@@ -1,28 +1,62 @@
 import { RouteComponentProps } from "@reach/router"
 import * as React from "react"
-import {Asd} from './pages/Asd'
-import { IndexPage } from "./pages/IndexPage"
+import { IndexPage } from "./pages/index/IndexPage"
+import { NotFoundPage } from "./pages/not-found/NotFoundPage"
 
-export type Route<T = any> = {
-  name: string
-  component: React.ComponentType<RouteComponentProps & any>
-  url: string
-  metadata?: T
-  default?: boolean
-  ssr?: boolean
-  children?: Route[]
+type RouteAsyncDataOptions<P> = {
+  params: P
 }
+
+export type RouteComponent = React.ComponentType<RouteComponentProps & any> & {
+  asyncData?: <P>(options: RouteAsyncDataOptions<P>) => Promise<any>
+}
+
+export type Route =
+  | {
+      name: string
+      component: RouteComponent
+      url: string
+      ssr?: boolean
+      default?: boolean
+      children?: Route[]
+    }
+  | {
+      name: string
+      component: RouteComponent
+      url?: string
+      ssr?: boolean
+      default: boolean
+      children?: Route[]
+    }
 
 export const routes: Route[] = [
   {
     name: "index",
     component: IndexPage,
-    url: "/",
-    ssr: true
+    url: "/ssr",
+    ssr: true,
+    children: [
+      {
+        name: "nest-no-ssr",
+        url: "/no-ssr",
+        component: IndexPage,
+        ssr: false
+      },
+      {
+        name: "nest-no-ssr",
+        url: "/",
+        component: IndexPage
+      }
+    ]
   },
   {
-    name: "asd",
-    component: Asd,
-    url: "/asd",
+    name: "no-index",
+    component: IndexPage,
+    url: "/no-ssr"
+  },
+  {
+    name: "404",
+    component: NotFoundPage,
+    default: true
   }
 ]
