@@ -2,9 +2,8 @@ import * as path from "path"
 import * as ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin"
 
 module.exports = {
-  entry: path.resolve(__dirname, "../src/client/index.tsx"),
   output: {
-    path: path.resolve(__dirname, "../../dist"),
+    path: path.resolve(__dirname, "../dist"),
     publicPath: "/",
     filename: "bundle.js"
   },
