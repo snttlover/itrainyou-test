@@ -28,7 +28,8 @@ type SearchInputTypes = {
   value: string
   children: React.ReactNode[]
   placeholder?: string
-  onChange: (value: string) => void
+  className?: string
+  onChange?: (value: string) => void
 }
 
 export const SearchInput = (props: SearchInputTypes) => {
@@ -51,7 +52,7 @@ export const SearchInput = (props: SearchInputTypes) => {
         changeFocus(false)
       }}
     >
-      <Container>
+      <Container className={props.className}>
         <Input
           value={props.value}
           placeholder={props.placeholder}

@@ -18,13 +18,15 @@ export const TextBox = styled.input`
 type InputTypes = {
   value: string
   placeholder?: string
-  onChange: (value: string) => void
+  onChange?: (value: string) => void
   onFocus?: () => void
 }
 
 export const Input = (props: InputTypes) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.onChange(e.target.value)
+    if (props.onChange) {
+      props.onChange(e.target.value)
+    }
   }
 
   return <TextBox {...props} onChange={change} />

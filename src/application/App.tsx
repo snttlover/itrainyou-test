@@ -3,6 +3,7 @@ import { Provider } from "effector-react/ssr"
 import * as React from "react"
 import { hot } from "react-hot-loader"
 import { Route, routes } from "./routes"
+import { AppStyles } from "./AppStyles"
 
 const renderRoutes = ({
   routes,
@@ -30,9 +31,12 @@ const renderRoutes = ({
 }
 
 const EntryApp = ({ store }: { store: any }) => (
-  <Provider value={store}>
-    <Router>{renderRoutes({ routes })}</Router>
-  </Provider>
+  <>
+    <AppStyles />
+    <Provider value={store}>
+      <Router>{renderRoutes({ routes })}</Router>
+    </Provider>
+  </>
 )
 
 export const App = hot(module)(EntryApp)

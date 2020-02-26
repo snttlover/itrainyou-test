@@ -17,11 +17,9 @@ const Button = styled.button`
 `
 
 const Arrow = styled.img.attrs({ src: arrowImage })`
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 22px;
   color: #544274;
   margin-left: 20px;
+  width: 12px;
 `
 
 const expandedStyles = css`
@@ -78,11 +76,7 @@ export const Dropdown = (props: SearchInputTypes) => {
   const [focused, changeFocus] = useState(false)
 
   const autocomplete = (
-    <Items
-      onClick={() => {
-        changeFocus(false)
-      }}
-    >
+    <Items>
       {props.children}
     </Items>
   )
