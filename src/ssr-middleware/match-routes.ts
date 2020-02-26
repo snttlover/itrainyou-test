@@ -1,8 +1,10 @@
-import { pathToRegexp } from "path-to-regexp"
+import { match, pathToRegexp } from "path-to-regexp"
+import * as querystring from "querystring"
 import { Route, RouteComponent } from "../application/routes"
 
-export type MatchedPath = {
+export type MatchedPath<T = any> = {
   ssr: boolean
+  params: T
   components: RouteComponent[]
 }
 
@@ -31,7 +33,8 @@ export const matchRoutes = (path: string, routes: Route[]): MatchedPath => {
         return acc
       },
       { url: "", routes: [] }
-    )  )
+    )
+  )
 
   const foundedRoute = mappedRoutes.find(route => {
     try {
@@ -46,13 +49,17 @@ export const matchRoutes = (path: string, routes: Route[]): MatchedPath => {
   if (!foundedRoute) {
     return {
       ssr: true,
+      params: {},
       components: []
     }
   }
 
+  // selective SSR logic
   // [true, undefined, undefined, true, false] -> false
   // [true, undefined, undefined, true, undefined] -> true
   // [true, undefined, false, undefined, undefined] -> false
+
+  const matchParams = match(foundedRoute.url, { decode: querystring.unescape })(path)
 
   return {
     ssr: foundedRoute.routes.reduce<boolean>((ssr, route) => {
@@ -60,6 +67,7 @@ export const matchRoutes = (path: string, routes: Route[]): MatchedPath => {
       else if (route.ssr === false) return false
       else return ssr
     }, false),
+    params: matchParams && matchParams.params || {},
     components: foundedRoute.routes.map(route => route.component)
   }
 }

@@ -1,35 +1,37 @@
 import { Router } from "@reach/router"
-import { Provider } from 'effector-react/ssr'
+import { Provider } from "effector-react/ssr"
 import * as React from "react"
-import {hot} from 'react-hot-loader'
+import { hot } from "react-hot-loader"
 import { Route, routes } from "./routes"
 
 const renderRoutes = ({
   routes,
-  baseUrl
+  baseUrl = ""
 }: {
   routes?: Route[]
-  baseUrl: string
+  baseUrl?: string
 }) => {
   if (!routes) return null
   return (
     <>
-      {routes.map(route => (
-        <route.component
-          key={baseUrl + route.url}
-          path={route.url}
-          default={route.default}
-        >
-          {renderRoutes({ routes: route.children, baseUrl: route.url })}
-        </route.component>
-      ))}
+      {routes.map(route => {
+        return (
+          <route.component
+            key={baseUrl + route.url}
+            path={route.url}
+            default={route.default}
+          >
+            {renderRoutes({ routes: route.children, baseUrl: route.url })}
+          </route.component>
+        )
+      })}
     </>
   )
 }
 
 const EntryApp = ({ store }: { store: any }) => (
   <Provider value={store}>
-    <Router>{renderRoutes({ routes, baseUrl: "" })}</Router>
+    <Router>{renderRoutes({ routes })}</Router>
   </Provider>
 )
 
