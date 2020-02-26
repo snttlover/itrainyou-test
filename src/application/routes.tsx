@@ -1,9 +1,9 @@
 import { RouteComponentProps } from "@reach/router"
 import { Scope } from "effector/fork"
 import * as React from "react"
-import { IndexPage } from "./pages/index/IndexPage"
 import { NotFoundPage } from "./pages/not-found/NotFoundPage"
 import { UserPage } from "./pages/user/UserPage"
+import { LandingPage } from "./pages/landing/LandingPage"
 
 export type AsyncDataOptions<T = any> = {
   params: T,
@@ -34,10 +34,10 @@ export type Route =
 
 export const routes: Route[] = [
   {
-    name: "index",
-    component: IndexPage,
-    url: "/",
-    ssr: true
+    name: "landing",
+    component: LandingPage,
+    ssr: true,
+    url: "/"
   },
   {
     name: 'user',
@@ -49,5 +49,5 @@ export const routes: Route[] = [
     name: "404",
     component: NotFoundPage,
     default: true
-  }
+  },
 ]

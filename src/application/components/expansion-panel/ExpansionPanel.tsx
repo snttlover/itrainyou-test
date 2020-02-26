@@ -53,14 +53,15 @@ const Panel = styled.div<PanelTypes>`
 
 type ExpansionPanelProps = {
   title: string,
-  children: React.ReactNode
+  children: React.ReactNode,
+  className?: string
 }
 
 export const ExpansionPanel = (props: ExpansionPanelProps) => {
   const [expanded, changeExpand] = useState(false);
 
   return (
-    <Panel expanded={expanded} onClick={() => changeExpand(!expanded)}>
+    <Panel className={props.className} expanded={expanded} onClick={() => changeExpand(!expanded)}>
       <Title>
         {props.title}
         <Arrow />

@@ -30,7 +30,9 @@ const CustomCheckbox = styled.div`
   }
 `
 
-const CheckboxInput = styled.input.attrs({ type: `checkbox` })<CheckboxInputTypes>`
+const CheckboxInput = styled.input.attrs({ type: `checkbox` })<
+  CheckboxInputTypes
+>`
   width: 0;
   height: 0;
   position: absolute;
@@ -41,7 +43,7 @@ const CheckboxInput = styled.input.attrs({ type: `checkbox` })<CheckboxInputType
   & ~ ${CustomCheckbox}:after {
     opacity: ${({ checked }) => (checked ? 1 : 0)};
     transform: scale(${({ checked }) => (checked ? 1 : 0)});
-  } 
+  }
 `
 
 const Label = styled.label`
@@ -52,21 +54,26 @@ const Label = styled.label`
 
 const Content = styled.div`
   flex: 1;
+  display: flex;
+  align-items: center;
 `
 
 type CheckboxProps = {
-  children: React.ReactNode,
-  onChange: (checked: boolean) => void,
+  children: React.ReactNode | React.ReactNode[]
   value: boolean
+  className?: string
+  onChange?: (checked: boolean) => void
 }
 
 export const Checkbox = (props: CheckboxProps) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (props.onChange) {
       props.onChange(e.target.checked)
+    }
   }
 
   return (
-    <Label>
+    <Label className={props.className}>
       <CheckboxInput checked={props.value} onChange={change} />
       <CustomCheckbox />
       <Content>{props.children}</Content>
