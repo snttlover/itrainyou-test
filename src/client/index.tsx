@@ -1,6 +1,6 @@
-import {allSettled, fork} from 'effector/fork'
+import { allSettled, fork, hydrate } from 'effector/fork'
 import * as React from "react"
-import { hydrate } from "react-dom"
+import * as ReactDOM from "react-dom"
 import { App } from "../application/App"
 import {appDomain, startClient} from '../application/store'
 
@@ -12,13 +12,15 @@ declare global {
 
 const initialState = window.__initialState__
 
-const clientScope = fork(appDomain, {
+hydrate(appDomain, {
   values: initialState
 })
+
+const clientScope = fork(appDomain)
 
 allSettled(startClient, {
   scope: clientScope,
   params: undefined,
 }).then(() => {
-  hydrate(<App store={clientScope} />, document.getElementById("root"))
+  ReactDOM.hydrate(<App store={clientScope} />, document.getElementById("root"))
 })

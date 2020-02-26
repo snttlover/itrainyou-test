@@ -1,15 +1,18 @@
 import { RouteComponentProps } from "@reach/router"
+import { Scope } from "effector/fork"
 import * as React from "react"
 import { IndexPage } from "./pages/index/IndexPage"
 import { NotFoundPage } from "./pages/not-found/NotFoundPage"
+import { UserPage } from "./pages/user/UserPage"
 
-type RouteAsyncDataOptions<P> = {
-  params: P
+export type AsyncDataOptions<T = any> = {
+  params: T,
+  scope: Scope
 }
 
-export type RouteComponent = React.ComponentType<RouteComponentProps & any> & {
-  asyncData?: <P>(options: RouteAsyncDataOptions<P>) => Promise<any>
-}
+export type AsyncDataFunction = (options: AsyncDataOptions) => Promise<never>
+
+export type RouteComponent = React.ComponentType<RouteComponentProps & any> & { asyncData?: AsyncDataFunction }
 
 export type Route =
   | {
@@ -33,26 +36,14 @@ export const routes: Route[] = [
   {
     name: "index",
     component: IndexPage,
-    url: "/ssr",
-    ssr: true,
-    children: [
-      {
-        name: "nest-no-ssr",
-        url: "/no-ssr",
-        component: IndexPage,
-        ssr: false
-      },
-      {
-        name: "nest-no-ssr",
-        url: "/",
-        component: IndexPage
-      }
-    ]
+    url: "/",
+    ssr: true
   },
   {
-    name: "no-index",
-    component: IndexPage,
-    url: "/no-ssr"
+    name: 'user',
+    url: "/user/:id",
+    ssr: true,
+    component: UserPage
   },
   {
     name: "404",

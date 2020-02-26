@@ -1,4 +1,5 @@
 import * as express from "express"
+import { statSync } from "fs"
 import * as path from 'path'
 import * as serveStatic from 'serve-static'
 
@@ -20,11 +21,18 @@ if (process.env.NODE_ENV !== "production") {
   app.use(webpackDevMiddleware(ssrCompiler, { writeToDisk: true }))
   app.use(webpackHotMiddleware(compiler))
 
+  let prevMStatsMS: number = -1
+  let compile: any = () => () => {}
+
   app.use((req: express.Request, res: express.Response) => {
     const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName.main
     const ssrMiddlewarePath = path.resolve(process.cwd(), '.build/ssr.middleware.js')
-    delete require.cache[require.resolve(ssrMiddlewarePath)]
-    const { compile } = require(ssrMiddlewarePath)
+    const stats = statSync(ssrMiddlewarePath)
+    if (stats.mtimeMs !== prevMStatsMS) {
+      delete require.cache[require.resolve(ssrMiddlewarePath)]
+      compile = require(ssrMiddlewarePath).compile
+      prevMStatsMS = stats.mtimeMs
+    }
     compile(assetsByChunkName)(req, res)
   })
 } else {

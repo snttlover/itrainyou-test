@@ -1,21 +1,26 @@
 import * as React from 'react'
+import { HelmetData } from "react-helmet"
 
 type TemplateOptions = {
   content?: string,
   stylesTags?: string,
   scriptsTags?: string,
-  initialState?: Object
+  initialState?: Object,
+  helmet: HelmetData
 }
 
 export function generateDocument(options: TemplateOptions) {
-  const { content = '', stylesTags = '', scriptsTags = '', initialState = {} } = options
+  const { content = '', stylesTags = '', scriptsTags = '', initialState = {}, helmet } = options
   return `
-    <html>
+    <!doctype html>
+    <html ${helmet.htmlAttributes.toString()}>
       <head>
-        <title>Title</title>
+        ${helmet.title.toString()}
+        ${helmet.meta.toString()}
+        ${helmet.link.toString()}
         ${stylesTags}
       </head>
-      <body>
+      <body ${helmet.bodyAttributes.toString()}>
         <div id='root'>${content}</div>
         <script>
           window.__initialState__ = ${JSON.stringify(initialState)}
