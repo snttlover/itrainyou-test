@@ -15,6 +15,7 @@ export function generateDocument(options: TemplateOptions) {
     <!doctype html>
     <html ${helmet.htmlAttributes.toString()}>
       <head>
+        <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name=viewport>
         <link rel="stylesheet" type="text/css" href="/fonts/gilroy/fonts-list.css">
         ${helmet.title.toString()}
         ${helmet.meta.toString()}
