@@ -14,6 +14,7 @@ const Button = styled.button`
   cursor: pointer;
   outline: none;
   background: #fff;
+  justify-content: space-between;
 `
 
 const Arrow = styled.img.attrs({ src: arrowImage })`
@@ -54,8 +55,7 @@ const Container = styled.div<ContainerTypes>`
 `
 
 const Items = styled.div`
-  width: 100%;
-  min-width: 400px;
+  width: 400px;
   position: absolute;
   z-index: 1;
   top: 0;
@@ -65,21 +65,21 @@ const Items = styled.div`
   background: #ffffff;
   border: 1px solid #449bd9;
   border-radius: 0px 4px 4px 4px;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
 `
 
 type SearchInputTypes = {
   renderTitle: () => React.ReactNode
   children: React.ReactNode[]
+  className?: string
 }
 
 export const Dropdown = (props: SearchInputTypes) => {
   const [focused, changeFocus] = useState(false)
 
-  const autocomplete = (
-    <Items>
-      {props.children}
-    </Items>
-  )
+  const autocomplete = <Items>{props.children}</Items>
   const autocompleteVisibility = props.children && focused
 
   return (
@@ -88,7 +88,7 @@ export const Dropdown = (props: SearchInputTypes) => {
         changeFocus(false)
       }}
     >
-      <Container expanded={autocompleteVisibility}>
+      <Container className={props.className} expanded={autocompleteVisibility}>
         <Button
           onClick={() => {
             changeFocus(true)

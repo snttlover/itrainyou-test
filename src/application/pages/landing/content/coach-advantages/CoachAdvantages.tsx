@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import { LeftColumn } from "./LeftColumn"
-import { RightColumn } from "./RightColumn";
+import { RightColumn } from "./RightColumn"
 import manImage from "./images/man.svg"
 
 const Title = styled.h3`
@@ -12,11 +12,26 @@ const Title = styled.h3`
   text-align: center;
   color: #544274;
   margin-bottom: 36px;
+  @media screen and (max-width: 480px) {
+    margin-bottom: 20px;
+    padding-top: 12px;
+  }
 `
 
 const AdvantagesColumns = styled.div`
   display: flex;
   padding-bottom: 128px;
+
+  @media screen and (max-width: 768px) {
+    padding-right: 18px;
+    padding-bottom: 64px;
+  }
+  @media screen and (max-width: 580px) {
+    flex-direction: column;
+  }
+  @media screen and (max-width: 480px) {
+    padding-bottom: 30px;
+  }
 `
 
 const Man = styled.img.attrs({ src: manImage })`
@@ -24,6 +39,14 @@ const Man = styled.img.attrs({ src: manImage })`
   height: 340px;
   flex: 0;
   margin: 0 24px;
+  @media screen and (max-width: 768px) {
+    width: 81.4px;
+    height: 240px;
+    margin: 49px 0 0;
+  }
+  @media screen and (max-width: 580px) {
+    display: none;
+  }
 `
 
 export const CoachAdvantages = () => (

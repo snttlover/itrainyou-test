@@ -25,6 +25,13 @@ const StyledCard = styled.div<StyledCardTypes>`
     border-radius: 10px;
     height: 8px;
   }
+  @media screen and (max-width: 768px) {
+    margin-top: 24px;
+  }
+  @media screen and (max-width: 554px) {
+    max-height: unset;
+    padding-bottom: 20px;
+  }
 `
 
 const Icon = styled.img`
@@ -39,6 +46,11 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 8px;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 12px;
+  }
 `
 
 const Description = styled.div`
