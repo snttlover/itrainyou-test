@@ -5,7 +5,6 @@ import { Header } from "./content/Header"
 import { Profile } from "./content/Profile"
 import { MenuItems } from "./content/menu-items/MenuItems"
 import { useState } from "react"
-import { $isServer } from "@/application/store"
 
 const Burger = styled.img.attrs({ src: burgerImage })`
   margin-left: 34px;

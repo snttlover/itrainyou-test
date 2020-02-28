@@ -1,13 +1,13 @@
 import { isRedirect, ServerLocation } from "@reach/router"
-import { fork, serialize } from "effector/fork"
+import { allSettled, fork, serialize } from "effector/fork"
 import * as express from "express"
 import * as React from "react"
 import { renderToString } from "react-dom/server"
 import Helmet, { HelmetData } from "react-helmet"
 import { ServerStyleSheet } from "styled-components"
-import { App } from "../application/App"
-import { AsyncDataFunction, routes } from "../application/routes"
-import { appDomain } from "../application/store"
+import { App } from "@/application/App"
+import { AsyncDataFunction, routes } from "@/application/routes"
+import { appDomain, startServer } from "@/application/store"
 import { matchRoutes } from "./match-routes"
 import { generateDocument } from "./template"
 
@@ -53,6 +53,10 @@ export const compile = (assets: string | string[]) => async (
       for (const asyncDataFunction of asyncDataFunctions) {
         await asyncDataFunction({ params: matchedPath.params, scope })
       }
+      await allSettled(startServer, {
+        scope,
+        params: undefined
+      })
       initialState = serialize(scope)
 
       content = renderToString(

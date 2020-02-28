@@ -36,9 +36,10 @@ if (process.env.NODE_ENV !== "production") {
     compile(assetsByChunkName)(req, res)
   })
 } else {
+  app.use(serveStatic(path.resolve(__dirname, 'dist')))
+  const { assetsByChunkName } = require("./stats.json")
   const { compile } = require("./ssr.middleware.js")
-  const assets = {} // TODO: Load assets in production from stats.json
-  app.use(compile(assets))
+  app.use(compile(assetsByChunkName.main))
 }
 
 const port = process.env.PORT || "3000"
