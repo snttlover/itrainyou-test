@@ -8,6 +8,14 @@ const Title = styled.h3`
   line-height: 44px;
   color: #424242;
   text-align: center;
+
+  @media screen and (max-width: 768px) {
+    font-size: 28px;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 20px;
+    line-height: 26px;
+  }
 `
 
 const SubTitle = styled.div`
@@ -17,6 +25,10 @@ const SubTitle = styled.div`
   color: #424242;
   margin-top: 12px;
   text-align: center;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    line-height: 22px;
+  }
 `
 
 const Description = styled.div`
@@ -26,6 +38,13 @@ const Description = styled.div`
   text-align: center;
   color: #424242;
   margin-bottom: 64px;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 24px;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
 `
 
 const StyledContainer = styled(LandingPageContainer)`

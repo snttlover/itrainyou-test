@@ -9,17 +9,35 @@ const StyledContainer = styled(LandingPageContainer)`
   margin-bottom: 50px;
   display: flex;
   justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    margin: 52px 19px 64px 44px;
+  }
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    margin-left: 12px;
+    margin-right: 12px;
+  }
 `
 
 const TextColumn = styled.div`
-  width: 460px;
-  color: #544274;
+  flex: 1;
+  max-width: 460px;
+  @media screen and (max-width: 768px) {
+    margin-right: 24px;
+  }
 `
 
 const Title = styled.h3`
   font-weight: 600;
   font-size: 28px;
   line-height: 44px;
+  color: #544274;
+  @media screen and (max-width: 768px) {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 26px;
+  }
 `
 
 const Subtitle = styled.h5`
@@ -29,6 +47,11 @@ const Subtitle = styled.h5`
   padding-top: 8px;
   color: #424242;
   margin-bottom: 32px;
+  @media screen and (max-width: 768px) {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+  }
 `
 
 const Paragraph = styled.div`
@@ -36,12 +59,24 @@ const Paragraph = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 8px;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    line-height: 22px;
+  }
 `
 
 const VideoColumn = styled.div`
   display: flex;
   align-items: center;
   padding-right: 20px;
+
+  @media screen and (max-width: 768px) {
+    align-items: flex-start;
+  }
+  @media screen and (max-width: 480px) {
+    display: flex;
+    justify-content: center;
+  }
 `
 
 const Video = styled.div`
@@ -64,6 +99,21 @@ const Video = styled.div`
       ),
       #9f8dc1;
   }
+  @media screen and (max-width: 768px) {
+    width: 269.38px;
+    height: 148.61px;
+    margin-top: 70px;
+  }
+  @media screen and (max-width: 480px) {
+    width: 269px;
+    height: 148.61px;
+  }
+`
+
+const SecondParagraph = styled(Paragraph)`
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
 `
 
 export const AboutCoach = () => (
@@ -75,12 +125,12 @@ export const AboutCoach = () => (
         <b>Коуч</b> — это наставник и тренер в одном лице. Он помогает человеку
         решить проблему, поставить жизненные задачи, найти мотивацию на успех
       </Paragraph>
-      <Paragraph>
+      <SecondParagraph>
         Коучи комбинируют методики педагогики, клинической, спортивной и
         социальной психологии, чтобы подобрать подход к каждому клиенту.
         Благодаря наставничеству люди достигают личных и профессиональных целей,
         которые ранее считали недоступными.
-      </Paragraph>
+      </SecondParagraph>
     </TextColumn>
     <VideoColumn>
       <Video />

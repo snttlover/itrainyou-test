@@ -11,6 +11,15 @@ const Title = styled.h3`
   text-align: center;
   color: #424242;
   margin-bottom: 24px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 20px;
+    line-height: 26px;
+  }
 `
 const SubTitle = styled.h3`
   font-weight: 600;
@@ -18,16 +27,36 @@ const SubTitle = styled.h3`
   line-height: 26px;
   text-align: center;
   color: #424242;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    line-height: 22px;
+  }
 `
 
 const StyledContainer = styled(LandingPageContainer)`
   padding-top: 60px;
   padding-bottom: 60px;
+  @media screen and (max-width: 768px) {
+    padding-bottom: 63px;
+    padding-top: 26px;
+  }
 `
 
 const CoachParamsCardsList = styled.div`
   display: flex;
   flex-wrap: wrap;
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+  }
+  @media screen and (max-width: 768px) {
+    justify-content: space-between;
+    width: auto;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  @media screen and (max-width: 554px) {
+    justify-content: center;
+  }
 `
 
 const CoachParamsCardWrapper = styled.div`
@@ -40,6 +69,11 @@ const CoachParamsCardWrapper = styled.div`
   &:nth-child(3),
   &:nth-child(6) {
     justify-content: flex-end;
+  }
+  @media screen and (max-width: 768px) {
+    width: auto;
+    max-width: 240px;
+    justify-content: flex-start !important;
   }
 `
 

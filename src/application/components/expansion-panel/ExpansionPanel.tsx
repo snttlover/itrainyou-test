@@ -1,7 +1,7 @@
 import * as React from "react"
-import {useState} from "react"
-import styled, {css} from "styled-components"
-import arrowImage from './arrow.svg'
+import { useState } from "react"
+import styled, { css } from "styled-components"
+import arrowImage from "./arrow.svg"
 
 const Title = styled.div`
   font-weight: 600;
@@ -11,9 +11,13 @@ const Title = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
 `
 
-const Arrow = styled.img.attrs({src: arrowImage})`
+const Arrow = styled.img.attrs({ src: arrowImage })`
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
@@ -26,6 +30,11 @@ const Container = styled.div`
   line-height: 22px;
   color: #424242;
   display: none;
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 8px;
+  }
 `
 
 interface PanelTypes {
@@ -49,19 +58,26 @@ const Panel = styled.div<PanelTypes>`
   cursor: pointer;
   border-radius: 8px;
   ${props => props.expanded && expandedStyles}
+  @media screen and (max-width: 480px) {
+    padding: 8px 24px 8px 8px;
+  }
 `
 
 type ExpansionPanelProps = {
-  title: string,
-  children: React.ReactNode,
+  title: string
+  children: React.ReactNode
   className?: string
 }
 
 export const ExpansionPanel = (props: ExpansionPanelProps) => {
-  const [expanded, changeExpand] = useState(false);
+  const [expanded, changeExpand] = useState(false)
 
   return (
-    <Panel className={props.className} expanded={expanded} onClick={() => changeExpand(!expanded)}>
+    <Panel
+      className={props.className}
+      expanded={expanded}
+      onClick={() => changeExpand(!expanded)}
+    >
       <Title>
         {props.title}
         <Arrow />

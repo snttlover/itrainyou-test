@@ -25,7 +25,11 @@ const Text = styled.div`
   margin-left: 8px;
 `
 
-export const CategoriesPicker = () => {
+type CategoriesPickerTypes = {
+  className?: string
+}
+
+export const CategoriesPicker = (props: CategoriesPickerTypes) => {
   const titleRenderer = () => <p>Категории</p>
 
   const renderCheckboxes = () =>
@@ -36,5 +40,5 @@ export const CategoriesPicker = () => {
       </StyledCheckbox>
     ))
 
-  return <Dropdown renderTitle={titleRenderer}>{renderCheckboxes()}</Dropdown>
+  return <Dropdown className={props.className} renderTitle={titleRenderer}>{renderCheckboxes()}</Dropdown>
 }

@@ -7,11 +7,23 @@ type CardTypes = {
 }
 
 const StyledBenefitCard = styled.div`
-  width: 25%;
+  width: calc(25% - 24px);
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 52px;
+  margin-right: 24px;
+  @media screen and (max-width: 768px) {
+    width: calc(25% - 24px);
+    margin-bottom: 44px;
+    max-width: 160px;
+  }
+  @media screen and (max-width: 480px) {
+    width: calc(50% - 16px);
+    margin-right: 16px;
+    margin-bottom: 32px;
+    max-width: 140px;
+  }
 `
 
 const Content = styled.div`
@@ -23,6 +35,10 @@ const Image = styled.img`
   width: 120px;
   height: 120px;
   opacity: 0.9;
+  @media screen and (max-width: 768px) {
+    width: 80px;
+    height: 80px;
+  }
 `
 
 const Text = styled.div`
@@ -32,6 +48,13 @@ const Text = styled.div`
   text-align: center;
   color: #424242;
   margin-top: 12px;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 16px;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+  }
 `
 
 export const BenefitCard = (props: CardTypes) => (
