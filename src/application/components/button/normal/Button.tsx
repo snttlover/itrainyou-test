@@ -16,6 +16,8 @@ export const Button = styled.button`
   color: #FFFFFF;
   cursor: pointer;
   
+  transition: all 200ms ease;
+  
   &:hover {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12), 1px 1px 3px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.12);
   }

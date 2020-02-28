@@ -4,6 +4,10 @@ import * as React from "react"
 import { hot } from "react-hot-loader"
 import { Route, routes } from "./routes"
 import { AppStyles } from "./AppStyles"
+import * as dayjs from 'dayjs'
+import 'dayjs/locale/ru'
+
+dayjs.locale('ru')
 
 const renderRoutes = ({
   routes,

@@ -1,3 +1,7 @@
+import { OurCoaches } from "@/application/pages/landing/content/our-coaches/OurCoaches"
+import { loadCoaches } from "./content/our-coaches/model"
+import { AsyncDataOptions } from "@/application/routes"
+import { allSettled } from "effector/fork"
 import * as React from "react"
 import { Layout } from "../../components/layout/Layout"
 import { TopBar } from "./content/top-bar/TopBar"
@@ -9,8 +13,8 @@ import { CoachParams } from "@/application/pages/landing/content/coach-params/Co
 import { PlatformAdvantages } from "@/application/pages/landing/content/platform-advantages/PlatformAdvantages"
 import { AllNeedsCoach } from "@/application/pages/landing/content/all-needs-coach/AllNeedsCoach"
 import { CoachAdvantages } from "@/application/pages/landing/content/coach-advantages/CoachAdvantages"
-import { FAQ } from "@/application/pages/landing/content/faq/FAQ";
-import { Footer } from "@/application/pages/landing/content/footer/Footer";
+import { FAQ } from "@/application/pages/landing/content/faq/FAQ"
+import { Footer } from "@/application/pages/landing/content/footer/Footer"
 
 export const LandingPage = () => (
   <Layout>
@@ -20,6 +24,7 @@ export const LandingPage = () => (
     <Benefits />
     <Steps />
     <CoachParams />
+    <OurCoaches />
     <PlatformAdvantages />
     <AllNeedsCoach />
     <CoachAdvantages />
@@ -27,3 +32,10 @@ export const LandingPage = () => (
     <Footer />
   </Layout>
 )
+
+LandingPage.asyncData = async ({ scope }: AsyncDataOptions) => {
+  await allSettled(loadCoaches, {
+    scope,
+    params: undefined
+  })
+}

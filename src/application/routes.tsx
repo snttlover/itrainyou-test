@@ -10,7 +10,7 @@ export type AsyncDataOptions<T = any> = {
   scope: Scope
 }
 
-export type AsyncDataFunction = (options: AsyncDataOptions) => Promise<never>
+export type AsyncDataFunction = (options: AsyncDataOptions) => Promise<void>
 
 export type RouteComponent = React.ComponentType<RouteComponentProps & any> & { asyncData?: AsyncDataFunction }
 
