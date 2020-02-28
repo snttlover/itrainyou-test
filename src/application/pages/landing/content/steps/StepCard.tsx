@@ -37,7 +37,7 @@ const StyledCard = styled.div`
   }
   
   
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     width: 100%;
     margin-right: 0 !important;
     &:not(:last-child) {
@@ -67,7 +67,7 @@ const Index = styled.div`
     font-size: 28px;
     margin-bottom: 4px;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     font-size: 20px;
     line-height: 26px;
   }
@@ -82,7 +82,7 @@ const Text = styled.div`
     font-size: 16px;
     line-height: 22px;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     line-height: 16px;
   }
 `

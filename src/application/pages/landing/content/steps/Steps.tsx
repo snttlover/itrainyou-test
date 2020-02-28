@@ -27,18 +27,18 @@ const Gradient = styled.img.attrs({ src: gradientImage })`
   @media screen and (max-width: 768px) {
     height: 225px;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     display: none;
   }
 `
 
 const MobileGradient = styled(Gradient).attrs({ src: mobileGradientImage })`
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     display: block;
     width: 100%;
     height: 100%;
   }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 566px) {
     display: none;
   }
 `
@@ -54,7 +54,7 @@ const Title = styled.h3`
     font-size: 28px;
     margin-bottom: 13px;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     font-size: 20px;
     line-height: 26px;
   }
@@ -63,7 +63,7 @@ const Title = styled.h3`
 const StepsList = styled.div`
   display: flex;
   justify-content: center;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     flex-direction: column;
   }
 `
