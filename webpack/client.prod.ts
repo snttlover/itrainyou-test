@@ -16,6 +16,35 @@ module.exports = merge(commonConfig, {
     "@babel/polyfill",
     path.resolve(__dirname, "../src/client/index.tsx")
   ],
+  module: {
+    rules: [
+      {
+        test: /\.(png|gif|jpeg|jpg|svg)?$/i,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 16384,
+              esModule: false
+            }
+          }
+        ],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(png|gif|jpeg|jpg|svg)?$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              esModule: false
+            }
+          }
+        ],
+        exclude: /node_modules/
+      }
+    ]
+  },
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()]

@@ -16,6 +16,23 @@ module.exports = merge(commonConfig, {
     filename: 'ssr.middleware.js',
     path: path.join(process.cwd(), '.build')
   },
+  module: {
+    rules: [
+      {
+        test: /\.(png|gif|jpeg|jpg|svg)?$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              esModule: false,
+              emitFile: false
+            }
+          }
+        ],
+        exclude: /node_modules/
+      }
+    ]
+  },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(true),
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })
