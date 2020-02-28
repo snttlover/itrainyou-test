@@ -1,0 +1,44 @@
+image: docker:stable
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+services:
+  - docker:18.09-dind
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  variables:
+    IMAGE: $CI_REGISTRY_IMAGE:latest
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
+    - docker pull $IMAGE
+    - docker build -t $IMAGE .
+    - docker push $IMAGE
+  only:
+    - master
+
+#deploy:
+#  stage: deploy
+#  variables:
+#    IMAGE_TAG: $CI_REGISTRY_IMAGE:latest
+#    IMAGE_NAME: itrainyoufrontend
+#    SERVER_IP: '89.223.92.195'
+#  script:
+#    - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client -y)'
+#    - mkdir -p ~/.ssh
+#    - eval $(ssh-agent -s)
+#    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+#    - echo "$PRODUCTION_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#    - ssh -p22 root@$SERVER_IP "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} registry.gitlab.com"
+#    - ssh -p22 root@$SERVER_IP "docker pull ${IMAGE_TAG}"
+#    - ssh -p22 root@$SERVER_IP "docker rm -f ${IMAGE_NAME}"
+#    - ssh -p22 root@$SERVER_IP "docker run --name ${IMAGE_NAME} -d -p 127.0.0.1:3000:3000 ${IMAGE_TAG}"
+#    - ssh -p22 root@$SERVER_IP "docker system prune -f"
+#    - ssh -p22 root@$SERVER_IP "docker logout registry.gitlab.com"
+#  only:
+#    - master
