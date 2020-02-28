@@ -1,9 +1,8 @@
+import * as ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin"
 import * as path from "path"
-import * as merge from "webpack-merge"
 import { HotModuleReplacementPlugin } from "webpack"
-import * as commonConfig from "./common.webpack"
 
-module.exports = merge(commonConfig, {
+module.exports = {
   mode: "development",
   devtool: "inline-source-map",
   output: {
@@ -19,11 +18,40 @@ module.exports = merge(commonConfig, {
   module: {
     rules: [
       {
+        test: /\.tsx?$/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            cacheDirectory: true
+          }
+        },
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(png|gif|jpeg|jpg|svg)?$/i,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 16384,
+              esModule: false
+            }
+          }
+        ],
+        exclude: /node_modules/
+      },
+      {
         test: /\.(js|jsx)$/,
         use: "react-hot-loader/webpack",
         include: /node_modules/
       }
     ]
   },
-  plugins: [new HotModuleReplacementPlugin()]
-})
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, '../src/')
+    },
+    extensions: [".tsx", ".ts", ".js"]
+  },
+  plugins: [new HotModuleReplacementPlugin(), new ForkTsCheckerWebpackPlugin()]
+}

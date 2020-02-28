@@ -18,19 +18,6 @@ module.exports = {
           }
         },
         exclude: /node_modules/
-      },
-      {
-        test: /\.(png|gif|jpeg|jpg|svg)?$/i,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 16384,
-              esModule: false
-            }
-          }
-        ],
-        exclude: /node_modules/
       }
     ]
   },
