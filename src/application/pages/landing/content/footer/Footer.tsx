@@ -61,7 +61,7 @@ const StyledContainer = styled(LandingPageContainer)`
     content: '';
     background-image: url("${desktopBackground}");
     left: -100px;
-    top: -26px;
+    top: -15px;
     width: 1163.08px;
     height: 328px;
   }
@@ -69,7 +69,7 @@ const StyledContainer = styled(LandingPageContainer)`
   @media screen and (max-width: 768px) {
     margin-left: 60px;
     &:before {
-      left: -60px;
+      margin-left: -20px;
     }
   }
   @media screen and (max-width: 480px) {

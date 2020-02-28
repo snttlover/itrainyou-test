@@ -55,7 +55,8 @@ const CoachParamsCardsList = styled.div`
     margin: 0 auto;
   }
   @media screen and (max-width: 554px) {
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 `
 
