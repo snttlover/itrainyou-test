@@ -38,7 +38,7 @@ const Man = styled.img.attrs({ src: manImage })`
   width: 115.31px;
   height: 340px;
   flex: 0;
-  margin: 0 24px;
+  margin: 40px 24px 0;
   @media screen and (max-width: 768px) {
     width: 81.4px;
     height: 240px;
