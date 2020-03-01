@@ -79,11 +79,19 @@ const VideoColumn = styled.div`
   }
 `
 
-const Video = styled.div`
-  background-image: url("${videoPlaceholderImage}");
+const Video = styled.iframe.attrs({
+    src: `https://www.youtube.com/embed/ilu61IUs0IA`,
+    frameBorder: 0,
+    allow: `accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture`
+  })`
+  width: 100%;
+  height: 100%;
+`
+
+const VideoWrapper = styled.div`
+  position: relative;
   width: 427px;
   height: 239px;
-  position: relative;
   &:after {
     position: absolute;
     content: "";
@@ -133,7 +141,9 @@ export const AboutCoach = () => (
       </SecondParagraph>
     </TextColumn>
     <VideoColumn>
-      <Video />
+      <VideoWrapper>
+        <Video />
+      </VideoWrapper>
     </VideoColumn>
   </StyledContainer>
 )
