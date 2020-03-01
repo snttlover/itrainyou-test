@@ -46,7 +46,7 @@ const StyledRegistrationButton = styled(Button)`
 
 export const Benefits = () => (
   <StyledContainer>
-    <Title>Обращение к коучу дает массу преимуществ каждому человеку.</Title>
+    <Title>Обращение к коучу дает массу преимуществ каждому человеку</Title>
     <CardsContainer>
       {cards.map((card, i) => (
         <BenefitCard key={i} {...card} />
