@@ -89,7 +89,7 @@ const Text = styled.div`
 
 export const StepCard = (props: StepCardTypes) => (
   <StyledCard>
-    <Index>{props.index}</Index>
+    <Index>0{props.index}</Index>
     <Text>{props.text}</Text>
   </StyledCard>
 )
