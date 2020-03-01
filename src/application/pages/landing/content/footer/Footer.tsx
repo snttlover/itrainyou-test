@@ -60,8 +60,8 @@ const StyledContainer = styled(LandingPageContainer)`
     position: absolute;
     content: '';
     background-image: url("${desktopBackground}");
-    left: -100px;
-    top: -15px;
+    left: -70px;
+    top: -20px;
     width: 1163.08px;
     height: 328px;
   }
