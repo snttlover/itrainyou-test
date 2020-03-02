@@ -2,6 +2,8 @@ import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import desktopBackground from "./images/desktop-background.svg"
+import mobileBackground from "./images/mobile-background.svg"
+import { Button } from "@/application/components/button/normal/Button"
 
 const StyledFooter = styled.div`
   background: #ddd9e3;
@@ -21,21 +23,7 @@ const Title = styled.div`
   @media screen and (max-width: 480px) {
     font-size: 20px;
     line-height: 26px;
-  }
-`
-
-const Label = styled.div`
-  margin-left: 16px;
-  padding: 4px 16px;
-  background: #544274;
-  border-radius: 16px;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 26px;
-  color: #ffffff;
-  @media screen and (max-width: 480px) {
-    font-size: 16px;
-    line-height: 22px;
+    flex: 1;
   }
 `
 
@@ -56,12 +44,12 @@ const StyledContainer = styled(LandingPageContainer)`
   position: relative;
   z-index: 1;
   &:before {
-    z-index: 0;
+    z-index: -1;
     position: absolute;
     content: '';
     background-image: url("${desktopBackground}");
-    left: -100px;
-    top: -15px;
+    left: -70px;
+    top: -20px;
     width: 1163.08px;
     height: 328px;
   }
@@ -69,7 +57,7 @@ const StyledContainer = styled(LandingPageContainer)`
   @media screen and (max-width: 768px) {
     margin-left: 60px;
     &:before {
-      margin-left: -20px;
+      left: -77px;
     }
   }
   @media screen and (max-width: 480px) {
@@ -77,10 +65,33 @@ const StyledContainer = styled(LandingPageContainer)`
     padding-top: 34px;
     padding-bottom: 22px;
     &:before {
-      left: -20px;
-      margin-top: -20px;
+      background-image: url("${mobileBackground}");
+      background-repeat: no-repeat;
+      left: -30px;
+      top: 3px;
       height: 100%;
     }
+  }
+`
+
+const RegistrationButton = styled(Button)`
+  background: #544274;
+  color: #ffffff;
+
+  margin-left: 16px;
+  padding: 4px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  &:active {
+    box-shadow: none;
+    background: #4f3e74;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+    line-height: 22px;
   }
 `
 
@@ -89,17 +100,14 @@ export const Footer = () => (
     <StyledContainer>
       <Header>
         <Title>Вы коуч?</Title>
-        <Label>Вам сюда!</Label>
+        <RegistrationButton>Вам сюда!</RegistrationButton>
       </Header>
       <Description>
         <p>
-          Приглашаем коучей к сотрудничеству. Предлагаем растущую базу клиентов,
-          продвижение по 12+ каналам рекламы и выгодные условия оплаты.
+          Приглашаем коучей к сотрудничеству. Предлагаем растущую базу клиентов, продвижение по 12+ каналам рекламы и
+          выгодные условия оплаты.
         </p>
-        <p>
-          Вы станете известным, будете работать на удобной платформе и
-          привлечете до 200% новых учеников.
-        </p>
+        <p>Вы станете известным, будете работать на удобной платформе и привлечете до 200% новых учеников.</p>
       </Description>
     </StyledContainer>
   </StyledFooter>

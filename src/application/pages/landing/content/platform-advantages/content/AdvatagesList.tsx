@@ -56,7 +56,7 @@ const Advantage = styled.div<AdvantageTypes>`
       position: absolute;
       width: 100%;
       height: 100%;
-      background: url("${props => (props.isActive ? mobileActiveButton : mobileButton)}");
+      background: url("${props => (props.isActive ? mobileActiveButton : mobileButton)}") no-repeat;
     }
   }
 `

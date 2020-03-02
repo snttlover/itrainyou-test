@@ -13,6 +13,7 @@ const StyledBenefitCard = styled.div`
   align-items: center;
   margin-bottom: 52px;
   margin-right: 24px;
+  order: initial;
   @media screen and (max-width: 768px) {
     width: calc(25% - 24px);
     margin-bottom: 44px;
@@ -23,6 +24,10 @@ const StyledBenefitCard = styled.div`
     margin-right: 16px;
     margin-bottom: 32px;
     max-width: 140px;
+    
+    &:nth-child(5) {
+      order: 100;
+    }
   }
 `
 

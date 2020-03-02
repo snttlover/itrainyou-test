@@ -6,7 +6,7 @@
     "start": "cross-env NODE_ENV=production node .build/server.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "dev": "nodemon --watch src/server/**/* src/server/server.ts",
-    "build": "npm run clean && tsc --outDir .build --skipLibCheck src/server/*.ts && webpack --config webpack/client.prod.ts && webpack --config webpack/ssr.prod.ts",
+    "build": "npm run clean && tsc --outDir .build --skipLibCheck src/server/server.ts && webpack --config webpack/client.prod.ts && webpack --config webpack/ssr.prod.ts",
     "clean": "rimraf .build"
   },
   "dependencies": {
