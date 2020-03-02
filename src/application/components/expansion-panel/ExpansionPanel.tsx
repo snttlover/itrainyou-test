@@ -11,6 +11,7 @@ const Title = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
   @media screen and (max-width: 480px) {
     font-size: 12px;
     line-height: 16px;
@@ -55,7 +56,6 @@ const Panel = styled.div<PanelTypes>`
   padding: 13px 20px;
   width: 100%;
   position: relative;
-  cursor: pointer;
   border-radius: 8px;
   ${props => props.expanded && expandedStyles}
   @media screen and (max-width: 480px) {
@@ -73,12 +73,8 @@ export const ExpansionPanel = (props: ExpansionPanelProps) => {
   const [expanded, changeExpand] = useState(false)
 
   return (
-    <Panel
-      className={props.className}
-      expanded={expanded}
-      onClick={() => changeExpand(!expanded)}
-    >
-      <Title>
+    <Panel className={props.className} expanded={expanded}>
+      <Title onClick={() => changeExpand(!expanded)}>
         {props.title}
         <Arrow />
       </Title>
