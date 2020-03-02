@@ -19,8 +19,9 @@ const StyledSteps = styled.div`
 const Gradient = styled.img.attrs({ src: gradientImage })`
   position: absolute;
   z-index: -1;
-  width: auto;
-  max-width: 1140px;
+  width: 100%;
+  height: 100%;
+  min-width: 1140px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
