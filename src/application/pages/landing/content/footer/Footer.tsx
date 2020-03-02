@@ -55,7 +55,7 @@ const StyledContainer = styled(LandingPageContainer)`
   @media screen and (max-width: 768px) {
     margin-left: 60px;
     &:before {
-      margin-left: -20px;
+      left: -77px;
     }
   }
   @media screen and (max-width: 480px) {
