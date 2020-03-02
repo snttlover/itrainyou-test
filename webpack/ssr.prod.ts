@@ -22,12 +22,7 @@ module.exports = merge(commonConfig, {
         test: /\.(gif|png|jpg|svg)(\?.*$|$)/,
         use: [
           {
-            loader: 'url-loader',
-            options: {
-              limit: true,
-              name: '[name].[ext]',
-              publicPath: 'images/'
-            },
+            loader: 'url-loader'
           },
         ]
       }
