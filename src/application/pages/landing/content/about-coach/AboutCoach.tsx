@@ -20,6 +20,14 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
+const MobileBr = styled.div`
+  display: none;
+
+  @media screen and (max-width: 480px) {
+    display: block;
+  }
+`
+
 const TextColumn = styled.div`
   flex: 1;
   max-width: 460px;
@@ -80,10 +88,10 @@ const VideoColumn = styled.div`
 `
 
 const Video = styled.iframe.attrs({
-    src: `https://www.youtube.com/embed/ilu61IUs0IA`,
-    frameBorder: 0,
-    allow: `accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture`
-  })`
+  src: `https://www.youtube.com/embed/ilu61IUs0IA`,
+  frameBorder: 0,
+  allow: `accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture`
+})`
   width: 100%;
   height: 100%;
 `
@@ -100,12 +108,7 @@ const VideoWrapper = styled.div`
     top: -20px;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        211.29deg,
-        #a3cff3 14.5%,
-        rgba(255, 255, 255, 0) 85.5%
-      ),
-      #9f8dc1;
+    background: linear-gradient(211.29deg, #a3cff3 14.5%, rgba(255, 255, 255, 0) 85.5%), #9f8dc1;
   }
   @media screen and (max-width: 768px) {
     width: 269.38px;
@@ -130,14 +133,13 @@ export const AboutCoach = () => (
       <Title>Коуч — необходимость нашего времени</Title>
       <Subtitle>Сила у тех, кто понял это раньше остальных</Subtitle>
       <Paragraph>
-        <b>Коуч</b> — это наставник и тренер в одном лице. Он помогает человеку
-        решить проблему, поставить жизненные задачи, найти мотивацию на успех
+        <b>Коуч</b> — это наставник и тренер в одном лице.
+        <MobileBr /> Он помогает человеку решить проблему, поставить жизненные задачи, найти мотивацию на успех
       </Paragraph>
       <SecondParagraph>
-        Коучи комбинируют методики педагогики, клинической, спортивной и
-        социальной психологии, чтобы подобрать подход к каждому клиенту.
-        Благодаря наставничеству люди достигают личных и профессиональных целей,
-        которые ранее считали недоступными.
+        Коучи комбинируют методики педагогики, клинической, спортивной и социальной психологии, чтобы подобрать подход к
+        каждому клиенту. Благодаря наставничеству люди достигают личных и профессиональных целей, которые ранее считали
+        недоступными.
       </SecondParagraph>
     </TextColumn>
     <VideoColumn>
