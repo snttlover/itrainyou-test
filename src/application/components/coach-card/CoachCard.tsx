@@ -1,7 +1,8 @@
 import { SelectDatetime } from "@/application/components/coach-card/SelectDatetime"
 import { Coach } from "@/application/lib/api/coach"
 import { formatISOStringToLocaleDateString } from "@/application/lib/formating/date"
-import { ImgHTMLAttributes, useState } from "react"
+import { MediaRange } from "@/application/lib/media/media"
+import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import starIcon from "./star.svg"
@@ -15,55 +16,85 @@ const Block = styled.div<{ isActive: boolean }>`
   border: 1px solid transparent;
   background: ${({ isActive }) => (isActive ? "#DDD9E3" : "#FFFFFF")};
   transition: border 200ms ease;
-  padding: 4px;
-
+  height: 104px;
+    
   &:hover {
     border: 1px solid #9f8dc1;
   }
+  
+  ${MediaRange.greaterThan('tablet')`
+    height: auto;
+    padding: 4px;    
+  `}
 `
 
 const MainInfoContainer = styled.div`
   display: flex;
-  padding: 8px 12px 12px;
+  padding: 12px 12px 12px 16px;
+  ${MediaRange.greaterThan('tablet')`
+    padding: 8px 12px 12px;
+  `}
 `
 
 const Avatar = styled.div<{ image: string }>`
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background-image: url("${props => props.image}");
   background-position: center;
   background-size: cover;
   border-radius: 50%;
+  
+  ${MediaRange.greaterThan('tablet')`
+    width: 80px;
+    height: 80px;
+  `}
 `
 
 const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  margin-left: 16px;
+  margin-left: 12px;
+  
+  ${MediaRange.greaterThan('tablet')`
+    margin-left: 16px;
+  `}
 `
 
 const Name = styled.span`
   font-style: normal;
   font-weight: 600;
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 20px;
   color: #424242;
+  
+  
+  ${MediaRange.greaterThan('tablet')`
+    font-size: 20px;
+    line-height: 26px;
+  `}
 `
 
 const Info = styled.div`
   display: flex;
-  margin-top: 16px;
+  margin-top: 12px;
+  ${MediaRange.greaterThan('tablet')`
+    margin-left: 16px;
+  `}
 `
 
 const Category = styled.img`
-  height: 24px;
-  width: 24px;
+  height: 16px;
+  width: 16px;
+  ${MediaRange.greaterThan('tablet')`
+    height: 24px;
+    width: 24px;
+  `}
 `
 
 const PriceContainer = styled.div`
   border: 1px solid #b3b3b3;
-  height: 24px;
+  height: 20px;
   border-radius: 12px;
   padding: 4px 8px;
   margin-left: 8px;
@@ -74,8 +105,14 @@ const PriceContainer = styled.div`
 
   color: #424242;
   font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 10px;
+  line-height: 12px;
+  
+  ${MediaRange.greaterThan('tablet')`
+    height: 24px;
+    font-size: 12px;
+    line-height: 16px;
+  `}
 `
 
 const Duration = styled.span`
@@ -115,22 +152,36 @@ const ReviewsCount = styled.span`
 `
 
 const Rating = styled.span`
-  font-size: 20px;
+  font-size: 12px;
   color: #424242;
+  ${MediaRange.greaterThan('tablet')`  
+    font-size: 20px;
+  `}
 `
 
 const Star = styled.img.attrs({ src: starIcon })`
-  width: 14px;
-  height: 14px;
-  margin: 0 5px;
+  width: 10px;
+  height: 10px;
+  margin: 0 3px;
+  
+  ${MediaRange.greaterThan('tablet')`  
+    width: 14px;
+    height: 14px;
+    margin: 0 5px;
+  `}
 `
 
 const Date = styled.span`
   margin-top: auto;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 10px;
+  line-height: 12px;
   color: #424242;
   display: flex;
+  
+  ${MediaRange.greaterThan('tablet')`  
+    font-size: 12px;
+    line-height: 16px;
+  `}
 `
 type ArrowType = { reverse?: boolean }
 
