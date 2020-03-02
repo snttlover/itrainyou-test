@@ -23,6 +23,7 @@ const StyledContainer = styled(LandingPageContainer)`
 
 const StyledLogo = styled(Logo)`
   margin-right: 40px;
+  cursor: pointer;
   @media screen and (max-width: 480px) {
     width: 36px;
     height: 36px;
