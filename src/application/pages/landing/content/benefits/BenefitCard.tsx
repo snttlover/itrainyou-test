@@ -25,6 +25,9 @@ const StyledBenefitCard = styled.div`
     margin-bottom: 32px;
     max-width: 140px;
     
+    &:nth-child(6) {
+      order: 99;
+    }
     &:nth-child(5) {
       order: 100;
     }
