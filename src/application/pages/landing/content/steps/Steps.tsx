@@ -25,6 +25,9 @@ const Gradient = styled.img.attrs({ src: gradientImage })`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  @media screen and (max-width: 743px) {
+    top: calc(50% + 20px);
+  }
   @media screen and (max-width: 768px) {
     height: 225px;
   }
@@ -38,6 +41,9 @@ const MobileGradient = styled(Gradient).attrs({ src: mobileGradientImage })`
     display: block;
     width: 100%;
     height: 100%;
+  }
+  @media screen and (max-width: 743px) {
+    top: 50%;
   }
   @media screen and (min-width: 566px) {
     display: none;
