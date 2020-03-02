@@ -2,6 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import desktopBackground from "./images/desktop-background.svg"
+import { Button } from "@/application/components/button/normal/Button"
 
 const StyledFooter = styled.div`
   background: #ddd9e3;
@@ -24,21 +25,6 @@ const Title = styled.div`
   }
 `
 
-const Label = styled.div`
-  margin-left: 16px;
-  padding: 4px 16px;
-  background: #544274;
-  border-radius: 16px;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 26px;
-  color: #ffffff;
-  @media screen and (max-width: 480px) {
-    font-size: 16px;
-    line-height: 22px;
-  }
-`
-
 const Description = styled.div`
   font-size: 20px;
   line-height: 26px;
@@ -56,7 +42,7 @@ const StyledContainer = styled(LandingPageContainer)`
   position: relative;
   z-index: 1;
   &:before {
-    z-index: 0;
+    z-index: -1;
     position: absolute;
     content: '';
     background-image: url("${desktopBackground}");
@@ -84,22 +70,40 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
+const RegistrationButton = styled(Button)`
+  background: #544274;
+  color: #ffffff;
+
+  margin-left: 16px;
+  padding: 4px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  &:active {
+    box-shadow: none;
+    background: #4f3e74;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+    line-height: 22px;
+  }
+`
+
 export const Footer = () => (
   <StyledFooter>
     <StyledContainer>
       <Header>
         <Title>Вы коуч?</Title>
-        <Label>Вам сюда!</Label>
+        <RegistrationButton>Вам сюда!</RegistrationButton>
       </Header>
       <Description>
         <p>
-          Приглашаем коучей к сотрудничеству. Предлагаем растущую базу клиентов,
-          продвижение по 12+ каналам рекламы и выгодные условия оплаты.
+          Приглашаем коучей к сотрудничеству. Предлагаем растущую базу клиентов, продвижение по 12+ каналам рекламы и
+          выгодные условия оплаты.
         </p>
-        <p>
-          Вы станете известным, будете работать на удобной платформе и
-          привлечете до 200% новых учеников.
-        </p>
+        <p>Вы станете известным, будете работать на удобной платформе и привлечете до 200% новых учеников.</p>
       </Description>
     </StyledContainer>
   </StyledFooter>
