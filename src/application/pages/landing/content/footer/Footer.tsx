@@ -2,6 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import desktopBackground from "./images/desktop-background.svg"
+import mobileBackground from "./images/mobile-background.svg"
 import { Button } from "@/application/components/button/normal/Button"
 
 const StyledFooter = styled.div`
@@ -22,6 +23,7 @@ const Title = styled.div`
   @media screen and (max-width: 480px) {
     font-size: 20px;
     line-height: 26px;
+    flex: 1;
   }
 `
 
@@ -63,8 +65,10 @@ const StyledContainer = styled(LandingPageContainer)`
     padding-top: 34px;
     padding-bottom: 22px;
     &:before {
-      left: -20px;
-      margin-top: -20px;
+      background-image: url("${mobileBackground}");
+      background-repeat: no-repeat;
+      left: -30px;
+      top: 3px;
       height: 100%;
     }
   }
