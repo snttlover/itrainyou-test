@@ -91,7 +91,7 @@ export const Dropdown = (props: SearchInputTypes) => {
       <Container className={props.className} expanded={autocompleteVisibility}>
         <Button
           onClick={() => {
-            changeFocus(true)
+            changeFocus(!focused)
           }}
         >
           {props.renderTitle()}
