@@ -77,9 +77,11 @@ const VideoColumn = styled.div`
   display: flex;
   align-items: center;
   padding-right: 20px;
+  padding-left: 20px;
 
   @media screen and (max-width: 768px) {
     align-items: flex-start;
+    padding-left: 0;
   }
   @media screen and (max-width: 480px) {
     display: flex;
