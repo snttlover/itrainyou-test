@@ -59,7 +59,7 @@ const Description = styled.div`
   color: #424242;
   @media screen and (max-width: 768px) {
     font-size: 14px;
-    line-height: 20px;
+    line-height: 18px;
   }
 `
 

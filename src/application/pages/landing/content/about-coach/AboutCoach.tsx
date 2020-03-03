@@ -75,7 +75,7 @@ const Paragraph = styled.div`
   }
   @media screen and (max-width: 768px) {
     font-size: 14px;
-    line-height: 20px;
+    line-height: 18px;
   }
 `
 
