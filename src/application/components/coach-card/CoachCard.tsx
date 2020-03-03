@@ -17,10 +17,17 @@ const Block = styled.div<{ isActive: boolean }>`
   background: ${({ isActive }) => (isActive ? "#DDD9E3" : "#FFFFFF")};
   transition: border 200ms ease;
   height: 104px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.2);
+  }
 
   @media screen and (max-width: 480px) {
-    background: #fff !important;
+    background: #fff;
     height: auto;
+    &:active {
+      background: #ddd9e3;
+    }
   }
   ${MediaRange.greaterThan("tablet")`
     height: auto;
@@ -86,6 +93,7 @@ const Name = styled.span`
 const Info = styled.div`
   display: flex;
   margin-top: 12px;
+  align-items: center;
   ${MediaRange.greaterThan("tablet")`
     margin-left: 16px;
   `}
@@ -115,10 +123,6 @@ const PriceContainer = styled.div`
   font-weight: 600;
   font-size: 10px;
   line-height: 12px;
-
-  @media screen and (max-width: 480px) {
-    display: none;
-  }
   ${MediaRange.greaterThan("tablet")`
     height: 24px;
     font-size: 12px;
@@ -148,9 +152,6 @@ const RatingContainer = styled.div`
   margin-left: auto;
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 480px) {
-    display: none;
-  }
 `
 
 const Meta = styled.div`
@@ -168,6 +169,12 @@ const ReviewsCount = styled.span`
 const Rating = styled.span`
   font-size: 12px;
   color: #424242;
+
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 600;
+  }
   ${MediaRange.greaterThan("tablet")`  
     font-size: 20px;
   `}
@@ -177,6 +184,11 @@ const Star = styled.img.attrs({ src: starIcon })`
   width: 10px;
   height: 10px;
   margin: 0 3px;
+
+  @media screen and (max-width: 480px) {
+    width: 13px;
+    height: 13px;
+  }
 
   ${MediaRange.greaterThan("tablet")`  
     width: 14px;
@@ -192,43 +204,14 @@ const Date = styled.span`
   color: #424242;
   display: flex;
 
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
   ${MediaRange.greaterThan("tablet")`  
     font-size: 12px;
     line-height: 16px;
   `}
 `
-
-const MobileTime = styled.div`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 22px;
-  text-align: right;
-  color: #544274;
-  display: none;
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  @media screen and (max-width: 480px) {
-    display: block;
-  }
-`
-
-const MobileStartButton = styled.div`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
-  color: #544274;
-  display: none;
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  @media screen and (max-width: 480px) {
-    display: block;
-  }
-`
-
 type ArrowType = { reverse?: boolean }
 
 const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
@@ -251,8 +234,6 @@ const CoachCardLayout = ({ coach, className }: Props) => {
     <Block className={className} isActive={isActive}>
       <MainInfoContainer onClick={() => changeActive(!isActive)}>
         <Avatar image={coach.avatar} />
-        <MobileTime>12:00-12:45</MobileTime>
-        <MobileStartButton>Начать сессию</MobileStartButton>
         <NameContainer>
           <Name>{`${coach.firstName} ${coach.lastName}`}</Name>
           <Info>
