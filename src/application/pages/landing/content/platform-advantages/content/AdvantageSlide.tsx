@@ -77,14 +77,15 @@ const Image = styled.img`
   }
 `
 
-type AdvantageSlideTypes = {
+export type AdvantageSlideTypes = {
   title: string,
   description: () => React.ReactNode,
-  image: string
+  image: string,
+  className?: string
 }
 
 export const AdvantageSlide = (props: AdvantageSlideTypes) => (
-  <StyledSlide>
+  <StyledSlide className={props.className}>
     <DescriptionContainer>
       <DescriptionTitle>{props.title}</DescriptionTitle>
       <DescriptionSubTitle>{props.description()}</DescriptionSubTitle>
