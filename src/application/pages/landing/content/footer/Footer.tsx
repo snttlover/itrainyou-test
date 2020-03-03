@@ -16,7 +16,7 @@ const Header = styled.div`
 
 const Title = styled.div`
   font-weight: 600;
-  font-size: 36px;
+  font-size: 28px;
   line-height: 44px;
   color: #424242;
 
