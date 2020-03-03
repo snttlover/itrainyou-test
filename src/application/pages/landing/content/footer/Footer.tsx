@@ -33,7 +33,7 @@ const Description = styled.div`
   color: #424242;
   margin-top: 20px;
   max-width: 600px;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     font-size: 14px;
     line-height: 18px;
   }
