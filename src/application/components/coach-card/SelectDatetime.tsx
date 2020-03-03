@@ -10,6 +10,9 @@ const Block = styled.div`
   padding: 24px 24px 20px;
   display: flex;
   min-height: 300px;
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
 `
 
 const Datepicker = styled.div`
