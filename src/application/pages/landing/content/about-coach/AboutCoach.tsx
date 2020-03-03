@@ -77,6 +77,10 @@ const Paragraph = styled.div`
     font-size: 14px;
     line-height: 18px;
   }
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
 `
 
 const VideoColumn = styled.div`
