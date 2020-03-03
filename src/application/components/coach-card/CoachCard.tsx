@@ -9,6 +9,9 @@ import starIcon from "./star.svg"
 import arrowIcon from "./arrow.svg"
 
 const Block = styled.div<{ isActive: boolean }>`
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
   width: 100%;
   position: relative;
   display: flex;
