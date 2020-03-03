@@ -2,9 +2,10 @@ import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import { AdvantagesList } from "./content/AdvatagesList"
-import { AdvantageSlide } from "./content/AdvantageSlide"
 import advantages from "./advantages"
 import { useState } from "react"
+import { DesktopSlider } from "./content/DesktopSlider"
+import { MobileSlider } from "./content/MobileSlider"
 
 const SlidesContainer = styled.div`
   flex: 1;
@@ -68,7 +69,8 @@ export const PlatformAdvantages = () => {
       <Title>Сориентированы на комплекс ваших преимуществ</Title>
       <SliderContainer>
         <SlidesContainer>
-          <AdvantageSlide {...slide} />
+          <DesktopSlider {...slide} />
+          <MobileSlider current={currentSlideIndex} items={advantages} slideChanged={changeCurrentSlideIndex} />
         </SlidesContainer>
         <AdvantagesList current={currentSlideIndex} list={advantages} changeIndex={changeCurrentSlideIndex} />
       </SliderContainer>
