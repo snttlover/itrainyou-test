@@ -66,16 +66,20 @@ const Subtitle = styled.h5`
 `
 
 const Paragraph = styled.div`
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 22px;
   color: #424242;
   margin-bottom: 8px;
   b {
     color: #544274;
   }
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+    line-height: 16px;
   }
 `
 
@@ -129,8 +133,8 @@ const VideoWrapper = styled.div`
   }
 `
 
-const SecondParagraph = styled(Paragraph)`
-  @media screen and (max-width: 480px) {
+const HideTabletParagraph = styled(Paragraph)`
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `
@@ -142,8 +146,15 @@ export const AboutCoach = () => (
       <Subtitle>Сила у тех, кто понял это раньше остальных</Subtitle>
       <Paragraph>
         <b>Коуч</b> — это наставник и тренер в одном лице.
-        <MobileBr /> Он помогает человеку решить проблему, поставить жизненные задачи, найти мотивацию на успех
+        <MobileBr /> Он помогает человеку решить проблему, поставить жизненные задачи, найти мотивацию на успех.
       </Paragraph>
+      <HideTabletParagraph>
+        Коучи комбинируют методики педагогики, клинической, спортивной и социальной психологии, чтобы подобрать подход к
+        каждому клиенту.
+      </HideTabletParagraph>
+      <HideTabletParagraph>
+        Благодаря наставничеству люди достигают личных и профессиональных целей, которые ранее считали недоступными.
+      </HideTabletParagraph>
     </TextColumn>
     <VideoColumn>
       <VideoWrapper>

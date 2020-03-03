@@ -16,7 +16,7 @@ const Header = styled.div`
 
 const Title = styled.div`
   font-weight: 600;
-  font-size: 36px;
+  font-size: 28px;
   line-height: 44px;
   color: #424242;
 
@@ -33,6 +33,10 @@ const Description = styled.div`
   color: #424242;
   margin-top: 20px;
   max-width: 600px;
+  @media screen and (max-width: 480px) {
+    font-size: 14px;
+    line-height: 18px;
+  }
   @media screen and (max-width: 480px) {
     font-size: 12px;
     line-height: 16px;
