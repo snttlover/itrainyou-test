@@ -13,14 +13,9 @@ const Block = styled.div<{ isActive: boolean }>`
   flex-direction: column;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  border: 1px solid transparent;
   background: ${({ isActive }) => (isActive ? "#DDD9E3" : "#FFFFFF")};
   transition: border 200ms ease;
   height: 104px;
-    
-  &:hover {
-    border: 1px solid #9f8dc1;
-  }
   
   ${MediaRange.greaterThan('tablet')`
     height: auto;
