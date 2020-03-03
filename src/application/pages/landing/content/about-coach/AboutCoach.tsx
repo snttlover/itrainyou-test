@@ -73,6 +73,10 @@ const Paragraph = styled.div`
   b {
     color: #544274;
   }
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `
 
 const VideoColumn = styled.div`
