@@ -23,6 +23,9 @@ const Text = styled.div`
   line-height: 22px;
   color: #424242;
   margin-left: 8px;
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+  }
 `
 
 type CategoriesPickerTypes = {
