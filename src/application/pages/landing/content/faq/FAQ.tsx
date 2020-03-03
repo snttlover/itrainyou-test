@@ -13,6 +13,7 @@ const Title = styled.h3`
   line-height: 44px;
   color: #424242;
   margin-bottom: 12px;
+  text-align: center;
   @media screen and (max-width: 768px) {
     font-size: 28px;
     margin-left: 20px;
@@ -30,6 +31,7 @@ const SubTitle = styled.h3`
   line-height: 26px;
   color: #424242;
   margin-bottom: 36px;
+  text-align: center;
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;

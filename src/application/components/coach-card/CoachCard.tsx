@@ -9,20 +9,20 @@ import starIcon from "./star.svg"
 import arrowIcon from "./arrow.svg"
 
 const Block = styled.div<{ isActive: boolean }>`
+  position: relative;
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  border: 1px solid transparent;
   background: ${({ isActive }) => (isActive ? "#DDD9E3" : "#FFFFFF")};
   transition: border 200ms ease;
   height: 104px;
-    
-  &:hover {
-    border: 1px solid #9f8dc1;
+
+  @media screen and (max-width: 480px) {
+    background: #fff !important;
+    height: auto;
   }
-  
-  ${MediaRange.greaterThan('tablet')`
+  ${MediaRange.greaterThan("tablet")`
     height: auto;
     padding: 4px;    
   `}
@@ -31,7 +31,7 @@ const Block = styled.div<{ isActive: boolean }>`
 const MainInfoContainer = styled.div`
   display: flex;
   padding: 12px 12px 12px 16px;
-  ${MediaRange.greaterThan('tablet')`
+  ${MediaRange.greaterThan("tablet")`
     padding: 8px 12px 12px;
   `}
 `
@@ -44,7 +44,11 @@ const Avatar = styled.div<{ image: string }>`
   background-size: cover;
   border-radius: 50%;
   
-  ${MediaRange.greaterThan('tablet')`
+  @media screen and (max-width: 480px) {
+    width: 60px;
+    height: 60px;
+  }
+  ${MediaRange.greaterThan("tablet")`
     width: 80px;
     height: 80px;
   `}
@@ -55,8 +59,8 @@ const NameContainer = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   margin-left: 12px;
-  
-  ${MediaRange.greaterThan('tablet')`
+
+  ${MediaRange.greaterThan("tablet")`
     margin-left: 16px;
   `}
 `
@@ -67,9 +71,13 @@ const Name = styled.span`
   font-size: 16px;
   line-height: 20px;
   color: #424242;
-  
-  
-  ${MediaRange.greaterThan('tablet')`
+
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 30px;
+  }
+  ${MediaRange.greaterThan("tablet")`
     font-size: 20px;
     line-height: 26px;
   `}
@@ -78,7 +86,7 @@ const Name = styled.span`
 const Info = styled.div`
   display: flex;
   margin-top: 12px;
-  ${MediaRange.greaterThan('tablet')`
+  ${MediaRange.greaterThan("tablet")`
     margin-left: 16px;
   `}
 `
@@ -86,7 +94,7 @@ const Info = styled.div`
 const Category = styled.img`
   height: 16px;
   width: 16px;
-  ${MediaRange.greaterThan('tablet')`
+  ${MediaRange.greaterThan("tablet")`
     height: 24px;
     width: 24px;
   `}
@@ -107,8 +115,11 @@ const PriceContainer = styled.div`
   font-weight: 600;
   font-size: 10px;
   line-height: 12px;
-  
-  ${MediaRange.greaterThan('tablet')`
+
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
+  ${MediaRange.greaterThan("tablet")`
     height: 24px;
     font-size: 12px;
     line-height: 16px;
@@ -137,6 +148,9 @@ const RatingContainer = styled.div`
   margin-left: auto;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
 `
 
 const Meta = styled.div`
@@ -154,7 +168,7 @@ const ReviewsCount = styled.span`
 const Rating = styled.span`
   font-size: 12px;
   color: #424242;
-  ${MediaRange.greaterThan('tablet')`  
+  ${MediaRange.greaterThan("tablet")`  
     font-size: 20px;
   `}
 `
@@ -163,8 +177,8 @@ const Star = styled.img.attrs({ src: starIcon })`
   width: 10px;
   height: 10px;
   margin: 0 3px;
-  
-  ${MediaRange.greaterThan('tablet')`  
+
+  ${MediaRange.greaterThan("tablet")`  
     width: 14px;
     height: 14px;
     margin: 0 5px;
@@ -177,12 +191,44 @@ const Date = styled.span`
   line-height: 12px;
   color: #424242;
   display: flex;
-  
-  ${MediaRange.greaterThan('tablet')`  
+
+  ${MediaRange.greaterThan("tablet")`  
     font-size: 12px;
     line-height: 16px;
   `}
 `
+
+const MobileTime = styled.div`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: right;
+  color: #544274;
+  display: none;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  @media screen and (max-width: 480px) {
+    display: block;
+  }
+`
+
+const MobileStartButton = styled.div`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #544274;
+  display: none;
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  @media screen and (max-width: 480px) {
+    display: block;
+  }
+`
+
 type ArrowType = { reverse?: boolean }
 
 const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
@@ -205,6 +251,8 @@ const CoachCardLayout = ({ coach, className }: Props) => {
     <Block className={className} isActive={isActive}>
       <MainInfoContainer onClick={() => changeActive(!isActive)}>
         <Avatar image={coach.avatar} />
+        <MobileTime>12:00-12:45</MobileTime>
+        <MobileStartButton>Начать сессию</MobileStartButton>
         <NameContainer>
           <Name>{`${coach.firstName} ${coach.lastName}`}</Name>
           <Info>

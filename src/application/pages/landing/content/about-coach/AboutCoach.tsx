@@ -34,6 +34,9 @@ const TextColumn = styled.div`
   @media screen and (max-width: 768px) {
     margin-right: 24px;
   }
+  @media screen and (max-width: 480px) {
+    margin-right: 0;
+  }
 `
 
 const Title = styled.h3`
@@ -67,6 +70,9 @@ const Paragraph = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 8px;
+  b {
+    color: #544274;
+  }
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
@@ -77,9 +83,11 @@ const VideoColumn = styled.div`
   display: flex;
   align-items: center;
   padding-right: 20px;
+  padding-left: 20px;
 
   @media screen and (max-width: 768px) {
     align-items: flex-start;
+    padding-left: 0;
   }
   @media screen and (max-width: 480px) {
     display: flex;
