@@ -12,6 +12,11 @@ const Title = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 18px;
+  }
   @media screen and (max-width: 480px) {
     font-size: 12px;
     line-height: 16px;
@@ -30,7 +35,10 @@ const Container = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
-  display: none;
+  display: none;  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 18px;
+  }
   @media screen and (max-width: 480px) {
     font-size: 12px;
     line-height: 16px;
