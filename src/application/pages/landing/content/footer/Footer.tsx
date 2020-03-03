@@ -28,8 +28,8 @@ const Title = styled.div`
 `
 
 const Description = styled.div`
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 22px;
   color: #424242;
   margin-top: 20px;
   max-width: 600px;
