@@ -57,6 +57,9 @@ const Panel = styled.div<PanelTypes>`
   width: 100%;
   position: relative;
   border-radius: 8px;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
   ${props => props.expanded && expandedStyles}
   @media screen and (max-width: 480px) {
     padding: 8px 24px 8px 8px;
