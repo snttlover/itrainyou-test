@@ -34,6 +34,9 @@ const TextColumn = styled.div`
   @media screen and (max-width: 768px) {
     margin-right: 24px;
   }
+  @media screen and (max-width: 480px) {
+    margin-right: 0;
+  }
 `
 
 const Title = styled.h3`
