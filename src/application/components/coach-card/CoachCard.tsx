@@ -9,6 +9,7 @@ import starIcon from "./star.svg"
 import arrowIcon from "./arrow.svg"
 
 const Block = styled.div<{ isActive: boolean }>`
+  width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
