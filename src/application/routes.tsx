@@ -6,9 +6,10 @@ import { UserPage } from "./pages/user/UserPage"
 import { LandingPage } from "./pages/landing/LandingPage"
 import { LoginPage } from "@/application/pages/auth/pages/login/LoginPage"
 import { RecoveryPage } from "@/application/pages/auth/pages/recovery/RecoveryPage"
+import { ResetPasswordPage } from "@/application/pages/auth/pages/reset/ResetPasswordPage"
 
 export type AsyncDataOptions<T = any> = {
-  params: T,
+  params: T
   scope: Scope
 }
 
@@ -46,14 +47,18 @@ export const routes: Route[] = [
     component: LoginPage,
     url: "/login"
   },
-
   {
     name: "recovery",
     component: RecoveryPage,
     url: "/recovery"
   },
   {
-    name: 'user',
+    name: "reset",
+    component: ResetPasswordPage,
+    url: "/reset"
+  },
+  {
+    name: "user",
     url: "/user/:id",
     ssr: true,
     component: UserPage
