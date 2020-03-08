@@ -2,24 +2,12 @@ import * as React from "react"
 import styled from "styled-components"
 import { Input } from "@/application/components/input/Input"
 import { DashedButton } from "@/application/components/button/dashed/DashedButton"
+import { FormItem } from "@/application/components/form-item/FormItem"
 
 const StyledForm = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`
-
-const FormInput = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-  width: 100%;
-`
-
-const Label = styled.div`
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
 `
 
 const StyledButton = styled(DashedButton)`
@@ -33,14 +21,12 @@ const StyledButton = styled(DashedButton)`
 
 export const LoginForm = () => (
   <StyledForm>
-    <FormInput>
-      <Label>Логин</Label>
+    <FormItem label='Логин'>
       <Input value='' />
-    </FormInput>
-    <FormInput>
-      <Label>Пароль</Label>
+    </FormItem>
+    <FormItem label='Пароль'>
       <Input value='' type='password' />
-    </FormInput>
+    </FormItem>
     <StyledButton>Вход</StyledButton>
   </StyledForm>
 )
