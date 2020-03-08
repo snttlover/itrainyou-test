@@ -32,6 +32,13 @@ type SearchInputTypes = {
   onChange?: (value: string) => void
 }
 
+const StyledInput = styled(Input)`
+  border: 1px solid #449bd9;
+  &:hover {
+    border: 1px solid #424242;
+  }
+`
+
 export const SearchInput = (props: SearchInputTypes) => {
   const [focused, changeFocus] = useState(false)
 
@@ -53,7 +60,7 @@ export const SearchInput = (props: SearchInputTypes) => {
       }}
     >
       <Container className={props.className}>
-        <Input
+        <StyledInput
           value={props.value}
           placeholder={props.placeholder}
           onChange={props.onChange}

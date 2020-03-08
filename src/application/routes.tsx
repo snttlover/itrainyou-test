@@ -4,6 +4,7 @@ import * as React from "react"
 import { NotFoundPage } from "./pages/not-found/NotFoundPage"
 import { UserPage } from "./pages/user/UserPage"
 import { LandingPage } from "./pages/landing/LandingPage"
+import { LoginPage } from "@/application/pages/login/LoginPage"
 
 export type AsyncDataOptions<T = any> = {
   params: T,
@@ -40,6 +41,11 @@ export const routes: Route[] = [
     url: "/"
   },
   {
+    name: "login",
+    component: LoginPage,
+    url: "/login"
+  },
+  {
     name: 'user',
     url: "/user/:id",
     ssr: true,
@@ -49,5 +55,5 @@ export const routes: Route[] = [
     name: "404",
     component: NotFoundPage,
     default: true
-  },
+  }
 ]
