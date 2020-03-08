@@ -5,6 +5,7 @@ import { NotFoundPage } from "./pages/not-found/NotFoundPage"
 import { UserPage } from "./pages/user/UserPage"
 import { LandingPage } from "./pages/landing/LandingPage"
 import { LoginPage } from "@/application/pages/auth/pages/login/LoginPage"
+import { RecoveryPage } from "@/application/pages/auth/pages/recovery/RecoveryPage"
 
 export type AsyncDataOptions<T = any> = {
   params: T,
@@ -44,6 +45,12 @@ export const routes: Route[] = [
     name: "login",
     component: LoginPage,
     url: "/login"
+  },
+
+  {
+    name: "recovery",
+    component: RecoveryPage,
+    url: "/recovery"
   },
   {
     name: 'user',
