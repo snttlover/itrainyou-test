@@ -4,7 +4,7 @@ import * as React from "react"
 import { NotFoundPage } from "./pages/not-found/NotFoundPage"
 import { UserPage } from "./pages/user/UserPage"
 import { LandingPage } from "./pages/landing/LandingPage"
-import { LoginPage } from "@/application/pages/login/LoginPage"
+import { LoginPage } from "@/application/pages/auth/pages/login/LoginPage"
 
 export type AsyncDataOptions<T = any> = {
   params: T,
