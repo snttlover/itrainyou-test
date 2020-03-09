@@ -4,14 +4,18 @@ import { WhiteContainer } from "@/application/pages/auth/common-components/White
 import { CenterFormContainer } from "@/application/pages/auth/common-components/CenterFormContainer"
 import { RecoveryForm } from "@/application/pages/auth/pages/recovery/content/RecoveryForm"
 import { RecoveryMessage } from "@/application/pages/auth/pages/recovery/content/RecoveryMessage"
+import { $recoverySuccessMessageVisibility } from "@/application/pages/auth/pages/recovery/model"
+import { useStore } from "effector-react"
 
-export const RecoveryPage = () => (
-  <AuthLayout>
-    <CenterFormContainer>
-      <WhiteContainer>
-        {/*<RecoveryMessage/>*/}
-        <RecoveryForm />
-      </WhiteContainer>
-    </CenterFormContainer>
-  </AuthLayout>
-)
+export const RecoveryPage = () => {
+  const showSuccessMessage = useStore($recoverySuccessMessageVisibility)
+  return (
+    <AuthLayout>
+      <CenterFormContainer>
+        <WhiteContainer>
+          { showSuccessMessage ? <RecoveryMessage/> : <RecoveryForm /> }
+        </WhiteContainer>
+      </CenterFormContainer>
+    </AuthLayout>
+  )
+}

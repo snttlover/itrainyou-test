@@ -1,5 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
+import { updateRecoverySuccessMessageVisibility } from "@/application/pages/auth/pages/recovery/model"
 
 const Title = styled.h3`
   font-weight: 600;
@@ -59,7 +60,7 @@ export const RecoveryMessage = () => (
     </Paragraph>
 
     <Paragraph>
-      Или <Link>отправьте письмо повторно.</Link>
+      Или <Link onClick={() => updateRecoverySuccessMessageVisibility(false)}>отправьте письмо повторно.</Link>
     </Paragraph>
   </Container>
 )
