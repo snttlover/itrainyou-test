@@ -4,6 +4,10 @@ import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
 import { ResetPasswordForm } from "@/application/pages/auth/pages/reset/content/ResetPasswordForm"
 import { WhiteContainer } from "@/application/pages/auth/common-components/WhiteContainer"
 import { CenterFormContainer } from "@/application/pages/auth/common-components/CenterFormContainer"
+import { AsyncDataOptions } from "@/application/routes"
+import { allSettled } from "effector/fork"
+import { loadCoaches } from "@/application/pages/landing/content/our-coaches/model"
+import * as serveStatic from "serve-static"
 
 const Header = styled.h3`
   color: #424242;
@@ -37,12 +41,16 @@ const ResetPasswordLink = styled.div`
   }
 `
 
-export const ResetPasswordPage = () => (
+type ResetPasswordPageTypes = {
+  token: string
+}
+
+export const ResetPasswordPage = (props: ResetPasswordPageTypes) => (
   <AuthLayout>
     <CenterFormContainer>
       <WhiteContainer>
         <Header>Изменение пароля</Header>
-        <ResetPasswordForm />
+        <ResetPasswordForm token={props.token} />
       </WhiteContainer>
     </CenterFormContainer>
   </AuthLayout>

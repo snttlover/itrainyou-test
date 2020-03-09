@@ -55,7 +55,7 @@ export const routes: Route[] = [
   {
     name: "reset",
     component: ResetPasswordPage,
-    url: "/reset"
+    url: "/reset-password/:token"
   },
   {
     name: "user",
