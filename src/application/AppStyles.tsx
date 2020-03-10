@@ -14,4 +14,8 @@ export const AppStyles = createGlobalStyle`
     height: 100%;
     position: relative;
   }
+
+  a {
+    text-decoration: none;
+  }
 `

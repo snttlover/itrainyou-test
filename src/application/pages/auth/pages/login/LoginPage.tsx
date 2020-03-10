@@ -4,6 +4,7 @@ import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
 import { LoginForm } from "@/application/pages/auth/pages/login/content/LoginForm"
 import { WhiteContainer } from "@/application/pages/auth/common-components/WhiteContainer"
 import { CenterFormContainer } from "@/application/pages/auth/common-components/CenterFormContainer"
+import { Link } from "@reach/router"
 
 const Header = styled.h3`
   font-weight: 600;
@@ -21,7 +22,7 @@ const Header = styled.h3`
   }
 `
 
-const ResetPasswordLink = styled.div`
+const ResetPasswordLink = styled(Link)`
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
@@ -44,7 +45,7 @@ export const LoginPage = () => (
         <Header>Вход</Header>
         <LoginForm />
       </WhiteContainer>
-      <ResetPasswordLink>Забыли пароль?</ResetPasswordLink>
+      <ResetPasswordLink to='/recovery'>Забыли пароль?</ResetPasswordLink>
     </CenterFormContainer>
   </AuthLayout>
 )
