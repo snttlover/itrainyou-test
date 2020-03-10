@@ -3,21 +3,30 @@ import styled from "styled-components"
 
 export const TextBox = styled.input`
   outline: none;
-  border: 1px solid #449bd9;
+  border: 1px solid #B3B3B3;
   box-sizing: border-box;
   border-radius: 4px;
-  padding: 8px 12px;
+  padding: 5px 8px;
   font-size: 16px;
   line-height: 22px;
-
+  caret-color: #449bd9;
+  
+  &:hover {
+    border: 1px solid #424242;
+  }
   &::placeholder {
     color: #b3b3b3;
+  }
+  &:focus {
+    border: 1px solid #449bd9;
   }
 `
 
 type InputTypes = {
   value: string
   placeholder?: string
+  type?: string,
+  className?: string,
   onChange?: (value: string) => void
   onFocus?: () => void
 }
