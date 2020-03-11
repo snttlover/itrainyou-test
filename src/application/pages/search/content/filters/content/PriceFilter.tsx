@@ -13,6 +13,7 @@ const Header = styled.div`
 `
 
 const Text = styled.div`
+  margin-top: 16px;
   text-align: center;
   font-size: 12px;
   line-height: 16px;
