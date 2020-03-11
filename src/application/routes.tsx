@@ -7,6 +7,7 @@ import { LandingPage } from "./pages/landing/LandingPage"
 import { LoginPage } from "@/application/pages/auth/pages/login/LoginPage"
 import { RecoveryPage } from "@/application/pages/auth/pages/recovery/RecoveryPage"
 import { ResetPasswordPage } from "@/application/pages/auth/pages/reset/ResetPasswordPage"
+import { SearchPage } from "@/application/pages/search/SearchPage"
 
 export type AsyncDataOptions<T = any> = {
   params: T
@@ -56,6 +57,11 @@ export const routes: Route[] = [
     name: "reset",
     component: ResetPasswordPage,
     url: "/reset-password/:token"
+  },
+  {
+    name: "search",
+    component: SearchPage,
+    url: "/search"
   },
   {
     name: "user",
