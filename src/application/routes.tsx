@@ -61,6 +61,7 @@ export const routes: Route[] = [
   {
     name: "search",
     component: SearchPage,
+    ssr: true,
     url: "/search"
   },
   {

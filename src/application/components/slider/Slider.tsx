@@ -85,7 +85,7 @@ type SectionsTypes = {
 const Sections = (props: SectionsTypes) => (
   <StyledSections>
     {new Array(props.count).fill(null).map((_, index) => (
-      <Section filled={index < props.filledIndex} />
+      <Section key={index} filled={index < props.filledIndex} />
     ))}
   </StyledSections>
 )

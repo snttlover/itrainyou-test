@@ -8,7 +8,7 @@ import { ResetFiltersButton } from "./content/ResetFiltersButton"
 
 const Container = styled.div`
   width: 220px;
-  padding: 12px 0 12px 12px;
+  padding: 12px;
   border-left: 1px solid #efefef;
 `
 
