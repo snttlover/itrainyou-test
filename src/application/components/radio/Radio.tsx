@@ -75,12 +75,13 @@ const RadioInput = styled.input.attrs({ type: `radio` })`
 type RadioOptionTypes = {
   value: RadioBoxValueType
   children: React.ReactNode
+  className?: string
 }
 
 export const RadioOption = (props: RadioOptionTypes) => (
   <RadioContext.Consumer>
     {(radioGroup: any) => (
-      <StyledLabel>
+      <StyledLabel className={props.className}>
         <RadioInput
           name={radioGroup.name}
           checked={radioGroup.value === props.value}

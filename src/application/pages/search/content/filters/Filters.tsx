@@ -2,6 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { PriceFilter } from "./content/PriceFilter"
 import { ReviewFilter } from "./content/ReviewFilter"
+import { DateFilter } from "./content/DateFilter"
 
 const Container = styled.div`
   width: 220px;
@@ -20,5 +21,6 @@ export const Filters = () => (
     <Header>Фильтры</Header>
     <PriceFilter />
     <ReviewFilter />
+    <DateFilter />
   </Container>
 )
