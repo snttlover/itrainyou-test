@@ -3,7 +3,8 @@ import styled from "styled-components"
 import { PriceFilter } from "./content/PriceFilter"
 import { ReviewFilter } from "./content/ReviewFilter"
 import { DateFilter } from "./content/DateFilter"
-import {OnlyTopCoachCheckbox} from "./content/OnlyTopCoachCheckbox"
+import { OnlyTopCoachCheckbox } from "./content/OnlyTopCoachCheckbox"
+import { ResetFiltersButton } from "./content/ResetFiltersButton"
 
 const Container = styled.div`
   width: 220px;
@@ -24,5 +25,6 @@ export const Filters = () => (
     <ReviewFilter />
     <DateFilter />
     <OnlyTopCoachCheckbox />
+    <ResetFiltersButton />
   </Container>
 )
