@@ -17,7 +17,6 @@ const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
 
 const CalendarWrapper = styled.div`
   width: 196px;
-  height: 164px;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
