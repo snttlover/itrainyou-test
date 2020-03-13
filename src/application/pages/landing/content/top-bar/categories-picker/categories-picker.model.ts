@@ -1,5 +1,5 @@
 import { Category, getCategories } from "@/application/lib/api/categories"
-import { forward, Unit } from "effector"
+import { forward } from "effector"
 import { appDomain } from "@/application/store"
 
 interface PickerCategory extends Category {

@@ -34,8 +34,6 @@ type CategoriesPickerTypes = {
 }
 
 export const CategoriesPicker = (props: CategoriesPickerTypes) => {
-  const params = useLocation()
-  console.log(params)
   const titleRenderer = () => <p>Категории</p>
 
   const renderCheckboxes = () =>

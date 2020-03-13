@@ -80,7 +80,7 @@ export const Dropdown = (props: SearchInputTypes) => {
   const [focused, changeFocus] = useState(false)
 
   const autocomplete = <Items>{props.children}</Items>
-  const autocompleteVisibility = props.children && focused
+  const autocompleteVisibility = !!props.children && focused
 
   return (
     <ClickOutside
