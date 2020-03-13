@@ -8,11 +8,13 @@ import { allSettled } from "effector/fork"
 import { loadCoaches } from "./model"
 import { loadCategories } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 import {Sorting} from "./content/list/content/Sorting"
+import {MobileTabs} from "./content/mobile-tabs/MobileTabs"
 
 export const SearchPage = () => (
   <Layout>
     <PageContainer>
       <TopBar />
+      <MobileTabs />
       <Sorting />
       <Content />
     </PageContainer>
