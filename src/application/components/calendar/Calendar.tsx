@@ -45,15 +45,7 @@ const CalendarWrapper = styled.div`
   .react-calendar__month-view__days__day--neighboringMonth {
     color: #b3b3b3;
   }
-  .react-calendar__tile--active:after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    z-index: -1;
-    width: 24px;
-    height: 24px;
-    transform: translate(-50%, -50%);
+  .react-calendar__tile--active {
     border-radius: 50%;
     background: #daebf7;
   }

@@ -12,7 +12,6 @@ const StyledCoachCard = styled(CoachCard)`
 
 export const CoachList = () => {
   const coaches = useStore($coachesList)
-  console.log(coaches)
   return (
     <Container>
       {coaches.map(coach => (

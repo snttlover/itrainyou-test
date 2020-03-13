@@ -15,6 +15,9 @@ const Container = styled.div`
     width: 100%;
     justify-content: center;
   }
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
 `
 
 const StyledSorting = styled.div`
