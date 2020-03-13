@@ -72,7 +72,7 @@ const Items = styled.div`
 
 type SearchInputTypes = {
   renderTitle: () => React.ReactNode
-  children: React.ReactNode[]
+  children: React.ReactNode[] | React.ReactNode
   className?: string
 }
 

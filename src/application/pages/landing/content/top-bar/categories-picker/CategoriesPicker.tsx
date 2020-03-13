@@ -2,8 +2,8 @@ import * as React from "react"
 import styled from "styled-components"
 import { Dropdown } from "@/application/components/dropdown/Dropdown"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
-
-import items from "./mocks"
+import { $categoriesList, toggleCategorySelection } from "./categories-picker.model"
+import { useList } from "effector-react"
 
 const StyledCheckbox = styled(Checkbox)`
   padding: 7px 10px;
@@ -36,12 +36,16 @@ export const CategoriesPicker = (props: CategoriesPickerTypes) => {
   const titleRenderer = () => <p>Категории</p>
 
   const renderCheckboxes = () =>
-    items.map((item, index) => (
-      <StyledCheckbox value={item.checked} key={index}>
+    useList($categoriesList, item => (
+      <StyledCheckbox value={item.checked} onChange={e => toggleCategorySelection(item.id)}>
         <CategoryIcon src={item.icon} />
-        <Text>{item.text}</Text>
+        <Text>{item.name}</Text>
       </StyledCheckbox>
     ))
 
-  return <Dropdown className={props.className} renderTitle={titleRenderer}>{renderCheckboxes()}</Dropdown>
+  return (
+    <Dropdown className={props.className} renderTitle={titleRenderer}>
+      {renderCheckboxes()}
+    </Dropdown>
+  )
 }
