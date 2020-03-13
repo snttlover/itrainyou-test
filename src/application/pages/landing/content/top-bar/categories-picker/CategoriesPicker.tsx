@@ -4,6 +4,7 @@ import { Dropdown } from "@/application/components/dropdown/Dropdown"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
 import { $categoriesList, toggleCategorySelection } from "./categories-picker.model"
 import { useList } from "effector-react"
+import { useLocation } from "@reach/router"
 
 const StyledCheckbox = styled(Checkbox)`
   padding: 7px 10px;
@@ -33,6 +34,8 @@ type CategoriesPickerTypes = {
 }
 
 export const CategoriesPicker = (props: CategoriesPickerTypes) => {
+  const params = useLocation()
+  console.log(params)
   const titleRenderer = () => <p>Категории</p>
 
   const renderCheckboxes = () =>
