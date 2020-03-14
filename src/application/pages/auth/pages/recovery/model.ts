@@ -1,7 +1,7 @@
 import { RecoveryRequest, recovery } from "@/application/lib/api/recovery"
+import { NetworkError } from "@/application/lib/network/network"
 import { appDomain } from "@/application/store"
-import { AxiosError } from "axios"
-import extractBackendErrorText from "@/application/lib/formating/extractBackendFirstErrorText"
+import { extractError } from "@/application/lib/network/extract-error"
 
 const recoveryDomain = appDomain.createDomain()
 
@@ -10,7 +10,7 @@ export const updateEmail = recoveryDomain.createEvent<string>()
 export const $email = recoveryDomain.createStore(``).on(updateEmail, (state, email) => email)
 
 // queries
-export const recoveryFx = recoveryDomain.createEffect<RecoveryRequest, void>().use(form => recovery(form))
+export const recoveryFx = recoveryDomain.createEffect<RecoveryRequest, void, NetworkError>().use(form => recovery(form))
 
 // errors
 export const updateRecoveryError = recoveryDomain.createEvent<string>()
@@ -33,9 +33,4 @@ recoveryFx.done.watch(() => {
   updateEmail(``)
 })
 
-recoveryFx.fail.watch(({ error }) => {
-  const axiosError = error as AxiosError
-  if (axiosError.response) {
-    return updateRecoveryError(extractBackendErrorText(axiosError))
-  }
-})
+recoveryFx.fail.watch(({ error }) => updateRecoveryError(extractError(error)))

@@ -1,7 +1,8 @@
-import * as React from "react"
-import styled from "styled-components"
 import { RangeSlider } from "@/application/components/slider/RangeSlider"
-import { useEffect, useState } from "react"
+import { formatCurrency } from "@/application/lib/formatting/currency"
+import * as React from "react"
+import { useState } from "react"
+import styled from "styled-components"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -49,12 +50,12 @@ export const PriceFilter = () => {
     <Container>
       <Header>Цена</Header>
       <Text>
-        от <Bold>{start.toLocaleString()}</Bold> до <Bold>{end.toLocaleString()}</Bold> руб.
+        от <Bold>{formatCurrency(start)}</Bold> до <Bold>{formatCurrency(end)}</Bold> руб.
       </Text>
       <RangeSlider value={[start, end]} min={min} max={max} onChange={change} />
       <RangeNumbers>
-        <RangeNumber>{min.toLocaleString()} руб.</RangeNumber>
-        <RangeNumber>{max.toLocaleString()} руб.</RangeNumber>
+        <RangeNumber>{formatCurrency(min)} руб.</RangeNumber>
+        <RangeNumber>{formatCurrency(max)} руб.</RangeNumber>
       </RangeNumbers>
     </Container>
   )

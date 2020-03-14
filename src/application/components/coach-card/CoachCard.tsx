@@ -1,6 +1,6 @@
 import { SelectDatetime } from "@/application/components/coach-card/SelectDatetime"
 import { Coach } from "@/application/lib/api/coach"
-import { formatISOStringToLocaleDateString } from "@/application/lib/formating/date"
+import { formatISOStringToLocaleDateString } from "@/application/lib/formatting/date"
 import { MediaRange } from "@/application/lib/media/media"
 import { useState } from "react"
 import * as React from "react"

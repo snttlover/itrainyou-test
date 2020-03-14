@@ -18,12 +18,25 @@ module.exports = {
           }
         },
         exclude: /node_modules/
+      },
+      {
+        test: /\.(gif|png|jpg|svg)(\?.*$|$)/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 16384,
+              esModule: false
+            }
+          },
+        ]
       }
     ]
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '../src/')
+      '@app': path.resolve(__dirname, '../src/application/'),
+      '@': path.resolve(__dirname, '../src/'),
     },
     extensions: [".tsx", ".ts", ".js"]
   },

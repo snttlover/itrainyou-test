@@ -1,15 +1,14 @@
 import * as webpack from 'webpack'
 import * as merge from 'webpack-merge'
 import * as path from 'path'
-import * as commonConfig from './common.webpack'
-const TerserPlugin = require('terser-webpack-plugin');
+import * as commonConfig from '../common.webpack'
 
-module.exports = merge(commonConfig, {
+const config = merge.smartStrategy({
+  entry: "prepend"
+})(commonConfig, {
   name: 'server',
-  devtool: 'source-map',
-  mode: 'production',
   target: 'node',
-  entry: ["@babel/polyfill", path.resolve(__dirname, '../src/ssr-middleware/index.tsx')],
+  entry: [path.resolve(__dirname, '../../src/ssr-middleware/index.tsx')],
   output: {
     libraryTarget: 'commonjs2',
     publicPath: '/',
@@ -22,7 +21,11 @@ module.exports = merge(commonConfig, {
         test: /\.(gif|png|jpg|svg)(\?.*$|$)/,
         use: [
           {
-            loader: 'url-loader'
+            loader: 'url-loader',
+            options: {
+              fallback: 'file-loader',
+              emitFile: false
+            }
           },
         ]
       }
@@ -31,9 +34,7 @@ module.exports = merge(commonConfig, {
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(true),
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })
-  ],
-  optimization: {
-    minimize: true,
-    minimizer: [new TerserPlugin()]
-  }
+  ]
 })
+
+module.exports = config

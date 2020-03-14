@@ -10,6 +10,6 @@ export const startServer = appDomain.createEvent<ServerSideParams>()
 export const startClient = appDomain.createEvent()
 
 export const $isServer = appDomain
-  .createStore(true)
-  .on(startClient, () => false)
-  .reset(startServer)
+  .createStore(false)
+  .on(startServer, () => true)
+  .reset(startClient)

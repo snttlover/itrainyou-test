@@ -1,7 +1,7 @@
 import { LoginRequest, login, LoginResponse } from "@/application/lib/api/login"
+import { NetworkError } from "@/application/lib/network/network"
 import { appDomain } from "@/application/store"
-import { AxiosError } from "axios"
-import extractBackendErrorText from "@/application/lib/formating/extractBackendFirstErrorText"
+import { extractError } from "@/application/lib/network/extract-error"
 
 const loginDomain = appDomain.createDomain()
 
@@ -13,7 +13,7 @@ export const updatePassword = loginDomain.createEvent<string>()
 export const $password = loginDomain.createStore(``).on(updatePassword, (state, password) => password)
 
 // queries
-export const loginFx = loginDomain.createEffect<LoginRequest, LoginResponse>().use(form => login(form))
+export const loginFx = loginDomain.createEffect<LoginRequest, LoginResponse, NetworkError>().use(form => login(form))
 
 // errors
 export const updateLoginError = loginDomain.createEvent<string>()
@@ -32,9 +32,4 @@ loginFx.done.watch(() => {
   updateEmail(``)
 })
 
-loginFx.fail.watch(({ error }) => {
-  const axiosError = error as AxiosError
-  if (axiosError.response) {
-    return updateLoginError(extractBackendErrorText(axiosError))
-  }
-})
+loginFx.fail.watch(({ error }) => updateLoginError(extractError(error)))

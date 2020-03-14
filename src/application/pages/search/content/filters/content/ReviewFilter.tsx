@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { Slider } from "@/application/components/slider/Slider"
 import { useState } from "react"
-import { declOfNum, DeclOfNumListType } from "@/application/lib/formating/numerals"
+import { declOfNum, DeclOfNumListType } from "@/application/lib/formatting/numerals"
 
 const Container = styled.div`
   padding-top: 16px;
