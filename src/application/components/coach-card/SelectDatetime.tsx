@@ -125,12 +125,14 @@ export const SelectDatetime = () => {
         </Times>
         <Divider />
         <SelectedDatetimeTable>
-          {selected.map(datetime => (
-            <tr key={datetime.date + datetime.time}>
-              <td>{datetime.date}</td>
-              <td>{datetime.time}</td>
-            </tr>
-          ))}
+          <tbody>
+            {selected.map(datetime => (
+              <tr key={datetime.date + datetime.time}>
+                <td>{datetime.date}</td>
+                <td>{datetime.time}</td>
+              </tr>
+            ))}
+          </tbody>
         </SelectedDatetimeTable>
         <Text>
           Итого: <Summary>2400 ₽</Summary>

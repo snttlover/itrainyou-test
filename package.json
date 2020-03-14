@@ -6,7 +6,10 @@
     "start": "cross-env NODE_ENV=production node .build/server.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "dev": "nodemon --watch src/server/**/* src/server/server.ts",
-    "build": "npm run clean && tsc --outDir .build --skipLibCheck src/server/server.ts && webpack --config webpack/client.prod.ts && webpack --config webpack/ssr.prod.ts",
+    "build": "npm run clean && npm run build:server && npm run build:client && npm run build:ssr-middleware",
+    "build:client": "webpack --config webpack/client/client.prod.ts",
+    "build:server": "tsc --outDir .build --skipLibCheck src/server/server.ts",
+    "build:ssr-middleware": "webpack --config webpack/ssr/ssr.prod.ts",
     "clean": "rimraf .build"
   },
   "dependencies": {
@@ -30,7 +33,6 @@
     "styled-media-query": "^2.1.2"
   },
   "devDependencies": {
-    "@types/react-slider": "^1.0.0",
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
@@ -44,6 +46,7 @@
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.9.5",
     "@types/react-helmet": "^5.0.15",
+    "@types/react-slider": "^1.0.0",
     "@types/serve-static": "^1.13.3",
     "@types/styled-components": "^5.0.0",
     "@types/webpack": "^4.41.6",

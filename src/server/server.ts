@@ -11,8 +11,8 @@ if (process.env.NODE_ENV !== "production") {
   const webpack = require("webpack")
   const webpackDevMiddleware = require("webpack-dev-middleware")
   const webpackHotMiddleware = require("webpack-hot-middleware")
-  const config = require("../../webpack/client.dev")
-  const ssrConfig = require("../../webpack/ssr.dev")
+  const config = require("../../webpack/client/client.dev")
+  const ssrConfig = require("../../webpack/ssr/ssr.dev")
 
   const compiler = webpack(config)
   const ssrCompiler = webpack(ssrConfig)

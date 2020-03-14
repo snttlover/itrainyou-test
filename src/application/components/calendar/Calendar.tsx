@@ -2,11 +2,8 @@ import * as React from "react"
 import styled from "styled-components"
 import * as dayjs from "dayjs"
 import { useState } from "react"
-import "dayjs/locale/ru"
 import leftImage from "./images/left.svg"
 import rightImage from "./images/right.svg"
-
-dayjs.locale("ru")
 
 type CalendarTypes = {
   value: Date
@@ -125,7 +122,13 @@ export const Calendar = (props: CalendarTypes) => {
         </MonthContainer>
         <Year>{dayjs(startDate).format(`YYYY`)}</Year>
       </Header>
-      <ReactCalendar value={props.value} onChange={props.onChange} activeStartDate={startDate} showNavigation={false} />
+      <ReactCalendar
+        locale='ru-RU'
+        value={props.value}
+        onChange={props.onChange}
+        activeStartDate={startDate}
+        showNavigation={false}
+      />
     </CalendarWrapper>
   )
 }

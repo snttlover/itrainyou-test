@@ -1,6 +1,5 @@
 import { match, pathToRegexp } from "path-to-regexp"
-import * as querystring from "querystring"
-import { Route, RouteComponent } from "../application/routes"
+import { Route, RouteComponent } from "@app/routes"
 
 export type MatchedPath<T = any> = {
   ssr: boolean
@@ -8,10 +7,7 @@ export type MatchedPath<T = any> = {
   components: RouteComponent[]
 }
 
-export const expandTreeByPath = (
-  routes: Route[],
-  previousRoutes: Route[] = []
-) => {
+export const expandTreeByPath = (routes: Route[], previousRoutes: Route[] = []) => {
   return routes.reduce<Route[][]>((acc, route) => {
     const currentPath = [...previousRoutes, route]
     if (Array.isArray(route.children)) {
@@ -22,7 +18,7 @@ export const expandTreeByPath = (
   }, [])
 }
 
-export const matchRoutes = (path: string, routes: Route[]): MatchedPath => {
+export const matchRoutes = (path: string, routes: Route[], uriDecoder: (str: string) => string): MatchedPath => {
   const expandedRoutes = expandTreeByPath(routes)
 
   const mappedRoutes = expandedRoutes.map(path =>
@@ -59,7 +55,7 @@ export const matchRoutes = (path: string, routes: Route[]): MatchedPath => {
   // [true, undefined, undefined, true, undefined] -> true
   // [true, undefined, false, undefined, undefined] -> false
 
-  const matchParams = match(foundedRoute.url, { decode: querystring.unescape })(path)
+  const matchParams = match(foundedRoute.url, { decode: uriDecoder })(path)
 
   return {
     ssr: foundedRoute.routes.reduce<boolean>((ssr, route) => {
@@ -67,7 +63,7 @@ export const matchRoutes = (path: string, routes: Route[]): MatchedPath => {
       else if (route.ssr === false) return false
       else return ssr
     }, false),
-    params: matchParams && matchParams.params || {},
+    params: (matchParams && matchParams.params) || {},
     components: foundedRoute.routes.map(route => route.component)
   }
 }

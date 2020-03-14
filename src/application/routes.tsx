@@ -9,8 +9,9 @@ import { RecoveryPage } from "@/application/pages/auth/pages/recovery/RecoveryPa
 import { ResetPasswordPage } from "@/application/pages/auth/pages/reset/ResetPasswordPage"
 import { SearchPage } from "@/application/pages/search/SearchPage"
 
-export type AsyncDataOptions<T = any> = {
+export type AsyncDataOptions<T = any, Q = any> = {
   params: T
+  query: Q
   scope: Scope
 }
 

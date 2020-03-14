@@ -34,13 +34,9 @@ const renderRoutes = ({
   )
 }
 
-const EntryApp = ({ store }: { store: any }) => (
+export const App = () => (
   <>
     <AppStyles />
-    <Provider value={store}>
-      <Router>{renderRoutes({ routes })}</Router>
-    </Provider>
+    <Router>{renderRoutes({ routes })}</Router>
   </>
 )
-
-export const App = hot(module)(EntryApp)

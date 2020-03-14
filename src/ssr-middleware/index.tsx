@@ -1,6 +1,8 @@
 import { isRedirect, ServerLocation } from "@reach/router"
+import { Provider } from "effector-react/ssr"
 import { allSettled, fork, serialize } from "effector/fork"
 import * as express from "express"
+import * as querystring from "querystring"
 import * as React from "react"
 import { renderToString } from "react-dom/server"
 import Helmet, { HelmetData } from "react-helmet"
@@ -8,7 +10,7 @@ import { ServerStyleSheet } from "styled-components"
 import { App } from "@/application/App"
 import { AsyncDataFunction, routes } from "@/application/routes"
 import { appDomain, startServer } from "@/application/store"
-import { matchRoutes } from "./match-routes"
+import { matchRoutes } from "@app/match-routes"
 import { generateDocument } from "./template"
 
 const normalizeAssets = (assets: any) => {
@@ -30,7 +32,7 @@ export const compile = (assets: string | string[]) => async (
   res: express.Response
 ) => {
   const path = req.path.endsWith("/") ? req.path : `${req.path}/`
-  const matchedPath = matchRoutes(path, routes)
+  const matchedPath = matchRoutes(path, routes, querystring.unescape)
 
   let styles = ""
   let content = ""
@@ -51,7 +53,7 @@ export const compile = (assets: string | string[]) => async (
         .filter(isAsyncDataExists)
 
       for (const asyncDataFunction of asyncDataFunctions) {
-        await asyncDataFunction({ params: matchedPath.params, scope })
+        await asyncDataFunction({ params: matchedPath.params, scope, query: req.query })
       }
       await allSettled(startServer, {
         scope,
@@ -62,7 +64,9 @@ export const compile = (assets: string | string[]) => async (
       content = renderToString(
         sheet.collectStyles(
           <ServerLocation url={path}>
-            <App store={scope} />
+            <Provider value={scope}>
+              <App />
+            </Provider>
           </ServerLocation>
         )
       )

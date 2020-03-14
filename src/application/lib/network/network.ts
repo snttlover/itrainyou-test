@@ -1,4 +1,6 @@
-import Axios, { AxiosResponse } from "axios"
+import Axios, { AxiosError, AxiosResponse } from "axios"
+
+export type NetworkError = AxiosError
 
 const axios = Axios.create()
 
