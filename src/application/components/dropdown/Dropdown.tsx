@@ -57,7 +57,7 @@ const Container = styled.div<ContainerTypes>`
 const Items = styled.div`
   width: 400px;
   position: absolute;
-  z-index: 1;
+  z-index: 10;
   top: 0;
   margin-top: 35px;
   height: auto;

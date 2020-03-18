@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 2;
 `
 
 const Loader = styled.img.attrs({ src: spinner })`
