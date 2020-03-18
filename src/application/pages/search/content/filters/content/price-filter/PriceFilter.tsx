@@ -1,8 +1,10 @@
-import { RangeSlider } from "@/application/components/slider/RangeSlider"
-import { formatCurrency } from "@/application/lib/formatting/currency"
+import { RangeSlider } from "@app/components/slider/RangeSlider"
+import { formatCurrency } from "@app/lib/formatting/currency"
 import * as React from "react"
-import { useState } from "react"
 import styled from "styled-components"
+import { useStoreMap } from "effector-react"
+import { debounce } from "@app/lib/helpers/debounce"
+import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -38,12 +40,24 @@ const RangeNumber = styled.div``
 
 export const PriceFilter = () => {
   const [min, max] = [0, 60000]
-  const [start, changeStart] = useState(1200)
-  const [end, changeEnd] = useState(10000)
+
+  const start = useStoreMap({
+    store: $searchPageQuery,
+    keys: [`price__gte`],
+    fn: values => (values.price__gte ? +values.price__gte : 0)
+  })
+
+  const end = useStoreMap({
+    store: $searchPageQuery,
+    keys: [`price__lte`],
+    fn: values => (values.price__lte ? +values.price__lte : 60000)
+  })
 
   const change = (value: [number, number]) => {
-    changeStart(value[0])
-    changeEnd(value[1])
+    addSearchPageQuery({
+      price__gte: value[0],
+      price__lte: value[1]
+    })
   }
 
   return (

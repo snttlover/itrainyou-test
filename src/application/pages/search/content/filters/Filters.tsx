@@ -1,8 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import { PriceFilter } from "./content/PriceFilter"
+import { PriceFilter } from "./content/price-filter/PriceFilter"
 import { ReviewFilter } from "./content/ReviewFilter"
-import { DateFilter } from "./content/DateFilter"
+import { DateFilter } from "./content/date-filter/DateFilter"
 import { OnlyTopCoachCheckbox } from "./content/OnlyTopCoachCheckbox"
 import { ResetFiltersButton } from "./content/ResetFiltersButton"
 import {

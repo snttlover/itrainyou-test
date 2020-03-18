@@ -1,8 +1,9 @@
 import * as React from "react"
 import styled from "styled-components"
 import { Slider } from "@/application/components/slider/Slider"
-import { useState } from "react"
 import { declOfNum, DeclOfNumListType } from "@/application/lib/formatting/numerals"
+import { useStoreMap } from "effector-react"
+import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -39,7 +40,14 @@ const RangeNumber = styled.div``
 export const ReviewFilter = () => {
   const [min, max] = [1, 5]
   const stars: DeclOfNumListType = ["звезды", "звезд", "звезд"]
-  const [score, changeScore] = useState(2)
+
+  const score = useStoreMap({
+    store: $searchPageQuery,
+    keys: [`rating__gte`],
+    fn: values => (values.rating__gte ? +values.rating__gte : 0)
+  })
+
+  const changeRating = (value: number) => addSearchPageQuery({ rating__gte: value })
 
   return (
     <Container>
@@ -47,7 +55,7 @@ export const ReviewFilter = () => {
       <Text>
         От <Bold>{score}</Bold> {declOfNum(score, stars)}
       </Text>
-      <Slider value={score} min={min} max={max} onChange={changeScore} />
+      <Slider value={score} min={min} max={max} onChange={changeRating} />
       <RangeNumbers>
         <RangeNumber>1 звезда</RangeNumber>
         <RangeNumber>5 звезд</RangeNumber>

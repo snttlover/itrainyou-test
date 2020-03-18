@@ -37,8 +37,24 @@ interface Pagination<T> {
   results: T[]
 }
 
-export const getCoaches = () =>
-  get<Pagination<Coach>>("http://142.93.228.206:8006/api/v1/web/coaches/")
+export type CoachSortingType = `price` | `-price` | `popularity` | `-popularity`
+
+export interface GetCoachesParamsTypes {
+  price__lte?: number
+  price__gte?: number
+  price?: number
+  is_top_coach?: boolean
+  categories?: string // id,id,id
+  rating?: number
+  rating__gte?: number
+  search?: string
+  nearest_session_date__gte?: string // YYYY-MM-DD
+  nearest_session_date__lte?: string
+  sorting?: CoachSortingType
+}
+
+export const getCoaches = (params: GetCoachesParamsTypes) =>
+  get<Pagination<Coach>, GetCoachesParamsTypes>("http://142.93.228.206:8006/api/v1/web/coaches/", params)
     .then(response => response.data)
     .then(data => data.results)
     .then(keysToCamel)

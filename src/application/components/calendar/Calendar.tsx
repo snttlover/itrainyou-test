@@ -5,9 +5,12 @@ import { useState } from "react"
 import leftImage from "./images/left.svg"
 import rightImage from "./images/right.svg"
 
+export type CalendarDateType = Date | Date[]
+
 type CalendarTypes = {
-  value: Date
-  onChange: (value: Date) => void
+  value: CalendarDateType
+  onChange: (value: CalendarDateType) => void
+  selectRange?: boolean
 }
 
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
@@ -127,6 +130,7 @@ export const Calendar = (props: CalendarTypes) => {
         value={props.value}
         onChange={props.onChange}
         activeStartDate={startDate}
+        selectRange={props.selectRange || false}
         showNavigation={false}
       />
     </CalendarWrapper>

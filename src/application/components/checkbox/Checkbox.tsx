@@ -3,9 +3,6 @@ import styled from "styled-components"
 import borderImage from "./checkbox-border.svg"
 import checkboxActive from "./checkbox-active.svg"
 
-type CheckboxInputTypes = {
-  checked: boolean
-}
 
 const CustomCheckbox = styled.div`
   width: 24px;
@@ -30,9 +27,7 @@ const CustomCheckbox = styled.div`
   }
 `
 
-const CheckboxInput = styled.input.attrs({ type: `checkbox` })<
-  CheckboxInputTypes
->`
+const CheckboxInput = styled.input.attrs({ type: `checkbox` })`
   width: 0;
   height: 0;
   position: absolute;
@@ -40,9 +35,14 @@ const CheckboxInput = styled.input.attrs({ type: `checkbox` })<
   top: 0;
   opacity: 0;
 
+  &:checked ~ ${CustomCheckbox}:after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   & ~ ${CustomCheckbox}:after {
-    opacity: ${({ checked }) => (checked ? 1 : 0)};
-    transform: scale(${({ checked }) => (checked ? 1 : 0)});
+    opacity: 0;
+    transform: scale(0);
   }
 `
 
@@ -50,6 +50,7 @@ const Label = styled.label`
   cursor: pointer;
   display: flex;
   align-items: center;
+  position: relative;
 `
 
 const Content = styled.div`

@@ -99,7 +99,8 @@ type SliderPropsTypes = {
   value: number
   max: number
   min: number
-  onChange: (value: number) => void
+  onChange?: (value: number) => void
+  onAfterChange?: (value: number) => void
 }
 
 export const Slider = (props: SliderPropsTypes) => (
@@ -112,6 +113,7 @@ export const Slider = (props: SliderPropsTypes) => (
       renderTrack={Track}
       renderThumb={Thumb}
       onChange={props.onChange}
+      onAfterChange={props.onAfterChange}
     />
   </Container>
 )
