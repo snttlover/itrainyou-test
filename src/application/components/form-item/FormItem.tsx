@@ -14,14 +14,25 @@ const Label = styled.div`
   line-height: 16px;
 `
 
+const Error = styled.div`
+  color: #D5584D;
+  font-size: 12px;
+  line-height: 16px;
+`
+
 type FormItemTypes = {
   label: string | React.ReactNode
-  children: React.ReactNode | React.ReactNode[]
+  children: React.ReactNode
+  error?: string
 }
 
-export const FormItem = (props: FormItemTypes) => (
+export const FormItem = ({label, children, error}: FormItemTypes) => (
   <StyledFormItem>
-    <Label>{props.label}</Label>
-    {props.children}
+    <Label>{label}</Label>
+    {React.Children.map(children, child => {
+      if (!React.isValidElement(child)) return null
+      return React.cloneElement(child, {error})
+    })}
+    {error && <Error>{error}</Error>}
   </StyledFormItem>
 )
