@@ -1,5 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
+import { SyntheticEvent } from "react"
 
 export const TextBox = styled.input`
   outline: none;
@@ -28,7 +29,8 @@ type InputTypes = {
   type?: string,
   className?: string,
   onChange?: (value: string) => void
-  onFocus?: () => void
+  onFocus?: (e: React.FocusEvent) => void
+  onKeyDown?: (e: React.KeyboardEvent) => void
 }
 
 export const Input = (props: InputTypes) => {
@@ -38,5 +40,5 @@ export const Input = (props: InputTypes) => {
     }
   }
 
-  return <TextBox {...props} onChange={change} />
+  return <TextBox {...props} onChange={change} onKeyDown={props.onKeyDown} />
 }

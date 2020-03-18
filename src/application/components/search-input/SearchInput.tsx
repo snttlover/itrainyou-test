@@ -24,12 +24,46 @@ const Autocomplete = styled.div`
   border-radius: 0px 0px 4px 4px;
 `
 
+
+const Loader = styled.div`
+  position: absolute;
+  height: calc(100% + 4px);
+  background: #449bd9;
+  left: -5px;
+  top: -2px;
+  opacity: 0.47;
+  border-radius: 4px;
+  z-index: -1;
+
+  animation-name: loader-animation;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  @keyframes loader-animation {
+    0% {
+      left: -2px;
+      width: 0;
+    }
+    49% {
+      left: 0;
+      width: 100%;
+    }
+    100% {
+      left: calc(100% + 2px);
+      width: 0;
+    }
+  }
+`
+
 type SearchInputTypes = {
   value: string
-  children: React.ReactNode[]
+  children: React.ReactNode[] | React.ReactNode
   placeholder?: string
   className?: string
+  isLoading?: boolean
   onChange?: (value: string) => void
+  onKeyDown?: (e: React.KeyboardEvent) => void
+  onFocus?: (e: React.FocusEvent) => void
 }
 
 const StyledInput = styled(Input)`
@@ -52,7 +86,7 @@ export const SearchInput = (props: SearchInputTypes) => {
       {props.children}
     </Autocomplete>
   )
-  const autocompleteVisibility = props.children.length && focused
+  const autocompleteVisibility = props.children && focused
 
   return (
     <ClickOutside
@@ -61,13 +95,16 @@ export const SearchInput = (props: SearchInputTypes) => {
       }}
     >
       <Container className={props.className}>
+        { props.isLoading && <Loader /> }
         <StyledInput
           value={props.value}
           placeholder={props.placeholder}
           onChange={props.onChange}
-          onFocus={() => {
+          onFocus={(e) => {
             changeFocus(true)
+            props.onFocus && props.onFocus(e)
           }}
+          onKeyDown={props.onKeyDown}
         />
         {autocompleteVisibility && autocomplete}
       </Container>

@@ -1,8 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import { useStore } from "effector-react/ssr"
-import { $coachesList } from "@/application/pages/search/model.ts"
+import { $coachesList } from "@/application/pages/search/coaches-search.model"
 import { CoachCard } from "@/application/components/coach-card/CoachCard"
+import { useList } from "effector-react"
 
 const Container = styled.div``
 
@@ -11,12 +11,7 @@ const StyledCoachCard = styled(CoachCard)`
 `
 
 export const CoachList = () => {
-  const coaches = useStore($coachesList)
-  return (
-    <Container>
-      {coaches.map(coach => (
-        <StyledCoachCard key={coach.id} coach={coach} />
-      ))}
-    </Container>
-  )
+  const list = useList($coachesList, coach => <StyledCoachCard coach={coach} />)
+
+  return <Container>{list}</Container>
 }

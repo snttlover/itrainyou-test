@@ -19,7 +19,6 @@ export const AsyncDataLoader = (props: AsyncDataLoaderProps) => {
   const isRenderedOnServer = useStore($isServer)
 
   useEffect(() => {
-    if (isRenderedOnServer) return
     const currentRoute = matchRoutes(location.pathname, routes, decodeURIComponent)
     const searchParams = new URLSearchParams(location.search)
 

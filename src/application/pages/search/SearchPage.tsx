@@ -5,9 +5,9 @@ import { TopBar } from "@/application/pages/landing/content/top-bar/TopBar"
 import { Content } from "./content/Content"
 import { AsyncDataOptions } from "@/application/routes"
 import { allSettled } from "effector/fork"
-import { loadCoaches } from "./model"
+import { loadCoaches, setSearchPageQuery } from "./coaches-search.model"
 import { loadCategories } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
-import { Sorting } from "./content/list/content/Sorting"
+import { Sorting } from "./content/list/content/sorting/Sorting"
 import { MobileTabs } from "./content/mobile-tabs/MobileTabs"
 
 export const SearchPage = () => (
@@ -21,11 +21,15 @@ export const SearchPage = () => (
   </Layout>
 )
 
-SearchPage.asyncData = async ({ scope }: AsyncDataOptions) => {
+SearchPage.asyncData = async ({ scope, query }: AsyncDataOptions) => {
+  await allSettled(setSearchPageQuery, {
+    scope,
+    params: query
+  })
   await Promise.all([
     allSettled(loadCoaches, {
       scope,
-      params: undefined
+      params: query
     }),
     allSettled(loadCategories, {
       scope,

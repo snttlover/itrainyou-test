@@ -46,6 +46,7 @@ type RangeSliderPropsTypes = {
   max: number
   min: number
   onChange: (value: [number, number]) => void
+  onAfterChange?: (value: number) => void
 }
 
 export const RangeSlider = (props: RangeSliderPropsTypes) => (
@@ -57,6 +58,7 @@ export const RangeSlider = (props: RangeSliderPropsTypes) => (
       renderTrack={Track}
       renderThumb={Thumb}
       onChange={props.onChange}
+      onAfterChange={props.onAfterChange}
     />
   </Container>
 )

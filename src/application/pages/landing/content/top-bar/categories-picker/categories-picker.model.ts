@@ -1,6 +1,7 @@
 import { Category, getCategories } from "@/application/lib/api/categories"
 import { forward } from "effector"
 import { appDomain } from "@/application/store"
+import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
 
 interface PickerCategory extends Category {
   checked: boolean
@@ -18,9 +19,14 @@ export const toggleCategorySelection = appDomain.createEvent<number>()
 
 export const $categoriesList = categoriesPickerDomain
   .createStore<PickerCategory[]>([])
-  .on(fetchCategoriesListFx.done, (state, payload) => payload.result.map(item => ({ ...item, checked: false })))
-  .on(toggleCategorySelection, (list, id: number) =>
-    list.map(item => {
+  .on(fetchCategoriesListFx.done, (state, payload) => {
+    const query = $searchPageQuery.getState()
+    const categories = query.categories ? query.categories.split(`,`).map(id => +id) : []
+
+    return payload.result.map(item => ({ ...item, checked: categories.includes(item.id) }))
+  })
+  .on(toggleCategorySelection, (list, id: number) => {
+    const newCategories = list.map(item => {
       if (item.id === id) {
         return {
           ...item,
@@ -29,7 +35,14 @@ export const $categoriesList = categoriesPickerDomain
       }
       return item
     })
-  )
+    addSearchPageQuery({
+      categories: newCategories
+        .filter(category => category.checked)
+        .map(category => category.id)
+        .join(`,`)
+    })
+    return newCategories
+  })
 
 forward({
   from: loadCategories,
