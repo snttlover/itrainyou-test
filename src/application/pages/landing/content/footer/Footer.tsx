@@ -4,6 +4,7 @@ import { LandingPageContainer } from "@/application/pages/landing/common/Landing
 import desktopBackground from "./images/desktop-background.svg"
 import mobileBackground from "./images/mobile-background.svg"
 import { Button } from "@/application/components/button/normal/Button"
+import { Link } from "@reach/router"
 
 const StyledFooter = styled.div`
   background: #ddd9e3;
