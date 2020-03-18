@@ -162,6 +162,13 @@ export const DateFilter = () => {
     }
   }
 
+  const selectDateText = () => {
+    if (!calendarVisibility) {
+      return `Выбрать промежуток`
+    }
+    return ``
+  }
+
   const calendar = () => (
     <>
       <Text>
@@ -184,7 +191,7 @@ export const DateFilter = () => {
         Даты
         <Arrow onClick={toggleCalendarVisibility} />
       </Header>
-      {calendarVisibility && calendar()}
+      {calendarVisibility ? calendar() : <Text>{selectDateText()}</Text>}
     </Container>
   )
 }
