@@ -19,3 +19,11 @@ export const exampleWithInput = () => (
     </FormItem>
   </Container>
 )
+
+export const exampleWithInputError = () => (
+  <Container>
+    <FormItem label='label' error='Неверный текст'>
+      <Input value='Текст' />
+    </FormItem>
+  </Container>
+)
