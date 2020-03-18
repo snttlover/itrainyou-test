@@ -4,6 +4,7 @@ import { BenefitCard } from "./BenefitCard"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import { Button } from "@/application/components/button/normal/Button"
 import cards from "./cards"
+import { Link } from "@reach/router"
 
 const Title = styled.h3`
   font-weight: 600;
@@ -52,6 +53,9 @@ export const Benefits = () => (
         <BenefitCard key={i} {...card} />
       ))}
     </CardsContainer>
-    <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
+
+    <Link to='/signup'>
+      <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
+    </Link>
   </StyledContainer>
 )

@@ -78,7 +78,7 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
-const RegistrationButton = styled(Button)`
+const RegistrationButton = styled(Link)`
   background: #544274;
   color: #ffffff;
 
@@ -104,7 +104,7 @@ export const Footer = () => (
     <StyledContainer>
       <Header>
         <Title>Вы коуч?</Title>
-        <RegistrationButton>Вам сюда!</RegistrationButton>
+        <RegistrationButton to='/signup'>Вам сюда!</RegistrationButton>
       </Header>
       <Description>
         <p>

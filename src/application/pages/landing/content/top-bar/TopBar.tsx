@@ -7,6 +7,7 @@ import { CategoriesPicker } from "./categories-picker/CategoriesPicker"
 import { Search } from "./search/Search"
 import { LoginButtons } from "./login-buttons/LoginButtons"
 import { MobileMenu } from "./mobile-menu/MobileMenu"
+import { Link } from "@reach/router"
 
 const StyledContainer = styled(LandingPageContainer)`
   padding: 15px 0;
@@ -61,7 +62,9 @@ const StyledLoginButtons = styled(LoginButtons)`
 
 export const TopBar = () => (
   <StyledContainer>
-    <StyledLogo />
+    <Link to='/'>
+      <StyledLogo />
+    </Link>
     <StyledCategoriesPicker />
     <StyledSearch />
     <StyledLoginButtons />

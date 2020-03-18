@@ -3,6 +3,7 @@ import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import * as dayjs from "dayjs"
+import { Link } from "@reach/router"
 
 const Block = styled.div`
   background: #ffffff;
@@ -138,7 +139,9 @@ export const SelectDatetime = () => {
           Итого: <Summary>2400 ₽</Summary>
         </Text>
         <ButtonContainer>
-          <BuyButton>Зарегистрироваться</BuyButton>
+          <Link to='/signup'>
+            <BuyButton>Зарегистрироваться</BuyButton>
+          </Link>
         </ButtonContainer>
       </SelectTimeContainer>
     </Block>
