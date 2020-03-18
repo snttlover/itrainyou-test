@@ -112,7 +112,7 @@ export const DateFilter = () => {
     }
   }
   const endText = () => {
-    if (end && [`to`, `range`].includes(rangeType)) {
+    if (date && [`to`, `range`].includes(rangeType)) {
       // @ts-ignore
       const currentDate: Date = date.length ? date[1] : date
       return `до ${dayjs(currentDate).format(`DD MMM`)}`
