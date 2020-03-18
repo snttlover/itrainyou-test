@@ -43,6 +43,11 @@ export const $coachesList = searchPageDomain
   .on(fetchCoachesListFx.doneData, (state, payload) => payload)
   .reset(fetchCoachesListFx)
 
+export const $coachesListLoading = searchPageDomain
+  .createStore(true)
+  .on(fetchCoachesListFx, () => true)
+  .on(fetchCoachesListFx.finally, () => false)
+
 forward({
   from: loadCoaches,
   to: fetchCoachesListFx

@@ -13,14 +13,18 @@ const StyledButton = styled(DashedButton)`
   width: 160px;
 `
 
-export const ResetFiltersButton = () => {
+type ResetFiltersButtonTypes = {
+  className?: string
+}
+
+export const ResetFiltersButton = (props: ResetFiltersButtonTypes) => {
   const clickHandler = () => {
     setSearchPageQuery({})
     loadCoaches({})
   }
 
   return (
-    <Container>
+    <Container className={props.className}>
       <Link to='/search' onClick={clickHandler}>
         <StyledButton>Сбросить</StyledButton>
       </Link>
