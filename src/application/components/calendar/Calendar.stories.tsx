@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Calendar } from "./Calendar"
+import { Calendar, CalendarDateType } from "./Calendar"
 import { useState } from "react"
 
 export default {
@@ -8,6 +8,6 @@ export default {
 }
 
 export const normal = () => {
-  const [date, change] = useState(new Date())
+  const [date, change] = useState<CalendarDateType>(new Date())
   return <Calendar value={date} onChange={change} />
 }

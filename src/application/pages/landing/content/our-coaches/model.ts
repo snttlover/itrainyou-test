@@ -4,7 +4,7 @@ import { forward } from "effector"
 
 const landingDomain = appDomain.createDomain()
 
-export const fetchCoachesListFx = landingDomain.createEffect<void, Coach[]>().use(() => getCoaches())
+export const fetchCoachesListFx = landingDomain.createEffect<void, Coach[]>().use(() => getCoaches({}))
 
 export const loadCoaches = landingDomain.createEvent()
 
