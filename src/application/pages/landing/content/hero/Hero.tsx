@@ -2,6 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import { Button } from "@/application/components/button/normal/Button"
+import { Link } from "@reach/router"
 
 const GradientContainer = styled.div`
   display: flex;
@@ -96,7 +97,9 @@ export const Hero = () => (
         Подберите специалиста на сайте, чтобы грамотно поставить и
         гарантированно достичь своей цели
       </Description>
-      <RegistrationButton>Зарегистрироваться</RegistrationButton>
+      <Link to='/signup'>
+        <RegistrationButton>Зарегистрироваться</RegistrationButton>
+      </Link>
     </StyledLandingPageContainer>
   </GradientContainer>
 )

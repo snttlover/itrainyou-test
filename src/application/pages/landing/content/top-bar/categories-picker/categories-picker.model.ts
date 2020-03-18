@@ -17,6 +17,8 @@ export const loadCategories = categoriesPickerDomain.createEvent()
 
 export const toggleCategorySelection = appDomain.createEvent<number>()
 
+export const resetCategories = appDomain.createEvent()
+
 export const $categoriesList = categoriesPickerDomain
   .createStore<PickerCategory[]>([])
   .on(fetchCategoriesListFx.done, (state, payload) => {
@@ -25,6 +27,12 @@ export const $categoriesList = categoriesPickerDomain
 
     return payload.result.map(item => ({ ...item, checked: categories.includes(item.id) }))
   })
+  .on(resetCategories, state =>
+    state.map(category => ({
+      ...category,
+      checked: false
+    }))
+  )
   .on(toggleCategorySelection, (list, id: number) => {
     const newCategories = list.map(item => {
       if (item.id === id) {

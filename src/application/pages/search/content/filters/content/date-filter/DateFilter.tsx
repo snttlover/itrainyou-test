@@ -112,7 +112,7 @@ export const DateFilter = () => {
     }
   }
   const endText = () => {
-    if (end && [`to`, `range`].includes(rangeType)) {
+    if (date && [`to`, `range`].includes(rangeType)) {
       // @ts-ignore
       const currentDate: Date = date.length ? date[1] : date
       return `до ${dayjs(currentDate).format(`DD MMM`)}`
@@ -162,6 +162,13 @@ export const DateFilter = () => {
     }
   }
 
+  const selectDateText = () => {
+    if (!calendarVisibility) {
+      return `Выбрать промежуток`
+    }
+    return ``
+  }
+
   const calendar = () => (
     <>
       <Text>
@@ -184,7 +191,7 @@ export const DateFilter = () => {
         Даты
         <Arrow onClick={toggleCalendarVisibility} />
       </Header>
-      {calendarVisibility && calendar()}
+      {calendarVisibility ? calendar() : <Text>{selectDateText()}</Text>}
     </Container>
   )
 }

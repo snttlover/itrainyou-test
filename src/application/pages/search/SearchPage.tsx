@@ -9,6 +9,7 @@ import { loadCoaches, setSearchPageQuery } from "./coaches-search.model"
 import { loadCategories } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 import { Sorting } from "./content/list/content/sorting/Sorting"
 import { MobileTabs } from "./content/mobile-tabs/MobileTabs"
+import { loadMaxPrice } from "@app/pages/search/content/filters/content/price-filter/price-filter.model"
 
 export const SearchPage = () => (
   <Layout>
@@ -27,6 +28,10 @@ SearchPage.asyncData = async ({ scope, query }: AsyncDataOptions) => {
     params: query
   })
   await Promise.all([
+    allSettled(loadMaxPrice, {
+      scope,
+      params: undefined
+    }),
     allSettled(loadCoaches, {
       scope,
       params: query

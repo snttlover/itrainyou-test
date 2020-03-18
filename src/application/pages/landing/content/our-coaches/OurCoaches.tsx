@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { $coachesList } from "./model"
 import { useStore } from "effector-react/ssr"
 import tabletka from "./images/tabletka.svg"
+import { Link } from "@reach/router"
 
 const Container = styled.div`
   width: 100%;
@@ -57,7 +58,7 @@ const CoachList = styled.div`
   }
 `
 
-const ShowMoreButton = styled.a`
+const ShowMoreButton = styled(Link)`
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
@@ -101,7 +102,7 @@ export const OurCoaches = () => {
           <CoachCard key={coach.id} coach={coach} />
         ))}
       </CoachList>
-      <ShowMoreButton>Показать еще</ShowMoreButton>
+      <ShowMoreButton to='/search'>Показать еще</ShowMoreButton>
     </Container>
   )
 }

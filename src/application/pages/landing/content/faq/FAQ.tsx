@@ -5,6 +5,7 @@ import { ExpansionPanel } from "@/application/components/expansion-panel/Expansi
 import peopleImage from "./images/people.svg"
 import questions from "./questions"
 import { Button } from "@/application/components/button/normal/Button"
+import { Link } from "@reach/router"
 
 const Title = styled.h3`
   font-style: normal;
@@ -100,19 +101,21 @@ const StyledRegistrationButton = styled(Button)`
 `
 
 export const FAQ = () => (
-  <StyledContainer>
-    <Title>У вас уже возникло много вопросов</Title>
-    <SubTitle>Даем ответы на 7 самых популярных</SubTitle>
-    <Content>
-      <QuestionsList>
-        {questions.map((faq, i) => (
-          <StyledExpansionPanel key={i} title={faq.question}>
-            {faq.answer}
-          </StyledExpansionPanel>
-        ))}
-      </QuestionsList>
-      <PeopleImage />
-      <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
-    </Content>
-  </StyledContainer>
-)
+         <StyledContainer>
+           <Title>У вас уже возникло много вопросов</Title>
+           <SubTitle>Даем ответы на 7 самых популярных</SubTitle>
+           <Content>
+             <QuestionsList>
+               {questions.map((faq, i) => (
+                 <StyledExpansionPanel key={i} title={faq.question}>
+                   {faq.answer}
+                 </StyledExpansionPanel>
+               ))}
+             </QuestionsList>
+             <PeopleImage />
+             <Link to='/signup'>
+               <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
+             </Link>
+           </Content>
+         </StyledContainer>
+       )

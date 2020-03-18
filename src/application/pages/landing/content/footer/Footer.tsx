@@ -4,6 +4,7 @@ import { LandingPageContainer } from "@/application/pages/landing/common/Landing
 import desktopBackground from "./images/desktop-background.svg"
 import mobileBackground from "./images/mobile-background.svg"
 import { Button } from "@/application/components/button/normal/Button"
+import { Link } from "@reach/router"
 
 const StyledFooter = styled.div`
   background: #ddd9e3;
@@ -78,7 +79,7 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
-const RegistrationButton = styled(Button)`
+const RegistrationButton = styled(Link)`
   background: #544274;
   color: #ffffff;
 
@@ -104,7 +105,7 @@ export const Footer = () => (
     <StyledContainer>
       <Header>
         <Title>Вы коуч?</Title>
-        <RegistrationButton>Вам сюда!</RegistrationButton>
+        <RegistrationButton to='/signup'>Вам сюда!</RegistrationButton>
       </Header>
       <Description>
         <p>

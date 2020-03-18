@@ -28,6 +28,8 @@ type LoginButtonsTypes = {
 export const LoginButtons = (props: LoginButtonsTypes) => (
   <ButtonsContainer className={props.className}>
     <LoginLink to='/login'>Войти</LoginLink>
-    <RegistrationButton>Зарегистрироваться</RegistrationButton>
+    <Link to='/signup'>
+      <RegistrationButton>Зарегистрироваться</RegistrationButton>
+    </Link>
   </ButtonsContainer>
 )
