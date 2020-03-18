@@ -1,6 +1,7 @@
 import * as React from "react"
 import { SearchInput } from "@/application/components/search-input/SearchInput"
 import { SearchInputItem } from "@/application/components/search-input/SearchInputItem"
+import searchIcon from "./images/search.svg"
 import {
   updateSearch,
   $search,
@@ -8,12 +9,29 @@ import {
   $hintsList,
   $searchLoading
 } from "@app/pages/landing/content/top-bar/search/search.model"
-import { useList, useStore } from "effector-react"
+import { useStore } from "effector-react"
 import { useState } from "react"
+import styled from "styled-components"
 
 type SearchProps = {
   className?: string
 }
+
+const Icon = styled.img.attrs({ src: searchIcon })`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 1;
+`
+
+const Container = styled.div`
+  position: relative;
+  flex: 1;
+`
 
 export const Search = (props: SearchProps) => {
   const query = useStore($search)
@@ -52,20 +70,22 @@ export const Search = (props: SearchProps) => {
   }
 
   return (
-    <SearchInput
-      className={props.className}
-      value={query}
-      isLoading={loading}
-      onChange={updateSearch}
-      onFocus={() => find(query)}
-      placeholder='Поиск по коучам'
-      onKeyDown={keydownHandler}
-    >
-      {hints.map((hint, i) => (
-        <SearchInputItem key={hint.id} onClick={() => find(hint.value)} isActive={selectedHint === i}>
-          {hint.value}
-        </SearchInputItem>
-      ))}
-    </SearchInput>
+    <Container>
+      <Icon onClick={() => find(query)} />
+      <SearchInput
+        className={props.className}
+        value={query}
+        isLoading={loading}
+        onChange={updateSearch}
+        placeholder='Поиск по коучам'
+        onKeyDown={keydownHandler}
+      >
+        {hints.map((hint, i) => (
+          <SearchInputItem key={hint.id} onClick={() => find(hint.value)} isActive={selectedHint === i}>
+            {hint.value}
+          </SearchInputItem>
+        ))}
+      </SearchInput>
+    </Container>
   )
 }
