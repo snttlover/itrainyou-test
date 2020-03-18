@@ -13,10 +13,6 @@ import { useStore } from "effector-react"
 import { useState } from "react"
 import styled from "styled-components"
 
-type SearchProps = {
-  className?: string
-}
-
 const Icon = styled.img.attrs({ src: searchIcon })`
   position: absolute;
   top: 50%;
@@ -32,6 +28,10 @@ const Container = styled.div`
   position: relative;
   flex: 1;
 `
+
+type SearchProps = {
+  className?: string
+}
 
 export const Search = (props: SearchProps) => {
   const query = useStore($search)
@@ -70,7 +70,7 @@ export const Search = (props: SearchProps) => {
   }
 
   return (
-    <Container>
+    <Container className={props.className}>
       <Icon onClick={() => find(query)} />
       <SearchInput
         className={props.className}
