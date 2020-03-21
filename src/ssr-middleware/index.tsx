@@ -37,7 +37,7 @@ export const compile = (assets: string | string[]) => async (
   let styles = ""
   let content = ""
   let helmet: HelmetData = Helmet.renderStatic()
-  let initialState = {}
+  let initialState = null
   const scripts = normalizeAssets(assets)
     .filter(path => path.endsWith(".js"))
     .map(path => `<script src="/${path}"></script>`)

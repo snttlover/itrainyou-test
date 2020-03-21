@@ -5,7 +5,7 @@ type TemplateOptions = {
   content?: string,
   stylesTags?: string,
   scriptsTags?: string,
-  initialState?: Object,
+  initialState?: Object | null,
   helmet: HelmetData
 }
 
@@ -24,9 +24,9 @@ export function generateDocument(options: TemplateOptions) {
       </head>
       <body ${helmet.bodyAttributes.toString()}>
         <div id='root'>${content}</div>
-        <script>
+        ${initialState && `<script>
           window.__initialState__ = ${JSON.stringify(initialState)}
-        </script>
+        </script>` || ''}
         ${scriptsTags}
       </body>
     </html>

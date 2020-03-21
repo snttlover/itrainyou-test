@@ -7,18 +7,18 @@ import * as React from "react"
 import { hot } from "react-hot-loader"
 
 type ApplicationClientEntryProps = {
-  scope: Scope,
+  scope: Scope
   history: History
 }
 
-const ApplicationClientEntry = ({scope, history}: ApplicationClientEntryProps) => (
-  <Provider value={scope}>
-    <LocationProvider history={history}>
+const ApplicationClientEntry = ({ scope, history }: ApplicationClientEntryProps) => (
+  <LocationProvider history={history}>
+    <Provider value={scope}>
       <AsyncDataLoader history={history} scope={scope}>
         <App />
       </AsyncDataLoader>
-    </LocationProvider>
-  </Provider>
+    </Provider>
+  </LocationProvider>
 )
 
 export const Application = hot(module)(ApplicationClientEntry)

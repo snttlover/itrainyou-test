@@ -33,12 +33,12 @@ type InputTypes = {
   error?: boolean
 }
 
-export const Input = (props: InputTypes) => {
+export const Input = styled((props: InputTypes) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
       props.onChange(e.target.value)
     }
   }
 
-  return <TextBox {...props} onChange={change} onKeyDown={props.onKeyDown} />
-}
+  return <TextBox {...props} onChange={change} />
+})``

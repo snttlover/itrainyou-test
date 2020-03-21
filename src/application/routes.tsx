@@ -1,3 +1,4 @@
+import { SignUpPage } from "@app/pages/auth/pages/signup/SignUpPage"
 import { RouteComponentProps } from "@reach/router"
 import { Scope } from "effector/fork"
 import * as React from "react"
@@ -58,6 +59,12 @@ export const routes: Route[] = [
     name: "reset",
     component: ResetPasswordPage,
     url: "/reset-password/:token"
+  },
+  {
+    name: "sign-up",
+    component: SignUpPage,
+    ssr: false,
+    url: "/signup"
   },
   {
     name: "search",
