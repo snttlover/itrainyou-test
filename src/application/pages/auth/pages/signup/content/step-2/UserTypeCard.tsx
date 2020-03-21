@@ -1,3 +1,4 @@
+import { MediaRange } from "@app/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -6,6 +7,10 @@ const Title = styled.h2`
   font-size: 16px;
   line-height: 22px;
   text-align: center;
+  ${MediaRange.greaterThan('mobile')`
+    font-size: 20px;
+    line-height: 26px;
+  `}
 `
 
 const Description = styled.li`
@@ -28,12 +33,33 @@ const Description = styled.li`
     border-bottom: 1px solid #fff;
     transform: rotateZ(-45deg);
   }
+  
+  ${MediaRange.greaterThan('mobile')`
+    margin-top: 22px;
+    
+    &:first-of-type {
+      margin-top: 0;
+    }
+    
+    &:before {
+      top: calc(50% - 8px);
+      left: -36px;
+      width: 16px;
+      height: 8px;
+      border-width: 2px;
+    }
+  `}
 `
 
 const List = styled.ul`
   list-style-type: none;
   list-style-position: outside;
   margin-left: 20px;
+  
+  ${MediaRange.greaterThan('mobile')`
+    margin-left: 38px;
+    margin-top: 20px;
+  `}
 `
 
 const Block = styled.div<{ selected?: boolean }>`
@@ -43,6 +69,8 @@ const Block = styled.div<{ selected?: boolean }>`
   flex-direction: column;
   justify-content: center;
   padding: 12px 8px;
+  cursor: pointer;
+  user-select: none;
 
   ${Title} {
     color: ${({ selected }) => (selected ? "#fff" : "#544274")};
@@ -55,6 +83,10 @@ const Block = styled.div<{ selected?: boolean }>`
       border-color: ${({ selected }) => (selected ? "#fff" : "#544274")};
     }
   }
+  
+  ${MediaRange.greaterThan('mobile')`
+    padding: 20px;
+  `}
 `
 
 type UserTypeCardProps = {

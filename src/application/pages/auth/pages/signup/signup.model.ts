@@ -1,4 +1,7 @@
+import { serializeQuery } from "@app/lib/formatting/serialize-query"
 import { appDomain } from "@app/store"
+import { navigate } from "@reach/router"
+import { createStoreObject, merge } from "effector"
 
 export const signUpDomain = appDomain.createDomain("sign-up-domain")
 
@@ -19,22 +22,23 @@ export const $currentStep = signUpDomain
   .on(nextStep, state => state + 1)
   .on(setStep, (_, payload) => payload)
 
-const STEP_KEY = "__register-step__"
+const $queryParams = createStoreObject({
+  step: $currentStep,
+  type: $registerUserType
+})
 
-$currentStep.watch(nextStep, step => {
-  localStorage.setItem(STEP_KEY, JSON.stringify(step))
+const queryParamsChanged = merge([nextStep, changeUserType])
+
+$queryParams.watch(queryParamsChanged, params => {
+  navigate(`${location.pathname}?${serializeQuery(params)}`)
 })
 
 pageMounted.watch(() => {
-  const rawSavedStep = localStorage.getItem(STEP_KEY)
-  if (!rawSavedStep) return
-  try {
-    setStep(JSON.parse(rawSavedStep))
-  } catch (error) {
-    /* ignore */
+  const searchParams = new URLSearchParams(location.search)
+  if (searchParams.has('step')) {
+    setStep(parseInt(searchParams.get('step') || '1'))
   }
-})
-
-pageUnmount.watch(() => {
-  localStorage.removeItem(STEP_KEY)
+  if (searchParams.has('type')) {
+    changeUserType(searchParams.get('type') as RegisterUserType)
+  }
 })

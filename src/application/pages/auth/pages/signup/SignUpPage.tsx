@@ -10,10 +10,7 @@ import { Step4 } from "@app/pages/auth/pages/signup/content/step-4/Step4"
 export const SignUpPage = () => {
   const currentStep = useStore($currentStep)
 
-  useEffect(() => {
-    pageMounted()
-    return () => pageUnmount()
-  }, [])
+  useEffect(() => pageMounted(), [])
 
   switch (currentStep) {
     case 1:
