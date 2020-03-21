@@ -8,6 +8,8 @@ export interface Coach {
     email: string
     creationDatetime: string
   }
+  price: string
+  duration: string
   firstName: string
   lastName: string
   birthDate: string

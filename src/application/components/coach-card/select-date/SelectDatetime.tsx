@@ -1,9 +1,13 @@
-import { DashedButton } from "@/application/components/button/dashed/DashedButton"
+import { DashedButton } from "@app/components/button/dashed/DashedButton"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import * as dayjs from "dayjs"
 import { Link } from "@reach/router"
+import { Store } from "effector"
+import { CoachSession } from "@app/lib/api/coach-sessions"
+import { Calendar, CalendarDateType } from "@app/components/calendar/Calendar"
+import { useStore } from "effector-react"
 
 const Block = styled.div`
   background: #ffffff;
@@ -19,7 +23,6 @@ const Block = styled.div`
 const Datepicker = styled.div`
   min-width: 224px;
   height: 210px;
-  background: antiquewhite;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,19 +105,45 @@ const BuyButton = styled(DashedButton)`
   color: #544274;
 `
 
-export const SelectDatetime = () => {
-  const formattedDate = dayjs().format("DD MMMM")
-  const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "22:00", "00:00"]
-  const selected = [
-    { date: "22.04.19", time: "12:00" },
-    { date: "23.04.19", time: "12:00" }
-  ]
+type SelectDatetimeTypes = {
+  sessionsList: Store<CoachSession[]>
+}
 
-  const [activeTime, changeActive] = useState("08:00")
+const getTimesByDate = (isoDate: string) => {}
+
+const equalDateFormat = `DDMMYYYY`
+const equalTimeFormat = `HH:mm`
+
+export const SelectDatetime = (props: SelectDatetimeTypes) => {
+  const sessions = useStore(props.sessionsList)
+
+  const [currentDate, changeCurrentDate] = useState<Date>(new Date())
+  const pinnedDates = sessions.map(session => session.start_datetime)
+
+  const formattedDate = dayjs(currentDate).format("DD MMMM")
+  const currentDateEqual = dayjs(currentDate).format(equalDateFormat)
+  const times = sessions
+    .filter(session => {
+      return dayjs(session.start_datetime).format(equalDateFormat) === currentDateEqual
+    })
+    .map(session => dayjs(session.start_datetime).format(equalTimeFormat))
+
+  const [activeTime, changeActive] = useState(times[0])
+
+  const selected = sessions
+    .filter(session => {
+      return dayjs(session.start_datetime).format(equalTimeFormat) === activeTime
+    })
+    .map(session => ({
+      date: dayjs(session.start_datetime).format(`DD.MM.YYYY`),
+      time: activeTime
+    }))
 
   return (
     <Block>
-      <Datepicker>Календарь для выбора даты</Datepicker>
+      <Datepicker>
+        <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} />
+      </Datepicker>
       <SelectTimeContainer>
         <h5>{formattedDate}</h5>
         <Times>

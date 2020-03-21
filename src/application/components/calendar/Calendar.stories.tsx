@@ -11,3 +11,10 @@ export const normal = () => {
   const [date, change] = useState<CalendarDateType>(new Date())
   return <Calendar value={date} onChange={change} />
 }
+
+export const withPinned = () => {
+  const pinned = [new Date().toISOString()]
+  const [date, change] = useState<CalendarDateType>(new Date())
+  return <Calendar value={date} onChange={change} pinnedDates={pinned} />
+}
+

@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 import * as dayjs from "dayjs"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import leftImage from "./images/left.svg"
 import rightImage from "./images/right.svg"
 
@@ -9,7 +9,8 @@ export type CalendarDateType = Date | Date[]
 
 type CalendarTypes = {
   value: CalendarDateType
-  onChange: (value: CalendarDateType) => void
+  pinnedDates?: string[], // iso date strings
+  onChange: (value: any) => void | Dispatch<SetStateAction<CalendarDateType>>
   selectRange?: boolean
 }
 
@@ -41,6 +42,21 @@ const CalendarWrapper = styled.div`
     outline: none;
     font-size: 12px;
     position: relative;
+  }
+  .pinned {
+    position: relative;
+    overflow: auto;
+  }
+  .pinned:after {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    content: '';
+    background: #544274;
+    width: 4px;
+    height: 4px;
+    border-radius: 4px;
+    z-index: 2;
   }
   .react-calendar__month-view__days__day--neighboringMonth {
     color: #b3b3b3;
@@ -95,6 +111,23 @@ const Year = styled.div`
 export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
 
+  const equalFormat = `DDMMYYYY`
+  const pinnedDates = (props.pinnedDates || []).map(date => dayjs(date).format(equalFormat))
+
+  type CustomClassNamesTypes = {
+    date: Date
+  }
+
+  const customClassNames = ({ date }: CustomClassNamesTypes) => {
+    const classes = []
+
+    if (pinnedDates.includes(dayjs(date).format(equalFormat))) {
+      classes.push(`pinned`)
+    }
+
+    return classes
+  }
+
   const prevMonth = () => {
     changeActiveStartDate(
       new Date(
@@ -126,6 +159,7 @@ export const Calendar = (props: CalendarTypes) => {
         <Year>{dayjs(startDate).format(`YYYY`)}</Year>
       </Header>
       <ReactCalendar
+        tileClassName={customClassNames}
         locale='ru-RU'
         value={props.value}
         onChange={props.onChange}

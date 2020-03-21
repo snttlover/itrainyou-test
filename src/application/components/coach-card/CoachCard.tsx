@@ -1,4 +1,4 @@
-import { SelectDatetime } from "@/application/components/coach-card/SelectDatetime"
+import { SelectDatetime } from "@app/components/coach-card/select-date/SelectDatetime"
 import { Coach } from "@/application/lib/api/coach"
 import { formatISOStringToLocaleDateString } from "@/application/lib/formatting/date"
 import { MediaRange } from "@/application/lib/media/media"
@@ -7,6 +7,7 @@ import * as React from "react"
 import styled from "styled-components"
 import starIcon from "./star.svg"
 import arrowIcon from "./arrow.svg"
+import { genCoachSessions } from "@app/components/coach-card/select-date/select-date.model"
 
 const Block = styled.div<{ isActive: boolean }>`
   -ms-user-select: none;
@@ -230,7 +231,13 @@ type Props = {
 }
 
 const CoachCardLayout = ({ coach, className }: Props) => {
+  const sessionsListModel = genCoachSessions(coach.id)
+
   const [isActive, changeActive] = useState(false)
+
+  if (isActive) {
+    sessionsListModel.loadData()
+  }
 
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
 
@@ -245,8 +252,8 @@ const CoachCardLayout = ({ coach, className }: Props) => {
               <Category key={category.id} src={category.icon} />
             ))}
             <PriceContainer>
-              <Duration>65 мин</Duration>
-              <Price>1200 ₽</Price>
+              <Duration>{coach.duration} мин</Duration>
+              <Price>{coach.price} ₽</Price>
             </PriceContainer>
           </Info>
         </NameContainer>
@@ -262,7 +269,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Date>
         </RatingContainer>
       </MainInfoContainer>
-      {isActive && <SelectDatetime />}
+      {isActive && <SelectDatetime sessionsList={sessionsListModel.store} />}
     </Block>
   )
 }
