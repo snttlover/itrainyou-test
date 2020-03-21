@@ -126,12 +126,13 @@ export const DateFilter = () => {
 
     if (range === `range`) {
       changeDate(date)
-      return addSearchPageQuery({
+      addSearchPageQuery({
         // @ts-ignore
         nearest_session_date__lte: formatDateToBackend(date[0]),
         // @ts-ignore
         nearest_session_date__gte: formatDateToBackend(date[1])
       })
+      return
     }
 
     const query = $searchPageQuery.getState()
