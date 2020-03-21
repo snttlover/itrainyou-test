@@ -1,4 +1,4 @@
-import { keysToCamel } from "@/application/lib/casing/casing"
+import { keysToCamel } from "@app/lib/network/casing"
 import { post } from "@/application/lib/network/network"
 
 type ResetPasswordResponse = void

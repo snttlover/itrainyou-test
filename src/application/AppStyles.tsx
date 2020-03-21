@@ -17,5 +17,14 @@ export const AppStyles = createGlobalStyle`
 
   a {
     text-decoration: none;
+    
+    &:visited {
+      color: inherit;
+    }
+  }
+  
+  button, a {  
+    -webkit-tap-highlight-color:  transparent;
+    user-select: none;
   }
 `

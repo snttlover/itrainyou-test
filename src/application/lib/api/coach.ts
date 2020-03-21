@@ -1,4 +1,5 @@
-import { keysToCamel } from "@/application/lib/casing/casing"
+import { Pagination } from "@app/lib/api/interfaces/utils.interface"
+import { keysToCamel } from "@app/lib/network/casing"
 import { get } from "@/application/lib/network/network"
 
 export interface Coach {
@@ -32,12 +33,6 @@ export interface Coach {
   creationDatetime: string
 }
 
-interface Pagination<T> {
-  count: number
-  next: number
-  previous: number
-  results: T[]
-}
 
 export type CoachSortingType = `price` | `-price` | `popularity` | `-popularity`
 

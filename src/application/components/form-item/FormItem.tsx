@@ -1,3 +1,4 @@
+import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -9,13 +10,13 @@ const StyledFormItem = styled.div`
 `
 
 const Label = styled.div`
-  font-weight: 600;
+  font-weight: 500;
   font-size: 12px;
   line-height: 16px;
 `
 
 const Error = styled.div`
-  color: #D5584D;
+  color: #d5584d;
   font-size: 12px;
   line-height: 16px;
 `
@@ -23,16 +24,22 @@ const Error = styled.div`
 type FormItemTypes = {
   label: string | React.ReactNode
   children: React.ReactNode
-  error?: string
+  error?: string | null
 }
 
-export const FormItem = ({label, children, error}: FormItemTypes) => (
-  <StyledFormItem>
-    <Label>{label}</Label>
-    {React.Children.map(children, child => {
-      if (!React.isValidElement(child)) return null
-      return React.cloneElement(child, {error})
-    })}
-    {error && <Error>{error}</Error>}
-  </StyledFormItem>
-)
+export const FormItem = ({ label, children, error }: FormItemTypes) => {
+  const [isTouched, changeTouched] = useState(false)
+
+  const showError = error && isTouched
+
+  return (
+    <StyledFormItem>
+      <Label>{label}</Label>
+      {React.Children.map(children, child => {
+        if (!React.isValidElement(child)) return null
+        return React.cloneElement(child, { error: showError, onBlur: () => changeTouched(true) })
+      })}
+      {showError && <Error>{error}</Error>}
+    </StyledFormItem>
+  )
+}

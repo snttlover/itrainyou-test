@@ -13,15 +13,19 @@ declare global {
 
 const initialState = window.__initialState__
 
-hydrate(appDomain, {
-  values: initialState
-})
-
 const clientScope = fork(appDomain)
 // @ts-ignore
 const history = createHistory(window)
 
-ReactDOM.hydrate(<Application scope={clientScope} history={history} />, document.getElementById("root"))
+let render = ReactDOM.render
+
+if (initialState) {
+  hydrate(appDomain, {
+    values: initialState
+  })
+  render = ReactDOM.hydrate
+}
+render(<Application scope={clientScope} history={history} />, document.getElementById("root"))
 
 allSettled(startClient, {
   scope: clientScope,
