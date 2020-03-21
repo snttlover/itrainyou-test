@@ -29,7 +29,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
 
 $emailError.on(registerFx.fail, (state, { error }) => {
   if (error.response?.data.email) {
-    return "Email уже используется"
+    return "Пользователь с данным email уже существует"
   }
   return state
 })
