@@ -18,6 +18,10 @@ const Block = styled.div`
   @media screen and (max-width: 480px) {
     display: none;
   }
+  @media screen and (max-width: 560px) {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 `
 
 const Datepicker = styled.div`
@@ -26,6 +30,9 @@ const Datepicker = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 560px) {
+    margin-bottom: 20px;
+  }
 `
 
 const SelectTimeContainer = styled.div`
