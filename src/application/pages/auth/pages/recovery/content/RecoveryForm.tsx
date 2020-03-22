@@ -91,7 +91,7 @@ export const RecoveryForm = () => {
         <Input value={form.email} onChange={emailChanged} />
       </FormItem>
       {error && <Error>{error}</Error>}
-      <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>
+      <StyledButton disabled={!isFormValid || isFetching}>Отправить</StyledButton>
       {isFetching && <Spinner />}
     </StyledForm>
   )

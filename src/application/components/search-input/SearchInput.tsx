@@ -24,7 +24,6 @@ const Autocomplete = styled.div`
   border-radius: 0px 0px 4px 4px;
 `
 
-
 const Loader = styled.div`
   position: absolute;
   height: calc(100% + 4px);
@@ -86,7 +85,7 @@ export const SearchInput = (props: SearchInputTypes) => {
       {props.children}
     </Autocomplete>
   )
-  const autocompleteVisibility = props.children && focused
+  const autocompleteVisibility = !!React.Children.toArray(props.children).length && focused
 
   return (
     <ClickOutside
@@ -95,12 +94,12 @@ export const SearchInput = (props: SearchInputTypes) => {
       }}
     >
       <Container className={props.className}>
-        { props.isLoading && <Loader /> }
+        {props.isLoading && <Loader />}
         <StyledInput
           value={props.value}
           placeholder={props.placeholder}
           onChange={props.onChange}
-          onFocus={(e) => {
+          onFocus={e => {
             changeFocus(true)
             props.onFocus && props.onFocus(e)
           }}

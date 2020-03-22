@@ -31,6 +31,7 @@ export interface Coach {
   rating: number
   reviewsCount: number
   creationDatetime: string
+  nearestSessionDatetime: string
 }
 
 

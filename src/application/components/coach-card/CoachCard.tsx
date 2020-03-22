@@ -7,15 +7,16 @@ import * as React from "react"
 import styled from "styled-components"
 import starIcon from "./star.svg"
 import arrowIcon from "./arrow.svg"
+import topCoachIcon from "./images/top-coach-icon.svg"
 import { genCoachSessions } from "@app/components/coach-card/select-date/select-date.model"
 
 const Block = styled.div<{ isActive: boolean }>`
+  display: inline-table;
   -ms-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   width: 100%;
   position: relative;
-  display: flex;
   flex-direction: column;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
@@ -99,9 +100,6 @@ const Info = styled.div`
   display: flex;
   margin-top: 12px;
   align-items: center;
-  ${MediaRange.greaterThan("tablet")`
-    margin-left: 16px;
-  `}
 `
 
 const Category = styled.img`
@@ -225,6 +223,13 @@ const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
   ${({ reverse }: ArrowType) => reverse && "transform: rotate(180deg)"}
 `
 
+const TopCoachIcon = styled.img.attrs({ src: topCoachIcon })`
+  width: 16px;
+  height: 16px;
+  display: inline;
+  margin-right: 5px;
+`
+
 type Props = {
   className?: string
   coach: Coach
@@ -241,19 +246,25 @@ const CoachCardLayout = ({ coach, className }: Props) => {
 
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
 
+  const duration = +coach.duration.split(`:`)[1] + +coach.duration.split(`:`)[0] * 60
+  const price = +coach.price
+
   return (
     <Block className={className} isActive={isActive}>
       <MainInfoContainer onClick={() => changeActive(!isActive)}>
         <Avatar image={coach.avatar} />
         <NameContainer>
-          <Name>{`${coach.firstName} ${coach.lastName}`}</Name>
+          <Name>
+            {coach.isTopCoach && <TopCoachIcon />}
+            {`${coach.firstName} ${coach.lastName}`}
+          </Name>
           <Info>
             {coach.categories.map(category => (
               <Category key={category.id} src={category.icon} />
             ))}
             <PriceContainer>
-              <Duration>{coach.duration} мин</Duration>
-              <Price>{coach.price} ₽</Price>
+              <Duration>{duration} мин</Duration>
+              <Price>{price} ₽</Price>
             </PriceContainer>
           </Info>
         </NameContainer>
