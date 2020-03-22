@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { updateRecoverySuccessMessageVisibility } from "@/application/pages/auth/pages/recovery/model"
+import { updateRecoverySuccessMessageVisibility } from "@app/pages/auth/pages/recovery/recovery.model"
 
 const Title = styled.h3`
   font-weight: 600;

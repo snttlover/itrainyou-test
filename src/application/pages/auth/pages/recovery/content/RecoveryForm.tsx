@@ -6,12 +6,13 @@ import { FormItem } from "@/application/components/form-item/FormItem"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { useStore } from "effector-react"
 import {
-  $email,
-  updateEmail,
-  recoveryFx,
-  $recoveryFetching,
-  $recoveryError
-} from "@/application/pages/auth/pages/recovery/model"
+  $commonError,
+  $isFormValid,
+  emailChanged,
+  $recoveryForm,
+  $recoveryFormErrors,
+  recoveryFx, recoveryFormSended
+} from "@app/pages/auth/pages/recovery/recovery.model"
 import { FormEvent } from "react"
 
 const Title = styled.h3`
@@ -70,26 +71,28 @@ const Error = styled.div`
   padding: 10px 0;
 `
 
-export const RecoveryForm = () => {
-  const email = useStore($email)
-  const error = useStore($recoveryError)
-  const loading = useStore($recoveryFetching)
+const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  recoveryFormSended()
+}
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    recoveryFx({ email })
-    e.preventDefault()
-  }
+export const RecoveryForm = () => {
+  const form = useStore($recoveryForm)
+  const errors = useStore($recoveryFormErrors)
+  const isFormValid = useStore($isFormValid)
+  const isFetching = useStore(recoveryFx.pending)
+  const error = useStore($commonError)
 
   return (
     <StyledForm onSubmit={submitHandler}>
       <Title>Восстановление пароля</Title>
       <SubTitle>Забыли пароль? Не страшно! Мы отправим вам на почту письмо с инструкциями по сбросу пароля.</SubTitle>
-      <FormItem label='Почта'>
-        <Input value={email} onChange={updateEmail} />
+      <FormItem label='Логин' error={errors.email}>
+        <Input value={form.email} onChange={emailChanged} />
       </FormItem>
-      { error && <Error>{error}</Error>}
-      <StyledButton>Отправить</StyledButton>
-      {loading && <Spinner />}
+      {error && <Error>{error}</Error>}
+      <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>
+      {isFetching && <Spinner />}
     </StyledForm>
   )
 }

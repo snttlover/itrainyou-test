@@ -1,7 +1,7 @@
 import { keysToCamel } from "@app/lib/network/casing"
 import { post } from "@/application/lib/network/network"
 
-type RecoveryResponse = void
+export type RecoveryResponse = void
 
 export interface RecoveryRequest {
   email: string
