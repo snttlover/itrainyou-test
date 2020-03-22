@@ -15,7 +15,7 @@ const DropdownItem = styled.div`
   width: 100%;
   cursor: pointer;
   padding: 9px 12px;
-  
+
   &:hover {
     background-color: #eeeeee;
   }
@@ -36,11 +36,11 @@ const Dropdown = styled.div`
   overflow: auto;
 `
 
-const SelectBox = styled.div<{ isOpen: boolean }>`
+const SelectBox = styled.div<{ isOpen: boolean; error?: boolean }>`
   position: relative;
   width: 100%;
   height: 32px;
-  border: 1px solid #b3b3b3;
+  border: 1px solid ${({ error }) => (error ? "#D5584D" : "#B3B3B3")};
   box-sizing: border-box;
   border-radius: ${({ isOpen }) => (isOpen ? "4px 4px 0px 0px" : "4px")};
   display: flex;
@@ -63,9 +63,18 @@ type SelectInputProps<T extends Value> = {
     value: T
     label: string
   }[]
+  error?: boolean
+  onBlur?: () => void
 }
 
-export const SelectInput = <T extends Value = Value>({ value, placeholder, onChange, options }: SelectInputProps<T>) => {
+export const SelectInput = <T extends Value = Value>({
+  value,
+  placeholder,
+  onChange,
+  options,
+  error,
+  onBlur
+}: SelectInputProps<T>) => {
   const [isOpen, changeOpen] = useState(false)
 
   const dropdownItems = options.map(item => (
@@ -77,14 +86,21 @@ export const SelectInput = <T extends Value = Value>({ value, placeholder, onCha
   const selectedItem = options.find(item => item.value === value)
 
   return (
-    <SelectBox isOpen={isOpen} placeholder={placeholder} onClick={() => changeOpen(!isOpen)}>
+    <SelectBox
+      isOpen={isOpen}
+      error={error}
+      placeholder={placeholder}
+      onClick={() => {
+        const newValue = !isOpen
+        changeOpen(newValue)
+        if (!newValue && onBlur) {
+          onBlur()
+        }
+      }}
+    >
       {selectedItem ? selectedItem.label : <Placeholder>{placeholder}</Placeholder>}
       <Arrow />
-      {isOpen && (
-        <Dropdown>
-          {dropdownItems}
-        </Dropdown>
-      )}
+      {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
     </SelectBox>
   )
 }

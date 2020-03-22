@@ -1,6 +1,6 @@
-import * as merge from 'webpack-merge'
-import * as path from 'path'
-import * as commonConfig from '../common.webpack'
+import * as merge from "webpack-merge"
+import * as path from "path"
+import * as commonConfig from "../common.webpack"
 
 module.exports = merge.smartStrategy({
   entry: "prepend"
@@ -10,8 +10,13 @@ module.exports = merge.smartStrategy({
     filename: "client.[hash].js",
     publicPath: "/"
   },
-  entry: [
-    "@babel/polyfill",
-    path.resolve(__dirname, "../../src/client/index.tsx")
-  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"]
+      }
+    ]
+  },
+  entry: ["@babel/polyfill", path.resolve(__dirname, "../../src/client/index.tsx")]
 })

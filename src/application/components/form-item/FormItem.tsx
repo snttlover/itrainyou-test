@@ -31,19 +31,20 @@ export const FormItemRequiredStar = styled.span`
 `
 
 type FormItemTypes = {
-  label: string | React.ReactNode
+  label?: string | React.ReactNode
   children: React.ReactNode
   required?: boolean
-  error?: string | null
+  error?: string | null,
+  className?: string
 }
 
-export const FormItem = ({ label, children, error, required }: FormItemTypes) => {
+export const FormItem = styled(({ label, children, error, required, ...props }: FormItemTypes) => {
   const [isTouched, changeTouched] = useState(false)
 
   const showError = error && isTouched
 
   return (
-    <StyledFormItem>
+    <StyledFormItem {...props}>
       <Label>{label} {required && <FormItemRequiredStar>*</FormItemRequiredStar>}</Label>
       {React.Children.map(children, child => {
         if (!React.isValidElement(child)) return null
@@ -52,4 +53,4 @@ export const FormItem = ({ label, children, error, required }: FormItemTypes) =>
       {showError && <Error>{error}</Error>}
     </StyledFormItem>
   )
-}
+})``
