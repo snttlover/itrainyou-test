@@ -52,7 +52,7 @@ export const LoginForm = () => {
 
   return (
     <StyledForm onSubmit={submitHandler}>
-      <FormItem label='Логин' error={errors.email}>
+      <FormItem label='Почта' error={errors.email}>
         <Input value={form.email} onChange={emailChanged} />
       </FormItem>
       <FormItem label='Пароль' error={errors.password}>
