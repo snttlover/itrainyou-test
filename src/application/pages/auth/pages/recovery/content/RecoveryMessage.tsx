@@ -43,7 +43,6 @@ const Paragraph = styled.div`
 
 const Link = styled.div`
   color: #2e9dea;
-  text-decoration: underline;
   cursor: pointer;
   display: inline;
 `
