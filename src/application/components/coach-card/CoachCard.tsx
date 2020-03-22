@@ -275,7 +275,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             <Rating>{rating}</Rating>
           </Meta>
           <Date>
-            {formatISOStringToLocaleDateString(coach.creationDatetime, "DD MMMM HH:mm")}
+            {formatISOStringToLocaleDateString(coach.nearestSessionDatetime, "DD MMMM HH:mm")}
             <Arrow reverse={isActive} />
           </Date>
         </RatingContainer>
