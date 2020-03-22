@@ -7,7 +7,7 @@ import { UserPage } from "./pages/user/UserPage"
 import { LandingPage } from "./pages/landing/LandingPage"
 import { LoginPage } from "@/application/pages/auth/pages/login/LoginPage"
 import { RecoveryPage } from "@/application/pages/auth/pages/recovery/RecoveryPage"
-import { ResetPasswordPage } from "@/application/pages/auth/pages/reset/ResetPasswordPage"
+import { ResetPasswordPage } from "@/application/pages/auth/pages/reset-password/ResetPasswordPage"
 import { SearchPage } from "@/application/pages/search/SearchPage"
 
 export type AsyncDataOptions<T = any, Q = any> = {

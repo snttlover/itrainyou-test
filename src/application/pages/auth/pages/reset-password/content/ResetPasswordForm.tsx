@@ -7,14 +7,14 @@ import { Spinner } from "@/application/components/spinner/Spinner"
 import { useStore } from "effector-react"
 import { FormEvent } from "react"
 import {
-  $password,
-  $repeatedPassword,
-  $resetPasswordError,
-  $resetPasswordFetching,
-  resetPasswordFx,
-  updatePassword,
-  updateRepeatedPassword
-} from "@/application/pages/auth/pages/reset/model"
+  $commonError,
+  $isFormValid,
+  $resetForm,
+  $resetFormErrors,
+  passwordChanged,
+  passwordRepeatChanged,
+  resetFx
+} from "@app/pages/auth/pages/reset-password/reset-password.model"
 
 const StyledForm = styled.form`
   position: relative;
@@ -42,27 +42,28 @@ type ResetPasswordFormTypes = {
 }
 
 export const ResetPasswordForm = (props: ResetPasswordFormTypes) => {
-  const password = useStore($password)
-  const passwordRepeat = useStore($repeatedPassword)
-  const error = useStore($resetPasswordError)
-  const loading = useStore($resetPasswordFetching)
+  const form = useStore($resetForm)
+  const errors = useStore($resetFormErrors)
+  const isFormValid = useStore($isFormValid)
+  const isFetching = useStore(resetFx.pending)
+  const error = useStore($commonError)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    resetPasswordFx({ password, token: props.token })
+    resetFx({ password: form.password, token: props.token })
     e.preventDefault()
   }
 
   return (
     <StyledForm onSubmit={submitHandler}>
-      <FormItem label='Пароль'>
-        <Input value={password} onChange={updatePassword} type='password' />
+      <FormItem label='Пароль' error={errors.password}>
+        <Input value={form.password} onChange={passwordChanged} type='password' />
       </FormItem>
-      <FormItem label='Повторите пароль'>
-        <Input value={passwordRepeat} onChange={updateRepeatedPassword} type='password' />
+      <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
+        <Input value={form.passwordRepeat} onChange={passwordRepeatChanged} type='password' />
       </FormItem>
       {error && <Error>{error}</Error>}
-      <StyledButton>Изменить</StyledButton>
-      {loading && <Spinner />}
+      <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>
+      {isFetching && <Spinner />}
     </StyledForm>
   )
 }

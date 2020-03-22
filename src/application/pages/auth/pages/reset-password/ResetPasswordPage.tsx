@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
-import { ResetPasswordForm } from "@/application/pages/auth/pages/reset/content/ResetPasswordForm"
+import { ResetPasswordForm } from "@/application/pages/auth/pages/reset-password/content/ResetPasswordForm"
 import { WhiteContainer } from "@/application/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/application/pages/auth/components/CenterFormContainer"
 import { AsyncDataOptions } from "@/application/routes"

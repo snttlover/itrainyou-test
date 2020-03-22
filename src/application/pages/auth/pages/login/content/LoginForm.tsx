@@ -6,14 +6,15 @@ import { FormItem } from "@/application/components/form-item/FormItem"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { useStore } from "effector-react"
 import {
-  $email,
-  updateEmail,
-  $password,
-  updatePassword,
+  $isFormValid,
+  $loginForm,
+  $loginFormErrors,
+  $commonError,
+  emailChanged,
+  passwordChanged,
   loginFx,
-  $loginError,
-  $loginFetching
-} from "@/application/pages/auth/pages/login/model"
+  loginFormSended
+} from "@app/pages/auth/pages/login/login.model"
 import { FormEvent } from "react"
 
 const StyledForm = styled.form`
@@ -38,27 +39,28 @@ const Error = styled.div`
 `
 
 export const LoginForm = () => {
-  const email = useStore($email)
-  const password = useStore($password)
-  const error = useStore($loginError)
-  const loading = useStore($loginFetching)
+  const form = useStore($loginForm)
+  const errors = useStore($loginFormErrors)
+  const isFormValid = useStore($isFormValid)
+  const isFetching = useStore(loginFx.pending)
+  const error = useStore($commonError)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    loginFx({ email, password })
+    loginFormSended()
     e.preventDefault()
   }
 
   return (
     <StyledForm onSubmit={submitHandler}>
-      <FormItem label='Логин'>
-        <Input value={email} onChange={updateEmail} />
+      <FormItem label='Почта' error={errors.email}>
+        <Input value={form.email} onChange={emailChanged} />
       </FormItem>
-      <FormItem label='Пароль'>
-        <Input value={password} onChange={updatePassword} type='password' />
+      <FormItem label='Пароль' error={errors.password}>
+        <Input value={form.password} onChange={passwordChanged} type='password' />
       </FormItem>
-      { error && <Error>{error}</Error>}
-      <StyledButton>Вход</StyledButton>
-      {loading && <Spinner />}
+      {error && <Error>{error}</Error>}
+      <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>
+      {isFetching && <Spinner />}
     </StyledForm>
   )
 }

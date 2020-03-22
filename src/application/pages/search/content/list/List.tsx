@@ -23,6 +23,7 @@ const ListContainer = styled.div`
   width: 100%;
   max-width: 640px;
   position: relative;
+  display: table;
 `
 
 const SpinnerContainer = styled.div`

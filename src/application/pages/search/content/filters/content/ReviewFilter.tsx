@@ -3,7 +3,8 @@ import styled from "styled-components"
 import { Slider } from "@/application/components/slider/Slider"
 import { declOfNum, DeclOfNumListType } from "@/application/lib/formatting/numerals"
 import { useStoreMap } from "effector-react"
-import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
+import { $searchPageQuery, addSearchPageQuery, DelayedNavigation } from "@app/pages/search/coaches-search.model"
+import { useState } from "react"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -37,6 +38,8 @@ const RangeNumbers = styled.div`
 
 const RangeNumber = styled.div``
 
+const navigation = new DelayedNavigation()
+
 export const ReviewFilter = () => {
   const [min, max] = [1, 5]
   const stars: DeclOfNumListType = ["звезды", "звезд", "звезд"]
@@ -47,15 +50,20 @@ export const ReviewFilter = () => {
     fn: values => (values.rating__gte ? +values.rating__gte : 0)
   })
 
-  const changeRating = (value: number) => addSearchPageQuery({ rating__gte: value })
+  const [scoreValue, changeScoreValue] = useState(score)
+
+  const changeRating = (value: number) => {
+    changeScoreValue(value)
+    navigation.navigate({ rating__gte: value }, 500)
+  }
 
   return (
     <Container>
       <Header>Оценка по отзывам</Header>
       <Text>
-        От <Bold>{score}</Bold> {declOfNum(score, stars)}
+        От <Bold>{scoreValue}</Bold> {declOfNum(scoreValue, stars)}
       </Text>
-      <Slider value={score} min={min} max={max} onChange={changeRating} />
+      <Slider value={scoreValue} min={min} max={max} onChange={changeRating} />
       <RangeNumbers>
         <RangeNumber>1 звезда</RangeNumber>
         <RangeNumber>5 звезд</RangeNumber>
