@@ -123,14 +123,14 @@ export const Step3 = () => {
         <Title>Добавьте информацию о себе</Title>
         <Description>Коучу надо заполнить все поля</Description>
         <UploadImage />
-        <FormItem label='Имя'>
+        <FormItem label='Имя' required>
           <Input value='asdasd' />
         </FormItem>
-        <FormItem label='Фамилия'>
+        <FormItem label='Фамилия' required>
           <Input value='asdasd' />
         </FormItem>
         <FormGroup>
-          <FormItem label='Дата рождения'>
+          <FormItem label='Дата рождения' required>
             <SelectInput placeholder='Год' value={birthday.year()} onChange={changeYear} options={years} />
           </FormItem>
           <FormItem label=''>
@@ -140,7 +140,7 @@ export const Step3 = () => {
             <SelectInput placeholder='День' value={birthday.date()} onChange={changeDay} options={days} />
           </FormItem>
         </FormGroup>
-        <FormItem label='Пол'>
+        <FormItem label='Пол' required>
           <SelectInput placeholder='Мужской' value='m' onChange={console.log} options={sexItems} />
         </FormItem>
         <NextButton />
