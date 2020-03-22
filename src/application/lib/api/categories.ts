@@ -9,6 +9,6 @@ export interface Category {
 }
 
 export const getCategories = () =>
-  get<Category[]>("http://142.93.228.206:8006/api/v1/web/categories/")
+  get<Category[]>("https://dev.itrainyou.heksray.com/api/v1/web/categories/")
     .then(response => response.data)
     .then(keysToCamel)

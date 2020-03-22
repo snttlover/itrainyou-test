@@ -11,6 +11,6 @@ export interface RegisterAsUserResponse {
 }
 
 export const registerAsUser = async (data: RegisterAsUserRequest) =>
-  post<RegisterAsUserResponse, RegisterAsUserRequest>(`http://142.93.228.206:8006/api/v1/web/auth/register/`, data)
+  post<RegisterAsUserResponse, RegisterAsUserRequest>(`https://dev.itrainyou.heksray.com/api/v1/web/auth/register/`, data)
     .then(response => response.data)
     .then(keysToCamel)

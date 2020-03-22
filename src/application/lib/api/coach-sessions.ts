@@ -18,6 +18,6 @@ export interface GetCoachSessionsParamsTypes {
 }
 
 export const getCoachSessions = (id: number, params: GetCoachSessionsParamsTypes) =>
-  get<CoachSession, GetCoachSessionsParamsTypes>(`http://142.93.228.206:8006/api/v1/web/coaches/${id}/sessions`, params)
+  get<CoachSession, GetCoachSessionsParamsTypes>(`https://dev.itrainyou.heksray.com/api/v1/web/coaches/${id}/sessions`, params)
     .then(response => response.data)
     .then(keysToCamel)

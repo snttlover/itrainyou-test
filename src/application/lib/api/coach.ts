@@ -51,7 +51,7 @@ export interface GetCoachesParamsTypes {
 }
 
 export const getCoaches = (params: GetCoachesParamsTypes) =>
-  get<Pagination<Coach>, GetCoachesParamsTypes>("http://142.93.228.206:8006/api/v1/web/coaches/", params)
+  get<Pagination<Coach>, GetCoachesParamsTypes>("https://dev.itrainyou.heksray.com/api/v1/web/coaches/", params)
     .then(response => response.data)
     .then(data => data.results)
     .then(keysToCamel)
