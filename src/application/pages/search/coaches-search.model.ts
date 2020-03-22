@@ -52,3 +52,11 @@ forward({
   from: loadCoaches,
   to: fetchCoachesListFx
 })
+
+export class DelayedNavigation {
+  private interval: any
+  navigate(params: GetCoachesParamsTypes, interval: number) {
+    clearInterval(this.interval)
+    this.interval = setTimeout(() => addSearchPageQuery(params), interval)
+  }
+}

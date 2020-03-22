@@ -3,9 +3,9 @@ import { formatCurrency } from "@app/lib/formatting/currency"
 import * as React from "react"
 import styled from "styled-components"
 import { useStore, useStoreMap } from "effector-react"
-import { debounce } from "@app/lib/helpers/debounce"
-import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
+import { $searchPageQuery, DelayedNavigation } from "@app/pages/search/coaches-search.model"
 import { $maxPrice } from "@app/pages/search/content/filters/content/price-filter/price-filter.model"
+import { useState } from "react"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -39,6 +39,8 @@ const RangeNumbers = styled.div`
 
 const RangeNumber = styled.div``
 
+const delayedNavigation = new DelayedNavigation()
+
 export const PriceFilter = () => {
   const maxPrice = useStore($maxPrice)
 
@@ -56,20 +58,28 @@ export const PriceFilter = () => {
     fn: values => (values.price__lte ? +values.price__lte : maxPrice)
   })
 
+  const [startValue, changeStartValue] = useState(start)
+  const [endValue, changeEndValue] = useState(end)
+
   const change = (value: [number, number]) => {
-    addSearchPageQuery({
-      price__gte: value[0],
-      price__lte: value[1]
-    })
+    changeStartValue(value[0])
+    changeEndValue(value[1])
+    delayedNavigation.navigate(
+      {
+        price__gte: value[0],
+        price__lte: value[1]
+      },
+      500
+    )
   }
 
   return (
     <Container>
       <Header>Цена</Header>
       <Text>
-        от <Bold>{formatCurrency(start)}</Bold> до <Bold>{formatCurrency(end)}</Bold> руб.
+        от <Bold>{formatCurrency(startValue)}</Bold> до <Bold>{formatCurrency(endValue)}</Bold> руб.
       </Text>
-      <RangeSlider value={[start, end]} min={min} max={max} onChange={change} />
+      <RangeSlider value={[startValue, endValue]} min={min} max={max} onChange={change} />
       <RangeNumbers>
         <RangeNumber>{formatCurrency(min)} руб.</RangeNumber>
         <RangeNumber>{formatCurrency(max)} руб.</RangeNumber>
