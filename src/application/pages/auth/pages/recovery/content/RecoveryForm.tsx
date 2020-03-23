@@ -87,7 +87,7 @@ export const RecoveryForm = () => {
     <StyledForm onSubmit={submitHandler}>
       <Title>Восстановление пароля</Title>
       <SubTitle>Забыли пароль? Не страшно! Мы отправим вам на почту письмо с инструкциями по сбросу пароля.</SubTitle>
-      <FormItem label='Логин' error={errors.email}>
+      <FormItem label='Почта' error={errors.email}>
         <Input value={form.email} onChange={emailChanged} />
       </FormItem>
       {error && <Error>{error}</Error>}
