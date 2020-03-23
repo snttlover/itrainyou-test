@@ -1,22 +1,22 @@
 import { keysToCamel } from "@app/lib/network/casing"
 import { post } from "@/application/lib/network/network"
 
-export interface LoginResponse {
+export interface UploadMediaResponse {
   id: number
   type: "IMAGE" | "OTHER"
   file: string
 }
 
-export interface LoginRequest {
+export interface UploadMediaRequest {
   type: "IMAGE" | "OTHER"
   file: File | Blob
 }
 
-export const uploadMedia = (data: LoginRequest, onUploadProgress?: (percent: ProgressEvent) => void) => {
+export const uploadMedia = (data: UploadMediaRequest, onUploadProgress?: (percent: ProgressEvent) => void) => {
   const formData = new FormData()
   formData.append("type", data.type)
   formData.append("file", data.file)
-  return post<LoginResponse, FormData>(`http://142.93.228.206:8006/api/v1/media-files/`, formData, {onUploadProgress})
+  return post<UploadMediaResponse, FormData>(`http://142.93.228.206:8006/api/v1/media-files/`, formData, {onUploadProgress})
     .then(response => response.data)
     .then(keysToCamel)
 }

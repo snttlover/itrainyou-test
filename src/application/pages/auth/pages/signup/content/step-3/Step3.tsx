@@ -12,7 +12,7 @@ import {
   birthdayChanged,
   nameChanged,
   lastNameChanged,
-  sexChanged
+  sexChanged, $isUploadModelOpen, toggleUploadModal
 } from "@app/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@app/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $registerUserType } from "@app/pages/auth/pages/signup/signup.model"
@@ -81,11 +81,12 @@ const Description = styled.p`
   `}
 `
 
-const UploadImage = styled.img.attrs({ src: uploadImage })`
-  width: 67px;
+const UploadImage = styled.img<{withAvatar: boolean}>`
+  width: ${({withAvatar}) => withAvatar ? '60px' : '67px'};
   height: 60px;
   margin-bottom: 16px;
   cursor: pointer;
+  border-radius: ${({withAvatar}) => withAvatar ? '30px' : '0'};
 `
 
 const FormGroup = styled.div`
@@ -103,7 +104,7 @@ const FormGroup = styled.div`
         margin-left: 0;
       }
     }
-  `}
+  `};
 `
 
 const Form = styled.form`
@@ -149,7 +150,7 @@ export const Step3 = () => {
   const errors = useStore($step3FormErrors)
   const isFormValid = useStore($isStep3FormValid)
   const userType = useStore($registerUserType)
-  const [isUploadModalShowed, changeShowModal] = useState(false)
+  const isUploadModalShowed = useStore($isUploadModelOpen)
 
   const [days, setDays] = useState<{ label: string; value: number }[]>([])
 
@@ -190,7 +191,7 @@ export const Step3 = () => {
         <Title>Добавьте информацию о себе</Title>
         <Description>{userType === "couch" && "Коучу надо заполнить все поля"}</Description>
         <Form onSubmit={handleSubmit}>
-          <UploadImage onClick={() => changeShowModal(true)} />
+          <UploadImage src={values.image.file || uploadImage} onClick={_ => toggleUploadModal()} withAvatar={!!values.image.file}/>
           <FormItem label='Имя' error={errors.name} required>
             <Input value={values.name} onChange={nameChanged} />
           </FormItem>
@@ -221,7 +222,7 @@ export const Step3 = () => {
           <NextButton disabled={!isFormValid} />
         </Form>
       </Container>
-      {isUploadModalShowed && <UploadModal onClose={() => changeShowModal(false)} />}
+      {isUploadModalShowed && <UploadModal onClose={() => toggleUploadModal()} />}
     </AuthLayout>
   )
 }

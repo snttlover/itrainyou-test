@@ -1,4 +1,5 @@
 import { uploadMedia } from "@app/lib/api/media"
+import { imageUploaded } from "@app/pages/auth/pages/signup/content/step-3/step3.model"
 import { signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
 import { forward } from "effector"
 
@@ -27,4 +28,9 @@ export const $uploadPercent = signUpDomain
 forward({
   from: uploadImage,
   to: uploadImageFx
+})
+
+forward({
+  from: uploadImageFx.doneData,
+  to: imageUploaded
 })

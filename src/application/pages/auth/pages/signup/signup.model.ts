@@ -15,11 +15,13 @@ export const pageMounted = signUpDomain.createEvent()
 export const pageUnmount = signUpDomain.createEvent()
 
 export const nextStep = signUpDomain.createEvent()
+export const step3Finish = signUpDomain.createEvent()
 const setStep = signUpDomain.createEvent<number>()
 
 export const $currentStep = signUpDomain
   .createStore(1)
   .on(nextStep, state => state + 1)
+  .on(step3Finish, state => state + 1)
   .on(setStep, (_, payload) => payload)
 
 const $queryParams = createStoreObject({

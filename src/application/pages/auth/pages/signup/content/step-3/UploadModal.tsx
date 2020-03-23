@@ -1,22 +1,29 @@
-import { DashedButton } from "@app/components/button/dashed/DashedButton"
-import { Button } from "@app/components/button/normal/Button"
-import { Modal } from "@app/components/modal/Modal"
+import cross from "@app/components/modal/cross.svg"
 import { ProgressBar } from "@app/components/progress-bar/ProgressBar"
 import { MediaRange } from "@app/lib/responsive/media"
-import {
-  $uploadPercent,
-  uploadImage,
-  uploadImageFx
-} from "@app/pages/auth/pages/signup/content/step-3/upload-modal.model"
+import { $uploadPercent, uploadImageFx } from "@app/pages/auth/pages/signup/content/step-3/upload-modal.model"
+import { ProcessingImage } from "@app/pages/auth/pages/signup/content/step-3/upload-steps/ProcessingImage"
+import { SelectImage } from "@app/pages/auth/pages/signup/content/step-3/upload-steps/SelectImage"
 import { useStore } from "effector-react"
 import * as React from "react"
 import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
-import ReactCrop from "react-image-crop"
-import "react-image-crop/dist/ReactCrop.css"
 import styled from "styled-components"
 
-const StyledReactCrop = styled(ReactCrop)``
+const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(66, 66, 66, 0.6);
+  ${MediaRange.greaterThan("mobile")`
+    padding: 44px;
+  `}
+`
 
 const Content = styled.div`
   height: 100%;
@@ -29,10 +36,6 @@ const Content = styled.div`
   ${MediaRange.greaterThan("mobile")`
     align-items: flex-start;
   `}
-
-  ${StyledReactCrop} {
-    margin-top: 20px;
-  }
 `
 
 const Title = styled.h2`
@@ -50,138 +53,57 @@ const Title = styled.h2`
   `}
 `
 
-const Description = styled.p`
-  font-size: 14px;
-  line-height: 18px;
+const Container = styled.div<{ fullscreen: boolean }>`
+  background: #ffffff;
+  border-radius: 4px;
+  margin: ${({fullscreen}) => fullscreen ? '0' : '12px'};
+  width: 100%;
+  height: ${({fullscreen}) => fullscreen ? '100%' : 'auto'};
+  position: relative;
+  padding: 24px;
+  outline: none;
 
-  text-align: center;
-
-  color: #424242;
-  margin-top: 12px;
+  ${({fullscreen}) => fullscreen && MediaRange.lessThan('mobile')`
+    padding: 12px;
+    ${Content} {
+      ${Title} {
+        font-size: 20px;
+        line-height: 24px;
+        margin-top: 112px;
+      }
+    }
+  `}
 
   ${MediaRange.greaterThan("mobile")`
-    margin-top: 63px;
-    font-size: 16px;
-    line-height: 22px;
-    width: 100%;
-    text-align: center;
+    height: auto;
+  `}
+  ${MediaRange.greaterThan("laptop")`
+    width: 680px;
   `}
 `
 
-const Warning = styled.p`
-  font-size: 12px;
-  line-height: 16px;
-  width: 100%;
-  text-align: center;
-  color: #d5584d;
-  margin-top: 12px;
-`
-
-const SelectPhotoButton = styled(Button)`
-  margin-top: 56px;
-  margin-left: auto;
-  margin-right: auto;
-
-  ${MediaRange.greaterThan("mobile")`    
-    margin-top: 30px;
+const Cross = styled.img.attrs({ src: cross })`
+  position: absolute;
+  right: 16px;
+  top: 12px;
+  cursor: pointer;
+  ${MediaRange.greaterThan("mobile")`
+    right: 24px;
+    top: 24px;
   `}
 `
 
-const DragText = styled.div`
-  width: 100%;
-  display: none;
-  text-align: center;
-  margin-top: 24px;
-  font-size: 16px;
-  line-height: 22px;
-  color: #424242;
-  margin-bottom: 60px;
-
-  ${MediaRange.greaterThan("mobile")`    
-    display: block;
-  `}
-`
-
-const BlueText = styled.div`
-  font-size: 16px;
-  line-height: 22px;
-  color: #449bd9;
-`
-const UploadButton = styled(DashedButton)`
-  margin-top: 76px;
-`
 
 type UploadModalProps = {
   onClose: () => void
 }
 
-function dataURItoFile(dataURI: string, filename: string) {
-  // convert base64 to raw binary data held in a string
-  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-  const byteString = atob(dataURI.split(",")[1])
-
-  // separate out the mime component
-  const mimeString = dataURI
-    .split(",")[0]
-    .split(":")[1]
-    .split(";")[0]
-
-  // write the bytes of the string to an ArrayBuffer
-  const ab = new ArrayBuffer(byteString.length)
-
-  // create a view into the buffer
-  const ia = new Uint8Array(ab)
-
-  // set the bytes of the buffer to the correct values
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i)
-  }
-
-  // write the ArrayBuffer to a blob, and you're done
-  return new File([ab], filename, { type: mimeString })
-}
-type Crop = { x: number; y: number; width: number; height: number }
-
-const cropAndUploadImage = (image: any, crop: Crop, filename: string): Promise<File> => {
-  const canvas = document.createElement("canvas")
-  const scaleX = image.naturalWidth / image.width
-  const scaleY = image.naturalHeight / image.height
-  canvas.width = crop.width
-  canvas.height = crop.height
-  const ctx = canvas.getContext("2d")
-
-  ctx?.drawImage(
-    image,
-    crop.x * scaleX,
-    crop.y * scaleY,
-    crop.width * scaleX,
-    crop.height * scaleY,
-    0,
-    0,
-    crop.width,
-    crop.height
-  )
-
-  return new Promise(resolve => {
-    const dataUrl = canvas.toDataURL("image/jpeg")
-    const blob = dataURItoFile(dataUrl, filename)
-    resolve(blob)
-  })
-}
-
-let imageRef: any = null
-
-const processFile = (crop: Crop, fileName: string) => async () => {
-  const file = await cropAndUploadImage(imageRef, crop, fileName)
-  uploadImage(file)
-}
-
 export const UploadModal = ({ onClose }: UploadModalProps) => {
   const isUploading = useStore(uploadImageFx.pending)
   const uploadPercent = useStore($uploadPercent)
-  const [image, setImage] = useState<string | null>(null)
-  const [filename, setFilename] = useState<string>('')
-  const [crop, setCrop] = useState({ aspect: 1 })
+  const [filename, setFilename] = useState<string>("")
+  const [image, setImage] = useState<File | string | null>(null)
+  const [largeFileError, setError] = useState(false)
 
   const onDropAccepted = useCallback(acceptedFiles => {
     const reader = new FileReader()
@@ -192,42 +114,32 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
     reader.readAsDataURL(acceptedFiles[0])
   }, [])
 
+  const onDropRejected = useCallback(_ => setError(true), [])
+
   const { getRootProps, getInputProps, open, isDragActive, isDragAccept, isDragReject } = useDropzone({
     onDropAccepted,
+    onDropRejected,
     multiple: false,
     noClick: true,
     maxSize: 2097152,
     accept: ["image/gif", "image/png", "image/jpg", "image/jpeg"]
   })
 
-  let component = (
-    <>
-      <Description>Вы можете загрузить фотографию в формате PNG, JPG или GIF</Description>
-      <Warning>*Максимальный размер 2 Мбайта</Warning>
-      <SelectPhotoButton onClick={open}>Выберите фотографию</SelectPhotoButton>
-      <DragText>
-        или <br />
-        <BlueText>Перетащите ее на экран</BlueText>
-      </DragText>
-    </>
-  )
+  let component = <SelectImage open={open} largeFileError={largeFileError} />
 
-  if (image)
-    component = (
-      <>
-        <StyledReactCrop src={image} crop={crop} onChange={setCrop} onImageLoaded={(ref: any) => (imageRef = ref)} />
-        <UploadButton onClick={processFile(crop as any, filename)}>Загрузить фотографию</UploadButton>
-      </>
-    )
+  if (image) component = <ProcessingImage image={image} filename={filename} setImage={setImage} />
   if (isUploading) component = <ProgressBar percent={uploadPercent} />
 
   return (
-    <Modal onCrossClick={onClose} {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
-      <Content>
-        <Title>Загрузка фотографии профиля</Title>
-        {component}
-        <input {...getInputProps()} />
-      </Content>
-    </Modal>
+    <Backdrop>
+      <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })} fullscreen={!!image || isUploading || largeFileError}>
+        <Cross onClick={onClose} />
+        <Content>
+          <Title>Загрузка фотографии профиля</Title>
+          {component}
+          <input {...getInputProps()} />
+        </Content>
+      </Container>
+    </Backdrop>
   )
 }
