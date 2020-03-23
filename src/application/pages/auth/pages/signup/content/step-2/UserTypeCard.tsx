@@ -1,6 +1,6 @@
 import { MediaRange } from "@app/lib/responsive/media"
 import * as React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 const Title = styled.h2`
   font-weight: 600;
@@ -71,6 +71,24 @@ const Block = styled.div<{ selected?: boolean }>`
   padding: 12px 8px;
   cursor: pointer;
   user-select: none;
+  transition: all 300ms ease-in-out;
+  
+  &:hover {
+    background: ${({selected}) => selected ? "#DAEBF7" : "#DDD9E3"};
+    ${({selected}) => selected && css`
+      ${Title} {
+        color: #449BD9;
+      }
+      
+      ${Description} {
+        color: #449BD9;
+    
+        &:before {
+          border-color: #449BD9;
+        }
+      }
+    `}
+  }
 
   ${Title} {
     color: ${({ selected }) => (selected ? "#fff" : "#544274")};
