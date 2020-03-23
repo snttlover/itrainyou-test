@@ -18,12 +18,23 @@ const config = merge.smartStrategy({
   module: {
     rules: [
       {
-        test: /\.(gif|png|jpg|svg|css)(\?.*$|$)/,
+        test: /\.(gif|png|jpg|svg)(\?.*$|$)/,
         use: [
           {
             loader: 'url-loader',
             options: {
               fallback: 'file-loader',
+              emitFile: false
+            }
+          },
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
               emitFile: false
             }
           },
