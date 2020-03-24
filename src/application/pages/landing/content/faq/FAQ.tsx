@@ -101,21 +101,21 @@ const StyledRegistrationButton = styled(Button)`
 `
 
 export const FAQ = () => (
-         <StyledContainer>
-           <Title>У вас уже возникло много вопросов</Title>
-           <SubTitle>Даем ответы на 7 самых популярных</SubTitle>
-           <Content>
-             <QuestionsList>
-               {questions.map((faq, i) => (
-                 <StyledExpansionPanel key={i} title={faq.question}>
-                   {faq.answer}
-                 </StyledExpansionPanel>
-               ))}
-             </QuestionsList>
-             <PeopleImage />
-             <Link to='/signup'>
-               <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
-             </Link>
-           </Content>
-         </StyledContainer>
-       )
+  <StyledContainer>
+    <Title>У вас уже возникло много вопросов</Title>
+    <SubTitle>Даем ответы на 7 самых популярных</SubTitle>
+    <Content>
+      <QuestionsList>
+        {questions.map((faq, i) => (
+          <StyledExpansionPanel key={i} title={faq.question}>
+            {faq.answer}
+          </StyledExpansionPanel>
+        ))}
+      </QuestionsList>
+      <PeopleImage />
+      <Link to='/signup'>
+        <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
+      </Link>
+    </Content>
+  </StyledContainer>
+)
