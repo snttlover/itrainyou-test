@@ -112,6 +112,7 @@ const Category = styled.img`
 `
 
 const PriceContainer = styled.div`
+  white-space: nowrap;
   border: 1px solid #b3b3b3;
   height: 20px;
   border-radius: 12px;
