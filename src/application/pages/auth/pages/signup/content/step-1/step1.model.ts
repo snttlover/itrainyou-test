@@ -2,7 +2,7 @@ import { loggedIn } from "@app/feature/user/user.model"
 import { registerAsUser, RegisterAsUserResponse } from "@app/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@app/lib/generators/efffector"
 import { emailValidator, passwordValidator, trimString } from "@app/lib/validators"
-import { nextStep, signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
+import { signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
 import { AxiosError } from "axios"
 import { combine, createStoreObject, sample } from "effector"
 
@@ -17,7 +17,8 @@ export const registerFx = signUpDomain.createEffect<
 
 registerFx.done.watch(payload => {
   loggedIn({ token: payload.result.token })
-  nextStep()
+  const history = require(`@/client`).history
+  history.navigate('/signup/2')
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({

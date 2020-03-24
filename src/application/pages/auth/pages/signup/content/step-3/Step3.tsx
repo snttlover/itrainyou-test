@@ -19,6 +19,7 @@ import {
 } from "@app/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@app/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@app/pages/auth/pages/signup/signup.model"
+import { useNavigate } from "@reach/router"
 import { useStore } from "effector-react"
 import { useEffect, useState } from "react"
 import * as React from "react"
@@ -154,6 +155,7 @@ export const Step3 = () => {
   const isFormValid = useStore($isStep3FormValid)
   const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
+  const navigate = useNavigate()
 
   const [days, setDays] = useState<{ label: string; value: number }[]>([])
 
@@ -227,7 +229,7 @@ export const Step3 = () => {
               <SelectInput placeholder='Мужской' value={values.sex} onChange={sexChanged} options={sexItems} />
             </FormItem>
           </FormGroup>
-          <NextButton disabled={!isFormValid} />
+          <NextButton onClick={() => navigate('/signup/4')} disabled={!isFormValid} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => toggleUploadModal()} />}
