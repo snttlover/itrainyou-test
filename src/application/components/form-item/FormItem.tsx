@@ -21,7 +21,7 @@ const Error = styled.div`
   line-height: 16px;
 `
 
-export const FormItemRequiredStar = styled.span`
+const FormItemRequiredStar = styled.span`
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

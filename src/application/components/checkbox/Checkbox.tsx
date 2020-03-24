@@ -60,7 +60,7 @@ const Content = styled.div`
 `
 
 type CheckboxProps = {
-  children: React.ReactNode | React.ReactNode[]
+  children?: React.ReactNode | React.ReactNode[]
   value: boolean
   className?: string
   onChange?: (checked: boolean) => void
