@@ -77,11 +77,14 @@ export const SelectInput = <T extends Value = Value>({
 }: SelectInputProps<T>) => {
   const [isOpen, changeOpen] = useState(false)
 
-  const dropdownItems = options.map(item => (
-    <DropdownItem key={item.value} onClick={() => onChange(item.value)}>
-      {item.label}
-    </DropdownItem>
-  ))
+  const dropdownItems = options.map(item => {
+    if (typeof item.value !== 'string' && typeof item.value !== 'number') throw new Error('value must be string or number')
+    return (
+      <DropdownItem key={item.value} onClick={() => onChange(item.value)}>
+        {item.label}
+      </DropdownItem>
+    )
+  })
 
   const selectedItem = options.find(item => item.value === value)
 
