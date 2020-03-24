@@ -35,7 +35,6 @@ type SearchProps = {
 
 export const Search = (props: SearchProps) => {
   const query = useStore($search)
-  const loading = useStore($searchLoading)
 
   const hints = useStore($hintsList)
   const [selectedHint, changeSelectedHint] = useState(-1)
@@ -75,8 +74,10 @@ export const Search = (props: SearchProps) => {
       <SearchInput
         className={props.className}
         value={query}
-        isLoading={loading}
         onChange={updateSearch}
+        onFocus={() => {
+          updateSearch(query)
+        }}
         placeholder='Поиск по коучам'
         onKeyDown={keydownHandler}
       >
