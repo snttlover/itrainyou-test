@@ -15,7 +15,7 @@ export const pageMounted = signUpDomain.createEvent()
 export const pageUnmount = signUpDomain.createEvent()
 
 export const nextStep = signUpDomain.createEvent()
-export const step3Finish = signUpDomain.createEvent()
+export const step3Finish = signUpDomain.createEvent<ClientData>()
 const setStep = signUpDomain.createEvent<number>()
 
 export const $currentStep = signUpDomain
@@ -37,10 +37,43 @@ $queryParams.watch(queryParamsChanged, params => {
 
 pageMounted.watch(() => {
   const searchParams = new URLSearchParams(location.search)
-  if (searchParams.has('step')) {
-    setStep(parseInt(searchParams.get('step') || '1'))
+  if (searchParams.has("step")) {
+    setStep(parseInt(searchParams.get("step") || "1"))
   }
-  if (searchParams.has('type')) {
-    changeUserType(searchParams.get('type') as RegisterUserType)
+  if (searchParams.has("type")) {
+    changeUserType(searchParams.get("type") as RegisterUserType)
   }
 })
+
+type ClientData = {
+  firstName: string
+  lastName: string
+  birthDate: string
+  sex: "M" | "F"
+  avatar: string
+  categories: number[]
+}
+
+type CouchData = {
+  workExperience: string
+  education: string
+  description: string
+  phone: string
+  videoInterview: string
+}
+
+type UserData =
+  | {
+      type: "client"
+      clientData?: ClientData
+    }
+  | {
+      type: "couch"
+      clientData?: ClientData
+      couchData?: CouchData
+    }
+
+const $userData = $registerUserType
+  .map<UserData>(type => ({ type }))
+  .on<ClientData>(step3Finish, (state, payload) => ({ type: state.type, clientData: payload }))
+
