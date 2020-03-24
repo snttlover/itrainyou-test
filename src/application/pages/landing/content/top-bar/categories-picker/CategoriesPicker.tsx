@@ -29,6 +29,8 @@ const Text = styled.div`
 `
 
 const Label = styled.div`
+  font-size: 16px;
+  line-height: 22px;
   position: relative;
   display: inline;
 `
@@ -41,6 +43,10 @@ const Counter = styled.div`
   font-size: 12px;
   line-height: 26px;
   font-weight: bold;
+`
+
+const StyledDropdown = styled(Dropdown)`
+  width: 156px;
 `
 
 type CategoriesPickerTypes = {
@@ -60,8 +66,8 @@ export const CategoriesPicker = (props: CategoriesPickerTypes) => {
     ))
 
   return (
-    <Dropdown className={props.className} renderTitle={titleRenderer}>
+    <StyledDropdown className={props.className} renderTitle={titleRenderer}>
       {renderCheckboxes()}
-    </Dropdown>
+    </StyledDropdown>
   )
 }
