@@ -4,6 +4,8 @@ import { changeMobileFiltersVisibility } from "./mobile-tabs.model"
 import { useStore, useStoreMap } from "effector-react"
 import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
 import { sortingItems } from "@app/pages/search/content/list/content/sorting/items"
+
+import sortingArrow from "./images/sorting-arrow.svg"
 import { CoachSortingType } from "@app/lib/api/coach"
 import { SortingContainer, SortingPicker } from "@app/pages/search/content/list/content/sorting/SortingPicker"
 
@@ -28,12 +30,20 @@ const Tab = styled.div`
   flex: 1;
 `
 
+const Arrow = styled.img.attrs({ src: sortingArrow })`
+  width: 16px;
+  height: 16px;
+`
+
 const StyledSortingPicker = styled(SortingPicker)`
   display: flex;
   flex: 1;
   ${SortingContainer} {
-    left: 14px;
-    top: -14px;
+    top: 100%;
+    left: 25px;
+  }
+  .opened ${Arrow} {
+    transform: rotate(-180deg);
   }
 `
 
@@ -53,7 +63,10 @@ export const MobileTabs = () => {
   return (
     <Container>
       <StyledSortingPicker current={current} sort={navigate}>
-        <Tab>Сортировка</Tab>
+        <Tab>
+          Сортировка
+          <Arrow />
+        </Tab>
       </StyledSortingPicker>
       <Tab onClick={() => changeMobileFiltersVisibility(true)}>Фильтры</Tab>
     </Container>

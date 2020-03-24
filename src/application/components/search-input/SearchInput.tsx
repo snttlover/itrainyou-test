@@ -37,6 +37,7 @@ type SearchInputTypes = {
 const StyledInput = styled(Input)`
   border: 1px solid #449bd9;
   padding: 8px 12px;
+  font-size: 16px;
   &:hover {
     border: 1px solid #424242;
   }

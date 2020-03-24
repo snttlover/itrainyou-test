@@ -9,7 +9,7 @@ export type CalendarDateType = Date | Date[]
 
 type CalendarTypes = {
   value: CalendarDateType
-  pinnedDates?: string[], // iso date strings
+  pinnedDates?: string[] // iso date strings
   onChange: (value: any) => void | Dispatch<SetStateAction<CalendarDateType>>
   selectRange?: boolean
 }
@@ -17,6 +17,7 @@ type CalendarTypes = {
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
 
 const CalendarWrapper = styled.div`
+  cursor: default;
   width: 196px;
   font-weight: 600;
   font-size: 12px;
@@ -31,7 +32,15 @@ const CalendarWrapper = styled.div`
   }
   .react-calendar__month-view__weekdays__weekday:nth-child(n + 6),
   .day--weekend {
-    color: red;
+    color: #d5584d;
+  }
+  .is-past {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+  }
+  .react-calendar__month-view__days__day:first-of-type {
+    margin-left: 70%;
   }
   .react-calendar__month-view__days__day {
     flex-basis: 28px;
@@ -51,15 +60,12 @@ const CalendarWrapper = styled.div`
     position: absolute;
     right: 4px;
     top: 4px;
-    content: '';
+    content: "";
     background: #544274;
     width: 4px;
     height: 4px;
     border-radius: 4px;
     z-index: 2;
-  }
-  .react-calendar__month-view__days__day--neighboringMonth {
-    color: #b3b3b3;
   }
   .react-calendar__tile--active {
     border-radius: 50%;
@@ -67,13 +73,19 @@ const CalendarWrapper = styled.div`
   }
 `
 
-const LeftButton = styled.img.attrs({ src: leftImage })`
+type LeftButtonTypes = {
+  disabled: boolean
+}
+
+const LeftButton = styled.img.attrs({ src: leftImage })<LeftButtonTypes>`
   width: 4.9px;
   height: 8.4px;
   cursor: pointer;
+  opacity: ${(props) => props.disabled ? 0.5 : 1};
+  pointer-events: ${(props) => props.disabled ? `none` : `auto`};
 `
 
-const RightButton = styled(LeftButton).attrs({ src: rightImage })`
+const RightButton = styled.img.attrs({ src: rightImage })`
   width: 4.9px;
   height: 8.4px;
   cursor: pointer;
@@ -125,6 +137,21 @@ export const Calendar = (props: CalendarTypes) => {
       classes.push(`pinned`)
     }
 
+    const day = date.getDay()
+    const isWeekend = day === 6 || day === 0
+    if (isWeekend) {
+      classes.push(`day--weekend`)
+    }
+
+    if (
+      date.valueOf() <
+      dayjs()
+        .subtract(1, `day`)
+        .valueOf()
+    ) {
+      classes.push(`is-past`)
+    }
+
     return classes
   }
 
@@ -148,11 +175,14 @@ export const Calendar = (props: CalendarTypes) => {
     )
   }
 
+  const formatter = `YYYYMM`
+  const lessThanTheCurrentMonth = +dayjs(startDate).format(formatter) <= +dayjs(new Date()).format(formatter)
+
   return (
     <CalendarWrapper>
       <Header>
         <MonthContainer>
-          <LeftButton onClick={prevMonth} />
+          <LeftButton disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
           <MonthName>{dayjs(startDate).format(`MMMM`)}</MonthName>
           <RightButton onClick={nextMonth} />
         </MonthContainer>

@@ -21,8 +21,8 @@ export const SortingContainer = styled.div`
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
   background: #fff;
   position: absolute;
-  left: -15px;
-  top: -20px;
+  left: 0;
+  top: calc(100% + 5px);
   border-radius: 4px;
   z-index: 2;
   overflow: hidden;
@@ -62,7 +62,9 @@ export const SortingPicker = (props: PickerTypes) => {
   return (
     <ClickOutside onClickOutside={() => changeVisibility(false)}>
       <StyledPicker className={props.className}>
-        <PickerContainer onClick={() => changeVisibility(true)}>{props.children}</PickerContainer>
+        <PickerContainer className={isVisible ? `opened` : ``} onClick={() => changeVisibility(true)}>
+          {props.children}
+        </PickerContainer>
         {isVisible && (
           <SortingContainer>
             {sortingItems.map(item => (
