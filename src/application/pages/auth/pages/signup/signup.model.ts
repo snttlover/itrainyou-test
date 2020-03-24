@@ -1,49 +1,7 @@
-import { serializeQuery } from "@app/lib/formatting/serialize-query"
 import { appDomain } from "@app/store"
-import { navigate } from "@reach/router"
-import { createStoreObject, merge } from "effector"
+import { merge } from "effector"
 
-export const signUpDomain = appDomain.createDomain("sign-up-domain")
-
-export type RegisterUserType = "client" | "couch"
-export const changeUserType = signUpDomain.createEvent<RegisterUserType>()
-export const $registerUserType = signUpDomain
-  .createStore<RegisterUserType>("client")
-  .on(changeUserType, (_, payload) => payload)
-
-export const pageMounted = signUpDomain.createEvent()
-export const pageUnmount = signUpDomain.createEvent()
-
-export const nextStep = signUpDomain.createEvent()
-export const step3Finish = signUpDomain.createEvent<ClientData>()
-const setStep = signUpDomain.createEvent<number>()
-
-export const $currentStep = signUpDomain
-  .createStore(1)
-  .on(nextStep, state => state + 1)
-  .on(step3Finish, state => state + 1)
-  .on(setStep, (_, payload) => payload)
-
-const $queryParams = createStoreObject({
-  step: $currentStep,
-  type: $registerUserType
-})
-
-const queryParamsChanged = merge([nextStep, changeUserType])
-
-$queryParams.watch(queryParamsChanged, params => {
-  navigate(`${location.pathname}?${serializeQuery(params)}`)
-})
-
-pageMounted.watch(() => {
-  const searchParams = new URLSearchParams(location.search)
-  if (searchParams.has("step")) {
-    setStep(parseInt(searchParams.get("step") || "1"))
-  }
-  if (searchParams.has("type")) {
-    changeUserType(searchParams.get("type") as RegisterUserType)
-  }
-})
+export const REGISTER_SAVE_KEY = "__register-data__"
 
 type ClientData = {
   firstName: string
@@ -51,7 +9,6 @@ type ClientData = {
   birthDate: string
   sex: "M" | "F"
   avatar: string
-  categories: number[]
 }
 
 type CouchData = {
@@ -66,14 +23,49 @@ type UserData =
   | {
       type: "client"
       clientData?: ClientData
+      categories?: number[]
     }
   | {
       type: "couch"
       clientData?: ClientData
+      categories?: number[]
       couchData?: CouchData
     }
 
-const $userData = $registerUserType
-  .map<UserData>(type => ({ type }))
-  .on<ClientData>(step3Finish, (state, payload) => ({ type: state.type, clientData: payload }))
+export type RegisterUserType = "client" | "couch"
 
+export const signUpDomain = appDomain.createDomain("sign-up-domain")
+
+export const pageMounted = signUpDomain.createEvent()
+
+export const userTypeChanged = signUpDomain.createEvent<RegisterUserType>()
+export const userDataChanged = signUpDomain.createEvent<UserData>()
+export const clientDataChanged = signUpDomain.createEvent<ClientData>()
+export const categoriesChanged = signUpDomain.createEvent<number[]>()
+export const couchDataChanged = signUpDomain.createEvent<CouchData>()
+
+export const $userData = signUpDomain
+  .createStore<UserData>({ type: "client" })
+  .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
+  .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
+  .on(couchDataChanged, (state, payload) => ({ ...state, couchData: payload }))
+  .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
+  .on(userDataChanged, (_, payload) => payload)
+
+const watchedEvents = merge([userTypeChanged, clientDataChanged, couchDataChanged, categoriesChanged])
+
+$userData.watch(watchedEvents, userData => {
+  try {
+    const data = JSON.stringify(userData)
+    localStorage.setItem(REGISTER_SAVE_KEY, data)
+  } catch (e) {}
+})
+
+pageMounted.watch(() => {
+  try {
+    const data = localStorage.getItem(REGISTER_SAVE_KEY)
+    if (!data) return
+    const userData = JSON.parse(data)
+    userDataChanged(userData)
+  } catch (e) {}
+})

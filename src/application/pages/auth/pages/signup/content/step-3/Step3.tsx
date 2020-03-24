@@ -12,10 +12,13 @@ import {
   birthdayChanged,
   nameChanged,
   lastNameChanged,
-  sexChanged, $isUploadModelOpen, toggleUploadModal
+  sexChanged,
+  $isUploadModelOpen,
+  toggleUploadModal,
+  step3Mounted
 } from "@app/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@app/pages/auth/pages/signup/content/step-3/UploadModal"
-import { $registerUserType } from "@app/pages/auth/pages/signup/signup.model"
+import { $userData } from "@app/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react"
 import { useEffect, useState } from "react"
 import * as React from "react"
@@ -81,12 +84,12 @@ const Description = styled.p`
   `}
 `
 
-const UploadImage = styled.img<{withAvatar: boolean}>`
-  width: ${({withAvatar}) => withAvatar ? '60px' : '67px'};
+const UploadImage = styled.img<{ withAvatar: boolean }>`
+  width: ${({ withAvatar }) => (withAvatar ? "60px" : "67px")};
   height: 60px;
   margin-bottom: 16px;
   cursor: pointer;
-  border-radius: ${({withAvatar}) => withAvatar ? '30px' : '0'};
+  border-radius: ${({ withAvatar }) => (withAvatar ? "30px" : "0")};
 `
 
 const FormGroup = styled.div`
@@ -112,7 +115,7 @@ const Form = styled.form`
   flex-direction: column;
 `
 
-const sexItems = [
+const sexItems: { label: string; value: "M" | "F" }[] = [
   {
     label: "Мужской",
     value: "M"
@@ -149,7 +152,7 @@ export const Step3 = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
   const isFormValid = useStore($isStep3FormValid)
-  const userType = useStore($registerUserType)
+  const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
 
   const [days, setDays] = useState<{ label: string; value: number }[]>([])
@@ -158,6 +161,7 @@ export const Step3 = () => {
     const date2 = values.birthday.add(1, "month")
     const daysCount = date2.diff(values.birthday, "day")
     setDays(Array.from({ length: daysCount }, (v, k) => k + 1).map(day => ({ label: `${day}`, value: day })))
+    step3Mounted()
   }, [])
 
   const changeYear = (year: number) => {
@@ -191,7 +195,11 @@ export const Step3 = () => {
         <Title>Добавьте информацию о себе</Title>
         <Description>{userType === "couch" && "Коучу надо заполнить все поля"}</Description>
         <Form onSubmit={handleSubmit}>
-          <UploadImage src={values.image.file || uploadImage} onClick={_ => toggleUploadModal()} withAvatar={!!values.image.file}/>
+          <UploadImage
+            src={values.image.file || uploadImage}
+            onClick={_ => toggleUploadModal()}
+            withAvatar={!!values.image.file}
+          />
           <FormItem label='Имя' error={errors.name} required>
             <Input value={values.name} onChange={nameChanged} />
           </FormItem>

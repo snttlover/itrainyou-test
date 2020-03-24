@@ -3,7 +3,8 @@ import { MediaRange } from "@app/lib/responsive/media"
 import { NextButton } from "@app/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
 import { UserTypeCard } from "@app/pages/auth/pages/signup/content/step-2/UserTypeCard"
-import { $registerUserType, changeUserType, nextStep } from "@app/pages/auth/pages/signup/signup.model"
+import { userTypeChanged, $userData } from "@app/pages/auth/pages/signup/signup.model"
+import { useNavigate } from "@reach/router"
 import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
@@ -109,7 +110,8 @@ const couchDescriptions = [
 ]
 
 export const Step2 = () => {
-  const type = useStore($registerUserType)
+  const type = useStore($userData).type
+  const navigate = useNavigate()
   return (
     <AuthLayout>
       <StyledSteps activeId='2'>
@@ -125,16 +127,16 @@ export const Step2 = () => {
             title='Клиентом'
             descriptions={clientDescriptions}
             selected={type === "client"}
-            onClick={() => changeUserType("client")}
+            onClick={() => userTypeChanged("client")}
           />
           <UserTypeCard
             title='Коучем'
             descriptions={couchDescriptions}
             selected={type === "couch"}
-            onClick={() => changeUserType("couch")}
+            onClick={() => userTypeChanged("couch")}
           />
         </Cards>
-        <NextButton onClick={() => nextStep()} />
+        <NextButton onClick={() => navigate('/signup/3')} />
       </Container>
     </AuthLayout>
   )

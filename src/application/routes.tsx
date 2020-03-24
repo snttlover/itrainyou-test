@@ -1,5 +1,5 @@
 import { SignUpPage } from "@app/pages/auth/pages/signup/SignUpPage"
-import { RouteComponentProps } from "@reach/router"
+import { Redirect, RouteComponentProps, useMatch } from "@reach/router"
 import { Scope } from "effector/fork"
 import * as React from "react"
 import { NotFoundPage } from "./pages/not-found/NotFoundPage"
@@ -62,9 +62,18 @@ export const routes: Route[] = [
   },
   {
     name: "sign-up",
-    component: SignUpPage,
-    ssr: false,
-    url: "/signup"
+    component: ({ children }) => {
+      const isMatched = useMatch("/signup/:step")
+      return isMatched ? children : <Redirect to='/signup/1' replace />
+    },
+    url: "/signup",
+    children: [
+      {
+        name: "step",
+        component: SignUpPage,
+        url: "/:step"
+      }
+    ]
   },
   {
     name: "search",
