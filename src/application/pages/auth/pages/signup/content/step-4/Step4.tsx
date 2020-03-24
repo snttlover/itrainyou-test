@@ -1,6 +1,7 @@
+import { Step4Couch } from "@app/pages/auth/pages/signup/content/step-4/Step4Couch"
 import { $userData } from "@app/pages/auth/pages/signup/signup.model"
 import { Step4Client } from "./Step4Client"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import * as React from "react"
 
 function throwCompileTimeError(x: never): never {
@@ -8,15 +9,15 @@ function throwCompileTimeError(x: never): never {
 }
 
 export const Step4 = () => {
-  const registerUserType = useStore($userData).type
+  const userData = useStore($userData)
 
-  switch (registerUserType) {
+  switch (userData.type) {
     case 'client':
       return <Step4Client />
     case 'couch':
-      return <div>Couch</div>
+      return <Step4Couch />
     default:
-      return throwCompileTimeError(registerUserType)
+      return throwCompileTimeError(userData)
   }
 }
 
