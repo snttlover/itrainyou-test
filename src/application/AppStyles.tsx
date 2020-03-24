@@ -17,10 +17,6 @@ export const AppStyles = createGlobalStyle`
 
   a {
     text-decoration: none;
-    
-    &:visited {
-      color: inherit;
-    }
   }
   
   button, a {  
