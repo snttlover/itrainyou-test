@@ -23,7 +23,7 @@ export const uploadImageFx = signUpDomain.createEffect({
 export const $uploadPercent = signUpDomain
   .createStore(0)
   .on(uploadPercentChanged, (state, payload) => payload)
-  .on(uploadImageFx.finally, () => 0)
+  .reset(uploadImageFx.finally)
 
 forward({
   from: uploadImage,

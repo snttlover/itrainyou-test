@@ -11,7 +11,7 @@ import {
   educationChanged,
   workExperienceChanged,
   descriptionChanged,
-  phoneChanged
+  phoneChanged, videoUploadFx, $videoUploadProgress, videoUploaded
 } from "@app/pages/auth/pages/signup/content/step-4/step-4-couch.model"
 import {
   $userData,
@@ -20,13 +20,17 @@ import {
   userRegistered
 } from "@app/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react"
+import { useCallback } from "react"
 import * as React from "react"
+import { useDropzone } from "react-dropzone"
 import styled from "styled-components"
+import { ProgressBar } from "@/application/components/progress-bar/ProgressBar"
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin: 32px 0 0;
+  outline: none;
   ${MediaRange.greaterThan("mobile")`
     margin: 44px 0 0;
   `}
@@ -192,11 +196,19 @@ const VideoUploader = styled.div`
   height: 172px;
   width: 288px;
   margin: 24px auto 0;
+  position: relative;
+  padding: 12px;
+  cursor: pointer;
 
   ${MediaRange.greaterThan("mobile")`
     width: 400px;
     height: 240px;
   `}
+`
+
+const Video = styled.video`
+  max-width: 100%;
+  max-height: 100%;
 `
 
 const SendRequestButton = styled(Button)`
@@ -210,6 +222,8 @@ export const CouchInformation = ({}: CouchInformation) => {
   const selectedCategories = useStore($userData).categories
   const values = useStore($step4Form)
   const loading = useStore(registerUserFx.pending)
+  const isVideoUploading = useStore(videoUploadFx.pending)
+  const videoUploadProgress = useStore($videoUploadProgress)
 
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
@@ -219,8 +233,19 @@ export const CouchInformation = ({}: CouchInformation) => {
       onSelect={id => toggleCategorySelection(id)}
     />
   ))
+
+  const onDropAccepted = useCallback(acceptedFiles => {
+    videoUploaded(acceptedFiles[0])
+  }, [])
+
+  const { getRootProps, getInputProps, open } = useDropzone({
+    onDropAccepted,
+    multiple: false,
+    noClick: true,
+    accept: ["video/mp4"]
+  })
   return (
-    <Container>
+    <Container {...getRootProps()}>
       <CategoriesContainer>
         <CategoriesTitle>Выберите направления, в которых вы проводите сессии:</CategoriesTitle>
         {categories}
@@ -256,8 +281,13 @@ export const CouchInformation = ({}: CouchInformation) => {
             приняли решение работать с Вами.
           </Question>
         </InterviewQuestions>
-        <VideoUploader>Добавить видео</VideoUploader>
-        <SendRequestButton disabled={loading} onClick={() => userRegistered()}>
+        <VideoUploader onClick={open}>
+          {!values.videoInterview && isVideoUploading && <ProgressBar percent={videoUploadProgress} />}
+          {values.videoInterview && !isVideoUploading && <Video src={values.videoInterview} />}
+          {!values.videoInterview && !isVideoUploading && 'Добавить видео'}
+        </VideoUploader>
+        <input {...getInputProps()}/>
+        <SendRequestButton disabled={loading || isVideoUploading} onClick={() => userRegistered()}>
           Отправить заявку
         </SendRequestButton>
       </InterviewContainer>

@@ -1,7 +1,8 @@
+import { uploadMedia } from "@app/lib/api/media"
 import { createEffectorField } from "@app/lib/generators/efffector"
 import { trimString } from "@app/lib/validators"
 import { couchDataChanged, REGISTER_SAVE_KEY, signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
-import { combine, createStoreObject } from "effector"
+import { combine, createStoreObject, forward } from "effector"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   domain: signUpDomain,
@@ -32,8 +33,27 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
   eventMapper: event => event.map(trimString)
 })
 
+export const videoUploadProgressChanged = signUpDomain.createEvent<number>()
+
+export const videoUploadFx = signUpDomain.createEffect({
+  handler(file: File) {
+    return uploadMedia({ file, type: "OTHER" }, (pe: ProgressEvent) => {
+      videoUploadProgressChanged(Math.round((pe.loaded * 100) / pe.total))
+    })
+  }
+})
+
+export const $videoUploadProgress = signUpDomain
+  .createStore(0)
+  .on(videoUploadProgressChanged, (state, payload) => payload)
+  .reset(videoUploadFx.finally)
+
 export const videoInterviewChanged = signUpDomain.createEvent<string>()
-export const $videoInterview = signUpDomain.createStore("").on(videoInterviewChanged, (state, payload) => payload)
+export const $videoInterview = signUpDomain
+  .createStore("")
+  .on(videoInterviewChanged, (state, payload) => payload)
+  .on(videoUploadFx.doneData, (state, payload) => payload.file)
+  .reset(videoUploadFx)
 
 export const $step4Form = createStoreObject({
   education: $education,
@@ -80,3 +100,10 @@ export const $step4FormValid = combine(
   $isPhoneCorrect,
   (...args) => args.every(val => val)
 )
+
+export const videoUploaded = signUpDomain.createEvent<File>()
+
+forward({
+  from: videoUploaded,
+  to: videoUploadFx
+})
