@@ -15,7 +15,7 @@ const initialState = window.__initialState__
 
 const clientScope = fork(appDomain)
 // @ts-ignore
-const history = createHistory(window)
+export const history = createHistory(window)
 
 let render = ReactDOM.render
 

@@ -1,7 +1,7 @@
 import { Coach, getCoaches, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { appDomain } from "@/application/store"
-import { forward } from "effector"
-import { navigate } from "@reach/router"
+import { forward, merge } from "effector"
+import { $isServer } from "@/application/store"
 import { serializeQuery } from "@app/lib/formatting/serialize-query"
 
 // coaches
@@ -15,22 +15,26 @@ export const $searchPageQuery = appDomain
   .createStore<GetCoachesParamsTypes>({})
   .on(setSearchPageQuery, (_, query) => query)
   .on(addSearchPageQuery, (state, query: GetCoachesParamsTypes) => {
-    const next = {
+    return {
       ...state,
       ...query
     }
-    navigate(`/search?${serializeQuery(next)}`)
-    fetchCoachesListFx(next)
-    return next
   })
   .on(removeSearchPageQuery, (state, keys) => {
     keys.forEach(key => {
       delete state[key]
     })
-    navigate(`/search?${serializeQuery(state)}`)
-    fetchCoachesListFx(state)
     return { ...state }
   })
+
+const watchedEvents = merge([addSearchPageQuery, removeSearchPageQuery])
+
+$searchPageQuery.watch(watchedEvents, query => {
+  if ($isServer.getState()) {
+    const history = require(`@/client`).history
+    history.navigate(`/search?${serializeQuery(query)}`, { replace: true }).then(() => fetchCoachesListFx(query))
+  }
+})
 
 export const fetchCoachesListFx = searchPageDomain
   .createEffect<GetCoachesParamsTypes, Coach[]>()
