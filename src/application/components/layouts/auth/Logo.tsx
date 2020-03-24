@@ -1,8 +1,10 @@
+import * as React from "react"
 import { MediaRange } from "@app/lib/responsive/media"
 import styled from "styled-components"
 import logo from "./images/logo.svg"
+import {Link} from "@reach/router"
 
-export const Logo = styled.img.attrs({ src: logo })`
+const LogoLink = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,3 +26,14 @@ export const Logo = styled.img.attrs({ src: logo })`
     top: 36px;
   `}
 `
+
+const StyledLogo = styled.img.attrs({ src: logo })`
+width: 100%;
+height: 100%;
+`
+
+export const Logo = () => (
+  <LogoLink to='/'>
+    <StyledLogo />
+  </LogoLink>
+)

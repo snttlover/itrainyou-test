@@ -55,8 +55,8 @@ const Arrow = styled.img.attrs({ src: arrowImage })`
 
 export const DateFilter = () => {
   const q = $searchPageQuery.getState()
-  const start = q.nearest_session_date__lte ? dayjs(q.nearest_session_date__lte).valueOf() : null
-  const end = q.nearest_session_date__gte ? dayjs(q.nearest_session_date__gte).valueOf() : null
+  let start = q.nearest_session_date__lte ? dayjs(q.nearest_session_date__lte).valueOf() : null
+  let end = q.nearest_session_date__gte ? dayjs(q.nearest_session_date__gte).valueOf() : null
 
   const getRangeType = () => {
     if (!!start && !!end) {
@@ -157,10 +157,11 @@ export const DateFilter = () => {
     changeCalendarVisibility(!calendarVisibility)
     if (!calendarVisibility) {
       changeRangeType(`from`)
-      navigateWithDate(new Date())
     } else {
       removeSearchPageQuery(["nearest_session_date__gte", "nearest_session_date__lte"])
     }
+    start = null
+    end = null
   }
 
   const selectDateText = () => {

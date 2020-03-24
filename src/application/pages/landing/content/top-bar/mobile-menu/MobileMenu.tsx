@@ -3,6 +3,7 @@ import styled from "styled-components"
 import burgerImage from "./images/burger.svg"
 import { Header } from "./content/Header"
 import { Profile } from "./content/Profile"
+import { MobileRegistrationBlock } from "@app/pages/landing/content/top-bar/mobile-menu/content/MobileRegistrationBlock"
 import { MenuItems } from "./content/menu-items/MenuItems"
 import { useState } from "react"
 
@@ -48,11 +49,10 @@ export const MobileMenu = () => {
   const Menu = (
     <Container>
       <Header close={() => changeMenuVisibility(false)} />
-      <Profile />
+      <MobileRegistrationBlock />
+      {/*<Profile />*/}
       <MenuItems />
-      <StartCoach onClick={() => changeMenuVisibility(false)}>
-        Стать коучем
-      </StartCoach>
+      <StartCoach onClick={() => changeMenuVisibility(false)}>Стать коучем</StartCoach>
     </Container>
   )
 

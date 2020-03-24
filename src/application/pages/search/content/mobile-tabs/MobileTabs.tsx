@@ -40,13 +40,13 @@ const StyledSortingPicker = styled(SortingPicker)`
 export const MobileTabs = () => {
   const current = useStoreMap({
     store: $searchPageQuery,
-    keys: [`sorting`],
-    fn: values => values.sorting || `popularity`
+    keys: [`ordering`],
+    fn: values => values.ordering || `popularity`
   })
 
   const navigate = (sort: CoachSortingType) => {
     addSearchPageQuery({
-      sorting: sort
+      ordering: sort
     })
   }
 

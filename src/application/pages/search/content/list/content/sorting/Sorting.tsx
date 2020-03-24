@@ -47,15 +47,15 @@ export const Sorting = () => {
   const list = useStore($coachesList)
   const current = useStoreMap({
     store: $searchPageQuery,
-    keys: [`sorting`],
-    fn: values => values.sorting || `popularity`
+    keys: [`ordering`],
+    fn: values => values.ordering || `popularity`
   })
 
   const currentItem = sortingItems.find(item => item.value === current)
 
   const navigate = (sort: CoachSortingType) => {
     addSearchPageQuery({
-      sorting: sort
+      ordering: sort
     })
   }
 
