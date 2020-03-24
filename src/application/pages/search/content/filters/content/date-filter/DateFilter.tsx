@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { RadioGroup, RadioOption } from "@app/components/radio/Radio"
 import { useState } from "react"
 import { Calendar, CalendarDateType } from "@app/components/calendar/Calendar"
-import { useStoreMap } from "effector-react"
+import { useStore } from "effector-react"
 import arrowImage from "./images/arrow.svg"
 import {
   $searchPageQuery,
@@ -54,7 +54,7 @@ const Arrow = styled.img.attrs({ src: arrowImage })`
 `
 
 export const DateFilter = () => {
-  const q = $searchPageQuery.getState()
+  const q = useStore($searchPageQuery)
   let start = q.nearest_session_date__lte ? dayjs(q.nearest_session_date__lte).valueOf() : null
   let end = q.nearest_session_date__gte ? dayjs(q.nearest_session_date__gte).valueOf() : null
 

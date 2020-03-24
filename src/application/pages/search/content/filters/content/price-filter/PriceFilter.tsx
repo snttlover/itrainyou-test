@@ -2,10 +2,9 @@ import { RangeSlider } from "@app/components/slider/RangeSlider"
 import { formatCurrency } from "@app/lib/formatting/currency"
 import * as React from "react"
 import styled from "styled-components"
-import { useStore, useStoreMap } from "effector-react"
-import { $searchPageQuery, DelayedNavigation } from "@app/pages/search/coaches-search.model"
+import { useStore } from "effector-react"
+import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
 import { $maxPrice } from "@app/pages/search/content/filters/content/price-filter/price-filter.model"
-import { useState } from "react"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -39,50 +38,29 @@ const RangeNumbers = styled.div`
 
 const RangeNumber = styled.div``
 
-const delayedNavigation = new DelayedNavigation()
-
 export const PriceFilter = () => {
   const maxPrice = useStore($maxPrice)
+  const params = useStore($searchPageQuery)
 
-  const [min, max] = [0, maxPrice]
+  const start = params.price__gte ? +params.price__gte : 0
+  const end = params.price__lte ? +params.price__lte : 0
 
-  const start = useStoreMap({
-    store: $searchPageQuery,
-    keys: [`price__gte`],
-    fn: values => (values.price__gte ? +values.price__gte : 0)
-  })
-
-  const end = useStoreMap({
-    store: $searchPageQuery,
-    keys: [`price__lte`],
-    fn: values => (values.price__lte ? +values.price__lte : maxPrice)
-  })
-
-  const [startValue, changeStartValue] = useState(start)
-  const [endValue, changeEndValue] = useState(end)
-
-  const change = (value: [number, number]) => {
-    changeStartValue(value[0])
-    changeEndValue(value[1])
-    delayedNavigation.navigate(
-      {
-        price__gte: value[0],
-        price__lte: value[1]
-      },
-      500
-    )
-  }
+  const change = (value: [number, number]) =>
+    addSearchPageQuery({
+      price__gte: value[0],
+      price__lte: value[1]
+    })
 
   return (
     <Container>
       <Header>Цена</Header>
       <Text>
-        от <Bold>{formatCurrency(startValue)}</Bold> до <Bold>{formatCurrency(endValue)}</Bold> руб.
+        от <Bold>{formatCurrency(start)}</Bold> до <Bold>{formatCurrency(end)}</Bold> руб.
       </Text>
-      <RangeSlider value={[startValue, endValue]} min={min} max={max} onChange={change} />
+      <RangeSlider value={[start, end]} min={0} max={maxPrice} onChange={change} />
       <RangeNumbers>
-        <RangeNumber>{formatCurrency(min)} руб.</RangeNumber>
-        <RangeNumber>{formatCurrency(max)} руб.</RangeNumber>
+        <RangeNumber>{formatCurrency(0)} руб.</RangeNumber>
+        <RangeNumber>{formatCurrency(maxPrice)} руб.</RangeNumber>
       </RangeNumbers>
     </Container>
   )

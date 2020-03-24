@@ -1,5 +1,6 @@
 import { Coach, getCoaches, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { appDomain } from "@/application/store"
+import { debounce } from "@app/lib/helpers/debounce"
 import { forward, merge } from "effector"
 import { $isServer } from "@/application/store"
 import { serializeQuery } from "@app/lib/formatting/serialize-query"
@@ -14,7 +15,7 @@ export const removeSearchPageQuery = appDomain.createEvent<(keyof GetCoachesPara
 export const $searchPageQuery = appDomain
   .createStore<GetCoachesParamsTypes>({})
   .on(setSearchPageQuery, (_, query) => query)
-  .on(addSearchPageQuery, (state, query: GetCoachesParamsTypes) => {
+  .on(addSearchPageQuery, (state, query) => {
     return {
       ...state,
       ...query
@@ -29,12 +30,15 @@ export const $searchPageQuery = appDomain
 
 const watchedEvents = merge([addSearchPageQuery, removeSearchPageQuery])
 
-$searchPageQuery.watch(watchedEvents, query => {
-  if ($isServer.getState()) {
-    const history = require(`@/client`).history
-    history.navigate(`/search?${serializeQuery(query)}`, { replace: true }).then(() => fetchCoachesListFx(query))
-  }
-})
+$searchPageQuery.watch(
+  watchedEvents,
+  debounce((query: GetCoachesParamsTypes) => {
+    if ($isServer.getState()) {
+      const history = require(`@/client`).history
+      history.navigate(`/search?${serializeQuery(query)}`, { replace: true }).then(() => fetchCoachesListFx(query))
+    }
+  }, 300)
+)
 
 export const fetchCoachesListFx = searchPageDomain
   .createEffect<GetCoachesParamsTypes, Coach[]>()
@@ -56,11 +60,3 @@ forward({
   from: loadCoaches,
   to: fetchCoachesListFx
 })
-
-export class DelayedNavigation {
-  private interval: any
-  navigate(params: GetCoachesParamsTypes, interval: number) {
-    clearInterval(this.interval)
-    this.interval = setTimeout(() => addSearchPageQuery(params), interval)
-  }
-}
