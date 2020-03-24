@@ -30,7 +30,7 @@ const Container = styled.div`
   }
   
   ${MediaRange.greaterThan("mobile")`
-    margin: 168px auto 0;
+    margin: 71px auto 0;
     ${UserTypeCard} {
       margin-top: 0;
       margin-left: 12px;
