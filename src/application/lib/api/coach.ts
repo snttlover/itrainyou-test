@@ -48,7 +48,7 @@ export interface GetCoachesParamsTypes {
   search?: string
   nearest_session_date__gte?: string // YYYY-MM-DD
   nearest_session_date__lte?: string
-  sorting?: CoachSortingType
+  ordering?: CoachSortingType
 }
 
 export const getCoaches = (params: GetCoachesParamsTypes) =>
