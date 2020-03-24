@@ -108,14 +108,14 @@ export const DateFilter = () => {
     if (date && [`from`, `range`].includes(rangeType)) {
       // @ts-ignore
       const currentDate: Date = date.length ? date[0] : date
-      return `c ${dayjs(currentDate).format(`DD MMM`)}`
+      return `c ${dayjs(currentDate).format(`D MMM`)}`
     }
   }
   const endText = () => {
     if (date && [`to`, `range`].includes(rangeType)) {
       // @ts-ignore
       const currentDate: Date = date.length ? date[1] : date
-      return `до ${dayjs(currentDate).format(`DD MMM`)}`
+      return `до ${dayjs(currentDate).format(`D MMM`)}`
     }
   }
 
