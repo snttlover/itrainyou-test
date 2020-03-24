@@ -4,8 +4,6 @@ import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
 import * as React from "react"
 import styled from "styled-components"
 
-const Container = styled.div``
-
 const HeaderContent = styled.div`
   margin-top: 71px;
   display: flex;
@@ -77,7 +75,7 @@ const FullName = styled.p`
 const Year = styled.span`
   font-weight: normal;
   margin-left: 8px;
-  
+
   ${MediaRange.greaterThan("mobile")`    
     font-size: 20px;
     line-height: 26px;
@@ -89,8 +87,8 @@ const Sex = styled.span`
   font-size: 14px;
   line-height: 18px;
   color: #424242;
-  
-  ${MediaRange.greaterThan("mobile")`    
+
+  ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
   `}
@@ -131,7 +129,7 @@ const Hint = styled.p`
   ${MediaRange.greaterThan("mobile")`
     width: 160px;    
     margin: 24px 0 0 auto;
-  `} 
+  `}
 
   ${MediaRange.greaterThan("laptop")`
     width: 250px;    
@@ -141,23 +139,19 @@ const Hint = styled.p`
 
 type CouchHeaderProps = { avatar: string; fullName: string; years: number; sex: string }
 
-export const CouchHeader = ({ avatar, fullName, sex, years }: CouchHeaderProps) => {
-  return (
-    <Container>
-      <HeaderContent>
-        <Title>Заполните полную информацию о себе</Title>
-        <Avatar src={avatar} />
-        <UserData>
-          <FullName>
-            {fullName} <Year>{years} лет</Year>
-          </FullName>
-          <Sex>Пол: {sex}</Sex>
-        </UserData>
-        <ButtonContainer>
-          <SkipButton>Пропустить</SkipButton>
-          <Hint>*Вы сможете потом заполнить информацию</Hint>
-        </ButtonContainer>
-      </HeaderContent>
-    </Container>
-  )
-}
+export const CouchHeader = ({ avatar, fullName, sex, years }: CouchHeaderProps) => (
+  <HeaderContent>
+    <Title>Заполните полную информацию о себе</Title>
+    <Avatar src={avatar} />
+    <UserData>
+      <FullName>
+        {fullName} <Year>{years} лет</Year>
+      </FullName>
+      <Sex>Пол: {sex}</Sex>
+    </UserData>
+    <ButtonContainer>
+      <SkipButton>Пропустить</SkipButton>
+      <Hint>*Вы сможете потом заполнить информацию</Hint>
+    </ButtonContainer>
+  </HeaderContent>
+)

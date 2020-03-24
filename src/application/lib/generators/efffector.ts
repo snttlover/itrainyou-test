@@ -3,14 +3,14 @@ import { Domain, Event, Store } from "effector"
 type Options<T> = {
   domain: Domain
   defaultValue: T
-  validator: (value: T) => string | null
+  validator?: (value: T) => string | null
   eventMapper?: (event: Event<T>) => Event<T>
 }
 
 export const createEffectorField = <T>({
   domain,
   defaultValue,
-  validator,
+  validator = value => null,
   eventMapper = event => event
 }: Options<T>): [Store<T>, Event<T>, Store<string | null>, Store<boolean>] => {
   const changeEvent = domain.createEvent<T>()

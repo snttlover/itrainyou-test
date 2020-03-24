@@ -1,13 +1,16 @@
 import { Button } from "@app/components/button/normal/Button"
-import { AuthLayout } from "@app/components/layouts/auth/AuthLayout"
-import { $categoriesList, loadCategories } from "@app/lib/categories/categories.store"
+import { $categoriesList } from "@app/lib/categories/categories.store"
 import { MediaRange } from "@app/lib/responsive/media"
 import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
 import { Step4ClientLayout } from "@app/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"
-import { $userData, toggleCategorySelection, userRegistered } from "@app/pages/auth/pages/signup/signup.model"
+import {
+  $userData,
+  registerUserFx,
+  toggleCategorySelection,
+  userRegistered
+} from "@app/pages/auth/pages/signup/signup.model"
 import { CategoryCard } from "./client/CategoryCard"
-import { useList, useStore } from "effector-react"
-import { useEffect } from "react"
+import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -59,9 +62,8 @@ const RegisterButton = styled(Button)`
 `
 
 export const Step4Client = () => {
-  useEffect(() => loadCategories(), [])
-
   const selectedCategories = useStore($userData).categories
+  const loading = useStore(registerUserFx.pending)
 
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
@@ -84,7 +86,7 @@ export const Step4Client = () => {
         <Title>Выберите направления, в которых вы хотели бы развиваться</Title>
         <Description>Потом вы сможете изменить интересы в своем профиле</Description>
         {categories}
-        <RegisterButton onClick={() => userRegistered()}>Зарегистрироваться</RegisterButton>
+        <RegisterButton disabled={loading} onClick={() => userRegistered()}>Зарегистрироваться</RegisterButton>
       </Container>
     </Step4ClientLayout>
   )

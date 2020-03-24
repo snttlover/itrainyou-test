@@ -2,10 +2,23 @@ import { DashedButton } from "@app/components/button/dashed/DashedButton"
 import { Button } from "@app/components/button/normal/Button"
 import { FormItem } from "@app/components/form-item/FormItem"
 import { Input } from "@app/components/input/Input"
+import { Textarea } from "@app/components/textarea/Textarea"
 import { $categoriesList } from "@app/lib/categories/categories.store"
 import { MediaRange } from "@app/lib/responsive/media"
 import { CategoryCard } from "@app/pages/auth/pages/signup/content/step-4/couch/CategoryCard"
-import { $userData, toggleCategorySelection } from "@app/pages/auth/pages/signup/signup.model"
+import {
+  $step4Form,
+  educationChanged,
+  workExperienceChanged,
+  descriptionChanged,
+  phoneChanged
+} from "@app/pages/auth/pages/signup/content/step-4/step-4-couch.model"
+import {
+  $userData,
+  registerUserFx,
+  toggleCategorySelection,
+  userRegistered
+} from "@app/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
@@ -21,11 +34,11 @@ const Container = styled.div`
 
 const CategoriesContainer = styled.div`
   margin: 0 8px;
-  
+
   ${CategoryCard} {
     margin-top: 16px;
   }
-  
+
   ${MediaRange.greaterThan("mobile")`
     ${CategoryCard} {
       margin-top: 24px;
@@ -34,12 +47,13 @@ const CategoriesContainer = styled.div`
         margin-top: 28px;
       }
     }
-  `}
-  
+  `};
+  //
   ${MediaRange.greaterThan("tablet")`
     width: 610px;
     margin: 0 auto;
-  `}
+  `};
+  //
 `
 
 const CategoriesTitle = styled.h3`
@@ -63,7 +77,7 @@ const InformationContainer = styled.div`
   ${MediaRange.greaterThan("mobile")`
     margin: 102px 16px 0;
   `}
-  
+
   ${MediaRange.greaterThan("tablet")`
     width: 610px;
     margin: 102px auto 0;
@@ -93,11 +107,12 @@ const AddPhotosButton = styled(DashedButton)`
 
 const InterviewContainer = styled.div`
   margin: 44px 8px 0;
-  
+
   ${MediaRange.greaterThan("tablet")`
     width: 700px;
     margin: 44px auto 0;
-  `}
+  `};
+  //
 `
 
 const InterviewTitle = styled.h2`
@@ -193,6 +208,8 @@ type CouchInformation = {}
 
 export const CouchInformation = ({}: CouchInformation) => {
   const selectedCategories = useStore($userData).categories
+  const values = useStore($step4Form)
+  const loading = useStore(registerUserFx.pending)
 
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
@@ -211,16 +228,16 @@ export const CouchInformation = ({}: CouchInformation) => {
       <InformationContainer>
         <InformationTitle>Заполните информацию</InformationTitle>
         <FormItem label='Место обучения'>
-          <Input value='1' />
+          <Input value={values.education} onChange={educationChanged} />
         </FormItem>
         <FormItem label='Опыт работы'>
-          <Input value='1' />
+          <Textarea value={values.workExperience} onChange={workExperienceChanged} rows={8} />
         </FormItem>
         <FormItem label='О себе'>
-          <Input value='1' />
+          <Textarea value={values.description} onChange={descriptionChanged} rows={8} />
         </FormItem>
         <FormItem label='Телефон'>
-          <Input value='1' />
+          <Input value={values.phone} type='number' onChange={phoneChanged} />
         </FormItem>
         <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
         <AddPhotosButton>Добавить фотографии</AddPhotosButton>
@@ -240,7 +257,9 @@ export const CouchInformation = ({}: CouchInformation) => {
           </Question>
         </InterviewQuestions>
         <VideoUploader>Добавить видео</VideoUploader>
-        <SendRequestButton>Отправить заявку</SendRequestButton>
+        <SendRequestButton disabled={loading} onClick={() => userRegistered()}>
+          Отправить заявку
+        </SendRequestButton>
       </InterviewContainer>
     </Container>
   )

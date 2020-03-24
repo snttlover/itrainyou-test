@@ -51,3 +51,41 @@ export const registerAsClient = (data: RegisterAsClientRequest) =>
   )
     .then(response => response.data)
     .then(keysToCamel)
+
+export interface RegisterAsCouchRequest {
+  firstName: string
+  lastName: string
+  birthDate: string
+  sex: "M" | "F"
+  avatar: string
+  categories: number[]
+  workExperience: string
+  education: string
+  description: string
+  phone: string
+  videoInterview: string
+}
+
+export interface RegisterAsCouchResponse {
+  user: {
+    id: number,
+    email: string,
+    creationDatetime: string
+  }
+  firstName: string
+  lastName: string
+  birthDate: string
+  sex: "M" | "F"
+  avatar: string
+  categories: Category[]
+  favouriteCoaches: []
+  creationDatetime: string
+}
+
+export const registerAsCouch = (data: RegisterAsCouchRequest) =>
+  post<RegisterAsCouchResponse, RegisterAsCouchRequest>(
+    `https://dev.itrainyou.heksray.com/api/v1/web/coaches/`,
+    keysToSnake(data)
+  )
+    .then(response => response.data)
+    .then(keysToCamel)

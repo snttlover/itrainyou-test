@@ -1,4 +1,4 @@
-import { registerAsClient, registerAsUser } from "@app/lib/api/register"
+import { registerAsClient, registerAsCouch, registerAsUser } from "@app/lib/api/register"
 import { appDomain } from "@app/store"
 import { merge, sample } from "effector"
 
@@ -78,20 +78,20 @@ pageMounted.watch(() => {
 
 export const userRegistered = signUpDomain.createEvent()
 
-const registerUserFx = signUpDomain.createEffect({
+export const registerUserFx = signUpDomain.createEffect({
   handler(params: UserData) {
-    if (params.type === 'client') {
-      return registerAsClient({...params.clientData!, categories: params.categories})
+    if (params.type === "client") {
+      return registerAsClient({ ...params.clientData!, categories: params.categories })
     } else {
-      return
+      return registerAsCouch({ ...params.clientData!, categories: params.categories, ...params.couchData! })
     }
   }
 })
 
-registerUserFx.doneData.watch((data) => {
+registerUserFx.doneData.watch(data => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
   const history = require(`@/client`).history
-  history.navigate('/')
+  history.navigate("/")
 })
 
 sample({
