@@ -64,7 +64,7 @@ export const routes: Route[] = [
     name: "sign-up",
     component: ({ children }) => {
       const isMatched = useMatch("/signup/:step")
-      return isMatched ? children : <Redirect to='/signup/1' replace />
+      return isMatched ? children : <Redirect to='/signup/1' replace noThrow />
     },
     url: "/signup",
     children: [

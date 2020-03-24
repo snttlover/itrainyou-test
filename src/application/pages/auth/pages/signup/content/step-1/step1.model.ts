@@ -15,8 +15,8 @@ export const registerFx = signUpDomain.createEffect<
   handler: ({ email, password }) => registerAsUser({ email, password })
 })
 
-registerFx.done.watch(payload => {
-  loggedIn({ token: payload.result.token })
+registerFx.doneData.watch(payload => {
+  loggedIn({ token: payload.token })
   const history = require(`@/client`).history
   history.navigate('/signup/2')
 })
