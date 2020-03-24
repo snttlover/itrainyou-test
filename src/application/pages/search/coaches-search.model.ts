@@ -3,7 +3,9 @@ import { appDomain } from "@/application/store"
 import { debounce } from "@app/lib/helpers/debounce"
 import { forward, merge } from "effector"
 import { $isServer } from "@/application/store"
+import {globalHistory} from "@reach/router"
 import { serializeQuery } from "@app/lib/formatting/serialize-query"
+import { getWindowQuery } from "@app/lib/helpers/getWindowQuery"
 
 // coaches
 const searchPageDomain = appDomain.createDomain()
@@ -28,6 +30,12 @@ export const $searchPageQuery = appDomain
     return { ...state }
   })
 
+globalHistory.listen(() => {
+  const query = getWindowQuery() as GetCoachesParamsTypes
+  setSearchPageQuery(query)
+  fetchCoachesListFx(query)
+})
+
 const watchedEvents = merge([addSearchPageQuery, removeSearchPageQuery])
 
 $searchPageQuery.watch(
@@ -35,7 +43,7 @@ $searchPageQuery.watch(
   debounce((query: GetCoachesParamsTypes) => {
     if ($isServer.getState()) {
       const history = require(`@/client`).history
-      history.navigate(`/search?${serializeQuery(query)}`, { replace: true }).then(() => fetchCoachesListFx(query))
+      history.navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
     }
   }, 300)
 )
