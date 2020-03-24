@@ -8,7 +8,7 @@ const Line = styled.div`
   height: 4px;
 `
 const Progress = styled.div<{percent: number}>`
-  width: ${({percent}) => percent}px;
+  width: ${({percent}) => percent}%;
   background: #449BD9;
   border-radius: 4px;
   height: 4px;
