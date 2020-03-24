@@ -281,7 +281,9 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Date>
         </RatingContainer>
       </MainInfoContainer>
-      {isActive && <SelectDatetime sessionsList={sessionsListModel.store} />}
+      {isActive && (
+        <SelectDatetime sessionsList={sessionsListModel.list} toggleSession={sessionsListModel.toggleSession} />
+      )}
     </Block>
   )
 }
