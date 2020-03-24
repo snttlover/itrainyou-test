@@ -6,6 +6,7 @@ import { useStore } from "effector-react/ssr"
 import { Scope } from "effector/fork"
 import { useEffect } from "react"
 import * as React from "react"
+import {getWindowQuery} from "@app/lib/helpers/getWindowQuery"
 
 type AsyncDataLoaderProps = {
   children: React.ReactNode
@@ -20,15 +21,7 @@ export const AsyncDataLoader = (props: AsyncDataLoaderProps) => {
 
   useEffect(() => {
     const currentRoute = matchRoutes(location.pathname, routes, decodeURIComponent)
-    const searchParams = new URLSearchParams(location.search)
-
-    const query: {
-      [key: string]: string
-    } = {}
-
-    for (const [key, value] of searchParams.entries()) {
-      query[key] = value
-    }
+    const query = getWindowQuery()
 
     const promise = Promise.resolve()
 

@@ -8,6 +8,7 @@ import { Store } from "effector"
 import { CoachSession } from "@app/lib/api/coach-sessions"
 import { Calendar, CalendarDateType } from "@app/components/calendar/Calendar"
 import { useStore } from "effector-react"
+import { CoachSessionWithSelect } from "@app/components/coach-card/select-date/select-date.model"
 
 const Block = styled.div`
   background: #ffffff;
@@ -89,6 +90,9 @@ const SelectedDatetimeTable = styled.table`
   line-height: 16px;
   color: #424242;
   width: 100px;
+  & tr td:first-child {
+    padding-right: 24px;
+  }
 `
 
 const Text = styled.div`
@@ -113,7 +117,9 @@ const BuyButton = styled(DashedButton)`
 `
 
 type SelectDatetimeTypes = {
-  sessionsList: Store<CoachSession[]>
+  sessionsList: Store<CoachSessionWithSelect[]>
+  // @ts-ignore
+  toggleSession: Event<CoachSessionWithSelect>
 }
 
 const getTimesByDate = (isoDate: string) => {}
@@ -125,26 +131,30 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsList)
 
   const [currentDate, changeCurrentDate] = useState<Date>(new Date())
-  const pinnedDates = sessions.map(session => session.start_datetime)
+  const pinnedDates = sessions.map(session => session.startDatetime)
 
   const formattedDate = dayjs(currentDate).format("DD MMMM")
   const currentDateEqual = dayjs(currentDate).format(equalDateFormat)
   const times = sessions
     .filter(session => {
-      return dayjs(session.start_datetime).format(equalDateFormat) === currentDateEqual
+      return dayjs(session.startDatetime).format(equalDateFormat) === currentDateEqual
     })
-    .map(session => dayjs(session.start_datetime).format(equalTimeFormat))
+    .map(session => ({
+      ...session,
+      start_datetime: dayjs(session.startDatetime).format(equalTimeFormat)
+    }))
 
   const [activeTime, changeActive] = useState(times[0])
 
   const selected = sessions
-    .filter(session => {
-      return dayjs(session.start_datetime).format(equalTimeFormat) === activeTime
-    })
+    .filter(session => session.selected)
     .map(session => ({
-      date: dayjs(session.start_datetime).format(`DD.MM.YYYY`),
-      time: activeTime
+      ...session,
+      date: dayjs(session.startDatetime).format(`DD.MM.YY`),
+      time: dayjs(session.startDatetime).format(equalTimeFormat)
     }))
+
+  const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
 
   return (
     <Block>
@@ -154,25 +164,25 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
       <SelectTimeContainer>
         <h5>{formattedDate}</h5>
         <Times>
-          {times.map(time => (
-            <Tag active={time === activeTime} key={time} onClick={() => changeActive(time)}>
-              {time}
+          {times.map(session => (
+            <Tag active={session.selected} key={session.id} onClick={() => props.toggleSession(session)}>
+              {session.start_datetime}
             </Tag>
           ))}
         </Times>
         <Divider />
         <SelectedDatetimeTable>
           <tbody>
-            {selected.map(datetime => (
-              <tr key={datetime.date + datetime.time}>
-                <td>{datetime.date}</td>
-                <td>{datetime.time}</td>
+            {selected.map(session => (
+              <tr key={session.id}>
+                <td>{session.date}</td>
+                <td>{session.time}</td>
               </tr>
             ))}
           </tbody>
         </SelectedDatetimeTable>
         <Text>
-          Итого: <Summary>2400 ₽</Summary>
+          Итого: <Summary>{amount} ₽</Summary>
         </Text>
         <ButtonContainer>
           <Link to='/signup'>

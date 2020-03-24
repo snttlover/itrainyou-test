@@ -4,9 +4,9 @@ import { get } from "@/application/lib/network/network"
 export interface CoachSession {
   id: number
   coach: number
-  client_price: string // example: 12.00
-  coach_price: string // example: 10.00
-  start_datetime: string // example: "2020-03-31T15:17:37Z"
+  clientPrice: string // example: 12.00
+  coachPrice: string // example: 10.00
+  startDatetime: string // example: "2020-03-31T15:17:37Z"
   duration: string //example: 01:00:00
 }
 

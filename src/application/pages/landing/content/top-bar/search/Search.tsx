@@ -22,6 +22,10 @@ const Icon = styled.img.attrs({ src: searchIcon })`
   height: 24px;
   cursor: pointer;
   z-index: 1;
+  opacity: 0.6;
+  &:hover {
+    opacity: 1;
+  }
 `
 
 const Container = styled.div`

@@ -43,7 +43,7 @@ export const PriceFilter = () => {
   const params = useStore($searchPageQuery)
 
   const start = params.price__gte ? +params.price__gte : 0
-  const end = params.price__lte ? +params.price__lte : 0
+  const end = params.price__lte ? +params.price__lte : maxPrice
 
   const change = (value: [number, number]) =>
     addSearchPageQuery({

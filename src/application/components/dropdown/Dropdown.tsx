@@ -5,6 +5,7 @@ import { useState } from "react"
 import arrowImage from "./arrow.svg"
 
 const Button = styled.button`
+  width: 100%;
   border: 1px solid #3b8ac3;
   border-radius: 4px;
   padding: 7px 12px;

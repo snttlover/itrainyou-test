@@ -112,6 +112,7 @@ const Category = styled.img`
 `
 
 const PriceContainer = styled.div`
+  white-space: nowrap;
   border: 1px solid #b3b3b3;
   height: 20px;
   border-radius: 12px;
@@ -280,7 +281,9 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Date>
         </RatingContainer>
       </MainInfoContainer>
-      {isActive && <SelectDatetime sessionsList={sessionsListModel.store} />}
+      {isActive && (
+        <SelectDatetime sessionsList={sessionsListModel.list} toggleSession={sessionsListModel.toggleSession} />
+      )}
     </Block>
   )
 }
