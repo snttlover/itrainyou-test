@@ -77,6 +77,9 @@ export const Search = (props: SearchProps) => {
         value={query}
         isLoading={loading}
         onChange={updateSearch}
+        onFocus={() => {
+          updateSearch(query)
+        }}
         placeholder='Поиск по коучам'
         onKeyDown={keydownHandler}
       >
