@@ -1,7 +1,7 @@
 import { Category, getCategories } from "@/application/lib/api/categories"
 import { forward } from "effector"
 import { appDomain } from "@/application/store"
-import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
+import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@app/pages/search/coaches-search.model"
 
 interface PickerCategory extends Category {
   checked: boolean
@@ -43,12 +43,14 @@ export const $categoriesList = categoriesPickerDomain
       }
       return item
     })
-    addSearchPageQuery({
-      categories: newCategories
-        .filter(category => category.checked)
-        .map(category => category.id)
-        .join(`,`)
-    })
+    const selectedCategoriesIds = newCategories.filter(category => category.checked).map(category => category.id)
+    if (selectedCategoriesIds.length) {
+      addSearchPageQuery({
+        categories: selectedCategoriesIds.join(`,`)
+      })
+    } else {
+      removeSearchPageQuery([`categories`])
+    }
     return newCategories
   })
 
