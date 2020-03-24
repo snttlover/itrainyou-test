@@ -32,8 +32,8 @@ const StyledSortingPicker = styled(SortingPicker)`
   display: flex;
   flex: 1;
   ${SortingContainer} {
-    left: 14px;
-    top: -14px;
+    top: 100%;
+    left: 25px;
   }
 `
 
