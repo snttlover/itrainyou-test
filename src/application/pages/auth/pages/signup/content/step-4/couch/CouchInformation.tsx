@@ -3,7 +3,7 @@ import { Button } from "@app/components/button/normal/Button"
 import { FormItem } from "@app/components/form-item/FormItem"
 import { Input } from "@app/components/input/Input"
 import { Textarea } from "@app/components/textarea/Textarea"
-import { $categoriesList } from "@app/lib/categories/categories.store"
+import { $categoriesList } from "@app/feature/categories/categories.store"
 import { MediaRange } from "@app/lib/responsive/media"
 import { CategoryCard } from "@app/pages/auth/pages/signup/content/step-4/couch/CategoryCard"
 import {

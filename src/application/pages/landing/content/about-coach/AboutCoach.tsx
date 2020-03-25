@@ -101,7 +101,6 @@ const VideoColumn = styled.div`
 
 const Video = styled.iframe.attrs({
   src: `https://www.youtube.com/embed/ilu61IUs0IA`,
-  frameBorder: 0,
   allow: `accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture`
 })`
   width: 100%;
@@ -158,7 +157,7 @@ export const AboutCoach = () => (
     </TextColumn>
     <VideoColumn>
       <VideoWrapper>
-        <Video />
+        <Video frameBorder={0}/>
       </VideoWrapper>
     </VideoColumn>
   </StyledContainer>

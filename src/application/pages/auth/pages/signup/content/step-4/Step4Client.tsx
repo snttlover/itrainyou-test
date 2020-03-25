@@ -1,5 +1,5 @@
 import { Button } from "@app/components/button/normal/Button"
-import { $categoriesList } from "@app/lib/categories/categories.store"
+import { $categoriesList } from "@app/feature/categories/categories.store"
 import { MediaRange } from "@app/lib/responsive/media"
 import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
 import { Step4ClientLayout } from "@app/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"

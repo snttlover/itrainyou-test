@@ -1,5 +1,5 @@
 import { OurCoaches } from "@/application/pages/landing/content/our-coaches/OurCoaches"
-import { loadCategories } from "@app/lib/categories/categories.store"
+import { loadCategories } from "@app/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 import { loadCoaches } from "./content/our-coaches/model"
 import { AsyncDataOptions } from "@/application/routes"
 import { allSettled } from "effector/fork"

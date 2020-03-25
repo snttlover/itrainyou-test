@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 import { CoachList } from "./content/CoachList"
-import { $coachesList, $coachesListLoading } from "@app/pages/search/coaches-search.model"
+import { $coachesList, fetchCoachesListFx } from "@app/pages/search/coaches-search.model"
 import { useStore } from "effector-react"
 import { Spinner } from "@app/components/spinner/Spinner"
 import { ResetFiltersButton } from "@app/pages/search/content/filters/content/ResetFiltersButton"
@@ -48,7 +48,7 @@ const NotFound = () => (
 )
 
 export const List = () => {
-  const loading = useStore($coachesListLoading)
+  const loading = useStore(fetchCoachesListFx.pending)
   const list = useStore($coachesList)
   const notFound = !loading && !list.length && <NotFound />
 

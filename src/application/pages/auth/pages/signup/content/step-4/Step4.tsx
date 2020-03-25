@@ -1,4 +1,4 @@
-import { loadCategories } from "@app/lib/categories/categories.store"
+import { loadCategories } from "@app/feature/categories/categories.store"
 import { Step4Couch } from "@app/pages/auth/pages/signup/content/step-4/Step4Couch"
 import { $userData } from "@app/pages/auth/pages/signup/signup.model"
 import { useEffect } from "react"
