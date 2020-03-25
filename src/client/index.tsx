@@ -1,13 +1,12 @@
 import { Application } from "@/client/Application"
 import { createHistory } from "@reach/router"
-import { allSettled, fork, hydrate } from "effector/fork"
+import { fork, hydrate } from "effector/fork"
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import { appDomain, startClient } from "@/application/store"
+import { appDomain } from "@/application/store"
 
 const initialState = window.__initialState__
 
-const clientScope = fork(appDomain)
 // @ts-ignore
 export const history = createHistory(window)
 
@@ -19,9 +18,7 @@ if (initialState) {
   })
   render = ReactDOM.hydrate
 }
-render(<Application scope={clientScope} history={history} />, document.getElementById("root"))
 
-allSettled(startClient, {
-  scope: clientScope,
-  params: undefined
-})
+const clientScope = fork(appDomain)
+
+render(<Application scope={clientScope} history={history} />, document.getElementById("root"))

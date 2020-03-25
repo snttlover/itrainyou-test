@@ -7,7 +7,7 @@ const priceFilterDomain = appDomain.createDomain()
 
 export const fetchMaxPriceFx = priceFilterDomain.createEffect<void, Price>().use(getMaxPrice)
 
-export const loadMaxPrice = priceFilterDomain.createEvent<Price>()
+export const loadMaxPrice = priceFilterDomain.createEvent()
 
 export const $maxPrice = priceFilterDomain
   .createStore<number>(0)
