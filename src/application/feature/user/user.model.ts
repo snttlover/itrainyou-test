@@ -6,7 +6,7 @@ const TOKEN_KEY = '__token__'
 export const userDomain = appDomain.createDomain()
 
 export const loggedIn = userDomain.createEvent<{ token: string }>()
-export const logout = userDomain.createEvent<{ token: string }>()
+export const logout = userDomain.createEvent()
 
 export const $isLoggedIn = userDomain
   .createStore(false)
@@ -19,5 +19,4 @@ loggedIn.watch(({ token }) => {
 
 logout.watch(() => {
   Cookies.remove(TOKEN_KEY)
-
 })
