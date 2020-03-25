@@ -41,13 +41,15 @@ const watchedEvents = merge([addSearchPageQuery, removeSearchPageQuery])
 $searchPageQuery.watch(
   watchedEvents,
   debounce((query: GetCoachesParamsTypes) => {
+    console.log(query)
     navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
   }, 300)
 )
 
 export const fetchCoachesListFx = searchPageDomain
-  .createEffect<GetCoachesParamsTypes, Coach[]>()
-  .use(params => getCoaches(params))
+  .createEffect<GetCoachesParamsTypes, Coach[]>({
+    handler: getCoaches
+  })
 
 export const loadCoaches = searchPageDomain.createEvent<GetCoachesParamsTypes>()
 
