@@ -1,15 +1,14 @@
-import * as merge from 'webpack-merge'
-import * as commonConfig from './client.common'
+import * as webpack from "webpack"
+import * as merge from "webpack-merge"
+import * as commonConfig from "./client.common"
 import { HotModuleReplacementPlugin } from "webpack"
 
 module.exports = merge.smartStrategy({
-  entry: 'prepend'
+  entry: "prepend"
 })(commonConfig, {
   mode: "development",
   devtool: "inline-source-map",
-  entry: [
-    "webpack-hot-middleware/client",
-  ],
+  entry: ["webpack-hot-middleware/client"],
   module: {
     rules: [
       {
@@ -19,5 +18,7 @@ module.exports = merge.smartStrategy({
       }
     ]
   },
-  plugins: [new HotModuleReplacementPlugin()]
+  plugins: [
+    new HotModuleReplacementPlugin()
+  ]
 })

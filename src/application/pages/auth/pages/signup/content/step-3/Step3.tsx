@@ -2,6 +2,7 @@ import { FormItem } from "@app/components/form-item/FormItem"
 import { Input } from "@app/components/input/Input"
 import { AuthLayout } from "@app/components/layouts/auth/AuthLayout"
 import { SelectInput } from "@app/components/select-input/SelectInput"
+import { navigate } from "@app/lib/navigation"
 import { MediaRange } from "@app/lib/responsive/media"
 import { NextButton } from "@app/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
@@ -19,7 +20,6 @@ import {
 } from "@app/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@app/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@app/pages/auth/pages/signup/signup.model"
-import { useNavigate } from "@reach/router"
 import { useStore } from "effector-react"
 import { useEffect, useState } from "react"
 import * as React from "react"
@@ -155,7 +155,6 @@ export const Step3 = () => {
   const isFormValid = useStore($isStep3FormValid)
   const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
-  const navigate = useNavigate()
 
   const [days, setDays] = useState<{ label: string; value: number }[]>([])
 

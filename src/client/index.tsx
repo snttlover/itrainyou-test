@@ -5,12 +5,6 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import { appDomain, startClient } from "@/application/store"
 
-declare global {
-  interface Window {
-    __initialState__: any
-  }
-}
-
 const initialState = window.__initialState__
 
 const clientScope = fork(appDomain)

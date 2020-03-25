@@ -1,4 +1,5 @@
 import { registerAsClient, registerAsCouch, registerAsUser } from "@app/lib/api/register"
+import { navigate } from "@app/lib/navigation"
 import { appDomain } from "@app/store"
 import { merge, sample } from "effector"
 
@@ -90,8 +91,7 @@ export const registerUserFx = signUpDomain.createEffect({
 
 registerUserFx.doneData.watch(data => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
-  const history = require(`@/client`).history
-  history.navigate("/")
+  navigate("/")
 })
 
 sample({

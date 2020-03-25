@@ -1,9 +1,9 @@
 import { Coach, getCoaches, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { appDomain } from "@/application/store"
 import { debounce } from "@app/lib/helpers/debounce"
+import { navigate } from "@app/lib/navigation"
 import { forward, merge } from "effector"
-import { $isServer } from "@/application/store"
-import {globalHistory} from "@reach/router"
+import { globalHistory } from "@reach/router"
 import { serializeQuery } from "@app/lib/formatting/serialize-query"
 import { getWindowQuery } from "@app/lib/helpers/getWindowQuery"
 
@@ -41,10 +41,7 @@ const watchedEvents = merge([addSearchPageQuery, removeSearchPageQuery])
 $searchPageQuery.watch(
   watchedEvents,
   debounce((query: GetCoachesParamsTypes) => {
-    if ($isServer.getState()) {
-      const history = require(`@/client`).history
-      history.navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
-    }
+    navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
   }, 300)
 )
 

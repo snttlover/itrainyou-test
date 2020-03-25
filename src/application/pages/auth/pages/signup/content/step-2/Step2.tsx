@@ -1,10 +1,10 @@
 import { AuthLayout } from "@app/components/layouts/auth/AuthLayout"
+import { navigate } from "@app/lib/navigation"
 import { MediaRange } from "@app/lib/responsive/media"
 import { NextButton } from "@app/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
 import { UserTypeCard } from "@app/pages/auth/pages/signup/content/step-2/UserTypeCard"
 import { userTypeChanged, $userData } from "@app/pages/auth/pages/signup/signup.model"
-import { useNavigate } from "@reach/router"
 import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
@@ -111,7 +111,6 @@ const couchDescriptions = [
 
 export const Step2 = () => {
   const type = useStore($userData).type
-  const navigate = useNavigate()
   return (
     <AuthLayout>
       <StyledSteps activeId='2'>

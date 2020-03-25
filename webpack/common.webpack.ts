@@ -1,5 +1,6 @@
 import * as path from "path"
 import * as ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin"
+import * as webpack from "webpack"
 
 module.exports = {
   output: {
@@ -41,6 +42,9 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin()
+    new ForkTsCheckerWebpackPlugin(),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: "development"
+    })
   ]
 }

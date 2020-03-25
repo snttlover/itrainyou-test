@@ -1,6 +1,7 @@
 import { loggedIn } from "@app/feature/user/user.model"
 import { registerAsUser, RegisterAsUserResponse } from "@app/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@app/lib/generators/efffector"
+import { navigate } from "@app/lib/navigation"
 import { emailValidator, passwordValidator, trimString } from "@app/lib/validators"
 import { signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
 import { AxiosError } from "axios"
@@ -17,8 +18,7 @@ export const registerFx = signUpDomain.createEffect<
 
 registerFx.doneData.watch(payload => {
   loggedIn({ token: payload.token })
-  const history = require(`@/client`).history
-  history.navigate('/signup/2')
+  navigate('/signup/2')
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({

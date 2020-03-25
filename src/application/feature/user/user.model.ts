@@ -1,4 +1,5 @@
 import { appDomain } from "@app/store"
+import * as Cookies from "js-cookie"
 
 const TOKEN_KEY = '__token__'
 
@@ -13,9 +14,10 @@ export const $isLoggedIn = userDomain
   .reset(logout)
 
 loggedIn.watch(({ token }) => {
-  localStorage.setItem(TOKEN_KEY, token)
+  Cookies.set(TOKEN_KEY, token)
 })
 
 logout.watch(() => {
-  localStorage.removeItem(TOKEN_KEY)
+  Cookies.remove(TOKEN_KEY)
+
 })

@@ -18,5 +18,5 @@ module.exports = merge.smartStrategy({
       }
     ]
   },
-  entry: ["@babel/polyfill", path.resolve(__dirname, "../../src/client/index.tsx")]
+  entry: ["@babel/polyfill", path.resolve(__dirname, "../../src/client/index.tsx")],
 })
