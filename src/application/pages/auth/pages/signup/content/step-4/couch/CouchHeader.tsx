@@ -30,7 +30,6 @@ const Title = styled.h2`
   line-height: 26px;
   margin: 0 12px;
 
-  color: #424242;
   text-align: center;
 
   ${MediaRange.greaterThan("mobile")`    
@@ -64,7 +63,6 @@ const FullName = styled.p`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: #424242;
 
   ${MediaRange.greaterThan("mobile")`    
     font-size: 20px;
@@ -86,7 +84,6 @@ const Sex = styled.span`
   margin-top: 8px;
   font-size: 14px;
   line-height: 18px;
-  color: #424242;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 20px;

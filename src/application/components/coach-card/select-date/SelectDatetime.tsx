@@ -43,7 +43,6 @@ const SelectTimeContainer = styled.div`
 
   & > h5 {
     margin-left: 8px;
-    color: #424242;
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
@@ -88,7 +87,6 @@ const Divider = styled.div`
 const SelectedDatetimeTable = styled.table`
   font-size: 12px;
   line-height: 16px;
-  color: #424242;
   width: 100px;
   & tr td:first-child {
     padding-right: 24px;

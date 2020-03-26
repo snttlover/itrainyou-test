@@ -83,7 +83,6 @@ const Name = styled.span`
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #424242;
 
   @media screen and (max-width: 480px) {
     font-size: 16px;
@@ -123,7 +122,6 @@ const PriceContainer = styled.div`
   display: flex;
   align-items: center;
 
-  color: #424242;
   font-weight: 600;
   font-size: 10px;
   line-height: 12px;
@@ -167,12 +165,10 @@ const Meta = styled.div`
 
 const ReviewsCount = styled.span`
   font-size: 12px;
-  color: #424242;
 `
 
 const Rating = styled.span`
   font-size: 12px;
-  color: #424242;
 
   @media screen and (max-width: 480px) {
     font-size: 16px;
@@ -205,7 +201,6 @@ const Date = styled.span`
   margin-top: auto;
   font-size: 10px;
   line-height: 12px;
-  color: #424242;
   display: flex;
 
   @media screen and (max-width: 480px) {

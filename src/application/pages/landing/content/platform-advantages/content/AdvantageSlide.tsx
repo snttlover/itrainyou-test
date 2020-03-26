@@ -50,7 +50,6 @@ const DescriptionTitle = styled.div`
 const DescriptionSubTitle = styled.div`
   font-size: 20px;
   line-height: 26px;
-  color: #424242;
   @media screen and (max-width: 638px) {
     text-align: center;
   }

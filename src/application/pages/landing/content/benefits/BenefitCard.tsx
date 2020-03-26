@@ -54,7 +54,6 @@ const Text = styled.div`
   font-size: 16px;
   line-height: 22px;
   text-align: center;
-  color: #424242;
   margin-top: 12px;
   @media screen and (max-width: 768px) {
     font-size: 14px;

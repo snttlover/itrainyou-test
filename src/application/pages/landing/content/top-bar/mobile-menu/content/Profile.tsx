@@ -39,7 +39,6 @@ const UserName = styled.div`
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
-  color: #424242;
 `
 
 const Age = styled.div`

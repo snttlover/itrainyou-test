@@ -77,8 +77,6 @@ const Title = styled.h1`
   margin-bottom: 20px;
 
   text-align: center;
-
-  color: #424242;
   
   ${MediaRange.greaterThan("mobile")`
     font-size: 36px;

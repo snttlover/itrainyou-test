@@ -12,7 +12,6 @@ const Title = styled.h3`
   font-weight: 600;
   font-size: 36px;
   line-height: 44px;
-  color: #424242;
   margin-bottom: 12px;
   text-align: center;
   @media screen and (max-width: 768px) {
@@ -30,7 +29,6 @@ const SubTitle = styled.h3`
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
-  color: #424242;
   margin-bottom: 36px;
   text-align: center;
   @media screen and (max-width: 768px) {

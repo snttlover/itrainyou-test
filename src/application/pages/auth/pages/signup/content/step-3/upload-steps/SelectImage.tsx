@@ -10,7 +10,6 @@ const Description = styled.p<{ largeFileError: boolean }>`
 
   text-align: center;
 
-  color: #424242;
   margin-top: ${({largeFileError}) => largeFileError ? '100px' : '12px'};
 
   ${MediaRange.greaterThan("mobile")`
@@ -48,7 +47,6 @@ const DragText = styled.div`
   margin-top: 24px;
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
   margin-bottom: 60px;
 
   ${MediaRange.greaterThan("mobile")`    

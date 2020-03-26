@@ -56,7 +56,6 @@ const Subtitle = styled.h5`
   font-size: 20px;
   line-height: 26px;
   padding-top: 8px;
-  color: #424242;
   margin-bottom: 32px;
   @media screen and (max-width: 768px) {
     font-weight: 600;
@@ -68,7 +67,6 @@ const Subtitle = styled.h5`
 const Paragraph = styled.div`
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
   margin-bottom: 8px;
   b {
     color: #544274;

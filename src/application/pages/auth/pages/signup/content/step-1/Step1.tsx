@@ -52,8 +52,6 @@ const Title = styled.h1`
   margin-bottom: 73px;
 
   text-align: center;
-
-  color: #424242;
   
   ${MediaRange.greaterThan('mobile')`
     font-size: 36px;
@@ -74,12 +72,18 @@ const Footer = styled.div`
   line-height: 18px;
   text-align: center;
   color: #544274;
+  width: 130px;
   
   ${MediaRange.greaterThan('mobile')`
+    width: auto;
     margin-top: 36px;
     font-size: 20px;
     line-height: 26px;
   `}
+`
+
+const StyledLink = styled(Link)`
+  color: #544274;
 `
 
 const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -117,7 +121,7 @@ export const Step1 = () => {
         </Form>
       </Container>
       <Footer>
-        <Link to='/login'>Уже есть аккаунт? Войдите</Link>
+        <StyledLink to='/login'>Уже есть аккаунт? Войдите</StyledLink>
       </Footer>
     </AuthLayout>
   )

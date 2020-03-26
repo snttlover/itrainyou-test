@@ -34,7 +34,6 @@ const Container = styled.div`
   margin-top: 13px;
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
   display: none;  @media screen and (max-width: 768px) {
     font-size: 14px;
     line-height: 18px;

@@ -28,7 +28,6 @@ const Container = styled.div`
 const Title = styled.h3`
   font-size: 36px;
   line-height: 44px;
-  color: #424242;
   margin-bottom: 24px;
   text-align: center;
   @media screen and (max-width: 768px) {

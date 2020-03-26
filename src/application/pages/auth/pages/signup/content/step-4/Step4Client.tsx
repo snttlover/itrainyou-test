@@ -32,7 +32,6 @@ const Title = styled.h2`
   font-size: 20px;
   line-height: 26px;
 
-  color: #424242;
   text-align: center;
   
   ${MediaRange.greaterThan('mobile')`    
@@ -47,7 +46,6 @@ const Description = styled.p`
   text-align: center;
   margin-top: 12px;
 
-  color: #544274;
   
   ${MediaRange.greaterThan('mobile')`    
     font-size: 20px;

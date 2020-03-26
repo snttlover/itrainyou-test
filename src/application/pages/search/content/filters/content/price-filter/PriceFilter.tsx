@@ -20,7 +20,6 @@ const Text = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 16px;
-  color: #424242;
 `
 
 const Bold = styled.div`

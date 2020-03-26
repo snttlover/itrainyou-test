@@ -19,7 +19,6 @@ const Title = styled.div`
   font-weight: 600;
   font-size: 28px;
   line-height: 44px;
-  color: #424242;
 
   @media screen and (max-width: 480px) {
     font-size: 20px;
@@ -31,7 +30,6 @@ const Title = styled.div`
 const Description = styled.div`
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
   margin-top: 20px;
   max-width: 600px;
   @media screen and (max-width: 768px) {

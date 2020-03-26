@@ -13,7 +13,6 @@ const Header = styled.h3`
   margin-bottom: 22px;
   width: 100%;
   text-align: center;
-  color: #424242;
 
   @media screen and (max-width: 480px) {
     font-size: 28px;

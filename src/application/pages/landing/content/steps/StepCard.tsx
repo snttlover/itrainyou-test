@@ -77,7 +77,6 @@ const Text = styled.div`
   font-size: 20px;
   line-height: 26px;
   text-align: center;
-  color: #424242;
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;

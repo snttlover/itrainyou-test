@@ -55,7 +55,6 @@ const Title = styled.h3`
   font-size: 36px;
   line-height: 44px;
   text-align: center;
-  color: #424242;
   margin-bottom: 60px;
   @media screen and (max-width: 768px) {
     font-size: 28px;

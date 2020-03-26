@@ -64,7 +64,6 @@ const CategoriesTitle = styled.h3`
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
   ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
@@ -92,7 +91,6 @@ const InformationTitle = styled.h2`
   font-weight: 500;
   font-size: 20px;
   line-height: 26px;
-  color: #424242;
 `
 
 const PhoneHint = styled.p`
@@ -100,7 +98,6 @@ const PhoneHint = styled.p`
   font-size: 12px;
   font-weight: 300;
   line-height: 16px;
-  color: #424242;
 `
 
 const AddPhotosButton = styled(DashedButton)`
@@ -124,7 +121,6 @@ const InterviewTitle = styled.h2`
   font-size: 20px;
   line-height: 26px;
   text-align: center;
-  color: #424242;
 
   ${MediaRange.greaterThan("mobile")`    
     font-size: 36px;
@@ -138,7 +134,6 @@ const InterviewDescription = styled.h2`
   font-size: 14px;
   line-height: 18px;
   text-align: center;
-  color: #424242;
 
   ${MediaRange.greaterThan("mobile")`    
     margin: 16px auto 0;
@@ -168,8 +163,6 @@ const InterviewQuestions = styled.ol`
   font-size: 12px;
   line-height: 16px;
   font-weight: 300;
-
-  color: #424242;
 
   ${Question} {
     margin-top: 12px;

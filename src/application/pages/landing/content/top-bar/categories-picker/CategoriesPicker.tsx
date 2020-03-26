@@ -21,7 +21,6 @@ const CategoryIcon = styled.img`
 const Text = styled.div`
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
   margin-left: 8px;
   @media screen and (max-width: 480px) {
     font-size: 12px;

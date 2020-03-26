@@ -19,7 +19,6 @@ const Title = styled.h3`
   font-weight: 600;
   font-size: 36px;
   line-height: 44px;
-  color: #424242;
   text-align: center;
   margin-bottom: 32px;
   @media screen and (max-width: 768px) {

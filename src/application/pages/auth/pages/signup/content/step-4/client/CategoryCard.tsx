@@ -22,7 +22,6 @@ const Title = styled.h3`
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
-  color: #424242;
   display: flex;
   align-items: center;
 
@@ -46,7 +45,6 @@ const Description = styled.p`
   margin-top: 8px;
   font-size: 12px;
   line-height: 16px;
-  color: #424242;
   ${MediaRange.greaterThan("mobile")`    
     font-size: 16px;
     line-height: 22px;

@@ -53,7 +53,6 @@ const Arrow = styled.img.attrs<ArrowType>({ src: arrow })`
 const Description = styled.p`
   font-size: 12px;
   line-height: 16px;
-  color: #424242;
   margin-top: 12px;
 
   ${MediaRange.greaterThan("mobile")`

@@ -9,7 +9,6 @@ const GradientContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: auto;
-  color: #424242;
   position: relative;
 
   background: linear-gradient(

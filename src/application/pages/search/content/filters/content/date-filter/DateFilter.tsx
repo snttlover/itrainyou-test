@@ -23,7 +23,6 @@ const Text = styled.div`
   margin-bottom: 18px;
   font-size: 12px;
   line-height: 16px;
-  color: #424242;
 `
 
 const StyledRadioOption = styled(RadioOption)``

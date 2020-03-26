@@ -13,7 +13,6 @@ const Text = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
 `
 
 const StyledMenuItem = styled.div`

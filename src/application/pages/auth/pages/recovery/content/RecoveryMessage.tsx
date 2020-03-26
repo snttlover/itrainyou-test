@@ -10,7 +10,6 @@ const Title = styled.h3`
   margin-bottom: 63px;
   width: 100%;
   text-align: center;
-  color: #424242;
 
   @media screen and (max-width: 480px) {
     font-size: 22px;
@@ -30,7 +29,6 @@ const Paragraph = styled.div`
   font-size: 20px;
   line-height: 26px;
   text-align: center;
-  color: #424242;
   &:not(:last-child) {
     padding-bottom: 20px;
   }

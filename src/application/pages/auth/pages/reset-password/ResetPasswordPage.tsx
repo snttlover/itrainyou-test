@@ -4,13 +4,8 @@ import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
 import { ResetPasswordForm } from "@/application/pages/auth/pages/reset-password/content/ResetPasswordForm"
 import { WhiteContainer } from "@/application/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/application/pages/auth/components/CenterFormContainer"
-import { AsyncDataOptions } from "@/application/routes"
-import { allSettled } from "effector/fork"
-import { loadCoaches } from "@/application/pages/landing/content/our-coaches/model"
-import * as serveStatic from "serve-static"
 
 const Header = styled.h3`
-  color: #424242;
   font-weight: 600;
   font-size: 36px;
   line-height: 44px;
@@ -22,22 +17,6 @@ const Header = styled.h3`
     font-size: 20px;
     line-height: 26px;
     margin-bottom: 40px;
-  }
-`
-
-const ResetPasswordLink = styled.div`
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 26px;
-  margin: 36px auto 0;
-  color: #544274;
-  cursor: pointer;
-  text-align: center;
-  width: 200px;
-
-  @media screen and (max-width: 480px) {
-    font-size: 14px;
-    line-height: 18px;
   }
 `
 
