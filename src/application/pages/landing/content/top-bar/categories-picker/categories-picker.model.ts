@@ -1,12 +1,12 @@
 import { Category, getCategories } from "@/application/lib/api/categories"
-import { createEffect, createEvent, forward } from "effector"
+import { serverStarted } from "@/store"
+import { createEffect, createEvent, createStore, forward } from "effector-next"
 import {
   $searchPageQuery,
   addSearchPageQuery,
   removeSearchPageQuery,
   setSearchPageQuery
 } from "@/application/pages/search/coaches-search.model"
-import { createUniversalStore } from "@/store"
 
 interface PickerCategory extends Category {
   checked: boolean
@@ -21,7 +21,7 @@ export const toggleCategorySelection = createEvent<number>()
 
 export const resetCategories = createEvent()
 
-export const $categoriesList = createUniversalStore<PickerCategory[]>([])
+export const $categoriesList = createStore<PickerCategory[]>([])
   .on(setSearchPageQuery, (state, query) => {
     const categories = query.categories ? query.categories.split(',').map(id => +id) : []
     return state.map(item => ({ ...item, checked: categories.includes(item.id) }))
@@ -61,5 +61,10 @@ export const $categoriesList = createUniversalStore<PickerCategory[]>([])
 
 forward({
   from: loadCategories,
+  to: fetchCategoriesListFx
+})
+
+forward({
+  from: serverStarted,
   to: fetchCategoriesListFx
 })

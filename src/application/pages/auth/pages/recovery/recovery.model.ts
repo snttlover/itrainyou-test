@@ -2,7 +2,7 @@ import { RecoveryRequest, recovery } from "@/application/lib/api/recovery"
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
 import { emailValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createEffect, createEvent, createStore, createStoreObject, sample } from "effector"
+import { combine, createEffect, createEvent, createStore, createStoreObject, sample } from "effector-next"
 
 export const recoveryFormSended = createEvent()
 

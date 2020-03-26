@@ -1,14 +1,15 @@
 import { Coach, getCoaches, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { debounce } from "@/application/lib/helpers/debounce"
-import { createEffect, createEvent } from "effector"
-import { createUniversalStore } from "@/store"
+import { serverStarted } from "@/store"
+import { createEffect, createEvent, forward } from "effector-next"
+import { createStore } from "effector-next"
 import Router from "next/router"
 
 export const setSearchPageQuery = createEvent<GetCoachesParamsTypes>()
 export const addSearchPageQuery = createEvent<GetCoachesParamsTypes>()
 export const removeSearchPageQuery = createEvent<(keyof GetCoachesParamsTypes)[]>()
 
-export const $searchPageQuery = createUniversalStore<GetCoachesParamsTypes>({})
+export const $searchPageQuery = createStore<GetCoachesParamsTypes>({})
   .on(setSearchPageQuery, (_, query) => query)
   .on(addSearchPageQuery, (state, query) => {
     return {
@@ -36,6 +37,18 @@ export const fetchCoachesListFx = createEffect<GetCoachesParamsTypes, Coach[]>({
   handler: getCoaches
 })
 
-export const $coachesList = createUniversalStore<Coach[]>([])
+export const $coachesList = createStore<Coach[]>([])
   .on(fetchCoachesListFx.doneData, (state, payload) => payload)
   .reset(fetchCoachesListFx)
+
+const serverStartedQueryParams = serverStarted.map(({ query }) => query)
+
+forward({
+  from: serverStartedQueryParams,
+  to: fetchCoachesListFx
+})
+
+forward({
+  from: serverStartedQueryParams,
+  to: setSearchPageQuery
+})

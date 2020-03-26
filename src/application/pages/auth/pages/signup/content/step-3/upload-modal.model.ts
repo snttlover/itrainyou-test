@@ -1,6 +1,6 @@
 import { uploadMedia } from "@/application/lib/api/media"
 import { imageUploaded } from "@/application/pages/auth/pages/signup/content/step-3/step3.model"
-import { createEffect, createEvent, createStore, forward } from "effector"
+import { createEffect, createEvent, createStore, forward } from "effector-next"
 
 export const uploadImage = createEvent<File | Blob>()
 const uploadPercentChanged = createEvent<number>()

@@ -1,8 +1,8 @@
 import { AppStyles } from "@/application/AppStyles"
-import { AppContext } from "next/dist/pages/_app"
+import { $categoriesList } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
+import { withHydrate } from "effector-next"
 import * as React from "react"
-import App from "next/app"
-import { universal } from "@/store"
+import App, { AppContext } from "next/app"
 import "react-image-crop/dist/ReactCrop.css"
 import "../../public/fonts/gilroy/fonts-list.css"
 
@@ -15,13 +15,7 @@ class MyApp extends App {
       pageProps = await Component.getInitialProps(ctx)
     }
 
-    type StoresObject = { [key: string]: any }
-    const universalStoresMap = Array.from(universal.history.stores).reduce<StoresObject>((acc, store) => {
-      acc[store.sid!] = store.getState()
-      return acc
-    }, {})
-
-    return { ...pageProps, universalStoresMap }
+    return { ...pageProps }
   }
 
   render() {
@@ -36,4 +30,6 @@ class MyApp extends App {
   }
 }
 
-export default MyApp
+const enhance = withHydrate();
+// @ts-ignore
+export default enhance(MyApp)

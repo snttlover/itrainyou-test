@@ -3,7 +3,7 @@ import { registerAsUser, RegisterAsUserResponse } from "@/application/lib/api/re
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
 import { emailValidator, passwordValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createEffect, createEvent, createStoreObject, sample } from "effector"
+import { combine, createEffect, createEvent, createStoreObject, sample } from "effector-next"
 import Router from "next/router"
 
 export const step1Registered = createEvent()

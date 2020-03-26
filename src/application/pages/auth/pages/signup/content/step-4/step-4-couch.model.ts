@@ -2,7 +2,7 @@ import { uploadMedia } from "@/application/lib/api/media"
 import { createEffectorField } from "@/application/lib/generators/efffector"
 import { trimString } from "@/application/lib/validators"
 import { couchDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
-import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector"
+import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-next"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",

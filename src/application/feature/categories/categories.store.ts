@@ -1,10 +1,10 @@
 import { Category, getCategories } from "@/application/lib/api/categories"
-import { createUniversalStore } from "@/store"
-import { createEffect} from "effector"
+import { createEffect} from "effector-next"
+import { createStore } from "effector-next"
 
 export const fetchCategoriesListFx = createEffect({
   handler: getCategories
 })
 
-export const $categoriesList = createUniversalStore<Category[]>([])
+export const $categoriesList = createStore<Category[]>([])
   .on(fetchCategoriesListFx.done, (state, payload) => payload.result)

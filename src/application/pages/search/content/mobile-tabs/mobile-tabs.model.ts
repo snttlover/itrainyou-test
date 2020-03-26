@@ -1,4 +1,4 @@
-import { createEvent, createStore } from "effector"
+import { createEvent, createStore } from "effector-next"
 
 export const changeMobileFiltersVisibility = createEvent<boolean>()
 

@@ -2,7 +2,7 @@ import { ResetPasswordRequest, resetPassword } from "@/application/lib/api/reset
 import { createEffectorField } from "@/application/lib/generators/efffector"
 import { passwordValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createEffect, createEvent, createStore, createStoreObject } from "effector"
+import { combine, createEffect, createEvent, createStore, createStoreObject } from "effector-next"
 import Router from "next/router"
 
 export const resetFormSended = createEvent()

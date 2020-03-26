@@ -1,5 +1,5 @@
 import { CoachSession, getCoachSessions } from "@/application/lib/api/coach-sessions"
-import { createDomain, forward } from "effector"
+import { createDomain, forward } from "effector-next"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean

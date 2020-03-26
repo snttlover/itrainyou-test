@@ -5,7 +5,7 @@ import {
   clientDataChanged,
   REGISTER_SAVE_KEY
 } from "@/application/pages/auth/pages/signup/signup.model"
-import { combine, createEvent, createStore, createStoreObject } from "effector"
+import { combine, createEvent, createStore, createStoreObject } from "effector-next"
 import dayjs from "dayjs"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()

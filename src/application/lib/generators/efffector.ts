@@ -1,4 +1,4 @@
-import { createEvent, createStore, Event, Store } from "effector"
+import { createEvent, createStore, Event, Store } from "effector-next"
 
 type Options<T> = {
   defaultValue: T

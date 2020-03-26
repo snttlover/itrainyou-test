@@ -1,5 +1,5 @@
 import { registerAsClient, registerAsCouch } from "@/application/lib/api/register"
-import { createEffect, createEvent, createStore, merge, sample } from "effector"
+import { createEffect, createEvent, createStore, merge, sample } from "effector-next"
 import Router from "next/router"
 
 export const REGISTER_SAVE_KEY = "__register-data__"

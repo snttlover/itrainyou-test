@@ -1,5 +1,5 @@
 import { Hint, getHints, GetHintsParamsTypes } from "@/application/lib/api/hint"
-import { createDomain, forward } from "effector"
+import { createDomain, forward } from "effector-next"
 import { addSearchPageQuery, removeSearchPageQuery } from "@/application/pages/search/coaches-search.model"
 
 // coaches

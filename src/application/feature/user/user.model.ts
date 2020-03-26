@@ -1,4 +1,4 @@
-import { createDomain } from "effector"
+import { createDomain } from "effector-next"
 import * as Cookies from "js-cookie"
 
 const TOKEN_KEY = '__token__'
