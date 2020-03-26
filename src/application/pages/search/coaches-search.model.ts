@@ -32,7 +32,7 @@ export const $searchPageQuery = searchPageDomain
   })
 
 if (!process.isServer) {
-  $searchPageQuery.watch(
+  $searchPageQuery.updates.watch(
     debounce((query: GetCoachesParamsTypes) => {
       navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
     }, 300)
