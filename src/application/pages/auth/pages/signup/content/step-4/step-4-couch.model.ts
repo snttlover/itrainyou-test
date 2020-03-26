@@ -81,9 +81,7 @@ step4CouchMounted.watch(() => {
     data.phone && phoneChanged(data.phone)
     data.videoInterview && videoInterviewChanged(data.videoInterview)
     data.workExperience && workExperienceChanged(data.workExperience)
-  } catch (e) {
-    console.log(e)
-  }
+  } catch (e) {}
 })
 
 export const $step4FormErrors = createStoreObject({

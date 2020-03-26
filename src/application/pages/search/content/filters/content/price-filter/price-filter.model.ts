@@ -16,8 +16,6 @@ export const $maxPrice = priceFilterDomain
   .on(fetchMaxPriceFx.doneData, (state, payload: Price) => +payload.maxCost)
   .reset(fetchMaxPriceFx)
 
-$maxPrice.watch(console.log)
-
 forward({
   from: loadMaxPrice,
   to: fetchMaxPriceFx

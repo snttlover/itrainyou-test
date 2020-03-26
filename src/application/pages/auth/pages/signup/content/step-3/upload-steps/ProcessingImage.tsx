@@ -99,7 +99,6 @@ const processFile = (crop: Crop, fileName: string) => async () => {
 }
 
 const rotateImage = (image: HTMLImageElement, degrees: number, setImage: (file: string | null) => void) => {
-  console.log(image)
   if (!image) return
   const canvas = document.createElement("canvas")
   const ctx = canvas.getContext("2d")
@@ -112,7 +111,6 @@ const rotateImage = (image: HTMLImageElement, degrees: number, setImage: (file: 
   ctx!.fillRect(0, 0, 25, 10)
 
   const dataUrl = canvas.toDataURL("image/jpeg")
-  console.log(dataUrl)
   setImage(null)
   setImmediate(() => setImage(dataUrl))
 }

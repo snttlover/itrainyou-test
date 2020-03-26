@@ -21,7 +21,6 @@ export const normal = () => {
   const [focused, change] = useState(false)
 
   const button = <Button onClick={() => {
-    console.log(!focused)
     change(!focused)
   }}>ToggleShow</Button>
 

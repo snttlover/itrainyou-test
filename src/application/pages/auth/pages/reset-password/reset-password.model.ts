@@ -2,11 +2,11 @@ import { ResetPasswordRequest, resetPassword } from "@/application/lib/api/reset
 import { appDomain } from "@/application/store"
 
 import { createEffectorField } from "@app/lib/generators/efffector"
+import { navigate } from "@app/lib/navigation"
 import { passwordValidator, trimString } from "@app/lib/validators"
 import { AxiosError } from "axios"
 import { combine, createStoreObject } from "effector"
 import { signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
-import { navigate } from "@reach/router"
 
 const resetDomain = appDomain.createDomain()
 
@@ -22,9 +22,7 @@ export const resetFx = resetDomain.createEffect<ResetRType, ResetPasswordRequest
 })
 
 resetFx.done.watch(data => {
-  console.log(data.result.token)
-  // @ts-ignore
-  window.location = `/`
+  navigate(`/`)
 })
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
