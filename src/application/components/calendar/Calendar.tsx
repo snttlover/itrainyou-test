@@ -17,6 +17,7 @@ type CalendarTypes = {
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
 
 const CalendarWrapper = styled.div`
+  position: relative;
   cursor: default;
   width: 196px;
   font-weight: 600;
@@ -29,6 +30,10 @@ const CalendarWrapper = styled.div`
   .react-calendar__month-view__weekdays__weekday {
     text-align: center;
     text-transform: uppercase;
+    text-decoration: none;
+    abbr {
+      text-decoration: none;
+    }
   }
   .react-calendar__month-view__weekdays__weekday:nth-child(n + 6),
   .day--weekend {
@@ -40,10 +45,10 @@ const CalendarWrapper = styled.div`
     cursor: default;
   }
   .react-calendar__month-view__days__day:first-of-type {
-    margin-left: 70%;
+    margin-left: 28%;
   }
   .react-calendar__month-view__days__day {
-    flex-basis: 28px;
+    flex-basis: 14.2%;
     height: 28px;
     border: none;
     background: transparent;
@@ -71,6 +76,10 @@ const CalendarWrapper = styled.div`
     border-radius: 50%;
     background: #daebf7;
   }
+  .not-current-month {
+    visibility: hidden;
+    height: 0px;
+  }
 `
 
 type LeftButtonTypes = {
@@ -81,8 +90,8 @@ const LeftButton = styled.img.attrs({ src: leftImage })<LeftButtonTypes>`
   width: 4.9px;
   height: 8.4px;
   cursor: pointer;
-  opacity: ${(props) => props.disabled ? 0.5 : 1};
-  pointer-events: ${(props) => props.disabled ? `none` : `auto`};
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${props => (props.disabled ? `none` : `auto`)};
 `
 
 const RightButton = styled.img.attrs({ src: rightImage })`
@@ -141,6 +150,10 @@ export const Calendar = (props: CalendarTypes) => {
     const isWeekend = day === 6 || day === 0
     if (isWeekend) {
       classes.push(`day--weekend`)
+    }
+
+    if (dayjs(startDate).format(`MMYYYY`) !== dayjs(date).format(`MMYYYY`)) {
+      classes.push(`not-current-month`)
     }
 
     if (
