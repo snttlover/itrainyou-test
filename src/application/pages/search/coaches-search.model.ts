@@ -6,15 +6,16 @@ import { forward, merge } from "effector"
 import { globalHistory } from "@reach/router"
 import { serializeQuery } from "@app/lib/formatting/serialize-query"
 import { getWindowQuery } from "@app/lib/helpers/getWindowQuery"
+import { scopeBind } from "effector/fork"
 
 // coaches
 const searchPageDomain = appDomain.createDomain()
 
-export const setSearchPageQuery = appDomain.createEvent<GetCoachesParamsTypes>()
-export const addSearchPageQuery = appDomain.createEvent<GetCoachesParamsTypes>()
-export const removeSearchPageQuery = appDomain.createEvent<(keyof GetCoachesParamsTypes)[]>()
+export const setSearchPageQuery = searchPageDomain.createEvent<GetCoachesParamsTypes>()
+export const addSearchPageQuery = searchPageDomain.createEvent<GetCoachesParamsTypes>()
+export const removeSearchPageQuery = searchPageDomain.createEvent<(keyof GetCoachesParamsTypes)[]>()
 
-export const $searchPageQuery = appDomain
+export const $searchPageQuery = searchPageDomain
   .createStore<GetCoachesParamsTypes>({})
   .on(setSearchPageQuery, (_, query) => query)
   .on(addSearchPageQuery, (state, query) => {
@@ -30,20 +31,13 @@ export const $searchPageQuery = appDomain
     return { ...state }
   })
 
-globalHistory.listen(() => {
-  const query = getWindowQuery() as GetCoachesParamsTypes
-  setSearchPageQuery(query)
-  fetchCoachesListFx(query)
-})
-
-const watchedEvents = merge([addSearchPageQuery, removeSearchPageQuery])
-
-$searchPageQuery.watch(
-  watchedEvents,
-  debounce((query: GetCoachesParamsTypes) => {
-    navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
-  }, 300)
-)
+if (!process.isServer) {
+  $searchPageQuery.watch(
+    debounce((query: GetCoachesParamsTypes) => {
+      navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
+    }, 300)
+  )
+}
 
 export const fetchCoachesListFx = searchPageDomain
   .createEffect<GetCoachesParamsTypes, Coach[]>({

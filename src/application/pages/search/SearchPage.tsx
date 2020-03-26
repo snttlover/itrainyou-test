@@ -1,3 +1,8 @@
+import { GetCoachesParamsTypes } from "@app/lib/api/coach"
+import { getWindowQuery } from "@app/lib/helpers/getWindowQuery"
+import { globalHistory } from "@reach/router"
+import { useEvent } from "effector-react/ssr"
+import { useEffect } from "react"
 import * as React from "react"
 import { Layout } from "@/application/components/layouts/default/Layout"
 import { PageContainer } from "@/application/components/page-container/PageContainer"
@@ -11,7 +16,16 @@ import { Sorting } from "./content/list/content/sorting/Sorting"
 import { MobileTabs } from "./content/mobile-tabs/MobileTabs"
 import { loadMaxPrice } from "@app/pages/search/content/filters/content/price-filter/price-filter.model"
 
-export const SearchPage = () => (
+export const SearchPage = () => {
+  const _setSearchPageQuery = useEvent(setSearchPageQuery)
+  useEffect(() => {
+    globalHistory.listen(() => {
+      const query = getWindowQuery() as GetCoachesParamsTypes
+      _setSearchPageQuery(query)
+    })
+  }, [])
+
+  return (
   <Layout>
     <PageContainer>
       <TopBar />
@@ -20,7 +34,7 @@ export const SearchPage = () => (
       <Content />
     </PageContainer>
   </Layout>
-)
+)}
 
 SearchPage.asyncData = async ({ scope, query }: AsyncDataOptions) => {
   await allSettled(setSearchPageQuery, {

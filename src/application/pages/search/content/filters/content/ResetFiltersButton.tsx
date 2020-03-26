@@ -1,3 +1,4 @@
+import { useEvent } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 import { DashedButton } from "@/application/components/button/dashed/DashedButton"
@@ -19,10 +20,11 @@ type ResetFiltersButtonTypes = {
 }
 
 export const ResetFiltersButton = (props: ResetFiltersButtonTypes) => {
+  const _setSearchPageQuery = useEvent(setSearchPageQuery)
+  const _resetCategories = useEvent(resetCategories)
   const clickHandler = () => {
-    setSearchPageQuery({})
-    loadCoaches({})
-    resetCategories()
+    _setSearchPageQuery({})
+    _resetCategories()
   }
 
   return (
