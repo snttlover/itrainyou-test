@@ -4,6 +4,7 @@ import * as React from "react"
 import App from "next/app"
 import { universal } from "@/store"
 import "react-image-crop/dist/ReactCrop.css"
+import "../../public/fonts/gilroy/fonts-list.css"
 
 // @ts-ignore
 class MyApp extends App {
@@ -15,25 +16,23 @@ class MyApp extends App {
     }
 
     type StoresObject = { [key: string]: any }
-    const universalStoresMap = Array.from(universal.history.stores).reduce<StoresObject>(
-      (acc, store) => {
-        acc[store.sid!] = store.getState()
-        return acc
-      },
-      {}
-    )
+    const universalStoresMap = Array.from(universal.history.stores).reduce<StoresObject>((acc, store) => {
+      acc[store.sid!] = store.getState()
+      return acc
+    }, {})
 
     return { ...pageProps, universalStoresMap }
   }
 
-
   render() {
     // @ts-ignore
     const { Component, pageProps } = this.props
-    return <>
-      <AppStyles />
-      <Component {...pageProps} />
-    </>
+    return (
+      <>
+        <AppStyles />
+        <Component {...pageProps} />
+      </>
+    )
   }
 }
 
