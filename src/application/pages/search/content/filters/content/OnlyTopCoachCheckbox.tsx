@@ -1,7 +1,7 @@
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
-import { useStoreMap } from "effector-react"
 import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@app/pages/search/coaches-search.model"
 
 const Container = styled.div`
@@ -16,16 +16,16 @@ const Text = styled.div`
 `
 
 export const OnlyTopCoachCheckbox = () => {
-  const value = useStoreMap({
-    store: $searchPageQuery,
-    keys: [`is_top_coach`],
-    fn: values => !!values.is_top_coach
-  })
+  const queries = useStore($searchPageQuery)
+  const _addSearchPageQuery = useEvent(addSearchPageQuery)
+  const _removeSearchPageQuery = useEvent(removeSearchPageQuery)
+  const value = !!queries.is_top_coach
+
   const change = (value: boolean) => {
     if (value) {
-      addSearchPageQuery({ is_top_coach: value })
+      _addSearchPageQuery({ is_top_coach: value })
     } else {
-      removeSearchPageQuery([`is_top_coach`])
+      _removeSearchPageQuery([`is_top_coach`])
     }
   }
 

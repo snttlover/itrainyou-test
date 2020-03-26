@@ -42,7 +42,7 @@ export interface GetCoachesParamsTypes {
   price__gte?: number
   price?: number
   is_top_coach?: boolean
-  categories?: number[]
+  categories?: string
   rating?: number
   rating__gte?: number
   search?: string

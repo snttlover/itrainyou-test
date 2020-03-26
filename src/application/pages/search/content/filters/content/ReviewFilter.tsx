@@ -1,4 +1,4 @@
-import { useStore } from "effector-react"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 import { Slider } from "@/application/components/slider/Slider"
@@ -42,6 +42,7 @@ export const ReviewFilter = () => {
   const stars: DeclOfNumListType = ["звезды", "звезд", "звезд"]
 
   const params = useStore($searchPageQuery)
+  const _addSearchPageQuery = useEvent(addSearchPageQuery)
   const score = params.rating__gte ? +params.rating__gte : 0
 
   return (
@@ -50,7 +51,7 @@ export const ReviewFilter = () => {
       <Text>
         От <Bold>{score}</Bold> {declOfNum(score, stars)}
       </Text>
-      <Slider value={score} min={min} max={max} onChange={value => addSearchPageQuery({ rating__gte: value })} />
+      <Slider value={score} min={min} max={max} onChange={value => _addSearchPageQuery({ rating__gte: value })} />
       <RangeNumbers>
         <RangeNumber>{min} звезда</RangeNumber>
         <RangeNumber>{max} звезд</RangeNumber>

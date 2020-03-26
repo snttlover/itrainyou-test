@@ -41,7 +41,6 @@ const watchedEvents = merge([addSearchPageQuery, removeSearchPageQuery])
 $searchPageQuery.watch(
   watchedEvents,
   debounce((query: GetCoachesParamsTypes) => {
-    console.log(query)
     navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
   }, 300)
 )

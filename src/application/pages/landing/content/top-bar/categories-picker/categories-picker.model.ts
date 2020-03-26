@@ -27,12 +27,12 @@ export const resetCategories = appDomain.createEvent()
 export const $categoriesList = categoriesPickerDomain
   .createStore<PickerCategory[]>([])
   .on(setSearchPageQuery, (state, query) => {
-    const categories = query.categories ? query.categories.map(id => +id) : []
+    const categories = query.categories ? query.categories.split(',').map(id => +id) : []
     return state.map(item => ({ ...item, checked: categories.includes(item.id) }))
   })
   .on(fetchCategoriesListFx.done, (state, payload) => {
     const query = $searchPageQuery.getState()
-    const categories = query.categories ? query.categories.map(id => +id) : []
+    const categories = query.categories ? query.categories.split(',').map(id => +id) : []
 
     return payload.result.map(item => ({ ...item, checked: categories.includes(item.id) }))
   })
@@ -55,7 +55,7 @@ export const $categoriesList = categoriesPickerDomain
     const selectedCategoriesIds = newCategories.filter(category => category.checked).map(category => category.id)
     if (selectedCategoriesIds.length) {
       addSearchPageQuery({
-        categories: selectedCategoriesIds
+        categories: selectedCategoriesIds.join(',')
       })
     } else {
       removeSearchPageQuery([`categories`])

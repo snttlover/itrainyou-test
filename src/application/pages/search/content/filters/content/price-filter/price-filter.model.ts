@@ -5,7 +5,9 @@ import { forward } from "effector"
 // coaches
 const priceFilterDomain = appDomain.createDomain()
 
-export const fetchMaxPriceFx = priceFilterDomain.createEffect<void, Price>().use(getMaxPrice)
+export const fetchMaxPriceFx = priceFilterDomain.createEffect<void, Price>({
+  handler: getMaxPrice
+})
 
 export const loadMaxPrice = priceFilterDomain.createEvent()
 
@@ -13,6 +15,8 @@ export const $maxPrice = priceFilterDomain
   .createStore<number>(0)
   .on(fetchMaxPriceFx.doneData, (state, payload: Price) => +payload.maxCost)
   .reset(fetchMaxPriceFx)
+
+$maxPrice.watch(console.log)
 
 forward({
   from: loadMaxPrice,

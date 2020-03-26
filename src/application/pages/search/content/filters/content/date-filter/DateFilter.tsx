@@ -3,18 +3,10 @@ import styled from "styled-components"
 import { RadioGroup, RadioOption } from "@app/components/radio/Radio"
 import { useState } from "react"
 import { Calendar, CalendarDateType } from "@app/components/calendar/Calendar"
-import { useStore } from "effector-react"
+import { useStore, useEvent } from "effector-react/ssr"
 import arrowImage from "./images/arrow.svg"
-import {
-  $searchPageQuery,
-  addSearchPageQuery,
-  loadCoaches,
-  removeSearchPageQuery,
-  setSearchPageQuery
-} from "@app/pages/search/coaches-search.model"
+import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@app/pages/search/coaches-search.model"
 import * as dayjs from "dayjs"
-import { navigate } from "@reach/router"
-import { serializeQuery } from "@app/lib/formatting/serialize-query"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -55,6 +47,9 @@ const Arrow = styled.img.attrs({ src: arrowImage })`
 
 export const DateFilter = () => {
   const q = useStore($searchPageQuery)
+  const _addSearchPageQuery = useEvent(addSearchPageQuery)
+  const _removeSearchPageQuery = useEvent(removeSearchPageQuery)
+
   let start = q.nearest_session_date__lte ? dayjs(q.nearest_session_date__lte).valueOf() : null
   let end = q.nearest_session_date__gte ? dayjs(q.nearest_session_date__gte).valueOf() : null
 
@@ -126,7 +121,7 @@ export const DateFilter = () => {
 
     if (range === `range`) {
       changeDate(date)
-      addSearchPageQuery({
+      _addSearchPageQuery({
         // @ts-ignore
         nearest_session_date__lte: formatDateToBackend(date[0]),
         // @ts-ignore
@@ -135,21 +130,20 @@ export const DateFilter = () => {
       return
     }
 
-    const query = $searchPageQuery.getState()
-
     if (range === `to`) {
-      delete query.nearest_session_date__gte
-      query.nearest_session_date__lte = formatDateToBackend(date as Date)
+      _removeSearchPageQuery(["nearest_session_date__gte"])
+      _addSearchPageQuery({
+        nearest_session_date__lte: formatDateToBackend(date as Date)
+      })
     }
 
     if (range === `from`) {
-      delete query.nearest_session_date__lte
-      query.nearest_session_date__gte = formatDateToBackend(date as Date)
+      _removeSearchPageQuery(["nearest_session_date__lte"])
+      _addSearchPageQuery({
+        nearest_session_date__gte: formatDateToBackend(date as Date)
+      })
     }
 
-    setSearchPageQuery(query)
-    navigate(`/search?${serializeQuery(query)}`)
-    loadCoaches(query)
     changeDate(date)
   }
 
@@ -158,7 +152,7 @@ export const DateFilter = () => {
     if (!calendarVisibility) {
       changeRangeType(`from`)
     } else {
-      removeSearchPageQuery(["nearest_session_date__gte", "nearest_session_date__lte"])
+      _removeSearchPageQuery(["nearest_session_date__gte", "nearest_session_date__lte"])
     }
     start = null
     end = null
