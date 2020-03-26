@@ -1,10 +1,10 @@
 import * as React from "react"
 import styled from "styled-components"
-import { SearchInputItem } from "@app/components/search-input/SearchInputItem"
+import { SearchInputItem } from "@/application/components/search-input/SearchInputItem"
 import { useState } from "react"
-import { ClickOutside } from "@app/components/click-outside/ClickOutside"
-import { CoachSortingType } from "@app/lib/api/coach"
-import { sortingItems, SortingItemType } from "@app/pages/search/content/list/content/sorting/items"
+import { ClickOutside } from "@/application/components/click-outside/ClickOutside"
+import { CoachSortingType } from "@/application/lib/api/coach"
+import { sortingItems, SortingItemType } from "@/application/pages/search/content/list/content/sorting/items"
 
 const StyledPicker = styled.div`
   display: inline;

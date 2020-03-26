@@ -14,7 +14,7 @@ import {
   passwordChanged,
   passwordRepeatChanged,
   resetFx
-} from "@app/pages/auth/pages/reset-password/reset-password.model"
+} from "@/application/pages/auth/pages/reset-password/reset-password.model"
 
 const StyledForm = styled.form`
   position: relative;

@@ -1,4 +1,4 @@
-import { MediaRange } from "@app/lib/responsive/media"
+import { MediaRange } from "@/application/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
 import cross from "./cross.svg"

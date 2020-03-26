@@ -8,7 +8,7 @@ import {
   find,
   $hintsList,
   $searchLoading
-} from "@app/pages/landing/content/top-bar/search/search.model"
+} from "@/application/pages/landing/content/top-bar/search/search.model"
 import { useStore } from "effector-react"
 import { useState } from "react"
 import styled from "styled-components"

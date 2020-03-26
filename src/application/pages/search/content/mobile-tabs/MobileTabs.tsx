@@ -2,12 +2,12 @@ import * as React from "react"
 import styled from "styled-components"
 import { changeMobileFiltersVisibility } from "./mobile-tabs.model"
 import { useStore, useStoreMap } from "effector-react"
-import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
-import { sortingItems } from "@app/pages/search/content/list/content/sorting/items"
+import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import { sortingItems } from "@/application/pages/search/content/list/content/sorting/items"
 
 import sortingArrow from "./images/sorting-arrow.svg"
-import { CoachSortingType } from "@app/lib/api/coach"
-import { SortingContainer, SortingPicker } from "@app/pages/search/content/list/content/sorting/SortingPicker"
+import { CoachSortingType } from "@/application/lib/api/coach"
+import { SortingContainer, SortingPicker } from "@/application/pages/search/content/list/content/sorting/SortingPicker"
 
 const Container = styled.div`
   display: none;

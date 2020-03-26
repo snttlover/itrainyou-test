@@ -1,22 +1,14 @@
 import { Coach, getCoaches, GetCoachesParamsTypes } from "@/application/lib/api/coach"
-import { appDomain } from "@/application/store"
-import { debounce } from "@app/lib/helpers/debounce"
-import { navigate } from "@app/lib/navigation"
-import { forward, merge } from "effector"
-import { globalHistory } from "@reach/router"
-import { serializeQuery } from "@app/lib/formatting/serialize-query"
-import { getWindowQuery } from "@app/lib/helpers/getWindowQuery"
-import { scopeBind } from "effector/fork"
+import { debounce } from "@/application/lib/helpers/debounce"
+import { createEffect, createEvent } from "effector"
+import { createUniversalStore } from "@/store"
+import Router from "next/router"
 
-// coaches
-const searchPageDomain = appDomain.createDomain()
+export const setSearchPageQuery = createEvent<GetCoachesParamsTypes>()
+export const addSearchPageQuery = createEvent<GetCoachesParamsTypes>()
+export const removeSearchPageQuery = createEvent<(keyof GetCoachesParamsTypes)[]>()
 
-export const setSearchPageQuery = searchPageDomain.createEvent<GetCoachesParamsTypes>()
-export const addSearchPageQuery = searchPageDomain.createEvent<GetCoachesParamsTypes>()
-export const removeSearchPageQuery = searchPageDomain.createEvent<(keyof GetCoachesParamsTypes)[]>()
-
-export const $searchPageQuery = searchPageDomain
-  .createStore<GetCoachesParamsTypes>({})
+export const $searchPageQuery = createUniversalStore<GetCoachesParamsTypes>({})
   .on(setSearchPageQuery, (_, query) => query)
   .on(addSearchPageQuery, (state, query) => {
     return {
@@ -31,27 +23,19 @@ export const $searchPageQuery = searchPageDomain
     return { ...state }
   })
 
-if (!process.isServer) {
+// @ts-ignore
+if (process.browser) {
   $searchPageQuery.updates.watch(
     debounce((query: GetCoachesParamsTypes) => {
-      navigate(`/search?${serializeQuery(query)}`).then(() => fetchCoachesListFx(query))
+      Router.push({ pathname: `/search`, query: { ...query } }, undefined, { shallow: true }).then(() => fetchCoachesListFx(query))
     }, 300)
   )
 }
 
-export const fetchCoachesListFx = searchPageDomain
-  .createEffect<GetCoachesParamsTypes, Coach[]>({
-    handler: getCoaches
-  })
+export const fetchCoachesListFx = createEffect<GetCoachesParamsTypes, Coach[]>({
+  handler: getCoaches
+})
 
-export const loadCoaches = searchPageDomain.createEvent<GetCoachesParamsTypes>()
-
-export const $coachesList = searchPageDomain
-  .createStore<Coach[]>([])
+export const $coachesList = createUniversalStore<Coach[]>([])
   .on(fetchCoachesListFx.doneData, (state, payload) => payload)
   .reset(fetchCoachesListFx)
-
-forward({
-  from: loadCoaches,
-  to: fetchCoachesListFx
-})

@@ -1,9 +1,9 @@
-import { appDomain } from "@app/store"
+import { createDomain } from "effector"
 import * as Cookies from "js-cookie"
 
 const TOKEN_KEY = '__token__'
 
-export const userDomain = appDomain.createDomain()
+export const userDomain = createDomain()
 
 export const loggedIn = userDomain.createEvent<{ token: string }>()
 export const logout = userDomain.createEvent()

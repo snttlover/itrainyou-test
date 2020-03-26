@@ -1,13 +1,12 @@
 import { CoachSession, getCoachSessions } from "@/application/lib/api/coach-sessions"
-import { appDomain } from "@/application/store"
-import { forward } from "effector"
+import { createDomain, forward } from "effector"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
 }
 
 export const genCoachSessions = (id: number) => {
-  const coachSession = appDomain.createDomain()
+  const coachSession = createDomain()
 
   const fetchCoachSessionsListFx = coachSession.createEffect<void, CoachSession[]>().use(() => getCoachSessions(id, {}))
 

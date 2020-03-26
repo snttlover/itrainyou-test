@@ -1,11 +1,10 @@
-import { FormItem } from "@app/components/form-item/FormItem"
-import { Input } from "@app/components/input/Input"
-import { AuthLayout } from "@app/components/layouts/auth/AuthLayout"
-import { SelectInput } from "@app/components/select-input/SelectInput"
-import { navigate } from "@app/lib/navigation"
-import { MediaRange } from "@app/lib/responsive/media"
-import { NextButton } from "@app/pages/auth/pages/signup/components/NextButton"
-import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
+import { FormItem } from "@/application/components/form-item/FormItem"
+import { Input } from "@/application/components/input/Input"
+import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { SelectInput } from "@/application/components/select-input/SelectInput"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
+import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import {
   $isStep3FormValid,
   $step3Form,
@@ -17,14 +16,15 @@ import {
   $isUploadModelOpen,
   toggleUploadModal,
   step3Mounted
-} from "@app/pages/auth/pages/signup/content/step-3/step3.model"
-import { UploadModal } from "@app/pages/auth/pages/signup/content/step-3/UploadModal"
-import { $userData } from "@app/pages/auth/pages/signup/signup.model"
+} from "@/application/pages/auth/pages/signup/content/step-3/step3.model"
+import { UploadModal } from "@/application/pages/auth/pages/signup/content/step-3/UploadModal"
+import { $userData } from "@/application/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react"
+import Router from "next/router"
 import { useEffect, useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
-import * as dayjs from "dayjs"
+import dayjs from "dayjs"
 import uploadImage from "./upload.svg"
 
 const StyledSteps = styled(Steps)`
@@ -227,7 +227,7 @@ export const Step3 = () => {
               <SelectInput placeholder='Мужской' value={values.sex} onChange={sexChanged} options={sexItems} />
             </FormItem>
           </FormGroup>
-          <NextButton onClick={() => navigate('/signup/4')} disabled={!isFormValid} />
+          <NextButton onClick={() => Router.push('/signup/4')} disabled={!isFormValid} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => toggleUploadModal()} />}

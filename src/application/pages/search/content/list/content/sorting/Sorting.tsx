@@ -1,11 +1,11 @@
 import * as React from "react"
 import styled from "styled-components"
 import { useStore, useStoreMap } from "effector-react"
-import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
-import { declOfNum, DeclOfNumListType } from "@app/lib/formatting/numerals"
-import { SortingPicker } from "@app/pages/search/content/list/content/sorting/SortingPicker"
-import { CoachSortingType } from "@app/lib/api/coach"
-import { sortingItems } from "@app/pages/search/content/list/content/sorting/items"
+import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import { declOfNum, DeclOfNumListType } from "@/application/lib/formatting/numerals"
+import { SortingPicker } from "@/application/pages/search/content/list/content/sorting/SortingPicker"
+import { CoachSortingType } from "@/application/lib/api/coach"
+import { sortingItems } from "@/application/pages/search/content/list/content/sorting/items"
 
 const Container = styled.div`
   display: flex;

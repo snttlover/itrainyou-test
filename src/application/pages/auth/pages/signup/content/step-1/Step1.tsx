@@ -1,9 +1,9 @@
-import { FormItem } from "@app/components/form-item/FormItem"
-import { Input } from "@app/components/input/Input"
-import { AuthLayout } from "@app/components/layouts/auth/AuthLayout"
-import { MediaRange } from "@app/lib/responsive/media"
-import { NextButton } from "@app/pages/auth/pages/signup/components/NextButton"
-import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
+import { FormItem } from "@/application/components/form-item/FormItem"
+import { Input } from "@/application/components/input/Input"
+import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
+import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import {
   $isFormValid,
   $step1Form,

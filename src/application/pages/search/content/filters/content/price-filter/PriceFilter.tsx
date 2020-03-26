@@ -1,9 +1,9 @@
-import { RangeSlider } from "@app/components/slider/RangeSlider"
-import { formatCurrency } from "@app/lib/formatting/currency"
+import { RangeSlider } from "@/application/components/slider/RangeSlider"
+import { formatCurrency } from "@/application/lib/formatting/currency"
 import * as React from "react"
 import styled from "styled-components"
-import { useEvent, useStore } from "effector-react/ssr"
-import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
+import { useEvent, useStore } from "effector-react"
+import { $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
 import { $maxPrice } from "./price-filter.model"
 
 const Container = styled.div`
@@ -40,7 +40,6 @@ const RangeNumber = styled.div``
 export const PriceFilter = () => {
   const maxPrice = useStore($maxPrice)
   const params = useStore($searchPageQuery)
-  const _addSearchPageQuery = useEvent(addSearchPageQuery)
 
   const start = params.price__gte ? +params.price__gte : 0
   const end = params.price__lte ? +params.price__lte : maxPrice
@@ -55,7 +54,7 @@ export const PriceFilter = () => {
         value={[start, end]}
         min={0}
         max={maxPrice}
-        onChange={([price__gte, price__lte]) => _addSearchPageQuery({ price__gte, price__lte })}
+        onChange={([price__gte, price__lte]) => addSearchPageQuery({ price__gte, price__lte })}
       />
       <RangeNumbers>
         <RangeNumber>{formatCurrency(0)} руб.</RangeNumber>

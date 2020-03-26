@@ -2,7 +2,7 @@ import { CoachCard } from "@/application/components/coach-card/CoachCard"
 import * as React from "react"
 import styled from "styled-components"
 import { $coachesList } from "./model"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import tabletka from "./images/tabletka.svg"
 import { Link } from "@reach/router"
 

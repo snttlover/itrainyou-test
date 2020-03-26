@@ -1,8 +1,4 @@
 import { OurCoaches } from "@/application/pages/landing/content/our-coaches/OurCoaches"
-import { loadCategories } from "@app/pages/landing/content/top-bar/categories-picker/categories-picker.model"
-import { loadCoaches } from "./content/our-coaches/model"
-import { AsyncDataOptions } from "@/application/routes"
-import { allSettled } from "effector/fork"
 import * as React from "react"
 import { Layout } from "@/application/components/layouts/default/Layout"
 import { TopBar } from "./content/top-bar/TopBar"
@@ -33,16 +29,3 @@ export const LandingPage = () => (
     <Footer />
   </Layout>
 )
-
-LandingPage.asyncData = async ({ scope }: AsyncDataOptions) => {
-  await Promise.all([
-    allSettled(loadCoaches, {
-      scope,
-      params: undefined
-    }),
-    allSettled(loadCategories, {
-      scope,
-      params: undefined
-    })
-  ])
-}

@@ -1,5 +1,5 @@
-import { Category } from "@app/lib/api/categories"
-import { keysToCamel, keysToSnake } from "@app/lib/network/casing"
+import { Category } from "@/application/lib/api/categories"
+import { keysToCamel, keysToSnake } from "@/application/lib/network/casing"
 import { post } from "@/application/lib/network/network"
 
 export interface RegisterAsUserRequest {

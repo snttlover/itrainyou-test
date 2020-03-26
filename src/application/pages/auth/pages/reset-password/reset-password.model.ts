@@ -1,32 +1,26 @@
 import { ResetPasswordRequest, resetPassword } from "@/application/lib/api/reset-password"
-import { appDomain } from "@/application/store"
-
-import { createEffectorField } from "@app/lib/generators/efffector"
-import { navigate } from "@app/lib/navigation"
-import { passwordValidator, trimString } from "@app/lib/validators"
+import { createEffectorField } from "@/application/lib/generators/efffector"
+import { passwordValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createStoreObject } from "effector"
-import { signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
+import { combine, createEffect, createEvent, createStore, createStoreObject } from "effector"
+import Router from "next/router"
 
-const resetDomain = appDomain.createDomain()
-
-export const resetFormSended = resetDomain.createEvent()
+export const resetFormSended = createEvent()
 
 type ResetRType = {
   token: string
   password: string
 }
 
-export const resetFx = resetDomain.createEffect<ResetRType, ResetPasswordRequest, AxiosError>({
+export const resetFx = createEffect<ResetRType, ResetPasswordRequest, AxiosError>({
   handler: ({ password, token }) => resetPassword({ password, token })
 })
 
 resetFx.done.watch(data => {
-  navigate(`/`)
+  Router.push(`/`)
 })
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
-  domain: resetDomain,
   defaultValue: "",
   validator: passwordValidator,
   eventMapper: event => event.map(trimString)
@@ -38,7 +32,6 @@ export const [
   $passwordRepeatError,
   $isPasswordRepeatCorrect
 ] = createEffectorField<string>({
-  domain: signUpDomain,
   defaultValue: "",
   validator: value => {
     const error = passwordValidator(value)
@@ -49,8 +42,7 @@ export const [
   eventMapper: event => event.map(trimString)
 })
 
-export const $commonError = resetDomain
-  .createStore<string | null>(null)
+export const $commonError = createStore<string | null>(null)
   .on(resetFx, () => null)
   .on(resetFx.fail, (state, { error }) => {
     if (error.response?.data.token) {
@@ -76,8 +68,7 @@ export const $isFormValid = combine(
   (isPasswordCorrect, isPasswordRepeatCorrect) => isPasswordCorrect && isPasswordRepeatCorrect
 )
 
-export const updateResetSuccessMessageVisibility = resetDomain.createEvent<boolean>()
-export const $resetSuccessMessageVisibility = resetDomain
-  .createStore(false)
+export const updateResetSuccessMessageVisibility = createEvent<boolean>()
+export const $resetSuccessMessageVisibility = createStore(false)
   .on(updateResetSuccessMessageVisibility, (state, status) => status)
   .on(resetFx.done, () => true)

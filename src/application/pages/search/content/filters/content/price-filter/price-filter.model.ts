@@ -1,22 +1,12 @@
 import { getMaxPrice, Price } from "@/application/lib/api/coach-max-price"
-import { appDomain } from "@/application/store"
-import { forward } from "effector"
+import { createUniversalStore } from "@/store"
+import { createEffect } from "effector"
 
-// coaches
-const priceFilterDomain = appDomain.createDomain()
-
-export const fetchMaxPriceFx = priceFilterDomain.createEffect<void, Price>({
+export const fetchMaxPriceFx = createEffect<void, Price>({
   handler: getMaxPrice
 })
 
-export const loadMaxPrice = priceFilterDomain.createEvent()
-
-export const $maxPrice = priceFilterDomain
-  .createStore<number>(0)
+export const $maxPrice = createUniversalStore<number>(0)
   .on(fetchMaxPriceFx.doneData, (state, payload: Price) => +payload.maxCost)
   .reset(fetchMaxPriceFx)
 
-forward({
-  from: loadMaxPrice,
-  to: fetchMaxPriceFx
-})

@@ -11,7 +11,7 @@ ENV NODE_ENV=production
 
 COPY --from=builder package*.json ./
 RUN npm i --production
-COPY --from=builder public/ ./public
+COPY --from=builder static ./public
 COPY --from=builder .build/ ./.build
 
 CMD npm start

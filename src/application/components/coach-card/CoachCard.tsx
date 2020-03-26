@@ -1,4 +1,4 @@
-import { SelectDatetime } from "@app/components/coach-card/select-date/SelectDatetime"
+import { SelectDatetime } from "@/application/components/coach-card/select-date/SelectDatetime"
 import { Coach } from "@/application/lib/api/coach"
 import { formatISOStringToLocaleDateString } from "@/application/lib/formatting/date"
 import { MediaRange } from "@/application/lib/responsive/media"
@@ -8,7 +8,7 @@ import styled from "styled-components"
 import starIcon from "./star.svg"
 import arrowIcon from "./arrow.svg"
 import topCoachIcon from "./images/top-coach-icon.svg"
-import { genCoachSessions } from "@app/components/coach-card/select-date/select-date.model"
+import { genCoachSessions } from "@/application/components/coach-card/select-date/select-date.model"
 
 const Block = styled.div<{ isActive: boolean }>`
   display: inline-table;

@@ -1,19 +1,10 @@
-import { Category, getCategories } from "@app/lib/api/categories"
-import { appDomain } from "@app/store"
-import { forward } from "effector"
+import { Category, getCategories } from "@/application/lib/api/categories"
+import { createUniversalStore } from "@/store"
+import { createEffect} from "effector"
 
-const categoriesDomain = appDomain.createDomain('categories-domain')
-
-const fetchCategoriesListFx = categoriesDomain.createEffect({
+export const fetchCategoriesListFx = createEffect({
   handler: getCategories
 })
 
-export const loadCategories = categoriesDomain.createEvent()
-
-export const $categoriesList = categoriesDomain.createStore<Category[]>([])
+export const $categoriesList = createUniversalStore<Category[]>([])
   .on(fetchCategoriesListFx.done, (state, payload) => payload.result)
-
-forward({
-  from: loadCategories,
-  to: fetchCategoriesListFx
-})

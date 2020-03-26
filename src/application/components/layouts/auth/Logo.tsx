@@ -1,5 +1,5 @@
 import * as React from "react"
-import { MediaRange } from "@app/lib/responsive/media"
+import { MediaRange } from "@/application/lib/responsive/media"
 import styled from "styled-components"
 import logo from "./images/logo.svg"
 import {Link} from "@reach/router"

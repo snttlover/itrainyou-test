@@ -1,14 +1,14 @@
-import { Button } from "@app/components/button/normal/Button"
-import { $categoriesList } from "@app/feature/categories/categories.store"
-import { MediaRange } from "@app/lib/responsive/media"
-import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
-import { Step4ClientLayout } from "@app/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"
+import { Button } from "@/application/components/button/normal/Button"
+import { $categoriesList } from "@/application/feature/categories/categories.store"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
+import { Step4ClientLayout } from "@/application/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"
 import {
   $userData,
   registerUserFx,
   toggleCategorySelection,
   userRegistered
-} from "@app/pages/auth/pages/signup/signup.model"
+} from "@/application/pages/auth/pages/signup/signup.model"
 import { CategoryCard } from "./client/CategoryCard"
 import { useStore } from "effector-react"
 import * as React from "react"

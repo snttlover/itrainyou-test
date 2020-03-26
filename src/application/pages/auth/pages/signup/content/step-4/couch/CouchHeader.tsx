@@ -1,6 +1,6 @@
-import { Button } from "@app/components/button/normal/Button"
-import { MediaRange } from "@app/lib/responsive/media"
-import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
+import { Button } from "@/application/components/button/normal/Button"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import * as React from "react"
 import styled from "styled-components"
 

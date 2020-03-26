@@ -4,7 +4,7 @@ import { WhiteContainer } from "@/application/pages/auth/components/WhiteContain
 import { CenterFormContainer } from "@/application/pages/auth/components/CenterFormContainer"
 import { RecoveryForm } from "@/application/pages/auth/pages/recovery/content/RecoveryForm"
 import { RecoveryMessage } from "@/application/pages/auth/pages/recovery/content/RecoveryMessage"
-import { $recoverySuccessMessageVisibility } from "@app/pages/auth/pages/recovery/recovery.model"
+import { $recoverySuccessMessageVisibility } from "@/application/pages/auth/pages/recovery/recovery.model"
 import { useStore } from "effector-react"
 
 export const RecoveryPage = () => {

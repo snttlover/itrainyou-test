@@ -1,28 +1,22 @@
 import { RecoveryRequest, recovery } from "@/application/lib/api/recovery"
-import { appDomain } from "@/application/store"
-
-import { createEffectorField, UnpackedStoreObjectType } from "@app/lib/generators/efffector"
-import { emailValidator, trimString } from "@app/lib/validators"
+import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
+import { emailValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createStoreObject, sample } from "effector"
+import { combine, createEffect, createEvent, createStore, createStoreObject, sample } from "effector"
 
-const recoveryDomain = appDomain.createDomain()
+export const recoveryFormSended = createEvent()
 
-export const recoveryFormSended = recoveryDomain.createEvent()
-
-export const recoveryFx = recoveryDomain.createEffect<UnpackedStoreObjectType<typeof $recoveryForm>, RecoveryRequest, AxiosError>({
+export const recoveryFx = createEffect<UnpackedStoreObjectType<typeof $recoveryForm>, RecoveryRequest, AxiosError>({
   handler: ({ email }) => recovery({ email })
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
-  domain: recoveryDomain,
   defaultValue: "",
   validator: emailValidator,
   eventMapper: event => event.map(trimString)
 })
 
-export const $commonError = recoveryDomain
-  .createStore<string | null>(null)
+export const $commonError = createStore<string | null>(null)
   .on(recoveryFx, () => null)
   .on(recoveryFx.fail, (state, { error }) => `Почта не найдена`)
 
@@ -40,9 +34,8 @@ export const $isFormValid = combine(
 )
 
 
-export const updateRecoverySuccessMessageVisibility = recoveryDomain.createEvent<boolean>()
-export const $recoverySuccessMessageVisibility = recoveryDomain
-  .createStore(false)
+export const updateRecoverySuccessMessageVisibility = createEvent<boolean>()
+export const $recoverySuccessMessageVisibility = createStore(false)
   .on(updateRecoverySuccessMessageVisibility, (state, status) => status)
   .on(recoveryFx.done, () => true)
 

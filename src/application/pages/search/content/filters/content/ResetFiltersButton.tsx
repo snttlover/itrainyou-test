@@ -1,10 +1,9 @@
-import { useEvent } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 import { DashedButton } from "@/application/components/button/dashed/DashedButton"
 import { Link } from "@reach/router"
-import { loadCoaches, setSearchPageQuery } from "@app/pages/search/coaches-search.model"
-import { resetCategories } from "@app/pages/landing/content/top-bar/categories-picker/categories-picker.model"
+import { fetchCoachesListFx, setSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import { resetCategories } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 
 const Container = styled.div`
   display: flex;
@@ -20,11 +19,9 @@ type ResetFiltersButtonTypes = {
 }
 
 export const ResetFiltersButton = (props: ResetFiltersButtonTypes) => {
-  const _setSearchPageQuery = useEvent(setSearchPageQuery)
-  const _resetCategories = useEvent(resetCategories)
   const clickHandler = () => {
-    _setSearchPageQuery({})
-    _resetCategories()
+    setSearchPageQuery({})
+    resetCategories()
   }
 
   return (

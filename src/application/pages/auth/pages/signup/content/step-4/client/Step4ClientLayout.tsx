@@ -1,4 +1,4 @@
-import { Logo } from "@app/components/layouts/auth/Logo"
+import { Logo } from "@/application/components/layouts/auth/Logo"
 import * as React from "react"
 import styled from "styled-components"
 

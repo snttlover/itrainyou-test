@@ -1,16 +1,12 @@
 import { login, LoginResponse } from "@/application/lib/api/login"
-import { appDomain } from "@/application/store"
-
-import { createEffectorField, UnpackedStoreObjectType } from "@app/lib/generators/efffector"
-import { emailValidator, trimString } from "@app/lib/validators"
+import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
+import { emailValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createStoreObject, sample } from "effector"
+import { combine, createEffect, createEvent, createStore, createStoreObject, sample } from "effector"
 
-const loginDomain = appDomain.createDomain()
+export const loginFormSended = createEvent()
 
-export const loginFormSended = loginDomain.createEvent()
-
-export const loginFx = loginDomain.createEffect<UnpackedStoreObjectType<typeof $loginForm>, LoginResponse, AxiosError>({
+export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, LoginResponse, AxiosError>({
   handler: ({ email, password }) => login({ email, password })
 })
 
@@ -19,19 +15,16 @@ loginFx.done.watch(payload => {
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
-  domain: loginDomain,
   defaultValue: "",
   validator: emailValidator,
   eventMapper: event => event.map(trimString)
 })
 
-export const $commonError = loginDomain
-  .createStore<string | null>(null)
+export const $commonError = createStore<string | null>(null)
   .on(loginFx, () => null)
   .on(loginFx.fail, (state, { error }) => `Неверные данные`)
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
-  domain: loginDomain,
   defaultValue: "",
   validator: () => null,
   eventMapper: event => event.map(trimString)

@@ -1,15 +1,15 @@
-import { pageMounted } from "@app/pages/auth/pages/signup/signup.model"
-import { Redirect, useParams } from "@reach/router"
+import { pageMounted } from "@/application/pages/auth/pages/signup/signup.model"
+import { useRouter } from "next/router"
 import { useEffect } from "react"
 import * as React from "react"
-import { Step1 } from "@app/pages/auth/pages/signup/content/step-1/Step1"
-import { Step2 } from "@app/pages/auth/pages/signup/content/step-2/Step2"
-import { Step3 } from "@app/pages/auth/pages/signup/content/step-3/Step3"
-import { Step4 } from "@app/pages/auth/pages/signup/content/step-4/Step4"
+import { Step1 } from "@/application/pages/auth/pages/signup/content/step-1/Step1"
+import { Step2 } from "@/application/pages/auth/pages/signup/content/step-2/Step2"
+import { Step3 } from "@/application/pages/auth/pages/signup/content/step-3/Step3"
+import { Step4 } from "@/application/pages/auth/pages/signup/content/step-4/Step4"
 
 export const SignUpPage = () => {
-  const params = useParams()
-  const currentStep = params ? +params.step : null
+  const params = useRouter()
+  const currentStep = params ? +params.query.step : null
   useEffect(() => pageMounted(), [])
 
   switch (currentStep) {
@@ -22,6 +22,6 @@ export const SignUpPage = () => {
     case 4:
       return <Step4 />
     default:
-      return <Redirect to='/signup/1' replace noThrow />
+      return <div></div>
   }
 }
