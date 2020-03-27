@@ -1,5 +1,4 @@
 import { AppStyles } from "@/application/AppStyles"
-import { $categoriesList } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 import { withHydrate } from "effector-next"
 import * as React from "react"
 import App, { AppContext } from "next/app"
