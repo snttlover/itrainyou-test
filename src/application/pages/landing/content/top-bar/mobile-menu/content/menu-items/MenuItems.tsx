@@ -11,8 +11,8 @@ const List = styled.div`
 
 export const MenuItems = () => (
   <List>
-    {menu.map((item, i) => (
+    {/*menu.map((item, i) => (
       <MenuItem key={i}>{item.text}</MenuItem>
-    ))}
+    ))*/}
   </List>
 )
