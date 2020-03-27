@@ -1,14 +1,12 @@
 import * as React from "react"
 import styled from "styled-components"
 import { changeMobileFiltersVisibility } from "./mobile-tabs.model"
-import { useStore, useStoreMap } from "effector-react"
-import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
-import { sortingItems } from "@/application/pages/search/content/list/content/sorting/items"
-
-import sortingArrow from "./images/sorting-arrow.svg"
-import { CoachSortingType } from "@/application/lib/api/coach"
+import { useStore } from "effector-react"
+import { $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import { CoachSortingType, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { SortingContainer, SortingPicker } from "@/application/pages/search/content/list/content/sorting/SortingPicker"
 
+import sortingArrow from "./images/sorting-arrow.svg"
 const Container = styled.div`
   display: none;
   width: 100%;
@@ -47,17 +45,40 @@ const StyledSortingPicker = styled(SortingPicker)`
   }
 `
 
+const Pin = styled.div`
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #d5584d;
+  border-radius: 50%;
+  margin-left: 25px;
+  margin-top: -3px;
+`
+
 export const MobileTabs = () => {
-  const current = useStoreMap({
-    store: $searchPageQuery,
-    keys: [`ordering`],
-    fn: values => values.ordering || `popularity`
-  })
+  const params = useStore($searchPageQuery)
+
+  const current = params.ordering || `popularity`
 
   const navigate = (sort: CoachSortingType) => {
     addSearchPageQuery({
       ordering: sort
     })
+  }
+
+  const usedFilters: (keyof GetCoachesParamsTypes)[] = [
+    "price__lte",
+    "price__gte",
+    "price",
+    "is_top_coach",
+    "rating",
+    "rating__gte",
+    "nearest_session_date__gte",
+    "nearest_session_date__lte"
+  ]
+
+  const hasFilters = () => {
+    return usedFilters.reduce((hasFilter, currentKey): boolean => hasFilter || !!params[currentKey], false)
   }
 
   return (
@@ -68,7 +89,10 @@ export const MobileTabs = () => {
           <Arrow />
         </Tab>
       </StyledSortingPicker>
-      <Tab onClick={() => changeMobileFiltersVisibility(true)}>Фильтры</Tab>
+      <Tab onClick={() => changeMobileFiltersVisibility(true)}>
+        Фильтры
+        {hasFilters() && <Pin />}
+      </Tab>
     </Container>
   )
 }
