@@ -1,6 +1,6 @@
 import { Button } from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
+import Router from "next/router"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -147,7 +147,7 @@ export const CouchHeader = ({ avatar, fullName, sex, years }: CouchHeaderProps) 
       <Sex>Пол: {sex}</Sex>
     </UserData>
     <ButtonContainer>
-      <SkipButton>Пропустить</SkipButton>
+      <SkipButton onClick={() => Router.push('/', '/')}>Пропустить</SkipButton>
       <Hint>*Вы сможете потом заполнить информацию</Hint>
     </ButtonContainer>
   </HeaderContent>
