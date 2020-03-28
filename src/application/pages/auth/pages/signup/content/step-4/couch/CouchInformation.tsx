@@ -11,7 +11,10 @@ import {
   educationChanged,
   workExperienceChanged,
   descriptionChanged,
-  phoneChanged, videoUploadFx, $videoUploadProgress, videoUploaded
+  phoneChanged,
+  videoUploadFx,
+  $videoUploadProgress,
+  videoUploaded
 } from "@/application/pages/auth/pages/signup/content/step-4/step-4-couch.model"
 import {
   $userData,
@@ -19,7 +22,7 @@ import {
   toggleCategorySelection,
   userRegistered
 } from "@/application/pages/auth/pages/signup/signup.model"
-import { useStore } from "effector-react"
+import { useList, useStore } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
@@ -223,6 +226,7 @@ export const CouchInformation = ({}: CouchInformation) => {
       key={category.id}
       category={category}
       selected={selectedCategories.includes(category.id)}
+      disabled={selectedCategories.length >= 3}
       onSelect={id => toggleCategorySelection(id)}
     />
   ))
@@ -277,9 +281,9 @@ export const CouchInformation = ({}: CouchInformation) => {
         <VideoUploader onClick={open}>
           {!values.videoInterview && isVideoUploading && <ProgressBar percent={videoUploadProgress} />}
           {values.videoInterview && !isVideoUploading && <Video src={values.videoInterview} />}
-          {!values.videoInterview && !isVideoUploading && 'Добавить видео'}
+          {!values.videoInterview && !isVideoUploading && "Добавить видео"}
         </VideoUploader>
-        <input {...getInputProps()}/>
+        <input {...getInputProps()} />
         <SendRequestButton disabled={loading || isVideoUploading} onClick={() => userRegistered()}>
           Отправить заявку
         </SendRequestButton>

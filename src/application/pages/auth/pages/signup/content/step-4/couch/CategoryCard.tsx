@@ -6,12 +6,13 @@ import * as React from "react"
 import styled from "styled-components"
 import arrow from "./arrow.svg"
 
-const Container = styled.div`
+const Container = styled.div<{ disabled?: boolean }>`
   background: #ffffff;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 12px;
   user-select: none;
+  opacity: ${({ disabled }) => (disabled ? "0.6" : "1")};
 `
 
 const Header = styled.div`
@@ -66,15 +67,21 @@ type CategoryCardProps = {
   selected: boolean
   onSelect: (id: number) => void
   className?: string
+  disabled?: boolean
 }
 
-export const CategoryCard = styled(({ category, selected, onSelect, className }: CategoryCardProps) => {
+export const CategoryCard = styled(({ category, selected, onSelect, className, disabled }: CategoryCardProps) => {
   const [isOpen, setOpen] = useState(false)
 
+  const realDisabled = !selected && disabled
+
   return (
-    <Container className={className} onClick={() => setOpen(!isOpen)}>
+    <Container className={className} onClick={() => setOpen(!isOpen)} disabled={realDisabled}>
       <Header>
-        <Checkbox value={selected} onChange={() => onSelect(category.id)} />
+        <Checkbox value={selected} onChange={() => {
+          if (realDisabled) return
+          onSelect(category.id)
+        }} />
         <Icon src={category.icon} />
         <Title>{category.name}</Title>
         <Arrow reverse={isOpen} />
