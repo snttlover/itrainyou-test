@@ -33,8 +33,8 @@ const StyledLogo = styled.img.attrs({ src: logo })`
 `
 
 export const Logo = () => (
-  <Link href='/'>
-    <LogoLink href='/'>
+  <Link href='/' as='/' passHref>
+    <LogoLink>
       <StyledLogo />
     </LogoLink>
   </Link>

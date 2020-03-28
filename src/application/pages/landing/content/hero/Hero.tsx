@@ -96,7 +96,7 @@ export const Hero = () => (
         Подберите специалиста на сайте, чтобы грамотно поставить и
         гарантированно достичь своей цели
       </Description>
-      <Link href='/signup/1'>
+      <Link href='/signup/[step]' as='/signup/1'>
         <RegistrationButton>Зарегистрироваться</RegistrationButton>
       </Link>
     </StyledLandingPageContainer>

@@ -61,8 +61,10 @@ const StyledLoginButtons = styled(LoginButtons)`
 
 export const TopBar = () => (
   <StyledContainer>
-    <Link href='/'>
-      <StyledLogo />
+    <Link href='/' as='/' passHref>
+      <a>
+        <StyledLogo />
+      </a>
     </Link>
     <StyledCategoriesPicker />
     <StyledSearch />

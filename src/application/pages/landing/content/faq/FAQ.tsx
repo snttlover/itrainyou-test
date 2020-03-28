@@ -111,7 +111,7 @@ export const FAQ = () => (
         ))}
       </QuestionsList>
       <PeopleImage />
-      <Link href='/signup/1'>
+      <Link href='/signup/[step]' as='/signup/1'>
         <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
       </Link>
     </Content>

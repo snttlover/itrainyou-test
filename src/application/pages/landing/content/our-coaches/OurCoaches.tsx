@@ -106,7 +106,7 @@ export const OurCoaches = () => {
           <CoachCard key={coach.id} coach={coach} />
         ))}
       </CoachList>
-      <Link href='/search'>
+      <Link href='/search' as='/search'>
         <ShowMoreButton>Показать еще</ShowMoreButton>
       </Link>
     </Container>

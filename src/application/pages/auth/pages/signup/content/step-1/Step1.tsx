@@ -123,8 +123,8 @@ export const Step1 = () => {
         </Form>
       </Container>
       <Footer>
-        <Link href='/login'>
-          <StyledLink href='/login'>Уже есть аккаунт? Войдите</StyledLink>
+        <Link href='/login' as='/login' passHref>
+          <StyledLink>Уже есть аккаунт? Войдите</StyledLink>
         </Link>
       </Footer>
     </AuthLayout>

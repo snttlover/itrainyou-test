@@ -182,7 +182,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           Итого: <Summary>{amount} ₽</Summary>
         </Text>
         <ButtonContainer>
-          <Link href='/signup/1'>
+          <Link href='/signup/[step]' as='/signup/1'>
             <BuyButton>Зарегистрироваться</BuyButton>
           </Link>
         </ButtonContainer>

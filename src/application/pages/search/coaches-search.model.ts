@@ -32,7 +32,10 @@ if (process.browser) {
   $searchPageQuery.watch(
     updateEvents,
     debounce((query: GetCoachesParamsTypes) => {
-      Router.push({ pathname: `/search`, query: { ...query } }, undefined, { shallow: true })
+      Router.push(
+        { pathname: `/search`, query: { ...query } },
+        { pathname: "/search", query: { ...query } }
+      )
     }, 300)
   )
 }

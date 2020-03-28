@@ -1,3 +1,4 @@
+import { withProtect } from "@/application/feature/user/Protected"
 import { pageMounted } from "@/application/pages/auth/pages/signup/signup.model"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
@@ -7,11 +8,16 @@ import { Step2 } from "@/application/pages/auth/pages/signup/content/step-2/Step
 import { Step3 } from "@/application/pages/auth/pages/signup/content/step-3/Step3"
 import { Step4 } from "@/application/pages/auth/pages/signup/content/step-4/Step4"
 
+
+const ProtectedStep2 = withProtect({to: '/signup/[step]', as: '/signup/1'})(Step2)
+const ProtectedStep3 = withProtect({to: '/signup/[step]', as: '/signup/1'})(Step3)
+const ProtectedStep4 = withProtect({to: '/signup/[step]', as: '/signup/1'})(Step4)
+
 export default () => {
   const router = useRouter()
   const currentStep = router ? +router.query.step : null
   useEffect(() => {
-    if (!currentStep) router.replace('/signup/1')
+    if (!currentStep) router.replace('/signup/[step]', '/signup/1')
     pageMounted()
   }, [])
 
@@ -19,12 +25,13 @@ export default () => {
     case 1:
       return <Step1 />
     case 2:
-      return <Step2 />
+      return <ProtectedStep2 />
     case 3:
-      return <Step3 />
+      return <ProtectedStep3 />
     case 4:
-      return <Step4 />
+      return <ProtectedStep4 />
     default:
-      return null
+      router.replace('/signup/[step]', '/signup/1')
   }
+  return null
 }

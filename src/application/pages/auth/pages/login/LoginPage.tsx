@@ -44,8 +44,8 @@ export default () => (
         <Header>Вход</Header>
         <LoginForm />
       </WhiteContainer>
-      <Link href='/recovery'>
-        <ResetPasswordLink href='/recovery'>Забыли пароль?</ResetPasswordLink>
+      <Link href='/recovery' as='/recovery' passHref>
+        <ResetPasswordLink>Забыли пароль?</ResetPasswordLink>
       </Link>
     </CenterFormContainer>
   </AuthLayout>

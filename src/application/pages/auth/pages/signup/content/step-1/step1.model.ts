@@ -17,7 +17,7 @@ export const registerFx = createEffect<
 
 registerFx.doneData.watch(payload => {
   loggedIn({ token: payload.token })
-  Router.push('/signup/2')
+  Router.push('/signup/[step]', '/signup/2', { shallow: true })
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
