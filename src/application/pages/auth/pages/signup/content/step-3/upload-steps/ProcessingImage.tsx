@@ -5,8 +5,15 @@ import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import ReactCrop from "react-image-crop"
+import rotate from "./rotate.svg"
 
-const StyledReactCrop = styled(ReactCrop)``
+const StyledReactCrop = styled(ReactCrop)`
+  margin: 0 auto;
+  & img {
+    max-height: 200px;
+    max-width: 300px;
+  }
+`
 
 const Container = styled.div`
   height: 100%;
@@ -29,6 +36,27 @@ const ControllersContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 0 8px;
+`
+
+const Rotate = styled.div<{ reverse?: boolean }>`
+  margin-top: 18px;
+  padding-left: 28px;
+  position: relative;
+  font-size: 12px;
+  line-height: 17px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  &:before {
+    content: url(${rotate});
+    transform: rotateX(${({ reverse }) => (reverse ? 180 : 0)}deg) rotate(${({ reverse }) => (reverse ? 180 : 0)}deg);
+    position: absolute;
+    left: 0;
+    margin-right: 12px;
+    width: 16px;
+    height: 20px;
+  }
 `
 
 const UploadButton = styled(DashedButton)`
@@ -100,18 +128,19 @@ const processFile = (crop: Crop, fileName: string) => async () => {
 const rotateImage = (image: HTMLImageElement, degrees: number, setImage: (file: string | null) => void) => {
   if (!image) return
   const canvas = document.createElement("canvas")
+  canvas.width = image.naturalHeight
+  canvas.height = image.naturalWidth
+
   const ctx = canvas.getContext("2d")
+  if (!ctx) return
 
   ctx!.translate(canvas.width / 2, canvas.height / 2)
-  ctx!.rotate(Math.PI / 2)
-  ctx!.drawImage(image, -image.width / 2, -image.height / 2)
-  ctx!.rotate(-Math.PI / 2)
-  ctx!.translate(-canvas.width / 2, -canvas.height / 2)
-  ctx!.fillRect(0, 0, 25, 10)
+  ctx!.rotate((degrees / 180) * Math.PI)
+  ctx!.drawImage(image, -image.naturalWidth / 2, -image.naturalHeight / 2)
+  ctx!.rotate((degrees / 180) * -Math.PI)
 
   const dataUrl = canvas.toDataURL("image/jpeg")
-  setImage(null)
-  setImmediate(() => setImage(dataUrl))
+  setImage(dataUrl)
 }
 
 type ProcessingImageProps = {
@@ -122,7 +151,6 @@ type ProcessingImageProps = {
 
 export const ProcessingImage = ({ image, filename, setImage }: ProcessingImageProps) => {
   const [crop, setCrop] = useState({ aspect: 1 })
-  //const [degrees, setDegrees] = useState(0)
   return (
     <Container>
       <ControllersContainer>
@@ -130,11 +158,17 @@ export const ProcessingImage = ({ image, filename, setImage }: ProcessingImagePr
           src={image}
           crop={crop}
           onChange={setCrop}
-          onImageLoaded={(ref: HTMLImageElement) => (imageRef = ref)}
+          circularCrop
+          onImageLoaded={(ref: HTMLImageElement) => {
+            imageRef = ref
+            setCrop({ ...crop })
+          }}
           /*imageStyle={{ transform: `rotate(${degrees}deg)` }}*/
         />
-        {/*<div onClick={() => setDegrees(degrees + 90)}>Повернуть влево</div>
-        <div onClick={() => setDegrees(degrees - 90)}>Повернуть вправо</div>*/}
+        <Rotate onClick={() => imageRef && rotateImage(imageRef, -90, setImage)}>Повернуть влево</Rotate>
+        <Rotate onClick={() => imageRef && rotateImage(imageRef, 90, setImage)} reverse>
+          Повернуть вправо
+        </Rotate>
       </ControllersContainer>
       <UploadButton onClick={processFile(crop as any, filename)}>Загрузить фотографию</UploadButton>
     </Container>
