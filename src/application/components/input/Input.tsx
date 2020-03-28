@@ -20,6 +20,17 @@ const TextBox = styled.input<{ error?: boolean }>`
   &:focus {
     border: 1px solid #449bd9;
   }
+  
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Firefox */
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
 `
 
 type InputTypes = {

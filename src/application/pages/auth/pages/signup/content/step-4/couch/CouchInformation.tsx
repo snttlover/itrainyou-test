@@ -259,7 +259,7 @@ export const CouchInformation = ({}: CouchInformation) => {
           <Textarea value={values.description} onChange={descriptionChanged} rows={8} />
         </FormItem>
         <FormItem label='Телефон'>
-          <Input value={values.phone} type='number' onChange={phoneChanged} />
+          <Input value={values.phone} type='phone' onChange={phoneChanged} />
         </FormItem>
         <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
         <AddPhotosButton>Добавить фотографии</AddPhotosButton>
