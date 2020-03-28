@@ -227,7 +227,7 @@ export const Step3 = () => {
               <SelectInput placeholder='Мужской' value={values.sex} onChange={sexChanged} options={sexItems} />
             </FormItem>
           </FormGroup>
-          <NextButton onClick={() => Router.push('/signup/4')} disabled={!isFormValid} />
+          <NextButton onClick={() => Router.push('/signup/[step]', '/signup/4')} disabled={!isFormValid} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => toggleUploadModal()} />}

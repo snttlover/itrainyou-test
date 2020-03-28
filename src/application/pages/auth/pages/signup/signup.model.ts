@@ -88,7 +88,7 @@ export const registerUserFx = createEffect({
 
 registerUserFx.doneData.watch(data => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
-  Router.push("/")
+  Router.push("/", "/")
 })
 
 sample({
