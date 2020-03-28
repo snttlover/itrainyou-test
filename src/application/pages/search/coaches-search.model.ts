@@ -26,7 +26,6 @@ export const $searchPageQuery = createStore<GetCoachesParamsTypes>({})
   })
   .reset(resetSearchQuery)
 
-// @ts-ignore
 if (process.browser) {
   const updateEvents = merge([addSearchPageQuery, removeSearchPageQuery])
   $searchPageQuery.watch(

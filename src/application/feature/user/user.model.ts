@@ -1,22 +1,28 @@
-import { createDomain } from "effector-next"
-import * as Cookies from "js-cookie"
+import { serverStarted, TOKEN_KEY } from "@/store"
+import { combine, createEvent, createStore } from "effector-next"
+import Cookies from "js-cookie"
 
-const TOKEN_KEY = '__token__'
+export const loggedIn = createEvent<{ token: string }>()
+export const logout = createEvent()
 
-export const userDomain = createDomain()
-
-export const loggedIn = userDomain.createEvent<{ token: string }>()
-export const logout = userDomain.createEvent()
-
-export const $isLoggedIn = userDomain
-  .createStore(false)
-  .on(loggedIn, () => true)
+export const $token = createStore<string | undefined>("")
+  .on(serverStarted, (state, payload) => payload.cookies[TOKEN_KEY])
+  .on(loggedIn, (state, payload) => payload.token)
   .reset(logout)
 
-loggedIn.watch(({ token }) => {
-  Cookies.set(TOKEN_KEY, token)
-})
+export const $isLoggedIn = createStore(false)
+  .on(loggedIn, () => true)
+  .on($token, (state, payload) => !!payload)
+  .reset(logout)
 
-logout.watch(() => {
-  Cookies.remove(TOKEN_KEY)
-})
+combine($token, $isLoggedIn, (token, isLoggedIn) => console.log('token', token, 'isLoggedIn', isLoggedIn))
+
+if (process.browser) {
+  const tokenCookie = Cookies.get(TOKEN_KEY)
+  tokenCookie && loggedIn({ token: tokenCookie })
+
+  $token.updates.watch(token => {
+    if (token) Cookies.set(TOKEN_KEY, token)
+    else Cookies.remove(TOKEN_KEY)
+  })
+}

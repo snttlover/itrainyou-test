@@ -1,9 +1,9 @@
-import { serverStarted } from "@/store"
 import { withFork } from "effector-next"
 import { DocumentContext } from "next/dist/next-server/lib/utils"
 import Document from "next/document"
 import React from "react"
 import { ServerStyleSheet } from "styled-components"
+import { serverStarted } from "@/store"
 
 const enhance = withFork({ debug: false, unit: serverStarted });
 

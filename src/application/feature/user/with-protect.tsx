@@ -14,7 +14,7 @@ export const withProtect = ({ to = "/", as = "/" }: Options) => (Child: React.Co
     const router = useRouter()
 
     if (!isAuthed) {
-      router.replace(to, to, { shallow: true })
+      router.replace(to, as, { shallow: true })
       return null
     }
 
