@@ -1,11 +1,15 @@
 import { uploadMedia } from "@/application/lib/api/media"
 import { createEffectorField } from "@/application/lib/generators/efffector"
 import { trimString } from "@/application/lib/validators"
-import { couchDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
+import { $userData, couchDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
 import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-next"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",
+  validator: value => {
+    if (!value) return "Поле не должно быть пустым"
+    return null
+  },
   eventMapper: event => event.map(trimString)
 })
 
@@ -15,17 +19,29 @@ export const [
   $workExperienceError,
   $isWorkExperienceCorrect
 ] = createEffectorField<string>({
-  defaultValue: ""
+  defaultValue: "",
+  validator: value => {
+    if (!value) return "Поле не должно быть пустым"
+    return null
+  }
 })
 
 export const [$description, descriptionChanged, $descriptionError, $isDescriptionCorrect] = createEffectorField<string>(
   {
-    defaultValue: ""
+    defaultValue: "",
+    validator: value => {
+      if (!value) return "Поле не должно быть пустым"
+      return null
+    }
   }
 )
 
 export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
   defaultValue: "",
+  validator: value => {
+    if (!value) return "Поле не должно быть пустым"
+    return null
+  },
   eventMapper: event => event.map(trimString)
 })
 
@@ -78,11 +94,29 @@ step4CouchMounted.watch(() => {
   } catch (e) {}
 })
 
+const $categoriesError = $userData.map(userData => {
+  if (userData.categories.length < 1) return 'Должна быть выбрана хоть одна категория'
+  if (userData.categories.length > 3) return 'Вы не можете выбрать более 3 категорий'
+  return null
+})
+
+const $isCategoriesCorrect = $categoriesError.map(value => !value)
+
+const $videoInterviewError = $videoInterview.map(video => {
+  if (!video) return 'Необходимо загрузить видео с интервью'
+
+  return null
+})
+
+const $isVideoInterviewCorrect = $videoInterviewError.map(value => !value)
+
 export const $step4FormErrors = createStoreObject({
+  categories: $categoriesError,
   education: $educationError,
   workExperience: $workExperienceError,
   description: $descriptionError,
-  phone: $phoneError
+  phone: $phoneError,
+  video: $videoInterviewError
 })
 
 export const $step4FormValid = combine(
@@ -90,6 +124,8 @@ export const $step4FormValid = combine(
   $isWorkExperienceCorrect,
   $isDescriptionCorrect,
   $isPhoneCorrect,
+  $isCategoriesCorrect,
+  $isVideoInterviewCorrect,
   (...args) => args.every(val => val)
 )
 

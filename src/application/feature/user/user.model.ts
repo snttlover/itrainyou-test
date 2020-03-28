@@ -1,5 +1,5 @@
 import { serverStarted, TOKEN_KEY } from "@/store"
-import { combine, createEvent, createStore } from "effector-next"
+import { createEvent, createStore } from "effector-next"
 import Cookies from "js-cookie"
 
 export const loggedIn = createEvent<{ token: string }>()
@@ -14,8 +14,6 @@ export const $isLoggedIn = createStore(false)
   .on(loggedIn, () => true)
   .on($token, (state, payload) => !!payload)
   .reset(logout)
-
-combine($token, $isLoggedIn, (token, isLoggedIn) => console.log('token', token, 'isLoggedIn', isLoggedIn))
 
 if (process.browser) {
   const tokenCookie = Cookies.get(TOKEN_KEY)

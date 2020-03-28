@@ -2,6 +2,7 @@ import { UploadMediaResponse } from "@/application/lib/api/media"
 import { createEffectorField } from "@/application/lib/generators/efffector"
 import { trimString } from "@/application/lib/validators"
 import {
+  $userData,
   clientDataChanged,
   REGISTER_SAVE_KEY
 } from "@/application/pages/auth/pages/signup/signup.model"
@@ -11,7 +12,13 @@ import dayjs from "dayjs"
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" })
   .on(imageUploaded, (state, payload) => payload)
-const $isImageCorrect = $image.map(img => !!img.file)
+
+const $isImageError = combine($image, $userData.map(userData => userData.type), (img, type) => {
+  if (type === "couch" && !img.file) return 'Изображение обязательно к загрузке'
+
+  return null
+})
+const $isImageCorrect = $isImageError.map(error => !error)
 
 export const toggleUploadModal = createEvent()
 export const $isUploadModelOpen = createStore(false)
