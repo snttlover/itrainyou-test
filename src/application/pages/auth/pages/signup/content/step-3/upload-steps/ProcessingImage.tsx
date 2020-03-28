@@ -15,6 +15,18 @@ const StyledReactCrop = styled(ReactCrop)`
   }
 `
 
+const ImageContainer = styled.div`
+  width: 300px;
+  height: 200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  
+  ${MediaRange.greaterThan("mobile")`
+    margin: 0 20px 0 10%;
+  `}
+`
+
 const Container = styled.div`
   height: 100%;
   width: 100%;
@@ -27,7 +39,7 @@ const Container = styled.div`
     align-items: flex-start;
   `}
 
-  ${StyledReactCrop} {
+  ${ImageContainer} {
     margin-top: 20px;
   }
 `
@@ -37,6 +49,11 @@ const ControllersContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 8px;
+  
+  ${MediaRange.greaterThan("mobile")`
+    margin-top: 50px;
+    flex-direction: row;
+  `}
 `
 
 const Rotate = styled.div<{ reverse?: boolean }>`
@@ -60,7 +77,7 @@ const Rotate = styled.div<{ reverse?: boolean }>`
 `
 
 const UploadButton = styled(DashedButton)`
-  margin-top: 76px;
+  margin: 76px auto 0;
 `
 
 function dataURItoFile(dataURI: string, filename: string) {
@@ -154,21 +171,21 @@ export const ProcessingImage = ({ image, filename, setImage }: ProcessingImagePr
   return (
     <Container>
       <ControllersContainer>
-        <StyledReactCrop
-          src={image}
-          crop={crop}
-          onChange={setCrop}
-          circularCrop
-          onImageLoaded={(ref: HTMLImageElement) => {
-            imageRef = ref
-            setCrop({ ...crop })
-          }}
-          /*imageStyle={{ transform: `rotate(${degrees}deg)` }}*/
-        />
-        <Rotate onClick={() => imageRef && rotateImage(imageRef, -90, setImage)}>Повернуть влево</Rotate>
-        <Rotate onClick={() => imageRef && rotateImage(imageRef, 90, setImage)} reverse>
-          Повернуть вправо
-        </Rotate>
+        <ImageContainer>
+          <StyledReactCrop
+            src={image}
+            crop={crop}
+            onChange={setCrop}
+            circularCrop
+            onImageLoaded={(ref: HTMLImageElement) => imageRef = ref}
+          />
+        </ImageContainer>
+        <div>
+          <Rotate onClick={() => imageRef && rotateImage(imageRef, -90, setImage)}>Повернуть влево</Rotate>
+          <Rotate onClick={() => imageRef && rotateImage(imageRef, 90, setImage)} reverse>
+            Повернуть вправо
+          </Rotate>
+        </div>
       </ControllersContainer>
       <UploadButton onClick={processFile(crop as any, filename)}>Загрузить фотографию</UploadButton>
     </Container>

@@ -62,7 +62,7 @@ const BlueText = styled.div`
 
 export const SelectImage = ({ open, largeFileError }: { open: () => void; largeFileError: boolean }) => (
   <>
-    <Description largeFileError>
+    <Description largeFileError={largeFileError}>
       {largeFileError ? "Слишком большой файл" : "Вы можете загрузить фотографию в формате PNG, JPG или GIF"}
     </Description>
     <Warning>*Максимальный размер 2 Мбайта</Warning>

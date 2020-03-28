@@ -75,8 +75,8 @@ const Container = styled.div<{ fullscreen: boolean }>`
 
   ${MediaRange.greaterThan("mobile")`
     height: auto;
-  `}
-  ${MediaRange.greaterThan("laptop")`
+  `} 
+  ${MediaRange.greaterThan("tablet")`    
     width: 680px;
   `}
 `
