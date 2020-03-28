@@ -36,6 +36,8 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
 `
 
 const StyledSimpleBar = styled(SimpleBar)`
+  width: 100%;
+  height: 100%;
   & .simplebar-content-wrapper {
     overflow: auto;
   }
