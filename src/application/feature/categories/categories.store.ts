@@ -3,7 +3,7 @@ import { createEffect} from "effector-next"
 import { createStore } from "effector-next"
 
 export const fetchCategoriesListFx = createEffect({
-  handler: getCategories
+  handler: () => getCategories()
 })
 
 export const $categoriesList = createStore<Category[]>([])

@@ -1,6 +1,8 @@
-import { LoginPage } from "@/application/pages/auth/pages/login/LoginPage"
+import dynamic from "next/dynamic"
 import React from "react"
 
-const Login = () => (<LoginPage />)
+const Login = dynamic(() => import("@/application/pages/auth/pages/login/LoginPage"), {
+  ssr: false
+})
 
-export default Login
+export default () => <Login />

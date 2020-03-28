@@ -1,6 +1,6 @@
-import { SignUpPage } from "@/application/pages/auth/pages/signup/SignUpPage"
+import dynamic from "next/dynamic"
 import React from "react"
 
-const SignUp = () => (<SignUpPage />)
+const SignUp = dynamic(() => import("@/application/pages/auth/pages/signup/SignUpPage"), { ssr: false })
 
-export default SignUp
+export default () => <SignUp />

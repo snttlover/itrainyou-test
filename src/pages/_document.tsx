@@ -5,7 +5,6 @@ import Document from "next/document"
 import React from "react"
 import { ServerStyleSheet } from "styled-components"
 
-// @ts-ignore
 const enhance = withFork({ debug: false, unit: serverStarted });
 
 class MyDocument extends Document {

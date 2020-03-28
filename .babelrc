@@ -4,15 +4,7 @@
   ],
   "plugins": [
     "@babel/plugin-proposal-class-properties",
-    [
-      "@effector/babel-plugin",
-      {
-        "storeCreators": [
-          "createStore",
-          "createUniversalStore"
-        ]
-      }
-    ],
+    "@effector/babel-plugin",
     ["styled-components", { "ssr": true }]
   ],
   "env": {

@@ -1,6 +1,6 @@
-import { RecoveryPage } from "@/application/pages/auth/pages/recovery/RecoveryPage"
+import dynamic from "next/dynamic"
 import React from "react"
 
-const Recovery = () => (<RecoveryPage />)
+const Recovery = dynamic(() => import("@/application/pages/auth/pages/recovery/RecoveryPage"), {ssr: false})
 
-export default Recovery
+export default () => <Recovery />

@@ -15,10 +15,7 @@ interface PickerCategory extends Category {
 export const fetchCategoriesListFx = createEffect<void, PickerCategory[]>()
   .use(() => getCategories())
 
-export const loadCategories = createEvent()
-
 export const toggleCategorySelection = createEvent<number>()
-
 export const resetCategories = createEvent()
 
 export const $categoriesList = createStore<PickerCategory[]>([])
@@ -58,11 +55,6 @@ export const $categoriesList = createStore<PickerCategory[]>([])
     }
     return newCategories
   })
-
-forward({
-  from: loadCategories,
-  to: fetchCategoriesListFx
-})
 
 forward({
   from: serverStarted,

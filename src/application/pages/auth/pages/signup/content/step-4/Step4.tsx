@@ -14,7 +14,7 @@ export const Step4 = () => {
   const userData = useStore($userData)
 
   useEffect(() => {
-    fetchCategoriesListFx()
+    fetchCategoriesListFx({})
   }, [])
 
   switch (userData.type) {

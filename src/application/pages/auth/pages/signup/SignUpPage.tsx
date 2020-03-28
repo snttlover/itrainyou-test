@@ -7,10 +7,13 @@ import { Step2 } from "@/application/pages/auth/pages/signup/content/step-2/Step
 import { Step3 } from "@/application/pages/auth/pages/signup/content/step-3/Step3"
 import { Step4 } from "@/application/pages/auth/pages/signup/content/step-4/Step4"
 
-export const SignUpPage = () => {
-  const params = useRouter()
-  const currentStep = params ? +params.query.step : null
-  useEffect(() => pageMounted(), [])
+export default () => {
+  const router = useRouter()
+  const currentStep = router ? +router.query.step : null
+  useEffect(() => {
+    if (!currentStep) router.replace('/signup/1')
+    pageMounted()
+  }, [])
 
   switch (currentStep) {
     case 1:
@@ -22,6 +25,6 @@ export const SignUpPage = () => {
     case 4:
       return <Step4 />
     default:
-      return <div></div>
+      return null
   }
 }

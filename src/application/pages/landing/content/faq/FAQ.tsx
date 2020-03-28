@@ -1,3 +1,4 @@
+import Link from "next/link"
 import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
@@ -5,7 +6,6 @@ import { ExpansionPanel } from "@/application/components/expansion-panel/Expansi
 import peopleImage from "./images/people.svg"
 import questions from "./questions"
 import { Button } from "@/application/components/button/normal/Button"
-import { Link } from "@reach/router"
 
 const Title = styled.h3`
   font-style: normal;
@@ -111,7 +111,7 @@ export const FAQ = () => (
         ))}
       </QuestionsList>
       <PeopleImage />
-      <Link to='/signup'>
+      <Link href='/signup/1'>
         <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
       </Link>
     </Content>

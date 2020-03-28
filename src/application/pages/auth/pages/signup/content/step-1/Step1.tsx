@@ -4,24 +4,26 @@ import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
+import Link from "next/link"
 import {
   $isFormValid,
   $step1Form,
   $step1FormErrors,
   emailChanged,
   passwordChanged,
-  passwordRepeatChanged, registerFx,
+  passwordRepeatChanged,
+  registerFx,
   step1Registered
 } from "./step1.model"
-import { Link } from "@reach/router"
 import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 
 const StyledSteps = styled(Steps)`
-  ${MediaRange.greaterThan('laptop')`
+  ${MediaRange.greaterThan("laptop")`
     margin-right: 134px;
-  `}
+  `};
+  height: auto;
 `
 
 const Container = styled.div`
@@ -31,15 +33,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     margin: 123px 36px 0;
     padding: 36px 48px 31px;
     background: #FFFFFF;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.12), 0px 4px 12px rgba(0, 0, 0, 0.25);
   `}
-  
-  ${MediaRange.greaterThan('laptop')`
+
+  ${MediaRange.greaterThan("laptop")`
     margin: 20px 170px 0;
     padding: 36px 100px 31px;
   `}
@@ -52,8 +54,8 @@ const Title = styled.h1`
   margin-bottom: 73px;
 
   text-align: center;
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     font-size: 36px;
     line-height: 44px;
   `}
@@ -73,8 +75,8 @@ const Footer = styled.div`
   text-align: center;
   color: #544274;
   width: 130px;
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     width: auto;
     margin-top: 36px;
     font-size: 20px;
@@ -82,7 +84,7 @@ const Footer = styled.div`
   `}
 `
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
   color: #544274;
 `
 
@@ -121,7 +123,9 @@ export const Step1 = () => {
         </Form>
       </Container>
       <Footer>
-        <StyledLink to='/login'>Уже есть аккаунт? Войдите</StyledLink>
+        <Link href='/login'>
+          <StyledLink href='/login'>Уже есть аккаунт? Войдите</StyledLink>
+        </Link>
       </Footer>
     </AuthLayout>
   )

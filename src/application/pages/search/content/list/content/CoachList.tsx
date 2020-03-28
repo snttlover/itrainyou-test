@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { $coachesList } from "@/application/pages/search/coaches-search.model"
 import { CoachCard } from "@/application/components/coach-card/CoachCard"
-import { useList } from "effector-react"
+import { useStore } from "effector-react"
 
 const Container = styled.div``
 
@@ -11,7 +11,7 @@ const StyledCoachCard = styled(CoachCard)`
 `
 
 export const CoachList = () => {
-  const list = useList($coachesList, coach => <StyledCoachCard coach={coach} />)
+  const list = useStore($coachesList).map(coach => <StyledCoachCard key={coach.id} coach={coach} />)
 
   return <Container>{list}</Container>
 }

@@ -45,11 +45,8 @@ const couches: DeclOfNumListType = [`коуч отсортирован`, `коу
 
 export const Sorting = () => {
   const list = useStore($coachesList)
-  const current = useStoreMap({
-    store: $searchPageQuery,
-    keys: [`ordering`],
-    fn: values => values.ordering || `popularity`
-  })
+  const query = useStore($searchPageQuery)
+  const current = query.ordering || 'popularity'
 
   const currentItem = sortingItems.find(item => item.value === current)
 

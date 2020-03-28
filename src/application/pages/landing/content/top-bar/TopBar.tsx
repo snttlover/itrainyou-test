@@ -1,13 +1,12 @@
+import Link from "next/link"
 import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "../../common/LandingPageContainer"
-
 import { Logo } from "./logo/Logo"
 import { CategoriesPicker } from "./categories-picker/CategoriesPicker"
 import { Search } from "./search/Search"
 import { LoginButtons } from "./login-buttons/LoginButtons"
 import { MobileMenu } from "./mobile-menu/MobileMenu"
-import { Link } from "@reach/router"
 
 const StyledContainer = styled(LandingPageContainer)`
   padding: 15px 0;
@@ -62,7 +61,7 @@ const StyledLoginButtons = styled(LoginButtons)`
 
 export const TopBar = () => (
   <StyledContainer>
-    <Link to='/'>
+    <Link href='/'>
       <StyledLogo />
     </Link>
     <StyledCategoriesPicker />

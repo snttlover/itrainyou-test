@@ -1,13 +1,14 @@
 import { Coach, getCoaches, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { debounce } from "@/application/lib/helpers/debounce"
 import { serverStarted } from "@/store"
-import { createEffect, createEvent, forward } from "effector-next"
+import { createEffect, createEvent, forward, merge } from "effector-next"
 import { createStore } from "effector-next"
 import Router from "next/router"
 
 export const setSearchPageQuery = createEvent<GetCoachesParamsTypes>()
 export const addSearchPageQuery = createEvent<GetCoachesParamsTypes>()
 export const removeSearchPageQuery = createEvent<(keyof GetCoachesParamsTypes)[]>()
+export const resetSearchQuery = createEvent()
 
 export const $searchPageQuery = createStore<GetCoachesParamsTypes>({})
   .on(setSearchPageQuery, (_, query) => query)
@@ -23,12 +24,15 @@ export const $searchPageQuery = createStore<GetCoachesParamsTypes>({})
     })
     return { ...state }
   })
+  .reset(resetSearchQuery)
 
 // @ts-ignore
 if (process.browser) {
-  $searchPageQuery.updates.watch(
+  const updateEvents = merge([addSearchPageQuery, removeSearchPageQuery])
+  $searchPageQuery.watch(
+    updateEvents,
     debounce((query: GetCoachesParamsTypes) => {
-      Router.push({ pathname: `/search`, query: { ...query } }, undefined, { shallow: true }).then(() => fetchCoachesListFx(query))
+      Router.push({ pathname: `/search`, query: { ...query } }, undefined, { shallow: true })
     }, 300)
   )
 }

@@ -1,8 +1,9 @@
+import { useEffect } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import { Dropdown } from "@/application/components/dropdown/Dropdown"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
-import { $categoriesList, toggleCategorySelection } from "./categories-picker.model"
+import { $categoriesList, fetchCategoriesListFx, toggleCategorySelection } from "./categories-picker.model"
 import { useList, useStore } from "effector-react"
 
 const StyledCheckbox = styled(Checkbox)`
@@ -55,6 +56,10 @@ type CategoriesPickerTypes = {
 export const CategoriesPicker = (props: CategoriesPickerTypes) => {
   const selectedCategories = useStore($categoriesList).filter(category => category.checked).length
   const titleRenderer = () => <Label>Категории {!!selectedCategories && <Counter>{selectedCategories}</Counter>}</Label>
+
+  useEffect(() => {
+    fetchCategoriesListFx()
+  }, [])
 
   const renderCheckboxes = () =>
     useList($categoriesList, item => (

@@ -232,13 +232,12 @@ type Props = {
 }
 
 const CoachCardLayout = ({ coach, className }: Props) => {
-  const sessionsListModel = genCoachSessions(coach.id)
-
   const [isActive, changeActive] = useState(false)
+  //const sessionsListModel = genCoachSessions(coach.id)
 
-  if (isActive) {
+  /*if (isActive) {
     sessionsListModel.loadData()
-  }
+  }*/
 
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
 
@@ -276,9 +275,9 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Date>
         </RatingContainer>
       </MainInfoContainer>
-      {isActive && (
+      {/*{isActive && (
         <SelectDatetime sessionsList={sessionsListModel.list} toggleSession={sessionsListModel.toggleSession} />
-      )}
+      )}*/}
     </Block>
   )
 }

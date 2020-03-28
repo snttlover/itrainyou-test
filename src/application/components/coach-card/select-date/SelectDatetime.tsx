@@ -1,9 +1,9 @@
 import { DashedButton } from "@/application/components/button/dashed/DashedButton"
+import Link from "next/link"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import dayjs from "dayjs"
-import { Link } from "@reach/router"
 import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useStore } from "effector-react"
@@ -182,7 +182,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           Итого: <Summary>{amount} ₽</Summary>
         </Text>
         <ButtonContainer>
-          <Link to='/signup'>
+          <Link href='/signup/1'>
             <BuyButton>Зарегистрироваться</BuyButton>
           </Link>
         </ButtonContainer>

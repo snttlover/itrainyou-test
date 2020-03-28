@@ -7,7 +7,7 @@ import { RecoveryMessage } from "@/application/pages/auth/pages/recovery/content
 import { $recoverySuccessMessageVisibility } from "@/application/pages/auth/pages/recovery/recovery.model"
 import { useStore } from "effector-react"
 
-export const RecoveryPage = () => {
+export default () => {
   const showSuccessMessage = useStore($recoverySuccessMessageVisibility)
   return (
     <AuthLayout>

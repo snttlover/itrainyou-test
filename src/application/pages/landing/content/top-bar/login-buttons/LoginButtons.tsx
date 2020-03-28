@@ -1,9 +1,9 @@
+import Link from "next/link"
 import * as React from "react"
 import styled from "styled-components"
 import { Button } from "@/application/components/button/normal/Button"
-import { Link } from "@reach/router"
 
-const LoginLink = styled(Link)`
+const LoginLink = styled.a`
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
@@ -27,8 +27,10 @@ type LoginButtonsTypes = {
 
 export const LoginButtons = (props: LoginButtonsTypes) => (
   <ButtonsContainer className={props.className}>
-    <LoginLink to='/login'>Войти</LoginLink>
-    <Link to='/signup'>
+    <Link href='/login'>
+      <LoginLink>Войти</LoginLink>
+    </Link>
+    <Link href='/signup/1'>
       <RegistrationButton>Зарегистрироваться</RegistrationButton>
     </Link>
   </ButtonsContainer>
