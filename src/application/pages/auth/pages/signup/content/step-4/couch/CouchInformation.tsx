@@ -1,24 +1,24 @@
-import { DashedButton } from "@app/components/button/dashed/DashedButton"
-import { Button } from "@app/components/button/normal/Button"
-import { FormItem } from "@app/components/form-item/FormItem"
-import { Input } from "@app/components/input/Input"
-import { Textarea } from "@app/components/textarea/Textarea"
-import { $categoriesList } from "@app/feature/categories/categories.store"
-import { MediaRange } from "@app/lib/responsive/media"
-import { CategoryCard } from "@app/pages/auth/pages/signup/content/step-4/couch/CategoryCard"
+import { DashedButton } from "@/application/components/button/dashed/DashedButton"
+import { Button } from "@/application/components/button/normal/Button"
+import { FormItem } from "@/application/components/form-item/FormItem"
+import { Input } from "@/application/components/input/Input"
+import { Textarea } from "@/application/components/textarea/Textarea"
+import { $categoriesList } from "@/application/feature/categories/categories.store"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { CategoryCard } from "@/application/pages/auth/pages/signup/content/step-4/couch/CategoryCard"
 import {
   $step4Form,
   educationChanged,
   workExperienceChanged,
   descriptionChanged,
   phoneChanged, videoUploadFx, $videoUploadProgress, videoUploaded
-} from "@app/pages/auth/pages/signup/content/step-4/step-4-couch.model"
+} from "@/application/pages/auth/pages/signup/content/step-4/step-4-couch.model"
 import {
   $userData,
   registerUserFx,
   toggleCategorySelection,
   userRegistered
-} from "@app/pages/auth/pages/signup/signup.model"
+} from "@/application/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"

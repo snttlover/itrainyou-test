@@ -1,8 +1,8 @@
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
-import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@app/pages/search/coaches-search.model"
+import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/application/pages/search/coaches-search.model"
 
 const Container = styled.div`
   padding-top: 42px;

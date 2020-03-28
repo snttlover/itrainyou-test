@@ -3,7 +3,7 @@ import styled from "styled-components"
 import burgerImage from "./images/burger.svg"
 import { Header } from "./content/Header"
 import { Profile } from "./content/Profile"
-import { MobileRegistrationBlock } from "@app/pages/landing/content/top-bar/mobile-menu/content/MobileRegistrationBlock"
+import { MobileRegistrationBlock } from "@/application/pages/landing/content/top-bar/mobile-menu/content/MobileRegistrationBlock"
 import { MenuItems } from "./content/menu-items/MenuItems"
 import { useState } from "react"
 

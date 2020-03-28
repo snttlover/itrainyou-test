@@ -14,7 +14,7 @@ import {
   passwordChanged,
   loginFx,
   loginFormSended
-} from "@app/pages/auth/pages/login/login.model"
+} from "@/application/pages/auth/pages/login/login.model"
 import { FormEvent } from "react"
 
 const StyledForm = styled.form`

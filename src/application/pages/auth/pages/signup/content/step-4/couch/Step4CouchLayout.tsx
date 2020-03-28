@@ -1,6 +1,6 @@
-import { Logo } from "@app/components/layouts/auth/Logo"
-import { MediaRange } from "@app/lib/responsive/media"
-import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
+import { Logo } from "@/application/components/layouts/auth/Logo"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import * as React from "react"
 import styled from "styled-components"
 

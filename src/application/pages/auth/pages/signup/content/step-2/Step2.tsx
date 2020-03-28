@@ -1,11 +1,11 @@
-import { AuthLayout } from "@app/components/layouts/auth/AuthLayout"
-import { navigate } from "@app/lib/navigation"
-import { MediaRange } from "@app/lib/responsive/media"
-import { NextButton } from "@app/pages/auth/pages/signup/components/NextButton"
-import { Steps } from "@app/pages/auth/pages/signup/components/Steps"
-import { UserTypeCard } from "@app/pages/auth/pages/signup/content/step-2/UserTypeCard"
-import { userTypeChanged, $userData } from "@app/pages/auth/pages/signup/signup.model"
+import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
+import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
+import { UserTypeCard } from "@/application/pages/auth/pages/signup/content/step-2/UserTypeCard"
+import { userTypeChanged, $userData } from "@/application/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react"
+import Router from "next/router"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -133,7 +133,7 @@ export const Step2 = () => {
             onClick={() => userTypeChanged("couch")}
           />
         </Cards>
-        <NextButton onClick={() => navigate('/signup/3')} />
+        <NextButton onClick={() => Router.push('/signup/3')} />
       </Container>
     </AuthLayout>
   )

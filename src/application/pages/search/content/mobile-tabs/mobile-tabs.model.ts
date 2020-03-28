@@ -1,10 +1,7 @@
-import { appDomain } from "@/application/store"
+import { createEvent, createStore } from "effector-next"
 
-const tabsDomain = appDomain.createDomain()
+export const changeMobileFiltersVisibility = createEvent<boolean>()
 
-export const changeMobileFiltersVisibility = tabsDomain.createEvent<boolean>()
-
-export const $mobileFiltersVisibility = tabsDomain
-  .createStore(false)
+export const $mobileFiltersVisibility = createStore(false)
   .on(changeMobileFiltersVisibility, (_, payload) => payload)
 

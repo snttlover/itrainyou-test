@@ -1,18 +1,15 @@
 import { Coach, getCoaches } from "@/application/lib/api/coach"
-import { appDomain } from "@/application/store"
-import { forward } from "effector"
+import { serverStarted } from "@/store"
+import { createEffect, forward } from "effector-next"
+import { createStore } from "effector-next"
 
-const landingDomain = appDomain.createDomain()
+export const fetchCoachesListFx = createEffect<void, Coach[]>().use(() => getCoaches({}))
 
-export const fetchCoachesListFx = landingDomain.createEffect<void, Coach[]>().use(() => getCoaches({}))
-
-export const loadCoaches = landingDomain.createEvent()
-
-export const $coachesList = landingDomain
-  .createStore<Coach[]>([])
+export const $coachesList = createStore<Coach[]>([])
   .on(fetchCoachesListFx.done, (state, payload) => payload.result)
 
 forward({
-  from: loadCoaches,
+  from: serverStarted,
   to: fetchCoachesListFx
 })
+

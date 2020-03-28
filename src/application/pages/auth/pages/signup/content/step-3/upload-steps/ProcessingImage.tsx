@@ -1,11 +1,10 @@
-import { DashedButton } from "@app/components/button/dashed/DashedButton"
-import { MediaRange } from "@app/lib/responsive/media"
-import { uploadImage } from "@app/pages/auth/pages/signup/content/step-3/upload-modal.model"
+import { DashedButton } from "@/application/components/button/dashed/DashedButton"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { uploadImage } from "@/application/pages/auth/pages/signup/content/step-3/upload-modal.model"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import ReactCrop from "react-image-crop"
-import "react-image-crop/dist/ReactCrop.css"
 
 const StyledReactCrop = styled(ReactCrop)``
 

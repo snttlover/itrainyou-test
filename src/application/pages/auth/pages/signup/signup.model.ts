@@ -1,7 +1,6 @@
-import { registerAsClient, registerAsCouch, registerAsUser } from "@app/lib/api/register"
-import { navigate } from "@app/lib/navigation"
-import { appDomain } from "@app/store"
-import { merge, sample } from "effector"
+import { registerAsClient, registerAsCouch } from "@/application/lib/api/register"
+import { createEffect, createEvent, createStore, merge, sample } from "effector-next"
+import Router from "next/router"
 
 export const REGISTER_SAVE_KEY = "__register-data__"
 
@@ -36,18 +35,16 @@ type UserData =
 
 export type RegisterUserType = "client" | "couch"
 
-export const signUpDomain = appDomain.createDomain("sign-up-domain")
 
-export const pageMounted = signUpDomain.createEvent()
+export const pageMounted = createEvent()
 
-export const userTypeChanged = signUpDomain.createEvent<RegisterUserType>()
-export const userDataChanged = signUpDomain.createEvent<UserData>()
-export const clientDataChanged = signUpDomain.createEvent<ClientData>()
-export const toggleCategorySelection = signUpDomain.createEvent<number>()
-export const couchDataChanged = signUpDomain.createEvent<CouchData>()
+export const userTypeChanged = createEvent<RegisterUserType>()
+export const userDataChanged = createEvent<UserData>()
+export const clientDataChanged = createEvent<ClientData>()
+export const toggleCategorySelection = createEvent<number>()
+export const couchDataChanged = createEvent<CouchData>()
 
-export const $userData = signUpDomain
-  .createStore<UserData>({ type: "client", categories: [] })
+export const $userData = createStore<UserData>({ type: "client", categories: [] })
   .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
   .on(couchDataChanged, (state, payload) => ({ ...state, couchData: payload }))
@@ -77,9 +74,9 @@ pageMounted.watch(() => {
   } catch (e) {}
 })
 
-export const userRegistered = signUpDomain.createEvent()
+export const userRegistered = createEvent()
 
-export const registerUserFx = signUpDomain.createEffect({
+export const registerUserFx = createEffect({
   handler(params: UserData) {
     if (params.type === "client") {
       return registerAsClient({ ...params.clientData!, categories: params.categories })
@@ -91,7 +88,7 @@ export const registerUserFx = signUpDomain.createEffect({
 
 registerUserFx.doneData.watch(data => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
-  navigate("/")
+  Router.push("/")
 })
 
 sample({

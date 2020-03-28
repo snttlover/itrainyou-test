@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import * as React from "react"
-import { LoginButtons } from "@app/pages/landing/content/top-bar/login-buttons/LoginButtons"
+import { LoginButtons } from "@/application/pages/landing/content/top-bar/login-buttons/LoginButtons"
 
 const Container = styled.div`
   width: 100%;

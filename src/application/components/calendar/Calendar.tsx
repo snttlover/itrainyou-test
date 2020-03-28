@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import * as dayjs from "dayjs"
+import dayjs from "dayjs"
 import { Dispatch, SetStateAction, useState } from "react"
 import leftImage from "./images/left.svg"
 import rightImage from "./images/right.svg"

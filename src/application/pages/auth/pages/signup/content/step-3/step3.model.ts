@@ -1,28 +1,24 @@
-import { UploadMediaResponse } from "@app/lib/api/media"
-import { createEffectorField } from "@app/lib/generators/efffector"
-import { trimString } from "@app/lib/validators"
+import { UploadMediaResponse } from "@/application/lib/api/media"
+import { createEffectorField } from "@/application/lib/generators/efffector"
+import { trimString } from "@/application/lib/validators"
 import {
   clientDataChanged,
-  REGISTER_SAVE_KEY,
-  signUpDomain
-} from "@app/pages/auth/pages/signup/signup.model"
-import { combine, createStoreObject } from "effector"
-import * as dayjs from "dayjs"
+  REGISTER_SAVE_KEY
+} from "@/application/pages/auth/pages/signup/signup.model"
+import { combine, createEvent, createStore, createStoreObject } from "effector-next"
+import dayjs from "dayjs"
 
-export const imageUploaded = signUpDomain.createEvent<UploadMediaResponse>()
-export const $image = signUpDomain
-  .createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" })
+export const imageUploaded = createEvent<UploadMediaResponse>()
+export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" })
   .on(imageUploaded, (state, payload) => payload)
 const $isImageCorrect = $image.map(img => !!img.file)
 
-export const toggleUploadModal = signUpDomain.createEvent()
-export const $isUploadModelOpen = signUpDomain
-  .createStore(false)
+export const toggleUploadModal = createEvent()
+export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
 
 export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorField({
-  domain: signUpDomain,
   defaultValue: "",
   validator: value => {
     if (!value) return "Поле обязательно к заполению"
@@ -32,7 +28,6 @@ export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorFi
 })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
-  domain: signUpDomain,
   defaultValue: "",
   validator: value => {
     if (!value) return "Поле обязательно к заполению"
@@ -42,13 +37,11 @@ export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = 
 })
 
 export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField({
-  domain: signUpDomain,
   defaultValue: dayjs(),
   validator: value => null
 })
 
 export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<"M" | "F">({
-  domain: signUpDomain,
   defaultValue: "M",
   validator: value => {
     if (!value) return "Поле обязательно к заполению"
@@ -74,7 +67,7 @@ $step3Form.updates.watch(data => {
   })
 })
 
-export const step3Mounted = signUpDomain.createEvent()
+export const step3Mounted = createEvent()
 
 step3Mounted.watch(() => {
   try {

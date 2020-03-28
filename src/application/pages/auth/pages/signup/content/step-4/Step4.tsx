@@ -1,6 +1,6 @@
-import { loadCategories } from "@app/feature/categories/categories.store"
-import { Step4Couch } from "@app/pages/auth/pages/signup/content/step-4/Step4Couch"
-import { $userData } from "@app/pages/auth/pages/signup/signup.model"
+import { fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
+import { Step4Couch } from "@/application/pages/auth/pages/signup/content/step-4/Step4Couch"
+import { $userData } from "@/application/pages/auth/pages/signup/signup.model"
 import { useEffect } from "react"
 import { Step4Client } from "./Step4Client"
 import { useStore } from "effector-react"
@@ -13,7 +13,9 @@ function throwCompileTimeError(x: never): never {
 export const Step4 = () => {
   const userData = useStore($userData)
 
-  useEffect(() => loadCategories(), [])
+  useEffect(() => {
+    fetchCategoriesListFx({})
+  }, [])
 
   switch (userData.type) {
     case 'client':

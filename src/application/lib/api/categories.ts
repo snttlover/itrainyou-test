@@ -1,4 +1,4 @@
-import { keysToCamel } from "@app/lib/network/casing"
+import { keysToCamel } from "@/application/lib/network/casing"
 import { get } from "@/application/lib/network/network"
 
 export interface Category {

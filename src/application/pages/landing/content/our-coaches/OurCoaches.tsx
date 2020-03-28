@@ -1,10 +1,11 @@
 import { CoachCard } from "@/application/components/coach-card/CoachCard"
+import Link from "next/link"
+import { useEffect } from "react"
 import * as React from "react"
 import styled from "styled-components"
-import { $coachesList } from "./model"
-import { useStore } from "effector-react/ssr"
+import { $coachesList, fetchCoachesListFx } from "./model"
+import { useStore } from "effector-react"
 import tabletka from "./images/tabletka.svg"
-import { Link } from "@reach/router"
 
 const Container = styled.div`
   width: 100%;
@@ -57,7 +58,7 @@ const CoachList = styled.div`
   }
 `
 
-const ShowMoreButton = styled(Link)`
+const ShowMoreButton = styled.a`
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
@@ -92,6 +93,10 @@ const Tabletka = styled.img.attrs({ src: tabletka })`
 export const OurCoaches = () => {
   const coaches = useStore($coachesList)
 
+  useEffect(() => {
+    fetchCoachesListFx()
+  }, [])
+
   return (
     <Container>
       <Tabletka />
@@ -101,7 +106,9 @@ export const OurCoaches = () => {
           <CoachCard key={coach.id} coach={coach} />
         ))}
       </CoachList>
-      <ShowMoreButton to='/search'>Показать еще</ShowMoreButton>
+      <Link href='/search'>
+        <ShowMoreButton>Показать еще</ShowMoreButton>
+      </Link>
     </Container>
   )
 }

@@ -2,12 +2,11 @@ import * as React from "react"
 import styled from "styled-components"
 import { changeMobileFiltersVisibility } from "./mobile-tabs.model"
 import { useStore } from "effector-react"
-import { $searchPageQuery, addSearchPageQuery } from "@app/pages/search/coaches-search.model"
+import { $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import { CoachSortingType, GetCoachesParamsTypes } from "@/application/lib/api/coach"
+import { SortingContainer, SortingPicker } from "@/application/pages/search/content/list/content/sorting/SortingPicker"
 
 import sortingArrow from "./images/sorting-arrow.svg"
-import { CoachSortingType, GetCoachesParamsTypes } from "@app/lib/api/coach"
-import { SortingContainer, SortingPicker } from "@app/pages/search/content/list/content/sorting/SortingPicker"
-
 const Container = styled.div`
   display: none;
   width: 100%;

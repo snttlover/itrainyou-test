@@ -1,14 +1,13 @@
-import { DashedButton } from "@app/components/button/dashed/DashedButton"
+import { DashedButton } from "@/application/components/button/dashed/DashedButton"
+import Link from "next/link"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
-import * as dayjs from "dayjs"
-import { Link } from "@reach/router"
-import { Store } from "effector"
-import { CoachSession } from "@app/lib/api/coach-sessions"
-import { Calendar, CalendarDateType } from "@app/components/calendar/Calendar"
+import dayjs from "dayjs"
+import { Store } from "effector-next"
+import { Calendar } from "@/application/components/calendar/Calendar"
 import { useStore } from "effector-react"
-import { CoachSessionWithSelect } from "@app/components/coach-card/select-date/select-date.model"
+import { CoachSessionWithSelect } from "@/application/components/coach-card/select-date/select-date.model"
 
 const Block = styled.div`
   background: #ffffff;
@@ -183,7 +182,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           Итого: <Summary>{amount} ₽</Summary>
         </Text>
         <ButtonContainer>
-          <Link to='/signup'>
+          <Link href='/signup/1'>
             <BuyButton>Зарегистрироваться</BuyButton>
           </Link>
         </ButtonContainer>

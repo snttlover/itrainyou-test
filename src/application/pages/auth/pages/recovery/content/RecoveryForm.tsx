@@ -12,7 +12,7 @@ import {
   $recoveryForm,
   $recoveryFormErrors,
   recoveryFx, recoveryFormSended
-} from "@app/pages/auth/pages/recovery/recovery.model"
+} from "@/application/pages/auth/pages/recovery/recovery.model"
 import { FormEvent } from "react"
 
 const Title = styled.h3`

@@ -1,11 +1,10 @@
-import { uploadMedia } from "@app/lib/api/media"
-import { createEffectorField } from "@app/lib/generators/efffector"
-import { trimString } from "@app/lib/validators"
-import { couchDataChanged, REGISTER_SAVE_KEY, signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
-import { combine, createStoreObject, forward } from "effector"
+import { uploadMedia } from "@/application/lib/api/media"
+import { createEffectorField } from "@/application/lib/generators/efffector"
+import { trimString } from "@/application/lib/validators"
+import { couchDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
+import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-next"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
-  domain: signUpDomain,
   defaultValue: "",
   eventMapper: event => event.map(trimString)
 })
@@ -16,26 +15,23 @@ export const [
   $workExperienceError,
   $isWorkExperienceCorrect
 ] = createEffectorField<string>({
-  domain: signUpDomain,
   defaultValue: ""
 })
 
 export const [$description, descriptionChanged, $descriptionError, $isDescriptionCorrect] = createEffectorField<string>(
   {
-    domain: signUpDomain,
     defaultValue: ""
   }
 )
 
 export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
-  domain: signUpDomain,
   defaultValue: "",
   eventMapper: event => event.map(trimString)
 })
 
-export const videoUploadProgressChanged = signUpDomain.createEvent<number>()
+export const videoUploadProgressChanged = createEvent<number>()
 
-export const videoUploadFx = signUpDomain.createEffect({
+export const videoUploadFx = createEffect({
   handler(file: File) {
     return uploadMedia({ file, type: "OTHER" }, (pe: ProgressEvent) => {
       videoUploadProgressChanged(Math.round((pe.loaded * 100) / pe.total))
@@ -43,14 +39,12 @@ export const videoUploadFx = signUpDomain.createEffect({
   }
 })
 
-export const $videoUploadProgress = signUpDomain
-  .createStore(0)
+export const $videoUploadProgress = createStore(0)
   .on(videoUploadProgressChanged, (state, payload) => payload)
   .reset(videoUploadFx.finally)
 
-export const videoInterviewChanged = signUpDomain.createEvent<string>()
-export const $videoInterview = signUpDomain
-  .createStore("")
+export const videoInterviewChanged = createEvent<string>()
+export const $videoInterview = createStore("")
   .on(videoInterviewChanged, (state, payload) => payload)
   .on(videoUploadFx.doneData, (state, payload) => payload.file)
   .reset(videoUploadFx)
@@ -69,7 +63,7 @@ $step4Form.updates.watch(data => {
   })
 })
 
-export const step4CouchMounted = signUpDomain.createEvent()
+export const step4CouchMounted = createEvent()
 
 step4CouchMounted.watch(() => {
   try {
@@ -99,7 +93,7 @@ export const $step4FormValid = combine(
   (...args) => args.every(val => val)
 )
 
-export const videoUploaded = signUpDomain.createEvent<File>()
+export const videoUploaded = createEvent<File>()
 
 forward({
   from: videoUploaded,

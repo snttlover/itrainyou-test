@@ -1,21 +1,17 @@
 import { CoachSession, getCoachSessions } from "@/application/lib/api/coach-sessions"
-import { appDomain } from "@/application/store"
-import { forward } from "effector"
+import { createEffect, createEvent, createStore, forward } from "effector-next"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
 }
 
 export const genCoachSessions = (id: number) => {
-  const coachSession = appDomain.createDomain()
+  const fetchCoachSessionsListFx = createEffect<void, CoachSession[]>().use(() => getCoachSessions(id, {}))
 
-  const fetchCoachSessionsListFx = coachSession.createEffect<void, CoachSession[]>().use(() => getCoachSessions(id, {}))
+  const loadCoachSessions = createEvent()
+  const toggleSession = createEvent<CoachSessionWithSelect>()
 
-  const loadCoachSessions = coachSession.createEvent()
-  const toggleSession = coachSession.createEvent<CoachSessionWithSelect>()
-
-  const $coachSessionsList = coachSession
-    .createStore<CoachSessionWithSelect[]>([])
+  const $coachSessionsList = createStore<CoachSessionWithSelect[]>([])
     .on(fetchCoachSessionsListFx.done, (state, payload) =>
       payload.result.map(session => ({ ...session, selected: false }))
     )

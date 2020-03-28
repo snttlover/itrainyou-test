@@ -1,10 +1,9 @@
+import Link from "next/link"
 import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import desktopBackground from "./images/desktop-background.svg"
 import mobileBackground from "./images/mobile-background.svg"
-import { Button } from "@/application/components/button/normal/Button"
-import { Link } from "@reach/router"
 
 const StyledFooter = styled.div`
   background: #ddd9e3;
@@ -77,9 +76,10 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
-const RegistrationButton = styled(Link)`
+const RegistrationButton = styled.a`
   background: #544274;
   color: #ffffff;
+  cursor: pointer;
 
   margin-left: 16px;
   padding: 4px 16px;
@@ -103,7 +103,9 @@ export const Footer = () => (
     <StyledContainer>
       <Header>
         <Title>Вы коуч?</Title>
-        <RegistrationButton to='/signup'>Вам сюда!</RegistrationButton>
+        <Link href='/signup/1'>
+          <RegistrationButton>Вам сюда!</RegistrationButton>
+        </Link>
       </Header>
       <Description>
         <p>

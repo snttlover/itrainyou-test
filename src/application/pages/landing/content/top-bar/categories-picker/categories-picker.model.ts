@@ -1,31 +1,24 @@
 import { Category, getCategories } from "@/application/lib/api/categories"
-import { forward } from "effector"
-import { appDomain } from "@/application/store"
+import { serverStarted } from "@/store"
+import { createEffect, createEvent, createStore, forward } from "effector-next"
 import {
   $searchPageQuery,
   addSearchPageQuery,
   removeSearchPageQuery,
   setSearchPageQuery
-} from "@app/pages/search/coaches-search.model"
+} from "@/application/pages/search/coaches-search.model"
 
 interface PickerCategory extends Category {
   checked: boolean
 }
 
-const categoriesPickerDomain = appDomain.createDomain()
-
-export const fetchCategoriesListFx = categoriesPickerDomain
-  .createEffect<void, PickerCategory[]>()
+export const fetchCategoriesListFx = createEffect<void, PickerCategory[]>()
   .use(() => getCategories())
 
-export const loadCategories = categoriesPickerDomain.createEvent()
+export const toggleCategorySelection = createEvent<number>()
+export const resetCategories = createEvent()
 
-export const toggleCategorySelection = appDomain.createEvent<number>()
-
-export const resetCategories = appDomain.createEvent()
-
-export const $categoriesList = categoriesPickerDomain
-  .createStore<PickerCategory[]>([])
+export const $categoriesList = createStore<PickerCategory[]>([])
   .on(setSearchPageQuery, (state, query) => {
     const categories = query.categories ? query.categories.split(',').map(id => +id) : []
     return state.map(item => ({ ...item, checked: categories.includes(item.id) }))
@@ -64,6 +57,6 @@ export const $categoriesList = categoriesPickerDomain
   })
 
 forward({
-  from: loadCategories,
+  from: serverStarted,
   to: fetchCategoriesListFx
 })

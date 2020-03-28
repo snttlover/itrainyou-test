@@ -1,14 +1,13 @@
-import { loggedIn } from "@app/feature/user/user.model"
-import { registerAsUser, RegisterAsUserResponse } from "@app/lib/api/register"
-import { createEffectorField, UnpackedStoreObjectType } from "@app/lib/generators/efffector"
-import { navigate } from "@app/lib/navigation"
-import { emailValidator, passwordValidator, trimString } from "@app/lib/validators"
-import { signUpDomain } from "@app/pages/auth/pages/signup/signup.model"
+import { loggedIn } from "@/application/feature/user/user.model"
+import { registerAsUser, RegisterAsUserResponse } from "@/application/lib/api/register"
+import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
+import { emailValidator, passwordValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createStoreObject, sample } from "effector"
+import { combine, createEffect, createEvent, createStoreObject, sample } from "effector-next"
+import Router from "next/router"
 
-export const step1Registered = signUpDomain.createEvent()
-export const registerFx = signUpDomain.createEffect<
+export const step1Registered = createEvent()
+export const registerFx = createEffect<
   UnpackedStoreObjectType<typeof $step1Form>,
   RegisterAsUserResponse,
   AxiosError
@@ -18,11 +17,10 @@ export const registerFx = signUpDomain.createEffect<
 
 registerFx.doneData.watch(payload => {
   loggedIn({ token: payload.token })
-  navigate('/signup/2')
+  Router.push('/signup/2')
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
-  domain: signUpDomain,
   defaultValue: "",
   validator: emailValidator,
   eventMapper: event => event.map(trimString)
@@ -36,7 +34,6 @@ $emailError.on(registerFx.fail, (state, { error }) => {
 })
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
-  domain: signUpDomain,
   defaultValue: "",
   validator: passwordValidator,
   eventMapper: event => event.map(trimString)
@@ -48,7 +45,6 @@ export const [
   $passwordRepeatError,
   $isPasswordRepeatCorrect
 ] = createEffectorField<string>({
-  domain: signUpDomain,
   defaultValue: "",
   validator: value => {
     const error = passwordValidator(value)
