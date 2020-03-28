@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "next start",
+    "start": "next start -p $PORT",
     "build": "next build",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "dev": "next dev"
