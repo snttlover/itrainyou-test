@@ -12,6 +12,7 @@ import {
 import { useStore } from "effector-react"
 import close from "./images/close.svg"
 import { useLayoutEffect, useState } from "react"
+import SimpleBar from 'simplebar-react';
 
 type ModalTypes = {
   showOnMobile: boolean
@@ -22,7 +23,7 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
   border-left: 1px solid #efefef;
   background: #fff;
   position: relative;
-  overflow: auto;
+  overflow: hidden;
   transition: all 50ms;
   @media screen and (max-width: 480px) {
     position: fixed;
@@ -31,6 +32,15 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
     width: 100%;
     height: 100%;
     display: ${props => (props.showOnMobile ? `block` : `none`)};
+  }
+`
+
+const StyledSimpleBar = styled(SimpleBar)`
+  & .simplebar-content-wrapper {
+    overflow: auto;
+  }
+  .simplebar-track.simplebar-vertical {
+    width: 7px;
   }
 `
 
@@ -106,15 +116,17 @@ export const Filters = () => {
 
   return (
     <Modal showOnMobile={showOnMobile} style={modalStyles}>
-      <Container>
-        <MobileClose onClick={() => changeMobileFiltersVisibility(false)} />
-        <Header>Фильтры</Header>
-        <PriceFilter />
-        <ReviewFilter />
-        <DateFilter />
-        <OnlyTopCoachCheckbox />
-        <ResetFiltersButton />
-      </Container>
+      <StyledSimpleBar>
+        <Container>
+          <MobileClose onClick={() => changeMobileFiltersVisibility(false)} />
+          <Header>Фильтры</Header>
+          <PriceFilter />
+          <ReviewFilter />
+          <DateFilter />
+          <OnlyTopCoachCheckbox />
+          <ResetFiltersButton />
+        </Container>
+      </StyledSimpleBar>
     </Modal>
   )
 }
