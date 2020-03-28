@@ -38,7 +38,7 @@ export const SearchPage = () => {
         <TopBar/>
         <MobileTabs/>
         <Sorting/>
-        <Content/>
+        <Content />
       </PageContainer>
     </Layout>
   )
