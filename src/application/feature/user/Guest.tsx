@@ -8,12 +8,12 @@ type Options = {
   as?: string
 }
 
-export const withProtect = ({ to = "/", as = "/" }: Options) => (Child: React.ComponentType) => {
+export const withOnlyGuest = ({ to = "/", as = "/" }: Options) => (Child: React.ComponentType) => {
   return ({ ...props }) => {
     const isAuthed = useStore($isLoggedIn)
     const router = useRouter()
 
-    if (!isAuthed) {
+    if (isAuthed) {
       router.replace(to, as, { shallow: true })
       return null
     }
