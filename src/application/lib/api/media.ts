@@ -20,7 +20,7 @@ export const uploadMedia = (
   formData.append("type", data.type)
   formData.append("file", data.file)
 
-  return post<UploadMediaResponse, FormData>(`http://142.93.228.206:8006/api/v1/media-files/`, formData, {
+  return post<UploadMediaResponse, FormData>(`https://dev.itrainyou.heksray.com/api/v1/media-files/`, formData, {
     onUploadProgress
   })
     .then(response => response.data)
