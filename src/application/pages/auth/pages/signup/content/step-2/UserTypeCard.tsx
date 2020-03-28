@@ -62,8 +62,10 @@ const List = styled.ul`
   `}
 `
 
-const Block = styled.div<{ selected?: boolean }>`
-  background: ${({ selected }) => (selected ? "#449bd9" : "#fff")};
+type BlockProps = { selected?: boolean, selectedColor: string, hoverColor: string, textColor: string }
+
+const Block = styled.div<BlockProps>`
+  background: ${({ selected, selectedColor }) => (selected ? selectedColor : "#fff")};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12), 1px 1px 3px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
@@ -74,31 +76,31 @@ const Block = styled.div<{ selected?: boolean }>`
   transition: all 300ms ease-in-out;
   
   &:hover {
-    background: ${({selected}) => selected ? "#DAEBF7" : "#DDD9E3"};
-    ${({selected}) => selected && css`
+    background: ${({hoverColor}) => hoverColor};
+    ${({selected}) => selected && css<BlockProps>`
       ${Title} {
-        color: #449BD9;
+        color: ${({textColor}) => textColor};
       }
       
       ${Description} {
-        color: #449BD9;
+        color: #424242;
     
         &:before {
-          border-color: #449BD9;
+          border-color: ${({textColor}) => textColor};
         }
       }
     `}
   }
 
   ${Title} {
-    color: ${({ selected }) => (selected ? "#fff" : "#544274")};
+    color: ${({selected, textColor}) => selected ? '#fff' : textColor};
   }
 
   ${Description} {
-    color: ${({ selected }) => (selected ? "#fff" : "#424242")};
+    color: ${({selected}) => selected ? '#fff' : '#424242'};
 
     &:before {
-      border-color: ${({ selected }) => (selected ? "#fff" : "#544274")};
+      border-color: ${({selected, textColor}) => selected ? '#fff' : textColor};
     }
   }
   
@@ -111,7 +113,10 @@ type UserTypeCardProps = {
   title: string
   descriptions: string[]
   className?: string
-  selected?: boolean
+  selectedColor: string
+  hoverColor: string
+  textColor: string
+  selected: boolean
   onClick: () => void
 }
 

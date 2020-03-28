@@ -122,12 +122,18 @@ export const Step2 = () => {
         <Cards>
           <UserTypeCard
             title='Клиентом'
+            selectedColor="#449BD9"
+            hoverColor="#DAEBF7"
+            textColor="#449BD9"
             descriptions={clientDescriptions}
             selected={type === "client"}
             onClick={() => userTypeChanged("client")}
           />
           <UserTypeCard
             title='Коучем'
+            selectedColor="#544274"
+            hoverColor="#DDD9E3"
+            textColor="#544274"
             descriptions={couchDescriptions}
             selected={type === "couch"}
             onClick={() => userTypeChanged("couch")}
