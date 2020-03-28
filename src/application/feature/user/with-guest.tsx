@@ -8,7 +8,7 @@ type Options = {
   as?: string
 }
 
-export const withOnlyGuest = ({ to = "/", as = "/" }: Options) => (Child: React.ComponentType) => {
+export const withGuest = ({ to = "/", as = "/" }: Options) => (Child: React.ComponentType) => {
   return ({ ...props }) => {
     const isAuthed = useStore($isLoggedIn)
     const router = useRouter()

@@ -1,5 +1,5 @@
-import { withOnlyGuest } from "@/application/feature/user/Guest"
-import { withProtect } from "@/application/feature/user/Protected"
+import { withGuest } from "@/application/feature/user/with-guest"
+import { withProtect } from "@/application/feature/user/with-protect"
 import { pageMounted } from "@/application/pages/auth/pages/signup/signup.model"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
@@ -9,7 +9,7 @@ import { Step2 } from "@/application/pages/auth/pages/signup/content/step-2/Step
 import { Step3 } from "@/application/pages/auth/pages/signup/content/step-3/Step3"
 import { Step4 } from "@/application/pages/auth/pages/signup/content/step-4/Step4"
 
-const OnlyForGuestStep1 = withOnlyGuest({to: '/signup/[step]', as: '/signup/2'})(Step1)
+const OnlyForGuestStep1 = withGuest({to: '/signup/[step]', as: '/signup/2'})(Step1)
 const ProtectedStep2 = withProtect({to: '/signup/[step]', as: '/signup/1'})(Step2)
 const ProtectedStep3 = withProtect({to: '/signup/[step]', as: '/signup/1'})(Step3)
 const ProtectedStep4 = withProtect({to: '/signup/[step]', as: '/signup/1'})(Step4)
