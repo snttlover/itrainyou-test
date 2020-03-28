@@ -24,6 +24,7 @@
     "react-image-crop": "^8.5.0",
     "react-multi-carousel": "^2.5.3",
     "react-slider": "^1.0.3",
+    "simplebar-react": "^2.1.0",
     "styled-components": "^5.0.1",
     "styled-media-query": "^2.1.2"
   },
