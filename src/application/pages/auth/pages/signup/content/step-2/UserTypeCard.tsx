@@ -76,17 +76,17 @@ const Block = styled.div<BlockProps>`
   transition: all 300ms ease-in-out;
   
   &:hover {
-    background: ${({hoverColor}) => hoverColor};
+    background: ${({selected, hoverColor, selectedColor}) => selected ? selectedColor : hoverColor};
     ${({selected}) => selected && css<BlockProps>`
       ${Title} {
-        color: ${({textColor}) => textColor};
+        color: ${({selected, textColor}) => selected ? '#fff' : textColor};
       }
       
       ${Description} {
-        color: #424242;
+        color: ${({selected}) => selected ? '#fff' : '#424242'};
     
         &:before {
-          border-color: ${({textColor}) => textColor};
+          border-color: ${({selected, textColor}) => selected ? '#fff' : textColor};
         }
       }
     `}
