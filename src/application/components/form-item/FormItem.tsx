@@ -10,6 +10,8 @@ const StyledFormItem = styled.div`
 `
 
 const Label = styled.div`
+  display: flex;
+  align-items: flex-start;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
@@ -26,15 +28,15 @@ const FormItemRequiredStar = styled.span`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  
-  color: #D5584D;
+
+  color: #d5584d;
 `
 
 type FormItemTypes = {
   label?: string | React.ReactNode
-  children: React.ReactNode
+  children?: React.ReactNode
   required?: boolean
-  error?: string | null,
+  error?: string | null
   className?: string
 }
 
@@ -45,7 +47,9 @@ export const FormItem = styled(({ label, children, error, required, ...props }: 
 
   return (
     <StyledFormItem {...props}>
-      <Label>{label} {required && <FormItemRequiredStar>*</FormItemRequiredStar>}</Label>
+      <Label>
+        {label} {required && <FormItemRequiredStar>*</FormItemRequiredStar>}
+      </Label>
       {React.Children.map(children, child => {
         if (!React.isValidElement(child)) return null
         return React.cloneElement(child, { error: showError, onBlur: () => changeTouched(true) })

@@ -8,7 +8,7 @@ type ClientData = {
   firstName: string
   lastName: string
   birthDate: string
-  sex: "M" | "F"
+  sex: "M" | "F" | ""
   avatar: string
 }
 

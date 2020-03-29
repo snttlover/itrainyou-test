@@ -23,7 +23,7 @@ export interface RegisterAsClientRequest {
   firstName: string
   lastName: string
   birthDate: string
-  sex: "M" | "F"
+  sex: "M" | "F" | ""
   avatar: string
   categories: number[]
 }
@@ -37,7 +37,7 @@ export interface RegisterAsClientResponse {
   firstName: string
   lastName: string
   birthDate: string
-  sex: "M" | "F"
+  sex: "M" | "F" | ""
   avatar: string
   categories: Category[]
   favouriteCoaches: []
@@ -56,7 +56,7 @@ export interface RegisterAsCouchRequest {
   firstName: string
   lastName: string
   birthDate: string
-  sex: "M" | "F"
+  sex: "M" | "F" | ""
   avatar: string
   categories: number[]
   workExperience: string
@@ -75,7 +75,7 @@ export interface RegisterAsCouchResponse {
   firstName: string
   lastName: string
   birthDate: string
-  sex: "M" | "F"
+  sex: "M" | "F" | ""
   avatar: string
   categories: Category[]
   favouriteCoaches: []

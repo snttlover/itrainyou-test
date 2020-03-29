@@ -7,7 +7,7 @@ import {
   REGISTER_SAVE_KEY
 } from "@/application/pages/auth/pages/signup/signup.model"
 import { combine, createEvent, createStore, createStoreObject } from "effector-next"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" })
@@ -43,15 +43,22 @@ export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = 
   eventMapper: event => event.map(trimString)
 })
 
-export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField({
-  defaultValue: dayjs(),
-  validator: value => null
+export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<Dayjs | null>({
+  defaultValue: null,
+  validator: value => {
+    const type = $userData.map(data => data.type).getState()
+
+    if (type === 'couch' && !value) return 'Поле обязательно к заполению'
+    return null
+  }
 })
 
-export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<"M" | "F">({
-  defaultValue: "M",
+export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<"M" | "F" | "">({
+  defaultValue: "",
   validator: value => {
-    if (!value) return "Поле обязательно к заполению"
+    const type = $userData.map(data => data.type).getState()
+
+    if (type === 'couch' && !value) return 'Поле обязательно к заполению'
     return null
   }
 })
@@ -67,7 +74,7 @@ export const $step3Form = createStoreObject({
 $step3Form.updates.watch(data => {
   clientDataChanged({
     avatar: data.image.file,
-    birthDate: data.birthday.format('YYYY-MM-DD'),
+    birthDate: data.birthday ? data.birthday.format('YYYY-MM-DD') : "",
     firstName: data.name,
     lastName: data.lastName,
     sex: data.sex

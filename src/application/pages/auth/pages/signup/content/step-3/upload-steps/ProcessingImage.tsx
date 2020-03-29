@@ -21,7 +21,7 @@ const ImageContainer = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  
+
   ${MediaRange.greaterThan("mobile")`
     margin: 0 20px 0 10%;
   `}
@@ -49,7 +49,7 @@ const ControllersContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 8px;
-  
+
   ${MediaRange.greaterThan("mobile")`
     margin-top: 50px;
     flex-direction: row;
@@ -166,8 +166,17 @@ type ProcessingImageProps = {
   setImage: (img: string | null) => void
 }
 
+type CropState = {
+  aspect?: number
+  x?: number
+  y?: number
+  width?: number
+  height?: number
+  unit?: string
+}
+
 export const ProcessingImage = ({ image, filename, setImage }: ProcessingImageProps) => {
-  const [crop, setCrop] = useState({ aspect: 1 })
+  const [crop, setCrop] = useState<CropState>({ aspect: 1, unit: "%", width: 50, height: 50, x: 25, y: 25 })
   return (
     <Container>
       <ControllersContainer>
@@ -177,7 +186,7 @@ export const ProcessingImage = ({ image, filename, setImage }: ProcessingImagePr
             crop={crop}
             onChange={setCrop}
             circularCrop
-            onImageLoaded={(ref: HTMLImageElement) => imageRef = ref}
+            onImageLoaded={(ref: HTMLImageElement) => (imageRef = ref)}
           />
         </ImageContainer>
         <div>
