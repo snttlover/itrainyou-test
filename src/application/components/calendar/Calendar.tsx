@@ -126,6 +126,10 @@ const Year = styled.div`
   color: #424242;
 `
 
+function firsDayOfMonth(month: number, year: number) {
+  return new Date(dayjs(`${year}-${month}-01`).valueOf())
+}
+
 export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
 
@@ -203,7 +207,7 @@ export const Calendar = (props: CalendarTypes) => {
         locale='ru-RU'
         value={props.value}
         onChange={props.onChange}
-        activeStartDate={startDate}
+        activeStartDate={firsDayOfMonth(startDate.getMonth() + 1, startDate.getFullYear())}
         selectRange={props.selectRange || false}
         showNavigation={false}
       />
