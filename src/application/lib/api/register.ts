@@ -22,9 +22,9 @@ export const registerAsUser = (data: RegisterAsUserRequest) =>
 export interface RegisterAsClientRequest {
   firstName: string
   lastName: string
-  birthDate: string
+  birthDate: string | null
   sex: "M" | "F" | ""
-  avatar: string
+  avatar: string | null
   categories: number[]
 }
 
@@ -36,9 +36,9 @@ export interface RegisterAsClientResponse {
   }
   firstName: string
   lastName: string
-  birthDate: string
+  birthDate: string  | null
   sex: "M" | "F" | ""
-  avatar: string
+  avatar: string | null
   categories: Category[]
   favouriteCoaches: []
   creationDatetime: string
@@ -55,9 +55,9 @@ export const registerAsClient = (data: RegisterAsClientRequest) =>
 export interface RegisterAsCouchRequest {
   firstName: string
   lastName: string
-  birthDate: string
+  birthDate: string | null
   sex: "M" | "F" | ""
-  avatar: string
+  avatar: string | null
   categories: number[]
   workExperience: string
   education: string
@@ -74,9 +74,9 @@ export interface RegisterAsCouchResponse {
   }
   firstName: string
   lastName: string
-  birthDate: string
+  birthDate: string | null
   sex: "M" | "F" | ""
-  avatar: string
+  avatar: string | null
   categories: Category[]
   favouriteCoaches: []
   creationDatetime: string

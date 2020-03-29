@@ -73,8 +73,8 @@ export const $step3Form = createStoreObject({
 
 $step3Form.updates.watch(data => {
   clientDataChanged({
-    avatar: data.image.file,
-    birthDate: data.birthday ? data.birthday.format('YYYY-MM-DD') : "",
+    avatar: data.image.file || null,
+    birthDate: data.birthday ? data.birthday.format('YYYY-MM-DD') : null,
     firstName: data.name,
     lastName: data.lastName,
     sex: data.sex

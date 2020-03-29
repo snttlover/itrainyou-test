@@ -10,7 +10,7 @@ import * as React from "react"
 
 export const Step4Couch = () => {
   const userData = useStore($userData)
-  const years = dayjs().diff(dayjs(userData.clientData?.birthDate, "YYYY-MM-DDDD"), "year")
+  const years = dayjs().diff(dayjs(userData.clientData?.birthDate!, "YYYY-MM-DDDD"), "year")
   const sex = { M: "мужской", F: "женский" }[userData.clientData?.sex || "M"]
 
   useEffect(() => step4CouchMounted(), [])

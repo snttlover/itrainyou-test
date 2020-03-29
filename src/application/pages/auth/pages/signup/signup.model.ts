@@ -7,9 +7,9 @@ export const REGISTER_SAVE_KEY = "__register-data__"
 type ClientData = {
   firstName: string
   lastName: string
-  birthDate: string
+  birthDate: string | null
   sex: "M" | "F" | ""
-  avatar: string
+  avatar: string | null
 }
 
 type CouchData = {
