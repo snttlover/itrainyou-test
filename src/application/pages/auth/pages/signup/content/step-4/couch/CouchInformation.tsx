@@ -2,6 +2,7 @@ import { Button } from "@/application/components/button/normal/Button"
 import { $categoriesList } from "@/application/feature/categories/categories.store"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { CategoryCard } from "@/application/pages/auth/pages/signup/content/step-4/couch/CategoryCard"
+import { CheckStep } from "@/application/pages/auth/pages/signup/content/step-4/couch/check-step/CheckStep"
 import { Form } from "@/application/pages/auth/pages/signup/content/step-4/couch/Form"
 import { UploadVideo } from "@/application/pages/auth/pages/signup/content/step-4/couch/UploadVideo"
 import { $step4FormValid, videoUploadFx } from "@/application/pages/auth/pages/signup/content/step-4/step-4-couch.model"
@@ -14,6 +15,10 @@ import {
 import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
+import study from './check-step/study.svg'
+import approve from './check-step/approve.svg'
+import peoples from './check-step/peoples.svg'
+import arrow from './check-step/arrow.svg'
 
 const Container = styled.div`
   display: flex;
@@ -58,9 +63,61 @@ const CategoriesTitle = styled.h3`
   `}
 `
 
+const CheckStepsContainer = styled.div`
+  margin: 32px auto 0;
+  display: none;
+  
+  ${CheckStep} {
+    margin-left: 48px;
+    &:first-of-type {
+      margin-left: 0;
+    }
+    
+    &:not(:last-of-type):after {
+      content: "";
+      width: 18px;
+      height: 12px;
+      background: url("${arrow}");
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      margin-left: 15px;
+      
+      transform: translateY(-50%);
+    }
+  }
+  
+  ${MediaRange.greaterThan("tablet")`  
+    display: flex;
+  `}
+  
+  ${MediaRange.greaterThan("laptop")`
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    right: 0;
+    margin-right: 10px;
+    
+    ${CheckStep} {
+      margin-left: 0;
+      margin-top: 40px;
+      &:first-of-type {
+        margin-top: 0;
+      }
+      &:not(:last-of-type):after {
+        top: 100%;
+        left: 50%;
+        margin-top: 15px;
+        margin-left: 0;
+        
+        transform: translateX(-50%) rotate(90deg);
+      }
+    }
+  `}
+`
 
 const SendRequestButton = styled(Button)`
-  margin: 36px auto 44px;
+  margin: 32px auto 44px;
   background: #544274;
 `
 export const CouchInformation = () => {
@@ -89,6 +146,11 @@ export const CouchInformation = () => {
       </CategoriesContainer>
       <Form />
       <UploadVideo />
+      <CheckStepsContainer>
+        <CheckStep description='Эта заявка отправится супервизору' img={study} />
+        <CheckStep description='Супервизор одобрит вашу заявку' img={approve} />
+        <CheckStep description='Эта анкета будет видна клиентам (кроме контактов)' img={peoples} />
+      </CheckStepsContainer>
       <SendRequestButton disabled={loading || isVideoUploading || !isFormValid} onClick={() => userRegistered()}>
         Отправить заявку
       </SendRequestButton>
