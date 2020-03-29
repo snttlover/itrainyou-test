@@ -1,8 +1,4 @@
-import { GetCoachesParamsTypes } from "@/application/lib/api/coach"
-import { debounce } from "@/application/lib/helpers/debounce"
-import { fetchCategoriesListFx } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 import {
-  $searchPageQuery,
   fetchCoachesListFx, resetSearchQuery,
   setSearchPageQuery
 } from "@/application/pages/search/coaches-search.model"
