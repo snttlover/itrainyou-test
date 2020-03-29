@@ -44,9 +44,6 @@ const CalendarWrapper = styled.div`
     pointer-events: none;
     cursor: default;
   }
-  .react-calendar__month-view__days__day:first-of-type {
-    margin-left: 28%;
-  }
   .react-calendar__month-view__days__day {
     flex-basis: 14.2%;
     height: 28px;
