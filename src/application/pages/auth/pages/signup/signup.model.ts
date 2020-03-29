@@ -35,7 +35,6 @@ type UserData =
 
 export type RegisterUserType = "client" | "couch"
 
-
 export const pageMounted = createEvent()
 
 export const userTypeChanged = createEvent<RegisterUserType>()

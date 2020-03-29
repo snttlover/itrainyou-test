@@ -65,11 +65,26 @@ export const $videoInterview = createStore("")
   .on(videoUploadFx.doneData, (state, payload) => payload.file)
   .reset(videoUploadFx)
 
+export const photoUploadFx = createEffect({
+  handler: (file: File) => {
+    return uploadMedia({ file, type: "IMAGE" })
+  }
+})
+
+export const photoRemoved = createEvent<number>()
+export const restorePhotos = createEvent<string[]>()
+
+export const $photos = createStore<string[]>([])
+  .on(photoUploadFx.doneData, (state, payload) => [...state, payload.file])
+  .on(restorePhotos, (_, payload) => payload)
+  .on(photoRemoved, (state, index) => [...state.slice(0, index), ...state.slice(index + 1)])
+
 export const $step4Form = createStoreObject({
   education: $education,
   workExperience: $workExperience,
   description: $description,
   phone: $phone,
+  photos: $photos,
   videoInterview: $videoInterview
 })
 
@@ -89,21 +104,22 @@ step4CouchMounted.watch(() => {
     data.description && descriptionChanged(data.description)
     data.education && educationChanged(data.education)
     data.phone && phoneChanged(data.phone)
+    data.photos && restorePhotos(data.photos)
     data.videoInterview && videoInterviewChanged(data.videoInterview)
     data.workExperience && workExperienceChanged(data.workExperience)
   } catch (e) {}
 })
 
 const $categoriesError = $userData.map(userData => {
-  if (userData.categories.length < 1) return 'Должна быть выбрана хоть одна категория'
-  if (userData.categories.length > 3) return 'Вы не можете выбрать более 3 категорий'
+  if (userData.categories.length < 1) return "Должна быть выбрана хоть одна категория"
+  if (userData.categories.length > 3) return "Вы не можете выбрать более 3 категорий"
   return null
 })
 
 const $isCategoriesCorrect = $categoriesError.map(value => !value)
 
 const $videoInterviewError = $videoInterview.map(video => {
-  if (!video) return 'Необходимо загрузить видео с интервью'
+  if (!video) return "Необходимо загрузить видео с интервью"
 
   return null
 })

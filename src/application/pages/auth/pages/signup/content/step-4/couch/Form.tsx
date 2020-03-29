@@ -4,16 +4,22 @@ import { Input } from "@/application/components/input/Input"
 import { Textarea } from "@/application/components/textarea/Textarea"
 import { MediaRange } from "@/application/lib/responsive/media"
 import {
+  $photos,
   $step4Form,
   $step4FormErrors,
   descriptionChanged,
   educationChanged,
   phoneChanged,
+  photoRemoved,
+  photoUploadFx,
   workExperienceChanged
 } from "@/application/pages/auth/pages/signup/content/step-4/step-4-couch.model"
 import { useStore } from "effector-react"
+import { useCallback } from "react"
 import * as React from "react"
+import { useDropzone } from "react-dropzone"
 import styled from "styled-components"
+import Carousel from "react-multi-carousel"
 
 const InformationContainer = styled.div`
   margin: 56px 16px 0;
@@ -55,6 +61,18 @@ export const Form = () => {
   const values = useStore($step4Form)
   const errors = useStore($step4FormErrors)
 
+  const onDropAccepted = useCallback(acceptedFiles => {
+    acceptedFiles.forEach(photoUploadFx)
+  }, [])
+
+  const { getInputProps, open } = useDropzone({
+    onDropAccepted,
+    multiple: true,
+    noClick: true,
+    maxSize: 2097152,
+    accept: ["image/gif", "image/png", "image/jpg", "image/jpeg"]
+  })
+
   return (
     <InformationContainer>
       <InformationTitle>Заполните информацию</InformationTitle>
@@ -71,7 +89,51 @@ export const Form = () => {
         <Input value={values.phone} type='phone' onChange={phoneChanged} />
       </FormItem>
       <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
-      <AddPhotosButton>Добавить фотографии</AddPhotosButton>
+      <Photos />
+      <AddPhotosButton onClick={() => open()}>Добавить фотографии</AddPhotosButton>
+      <input {...getInputProps()} />
     </InformationContainer>
+  )
+}
+
+const Photo = styled.div<{ src: string }>`
+  width: 100px;
+  height: 100px;
+  background: url("${({ src }) => src}");
+  background-position: center;
+  background-size: cover;
+  margin-left: 8px;
+`
+
+const StyledCarousel = styled(Carousel)`
+  margin-top: 24px;
+`
+
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 6,
+    partialVisibilityGutter: 0 // this is optional if you are not using partialVisible props
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 4,
+    partialVisibilityGutter: 0 // this is optional if you are not using partialVisible props
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 2,
+    partialVisibilityGutter: 0 // this is optional if you are not using partialVisible props
+  }
+}
+
+const Photos = () => {
+  const photos = useStore($photos)
+  return (
+    <StyledCarousel removeArrowOnDeviceType={["mobile", "tablet", "desktop"]} responsive={responsive}>
+      {photos.map((src, index) => (
+        <Photo key={src} src={src} onClick={() => photoRemoved(index)} />
+      ))}
+    </StyledCarousel>
   )
 }

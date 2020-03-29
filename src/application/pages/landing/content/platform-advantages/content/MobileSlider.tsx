@@ -1,5 +1,4 @@
 import * as React from "react"
-// @ts-ignore
 import Carousel from "react-multi-carousel"
 
 import {
@@ -25,7 +24,7 @@ const responsive = {
 }
 
 export const MobileSlider = (props: MobileSliderProps) => {
-  let carousel: any = null
+  let carousel: Carousel | null = null
 
   useEffect(() => {
     if (carousel && carousel.goToSlide) {
@@ -36,7 +35,7 @@ export const MobileSlider = (props: MobileSliderProps) => {
   return (
     <StyledCarousel>
       <Carousel
-        ref={(el: any) => (carousel = el)}
+        ref={el => (carousel = el)}
         responsive={responsive}
         ssr={true}
         afterChange={(_, current: any ) => {
