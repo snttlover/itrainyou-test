@@ -28,7 +28,7 @@ const Icon = styled.img``
 export const CheckStep = styled(
   ({ description, img, className }: { description: string; img: string; className?: string }) => (
     <CheckStepContainer className={className}>
-      {description}
+      <span dangerouslySetInnerHTML={{ __html: description }}/>
       <Icon src={img} />
     </CheckStepContainer>
   )

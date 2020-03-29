@@ -44,13 +44,11 @@ const CategoriesContainer = styled.div`
         margin-top: 28px;
       }
     }
-  `};
-  //
+  `}
   ${MediaRange.greaterThan("tablet")`
     width: 610px;
     margin: 0 auto;
-  `};
-  //
+  `}
 `
 
 const CategoriesTitle = styled.h3`
@@ -149,7 +147,7 @@ export const CouchInformation = () => {
       <CheckStepsContainer>
         <CheckStep description='Эта заявка отправится супервизору' img={study} />
         <CheckStep description='Супервизор одобрит вашу заявку' img={approve} />
-        <CheckStep description='Эта анкета будет видна клиентам (кроме контактов)' img={peoples} />
+        <CheckStep description='Эта анкета будет видна клиентам<br /> (кроме контактов)' img={peoples} />
       </CheckStepsContainer>
       <SendRequestButton disabled={loading || isVideoUploading || !isFormValid} onClick={() => userRegistered()}>
         Отправить заявку
