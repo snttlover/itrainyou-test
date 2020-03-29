@@ -14,6 +14,7 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
   if (error.response?.status === 401) {
     logout()
   }
+  return Promise.reject(error)
 })
 
 export const get = <R, Params = {}>(url: string, params?: Params): Promise<AxiosResponse<R>> =>
