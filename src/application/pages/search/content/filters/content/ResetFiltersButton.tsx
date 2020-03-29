@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { DashedButton } from "@/application/components/button/dashed/DashedButton"
 import { setSearchPageQuery } from "@/application/pages/search/coaches-search.model"
 import { resetCategories } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
+import Router from "next/router"
 
 const Container = styled.div`
   display: flex;
@@ -19,8 +20,7 @@ type ResetFiltersButtonTypes = {
 
 export const ResetFiltersButton = (props: ResetFiltersButtonTypes) => {
   const clickHandler = () => {
-    setSearchPageQuery({})
-    resetCategories()
+    Router.replace(`/search`)
   }
 
   return (

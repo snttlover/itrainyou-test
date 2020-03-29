@@ -44,9 +44,6 @@ const CalendarWrapper = styled.div`
     pointer-events: none;
     cursor: default;
   }
-  .react-calendar__month-view__days__day:first-of-type {
-    margin-left: 28%;
-  }
   .react-calendar__month-view__days__day {
     flex-basis: 14.2%;
     height: 28px;
@@ -129,6 +126,10 @@ const Year = styled.div`
   color: #424242;
 `
 
+function firsDayOfMonth(month: number, year: number) {
+  return new Date(dayjs(`${year}-${month}-01`).valueOf())
+}
+
 export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
 
@@ -206,7 +207,7 @@ export const Calendar = (props: CalendarTypes) => {
         locale='ru-RU'
         value={props.value}
         onChange={props.onChange}
-        activeStartDate={startDate}
+        activeStartDate={firsDayOfMonth(startDate.getMonth() + 1, startDate.getFullYear())}
         selectRange={props.selectRange || false}
         showNavigation={false}
       />
