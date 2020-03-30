@@ -94,6 +94,9 @@ const UploadImage = styled.img<{ withAvatar: boolean }>`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  ${NextButton} {
+    margin-left: auto
+  }
 `
 
 const sexItems: { label: string; value: "M" | "F" }[] = [
