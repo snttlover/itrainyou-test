@@ -2,6 +2,7 @@ import { loggedIn } from "@/application/feature/user/user.model"
 import { registerAsUser, RegisterAsUserResponse } from "@/application/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
 import { emailValidator, passwordValidator, trimString } from "@/application/lib/validators"
+import { userDataReset } from "@/application/pages/auth/pages/signup/signup.model"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, sample } from "effector-next"
 import Router from "next/router"
@@ -16,6 +17,7 @@ export const registerFx = createEffect<
 })
 
 registerFx.doneData.watch(payload => {
+  userDataReset()
   loggedIn({ token: payload.token })
   Router.push('/signup/[step]', '/signup/2', { shallow: true })
 })

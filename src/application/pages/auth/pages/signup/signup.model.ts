@@ -42,6 +42,7 @@ export const userDataChanged = createEvent<UserData>()
 export const clientDataChanged = createEvent<ClientData>()
 export const toggleCategorySelection = createEvent<number>()
 export const couchDataChanged = createEvent<CouchData>()
+export const userDataReset = createEvent()
 
 export const $userData = createStore<UserData>({ type: "client", categories: [] })
   .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
@@ -54,8 +55,9 @@ export const $userData = createStore<UserData>({ type: "client", categories: [] 
     return { ...state, categories: [...state.categories] }
   })
   .on(userDataChanged, (_, payload) => payload)
+  .reset(userDataReset)
 
-const watchedEvents = merge([userTypeChanged, clientDataChanged, couchDataChanged, toggleCategorySelection])
+const watchedEvents = merge([userTypeChanged, clientDataChanged, couchDataChanged, toggleCategorySelection, userDataReset])
 
 $userData.watch(watchedEvents, userData => {
   try {
