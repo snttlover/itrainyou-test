@@ -28,10 +28,9 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
   @media screen and (max-width: 480px) {
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    display: ${props => (props.showOnMobile ? `block` : `none`)};
+    transition: left 300ms;
+    left: ${props => (props.showOnMobile ? 0 : `100%`)};
   }
 `
 
