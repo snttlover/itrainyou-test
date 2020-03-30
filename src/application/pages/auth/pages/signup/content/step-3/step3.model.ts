@@ -45,20 +45,30 @@ export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = 
   eventMapper: event => event.map(trimString)
 })
 
-export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<Dayjs | null>({
+export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<
+  Dayjs | null,
+  { userData: UnpackedStoreObjectType<typeof $userData>; value: Dayjs | null }
+>({
   defaultValue: null,
-  validator: value => {
-    const type = $userData.map(data => data.type).getState()
+  validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+  validator: obj => {
+    const type = obj.userData.type
+    const value = obj.value
 
     if (type === "couch" && !value) return "Поле обязательно к заполению"
     return null
   }
 })
 
-export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<"M" | "F" | "">({
+export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
+  "M" | "F" | "",
+  { userData: UnpackedStoreObjectType<typeof $userData>; value: "M" | "F" | "" }
+>({
   defaultValue: "",
-  validator: value => {
-    const type = $userData.map(data => data.type).getState()
+  validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+  validator: obj => {
+    const type = obj.userData.type
+    const value = obj.value
 
     if (type === "couch" && !value) return "Поле обязательно к заполению"
     return null
