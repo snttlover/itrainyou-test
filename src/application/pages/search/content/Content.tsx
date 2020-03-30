@@ -5,6 +5,7 @@ import {Filters} from "./filters/Filters"
 
 const Container = styled.div`
   width: 100%;
+  min-height: 100vh;
   padding-top: 20px;
   display: flex;
 `
