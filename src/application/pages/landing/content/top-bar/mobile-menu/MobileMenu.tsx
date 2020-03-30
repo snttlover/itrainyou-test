@@ -52,7 +52,7 @@ export const MobileMenu = () => {
       <MobileRegistrationBlock />
       {/*<Profile />*/}
       <MenuItems />
-      <StartCoach onClick={() => changeMenuVisibility(false)}>Стать коучем</StartCoach>
+      {/*<StartCoach onClick={() => changeMenuVisibility(false)}>Стать коучем</StartCoach>*/}
     </Container>
   )
 
