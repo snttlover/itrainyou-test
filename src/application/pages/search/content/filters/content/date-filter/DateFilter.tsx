@@ -3,9 +3,10 @@ import styled from "styled-components"
 import { RadioGroup, RadioOption } from "@/application/components/radio/Radio"
 import { useState } from "react"
 import { Calendar, CalendarDateType } from "@/application/components/calendar/Calendar"
-import { useStore } from "effector-react"
+import { useEvent, useStore } from "effector-react"
 import arrowImage from "./images/arrow.svg"
 import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import {$calendarVisibility, changeVisibility} from "@/application/pages/search/content/filters/content/date-filter/calendar.model"
 import dayjs from "dayjs"
 
 const Container = styled.div`
@@ -94,7 +95,8 @@ export const DateFilter = () => {
 
   const [date, changeDate] = useState<CalendarDateType>(getCalendarValue())
 
-  const [calendarVisibility, changeCalendarVisibility] = useState(!!start || !!end)
+  const calendarVisibility = useStore($calendarVisibility)
+  const changeCalendarVisibility = useEvent(changeVisibility)
 
   const startText = () => {
     if (date && [`from`, `range`].includes(rangeType)) {

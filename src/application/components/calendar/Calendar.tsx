@@ -1,9 +1,12 @@
 import * as React from "react"
 import styled from "styled-components"
 import dayjs from "dayjs"
+import 'dayjs/locale/ru'
 import { Dispatch, SetStateAction, useState } from "react"
 import leftImage from "./images/left.svg"
 import rightImage from "./images/right.svg"
+
+dayjs.locale('ru')
 
 export type CalendarDateType = Date | Date[]
 
