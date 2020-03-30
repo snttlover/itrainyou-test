@@ -38,7 +38,7 @@ const ResetPasswordLink = styled.a`
   }
 `
 
-export default withGuest({ to: "/", as: "/" })(() => (
+export default () => (
   <AuthLayout>
     <CenterFormContainer>
       <WhiteContainer>
@@ -50,4 +50,4 @@ export default withGuest({ to: "/", as: "/" })(() => (
       </Link>
     </CenterFormContainer>
   </AuthLayout>
-))
+)

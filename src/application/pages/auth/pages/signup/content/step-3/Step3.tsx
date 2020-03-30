@@ -156,7 +156,7 @@ export const Step3 = () => {
           <BirthdayFormGroup />
           <FormGroup>
             <FormItem label='Пол' error={errors.sex} required={userType === "couch"}>
-              <SelectInput placeholder='Мужской' value={values.sex} onChange={sexChanged} options={sexItems} />
+              <SelectInput placeholder='Пол' value={values.sex} onChange={sexChanged} options={sexItems} />
             </FormItem>
           </FormGroup>
           <NextButton onClick={() => Router.push("/signup/[step]", "/signup/4")} disabled={!isFormValid} />

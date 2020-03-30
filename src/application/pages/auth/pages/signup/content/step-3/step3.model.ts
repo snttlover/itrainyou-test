@@ -1,23 +1,25 @@
 import { UploadMediaResponse } from "@/application/lib/api/media"
-import { createEffectorField } from "@/application/lib/generators/efffector"
+import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
 import { trimString } from "@/application/lib/validators"
-import {
-  $userData,
-  clientDataChanged,
-  REGISTER_SAVE_KEY
-} from "@/application/pages/auth/pages/signup/signup.model"
-import { combine, createEvent, createStore, createStoreObject } from "effector-next"
+import { $userData, clientDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
 import dayjs, { Dayjs } from "dayjs"
+import { combine, createEvent, createStore, createStoreObject } from "effector-next"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
-export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" })
-  .on(imageUploaded, (state, payload) => payload)
+export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
+  imageUploaded,
+  (state, payload) => payload
+)
 
-const $isImageError = combine($image, $userData.map(userData => userData.type), (img, type) => {
-  if (type === "couch" && !img.file) return 'Изображение обязательно к загрузке'
+const $isImageError = combine(
+  $image,
+  $userData.map(userData => userData.type),
+  (img, type) => {
+    if (type === "couch" && !img.file) return "Изображение обязательно к загрузке"
 
-  return null
-})
+    return null
+  }
+)
 const $isImageCorrect = $isImageError.map(error => !error)
 
 export const toggleUploadModal = createEvent()
@@ -48,7 +50,7 @@ export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = 
   validator: value => {
     const type = $userData.map(data => data.type).getState()
 
-    if (type === 'couch' && !value) return 'Поле обязательно к заполению'
+    if (type === "couch" && !value) return "Поле обязательно к заполению"
     return null
   }
 })
@@ -58,7 +60,7 @@ export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
   validator: value => {
     const type = $userData.map(data => data.type).getState()
 
-    if (type === 'couch' && !value) return 'Поле обязательно к заполению'
+    if (type === "couch" && !value) return "Поле обязательно к заполению"
     return null
   }
 })
@@ -74,7 +76,7 @@ export const $step3Form = createStoreObject({
 $step3Form.updates.watch(data => {
   clientDataChanged({
     avatar: data.image.file || null,
-    birthDate: data.birthday ? data.birthday.format('YYYY-MM-DD') : null,
+    birthDate: data.birthday ? data.birthday.format("YYYY-MM-DD") : null,
     firstName: data.name,
     lastName: data.lastName,
     sex: data.sex
@@ -90,7 +92,7 @@ step3Mounted.watch(() => {
     const data = JSON.parse(stringData).clientData
     data?.firstName && nameChanged(data.firstName)
     data?.lastName && lastNameChanged(data.lastName)
-    data?.birthDate && birthdayChanged(dayjs(data.birthDate, 'YYYY-MM-DD'))
+    data?.birthDate && birthdayChanged(dayjs(data.birthDate, "YYYY-MM-DD"))
     data?.sex && sexChanged(data.sex)
     data?.avatar && imageUploaded({ id: -1, type: "IMAGE", file: data.avatar })
   } catch (e) {}
