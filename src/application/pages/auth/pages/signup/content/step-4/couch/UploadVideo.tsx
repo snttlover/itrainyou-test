@@ -124,7 +124,7 @@ export const UploadVideo = () => {
     onDropAccepted,
     multiple: false,
     noClick: true,
-    accept: ["video/mp4"]
+    accept: "video/*"
   })
 
   return (
@@ -142,7 +142,7 @@ export const UploadVideo = () => {
       </InterviewQuestions>
       <VideoUploader {...getRootProps()} onClick={open}>
         {!video && isVideoUploading && <ProgressBar percent={videoUploadProgress} />}
-        {video && !isVideoUploading && <Video src={video} />}
+        {video && !isVideoUploading && <Video src={video} autoPlay muted/>}
         {!video && !isVideoUploading && "Добавить видео"}
       </VideoUploader>
       <input {...getInputProps()} />
