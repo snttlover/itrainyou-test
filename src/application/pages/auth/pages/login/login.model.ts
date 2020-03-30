@@ -1,17 +1,24 @@
+import { loggedIn } from "@/application/feature/user/user.model"
 import { login, LoginResponse } from "@/application/lib/api/login"
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
 import { emailValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStore, createStoreObject, sample } from "effector-next"
+import Router from "next/router"
 
-export const loginFormSended = createEvent()
+export const loginFormSent = createEvent()
 
 export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, LoginResponse, AxiosError>({
   handler: ({ email, password }) => login({ email, password })
 })
 
-loginFx.done.watch(payload => {
-  alert(`success login`)
+loginFx.doneData.watch(data => {
+  loggedIn({ token: data.token })
+  if (!data.user.client && !data.user.coach) {
+    Router.push('/signup/[step]', '/signup/2')
+  } else {
+    Router.push('/', '/')
+  }
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
@@ -48,6 +55,6 @@ export const $isFormValid = combine(
 
 sample({
   source: $loginForm,
-  clock: loginFormSended,
+  clock: loginFormSent,
   target: loginFx
 })

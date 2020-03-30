@@ -1,3 +1,4 @@
+import { withGuest } from "@/application/feature/user/with-guest"
 import Link from "next/link"
 import * as React from "react"
 import styled from "styled-components"
@@ -37,7 +38,7 @@ const ResetPasswordLink = styled.a`
   }
 `
 
-export default () => (
+export default withGuest({ to: "/", as: "/" })(() => (
   <AuthLayout>
     <CenterFormContainer>
       <WhiteContainer>
@@ -49,4 +50,4 @@ export default () => (
       </Link>
     </CenterFormContainer>
   </AuthLayout>
-)
+))

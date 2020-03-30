@@ -7,6 +7,8 @@ export interface LoginResponse {
     id: number
     email: string
     creationDatetime: string
+    coach: null | {}
+    client: null | {}
   }
 }
 

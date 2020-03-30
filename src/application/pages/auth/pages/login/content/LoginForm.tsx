@@ -13,7 +13,7 @@ import {
   emailChanged,
   passwordChanged,
   loginFx,
-  loginFormSended
+  loginFormSent
 } from "@/application/pages/auth/pages/login/login.model"
 import { FormEvent } from "react"
 
@@ -46,17 +46,17 @@ export const LoginForm = () => {
   const error = useStore($commonError)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    loginFormSended()
+    loginFormSent()
     e.preventDefault()
   }
 
   return (
     <StyledForm onSubmit={submitHandler}>
       <FormItem label='Почта' error={errors.email}>
-        <Input value={form.email} onChange={emailChanged} />
+        <Input value={form.email} name='email' type='email' onChange={emailChanged} />
       </FormItem>
       <FormItem label='Пароль' error={errors.password}>
-        <Input value={form.password} onChange={passwordChanged} type='password' />
+        <Input value={form.password} name='password' onChange={passwordChanged} type='password' />
       </FormItem>
       {error && <Error>{error}</Error>}
       <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>

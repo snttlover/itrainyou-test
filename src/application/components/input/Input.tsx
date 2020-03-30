@@ -34,6 +34,7 @@ const TextBox = styled.input<{ error?: boolean }>`
 `
 
 type InputTypes = {
+  name?: string
   value: string
   placeholder?: string
   type?: string
