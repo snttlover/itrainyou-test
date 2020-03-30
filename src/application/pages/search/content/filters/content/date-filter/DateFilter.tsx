@@ -150,11 +150,10 @@ export const DateFilter = () => {
     changeCalendarVisibility(!calendarVisibility)
     if (!calendarVisibility) {
       changeRangeType(`from`)
+      changeDate(new Date())
     } else {
       removeSearchPageQuery(["nearest_session_date__gte", "nearest_session_date__lte"])
     }
-    start = null
-    end = null
   }
 
   const selectDateText = () => {
