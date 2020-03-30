@@ -1,5 +1,5 @@
 import * as React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { changeMobileFiltersVisibility } from "./mobile-tabs.model"
 import { useStore } from "effector-react"
 import { $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
@@ -45,14 +45,22 @@ const StyledSortingPicker = styled(SortingPicker)`
   }
 `
 
-const Pin = styled.div`
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #d5584d;
-  border-radius: 50%;
-  margin-left: 25px;
-  margin-top: -3px;
+const Filters = styled.span<{ pin?: boolean }>`
+  position: relative;
+  ${({ pin }) =>
+    pin &&
+    css`
+      &:after {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #d5584d;
+        border-radius: 50%;
+        right: -5px;
+        top: -3px;
+      }
+    `}
 `
 
 export const MobileTabs = () => {
@@ -90,8 +98,7 @@ export const MobileTabs = () => {
         </Tab>
       </StyledSortingPicker>
       <Tab onClick={() => changeMobileFiltersVisibility(true)}>
-        Фильтры
-        {hasFilters() && <Pin />}
+        <Filters pin={hasFilters()}>Фильтры</Filters>
       </Tab>
     </Container>
   )
