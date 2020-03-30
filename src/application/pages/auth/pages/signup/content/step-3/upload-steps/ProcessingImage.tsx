@@ -65,6 +65,7 @@ const Rotate = styled.div<{ reverse?: boolean }>`
   height: 20px;
   display: flex;
   align-items: center;
+  cursor: pointer;
   &:before {
     content: url(${rotate});
     transform: rotateX(${({ reverse }) => (reverse ? 180 : 0)}deg) rotate(${({ reverse }) => (reverse ? 180 : 0)}deg);
