@@ -22,7 +22,6 @@ const Block = styled.div<{ isActive: boolean }>`
   border-radius: 8px;
   background: ${({ isActive }) => (isActive ? "#DDD9E3" : "#FFFFFF")};
   transition: border 200ms ease;
-  height: 104px;
   cursor: pointer;
   &:hover {
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.2);
