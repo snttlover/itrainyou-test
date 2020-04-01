@@ -11,7 +11,7 @@ export const removeSearchPageQuery = createEvent<(keyof GetCoachesParamsTypes)[]
 export const resetSearchQuery = createEvent()
 
 export const $searchPageQuery = createStore<GetCoachesParamsTypes>({})
-  .on(setSearchPageQuery, (_, query) => query)
+  .on(setSearchPageQuery, (_, query) => ({ ...query }))
   .on(addSearchPageQuery, (state, query) => {
     return {
       ...state,

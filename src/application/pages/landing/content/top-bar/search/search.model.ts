@@ -1,12 +1,19 @@
 import { Hint, getHints, GetHintsParamsTypes } from "@/application/lib/api/hint"
 import { createDomain, forward } from "effector-next"
-import { addSearchPageQuery, removeSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import {
+  addSearchPageQuery,
+  removeSearchPageQuery, resetSearchQuery,
+  setSearchPageQuery
+} from "@/application/pages/search/coaches-search.model"
 
 // coaches
 const searchDomain = createDomain()
 
 export const updateSearch = searchDomain.createEvent<string>()
-export const $search = searchDomain.createStore(``).on(updateSearch, (_, search) => search)
+export const $search = searchDomain.createStore(``)
+  .on(updateSearch, (_, search) => search)
+  .on(setSearchPageQuery, (_, query) => query.search || ``)
+  .on(resetSearchQuery, () => ``)
 
 updateSearch.watch((search: string) => loadHints({ search }))
 

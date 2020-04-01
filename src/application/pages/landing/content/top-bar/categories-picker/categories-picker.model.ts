@@ -50,16 +50,21 @@ export const $categoriesList = createStore<PickerCategory[]>([])
 export const updatePickerQuery = createEvent()
 
 updatePickerQuery.watch(() => {
+  const query = $searchPageQuery.getState()
   const selectedCategoriesIds = $categoriesList
     .getState()
     .filter(category => category.checked).map(category => category.id)
 
   if (selectedCategoriesIds.length) {
-    addSearchPageQuery({
-      categories: selectedCategoriesIds.join(',')
-    })
+    if (selectedCategoriesIds.join(`,`) !== query.categories) {
+      addSearchPageQuery({
+        categories: selectedCategoriesIds.join(',')
+      })
+    }
   } else {
-    removeSearchPageQuery([`categories`])
+    if (query.categories) {
+      removeSearchPageQuery([`categories`])
+    }
   }
 })
 
