@@ -60,6 +60,7 @@ const Items = styled.div`
   position: absolute;
   z-index: 10;
   top: 0;
+  left: 0;
   margin-top: 35px;
   height: auto;
   padding: 8px 0;
