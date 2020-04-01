@@ -59,13 +59,16 @@ const StyledLoginButtons = styled(LoginButtons)`
   }
 `
 
+const StyledLogoLink = styled(Link)`
+  display: flex;
+  align-items: center;
+`
+
 export const TopBar = () => (
   <StyledContainer>
-    <Link href='/' as='/' passHref>
-      <a>
-        <StyledLogo />
-      </a>
-    </Link>
+    <StyledLogoLink href='/' passHref>
+      <StyledLogo />
+    </StyledLogoLink>
     <StyledCategoriesPicker />
     <StyledSearch />
     <StyledLoginButtons />
