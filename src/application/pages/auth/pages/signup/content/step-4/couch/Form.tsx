@@ -51,6 +51,10 @@ const PhoneHint = styled.p`
   line-height: 16px;
 `
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
 const AddPhotosButton = styled(DashedButton)`
   border: 1px solid #544274;
   color: #544274;
@@ -90,7 +94,9 @@ export const Form = () => {
       </FormItem>
       <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <Photos />
-      <AddPhotosButton onClick={() => open()}>Добавить фотографии</AddPhotosButton>
+      <ButtonContainer>
+        <AddPhotosButton onClick={() => open()}>Добавить фотографии</AddPhotosButton>
+      </ButtonContainer>
       <input {...getInputProps()} />
     </InformationContainer>
   )

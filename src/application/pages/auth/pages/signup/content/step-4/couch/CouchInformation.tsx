@@ -15,10 +15,10 @@ import {
 import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import study from './check-step/study.svg'
-import approve from './check-step/approve.svg'
-import peoples from './check-step/peoples.svg'
-import arrow from './check-step/arrow.svg'
+import study from "./check-step/study.svg"
+import approve from "./check-step/approve.svg"
+import peoples from "./check-step/peoples.svg"
+import arrow from "./check-step/arrow.svg"
 
 const Container = styled.div`
   display: flex;
@@ -93,6 +93,7 @@ const CheckStepsContainer = styled.div`
     position: absolute;
     display: flex;
     flex-direction: column;
+    top: 0;
     right: 0;
     margin-right: 10px;
     
@@ -113,7 +114,10 @@ const CheckStepsContainer = styled.div`
     }
   `}
 `
-
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
 const SendRequestButton = styled(Button)`
   margin: 32px auto 44px;
   background: #544274;
@@ -149,9 +153,11 @@ export const CouchInformation = () => {
         <CheckStep description='Супервизор одобрит вашу заявку' img={approve} />
         <CheckStep description='Эта анкета будет видна клиентам<br /> (кроме контактов)' img={peoples} />
       </CheckStepsContainer>
-      <SendRequestButton disabled={loading || isVideoUploading || !isFormValid} onClick={() => userRegistered()}>
-        Отправить заявку
-      </SendRequestButton>
+      <ButtonContainer>
+        <SendRequestButton disabled={loading || isVideoUploading || !isFormValid} onClick={() => userRegistered()}>
+          Отправить заявку
+        </SendRequestButton>
+      </ButtonContainer>
     </Container>
   )
 }
