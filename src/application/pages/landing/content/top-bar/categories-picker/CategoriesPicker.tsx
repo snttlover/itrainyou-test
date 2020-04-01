@@ -3,8 +3,8 @@ import * as React from "react"
 import styled from "styled-components"
 import { Dropdown } from "@/application/components/dropdown/Dropdown"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
-import { $categoriesList, fetchCategoriesListFx, toggleCategorySelection } from "./categories-picker.model"
-import { useList, useStore } from "effector-react"
+import { $categoriesList, fetchCategoriesListFx, toggleCategorySelection, updatePickerQuery } from "./categories-picker.model"
+import { useEvent, useList, useStore } from "effector-react"
 
 const StyledCheckbox = styled(Checkbox)`
   padding: 7px 10px;
@@ -54,6 +54,8 @@ type CategoriesPickerTypes = {
 }
 
 export const CategoriesPicker = (props: CategoriesPickerTypes) => {
+  const navigate = useEvent(updatePickerQuery)
+
   const selectedCategories = useStore($categoriesList).filter(category => category.checked).length
   const titleRenderer = () => <Label>Категории {!!selectedCategories && <Counter>{selectedCategories}</Counter>}</Label>
 
@@ -70,7 +72,7 @@ export const CategoriesPicker = (props: CategoriesPickerTypes) => {
     ))
 
   return (
-    <StyledDropdown className={props.className} renderTitle={titleRenderer}>
+    <StyledDropdown className={props.className} renderTitle={titleRenderer} onClose={() => navigate()}>
       {renderCheckboxes()}
     </StyledDropdown>
   )

@@ -72,14 +72,22 @@ const Items = styled.div`
   }
 `
 
-type SearchInputTypes = {
+type DropdownTypes = {
   renderTitle: () => React.ReactNode
   children: React.ReactNode[] | React.ReactNode
   className?: string
+  onClose?: () => any
 }
 
-export const Dropdown = (props: SearchInputTypes) => {
+export const Dropdown = (props: DropdownTypes) => {
   const [focused, changeFocus] = useState(false)
+
+  const changeFocusHandler = (focus: boolean) => {
+    if (!focus) {
+      props.onClose && props.onClose()
+    }
+    changeFocus(focus)
+  }
 
   const autocomplete = <Items>{props.children}</Items>
   const autocompleteVisibility = !!props.children && focused
@@ -87,13 +95,13 @@ export const Dropdown = (props: SearchInputTypes) => {
   return (
     <ClickOutside
       onClickOutside={() => {
-        changeFocus(false)
+        changeFocusHandler(false)
       }}
     >
       <Container className={props.className} expanded={autocompleteVisibility}>
         <Button
           onClick={() => {
-            changeFocus(!focused)
+            changeFocusHandler(!focused)
           }}
         >
           {props.renderTitle()}
