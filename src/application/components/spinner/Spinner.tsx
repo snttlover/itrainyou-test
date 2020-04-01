@@ -1,5 +1,5 @@
 import * as React from "react"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import spinner from "./spinner.svg"
 
 const Wrapper = styled.div`
@@ -13,9 +13,20 @@ const Wrapper = styled.div`
   z-index: 2;
 `
 
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
 const Loader = styled.img.attrs({ src: spinner })`
   width: auto;
   height: auto;
+  animation: ${rotate} 1s linear infinite;
 `
 
 export const Spinner = () => (
