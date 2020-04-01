@@ -26,6 +26,7 @@ const Container = styled.div`
   }
 
   ${NextButton} {
+    margin-left: auto;
     margin-top: 16px;
     margin-bottom: 20px;
   }
@@ -66,6 +67,7 @@ const Cards = styled.div`
   flex-direction: column;
   
   ${MediaRange.greaterThan("mobile")`
+    justify-content: center;
     flex-direction: row;
   `}
 `

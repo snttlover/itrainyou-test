@@ -4,6 +4,7 @@ import styled from "styled-components"
 import arrow from "./next-arrow.svg"
 
 const StyledButton = styled.button`
+  width: 100px;
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
