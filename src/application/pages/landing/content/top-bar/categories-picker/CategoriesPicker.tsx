@@ -64,6 +64,9 @@ const Description = styled.div`
   padding: 16px;
   width: 400px;
   border-radius: 4px;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `
 
 const StyledCheckboxWrapper = styled.div``
