@@ -94,16 +94,10 @@ export const Dropdown = (props: DropdownTypes) => {
 
   return (
     <ClickOutside
-      onClickOutside={() => {
-        changeFocusHandler(false)
-      }}
+      onClickOutside={() => {changeFocusHandler(false)}}
     >
       <Container className={props.className} expanded={autocompleteVisibility}>
-        <Button
-          onClick={() => {
-            changeFocusHandler(!focused)
-          }}
-        >
+        <Button onClick={() => {changeFocusHandler(!focused)}}>
           {props.renderTitle()}
           <Arrow />
         </Button>
