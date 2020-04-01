@@ -36,6 +36,10 @@ const Content = styled.div`
   ${MediaRange.greaterThan("mobile")`
     align-items: flex-start;
   `}
+  
+  ${ProgressBar} {
+    margin-top: 20px;
+  }
 `
 
 const Title = styled.h2`
@@ -55,14 +59,16 @@ const Title = styled.h2`
 const Container = styled.div<{ fullscreen: boolean }>`
   background: #ffffff;
   border-radius: 4px;
-  margin: ${({fullscreen}) => fullscreen ? '0' : '12px'};
+  margin: ${({ fullscreen }) => (fullscreen ? "0" : "12px")};
   width: 100%;
-  height: ${({fullscreen}) => fullscreen ? '100%' : 'auto'};
+  height: ${({ fullscreen }) => (fullscreen ? "100%" : "auto")};
   position: relative;
   padding: 24px;
   outline: none;
 
-  ${({fullscreen}) => fullscreen && MediaRange.lessThan('mobile')`
+  ${({ fullscreen }) =>
+    fullscreen &&
+    MediaRange.lessThan("mobile")`
     padding: 12px;
     ${Content} {
       ${Title} {
@@ -74,6 +80,7 @@ const Container = styled.div<{ fullscreen: boolean }>`
   `}
 
   ${MediaRange.greaterThan("mobile")`
+    max-height: 460px;
     height: auto;
   `} 
   ${MediaRange.greaterThan("tablet")`    
@@ -92,7 +99,6 @@ const Cross = styled.img.attrs({ src: cross })`
   `}
 `
 
-
 type UploadModalProps = {
   onClose: () => void
 }
@@ -100,7 +106,6 @@ type UploadModalProps = {
 export const UploadModal = ({ onClose }: UploadModalProps) => {
   const isUploading = useStore(uploadImageFx.pending)
   const uploadPercent = useStore($uploadPercent)
-  const [filename, setFilename] = useState<string>("")
   const [image, setImage] = useState<File | string | null>(null)
   const [largeFileError, setError] = useState(false)
 
@@ -108,7 +113,6 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
     const reader = new FileReader()
     reader.addEventListener("load", () => {
       setImage(reader.result as string)
-      setFilename(acceptedFiles[0].name)
     })
     reader.readAsDataURL(acceptedFiles[0])
   }, [])
@@ -121,17 +125,20 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
     multiple: false,
     noClick: true,
     maxSize: 2097152,
-    accept: ["image/gif", "image/png", "image/jpg", "image/jpeg"]
+    accept: "image/*"
   })
 
   let component = <SelectImage open={open} largeFileError={largeFileError} />
 
-  if (image) component = <ProcessingImage image={image} filename={filename} setImage={setImage} />
+  if (image) component = <ProcessingImage image={image} setImage={setImage} />
   if (isUploading) component = <ProgressBar percent={uploadPercent} />
 
   return (
     <Backdrop>
-      <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })} fullscreen={!!image || isUploading || largeFileError}>
+      <Container
+        {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
+        fullscreen={!!image || isUploading || largeFileError}
+      >
         <Cross onClick={onClose} />
         <Content>
           <Title>Загрузка фотографии профиля</Title>

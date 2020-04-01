@@ -18,30 +18,13 @@ const StyledReactCrop = styled(ReactCrop)`
 const ImageContainer = styled.div`
   width: 300px;
   height: 200px;
-  margin: 0 auto;
+  margin: 20px auto 0;
   display: flex;
   justify-content: center;
 
   ${MediaRange.greaterThan("mobile")`
     margin: 0 20px 0 10%;
   `}
-`
-
-const Container = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
-
-  ${MediaRange.greaterThan("mobile")`
-    align-items: flex-start;
-  `}
-
-  ${ImageContainer} {
-    margin-top: 20px;
-  }
 `
 
 const ControllersContainer = styled.div`
@@ -81,7 +64,7 @@ const UploadButton = styled(DashedButton)`
   margin: 76px auto 0;
 `
 
-function dataURItoFile(dataURI: string, filename: string) {
+function dataURItoFile(dataURI: string) {
   // convert base64 to raw binary data held in a string
   // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
   const byteString = atob(dataURI.split(",")[1])
@@ -104,11 +87,11 @@ function dataURItoFile(dataURI: string, filename: string) {
   }
 
   // write the ArrayBuffer to a blob, and you're done
-  return new File([ab], filename, { type: mimeString })
+  return new Blob([ab], { type: mimeString })
 }
 type Crop = { x: number; y: number; width: number; height: number }
 
-const cropAndUploadImage = (image: HTMLImageElement, crop: Crop, filename: string): Promise<File> => {
+const cropAndUploadImage = (image: HTMLImageElement, crop: Crop): Promise<Blob> => {
   const canvas = document.createElement("canvas")
   const scaleX = image.naturalWidth / image.width
   const scaleY = image.naturalHeight / image.height
@@ -130,16 +113,16 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop, filename: strin
 
   return new Promise(resolve => {
     const dataUrl = canvas.toDataURL("image/jpeg")
-    const blob = dataURItoFile(dataUrl, filename)
+    const blob = dataURItoFile(dataUrl)
     resolve(blob)
   })
 }
 
 let imageRef: HTMLImageElement | null = null
 
-const processFile = (crop: Crop, fileName: string) => async () => {
+const processFile = (crop: Crop) => async () => {
   if (!imageRef) return
-  const file = await cropAndUploadImage(imageRef, crop, fileName)
+  const file = await cropAndUploadImage(imageRef, crop)
   uploadImage(file)
 }
 
@@ -163,7 +146,6 @@ const rotateImage = (image: HTMLImageElement, degrees: number, setImage: (file: 
 
 type ProcessingImageProps = {
   image: File | string
-  filename: string
   setImage: (img: string | null) => void
 }
 
@@ -176,10 +158,10 @@ type CropState = {
   unit?: string
 }
 
-export const ProcessingImage = ({ image, filename, setImage }: ProcessingImageProps) => {
+export const ProcessingImage = ({ image, setImage }: ProcessingImageProps) => {
   const [crop, setCrop] = useState<CropState>({ aspect: 1, unit: "%", width: 50, height: 50, x: 25, y: 25 })
   return (
-    <Container>
+    <>
       <ControllersContainer>
         <ImageContainer>
           <StyledReactCrop
@@ -197,7 +179,7 @@ export const ProcessingImage = ({ image, filename, setImage }: ProcessingImagePr
           </Rotate>
         </div>
       </ControllersContainer>
-      <UploadButton onClick={processFile(crop as any, filename)}>Загрузить фотографию</UploadButton>
-    </Container>
+      <UploadButton onClick={processFile(crop as any)}>Загрузить фотографию</UploadButton>
+    </>
   )
 }
