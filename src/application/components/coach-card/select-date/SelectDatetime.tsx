@@ -15,7 +15,7 @@ const Block = styled.div`
   padding: 24px 24px 20px;
   display: flex;
   min-height: 300px;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     display: none;
   }
   @media screen and (max-width: 560px) {
