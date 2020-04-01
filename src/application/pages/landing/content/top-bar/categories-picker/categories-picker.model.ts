@@ -36,7 +36,7 @@ export const $categoriesList = createStore<PickerCategory[]>([])
     }))
   )
   .on(toggleCategorySelection, (list, id: number) => {
-    const newCategories = list.map(item => {
+    return  list.map(item => {
       if (item.id === id) {
         return {
           ...item,
@@ -45,16 +45,28 @@ export const $categoriesList = createStore<PickerCategory[]>([])
       }
       return item
     })
-    const selectedCategoriesIds = newCategories.filter(category => category.checked).map(category => category.id)
-    if (selectedCategoriesIds.length) {
+  })
+
+export const updatePickerQuery = createEvent()
+
+updatePickerQuery.watch(() => {
+  const query = $searchPageQuery.getState()
+  const selectedCategoriesIds = $categoriesList
+    .getState()
+    .filter(category => category.checked).map(category => category.id)
+
+  if (selectedCategoriesIds.length) {
+    if (selectedCategoriesIds.join(`,`) !== query.categories) {
       addSearchPageQuery({
         categories: selectedCategoriesIds.join(',')
       })
-    } else {
+    }
+  } else {
+    if (query.categories) {
       removeSearchPageQuery([`categories`])
     }
-    return newCategories
-  })
+  }
+})
 
 forward({
   from: serverStarted,

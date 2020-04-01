@@ -22,13 +22,12 @@ const Block = styled.div<{ isActive: boolean }>`
   border-radius: 8px;
   background: ${({ isActive }) => (isActive ? "#DDD9E3" : "#FFFFFF")};
   transition: border 200ms ease;
-  height: 104px;
   cursor: pointer;
   &:hover {
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.2);
   }
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     background: #fff;
     height: auto;
     &:active {
@@ -57,7 +56,7 @@ const Avatar = styled.div<{ image: string }>`
   background-size: cover;
   border-radius: 50%;
   
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     width: 60px;
     height: 60px;
   }
@@ -84,7 +83,7 @@ const Name = styled.span`
   font-size: 16px;
   line-height: 20px;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     font-size: 16px;
     line-height: 20px;
     margin-top: 30px;
@@ -170,7 +169,7 @@ const ReviewsCount = styled.span`
 const Rating = styled.span`
   font-size: 12px;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     font-size: 16px;
     line-height: 22px;
     font-weight: 600;
@@ -185,7 +184,7 @@ const Star = styled.img.attrs({ src: starIcon })`
   height: 10px;
   margin: 0 3px;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     width: 13px;
     height: 13px;
   }
@@ -203,7 +202,7 @@ const Date = styled.span`
   line-height: 12px;
   display: flex;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     display: none;
   }
   ${MediaRange.greaterThan("tablet")`  

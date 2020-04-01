@@ -31,12 +31,12 @@ export const [
   passwordRepeatChanged,
   $passwordRepeatError,
   $isPasswordRepeatCorrect
-] = createEffectorField<string>({
+] = createEffectorField<string, {value: string, $password: string}>({
+  validatorEnhancer: $store => combine($store, $password, (value) => ({ $password: $password.getState(), value })),
   defaultValue: "",
-  validator: value => {
-    const error = passwordValidator(value)
-    const passwordValue = $password.getState()
-    if (passwordValue !== value) return "Пароли не совпадают"
+  validator: v => {
+    const error = passwordValidator(v.value)
+    if (v.$password !== v.value) return "Пароли не совпадают"
     return error
   },
   eventMapper: event => event.map(trimString)
