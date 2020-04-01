@@ -2,10 +2,8 @@ import * as React from "react"
 import styled from "styled-components"
 
 export const Button = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 7px 24px;
+  text-align: center;
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;

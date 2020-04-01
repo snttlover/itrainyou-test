@@ -6,9 +6,6 @@ export const DashedButton = styled(Button)`
   background: #fff;
   color: #449BD9;
   border: 1px solid #449BD9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   &:hover {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12), 1px 1px 3px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.12);
