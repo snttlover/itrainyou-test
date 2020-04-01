@@ -13,12 +13,14 @@ updateSearch.watch((search: string) => loadHints({ search }))
 export const find = searchDomain.createEvent<string>()
 
 find.watch((search: string) => {
-  updateSearch(search)
-  if (search) {
-    addSearchPageQuery({ search })
-  } else {
-    removeSearchPageQuery([`search`])
-  }
+  setTimeout(() => {
+    updateSearch(search)
+    if (search) {
+      addSearchPageQuery({ search })
+    } else {
+      removeSearchPageQuery([`search`])
+    }
+  }, 0)
 })
 
 export const fetchHintsList = searchDomain.createEffect<GetHintsParamsTypes, Hint[]>().use(params => getHints(params))
