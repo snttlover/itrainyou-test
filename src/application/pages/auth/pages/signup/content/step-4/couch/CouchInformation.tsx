@@ -143,7 +143,7 @@ export const CouchInformation = () => {
   return (
     <Container>
       <CategoriesContainer>
-        <CategoriesTitle>Выберите направления, в которых вы проводите сессии:</CategoriesTitle>
+        <CategoriesTitle>Выберите направления, в которых Вы проводите сессии:</CategoriesTitle>
         {categories}
       </CategoriesContainer>
       <Form />
