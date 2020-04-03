@@ -54,7 +54,9 @@ type CheckBoxWrapperTypes = {
   description: string
 }
 
-const Description = styled.div`
+// ToDo: переверстать в спринте 3
+const Description = styled.div` 
+  display: none;
   position: fixed;
   z-index: 200;
   background: #FFFFFF;
@@ -64,6 +66,7 @@ const Description = styled.div`
   padding: 16px;
   width: 400px;
   border-radius: 4px;
+  
   @media screen and (max-width: 768px) {
     display: none;
   }

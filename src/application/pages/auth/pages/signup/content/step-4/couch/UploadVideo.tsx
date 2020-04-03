@@ -154,15 +154,16 @@ export const UploadVideo = () => {
               controls={isPlaying}
               ref={videoRef}
               onClick={() => {
-                if (videoRef.current?.paused) {
+                if (videoRef.current && !isPlaying) {
                   videoRef.current
                     .play()
                     .then(() => {
-                      setIsPlaying(true)
+                        setIsPlaying(true)
                     })
                     .catch(error => console.error(error))
                 }
               }}
+              onPause={() => setIsPlaying(false)}
             >
               <source src={video} />
             </Video>
