@@ -1,4 +1,3 @@
-import { Icon } from "@/application/components/icon/Icon"
 import { OurCoaches } from "@/application/pages/landing/content/our-coaches/OurCoaches"
 import * as React from "react"
 import { Layout } from "@/application/components/layouts/default/Layout"
