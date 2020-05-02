@@ -7,11 +7,12 @@ import { CenterFormContainer } from "@/application/pages/auth/components/CenterF
 
 const Header = styled.h3`
   font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
   margin-bottom: 22px;
   width: 100%;
   text-align: center;
+  font-family: Roboto Slab;
+  font-size: 32px;
+  line-height: 26px;
 
   @media screen and (max-width: 480px) {
     font-size: 20px;

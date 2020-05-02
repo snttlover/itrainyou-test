@@ -1,4 +1,4 @@
-import { Logo } from "@/application/components/layouts/auth/Logo"
+import { AuthLayoutLogo } from "@/application/components/layouts/auth/AuthLayoutLogo"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import * as React from "react"
@@ -47,7 +47,7 @@ export const Step4CouchLayout = (props: Step4ClientLayoutProps) => (
   <StyledLayout>
     <Header>
       <HeaderContent>
-        <Logo />
+        <AuthLayoutLogo />
         <Steps activeId='4'>
           <Steps.Step id='1'>1</Steps.Step>
           <Steps.Step id='2'>2</Steps.Step>

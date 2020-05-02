@@ -17,11 +17,12 @@ import { FormEvent } from "react"
 
 const Title = styled.h3`
   font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
+  font-size: 32px;
+  line-height: 26px;
   margin-bottom: 22px;
   width: 100%;
   text-align: center;
+  font-family: Roboto Slab;
 
   @media screen and (max-width: 480px) {
     font-size: 20px;
