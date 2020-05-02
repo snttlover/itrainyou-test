@@ -2,12 +2,12 @@ import * as React from "react"
 import styled from "styled-components"
 
 export const Button = styled.button`
-  padding: 7px 24px;
+  padding: 4px 24px;
   text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 22px;
-  background: #449BD9;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  background: #4858CC;
   border-radius: 32px;
   border: none;
   outline: none;
@@ -21,11 +21,11 @@ export const Button = styled.button`
   }
   &:active {
     box-shadow: none;
-    background: #3B8AC3;
+    background: #3746B0;
   }
   &:disabled {
     background: #EFEFEF;
-    color: #B3B3B3;
+    color: #9AA0A6;
     pointer-events: none;
   }
 `
