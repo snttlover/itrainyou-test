@@ -1,17 +1,17 @@
 import * as React from "react"
 import styled from "styled-components"
-import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
 import { ResetPasswordForm } from "@/application/pages/auth/pages/reset-password/content/ResetPasswordForm"
-import { WhiteContainer } from "@/application/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/application/pages/auth/components/CenterFormContainer"
+import {WhiteMobileAuthContainer, WhiteMobileAuthLayout} from "@/application/pages/auth/pages/reset-password/common/StyledWhiteMobileAuthLayout"
 
 const Header = styled.h3`
   font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
   margin-bottom: 22px;
   width: 100%;
   text-align: center;
+  font-family: Roboto Slab;
+  font-size: 32px;
+  line-height: 26px;
 
   @media screen and (max-width: 480px) {
     font-size: 20px;
@@ -20,17 +20,18 @@ const Header = styled.h3`
   }
 `
 
+
 type ResetPasswordPageTypes = {
   token: string
 }
 
 export const ResetPasswordPage = (props: ResetPasswordPageTypes) => (
-  <AuthLayout>
+  <WhiteMobileAuthLayout>
     <CenterFormContainer>
-      <WhiteContainer>
+      <WhiteMobileAuthContainer>
         <Header>Изменение пароля</Header>
         <ResetPasswordForm token={props.token} />
-      </WhiteContainer>
+      </WhiteMobileAuthContainer>
     </CenterFormContainer>
-  </AuthLayout>
+  </WhiteMobileAuthLayout>
 )

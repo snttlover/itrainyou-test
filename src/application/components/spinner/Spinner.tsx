@@ -31,8 +31,12 @@ const Loader = styled.img.attrs({ src: spinner })`
   animation: ${rotate} 1s linear infinite;
 `
 
-export const Spinner = () => (
-  <Wrapper>
+type SpinnerTypes = {
+  className?: string
+}
+
+export const Spinner = (props: SpinnerTypes) => (
+  <Wrapper className={props.className}>
     <Loader />
   </Wrapper>
 )

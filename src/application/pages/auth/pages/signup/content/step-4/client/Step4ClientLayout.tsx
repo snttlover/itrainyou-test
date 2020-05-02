@@ -1,4 +1,4 @@
-import { Logo } from "@/application/components/layouts/auth/Logo"
+import { AuthLayoutLogo } from "@/application/components/layouts/auth/AuthLayoutLogo"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -25,7 +25,7 @@ type Step4ClientLayoutProps = {
 export const Step4ClientLayout = (props: Step4ClientLayoutProps) => (
   <StyledLayout>
     <AuthContainer>
-      <Logo />
+      <AuthLayoutLogo />
       {props.children}
     </AuthContainer>
   </StyledLayout>

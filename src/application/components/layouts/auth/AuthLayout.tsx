@@ -1,15 +1,30 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Logo } from "./Logo"
+import { AuthLayoutLogo } from "./AuthLayoutLogo"
+import desktopBackgroundImage from './images/desktop-background.svg'
+import tabletBackgroundImage from './images/tablet-background.svg'
+import mobileBackgroundImage from './images/mobile-background.svg'
 
 const StyledLayout = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
   overflow: auto;
-  background: linear-gradient(211.55deg, #a3cff3 14.5%, rgba(255, 255, 255, 0) 85.5%), #9f8dc1;
+  background: url("${desktopBackgroundImage}");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  @media screen and (max-width: 768px) {
+    background: url("${tabletBackgroundImage}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+  }
   @media screen and (max-width: 480px) {
-    background: #fff; 
+    background: url("${mobileBackgroundImage}"); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
   }
 `
 
@@ -23,12 +38,13 @@ const AuthContainer = styled.div`
 
 type AuthLayoutProps = {
   children: React.ReactNode
+  className?: string
 }
 
 export const AuthLayout = (props: AuthLayoutProps) => (
-  <StyledLayout>
+  <StyledLayout className={props.className}>
     <AuthContainer>
-      <Logo />
+      <AuthLayoutLogo />
       {props.children}
     </AuthContainer>
   </StyledLayout>

@@ -17,11 +17,12 @@ import { FormEvent } from "react"
 
 const Title = styled.h3`
   font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
+  font-size: 32px;
+  line-height: 26px;
   margin-bottom: 22px;
   width: 100%;
   text-align: center;
+  font-family: Roboto Slab;
 
   @media screen and (max-width: 480px) {
     font-size: 20px;
@@ -64,6 +65,17 @@ const StyledButton = styled(DashedButton)`
   @media screen and (max-width: 768px) {
     margin-top: 35px;
   }
+  @media screen and (max-width: 480px) {
+    background: #3358D4;
+    color: #fff;
+  }
+`
+
+const StyledSpinner = styled(Spinner)`
+  @media screen and (max-width: 480px) {
+    background: #ECEFF1;
+    opacity: 0.8;
+  }
 `
 
 const Error = styled.div`
@@ -92,7 +104,7 @@ export const RecoveryForm = () => {
       </FormItem>
       {error && <Error>{error}</Error>}
       <StyledButton disabled={!isFormValid || isFetching}>Отправить</StyledButton>
-      {isFetching && <Spinner />}
+      {isFetching && <StyledSpinner />}
     </StyledForm>
   )
 }

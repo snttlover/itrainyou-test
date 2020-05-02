@@ -29,12 +29,21 @@ const StyledButton = styled(DashedButton)`
 
   @media screen and (max-width: 480px) {
     margin-top: 110px;
+    background: #3358D4;
+    color: #fff;
   }
 `
 
 const Error = styled.div`
   color: crimson;
   padding: 10px 0;
+`
+
+const StyledSpinner = styled(Spinner)`
+  @media screen and (max-width: 480px) {
+    background: #ECEFF1;
+    opacity: 0.8;
+  }
 `
 
 type ResetPasswordFormTypes = {
@@ -63,7 +72,7 @@ export const ResetPasswordForm = (props: ResetPasswordFormTypes) => {
       </FormItem>
       {error && <Error>{error}</Error>}
       <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>
-      {isFetching && <Spinner />}
+      {isFetching && <StyledSpinner />}
     </StyledForm>
   )
 }

@@ -1,4 +1,3 @@
-import { withGuest } from "@/application/feature/user/with-guest"
 import Link from "next/link"
 import * as React from "react"
 import styled from "styled-components"
@@ -8,10 +7,11 @@ import { WhiteContainer } from "@/application/pages/auth/components/WhiteContain
 import { CenterFormContainer } from "@/application/pages/auth/components/CenterFormContainer"
 
 const Header = styled.h3`
+  font-family: 'Roboto Slab';
   font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
-  margin-bottom: 22px;
+  font-size: 32px;
+  line-height: 26px;
+  margin-bottom: 30px;
   width: 100%;
   text-align: center;
 
@@ -27,7 +27,7 @@ const ResetPasswordLink = styled.a`
   font-size: 20px;
   line-height: 26px;
   margin: 36px auto 0;
-  color: #544274;
+  color: #fff;
   cursor: pointer;
   text-align: center;
   width: 200px;

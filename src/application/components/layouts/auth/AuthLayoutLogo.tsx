@@ -2,9 +2,10 @@ import Link from "next/link"
 import * as React from "react"
 import { MediaRange } from "@/application/lib/responsive/media"
 import styled from "styled-components"
-import logo from "./images/logo.svg"
+import desktopLogo from "./images/desktop-logo.svg"
+import mobileLogo from "./images/mobile-logo.svg"
 
-const LogoLink = styled.a`
+export const AuthLogoLink = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,12 +14,18 @@ const LogoLink = styled.a`
   position: absolute;
   left: 16px;
   top: 16px;
-  width: 60px;
-  height: 60.19px;
+  background-size: cover;
+  background-position: center;
+  background: url("${mobileLogo}");
+  width: 36px;
+  height: 36px;
 
   ${MediaRange.greaterThan("mobile")`  
+    background: url("${desktopLogo}");
+    background-size: cover;
+    background-position: center;
     width: 80px;
-    height: 80.26px;
+    height: 103px;
   `}
 
   ${MediaRange.greaterThan("tablet")`  
@@ -27,15 +34,8 @@ const LogoLink = styled.a`
   `}
 `
 
-const StyledLogo = styled.img.attrs({ src: logo })`
-  width: 100%;
-  height: 100%;
-`
-
-export const Logo = () => (
+export const AuthLayoutLogo = () => (
   <Link href='/' as='/' passHref>
-    <LogoLink>
-      <StyledLogo />
-    </LogoLink>
+    <AuthLogoLink />
   </Link>
 )
