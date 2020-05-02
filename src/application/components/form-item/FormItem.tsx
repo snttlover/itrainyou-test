@@ -18,7 +18,7 @@ const Label = styled.div`
 `
 
 const Error = styled.div`
-  color: #d5584d;
+  color: #FF6B00;
   font-size: 12px;
   line-height: 16px;
 `
@@ -29,7 +29,7 @@ const FormItemRequiredStar = styled.span`
   font-size: 12px;
   line-height: 16px;
 
-  color: #d5584d;
+  color: #FF6B00;
 `
 
 type FormItemTypes = {
