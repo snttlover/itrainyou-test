@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { Input } from "../input/Input"
 import { ClickOutside } from "../click-outside/ClickOutside"
-import { SyntheticEvent, useState } from "react"
+import { useState } from "react"
 
 const Container = styled.div`
   position: relative;
