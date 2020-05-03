@@ -1,8 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
-import borderImage from "./checkbox-border.svg"
-import checkboxActive from "./checkbox-active.svg"
-
+import borderImage from "./images/checkbox-border.svg"
+import checkboxActive from "./images/checkbox-active.svg"
 
 const CustomCheckbox = styled.div`
   width: 24px;
