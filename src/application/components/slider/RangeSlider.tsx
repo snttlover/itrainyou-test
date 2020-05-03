@@ -12,7 +12,7 @@ const StyledThumb = styled.div`
   z-index: 10;
   height: 12px;
   width: 12px;
-  background: #449bd9;
+  background: #3358D4;
   border-radius: 50%;
   cursor: grab;
   top: 50%;
@@ -29,7 +29,7 @@ type TrackStateTypes = {
 const StyledTrack = styled.div<TrackStateTypes>`
   top: 50%;
   transform: translateY(-50%);
-  background: ${props => (props.index === 1 ? "#449bd9" : "#a3cff3")};
+  background: ${props => (props.index === 1 ? "#3358D4" : "#859BE5")};
   border-radius: 10px;
   height: 2px;
 `

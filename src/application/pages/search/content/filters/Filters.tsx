@@ -21,7 +21,6 @@ type ModalTypes = {
 const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
   width: 220px;
   border-left: 1px solid #efefef;
-  background: #fff;
   position: relative;
   overflow: hidden;
   transition: all 50ms;
@@ -32,6 +31,7 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
     width: 100%;
     transition: left 300ms;
     left: ${props => (props.showOnMobile ? 0 : `100%`)};
+    background: #fff;
   }
 `
 
@@ -59,6 +59,7 @@ const MobileClose = styled.img.attrs({ src: close })`
 
 const Container = styled.div`
   padding: 12px;
+  background: #fff;
   @media screen and (max-width: 480px) {
     padding: 60px 52px 52px 72px;
     width: 100%;

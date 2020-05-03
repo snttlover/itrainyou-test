@@ -9,7 +9,7 @@ import { useEvent, useList, useStore } from "effector-react"
 const StyledCheckbox = styled(Checkbox)`
   padding: 7px 10px;
   &:hover {
-    background: #daebf7;
+    background: #F8F8FD;
   }
 `
 

@@ -4,10 +4,15 @@ import { ClickOutside } from "../click-outside/ClickOutside"
 import { useState } from "react"
 import arrowImage from "./arrow.svg"
 
-const Button = styled.button`
+type ButtonTypes = {
+  opened: boolean
+}
+
+const Button = styled.button<ButtonTypes>`
   width: 100%;
-  border: 1px solid #3b8ac3;
-  border-radius: 4px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-color: ${props => props.opened ? `#bbc2f1` : `trasparent`};
   padding: 7px 12px;
   display: flex;
   align-items: center;
@@ -19,6 +24,7 @@ const Button = styled.button`
 `
 
 const Arrow = styled.img.attrs({ src: arrowImage })`
+  transition: all 300ms;
   color: #544274;
   margin-left: 20px;
   width: 12px;
@@ -27,6 +33,8 @@ const Arrow = styled.img.attrs({ src: arrowImage })`
 const expandedStyles = css`
   ${Button} {
     position: relative;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     &:after {
@@ -37,7 +45,7 @@ const expandedStyles = css`
       width: 100%;
       background: #fff;
       height: 4px;
-      z-index: 2;
+      z-index: 20;
     }
   }
   ${Arrow} {
@@ -64,9 +72,9 @@ const Items = styled.div`
   margin-top: 35px;
   height: auto;
   padding: 8px 0;
-  background: #ffffff;
-  border: 1px solid #449bd9;
-  border-radius: 0px 4px 4px 4px;
+  background: #ffffff;  
+  border-radius: 0px 2px 2px 2px;
+  border: 1px solid #bbc2f1;
   @media screen and (max-width: 480px) {
     width: 100%;
   }
@@ -97,7 +105,7 @@ export const Dropdown = (props: DropdownTypes) => {
       onClickOutside={() => {changeFocusHandler(false)}}
     >
       <Container className={props.className} expanded={autocompleteVisibility}>
-        <Button onClick={() => {changeFocusHandler(!focused)}}>
+        <Button opened={focused} onClick={() => {changeFocusHandler(!focused)}}>
           {props.renderTitle()}
           <Arrow />
         </Button>

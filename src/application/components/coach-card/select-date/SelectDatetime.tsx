@@ -11,7 +11,8 @@ import { CoachSessionWithSelect } from "@/application/components/coach-card/sele
 
 const Block = styled.div`
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 2px;
+  margin-top: 4px;
   padding: 24px 24px 20px;
   display: flex;
   min-height: 300px;

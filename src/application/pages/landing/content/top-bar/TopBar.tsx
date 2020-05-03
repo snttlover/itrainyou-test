@@ -9,6 +9,7 @@ import { LoginButtons } from "./login-buttons/LoginButtons"
 import { MobileMenu } from "./mobile-menu/MobileMenu"
 
 const StyledContainer = styled(LandingPageContainer)`
+  width: 100%;
   padding: 15px 0;
   display: flex;
   align-items: center;
@@ -19,6 +20,13 @@ const StyledContainer = styled(LandingPageContainer)`
     justify-content: space-between;
     padding-bottom: 32px;
   }
+`
+
+const Container = styled.div`
+  width: 100%;
+  background: #DBDEE0;
+  display: flex;
+  justify-content: center;
 `
 
 const StyledLogo = styled(Logo)`
@@ -65,13 +73,16 @@ const StyledLogoLink = styled(Link)`
 `
 
 export const TopBar = () => (
-  <StyledContainer>
-    <StyledLogoLink href='/' passHref>
-      <StyledLogo />
-    </StyledLogoLink>
-    <StyledCategoriesPicker />
-    <StyledSearch />
-    <StyledLoginButtons />
-    <MobileMenu />
-  </StyledContainer>
+  <Container>
+    <StyledContainer>
+      <StyledLogoLink href='/' passHref>
+        <StyledLogo />
+      </StyledLogoLink>
+      <StyledCategoriesPicker />
+      <StyledSearch />
+      <StyledLoginButtons />
+      <MobileMenu />
+    </StyledContainer>
+  </Container>
+
 )

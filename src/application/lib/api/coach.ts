@@ -17,7 +17,7 @@ export interface Coach {
   sex: "M" | "F"
   avatar: string
   isApproved: string
-  isTopCoach: string
+  isTopCoach: boolean
   photos: string[]
   description: string
   workExpirience: string

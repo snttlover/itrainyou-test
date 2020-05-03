@@ -1,14 +1,43 @@
 import * as React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { Input } from "../input/Input"
 import { ClickOutside } from "../click-outside/ClickOutside"
 import { useState } from "react"
 
-const Container = styled.div`
+type InputTypes = {
+  opened: boolean
+}
+
+const StyledInput = styled(Input)`
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 16px;
+`
+
+const expandedStyles = css`
+  ${StyledInput} {
+    position: relative;
+    border-radius: 20px 20px 0 0;
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      height: 4px;
+      z-index: 20;
+    }
+  }
+`
+
+const Container = styled.div<InputTypes>`
   position: relative;
   input {
     width: 100%;
   }
+  ${props => props.opened && expandedStyles}
 `
 
 const Autocomplete = styled.div`
@@ -20,8 +49,11 @@ const Autocomplete = styled.div`
   height: auto;
   padding: 8px 0;
   background: #ffffff;
-  border: 1px solid #449bd9;
+  border: 1px solid #919BE0;
+  border-top: 0;
   border-radius: 0px 0px 4px 4px;
+  max-height: 300px;
+  overflow: auto;
 `
 
 type SearchInputTypes = {
@@ -33,15 +65,6 @@ type SearchInputTypes = {
   onKeyDown?: (e: React.KeyboardEvent) => void
   onFocus?: (e: React.FocusEvent) => void
 }
-
-const StyledInput = styled(Input)`
-  border: 1px solid #449bd9;
-  padding: 8px 12px;
-  font-size: 16px;
-  &:hover {
-    border: 1px solid #424242;
-  }
-`
 
 export const SearchInput = (props: SearchInputTypes) => {
   const [focused, changeFocus] = useState(false)
@@ -63,7 +86,7 @@ export const SearchInput = (props: SearchInputTypes) => {
         changeFocus(false)
       }}
     >
-      <Container className={props.className}>
+      <Container className={props.className} opened={autocompleteVisibility}>
         <StyledInput
           value={props.value}
           placeholder={props.placeholder}

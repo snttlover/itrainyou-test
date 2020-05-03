@@ -36,13 +36,19 @@ const RadioContainer = styled.div`
   }
 `
 
-const Arrow = styled.img.attrs({ src: arrowImage })`
+type ArrowTypes = {
+  opened: boolean
+}
+
+const Arrow = styled.img.attrs({ src: arrowImage })<ArrowTypes>`
+  transition: all 300ms;
   width: 24px;
   height: 24px;
   position: absolute;
   cursor: pointer;
   right: 0;
   top: 0;
+  transform: rotate(${props => props.opened ? `180deg` : `0`})
 `
 
 export const DateFilter = () => {
@@ -183,7 +189,7 @@ export const DateFilter = () => {
     <Container>
       <Header>
         Даты
-        <Arrow onClick={toggleCalendarVisibility} />
+        <Arrow opened={calendarVisibility} onClick={toggleCalendarVisibility} />
       </Header>
       {calendarVisibility ? calendar() : <Text>{selectDateText()}</Text>}
     </Container>
