@@ -1,10 +1,12 @@
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
 import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { logout } from "@/application/feature/user/user.model"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import Link from "next/link"
+import { useEffect } from "react"
 import {
   $isFormValid,
   $step1Form,
@@ -18,13 +20,6 @@ import {
 import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-
-const StyledSteps = styled(Steps)`
-  ${MediaRange.greaterThan("laptop")`
-    margin-right: 134px;
-  `};
-  height: auto;
-`
 
 const Container = styled.div`
   min-width: 320px;
@@ -99,14 +94,18 @@ export const Step1 = () => {
   const isFormValid = useStore($isFormValid)
   const isFetching = useStore(registerFx.pending)
 
+  useEffect(() => {
+    logout()
+  }, [])
+
   return (
     <AuthLayout>
-      <StyledSteps activeId='1'>
+      <Steps activeId='1'>
         <Steps.Step id='1'>1</Steps.Step>
         <Steps.Step id='2'>2</Steps.Step>
         <Steps.Step id='3'>3</Steps.Step>
         <Steps.Step id='4'>4</Steps.Step>
-      </StyledSteps>
+      </Steps>
       <Container>
         <Title>Регистрация</Title>
         <Form onSubmit={handleSubmit}>
