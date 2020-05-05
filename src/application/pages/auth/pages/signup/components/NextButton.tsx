@@ -1,14 +1,13 @@
+import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
-import arrow from "./next-arrow.svg"
 
 const StyledButton = styled.button`
-  width: 100px;
   font-weight: 600;
   font-size: 16px;
-  line-height: 22px;
-  color: #544274;
+  line-height: 26px;
+  color: #FFFFFF;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -23,15 +22,20 @@ const StyledButton = styled.button`
   }
 
   ${MediaRange.greaterThan("mobile")`
-    font-size: 20px;
-    line-height: 26px;
+    color: #5B6670;
   `}
 `
 
-const Arrow = styled.img.attrs({ src: arrow })`
+const Arrow = styled(Icon).attrs({ name: "arrow" })`
   width: 24px;
   height: 24px;
-  margin-left: 4px;
+  margin-left: 12px;
+  transform: rotate(-90deg);
+  fill: #FFFFFF;
+  
+  ${MediaRange.greaterThan("mobile")`
+    fill: #5B6670;
+  `}
 `
 
 type NextButtonProps = {
@@ -42,6 +46,6 @@ type NextButtonProps = {
 
 export const NextButton = styled((props: NextButtonProps) => (
   <StyledButton type='submit' {...props}>
-    Дальше <Arrow />
+    дальше <Arrow />
   </StyledButton>
 ))``
