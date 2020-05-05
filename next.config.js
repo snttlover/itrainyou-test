@@ -1,5 +1,5 @@
 const path = require('path')
-const withImages = require('next-images')
+const withImages = require('next-optimized-images')
 const { withEffectoReactAliases } = require("effector-next/tools");
 
 const enhance = withEffectoReactAliases();
