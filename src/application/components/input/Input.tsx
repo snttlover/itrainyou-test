@@ -5,7 +5,7 @@ const TextBox = styled.input<{ error?: boolean }>`
   outline: none;
   border: 1px solid ${({ error }) => (error ? "#FF6B00" : "#D3D7F3")};
   box-sizing: border-box;
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 5px 8px;
   font-size: 16px;
   line-height: 22px;
