@@ -5,44 +5,19 @@ import { MediaRange } from "@/application/lib/responsive/media"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
-import starIcon from "./star.svg"
-import arrowIcon from "./arrow.svg"
-import topCoachIcon from "./images/top-coach-icon.svg"
+import starIcon from "./images/star.svg"
+import arrowIcon from "./images/arrow.svg"
 import { genCoachSessions } from "@/application/components/coach-card/select-date/select-date.model"
-
-const Block = styled.div<{ isActive: boolean }>`
-  display: inline-table;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  width: 100%;
-  position: relative;
-  flex-direction: column;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-  background: ${({ isActive }) => (isActive ? "#DDD9E3" : "#FFFFFF")};
-  transition: border 200ms ease;
-  cursor: pointer;
-  &:hover {
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  @media screen and (max-width: 600px) {
-    background: #fff;
-    height: auto;
-    &:active {
-      background: #ddd9e3;
-    }
-  }
-  ${MediaRange.greaterThan("tablet")`
-    height: auto;
-    padding: 4px;    
-  `}
-`
 
 const MainInfoContainer = styled.div`
   display: flex;
   padding: 12px 12px 12px 16px;
+  background: #fff;
+
+  &:hover {
+    border: 2px solid #DBDEE0;
+  }
+  
   ${MediaRange.greaterThan("tablet")`
     padding: 8px 12px 12px;
   `}
@@ -69,7 +44,7 @@ const Avatar = styled.div<{ image: string }>`
 const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   margin-left: 12px;
 
   ${MediaRange.greaterThan("tablet")`
@@ -79,7 +54,6 @@ const NameContainer = styled.div`
 
 const Name = styled.span`
   font-style: normal;
-  font-weight: 600;
   font-size: 16px;
   line-height: 20px;
 
@@ -109,9 +83,9 @@ const Category = styled.img`
   `}
 `
 
+
 const PriceContainer = styled.div`
   white-space: nowrap;
-  border: 1px solid #b3b3b3;
   height: 20px;
   border-radius: 12px;
   padding: 4px 8px;
@@ -120,10 +94,11 @@ const PriceContainer = styled.div`
   overflow: hidden;
   display: flex;
   align-items: center;
+  color: #fff;
 
-  font-weight: 600;
-  font-size: 10px;
-  line-height: 12px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
   ${MediaRange.greaterThan("tablet")`
     height: 24px;
     font-size: 12px;
@@ -131,23 +106,50 @@ const PriceContainer = styled.div`
   `}
 `
 
-const Duration = styled.span`
+
+type BlockTypes = {
+  isTopCoach: boolean
+  isActive: boolean
+}
+
+const Block = styled.div<BlockTypes>`
+  display: inline-table;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
   position: relative;
-  &:after {
-    content: "";
-    height: calc(100% + 20px);
-    width: 1px;
-    position: absolute;
-    top: -10px;
-    right: -8px;
-    background-color: #b3b3b3;
-    transform: rotate(25deg);
+  flex-direction: column;
+  border-radius: 2px;
+  background: transparent;
+  transition: border 200ms ease;
+  cursor: pointer;
+  
+  ${MainInfoContainer} {
+    border: 2px solid ${({isTopCoach}) => isTopCoach ? `#DBDEE0` : `#fff`};
   }
+  ${PriceContainer} {
+    background: ${props => props.isTopCoach ? `#F6C435` : `#9AA0A6`};
+  }
+
+  @media screen and (max-width: 600px) {
+    background: #fff;
+    height: auto;
+    &:active {
+      background: #ddd9e3;
+    }
+  }
+  ${MediaRange.greaterThan("tablet")`
+    height: auto;
+  `}
 `
 
-const Price = styled.span`
-  margin-left: 16px;
+
+const Duration = styled.span`
+  position: relative;
 `
+
+const Price = styled.span``
 
 const RatingContainer = styled.div`
   margin-left: auto;
@@ -179,6 +181,11 @@ const Rating = styled.span`
   `}
 `
 
+const PriceContainerDelemiter = styled.div`
+  margin-right: 5px;
+  margin-left: 5px;
+`
+
 const Star = styled.img.attrs({ src: starIcon })`
   width: 10px;
   height: 10px;
@@ -201,6 +208,7 @@ const Date = styled.span`
   font-size: 10px;
   line-height: 12px;
   display: flex;
+  color: #4858CC;
 
   @media screen and (max-width: 600px) {
     display: none;
@@ -216,13 +224,6 @@ const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
   margin-left: 6px;
   width: 8px;
   ${({ reverse }: ArrowType) => reverse && "transform: rotate(180deg)"}
-`
-
-const TopCoachIcon = styled.img.attrs({ src: topCoachIcon })`
-  width: 16px;
-  height: 16px;
-  display: inline;
-  margin-right: 5px;
 `
 
 type Props = {
@@ -244,12 +245,11 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   const price = +coach.price
 
   return (
-    <Block className={className} isActive={isActive}>
-      <MainInfoContainer onClick={() => changeActive(!isActive)}>
+    <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
+      <MainInfoContainer onClick={() => changeActive(!isActive)} >
         <Avatar image={coach.avatar} />
         <NameContainer>
           <Name>
-            {coach.isTopCoach && <TopCoachIcon />}
             {`${coach.firstName} ${coach.lastName}`}
           </Name>
           <Info>
@@ -258,6 +258,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             ))}
             <PriceContainer>
               <Duration>{duration} мин</Duration>
+              <PriceContainerDelemiter>/</PriceContainerDelemiter>
               <Price>{price} ₽</Price>
             </PriceContainer>
           </Info>

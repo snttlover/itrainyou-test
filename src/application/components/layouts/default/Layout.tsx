@@ -5,4 +5,5 @@ export const Layout = styled.div.attrs({ id: 'app-layouts' })`
   height: 100%;
   position: relative;
   overflow: hidden;
+  background: #ECEFF1;
 `

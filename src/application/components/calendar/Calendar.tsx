@@ -32,15 +32,16 @@ const CalendarWrapper = styled.div`
   }
   .react-calendar__month-view__weekdays__weekday {
     text-align: center;
-    text-transform: uppercase;
+    text-transform: lowercase;
     text-decoration: none;
+    font-weight: normal;
     abbr {
       text-decoration: none;
     }
   }
   .react-calendar__month-view__weekdays__weekday:nth-child(n + 6),
   .day--weekend {
-    color: #d5584d;
+    color: #FF6B00;
   }
   .is-past {
     opacity: 0.5;
@@ -72,9 +73,22 @@ const CalendarWrapper = styled.div`
     border-radius: 4px;
     z-index: 2;
   }
+  .react-calendar__tile {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 17px;
+  }
   .react-calendar__tile--active {
-    border-radius: 50%;
-    background: #daebf7;
+    background: #3358D4;
+    color: #fff;
+  }
+  .react-calendar__tile--rangeStart {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+  .react-calendar__tile--rangeEnd {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
   }
   .not-current-month {
     visibility: hidden;
