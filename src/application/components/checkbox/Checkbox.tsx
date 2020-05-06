@@ -43,14 +43,14 @@ type CheckboxProps = {
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = ({value, onChange, color = '#4858CC', ...props}: CheckboxProps) => {
+export const Checkbox = styled(({value, onChange, color = '#4858CC', ...props}: CheckboxProps) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(e.target.checked)
     }
   }
 
-  const CheckboxIcon = StyledCheckbox(value ? `checkbox-border` : `checkbox-active`, color)
+  const CheckboxIcon = StyledCheckbox(value ? `checkbox-active` : `checkbox-border`, color)
 
   return (
     <Label className={props.className}>
@@ -59,4 +59,4 @@ export const Checkbox = ({value, onChange, color = '#4858CC', ...props}: Checkbo
       <Content>{props.children}</Content>
     </Label>
   )
-}
+})``
