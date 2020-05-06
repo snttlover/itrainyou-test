@@ -1,29 +1,16 @@
 import * as React from "react"
 import styled from "styled-components"
-import borderImage from "./images/checkbox-border.svg"
-import checkboxActive from "./images/checkbox-active.svg"
+import { Icon, IconName } from "../icon/Icon"
 
-const CustomCheckbox = styled.div`
+type StyledCheckboxTypes = {
+  color?: string
+}
+
+const StyledCheckbox = (name: IconName, color?: string) => styled(Icon).attrs({ name })<StyledCheckboxTypes>`
   width: 24px;
   height: 24px;
   position: relative;
-  &:before,
-  &:after {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    transition: all 300ms;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-  }
-  &:before {
-    background-image: url(${borderImage});
-  }
-  &:after {
-    z-index: 2;
-    background-image: url(${checkboxActive});
-  }
+  fill: ${color};
 `
 
 const CheckboxInput = styled.input.attrs({ type: `checkbox` })`
@@ -33,16 +20,6 @@ const CheckboxInput = styled.input.attrs({ type: `checkbox` })`
   left: 0;
   top: 0;
   opacity: 0;
-
-  &:checked ~ ${CustomCheckbox}:after {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  & ~ ${CustomCheckbox}:after {
-    opacity: 0;
-    transform: scale(0);
-  }
 `
 
 const Label = styled.label`
@@ -62,20 +39,23 @@ type CheckboxProps = {
   children?: React.ReactNode | React.ReactNode[]
   value: boolean
   className?: string
+  color?: string
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = (props: CheckboxProps) => {
+export const Checkbox = ({value, onChange, color = '#4858CC', ...props}: CheckboxProps) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (props.onChange) {
-      props.onChange(e.target.checked)
+    if (onChange) {
+      onChange(e.target.checked)
     }
   }
 
+  const CheckboxIcon = StyledCheckbox(value ? `checkbox-border` : `checkbox-active`, color)
+
   return (
     <Label className={props.className}>
-      <CheckboxInput checked={props.value} onChange={change} />
-      <CustomCheckbox />
+      <CheckboxInput checked={value} onChange={change} />
+      <CheckboxIcon />
       <Content>{props.children}</Content>
     </Label>
   )
