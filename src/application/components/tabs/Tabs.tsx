@@ -10,7 +10,6 @@ type TabValueType = string | number | null
 
 type TabsTypes = {
   value: TabValueType
-  name: string
   onChange: (value: any) => void
   children: React.ReactNode | React.ReactNode[]
 }
@@ -22,7 +21,6 @@ const StyledTabs = styled.div`
 export const Tabs = (props: TabsTypes) => {
   const context = {
     value: props.value,
-    name: props.name,
     onChange: props.onChange
   }
 
