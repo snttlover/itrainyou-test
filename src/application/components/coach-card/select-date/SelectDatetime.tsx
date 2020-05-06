@@ -7,12 +7,13 @@ import dayjs from "dayjs"
 import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useStore } from "effector-react"
+import {Tabs, Tab} from "@/application/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/application/components/coach-card/select-date/select-date.model"
+import { Coach } from "@/application/lib/api/coach"
 
 const Block = styled.div`
   background: #ffffff;
   border-radius: 2px;
-  margin-top: 4px;
   padding: 24px 24px 20px;
   display: flex;
   min-height: 300px;
@@ -115,18 +116,47 @@ const BuyButton = styled(DashedButton)`
 `
 
 type SelectDatetimeTypes = {
+  coach: Coach
   sessionsList: Store<CoachSessionWithSelect[]>
   // @ts-ignore
   toggleSession: Event<CoachSessionWithSelect>
 }
 
-const getTimesByDate = (isoDate: string) => {}
+const StyledTabs = styled(Tabs)`
+  margin-top: 4px;
+`
+
+const TabTime = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #5B6670;
+`
+
+const TabPrice = styled.div`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #9AA0A6;
+`
+
+type TimeTabType = {
+  timeInMinutes: number
+  price: number
+}
 
 const equalDateFormat = `DDMMYYYY`
 const equalTimeFormat = `HH:mm`
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsList)
+
+  const tabs = Object.keys(props.coach.prices).map((key): TimeTabType => ({
+    timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
+    price: props.coach.prices[key] as number
+  }))
+
+  const [activeTab, changeActiveTab] = useState((tabs[0] as TimeTabType).timeInMinutes)
 
   const [currentDate, changeCurrentDate] = useState<Date>(new Date())
   const pinnedDates = sessions.map(session => session.startDatetime)
@@ -142,8 +172,6 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
       start_datetime: dayjs(session.startDatetime).format(equalTimeFormat)
     }))
 
-  const [activeTime, changeActive] = useState(times[0])
-
   const selected = sessions
     .filter(session => session.selected)
     .map(session => ({
@@ -155,39 +183,49 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
 
   return (
-    <Block>
-      <Datepicker>
-        <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} />
-      </Datepicker>
-      <SelectTimeContainer>
-        <h5>{formattedDate}</h5>
-        <Times>
-          {times.map(session => (
-            <Tag active={session.selected} key={session.id} onClick={() => props.toggleSession(session)}>
-              {session.start_datetime}
-            </Tag>
-          ))}
-        </Times>
-        <Divider />
-        <SelectedDatetimeTable>
-          <tbody>
+    <>
+      <StyledTabs value={activeTab} onChange={changeActiveTab}>
+        {tabs.map(tab => (
+          <Tab value={tab.timeInMinutes}>
+            <TabTime>{tab.timeInMinutes} мин</TabTime>
+            <TabPrice>/{tab.price}</TabPrice>
+          </Tab>
+        ))}
+      </StyledTabs>
+      <Block>
+        <Datepicker>
+          <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} />
+        </Datepicker>
+        <SelectTimeContainer>
+          <h5>{formattedDate}</h5>
+          <Times>
+            {times.map(session => (
+              <Tag active={session.selected} key={session.id} onClick={() => props.toggleSession(session)}>
+                {session.start_datetime}
+              </Tag>
+            ))}
+          </Times>
+          <Divider />
+          <SelectedDatetimeTable>
+            <tbody>
             {selected.map(session => (
               <tr key={session.id}>
                 <td>{session.date}</td>
                 <td>{session.time}</td>
               </tr>
             ))}
-          </tbody>
-        </SelectedDatetimeTable>
-        <Text>
-          Итого: <Summary>{amount} ₽</Summary>
-        </Text>
-        <ButtonContainer>
-          <Link href='/signup/[step]' as='/signup/1'>
-            <BuyButton>Зарегистрироваться</BuyButton>
-          </Link>
-        </ButtonContainer>
-      </SelectTimeContainer>
-    </Block>
+            </tbody>
+          </SelectedDatetimeTable>
+          <Text>
+            Итого: <Summary>{amount} ₽</Summary>
+          </Text>
+          <ButtonContainer>
+            <Link href='/signup/[step]' as='/signup/1'>
+              <BuyButton>Зарегистрироваться</BuyButton>
+            </Link>
+          </ButtonContainer>
+        </SelectTimeContainer>
+      </Block>
+    </>
   )
 }

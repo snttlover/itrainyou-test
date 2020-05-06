@@ -9,6 +9,7 @@ export interface Coach {
     email: string
     creationDatetime: string
   }
+  prices: any
   price: string
   duration: string
   firstName: string
