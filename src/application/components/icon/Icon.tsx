@@ -1,15 +1,18 @@
 import React from "react"
+import styled from "styled-components"
+
+type IconName = 'arrow' | 'cross' | 'facebook' | 'google' | 'mark' | 'rotate' | 'tail-arrow' | 'vk'
 
 type IconProps = {
-  name: string
+  name: IconName
 } & React.SVGProps<SVGSVGElement>
 
-export const Icon = ({ name, fill = '#999', ...props }: IconProps) => {
+export const Icon = styled(({ name, ...props }: IconProps) => {
   const icon = require(`./icons/${name}.svg?sprite`)
 
   return (
-    <svg viewBox={icon.viewBox} fill={fill} width={24} height={24} {...props}>
+    <svg viewBox={icon.viewBox} width={24} height={24} {...props}>
       <use xlinkHref={`#${icon.id}`} />
     </svg>
   )
-}
+})``
