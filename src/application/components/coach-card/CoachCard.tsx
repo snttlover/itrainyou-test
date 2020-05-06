@@ -241,7 +241,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
 
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
 
-  const duration = +coach.duration.split(`:`)[1] + +coach.duration.split(`:`)[0] * 60
+  // const duration = +coach.duration.split(`:`)[1] + +coach.duration.split(`:`)[0] * 60
   const price = +coach.price
 
   return (
@@ -257,7 +257,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
               <Category key={category.id} src={category.icon} />
             ))}
             <PriceContainer>
-              <Duration>{duration} мин</Duration>
+              {/*<Duration>{duration} мин</Duration>*/}
               <PriceContainerDelemiter>/</PriceContainerDelemiter>
               <Price>{price} ₽</Price>
             </PriceContainer>
