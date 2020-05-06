@@ -7,7 +7,7 @@ type IconProps = {
   name: IconName
 } & React.SVGProps<SVGSVGElement>
 
-export const Icon = styled(({ name, rotate, ...props }: IconProps) => {
+export const Icon = styled(({ name, ...props }: IconProps) => {
   const icon = require(`./icons/${name}.svg?sprite`)
 
   return (
