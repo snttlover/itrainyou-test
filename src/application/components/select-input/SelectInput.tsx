@@ -1,9 +1,11 @@
+import { Icon } from "@/application/components/icon/Icon"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
-import arrow from "./arrow.svg"
 
-const Arrow = styled.img.attrs({ src: arrow })``
+const Arrow = styled(Icon).attrs({ name: 'arrow' })`
+  fill: #919BE0;
+`
 
 const Placeholder = styled.p`
   color: #b3b3b3;
@@ -15,6 +17,12 @@ const DropdownItem = styled.div`
   width: 100%;
   cursor: pointer;
   padding: 9px 12px;
+  
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
 
   &:hover {
     background-color: #eeeeee;
@@ -25,9 +33,9 @@ const Dropdown = styled.div`
   position: absolute;
   width: calc(100% + 2px);
   max-height: 150px;
-  border: 1px solid #b3b3b3;
+  border: 1px solid #919BE0;
   box-sizing: border-box;
-  border-radius: 0px 0px 4px 4px;
+  border-radius: 0 0 4px 4px;
   background: #ffffff;
   top: 100%;
   left: -1px;
@@ -40,12 +48,13 @@ const SelectBox = styled.div<{ isOpen: boolean; error?: boolean }>`
   position: relative;
   width: 100%;
   height: 32px;
-  border: 1px solid ${({ error }) => (error ? "#D5584D" : "#B3B3B3")};
+  background: #fff;
+  border: 1px solid ${({ error, isOpen }) => (error ? "#D5584D" : isOpen ? "#919BE0" : "#D3D7F3")};
   box-sizing: border-box;
-  border-radius: ${({ isOpen }) => (isOpen ? "4px 4px 0px 0px" : "4px")};
+  border-radius: ${({ isOpen }) => (isOpen ? "2px 2px 0px 0px" : "2px")};
   display: flex;
   align-items: center;
-  padding: 0 16px 0 8px;
+  padding: 0 12px 0 8px;
 
   ${Arrow} {
     margin-left: auto;
@@ -65,6 +74,7 @@ type SelectInputProps<T extends Value> = {
   }[]
   error?: boolean
   onBlur?: () => void
+  className?: string
 }
 
 export const SelectInput = <T extends Value = Value>({
@@ -78,7 +88,6 @@ export const SelectInput = <T extends Value = Value>({
   const [isOpen, changeOpen] = useState(false)
 
   const dropdownItems = options.map(item => {
-    if (typeof item.value !== 'string' && typeof item.value !== 'number') throw new Error('value must be string or number')
     return (
       <DropdownItem key={item.value} onClick={() => onChange(item.value)}>
         {item.label}

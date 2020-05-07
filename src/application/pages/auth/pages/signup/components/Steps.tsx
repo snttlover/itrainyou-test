@@ -6,7 +6,11 @@ import styled from "styled-components"
 const Container = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 16px 16px 0;
+  padding: 26px 16px 0;
+  
+  ${MediaRange.greaterThan("mobile")`
+    justify-content: center; 
+  `}
   
   ${MediaRange.greaterThan("tablet")`  
     padding: 36px;

@@ -1,13 +1,13 @@
 import * as React from "react"
 import styled from "styled-components"
 
-export const Button = styled.button`
+export const Button = styled.button<{ secondary? : boolean }>`
   padding: 8px 24px;
   text-align: center;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  background: #4858CC;
+  background: ${({secondary}) => secondary ? '#7D36A8' : '#4858CC'};
   border-radius: 32px;
   border: none;
   outline: none;
@@ -21,7 +21,7 @@ export const Button = styled.button`
   }
   &:active {
     box-shadow: none;
-    background: #3746B0;
+    background: ${({secondary}) => secondary ? '#75309E' : '#3746B0'};
   }
   &:disabled {
     background: #EFEFEF;

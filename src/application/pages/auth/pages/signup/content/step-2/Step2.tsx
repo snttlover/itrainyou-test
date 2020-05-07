@@ -17,14 +17,6 @@ const Container = styled.div`
   flex-direction: column;
   height: 440px;
 
-  ${UserTypeCard} {
-    margin-top: 16px;
-
-    &:first-of-type {
-      margin-top: 0;
-    }
-  }
-
   ${NextButton} {
     margin-left: auto;
     margin-top: 16px;
@@ -32,31 +24,26 @@ const Container = styled.div`
   }
   
   ${MediaRange.greaterThan("mobile")`
-    margin: 71px auto 0;
-    ${UserTypeCard} {
-      margin-top: 0;
-      margin-left: 12px;
+    margin: 182px auto 0;
+    ${NextButton} {
+      margin: 64px auto;
+      color: #fff;
       
-      &:first-of-type {
-        margin-left: 0;
-      }
+      & svg {
+        fill: #fff;
+      } 
     }
   `}
   
   ${MediaRange.greaterThan("tablet")`
-    ${UserTypeCard} {
-      width: 360px  
-    }
-  `}
-  
-  ${MediaRange.greaterThan("laptop")`
-    ${UserTypeCard} {
-      width: 400px;  
-      margin-left: 32px;
-    }
-    
+    margin: 94px auto 0;
     ${NextButton} {
-      margin-right: 140px
+      margin: 36px auto;
+      color: #fff;
+      
+      & svg {
+        fill: #fff;
+      } 
     }
   `}
 `
@@ -65,78 +52,80 @@ const Cards = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  
+  ${UserTypeCard} {
+    margin: 12px auto 0;
+    height: 124px;
+    width: 288px;
+    
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
   
   ${MediaRange.greaterThan("mobile")`
+    ${UserTypeCard} {
+      margin: 24px auto 0;
+      width: 400px;
+      height: 160px;
+    }
+  `}
+  
+  ${MediaRange.greaterThan("tablet")`
     justify-content: center;
     flex-direction: row;
+    ${UserTypeCard} {
+      margin: 0 auto;
+      width: 400px;
+      height: 160px;
+    }
   `}
 `
 
 const Title = styled.h1`
   font-weight: 600;
-  font-size: 28px;
-  line-height: 44px;
-  margin-bottom: 20px;
+  font-size: 24px;
+  line-height: 26px;
+  margin-bottom: 32px;
 
   text-align: center;
+  color: #ffffff;
   
   ${MediaRange.greaterThan("mobile")`
-    font-size: 36px;
-    margin-bottom: 40px;
+    font-size: 32px;
+    margin-bottom: 52px;
+  `}  
+
+  ${MediaRange.greaterThan("mobile")`
+    margin-bottom: 64px;
   `}
 `
-
-const StyledSteps = styled(Steps)`
-  ${MediaRange.greaterThan('tablet')`
-    margin-right: -10px;
-  `}
-  ${MediaRange.greaterThan('laptop')`
-    margin-right: 134px;
-  `}
-`
-
-const clientDescriptions = [
-  "Большая база данных тренингов",
-  "Безопасная оплата тренингов на сайте",
-  "Возможность просмотра трансляций прямо на сайте",
-  "Возможность просмотра отзывов тренингов от людей, которые уже прошли эти тренинги"
-]
-
-const couchDescriptions = [
-  "Легкая регистрация",
-  "Удобное проведение тренингов",
-  "Возможность проведения трансляции прямо на сайте без специальных программных средств",
-  "При желании вы можете записаться на тренинги и самим быть учеником"
-]
 
 export const Step2 = () => {
   const type = useStore($userData).type
   return (
     <AuthLayout>
-      <StyledSteps activeId='2'>
+      <Steps activeId='2'>
         <Steps.Step id='1'>1</Steps.Step>
         <Steps.Step id='2'>2</Steps.Step>
         <Steps.Step id='3'>3</Steps.Step>
         <Steps.Step id='4'>4</Steps.Step>
-      </StyledSteps>
+      </Steps>
       <Container>
         <Title>Вы хотите стать:</Title>
         <Cards>
           <UserTypeCard
-            title='Клиентом'
-            selectedColor="#449BD9"
-            hoverColor="#DAEBF7"
-            textColor="#449BD9"
-            descriptions={clientDescriptions}
+            title='клиентом'
+            color='#4858CC'
+            hoverColor="#EFF2FC"
             selected={type === "client"}
             onClick={() => userTypeChanged("client")}
           />
           <UserTypeCard
-            title='Коучем'
-            selectedColor="#544274"
-            hoverColor="#DDD9E3"
-            textColor="#544274"
-            descriptions={couchDescriptions}
+            title='коучем'
+            color='#7D36A8'
+            hoverColor="#F5EFF8"
             selected={type === "couch"}
             onClick={() => userTypeChanged("couch")}
           />

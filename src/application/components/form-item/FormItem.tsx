@@ -9,7 +9,8 @@ const StyledFormItem = styled.div`
   width: 100%;
 `
 
-const Label = styled.div`
+export const Label = styled.div`
+  font-family: Roboto;
   display: flex;
   align-items: flex-start;
   font-weight: 500;
@@ -48,7 +49,7 @@ export const FormItem = styled(({ label, children, error, required, ...props }: 
   return (
     <StyledFormItem {...props}>
       <Label>
-        {label} {required && <FormItemRequiredStar>*</FormItemRequiredStar>}
+        {label}&nbsp;{required && <FormItemRequiredStar>*</FormItemRequiredStar>}
       </Label>
       {React.Children.map(children, child => {
         if (!React.isValidElement(child)) return null

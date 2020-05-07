@@ -1,16 +1,18 @@
-import { Button } from "@/application/components/button/normal/Button"
+import { DashedButton } from "@/application/components/button/dashed/DashedButton"
 import { MediaRange } from "@/application/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
 
 const Description = styled.p<{ largeFileError: boolean }>`
+  font-family: Roboto;
   font-weight: ${({largeFileError}) => largeFileError ? '600' : 'normal'};
   font-size: ${({largeFileError}) => largeFileError ? '16px' : '14px'};
   line-height: ${({largeFileError}) => largeFileError ? '22px' : '18px'};
 
   text-align: center;
+  color: #424242;
 
-  margin-top: ${({largeFileError}) => largeFileError ? '100px' : '12px'};
+  margin-top: ${({largeFileError}) => largeFileError ? '100px' : '24px'};
 
   ${MediaRange.greaterThan("mobile")`
     margin-top: 63px;
@@ -30,7 +32,7 @@ const Warning = styled.p`
   margin-top: 12px;
 `
 
-const SelectPhotoButton = styled(Button)`
+const SelectPhotoButton = styled(DashedButton).attrs({ secondary: true })`
   margin-top: 56px;
   margin-left: auto;
   margin-right: auto;
