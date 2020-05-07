@@ -43,10 +43,13 @@ const Content = styled.div`
 `
 
 const Title = styled.h2`
-  font-weight: 600;
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
+  color: #424242;
   font-size: 16px;
   line-height: 22px;
-  margin-top: 28px;
+  margin: 28px -5px 0;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 20px;

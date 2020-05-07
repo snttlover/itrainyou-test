@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-export type IconName = 'arrow' | 'cross' | 'facebook' | 'google' | 'mark' | 'rotate' | 'tail-arrow' | 'vk' | 'checkbox-border' | 'checkbox-active'
+export type IconName = 'arrow' | 'cross' | 'facebook' | 'google' | 'mark' | 'rotate' | 'tail-arrow' | 'vk' | 'checkbox-border' | 'checkbox-active' | 'user'
 
 type IconProps = {
   name: IconName

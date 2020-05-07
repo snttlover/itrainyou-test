@@ -1,10 +1,12 @@
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
 import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { logout } from "@/application/feature/user/user.model"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import Link from "next/link"
+import { useEffect } from "react"
 import {
   $isFormValid,
   $step1Form,
@@ -19,13 +21,6 @@ import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 
-const StyledSteps = styled(Steps)`
-  ${MediaRange.greaterThan("laptop")`
-    margin-right: 134px;
-  `};
-  height: auto;
-`
-
 const Container = styled.div`
   min-width: 320px;
   margin: 71px auto 0;
@@ -37,8 +32,8 @@ const Container = styled.div`
   ${MediaRange.greaterThan("mobile")`
     margin: 123px 36px 0;
     padding: 36px 48px 31px;
+    border-radius: 2px;
     background: #FFFFFF;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.12), 0px 4px 12px rgba(0, 0, 0, 0.25);
   `}
 
   ${MediaRange.greaterThan("laptop")`
@@ -49,43 +44,75 @@ const Container = styled.div`
 
 const Title = styled.h1`
   font-weight: 600;
-  font-size: 28px;
-  line-height: 44px;
+  font-size: 24px;
+  line-height: 26px;
   margin-bottom: 73px;
 
   text-align: center;
+  color: #FFFFFF;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 36px;
     line-height: 44px;
+    color: #424242;
   `}
 `
 
 const Form = styled.form`
+  color: #fff;
   ${NextButton} {
     margin-left: auto;
   }
+  ${MediaRange.greaterThan("mobile")`
+    color: inherit;  
+  `}
+`
+
+const PasswordHint = styled.p`
+  display: none;
+  color: #9AA0A6;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  ${MediaRange.greaterThan('mobile')`
+    display: block;
+  `}
 `
 
 const Footer = styled.div`
   margin: 118px auto 34px;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 18px;
+  
   text-align: center;
   color: #544274;
   width: 130px;
 
   ${MediaRange.greaterThan("mobile")`
     width: auto;
-    margin-top: 36px;
+    margin-top: 16px;
     font-size: 20px;
     line-height: 26px;
   `}
 `
 
 const StyledLink = styled.a`
-  color: #544274;
+  color: #FFFFFF;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 18px;
+  
+  ${MediaRange.greaterThan("mobile")`    
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 26px;
+  `}
+`
+
+const SignIn = styled.span`
+  font-weight: 600;
 `
 
 const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -99,14 +126,18 @@ export const Step1 = () => {
   const isFormValid = useStore($isFormValid)
   const isFetching = useStore(registerFx.pending)
 
+  useEffect(() => {
+    logout()
+  }, [])
+
   return (
     <AuthLayout>
-      <StyledSteps activeId='1'>
+      <Steps activeId='1'>
         <Steps.Step id='1'>1</Steps.Step>
         <Steps.Step id='2'>2</Steps.Step>
         <Steps.Step id='3'>3</Steps.Step>
         <Steps.Step id='4'>4</Steps.Step>
-      </StyledSteps>
+      </Steps>
       <Container>
         <Title>Регистрация</Title>
         <Form onSubmit={handleSubmit}>
@@ -118,13 +149,14 @@ export const Step1 = () => {
           </FormItem>
           <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
             <Input value={form.passwordRepeat} type='password' onChange={passwordRepeatChanged} />
+            <PasswordHint>Пароль должен быть не меньше 8 символов и содержать в себе только латинские буквы или цифры</PasswordHint>
           </FormItem>
           <NextButton disabled={!isFormValid || isFetching} />
         </Form>
       </Container>
       <Footer>
         <Link href='/login' as='/login' passHref>
-          <StyledLink>Уже есть аккаунт? Войдите</StyledLink>
+          <StyledLink>Уже есть аккаунт? <SignIn>Войдите</SignIn></StyledLink>
         </Link>
       </Footer>
     </AuthLayout>
