@@ -1,3 +1,4 @@
+import { Avatar } from "@/application/components/avatar/Avatar"
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
 import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
@@ -25,7 +26,6 @@ import Router from "next/router"
 import * as React from "react"
 import { useEffect } from "react"
 import styled from "styled-components"
-import uploadImage from "./upload.svg"
 
 const StyledSteps = styled(Steps)`
   //
@@ -83,12 +83,11 @@ const Description = styled.p`
   `}
 `
 
-const UploadImage = styled.img<{ withAvatar: boolean }>`
+const UserAvatar = styled(Avatar)`
   width: 60px;
   height: 60px;
   margin-bottom: 16px;
   cursor: pointer;
-  border-radius: ${({ withAvatar }) => (withAvatar ? "30px" : "0")};
 `
 
 const Form = styled.form`
@@ -139,10 +138,9 @@ export const Step3 = () => {
         <Form onSubmit={handleSubmit}>
           <FormItem
             label={
-              <UploadImage
-                src={values.image.file || uploadImage}
-                onClick={_ => toggleUploadModal()}
-                withAvatar={!!values.image.file}
+              <UserAvatar
+                src={values.image.file}
+                onClick={() => toggleUploadModal()}
               />
             }
             required={userType === "couch"}
