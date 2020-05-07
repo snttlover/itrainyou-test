@@ -1,8 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import { useStore } from "effector-react"
-import { $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import { useEvent, useList, useStore } from "effector-react"
 import {Checkbox} from "@/application/components/checkbox/Checkbox"
+import { $priceFilters, toggleFilter } from "@/application/pages/search/content/filters/content/session-time-filter/session-price-filter.model"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -24,46 +24,14 @@ const StyledCheckbox = styled(Checkbox)`
 `
 
 export const SessionTimeFilter = () => {
-  const params = useStore($searchPageQuery)
-
-  const selected = (params.session_duration_types || ``).split(`,`)
-
-  const times = [
-    {
-      key: `D30`,
-      text: `30 мин`
-    },
-    {
-      key: `D45`,
-      text: `45 мин`
-    },
-    {
-      key: `D60`,
-      text: `60 мин`
-    },
-    {
-      key: `D90`,
-      text: `90 мин`
-    }
-  ]
-
-  const checkboxes = times.map(time => ({
-    ...time,
-    selected: selected.indexOf(time.key) !== -1
-  }))
-
-
-  const updateFilters = () => {
-    addSearchPageQuery({
-      session_duration_types: checkboxes.filter(box => box.selected).map(box => box.key).join(`,`)
-    })
-  }
-
+  const toggle = useEvent(toggleFilter)
   return (
     <Container>
       <Header>Длительность сессии</Header>
       {
-        checkboxes.map(time => (<StyledCheckbox key={time.key} value={time.selected} onChange={updateFilters}>{time.text}</StyledCheckbox>))
+        useList($priceFilters, filter => (
+          <StyledCheckbox value={filter.selected} onChange={() => toggle(filter.key)}>{filter.text}</StyledCheckbox>
+        ))
       }
     </Container>
   )
