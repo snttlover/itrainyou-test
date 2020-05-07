@@ -10,6 +10,7 @@ const TextBox = styled.input<{ error?: boolean }>`
   font-size: 16px;
   line-height: 22px;
   caret-color: #3746B0;
+  color: #424242;
 
   &:hover {
     border: 1px solid #919BE0;
