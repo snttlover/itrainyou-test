@@ -26,7 +26,8 @@
     "react-slider": "^1.0.3",
     "simplebar-react": "^2.1.0",
     "styled-components": "^5.0.1",
-    "styled-media-query": "^2.1.2"
+    "styled-media-query": "^2.1.2",
+    "url-loader": "^4.1.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",
