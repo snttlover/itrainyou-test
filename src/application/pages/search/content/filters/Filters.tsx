@@ -13,6 +13,7 @@ import { useStore } from "effector-react"
 import close from "./images/close.svg"
 import { useLayoutEffect, useState } from "react"
 import SimpleBar from 'simplebar-react';
+import {SessionTimeFilter} from "./content/session-time-filter/SessionTimeFilter"
 
 type ModalTypes = {
   showOnMobile: boolean
@@ -123,6 +124,7 @@ export const Filters = () => {
         <Container>
           <MobileClose onClick={() => changeMobileFiltersVisibility(false)} />
           <Header>Фильтры</Header>
+          <SessionTimeFilter />
           <PriceFilter />
           <ReviewFilter />
           <DateFilter />

@@ -39,6 +39,7 @@ export interface Coach {
 export type CoachSortingType = `price` | `-price` | `popularity` | `-popularity`
 
 export interface GetCoachesParamsTypes {
+  session_duration_types?: string
   price__lte?: number
   price__gte?: number
   price?: number
