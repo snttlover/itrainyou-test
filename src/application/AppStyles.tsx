@@ -5,9 +5,9 @@ export const AppStyles = createGlobalStyle`
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: Roboto Slab, sans-serif;
+    font-family: Gilroy, sans-serif;
   }
-  
+
   html,
   body {
     width: 100%;

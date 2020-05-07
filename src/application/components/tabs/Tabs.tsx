@@ -9,8 +9,8 @@ const TabContext = createContext<any>({})
 type TabValueType = string | number | null
 
 type TabsTypes = {
+  className?: string
   value: TabValueType
-  name: string
   onChange: (value: any) => void
   children: React.ReactNode | React.ReactNode[]
 }
@@ -22,13 +22,12 @@ const StyledTabs = styled.div`
 export const Tabs = (props: TabsTypes) => {
   const context = {
     value: props.value,
-    name: props.name,
     onChange: props.onChange
   }
 
   return (
     <TabContext.Provider value={context}>
-      <StyledTabs>
+      <StyledTabs className={props.className}>
         {props.children}
       </StyledTabs>
     </TabContext.Provider>
@@ -47,6 +46,9 @@ const StyledTab = styled.div<StyledTabPropsTypes>`
   margin-right: 1px;
   font-size: 16px;
   line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:last-child {
     margin-right: 0;
   }
