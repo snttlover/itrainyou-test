@@ -44,8 +44,8 @@ const Container = styled.div`
   ${MediaRange.greaterThan("mobile")`
     margin: 123px 36px;
     padding: 36px 48px 31px;
+    border-radius: 2px;
     background: #FFFFFF;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.12), 0px 4px 12px rgba(0, 0, 0, 0.25);
   `}
 
   ${MediaRange.greaterThan("laptop")`
