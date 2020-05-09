@@ -4,6 +4,7 @@ import * as React from "react"
 import styled from "styled-components"
 
 const Title = styled.h2<{ color: string }>`
+  font-family: Roboto Slab;
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;

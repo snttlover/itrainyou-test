@@ -88,6 +88,7 @@ const Title = styled.h1`
   font-size: 24px;
   line-height: 26px;
   margin-bottom: 32px;
+  font-family: Roboto Slab;
 
   text-align: center;
   color: #ffffff;

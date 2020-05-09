@@ -19,6 +19,7 @@ const Container = styled.div<{active?: boolean}>`
   display: flex;
   align-items: center;
   color: ${({active}) => active ? '#919BE0' : '#fff'};
+  font-family: Roboto Slab;
   font-weight: bold;
   font-size: 12px;
   line-height: 16px;

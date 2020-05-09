@@ -4,6 +4,7 @@ import * as React from "react"
 import styled from "styled-components"
 
 const StyledButton = styled.button`
+  font-family: Roboto Slab;
   font-weight: 600;
   font-size: 16px;
   line-height: 26px;

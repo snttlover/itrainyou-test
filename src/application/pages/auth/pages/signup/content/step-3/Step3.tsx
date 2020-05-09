@@ -55,6 +55,7 @@ const Container = styled.div`
 `
 
 const Title = styled.h1`
+  font-family: Roboto Slab;
   font-weight: bold;
   font-size: 24px;
   line-height: 26px;

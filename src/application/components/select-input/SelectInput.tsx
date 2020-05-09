@@ -1,4 +1,5 @@
 import { Icon } from "@/application/components/icon/Icon"
+import { useClickOutside } from "@/application/lib/hooks/use-click-outside"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
@@ -97,10 +98,17 @@ export const SelectInput = <T extends Value = Value>({
 
   const selectedItem = options.find(item => item.value === value)
 
+  const selectBoxRef = React.createRef<HTMLDivElement>()
+
+  useClickOutside(selectBoxRef, () => {
+    changeOpen(false)
+  })
+
   return (
     <SelectBox
       isOpen={isOpen}
       error={error}
+      ref={selectBoxRef}
       placeholder={placeholder}
       onClick={() => {
         const newValue = !isOpen

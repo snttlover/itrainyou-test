@@ -5,7 +5,7 @@ export const AppStyles = createGlobalStyle`
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: Gilroy, sans-serif;
+    font-family: Roboto, sans-serif;
   }
 
   html,

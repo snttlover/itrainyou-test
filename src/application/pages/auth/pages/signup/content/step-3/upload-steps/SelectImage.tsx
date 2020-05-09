@@ -28,7 +28,7 @@ const Warning = styled.p`
   line-height: 16px;
   width: 100%;
   text-align: center;
-  color: #d5584d;
+  color: #FF6B00;
   margin-top: 12px;
 `
 
