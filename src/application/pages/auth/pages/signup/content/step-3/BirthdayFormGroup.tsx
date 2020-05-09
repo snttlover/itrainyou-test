@@ -2,7 +2,11 @@ import { FormItem, Label } from "@/application/components/form-item/FormItem"
 import { SelectInput } from "@/application/components/select-input/SelectInput"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { FormGroup } from "@/application/pages/auth/pages/signup/content/step-3/FormGroup"
-import { $step3Form, birthdayChanged } from "@/application/pages/auth/pages/signup/content/step-3/step3.model"
+import {
+  $step3Form, $step3FormErrors,
+  birthdayChanged,
+  sexChanged
+} from "@/application/pages/auth/pages/signup/content/step-3/step3.model"
 import { $userData } from "@/application/pages/auth/pages/signup/signup.model"
 import dayjs from "dayjs"
 import { useStore } from "effector-react"
@@ -12,12 +16,12 @@ import styled from "styled-components"
 
 const StyledFormItem = styled(FormItem)`
   color: #424242;
-  
+
   ${Label} {
     color: #fff;
   }
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     ${Label} {
       color: #424242;
     }
@@ -42,9 +46,22 @@ const months = [
 const currentYear = dayjs().year()
 const years = Array.from({ length: 100 }, (v, k) => currentYear - k).map(year => ({ label: `${year}`, value: year }))
 
+const sexItems: { label: string; value: "M" | "F" }[] = [
+  {
+    label: "Мужской",
+    value: "M"
+  },
+  {
+    label: "Женский",
+    value: "F"
+  }
+]
+
 export const BirthdayFormGroup = () => {
   let birthday = useStore($step3Form.map(form => form.birthday))
   const userType = useStore($userData.map(data => data.type))
+  const values = useStore($step3Form)
+  const errors = useStore($step3FormErrors)
 
   const [days, setDays] = useState<{ label: string; value: number }[]>(
     Array.from({ length: 31 }, (v, k) => k + 1).map(day => ({ label: `${day}`, value: day }))
@@ -79,21 +96,33 @@ export const BirthdayFormGroup = () => {
     }
   }
   return (
-    <FormGroup>
-      <StyledFormItem label='Дата рождения' required={userType === "couch"}>
-        <SelectInput placeholder='День' value={birthday ? birthday.date() : -1} onChange={changeDay} options={days} />
-      </StyledFormItem>
-      <StyledFormItem label=''>
-        <SelectInput
-          placeholder='Месяц'
-          value={birthday ? birthday.month() : -1}
-          onChange={changeMonth}
-          options={months}
-        />
-      </StyledFormItem>
-      <StyledFormItem label=''>
-        <SelectInput placeholder='Год' value={birthday ? birthday.year() : -1} onChange={changeYear} options={years} />
-      </StyledFormItem>
-    </FormGroup>
+    <React.Fragment>
+      <FormGroup>
+        <StyledFormItem label='Дата рождения' required={userType === "couch"}>
+          <SelectInput placeholder='День' value={birthday ? birthday.date() : -1} onChange={changeDay} options={days} />
+        </StyledFormItem>
+        <StyledFormItem label=''>
+          <SelectInput
+            placeholder='Месяц'
+            value={birthday ? birthday.month() : -1}
+            onChange={changeMonth}
+            options={months}
+          />
+        </StyledFormItem>
+        <StyledFormItem label=''>
+          <SelectInput
+            placeholder='Год'
+            value={birthday ? birthday.year() : -1}
+            onChange={changeYear}
+            options={years}
+          />
+        </StyledFormItem>
+      </FormGroup>
+      <FormGroup>
+        <StyledFormItem label='Пол' error={errors.sex} required={userType === "couch"}>
+          <SelectInput value={values.sex} onChange={sexChanged} options={sexItems} />
+        </StyledFormItem>
+      </FormGroup>
+    </React.Fragment>
   )
 }

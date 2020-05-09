@@ -136,17 +136,6 @@ const AvatarHint = styled.div`
   `}
 `
 
-const sexItems: { label: string; value: "M" | "F" }[] = [
-  {
-    label: "Мужской",
-    value: "M"
-  },
-  {
-    label: "Женский",
-    value: "F"
-  }
-]
-
 const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault()
 }
@@ -195,11 +184,7 @@ export const Step3 = () => {
             <Input value={values.lastName} onChange={lastNameChanged} />
           </FormItem>
           <BirthdayFormGroup />
-          <FormGroup>
-            <FormItem label='Пол' error={errors.sex} required={userType === "couch"}>
-              <SelectInput value={values.sex} onChange={sexChanged} options={sexItems} />
-            </FormItem>
-          </FormGroup>
+
           <NextButton onClick={() => Router.push("/signup/[step]", "/signup/4")} disabled={!isFormValid} />
         </Form>
       </Container>
