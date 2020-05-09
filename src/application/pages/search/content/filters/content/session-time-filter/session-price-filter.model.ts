@@ -7,7 +7,7 @@ import {
 
 const priceFilterDomain = createDomain(`price-filter`)
 
-type PriceKey = 'D30' | 'D45' |'D60' |'D90'
+type PriceKey = 'D30' | 'D45' | 'D60' |'D90'
 
 const minutes: PriceKey[] = [`D30`, `D45`, `D60`, `D90`]
 

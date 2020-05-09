@@ -153,6 +153,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
 
   const tabs = Object.keys(props.coach.prices).map((key): TimeTabType => ({
     timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
+    // @ts-ignore
     price: props.coach.prices[key] as number
   }))
 

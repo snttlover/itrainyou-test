@@ -235,6 +235,17 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   const [isActive, changeActive] = useState(false)
   const sessionsListModel = genCoachSessions(coach.id)
 
+  const minimumPrice = Object.entries(coach.prices).reduce((acc, [key, price]) => {
+    if (price !== `None` && price < acc.price) {
+      return {
+        price: Math.ceil(price),
+        text: `${key.slice(1, key.length)} минут`
+      }
+    } else {
+      return acc
+    }
+  }, { price: Infinity, text: `0 минут` })
+
   if (isActive) {
     sessionsListModel.loadData()
   }
@@ -258,8 +269,8 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             ))}
             <PriceContainer>
               {/*<Duration>{duration} мин</Duration>*/}
-              <PriceContainerDelemiter>/</PriceContainerDelemiter>
-              <Price>{price} ₽</Price>
+              {/*<PriceContainerDelemiter>/</PriceContainerDelemiter>*/}
+              <Price>{minimumPrice.price} ₽</Price>
             </PriceContainer>
           </Info>
         </NameContainer>
