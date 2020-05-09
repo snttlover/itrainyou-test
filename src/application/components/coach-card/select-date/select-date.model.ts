@@ -1,14 +1,19 @@
-import { CoachSession, getCoachSessions } from "@/application/lib/api/coach-sessions"
+import { CoachSession, getCoachSessions, GetCoachSessionsParamsTypes } from "@/application/lib/api/coach-sessions"
 import { createEffect, createEvent, createStore, forward } from "effector-next"
+import { Coach } from "@/application/lib/api/coach"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
 }
 
-export const genCoachSessions = (id: number) => {
-  const fetchCoachSessionsListFx = createEffect<void, CoachSession[]>().use(() => getCoachSessions(id, {}))
+export const genCoachSessions = (coach: Coach) => {
+  const fetchCoachSessionsListFx = createEffect<GetCoachSessionsParamsTypes, CoachSession[]>().use(() => getCoachSessions(coach.id, {}))
 
-  const loadCoachSessions = createEvent()
+  const isFetching = createStore(false)
+    .on(fetchCoachSessionsListFx, () => true)
+    .on(fetchCoachSessionsListFx.finally, () => false)
+
+  const loadCoachSessions = createEvent<GetCoachSessionsParamsTypes>()
   const toggleSession = createEvent<CoachSessionWithSelect>()
 
   const $coachSessionsList = createStore<CoachSessionWithSelect[]>([])
@@ -29,7 +34,10 @@ export const genCoachSessions = (id: number) => {
     to: fetchCoachSessionsListFx
   })
 
+
+
   return {
+    loading: isFetching,
     list: $coachSessionsList,
     loadData: loadCoachSessions,
     toggleSession

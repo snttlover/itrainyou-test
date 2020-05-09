@@ -233,7 +233,11 @@ type Props = {
 
 const CoachCardLayout = ({ coach, className }: Props) => {
   const [isActive, changeActive] = useState(false)
-  const sessionsListModel = genCoachSessions(coach.id)
+  const sessionsListModel = genCoachSessions(coach)
+
+  if (isActive) {
+    sessionsListModel.loadData({})
+  }
 
   const minimumPrice = Object.entries(coach.prices).reduce((acc, [key, price]) => {
     if (price !== `None` && price < acc.price) {
@@ -246,14 +250,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
     }
   }, { price: Infinity, text: `0 минут` })
 
-  if (isActive) {
-    sessionsListModel.loadData()
-  }
-
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
-
-  // const duration = +coach.duration.split(`:`)[1] + +coach.duration.split(`:`)[0] * 60
-  const price = +coach.price
 
   return (
     <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
@@ -268,8 +265,6 @@ const CoachCardLayout = ({ coach, className }: Props) => {
               <Category key={category.id} src={category.icon} />
             ))}
             <PriceContainer>
-              {/*<Duration>{duration} мин</Duration>*/}
-              {/*<PriceContainerDelemiter>/</PriceContainerDelemiter>*/}
               <Price>{minimumPrice.price}₽ {minimumPrice.text}</Price>
             </PriceContainer>
           </Info>
@@ -289,6 +284,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
       {isActive && (
         <SelectDatetime
           coach={coach}
+          loading={sessionsListModel.loading}
           sessionsList={sessionsListModel.list}
           toggleSession={sessionsListModel.toggleSession}
         />

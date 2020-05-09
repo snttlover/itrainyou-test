@@ -2,7 +2,7 @@ import { DashedButton } from "@/application/components/button/dashed/DashedButto
 import Link from "next/link"
 import { useState } from "react"
 import * as React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import dayjs from "dayjs"
 import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
@@ -10,6 +10,8 @@ import { useStore } from "effector-react"
 import {Tabs, Tab} from "@/application/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/application/components/coach-card/select-date/select-date.model"
 import { Coach } from "@/application/lib/api/coach"
+import { Spinner } from "@/application/components/spinner/Spinner"
+import { Button } from "@/application/components/button/normal/Button"
 
 const Block = styled.div`
   background: #ffffff;
@@ -17,6 +19,7 @@ const Block = styled.div`
   padding: 24px 24px 20px;
   display: flex;
   min-height: 300px;
+  position: relative;
   @media screen and (max-width: 600px) {
     display: none;
   }
@@ -106,16 +109,12 @@ const Summary = styled.span`
 `
 
 const ButtonContainer = styled.div`
-  margin-top: auto;
+  border: 1px solid #DBDEE0;
   margin-left: auto;
 `
 
-const BuyButton = styled(DashedButton)`
-  border: 1px solid #544274;
-  color: #544274;
-`
-
 type SelectDatetimeTypes = {
+  loading: Store<boolean>,
   coach: Coach
   sessionsList: Store<CoachSessionWithSelect[]>
   // @ts-ignore
@@ -128,8 +127,18 @@ const StyledTabs = styled(Tabs)`
   position: relative;
 `
 
-const StyledTab = styled(Tab)`
-  max-width: 25%;
+type StyledTabTypes = {
+  onlyOneCard: boolean
+}
+
+const OnlyOneTabStyles = css`
+  justify-content: flex-end;
+  padding-top: 16px;
+  padding-bottom: 8px;
+`
+
+const StyledTab = styled(Tab)<StyledTabTypes>`
+  ${props => props.onlyOneCard && OnlyOneTabStyles}
 `
 
 const TabTime = styled.div`
@@ -156,6 +165,7 @@ const equalTimeFormat = `HH:mm`
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsList)
+  const loading = useStore(props.loading)
 
   const tabs = Object.keys(props.coach.prices)
     // @ts-ignore
@@ -196,13 +206,14 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     <>
       <StyledTabs value={activeTab} onChange={changeActiveTab}>
         {tabs.map(tab => (
-          <StyledTab value={tab.timeInMinutes}>
+          <StyledTab value={tab.timeInMinutes} onlyOneCard={tabs.length === 1}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
             <TabPrice>/{tab.price} ₽</TabPrice>
           </StyledTab>
         ))}
       </StyledTabs>
       <Block>
+        { loading && <Spinner /> }
         <Datepicker>
           <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} />
         </Datepicker>
@@ -231,7 +242,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           </Text>
           <ButtonContainer>
             <Link href='/signup/[step]' as='/signup/1'>
-              <BuyButton>Зарегистрироваться</BuyButton>
+              <Button>Зарегистрироваться</Button>
             </Link>
           </ButtonContainer>
         </SelectTimeContainer>

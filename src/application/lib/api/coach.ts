@@ -15,7 +15,6 @@ export interface Coach {
     D60: 'None' | number
     D90: 'None' | number
   }
-  price: string
   duration: string
   firstName: string
   lastName: string
