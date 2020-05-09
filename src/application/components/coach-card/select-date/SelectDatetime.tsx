@@ -1,4 +1,3 @@
-import { DashedButton } from "@/application/components/button/dashed/DashedButton"
 import Link from "next/link"
 import { useState } from "react"
 import * as React from "react"
@@ -6,12 +5,14 @@ import styled, { css } from "styled-components"
 import dayjs from "dayjs"
 import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
-import { useStore } from "effector-react"
+import { useEvent, useStore } from "effector-react"
 import {Tabs, Tab} from "@/application/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/application/components/coach-card/select-date/select-date.model"
 import { Coach } from "@/application/lib/api/coach"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { Button } from "@/application/components/button/normal/Button"
+import { DurationType } from "@/application/lib/api/coach-sessions"
+import {Event} from "effector-next"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -36,10 +37,12 @@ const Block = styled.div<StyledTabTypes>`
 `
 
 const Datepicker = styled.div`
-  min-width: 224px;
+  max-width: 252px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-right: 32px;
+  border-right: 1px solid #DBDEE0;
   @media screen and (max-width: 560px) {
     margin-bottom: 20px;
   }
@@ -64,26 +67,20 @@ const Times = styled.div`
   margin-top: 4px;
 `
 
-const Tag = styled.div<{ disabled?: boolean; active?: boolean }>`
-  background: ${props => {
-    if (props.disabled) return "#DDD9E3"
-    else if (props.active) return "#544274"
-    else return "#FFFFFF"
-  }};
-  transition: all 300ms ease;
-
-  border: 1px solid #544274;
+const Tag = styled.div<{ active?: boolean }>`
+  display: flex;
+  flex-direction: row;
+  padding: 2px 8px;
+  background: ${({active}) => active ? `#4858CC` : `#fff`};
+  color: ${({active}) => active ? `#fff` : `#5B6670`};
   box-sizing: border-box;
   border-radius: 24px;
-  padding: 2px 6px;
-  margin-left: 8px;
-  margin-top: 8px;
-
   font-size: 12px;
   line-height: 16px;
-  color: ${({ active }) => (active ? "#FFFFFF" : "#424242")};
-  cursor: pointer;
-  user-select: none;
+  &:hover {
+    background: #DBDEE0;
+    color: #fff;
+  }
 `
 
 const Divider = styled.div`
@@ -125,6 +122,10 @@ type SelectDatetimeTypes = {
   sessionsList: Store<CoachSessionWithSelect[]>
   // @ts-ignore
   toggleSession: Event<CoachSessionWithSelect>
+  tabs: {
+    $durationTab: Store<DurationType>,
+    changeDurationTab: Event<DurationType>
+  }
 }
 
 const StyledTabs = styled(Tabs)`
@@ -160,7 +161,12 @@ const TabPrice = styled.div`
 type TimeTabType = {
   timeInMinutes: number
   price: number
+  key: DurationType
 }
+
+const TimeColumn = styled.td`
+  color: #9AA0A6;
+`
 
 const equalDateFormat = `DDMMYYYY`
 const equalTimeFormat = `HH:mm`
@@ -175,10 +181,13 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     .map((key): TimeTabType => ({
       timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
       // @ts-ignore
+      key: key as DurationType,
+      // @ts-ignore
       price: Math.ceil(props.coach.prices[key] as number)
     }))
 
-  const [activeTab, changeActiveTab] = useState((tabs[0] as TimeTabType).timeInMinutes)
+  const activeTab = useStore(props.tabs.$durationTab)
+  const changeActiveTab = useEvent(props.tabs.changeDurationTab)
 
   const [currentDate, changeCurrentDate] = useState<Date>(new Date())
   const pinnedDates = sessions.map(session => session.startDatetime)
@@ -208,7 +217,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     <>
       <StyledTabs value={activeTab} onChange={changeActiveTab}>
         {tabs.map(tab => (
-          <StyledTab value={tab.timeInMinutes} onlyOneCard={tabs.length === 1}>
+          <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
             <TabPrice>/{tab.price} ₽</TabPrice>
           </StyledTab>
@@ -234,7 +243,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
             {selected.map(session => (
               <tr key={session.id}>
                 <td>{session.date}</td>
-                <td>{session.time}</td>
+                <TimeColumn>{session.time}</TimeColumn>
               </tr>
             ))}
             </tbody>

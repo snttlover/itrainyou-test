@@ -287,6 +287,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           loading={sessionsListModel.loading}
           sessionsList={sessionsListModel.list}
           toggleSession={sessionsListModel.toggleSession}
+          tabs={sessionsListModel.tabs}
         />
       )}
     </Block>
