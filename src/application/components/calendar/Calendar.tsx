@@ -1,5 +1,5 @@
 import * as React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import dayjs from "dayjs"
 import 'dayjs/locale/ru'
 import { Dispatch, SetStateAction, useState } from "react"
@@ -15,14 +15,72 @@ type CalendarTypes = {
   pinnedDates?: string[] // iso date strings
   onChange: (value: any) => void | Dispatch<SetStateAction<CalendarDateType>>
   selectRange?: boolean
+  isBig?: boolean
 }
 
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
 
-const CalendarWrapper = styled.div`
+const Year = styled.div`
+  font-size: 12px;
+  line-height: 16px;
+  color: #424242;
+`
+
+const MonthName = styled.div`
+  margin: 0 10px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #424242;
+  text-transform: capitalize;
+  width: 65px;
+  text-align: center;
+`
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: normal;
+`
+
+type CalendarWrapperTypes = {
+  isBig?: boolean
+}
+
+const BigCalendarStyles = css`
+  ${Header} {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    border-bottom: 1px solid #DBDEE0;
+    padding-bottom: 12px;
+    
+    ${MonthName} {
+      font-size: inherit;
+      line-height: inherit;
+      font-weight: inherit;
+    }
+    ${Year} {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+  }
+  
+  .react-calendar__tile {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 24px;
+  }
+`
+
+const CalendarWrapper = styled.div<CalendarWrapperTypes>`
   position: relative;
   cursor: default;
-  width: 196px;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
@@ -87,6 +145,7 @@ const CalendarWrapper = styled.div`
     visibility: hidden;
     height: 0px;
   }
+  ${(props) => props.isBig && BigCalendarStyles}
 `
 
 type LeftButtonTypes = {
@@ -107,33 +166,9 @@ const RightButton = styled.img.attrs({ src: rightImage })`
   cursor: pointer;
 `
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-weight: normal;
-`
-
 const MonthContainer = styled.div`
   display: flex;
   align-items: center;
-`
-
-const MonthName = styled.div`
-  margin: 0 10px;
-  font-size: 12px;
-  line-height: 16px;
-  color: #424242;
-  text-transform: capitalize;
-  width: 65px;
-  text-align: center;
-`
-
-const Year = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #424242;
 `
 
 function firsDayOfMonth(month: number, year: number) {
@@ -207,7 +242,7 @@ export const Calendar = (props: CalendarTypes) => {
   const lessThanTheCurrentMonth = +dayjs(startDate).format(formatter) <= +dayjs(new Date()).format(formatter)
 
   return (
-    <CalendarWrapper>
+    <CalendarWrapper isBig={props.isBig}>
       <Header>
         <MonthContainer>
           <LeftButton disabled={lessThanTheCurrentMonth} onClick={prevMonth} />

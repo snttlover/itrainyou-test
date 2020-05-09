@@ -13,10 +13,16 @@ import { Coach } from "@/application/lib/api/coach"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { Button } from "@/application/components/button/normal/Button"
 
-const Block = styled.div`
+type StyledTabTypes = {
+  onlyOneCard: boolean
+}
+
+
+const Block = styled.div<StyledTabTypes>`
   background: #ffffff;
   border-radius: 2px;
   padding: 24px 24px 20px;
+  padding-top: ${props => props.onlyOneCard ? 0 : 24}px;
   display: flex;
   min-height: 300px;
   position: relative;
@@ -31,7 +37,6 @@ const Block = styled.div`
 
 const Datepicker = styled.div`
   min-width: 224px;
-  height: 210px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,7 +114,8 @@ const Summary = styled.span`
 `
 
 const ButtonContainer = styled.div`
-  border: 1px solid #DBDEE0;
+  border-top: 1px solid #DBDEE0;
+  padding-top: 10px;
   margin-left: auto;
 `
 
@@ -126,10 +132,6 @@ const StyledTabs = styled(Tabs)`
   width: 100%;
   position: relative;
 `
-
-type StyledTabTypes = {
-  onlyOneCard: boolean
-}
 
 const OnlyOneTabStyles = css`
   justify-content: flex-end;
@@ -212,10 +214,10 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           </StyledTab>
         ))}
       </StyledTabs>
-      <Block>
+      <Block onlyOneCard={tabs.length === 1}>
         { loading && <Spinner /> }
         <Datepicker>
-          <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} />
+          <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
         </Datepicker>
         <SelectTimeContainer>
           <h5>{formattedDate}</h5>
