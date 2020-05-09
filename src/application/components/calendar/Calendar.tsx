@@ -58,20 +58,13 @@ const CalendarWrapper = styled.div`
     font-size: 12px;
     position: relative;
   }
+  .not-pinned {
+    opacity: 0.5;
+  }
   .pinned {
     position: relative;
     overflow: auto;
-  }
-  .pinned:after {
-    position: absolute;
-    right: 4px;
-    top: 4px;
-    content: "";
-    background: #544274;
-    width: 4px;
-    height: 4px;
-    border-radius: 4px;
-    z-index: 2;
+    opacity: 1;
   }
   .react-calendar__tile {
     margin-top: 10px;
@@ -160,8 +153,12 @@ export const Calendar = (props: CalendarTypes) => {
   const customClassNames = ({ date }: CustomClassNamesTypes) => {
     const classes = []
 
-    if (pinnedDates.includes(dayjs(date).format(equalFormat))) {
-      classes.push(`pinned`)
+    if (pinnedDates.length) {
+      if (pinnedDates.includes(dayjs(date).format(equalFormat))) {
+        classes.push(`pinned`)
+      } else {
+        classes.push(`not-pinned`)
+      }
     }
 
     const day = date.getDay()
