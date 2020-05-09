@@ -124,6 +124,12 @@ type SelectDatetimeTypes = {
 
 const StyledTabs = styled(Tabs)`
   margin-top: 4px;
+  width: 100%;
+  position: relative;
+`
+
+const StyledTab = styled(Tab)`
+  max-width: 25%;
 `
 
 const TabTime = styled.div`
@@ -151,11 +157,14 @@ const equalTimeFormat = `HH:mm`
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsList)
 
-  const tabs = Object.keys(props.coach.prices).map((key): TimeTabType => ({
-    timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
+  const tabs = Object.keys(props.coach.prices)
     // @ts-ignore
-    price: props.coach.prices[key] as number
-  }))
+    .filter(key => props.coach.prices[key] !== `None`)
+    .map((key): TimeTabType => ({
+      timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
+      // @ts-ignore
+      price: Math.ceil(props.coach.prices[key] as number)
+    }))
 
   const [activeTab, changeActiveTab] = useState((tabs[0] as TimeTabType).timeInMinutes)
 
@@ -187,10 +196,10 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     <>
       <StyledTabs value={activeTab} onChange={changeActiveTab}>
         {tabs.map(tab => (
-          <Tab value={tab.timeInMinutes}>
+          <StyledTab value={tab.timeInMinutes}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
-            <TabPrice>/{tab.price}</TabPrice>
-          </Tab>
+            <TabPrice>/{tab.price} ₽</TabPrice>
+          </StyledTab>
         ))}
       </StyledTabs>
       <Block>

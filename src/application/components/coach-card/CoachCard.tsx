@@ -239,7 +239,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
     if (price !== `None` && price < acc.price) {
       return {
         price: Math.ceil(price),
-        text: `${key.slice(1, key.length)} минут`
+        text: ` за ${key.slice(1, key.length)} мин`
       }
     } else {
       return acc
@@ -270,7 +270,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             <PriceContainer>
               {/*<Duration>{duration} мин</Duration>*/}
               {/*<PriceContainerDelemiter>/</PriceContainerDelemiter>*/}
-              <Price>{minimumPrice.price} ₽</Price>
+              <Price>{minimumPrice.price}₽ {minimumPrice.text}</Price>
             </PriceContainer>
           </Info>
         </NameContainer>
