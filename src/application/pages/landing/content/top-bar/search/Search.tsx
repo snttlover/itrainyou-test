@@ -6,8 +6,7 @@ import {
   updateSearch,
   $search,
   find,
-  $hintsList,
-  $searchLoading
+  $hintsList
 } from "@/application/pages/landing/content/top-bar/search/search.model"
 import { useStore } from "effector-react"
 import { useState } from "react"

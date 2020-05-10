@@ -1,17 +1,19 @@
 import * as React from "react"
 import styled from "styled-components"
-import burgerImage from "./images/burger.svg"
-import { Header } from "./content/Header"
-import { Profile } from "./content/Profile"
-import { MobileRegistrationBlock } from "@/application/pages/landing/content/top-bar/mobile-menu/content/MobileRegistrationBlock"
-import { MenuItems } from "./content/menu-items/MenuItems"
+import {Icon} from "@/application/components/icon/Icon"
 import { useState } from "react"
+import { Search } from "@/application/pages/landing/content/top-bar/search/Search"
+import {Input} from "@/application/components/input/Input"
+import { Categories, StyledCategoryCheckbox } from "@/application/pages/landing/content/top-bar/categories-picker/Categories"
+import {Button} from "@/application/components/button/normal/Button"
+import { MediaRange } from "@/application/lib/responsive/media"
 
-const Burger = styled.img.attrs({ src: burgerImage })`
-  margin-left: 34px;
+const MobileSearchButton = styled(Icon).attrs({ name: `search` })`
   width: 36px;
   height: 36px;
+  fill: #4858CC;
   display: none;
+  margin-left: 25px;
   @media screen and (max-width: 768px) {
     display: flex;
   }
@@ -21,7 +23,7 @@ const Container = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: #ECEFF1;
   z-index: 100;
   left: 0;
   top: 0;
@@ -35,12 +37,45 @@ const Container = styled.div`
   }
 `
 
-const StartCoach = styled.div`
-  font-size: 16px;
-  line-height: 22px;
-  color: #449bd9;
-  text-align: center;
-  margin-top: 20px;
+const StyledSearch = styled(Search)`
+  flex: 0;
+  margin-top: 10px;
+  ${Input} {
+    border-radius: 2px !important;
+    padding: 14px 16px;
+  }
+`
+
+const Close = styled(Icon).attrs({ name: `close` })`
+  width: 36px;
+  height: 36px;
+  align-self: flex-end;
+`
+
+const CategoriesWrapper = styled.div`
+  flex: 1;
+  margin-top: 40px;
+  ${StyledCategoryCheckbox} {
+    margin-top: 12px;
+    background: #fff;  
+    padding: 12px 16px;
+    border-radius: 2px;
+  }
+`
+
+const SearchButtonWrapper = styled.div`
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  ${Button} {
+    flex: 1;
+  }
+  ${MediaRange.greaterThan("mobile")`
+    ${Button} {
+      flex: 0;
+      flex-basis: 160px;
+    }
+  `}
 `
 
 export const MobileMenu = () => {
@@ -48,17 +83,21 @@ export const MobileMenu = () => {
 
   const Menu = (
     <Container>
-      <Header close={() => changeMenuVisibility(false)} />
-      <MobileRegistrationBlock />
-      {/*<Profile />*/}
-      <MenuItems />
-      {/*<StartCoach onClick={() => changeMenuVisibility(false)}>Стать коучем</StartCoach>*/}
+      <Close onClick={() => changeMenuVisibility(false)} />
+      <StyledSearch />
+
+      <CategoriesWrapper>
+        <Categories />
+      </CategoriesWrapper>
+      <SearchButtonWrapper>
+        <Button onClick={() => changeMenuVisibility(false)} >Поиск</Button>
+      </SearchButtonWrapper>
     </Container>
   )
 
   return (
     <>
-      <Burger onClick={() => changeMenuVisibility(true)} />
+      <MobileSearchButton onClick={() => changeMenuVisibility(true)} />
 
       {menuVisibility && Menu}
     </>

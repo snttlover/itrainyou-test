@@ -16,6 +16,10 @@ const Container = styled.div`
   @media screen and (max-width: 963px) {
     padding-right: 26px;
   }
+  @media screen and (max-width: 963px) {
+    padding: 0;
+    justify-content: center;
+  }
 `
 
 const ListContainer = styled.div`

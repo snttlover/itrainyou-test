@@ -14,26 +14,7 @@ const StyledHeader = styled.div`
   }
 `
 
-const StyledSearch = styled(Search)`
-  margin-left: 16px;
-  flex: 1;
-  @media screen and (max-width: 480px) {
-    width: 100%;
-    margin: 0;
-    order: 3;
-  }
-`
 
-const Close = styled.img.attrs({ src: closeImage })`
-  margin-left: 20px;
-  width: 36px;
-  height: 36px;
-  @media screen and (max-width: 480px) {
-    order: 1;
-    align-self: flex-end;
-    margin-bottom: 8px;
-  }
-`
 
 const StyledCategoriesPicker = styled(CategoriesPicker)`
   @media screen and (max-width: 480px) {
@@ -52,8 +33,5 @@ type HeaderTypes = {
 
 export const Header = (props: HeaderTypes) => (
   <StyledHeader>
-    <StyledCategoriesPicker />
-    <StyledSearch />
-    <Close onClick={() => props.close()} />
   </StyledHeader>
 )

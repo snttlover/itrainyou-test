@@ -25,7 +25,7 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
   position: relative;
   overflow: hidden;
   transition: all 50ms;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     position: fixed;
     top: 0;
     z-index: 300;
@@ -53,7 +53,7 @@ const MobileClose = styled.img.attrs({ src: close })`
   margin-top: -30px;
   margin-left: -40px;
   display: none;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
   display: block;
   }
 `
@@ -61,7 +61,7 @@ const MobileClose = styled.img.attrs({ src: close })`
 const Container = styled.div`
   padding: 12px;
   background: #fff;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     padding: 60px 52px 52px 72px;
     width: 100%;
     height: 100%;
@@ -85,7 +85,7 @@ const useWindowSize = () => {
       const filtersContainer = window.document.getElementById(`filters-container`) as HTMLDivElement
 
       function updateSizes() {
-        if (window.innerWidth <= 480) {
+        if (window.innerWidth <= 768) {
           return setSize({...initial})
         }
 

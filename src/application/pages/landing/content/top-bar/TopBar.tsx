@@ -14,7 +14,7 @@ const StyledContainer = styled(LandingPageContainer)`
   display: flex;
   align-items: center;
   @media screen and (max-width: 768px) {
-    padding-bottom: 36px;
+    padding: 21px 0;
   }
   @media screen and (max-width: 480px) {
     justify-content: space-between;
@@ -84,5 +84,4 @@ export const TopBar = () => (
       <MobileMenu />
     </StyledContainer>
   </Container>
-
 )
