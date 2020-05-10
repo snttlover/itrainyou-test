@@ -1,5 +1,5 @@
-import { Icon } from "@/application/components/icon/Icon"
-import { useClickOutside } from "@/application/lib/hooks/use-click-outside"
+import { Icon } from "../icon/Icon"
+import { useClickOutside } from "../../lib/hooks/use-click-outside"
 import { useRef, useState } from "react"
 import * as React from "react"
 import styled from "styled-components"

@@ -9,8 +9,12 @@ export interface Coach {
     email: string
     creationDatetime: string
   }
-  prices: any
-  price: string
+  prices: {
+    D30: 'None' | number
+    D45: 'None' | number
+    D60: 'None' | number
+    D90: 'None' | number
+  }
   duration: string
   firstName: string
   lastName: string
