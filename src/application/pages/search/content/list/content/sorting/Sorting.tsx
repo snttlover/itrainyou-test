@@ -66,13 +66,14 @@ const SortingText = styled.div`
 
 const SortingLinksWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   ${SearchInputItem} {
     text-transform: lowercase;
     background: transparent;
     font-size: 16px;
     line-height: 22px;
     padding: 0;
-    padding-left: 20px;
+    padding-right: 20px;
     &:first-child {
       padding-left: 0;
     }

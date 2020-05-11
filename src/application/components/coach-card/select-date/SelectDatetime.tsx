@@ -132,6 +132,9 @@ const StyledTabs = styled(Tabs)`
   margin-top: 4px;
   width: 100%;
   position: relative;
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
 `
 
 const OnlyOneTabStyles = css`

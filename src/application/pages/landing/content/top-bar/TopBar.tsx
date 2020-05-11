@@ -17,8 +17,8 @@ const StyledContainer = styled(LandingPageContainer)`
     padding: 21px 0;
   }
   @media screen and (max-width: 480px) {
+    padding: 8px;
     justify-content: space-between;
-    padding-bottom: 32px;
   }
 `
 

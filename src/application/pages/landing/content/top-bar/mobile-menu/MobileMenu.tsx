@@ -17,6 +17,10 @@ const MobileSearchButton = styled(Icon).attrs({ name: `search` })`
   @media screen and (max-width: 768px) {
     display: flex;
   }
+  @media screen and (max-width: 480px) {
+    width: 24px;
+    height: 24px;
+  }
 `
 
 const Container = styled.div`

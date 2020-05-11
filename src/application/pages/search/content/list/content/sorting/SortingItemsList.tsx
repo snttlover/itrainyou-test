@@ -7,6 +7,7 @@ import {PickerTypes} from "@/application/pages/search/content/list/content/sorti
 export const StyledSortingItem = styled(SearchInputItem)`
   display: flex;
   justify-content: space-between;
+  white-space: nowrap;
 `
 
 export const SortingItemIcon = styled.img`
