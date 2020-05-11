@@ -1,6 +1,9 @@
 import { AuthLayoutLogo } from "@/application/components/layouts/auth/AuthLayoutLogo"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
+import desktop from "./backgrounds/desktop.svg"
+import mobile from "./backgrounds/mobile.svg"
+import tablet from "./backgrounds/tablet.svg"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -9,7 +12,7 @@ const StyledLayout = styled.div`
   height: 100vh;
   position: relative;
   overflow: auto;
-  background: #fff; 
+  background: #ECEFF1; 
 `
 
 const AuthContainer = styled.div`
@@ -21,12 +24,21 @@ const AuthContainer = styled.div`
 `
 
 const Header = styled.div`
-  background: linear-gradient(240deg, #a3cff3 14.5%, rgba(255, 255, 255, 0) 85.5%), #9f8dc1;
-  height: 416px;
+  background-image: url(${mobile});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  height: 292px;
   width: 100%;
 
   ${MediaRange.greaterThan("mobile")`
-    height: 369px;
+    background-image: url(${tablet});
+    height: 370px;
+  `}
+  ${MediaRange.greaterThan("tablet")`
+    background-image: url(${desktop});
+    height: 312px;
   `}
 `
 
