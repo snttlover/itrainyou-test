@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import logoImage from './images/logo.svg'
+import logoImage from '../images/logo.svg'
 import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 
