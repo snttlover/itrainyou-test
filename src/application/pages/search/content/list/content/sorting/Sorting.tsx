@@ -10,6 +10,8 @@ import {
   SortingItemsList
 } from "@/application/pages/search/content/list/content/sorting/SortingItemsList"
 import { SearchInputItem } from "@/application/components/search-input/SearchInputItem"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { changeMobileFiltersVisibility } from "@/application/pages/search/content/mobile-tabs/mobile-tabs.model"
 
 const Container = styled.div`
   display: flex;
@@ -34,9 +36,25 @@ const StyledSorting = styled.div`
   width: 100%;
   max-width: 640px;
   margin-top: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   @media screen and (max-width: 768px) {
     margin: 0 auto;
   }
+`
+
+const TabletFiltersButton = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #424242;
+  display: flex;
+  cursor: pointer;
+    
+  ${MediaRange.greaterThan("tablet")`  
+    display: block;
+  `}
 `
 
 const SortingText = styled.div`
@@ -74,6 +92,10 @@ const SortingLinksWrapper = styled.div`
   }
 `
 
+const SortingItemsWrapper = styled.div`
+  flex: 1;
+`
+
 const couches: DeclOfNumListType = [`коуч отсортирован`, `коуча отсортированы`, `коучей отсортированы`]
 
 export const Sorting = () => {
@@ -92,17 +114,20 @@ export const Sorting = () => {
   return (
     <Container>
       <StyledSorting>
-        {!!list.length && (
-          <>
-            <SortingText>
-              {list.length} {declOfNum(list.length, couches)}
-            </SortingText>
+        <SortingItemsWrapper>
+          {!!list.length && (
+            <>
+              <SortingText>
+                {list.length} {declOfNum(list.length, couches)}
+              </SortingText>
 
-            <SortingLinksWrapper>
-              <SortingItemsList current={currentItem} onClick={(item) => navigate(item.value)} />
-            </SortingLinksWrapper>
-          </>
-        )}
+              <SortingLinksWrapper>
+                <SortingItemsList current={currentItem} onClick={(item) => navigate(item.value)} />
+              </SortingLinksWrapper>
+            </>
+          )}
+        </SortingItemsWrapper>
+        <TabletFiltersButton onClick={() => changeMobileFiltersVisibility(true)}>Фильтры</TabletFiltersButton>
       </StyledSorting>
     </Container>
   )
