@@ -1,5 +1,5 @@
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
-import { Category } from "@/application/lib/api/categories"
+import { CategoryResponse } from "@/application/lib/api/categories"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { useState } from "react"
 import * as React from "react"
@@ -63,7 +63,7 @@ const Description = styled.p`
 `
 
 type CategoryCardProps = {
-  category: Category
+  category: CategoryResponse
   selected: boolean
   onSelect: (id: number) => void
   className?: string

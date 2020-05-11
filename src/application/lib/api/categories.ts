@@ -1,7 +1,7 @@
 import { keysToCamel } from "@/application/lib/network/casing"
 import { get } from "@/application/lib/network/network"
 
-export interface Category {
+export interface CategoryResponse {
   id: number
   name: string
   icon: string
@@ -9,6 +9,6 @@ export interface Category {
 }
 
 export const getCategories = () =>
-  get<Category[]>("https://dev.itrainyou.heksray.com/api/v1/web/categories/")
+  get<CategoryResponse[]>("https://dev.itrainyou.heksray.com/api/v1/web/categories/")
     .then(response => response.data)
     .then(keysToCamel)

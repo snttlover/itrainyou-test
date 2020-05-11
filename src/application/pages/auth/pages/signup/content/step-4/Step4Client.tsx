@@ -1,7 +1,6 @@
 import { Button } from "@/application/components/button/normal/Button"
 import { $categoriesList } from "@/application/feature/categories/categories.store"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import { Step4ClientLayout } from "@/application/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"
 import {
   $userData,
@@ -17,46 +16,79 @@ import styled from "styled-components"
 const Container = styled.div`
   min-width: 320px;
   max-width: 800px;
-  margin: 71px auto 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  ${MediaRange.greaterThan('mobile')`    
-    margin: 71px auto 0;
+  ${MediaRange.greaterThan("mobile")`    
+    margin: 20px 32px 0;
+  `}
+  
+  ${MediaRange.greaterThan("tablet")`
+    margin: 20px auto 0;
+  `}
+`
+
+const Header = styled.div`
+  margin: 24px 16px 0;
+  ${MediaRange.greaterThan("mobile")`
+    margin: 120px auto 0;
+    max-width: 540px;
+  `}
+  ${MediaRange.greaterThan("tablet")`
+    margin-top: 16px;  
+    max-width: 560px;
   `}
 `
 
 const Title = styled.h2`
-  margin: 0;
-  font-weight: 600;
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
   font-size: 20px;
   line-height: 26px;
+  color: #fff;
 
-  text-align: center;
-  
-  ${MediaRange.greaterThan('mobile')`    
-    font-size: 36px;
-    line-height: 44px;
+  ${MediaRange.greaterThan("mobile")`    
+    width: 432px;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 26px;
+  `}  
+
+  ${MediaRange.greaterThan("tablet")`    
+    width: 565px;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 40px;
   `}
 `
 
 const Description = styled.p`
   font-size: 16px;
   line-height: 22px;
-  text-align: center;
-  margin-top: 12px;
-
+  margin: 12px 0;
   
-  ${MediaRange.greaterThan('mobile')`    
+  color: #fff;
+
+  ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
-    margin-top: 22px;
+    margin-top: 16px;
+  `}  
+
+  ${MediaRange.greaterThan("tablet")`
+    margin-top: 32px;
   `}
 `
 
 const RegisterButton = styled(Button)`
   width: 207px;
   margin: 36px auto 30px;
+  
+  ${MediaRange.greaterThan("mobile")`
+    margin: 36px 32px 30px auto;
+  `}
 `
 
 export const Step4Client = () => {
@@ -73,18 +105,19 @@ export const Step4Client = () => {
   ))
 
   return (
-    <Step4ClientLayout>
-      <Steps activeId='4'>
-        <Steps.Step id='1'>1</Steps.Step>
-        <Steps.Step id='2'>2</Steps.Step>
-        <Steps.Step id='3'>3</Steps.Step>
-        <Steps.Step id='4'>4</Steps.Step>
-      </Steps>
+    <Step4ClientLayout
+      renderHeader={() => (
+        <Header>
+          <Title>Выберите направления, в которых вы хотели бы развиваться</Title>
+          <Description>Потом вы сможете изменить интересы в своем профиле</Description>
+        </Header>
+      )}
+    >
       <Container>
-        <Title>Выберите направления, в которых вы хотели бы развиваться</Title>
-        <Description>Потом вы сможете изменить интересы в своем профиле</Description>
         {categories}
-        <RegisterButton disabled={loading} onClick={() => userRegistered()}>Зарегистрироваться</RegisterButton>
+        <RegisterButton disabled={loading} onClick={() => userRegistered()}>
+          Зарегистрироваться
+        </RegisterButton>
       </Container>
     </Step4ClientLayout>
   )
