@@ -1,6 +1,7 @@
 import { DashedButton } from "@/application/components/button/dashed/DashedButton"
 import { Button } from "@/application/components/button/normal/Button"
-import { Category } from "@/application/lib/api/categories"
+import { Icon } from "@/application/components/icon/Icon"
+import { Category } from "@/application/feature/categories/categories.store"
 import { MediaRange } from "@/application/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
@@ -8,9 +9,13 @@ import styled from "styled-components"
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 36px 12px 0;
+  margin: 20px 8px 0;
+  background: #FFFFFF;
+  padding: 12px 8px;
+  border-radius: 2px;
   ${MediaRange.greaterThan("mobile")`
     width: 92%;
+    padding: 24px 36px;
     margin: 36px auto 0;
   `}
   ${MediaRange.greaterThan("tablet")`    
@@ -19,9 +24,12 @@ const Container = styled.div`
 `
 
 const Title = styled.h3`
+  font-family: Roboto Slab;
   font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 26px;
+  color: #424242;
   display: flex;
   align-items: center;
 
@@ -31,10 +39,11 @@ const Title = styled.h3`
   `}
 `
 
-const Icon = styled.img`
-  width: 24px;
-  height: 24px;
+const TabletkaIcon = styled(Icon).attrs({ name: 'tabletka' })<{ color: string }>`
+  width: 16px;
+  height: 16px;
   margin-right: 8px;
+  fill: ${({color}) => color};
   ${MediaRange.greaterThan("mobile")`    
     width: 36px;
     height: 36px;
@@ -43,8 +52,9 @@ const Icon = styled.img`
 
 const Description = styled.p`
   margin-top: 8px;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 18px;
+  color: #424242;
   ${MediaRange.greaterThan("mobile")`    
     font-size: 16px;
     line-height: 22px;
@@ -52,15 +62,50 @@ const Description = styled.p`
 `
 
 const ButtonsContainer = styled.div`
-  margin-top: 8px;
-  width: 160px;
+  width: auto;
   margin-left: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  
+  margin-top: 4px;
+  
+  ${MediaRange.greaterThan("mobile")`
+    width: 160px;
+  `}
 `
 
-const DefaultButton = styled(Button)`
-  border: solid 1px transparent;
+const DefaultButton = styled(Button)<{color: string}>`
+  height: 26px;
+  padding: 0;
+  display: none;
+  background: ${({color}) => color};
+  
+  ${MediaRange.greaterThan("mobile")`
+    display: block;
+  `}
+`
+
+const StyledDashedButton = styled(DashedButton)<{ color: string }>`
+  height: 26px;
+  padding: 0;
+  display: none;
+  border: 1px solid ${({color}) => color};
+  color: ${({color}) => color};
+  
+  ${MediaRange.greaterThan("mobile")`
+    display: block;
+  `}
+`
+
+const TextButton = styled.div<{ color: string }>`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: ${({color}) => color};
+  ${MediaRange.greaterThan("mobile")`
+    display: none;
+  `}
 `
 
 type CategoryCardProps = {
@@ -71,15 +116,16 @@ type CategoryCardProps = {
 }
 
 export const CategoryCard = styled(({ category, className, onSelect, selected }: CategoryCardProps) => {
-  const ButtonComponent = selected ? DefaultButton : DashedButton
+  const ButtonComponent = selected ? DefaultButton : StyledDashedButton
   return (
     <Container className={className}>
       <Title>
-        <Icon src={category.icon} /> {category.name}
+        <TabletkaIcon color={category.color} /> {category.name}
       </Title>
       <Description>{category.description}</Description>
       <ButtonsContainer>
-        <ButtonComponent onClick={() => onSelect(category.id)}>{selected ? "Выбрано" : "Выбрать"}</ButtonComponent>
+        <ButtonComponent color={category.color} onClick={() => onSelect(category.id)}>{selected ? "Выбрано" : "Выбрать"}</ButtonComponent>
+        <TextButton color={category.color} onClick={() => onSelect(category.id)}>{selected ? "Выбрано" : "Выбрать"}</TextButton>
       </ButtonsContainer>
     </Container>
   )
