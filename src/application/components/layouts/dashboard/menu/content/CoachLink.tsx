@@ -1,10 +1,10 @@
 import styled from "styled-components"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   flex: 1;
   font-weight: 500;
@@ -13,6 +13,11 @@ const Container = styled.div`
   color: #D3D7F3;
   padding-top: 40px;
   cursor: pointer;
+  justify-content: flex-end;
+  
+  ${MediaRange.greaterThan('mobile')`
+     padding-bottom: 20px;
+  `}
 `
 
 export const CoachLink = () => (

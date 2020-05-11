@@ -13,6 +13,10 @@ const CloseIcon = styled(Icon).attrs({ name: `close` })`
   height: 24px;
   cursor: pointer;
   fill: #fff;
+  ${MediaRange.greaterThan('mobile')`
+    width: 36px;
+    height: 36px;
+  `}
 `
 
 const StyledHeader = styled.div`

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import React from "react"
 import {MenuItem} from "@/application/components/layouts/dashboard/menu/content/MenuItem"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 const ItemsWrapper = styled.div`
   display: flex;
@@ -8,6 +9,11 @@ const ItemsWrapper = styled.div`
   margin-top: 25px;
   align-self: flex-end;
   margin-right: 70px;
+  ${MediaRange.greaterThan('mobile')`
+     margin-top: 53px;
+     align-self: flex-start;
+     margin-left: 63px;
+  `}
 `
 
 export const MenuItems = () => (
