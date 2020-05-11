@@ -14,6 +14,11 @@ const ItemsWrapper = styled.div`
      align-self: flex-start;
      margin-left: 63px;
   `}
+  ${MediaRange.greaterThan('tablet')`
+     margin-top: 36px;
+     margin-left: 0px;
+     margin-right: 0px;
+  `}
 `
 
 export const MenuItems = () => (

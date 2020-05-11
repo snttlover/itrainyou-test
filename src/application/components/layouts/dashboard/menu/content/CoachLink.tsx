@@ -18,6 +18,9 @@ const Container = styled.div`
   ${MediaRange.greaterThan('mobile')`
      padding-bottom: 20px;
   `}
+  ${MediaRange.greaterThan('tablet')`
+    display: none;
+  `}
 `
 
 export const CoachLink = () => (

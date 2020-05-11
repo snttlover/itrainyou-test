@@ -13,15 +13,25 @@ const MenuItemIcon = styled(Icon).attrs((props) => ({
     width: 36px;
     height: 36px;
   `}
+  ${MediaRange.greaterThan('tablet')`
+    width: 16px;
+    height: 16px;
+  `}
 `
 
 const StyledMenuItem = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 36px;
+  cursor: pointer;
   &:last-child {
     margin-bottom: 0;
   }
+  ${MediaRange.greaterThan('tablet')`
+     width: 100%;
+     margin-bottom: 15px;
+     padding: 8px 24px;
+  `}
 `
 
 const Label = styled.div`
@@ -33,6 +43,14 @@ const Label = styled.div`
      font-size: 20px;
      line-height: 26px;
      margin-left: 16px;
+  `}
+  
+  ${MediaRange.greaterThan('tablet')`  
+     font-style: normal;
+     font-weight: normal;
+     font-size: 14px;
+     line-height: 18px;
+     white-space: nowrap;
   `}
 `
 

@@ -4,10 +4,13 @@ import {MobileHeader} from "@/application/components/layouts/dashboard/menu/cont
 import {ProfileHeader} from "@/application/components/layouts/dashboard/menu/content/ProfileHeader"
 import {MenuItems} from "./content/MenuItems"
 import {CoachLink} from "@/application/components/layouts/dashboard/menu/content/CoachLink"
+import { MediaRange } from "@/application/lib/responsive/media"
+import {DesktopLogo} from "@/application/components/layouts/dashboard/menu/content/DesktopLogo"
 
 const StyledMenuWrapper = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   z-index: 200;
   background: #4858CC;
   color: #fff;
@@ -17,10 +20,17 @@ const StyledMenuWrapper = styled.div`
   flex-direction: column;
   overflow: hidden;
   overflow-y: auto;
+  
+  ${MediaRange.greaterThan('tablet')`
+    position: relative;
+    width: 200px;
+    padding: 0;
+  `}
 `
 
 export const Menu = () => (
   <StyledMenuWrapper>
+    <DesktopLogo />
     <MobileHeader />
     <ProfileHeader />
     <MenuItems />

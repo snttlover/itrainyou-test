@@ -19,6 +19,10 @@ const StyledHeader = styled.div`
     align-items: flex-end;
     max-width: 522px;
   `}
+  
+  ${MediaRange.greaterThan('tablet')`
+    display: none;
+  `}
 `
 
 const Name = styled.div`

@@ -17,6 +17,9 @@ const CloseIcon = styled(Icon).attrs({ name: `close` })`
     width: 36px;
     height: 36px;
   `}
+  ${MediaRange.greaterThan('tablet')`
+    display: none;
+  `}
 `
 
 const StyledHeader = styled.div`
