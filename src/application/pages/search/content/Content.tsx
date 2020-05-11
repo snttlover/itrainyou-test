@@ -8,6 +8,9 @@ const Container = styled.div`
   min-height: 100vh;
   padding-top: 20px;
   display: flex;
+  @media screen and (max-width: 480px) {
+    padding: 16px;
+  }
 `
 
 export const Content = () => (

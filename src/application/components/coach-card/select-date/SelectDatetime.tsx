@@ -1,22 +1,32 @@
-import { DashedButton } from "@/application/components/button/dashed/DashedButton"
 import Link from "next/link"
 import { useState } from "react"
 import * as React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import dayjs from "dayjs"
 import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
-import { useStore } from "effector-react"
+import { useEvent, useStore } from "effector-react"
 import {Tabs, Tab} from "@/application/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/application/components/coach-card/select-date/select-date.model"
 import { Coach } from "@/application/lib/api/coach"
+import { Spinner } from "@/application/components/spinner/Spinner"
+import { Button } from "@/application/components/button/normal/Button"
+import { DurationType } from "@/application/lib/api/coach-sessions"
+import {Event} from "effector-next"
 
-const Block = styled.div`
+type StyledTabTypes = {
+  onlyOneCard: boolean
+}
+
+
+const Block = styled.div<StyledTabTypes>`
   background: #ffffff;
   border-radius: 2px;
   padding: 24px 24px 20px;
+  padding-top: ${props => props.onlyOneCard ? 0 : 24}px;
   display: flex;
   min-height: 300px;
+  position: relative;
   @media screen and (max-width: 600px) {
     display: none;
   }
@@ -27,11 +37,12 @@ const Block = styled.div`
 `
 
 const Datepicker = styled.div`
-  min-width: 224px;
-  height: 210px;
+  max-width: 252px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-right: 32px;
+  border-right: 1px solid #DBDEE0;
   @media screen and (max-width: 560px) {
     margin-bottom: 20px;
   }
@@ -56,26 +67,20 @@ const Times = styled.div`
   margin-top: 4px;
 `
 
-const Tag = styled.div<{ disabled?: boolean; active?: boolean }>`
-  background: ${props => {
-    if (props.disabled) return "#DDD9E3"
-    else if (props.active) return "#544274"
-    else return "#FFFFFF"
-  }};
-  transition: all 300ms ease;
-
-  border: 1px solid #544274;
+const Tag = styled.div<{ active?: boolean }>`
+  display: flex;
+  flex-direction: row;
+  padding: 2px 8px;
+  background: ${({active}) => active ? `#4858CC` : `#fff`};
+  color: ${({active}) => active ? `#fff` : `#5B6670`};
   box-sizing: border-box;
   border-radius: 24px;
-  padding: 2px 6px;
-  margin-left: 8px;
-  margin-top: 8px;
-
   font-size: 12px;
   line-height: 16px;
-  color: ${({ active }) => (active ? "#FFFFFF" : "#424242")};
-  cursor: pointer;
-  user-select: none;
+  &:hover {
+    background: #DBDEE0;
+    color: #fff;
+  }
 `
 
 const Divider = styled.div`
@@ -106,24 +111,40 @@ const Summary = styled.span`
 `
 
 const ButtonContainer = styled.div`
-  margin-top: auto;
+  border-top: 1px solid #DBDEE0;
+  padding-top: 10px;
   margin-left: auto;
 `
 
-const BuyButton = styled(DashedButton)`
-  border: 1px solid #544274;
-  color: #544274;
-`
-
 type SelectDatetimeTypes = {
+  loading: Store<boolean>,
   coach: Coach
   sessionsList: Store<CoachSessionWithSelect[]>
   // @ts-ignore
   toggleSession: Event<CoachSessionWithSelect>
+  tabs: {
+    $durationTab: Store<DurationType>,
+    changeDurationTab: Event<DurationType>
+  }
 }
 
 const StyledTabs = styled(Tabs)`
   margin-top: 4px;
+  width: 100%;
+  position: relative;
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
+`
+
+const OnlyOneTabStyles = css`
+  justify-content: flex-end;
+  padding-top: 16px;
+  padding-bottom: 8px;
+`
+
+const StyledTab = styled(Tab)<StyledTabTypes>`
+  ${props => props.onlyOneCard && OnlyOneTabStyles}
 `
 
 const TabTime = styled.div`
@@ -143,20 +164,33 @@ const TabPrice = styled.div`
 type TimeTabType = {
   timeInMinutes: number
   price: number
+  key: DurationType
 }
+
+const TimeColumn = styled.td`
+  color: #9AA0A6;
+`
 
 const equalDateFormat = `DDMMYYYY`
 const equalTimeFormat = `HH:mm`
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsList)
+  const loading = useStore(props.loading)
 
-  const tabs = Object.keys(props.coach.prices).map((key): TimeTabType => ({
-    timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
-    price: props.coach.prices[key] as number
-  }))
+  const tabs = Object.keys(props.coach.prices)
+    // @ts-ignore
+    .filter(key => props.coach.prices[key] !== `None`)
+    .map((key): TimeTabType => ({
+      timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
+      // @ts-ignore
+      key: key as DurationType,
+      // @ts-ignore
+      price: Math.ceil(props.coach.prices[key] as number)
+    }))
 
-  const [activeTab, changeActiveTab] = useState((tabs[0] as TimeTabType).timeInMinutes)
+  const activeTab = useStore(props.tabs.$durationTab)
+  const changeActiveTab = useEvent(props.tabs.changeDurationTab)
 
   const [currentDate, changeCurrentDate] = useState<Date>(new Date())
   const pinnedDates = sessions.map(session => session.startDatetime)
@@ -186,15 +220,16 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     <>
       <StyledTabs value={activeTab} onChange={changeActiveTab}>
         {tabs.map(tab => (
-          <Tab value={tab.timeInMinutes}>
+          <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
-            <TabPrice>/{tab.price}</TabPrice>
-          </Tab>
+            <TabPrice>/{tab.price} ₽</TabPrice>
+          </StyledTab>
         ))}
       </StyledTabs>
-      <Block>
+      <Block onlyOneCard={tabs.length === 1}>
+        { loading && <Spinner /> }
         <Datepicker>
-          <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} />
+          <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
         </Datepicker>
         <SelectTimeContainer>
           <h5>{formattedDate}</h5>
@@ -211,7 +246,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
             {selected.map(session => (
               <tr key={session.id}>
                 <td>{session.date}</td>
-                <td>{session.time}</td>
+                <TimeColumn>{session.time}</TimeColumn>
               </tr>
             ))}
             </tbody>
@@ -221,7 +256,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           </Text>
           <ButtonContainer>
             <Link href='/signup/[step]' as='/signup/1'>
-              <BuyButton>Зарегистрироваться</BuyButton>
+              <Button>Зарегистрироваться</Button>
             </Link>
           </ButtonContainer>
         </SelectTimeContainer>

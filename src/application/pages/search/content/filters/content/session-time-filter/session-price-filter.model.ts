@@ -4,15 +4,14 @@ import {
   addSearchPageQuery,
   removeSearchPageQuery
 } from "@/application/pages/search/coaches-search.model"
+import { DurationType } from "@/application/lib/api/coach-sessions"
 
 const priceFilterDomain = createDomain(`price-filter`)
 
-type PriceKey = 'D30' | 'D45' |'D60' |'D90'
-
-const minutes: PriceKey[] = [`D30`, `D45`, `D60`, `D90`]
+const minutes: DurationType[] = [`D30`, `D45`, `D60`, `D90`]
 
 type PriceFilter = {
-  key: PriceKey
+  key: DurationType
   text: string
   selected: boolean
 }
@@ -24,11 +23,11 @@ const getDefault = (): PriceFilter[] => minutes.map(key => ({
 }))
 
 const setPricesFromQueryString = priceFilterDomain.createEvent<string>()
-export const toggleFilter = priceFilterDomain.createEvent<PriceKey>()
+export const toggleFilter = priceFilterDomain.createEvent<DurationType>()
 
 export const $priceFilters = priceFilterDomain.createStore<PriceFilter[]>(getDefault())
   .on(setPricesFromQueryString, (state, payload) => {
-    const selected = payload.split(`,`) as PriceKey[]
+    const selected = payload.split(`,`) as DurationType[]
 
     return state.map(filter => ({
       ...filter,

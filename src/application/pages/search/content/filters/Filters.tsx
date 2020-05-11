@@ -14,6 +14,7 @@ import close from "./images/close.svg"
 import { useLayoutEffect, useState } from "react"
 import SimpleBar from 'simplebar-react';
 import {SessionTimeFilter} from "./content/session-time-filter/SessionTimeFilter"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 type ModalTypes = {
   showOnMobile: boolean
@@ -25,13 +26,13 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
   position: relative;
   overflow: hidden;
   transition: all 50ms;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     position: fixed;
     top: 0;
     z-index: 300;
-    width: 100%;
+    width: 276px;
     transition: left 300ms;
-    left: ${props => (props.showOnMobile ? 0 : `100%`)};
+    right: ${props => (props.showOnMobile ? 0 : `-276px`)};
     background: #fff;
   }
 `
@@ -48,21 +49,27 @@ const StyledSimpleBar = styled(SimpleBar)`
 `
 
 const MobileClose = styled.img.attrs({ src: close })`
-  position: absolute;
   cursor: pointer;
-  margin-top: -30px;
-  margin-left: -40px;
-  display: none;
-  @media screen and (max-width: 480px) {
   display: block;
-  }
+  align-self: flex-end;
+  margin-bottom: 20px;
+  
+  ${MediaRange.greaterThan("mobile")`
+    margin-bottom: 131px;
+  `}
+  
+  ${MediaRange.greaterThan("tablet")`
+    display: none;
+  `}
 `
 
 const Container = styled.div`
   padding: 12px;
   background: #fff;
-  @media screen and (max-width: 480px) {
-    padding: 60px 52px 52px 72px;
+  display: flex;
+  flex-direction: column;
+  @media screen and (max-width: 768px) {
+    padding: 40px;
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -85,7 +92,7 @@ const useWindowSize = () => {
       const filtersContainer = window.document.getElementById(`filters-container`) as HTMLDivElement
 
       function updateSizes() {
-        if (window.innerWidth <= 480) {
+        if (window.innerWidth <= 768) {
           return setSize({...initial})
         }
 

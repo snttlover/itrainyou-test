@@ -33,7 +33,7 @@ export const normal = () => {
 
   return (
     <Container>
-      <Tabs value={value} onChange={change} name='someName'>
+      <Tabs value={value} onChange={change}>
         {radioItems.map(item => (
           <Tab key={item.id} value={item.id}>
             {item.text}

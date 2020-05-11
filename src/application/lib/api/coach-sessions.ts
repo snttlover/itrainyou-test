@@ -10,11 +10,13 @@ export interface CoachSession {
   duration: string //example: 01:00:00
 }
 
+export type DurationType = 'D30' | 'D45' | 'D60' |'D90'
 
 export interface GetCoachSessionsParamsTypes {
   start_date__lte?: string
   start_date__gte?: string
   start_date?: string
+  duration_type?: DurationType
 }
 
 export const getCoachSessions = (id: number, params: GetCoachSessionsParamsTypes) =>

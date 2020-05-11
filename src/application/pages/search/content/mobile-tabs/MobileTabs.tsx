@@ -12,20 +12,25 @@ const Container = styled.div`
   width: 100%;
   @media screen and (max-width: 480px) {
     display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    padding-top: 26px;
   }
 `
 
 const Tab = styled.div`
-  background: #daebf7;
-  border: 1px solid #a3cff3;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
   padding: 8px 0;
   display: flex;
-  justify-content: center;
+  align-items: center;
   cursor: pointer;
   flex: 1;
+`
+
+const StyledFiltersTab = styled(Tab)`
+  justify-content: flex-end;
 `
 
 const Arrow = styled.img.attrs({ src: sortingArrow })`
@@ -97,9 +102,9 @@ export const MobileTabs = () => {
           <Arrow />
         </Tab>
       </StyledSortingPicker>
-      <Tab onClick={() => changeMobileFiltersVisibility(true)}>
+      <StyledFiltersTab onClick={() => changeMobileFiltersVisibility(true)}>
         <Filters pin={hasFilters()}>Фильтры</Filters>
-      </Tab>
+      </StyledFiltersTab>
     </Container>
   )
 }
