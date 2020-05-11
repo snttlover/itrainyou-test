@@ -4,16 +4,12 @@ import { SearchInputItem } from "@/application/components/search-input/SearchInp
 import { useState } from "react"
 import { ClickOutside } from "@/application/components/click-outside/ClickOutside"
 import { CoachSortingType } from "@/application/lib/api/coach"
-import { sortingItems, SortingItemType } from "@/application/pages/search/content/list/content/sorting/items"
+import { SortingItemsList } from "@/application/pages/search/content/list/content/sorting/SortingItemsList"
+import { SortingItemType } from "@/application/pages/search/content/list/content/sorting/items"
 
 const StyledPicker = styled.div`
   display: inline;
   position: relative;
-`
-
-const StyledSearchInputItem = styled(SearchInputItem)`
-  display: flex;
-  justify-content: space-between;
 `
 
 export const SortingContainer = styled.div`
@@ -28,9 +24,6 @@ export const SortingContainer = styled.div`
   overflow: hidden;
   padding-top: 12px;
   padding-bottom: 12px;
-  ${SearchInputItem} {
-    white-space: nowrap;
-  }
 `
 
 const PickerContainer = styled.div`
@@ -39,12 +32,7 @@ const PickerContainer = styled.div`
   cursor: pointer;
 `
 
-const Icon = styled.img`
-  margin-left: 20px;
-  width: 12px;
-`
-
-type PickerTypes = {
+export type PickerTypes = {
   current: CoachSortingType
   sort: (sorting: CoachSortingType) => void
   children: React.ReactNode | React.ReactNode[]
@@ -67,16 +55,7 @@ export const SortingPicker = (props: PickerTypes) => {
         </PickerContainer>
         {isVisible && (
           <SortingContainer>
-            {sortingItems.map(item => (
-              <StyledSearchInputItem
-                key={item.value}
-                isActive={item.value === props.current}
-                onClick={() => itemClickHandler(item)}
-              >
-                {item.text}
-                <Icon src={item.icon} />
-              </StyledSearchInputItem>
-            ))}
+            <SortingItemsList {...props} onClick={(item) => itemClickHandler(item)} />
           </SortingContainer>
         )}
       </StyledPicker>

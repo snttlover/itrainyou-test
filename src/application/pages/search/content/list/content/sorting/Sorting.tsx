@@ -1,11 +1,15 @@
 import * as React from "react"
 import styled from "styled-components"
-import { useStore, useStoreMap } from "effector-react"
+import { useStore } from "effector-react"
 import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
 import { declOfNum, DeclOfNumListType } from "@/application/lib/formatting/numerals"
-import { SortingPicker } from "@/application/pages/search/content/list/content/sorting/SortingPicker"
 import { CoachSortingType } from "@/application/lib/api/coach"
 import { sortingItems } from "@/application/pages/search/content/list/content/sorting/items"
+import {
+  SortingItemIcon,
+  SortingItemsList
+} from "@/application/pages/search/content/list/content/sorting/SortingItemsList"
+import { SearchInputItem } from "@/application/components/search-input/SearchInputItem"
 
 const Container = styled.div`
   display: flex;
@@ -29,16 +33,45 @@ const Container = styled.div`
 const StyledSorting = styled.div`
   width: 100%;
   max-width: 640px;
-  min-height: 20px;
+  margin-top: 36px;
   @media screen and (max-width: 768px) {
-    text-align: center;
+    margin: 0 auto;
   }
 `
 
-const PickerLink = styled.div`
-  text-decoration: underline;
-  display: inline;
-  text-transform: lowercase;
+const SortingText = styled.div`
+  font-size: 20px;
+  line-height: 26px;
+  margin-bottom: 20px;
+  color: #424242;
+`
+
+const SortingLinksWrapper = styled.div`
+  display: flex;
+  ${SearchInputItem} {
+    text-transform: lowercase;
+    background: transparent;
+    font-size: 16px;
+    line-height: 22px;
+    padding: 0;
+    padding-left: 20px;
+    &:first-child {
+      padding-left: 0;
+    }
+    &.active {
+      color: #4858CC;
+      background: transparent;
+    }
+    ${SortingItemIcon} {
+      margin-left: 10px;
+    }
+    &:nth-child(1),
+    &:nth-child(2) {
+      ${SortingItemIcon} {
+        display: none;
+      }
+    }
+  }
 `
 
 const couches: DeclOfNumListType = [`коуч отсортирован`, `коуча отсортированы`, `коучей отсортированы`]
@@ -48,7 +81,7 @@ export const Sorting = () => {
   const query = useStore($searchPageQuery)
   const current = query.ordering || 'popularity'
 
-  const currentItem = sortingItems.find(item => item.value === current)
+  const currentItem = sortingItems.find(item => item.value === current)?.value || `popularity`
 
   const navigate = (sort: CoachSortingType) => {
     addSearchPageQuery({
@@ -61,10 +94,13 @@ export const Sorting = () => {
       <StyledSorting>
         {!!list.length && (
           <>
-            {list.length} {declOfNum(list.length, couches)} по{" "}
-            <SortingPicker current={current} sort={navigate}>
-              <PickerLink>{currentItem ? currentItem.text : `количеству отзывов`}</PickerLink>
-            </SortingPicker>
+            <SortingText>
+              {list.length} {declOfNum(list.length, couches)}
+            </SortingText>
+
+            <SortingLinksWrapper>
+              <SortingItemsList current={currentItem} onClick={(item) => navigate(item.value)} />
+            </SortingLinksWrapper>
           </>
         )}
       </StyledSorting>
