@@ -16,6 +16,14 @@ export type IconName =
   | "user"
   | "search"
   | "close"
+  | "calendar"
+  | "contacts"
+  | "hand"
+  | "help"
+  | "home"
+  | "my-coaches"
+  | "my-purse"
+  | "settings"
 
 type IconProps = {
   name: IconName

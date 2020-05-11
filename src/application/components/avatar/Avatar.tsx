@@ -24,7 +24,7 @@ const AvatarImage = styled.img`
 type AvatarProps = {
   src: string
   size?: number
-  onClick: () => void
+  onClick?: () => void
 }
 
 export const Avatar = ({ src, size = 80, ...props}: AvatarProps) => (
