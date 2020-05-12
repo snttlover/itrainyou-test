@@ -1,6 +1,7 @@
 import { AuthLayoutLogo } from "@/application/components/layouts/auth/AuthLayoutLogo"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
+import bgImage from "@/application/pages/auth/pages/signup/content/step-4/couch/backgrounds/bg-image.svg"
 import desktop from "./backgrounds/desktop.svg"
 import mobile from "./backgrounds/mobile.svg"
 import tablet from "./backgrounds/tablet.svg"
@@ -12,7 +13,7 @@ const StyledLayout = styled.div`
   height: 100vh;
   position: relative;
   overflow: auto;
-  background: #ECEFF1; 
+  background: #eceff1;
 `
 
 const AuthContainer = styled.div`
@@ -28,7 +29,7 @@ const Header = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  
+
   height: 292px;
   width: 100%;
 
@@ -50,6 +51,23 @@ const HeaderContent = styled.div`
   height: 100%;
 `
 
+const BGImage = styled.div`
+  background-image: url(${bgImage});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 329.35px;
+  height: 589px;
+  left: -17px;
+  top: 356px;
+  display: none;
+
+  ${MediaRange.greaterThan("laptop")`
+    display: block;
+  `}
+`
+
 type Step4ClientLayoutProps = {
   children: React.ReactNode
   renderHeader: () => React.ReactNode
@@ -69,8 +87,7 @@ export const Step4CouchLayout = (props: Step4ClientLayoutProps) => (
         {props.renderHeader()}
       </HeaderContent>
     </Header>
-    <AuthContainer>
-      {props.children}
-    </AuthContainer>
+    <BGImage />
+    <AuthContainer>{props.children}</AuthContainer>
   </StyledLayout>
 )
