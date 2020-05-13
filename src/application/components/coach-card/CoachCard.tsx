@@ -284,10 +284,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
       {isActive && (
         <SelectDatetime
           coach={coach}
-          loading={sessionsListModel.loading}
-          sessionsList={sessionsListModel.list}
-          toggleSession={sessionsListModel.toggleSession}
-          tabs={sessionsListModel.tabs}
+          sessionsData={sessionsListModel}
         />
       )}
     </Block>

@@ -116,16 +116,18 @@ const ButtonContainer = styled.div`
   margin-left: auto;
 `
 
-type SelectDatetimeTypes = {
-  loading: Store<boolean>,
+export type SelectDatetimeTypes = {
   coach: Coach
-  sessionsList: Store<CoachSessionWithSelect[]>
-  // @ts-ignore
-  toggleSession: Event<CoachSessionWithSelect>
-  tabs: {
-    $durationTab: Store<DurationType>,
-    changeDurationTab: Event<DurationType>,
-    list: TimeTabType[]
+  sessionsData: {
+    loading: Store<boolean>,
+    sessionsList: Store<CoachSessionWithSelect[]>
+    toggleSession: Event<CoachSessionWithSelect>
+    deleteSession: Event<number>
+    tabs: {
+      $durationTab: Store<DurationType>,
+      changeDurationTab: Event<DurationType>,
+      list: TimeTabType[]
+    }
   }
 }
 
@@ -170,11 +172,11 @@ const equalDateFormat = `DDMMYYYY`
 const equalTimeFormat = `HH:mm`
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
-  const sessions = useStore(props.sessionsList)
-  const loading = useStore(props.loading)
-  const activeTab = useStore(props.tabs.$durationTab)
-  const changeActiveTab = useEvent(props.tabs.changeDurationTab)
-  const [tabs, _] = useState(props.tabs.list)
+  const sessions = useStore(props.sessionsData.sessionsList)
+  const loading = useStore(props.sessionsData.loading)
+  const activeTab = useStore(props.sessionsData.tabs.$durationTab)
+  const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
+  const [tabs, _] = useState(props.sessionsData.tabs.list)
 
   const [currentDate, changeCurrentDate] = useState<Date>(new Date())
   const pinnedDates = sessions.map(session => session.startDatetime)
@@ -219,7 +221,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           <h5>{formattedDate}</h5>
           <Times>
             {times.map(session => (
-              <Tag active={session.selected} key={session.id} onClick={() => props.toggleSession(session)}>
+              <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>
                 {session.start_datetime}
               </Tag>
             ))}

@@ -10,6 +10,8 @@ export type IconName =
   | "burger"
   | "google"
   | "mark"
+  | "ruble"
+  | "delete"
   | "rotate"
   | "tail-arrow"
   | "vk"

@@ -4,7 +4,7 @@ import {
   getCoachSessions,
   GetCoachSessionsParamsTypes
 } from "@/application/lib/api/coach-sessions"
-import { createEffect, createEvent, createStore, forward } from "effector-next"
+import { combine, createEffect, createEvent, createStore, forward } from "effector-next"
 import { Coach } from "@/application/lib/api/coach"
 
 export interface CoachSessionWithSelect extends CoachSession {
@@ -26,6 +26,7 @@ export const genCoachSessions = (coach: Coach) => {
 
   const loadCoachSessions = createEvent<GetCoachSessionsParamsTypes>()
   const toggleSession = createEvent<CoachSessionWithSelect>()
+  const deleteSession = createEvent<number>()
 
   const selectedSessionIds = createStore<number[]>([])
     .on(toggleSession, (state, selectedSession) => {
@@ -36,6 +37,7 @@ export const genCoachSessions = (coach: Coach) => {
         return state
       }
     })
+    .on(deleteSession, (state, sessionId) => state.filter(id => sessionId !== id))
 
   const $coachSessionsList = createStore<CoachSessionWithSelect[]>([])
     .on(fetchCoachSessionsListFx.done, (state, payload) => {
@@ -43,6 +45,13 @@ export const genCoachSessions = (coach: Coach) => {
       return payload.result.map(session => ({ ...session, selected: ids.includes(session.id) }))
     })
     .on(toggleSession, (state) => {
+      const ids = selectedSessionIds.getState()
+      return state.map(session => {
+        session.selected = ids.includes(session.id)
+        return session
+      })
+    })
+    .on(deleteSession, (state) => {
       const ids = selectedSessionIds.getState()
       return state.map(session => {
         session.selected = ids.includes(session.id)
@@ -74,9 +83,10 @@ export const genCoachSessions = (coach: Coach) => {
 
   return {
     loading: isFetching,
-    list: $coachSessionsList,
+    sessionsList: $coachSessionsList,
     loadData: loadCoachSessions,
     toggleSession,
+    deleteSession,
     tabs: {
       list: UITabs,
       $durationTab,
