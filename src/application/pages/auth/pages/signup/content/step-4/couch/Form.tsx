@@ -18,8 +18,11 @@ import { useStore } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
+import ReactInputMask from "react-input-mask"
 import styled from "styled-components"
 import Carousel from "react-multi-carousel"
+
+const InputMask: any = ReactInputMask
 
 const InformationContainer = styled.div`
   margin: 32px 16px 0;
@@ -89,17 +92,24 @@ export const Form = () => {
   return (
     <InformationContainer>
       <InformationTitle>Заполните информацию</InformationTitle>
-      <FormItem label='Место обучения' error={errors.education} required>
+      <FormItem label='Место обучения' error={errors.education}>
         <Input withoutBorder value={values.education} onChange={educationChanged} />
       </FormItem>
-      <FormItem label='Опыт работы' error={errors.workExperience} required>
+      <FormItem label='Опыт работы' error={errors.workExperience}>
         <Textarea withoutBorder value={values.workExperience} onChange={workExperienceChanged} rows={8} />
       </FormItem>
-      <FormItem label='О себе' error={errors.description} required>
+      <FormItem label='О себе' error={errors.description}>
         <Textarea withoutBorder value={values.description} onChange={descriptionChanged} rows={8} />
       </FormItem>
-      <FormItem label='Телефон' error={errors.phone} required>
-        <Input withoutBorder value={values.phone} type='phone' onChange={phoneChanged} />
+      <FormItem label='Телефон' error={errors.phone}>
+        <InputMask
+          mask='+7 999 999-99-99'
+          placeholder='+7 900 000-00-00'
+          value={values.phone}
+          onChange={(value: any) => phoneChanged(value)}
+        >
+          {(inputProps: any) => <Input {...inputProps} withoutBorder type='tel' />}
+        </InputMask>
       </FormItem>
       <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <Photos />
