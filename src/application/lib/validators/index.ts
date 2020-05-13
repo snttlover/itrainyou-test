@@ -1,4 +1,4 @@
-const emailRegexp = /.{2,}@.{2,}/
+const emailRegexp = /.{2,}@.{2,}\..+/
 export const emailValidator = (value: string) => {
   if (value.length === 0 || !emailRegexp.test(value)) return "Указана некорректная почта"
   return null
@@ -10,8 +10,7 @@ export const passwordValidator = (value: string) => {
     return `Пароль должен состоять как минимум из 8 символов`
   }
 
-  if (!passwordRegexp.test(value))
-    return "Пароль должен состоять только из латинских букв или цифр"
+  if (!passwordRegexp.test(value)) return "Пароль должен состоять только из латинских букв или цифр"
 
   return null
 }
