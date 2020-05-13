@@ -15,6 +15,8 @@ const Layout = styled.div`
 const PageContent = styled.div`
   flex: 1;
   height: 100%;
+  min-height: 100vh;
+  width: 100%;
   position: relative;
   overflow: hidden;
   overflow-y: auto;

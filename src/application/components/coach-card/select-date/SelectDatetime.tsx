@@ -7,7 +7,7 @@ import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import {Tabs, Tab} from "@/application/components/tabs/Tabs"
-import { CoachSessionWithSelect } from "@/application/components/coach-card/select-date/select-date.model"
+import { CoachSessionWithSelect, TimeTabType } from "@/application/components/coach-card/select-date/select-date.model"
 import { Coach } from "@/application/lib/api/coach"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { Button } from "@/application/components/button/normal/Button"
@@ -116,15 +116,18 @@ const ButtonContainer = styled.div`
   margin-left: auto;
 `
 
-type SelectDatetimeTypes = {
-  loading: Store<boolean>,
+export type SelectDatetimeTypes = {
   coach: Coach
-  sessionsList: Store<CoachSessionWithSelect[]>
-  // @ts-ignore
-  toggleSession: Event<CoachSessionWithSelect>
-  tabs: {
-    $durationTab: Store<DurationType>,
-    changeDurationTab: Event<DurationType>
+  sessionsData: {
+    loading: Store<boolean>,
+    sessionsList: Store<CoachSessionWithSelect[]>
+    toggleSession: Event<CoachSessionWithSelect>
+    deleteSession: Event<number>
+    tabs: {
+      $durationTab: Store<DurationType>,
+      changeDurationTab: Event<DurationType>,
+      list: TimeTabType[]
+    }
   }
 }
 
@@ -161,12 +164,6 @@ const TabPrice = styled.div`
   color: #9AA0A6;
 `
 
-type TimeTabType = {
-  timeInMinutes: number
-  price: number
-  key: DurationType
-}
-
 const TimeColumn = styled.td`
   color: #9AA0A6;
 `
@@ -175,22 +172,11 @@ const equalDateFormat = `DDMMYYYY`
 const equalTimeFormat = `HH:mm`
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
-  const sessions = useStore(props.sessionsList)
-  const loading = useStore(props.loading)
-
-  const tabs = Object.keys(props.coach.prices)
-    // @ts-ignore
-    .filter(key => props.coach.prices[key] !== `None`)
-    .map((key): TimeTabType => ({
-      timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
-      // @ts-ignore
-      key: key as DurationType,
-      // @ts-ignore
-      price: Math.ceil(props.coach.prices[key] as number)
-    }))
-
-  const activeTab = useStore(props.tabs.$durationTab)
-  const changeActiveTab = useEvent(props.tabs.changeDurationTab)
+  const sessions = useStore(props.sessionsData.sessionsList)
+  const loading = useStore(props.sessionsData.loading)
+  const activeTab = useStore(props.sessionsData.tabs.$durationTab)
+  const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
+  const [tabs, _] = useState(props.sessionsData.tabs.list)
 
   const [currentDate, changeCurrentDate] = useState<Date>(new Date())
   const pinnedDates = sessions.map(session => session.startDatetime)
@@ -235,7 +221,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           <h5>{formattedDate}</h5>
           <Times>
             {times.map(session => (
-              <Tag active={session.selected} key={session.id} onClick={() => props.toggleSession(session)}>
+              <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>
                 {session.start_datetime}
               </Tag>
             ))}
