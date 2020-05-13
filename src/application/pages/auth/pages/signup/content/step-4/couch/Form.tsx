@@ -124,43 +124,74 @@ export const Form = () => {
 }
 
 const Photo = styled.div<{ src: string }>`
-  width: 100px;
-  height: 100px;
+  position: relative;
+  width: 64px;
+  height: 64px;
   background: url("${({ src }) => src}");
   background-position: center;
   background-size: cover;
-  margin-left: 8px;
+  border-radius: 2px;
+  margin-right: 10px;
+  margin-top: 10px;
+  
+  ${MediaRange.greaterThan("mobile")`
+    margin-right: 7px;
+    margin-top: 7px;
+    width: 94px;
+    height: 94px;
+  `}
 `
 
-const StyledCarousel = styled(Carousel)`
-  margin-top: 24px;
+const PhotoList = styled.div`
+  width: calc(100% + 16px);
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 `
 
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 6,
-    partialVisibilityGutter: 0 // this is optional if you are not using partialVisible props
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 4,
-    partialVisibilityGutter: 0 // this is optional if you are not using partialVisible props
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 2,
-    partialVisibilityGutter: 0 // this is optional if you are not using partialVisible props
+const PhotoCross = styled.div`
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  right: 0;
+  top: 0;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px 2px 1px 1px;
+
+  span {
+    position: absolute;
+    display: block;
+    background: #4858cc;
+    width: 8px;
+    height: 1px;
+
+    &:nth-of-type(1) {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &:nth-of-type(2) {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
   }
-}
+`
 
 const Photos = () => {
   const photos = useStore($photos)
   return (
-    <StyledCarousel removeArrowOnDeviceType={["mobile", "tablet", "desktop"]} responsive={responsive}>
+    <PhotoList>
       {photos.map((src, index) => (
-        <Photo key={src} src={src} onClick={() => photoRemoved(index)} />
+        <Photo key={src} src={src} onClick={() => photoRemoved(index)}>
+          <PhotoCross>
+            <span />
+            <span />
+          </PhotoCross>
+        </Photo>
       ))}
-    </StyledCarousel>
+    </PhotoList>
   )
 }
