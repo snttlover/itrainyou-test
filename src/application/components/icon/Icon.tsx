@@ -6,6 +6,8 @@ export type IconName =
   | "arrow"
   | "cross"
   | "facebook"
+  | "notification"
+  | "burger"
   | "google"
   | "mark"
   | "rotate"
