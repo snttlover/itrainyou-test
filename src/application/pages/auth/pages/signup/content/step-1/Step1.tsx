@@ -5,6 +5,7 @@ import { logout } from "@/application/feature/user/user.model"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
+import { userDataReset } from "@/application/pages/auth/pages/signup/signup.model"
 import Link from "next/link"
 import { useEffect } from "react"
 import {
@@ -50,7 +51,7 @@ const Title = styled.h1`
   margin-bottom: 73px;
 
   text-align: center;
-  color: #FFFFFF;
+  color: #ffffff;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 36px;
@@ -71,20 +72,20 @@ const Form = styled.form`
 
 const PasswordHint = styled.p`
   display: none;
-  color: #9AA0A6;
+  color: #9aa0a6;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
   line-height: 16px;
-  ${MediaRange.greaterThan('mobile')`
+  ${MediaRange.greaterThan("mobile")`
     display: block;
   `}
 `
 
 const Footer = styled.div`
   margin: 118px auto 34px;
-  
+
   text-align: center;
   color: #544274;
   width: 130px;
@@ -98,13 +99,13 @@ const Footer = styled.div`
 `
 
 const StyledLink = styled.a`
-  color: #FFFFFF;
+  color: #ffffff;
   font-family: Roboto;
   font-style: normal;
   font-weight: 300;
   font-size: 14px;
   line-height: 18px;
-  
+
   ${MediaRange.greaterThan("mobile")`    
     font-weight: 500;
     font-size: 20px;
@@ -128,6 +129,7 @@ export const Step1 = () => {
   const isFetching = useStore(registerFx.pending)
 
   useEffect(() => {
+    userDataReset()
     logout()
   }, [])
 
@@ -150,14 +152,18 @@ export const Step1 = () => {
           </FormItem>
           <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
             <Input value={form.passwordRepeat} type='password' onChange={passwordRepeatChanged} />
-            <PasswordHint>Пароль должен быть не меньше 8 символов и содержать в себе только латинские буквы или цифры</PasswordHint>
+            <PasswordHint>
+              Пароль должен быть не меньше 8 символов и содержать в себе только латинские буквы или цифры
+            </PasswordHint>
           </FormItem>
           <NextButton disabled={!isFormValid || isFetching} />
         </Form>
       </Container>
       <Footer>
         <Link href='/login' as='/login' passHref>
-          <StyledLink>Уже есть аккаунт? <SignIn>Войдите</SignIn></StyledLink>
+          <StyledLink>
+            Уже есть аккаунт? <SignIn>Войдите</SignIn>
+          </StyledLink>
         </Link>
       </Footer>
     </AuthLayout>
