@@ -54,12 +54,11 @@ const HeaderContent = styled.div`
 const BGImage = styled.div`
   background-image: url(${bgImage});
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
   position: absolute;
   width: 329.35px;
   height: 589px;
-  left: -17px;
+  left: 0;
   top: 356px;
   display: none;
 

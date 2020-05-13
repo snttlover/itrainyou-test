@@ -1,35 +1,36 @@
 import * as React from "react"
 import styled from "styled-components"
 
-const TextBox = styled.input<{ error?: boolean }>`
+const TextBox = styled.input<{ error?: boolean; withoutBorder?: boolean }>`
   outline: none;
-  border: 1px solid ${({ error }) => (error ? "#FF6B00" : "#D3D7F3")};
+  border: ${({ withoutBorder, error }) =>
+    withoutBorder ? "1px solid transparent" : `1px solid ${error ? "#FF6B00" : "#D3D7F3"}`};
   box-sizing: border-box;
   border-radius: 2px;
   padding: 5px 8px;
   font-size: 16px;
   line-height: 22px;
-  caret-color: #3746B0;
+  caret-color: #3746b0;
   color: #424242;
 
   &:hover {
-    border: 1px solid #919BE0;
+    border: 1px solid #919be0;
   }
   &::placeholder {
     color: #b3b3b3;
   }
   &:focus {
-    border: 1px solid #919BE0;
+    border: 1px solid #919be0;
   }
-  
+
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-  
+
   /* Firefox */
-  &[type=number] {
+  &[type="number"] {
     -moz-appearance: textfield;
   }
 `
@@ -38,6 +39,7 @@ type InputTypes = {
   name?: string
   value: string
   placeholder?: string
+  withoutBorder?: boolean
   type?: string
   className?: string
   onChange?: (value: string) => void

@@ -29,26 +29,27 @@ const InformationContainer = styled.div`
   }
 
   ${MediaRange.greaterThan("mobile")`
-    margin: 102px 16px 0;
-  `}
-
-  ${MediaRange.greaterThan("tablet")`
-    width: 610px;
+    width: 600px;
     margin: 102px auto 0;
   `}
 `
 
 const InformationTitle = styled.h2`
-  font-weight: 500;
-  font-size: 20px;
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
   line-height: 26px;
-`
+  color: #7d36a8;
 
-const PhoneHint = styled.p`
-  margin-top: 4px;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 16px;
+  ${MediaRange.greaterThan("mobile")`    
+    font-size: 24px;
+    line-height: 26px;
+  `}
+  ${MediaRange.greaterThan("tablet")`    
+    font-size: 24px;
+    line-height: 26px;
+  `}
 `
 
 const ButtonContainer = styled.div`
@@ -81,18 +82,17 @@ export const Form = () => {
     <InformationContainer>
       <InformationTitle>Заполните информацию</InformationTitle>
       <FormItem label='Место обучения' error={errors.education} required>
-        <Input value={values.education} onChange={educationChanged} />
+        <Input withoutBorder value={values.education} onChange={educationChanged} />
       </FormItem>
       <FormItem label='Опыт работы' error={errors.workExperience} required>
-        <Textarea value={values.workExperience} onChange={workExperienceChanged} rows={8} />
+        <Textarea withoutBorder value={values.workExperience} onChange={workExperienceChanged} rows={8} />
       </FormItem>
       <FormItem label='О себе' error={errors.description} required>
-        <Textarea value={values.description} onChange={descriptionChanged} rows={8} />
+        <Textarea withoutBorder value={values.description} onChange={descriptionChanged} rows={8} />
       </FormItem>
       <FormItem label='Телефон' error={errors.phone} required>
-        <Input value={values.phone} type='phone' onChange={phoneChanged} />
+        <Input withoutBorder value={values.phone} type='phone' onChange={phoneChanged} />
       </FormItem>
-      <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <Photos />
       <ButtonContainer>
         <AddPhotosButton onClick={() => open()}>Добавить фотографии</AddPhotosButton>
