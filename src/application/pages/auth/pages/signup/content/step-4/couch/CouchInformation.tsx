@@ -52,12 +52,21 @@ const CategoriesContainer = styled.div`
 `
 
 const CategoriesTitle = styled.h3`
-  font-weight: 500;
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
   font-size: 16px;
-  line-height: 22px;
+  line-height: 26px;
+  color: #7d36a8;
   ${MediaRange.greaterThan("mobile")`
+    margin: 0 auto;
+    width: 80%;
+    max-width: 600px;
     font-size: 20px;
     line-height: 26px;
+  `}
+  ${MediaRange.greaterThan("tablet")`
+    width: 600px;
   `}
 `
 
@@ -88,7 +97,6 @@ const ButtonContainer = styled.div`
 
 const SendRequestButton = styled(Button)`
   margin: 32px auto 44px;
-  background: #544274;
 `
 
 export const CouchInformation = () => {
@@ -112,7 +120,7 @@ export const CouchInformation = () => {
   return (
     <Container>
       <CategoriesContainer>
-        {/*<CategoriesTitle>Выберите направления, в которых Вы проводите сессии:</CategoriesTitle>*/}
+        <CategoriesTitle>Выберите направления, в которых Вы проводите сессии:</CategoriesTitle>
         {categories}
       </CategoriesContainer>
       <Form />
@@ -125,8 +133,12 @@ export const CouchInformation = () => {
         <CheckStep description='Эта анкета будет видна клиентам<br /> (кроме контактов)' img={peoples} />
       </CheckStepsContainer>
       <ButtonContainer>
-        <SendRequestButton disabled={loading || isVideoUploading || !isFormValid} onClick={() => userRegistered()}>
-          Отправить заявку
+        <SendRequestButton
+          secondary
+          disabled={loading || isVideoUploading || !isFormValid}
+          onClick={() => userRegistered()}
+        >
+          Зарегистрироваться
         </SendRequestButton>
       </ButtonContainer>
     </Container>

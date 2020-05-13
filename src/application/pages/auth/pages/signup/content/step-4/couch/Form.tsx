@@ -22,15 +22,16 @@ import styled from "styled-components"
 import Carousel from "react-multi-carousel"
 
 const InformationContainer = styled.div`
-  margin: 56px 16px 0;
+  margin: 32px 16px 0;
   ${FormItem} {
     margin-top: 24px;
     margin-bottom: 0;
   }
 
   ${MediaRange.greaterThan("mobile")`
-    width: 600px;
-    margin: 102px auto 0;
+    max-width: 600px;
+    width: 80%;
+    margin: 52px auto 0;
   `}
 `
 
@@ -52,13 +53,20 @@ const InformationTitle = styled.h2`
   `}
 `
 
+const PhoneHint = styled.p`
+  margin-top: 4px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+`
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
 `
 const AddPhotosButton = styled(DashedButton)`
-  border: 1px solid #544274;
-  color: #544274;
   margin: 24px auto 0;
 `
 
@@ -93,9 +101,12 @@ export const Form = () => {
       <FormItem label='Телефон' error={errors.phone} required>
         <Input withoutBorder value={values.phone} type='phone' onChange={phoneChanged} />
       </FormItem>
+      <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <Photos />
       <ButtonContainer>
-        <AddPhotosButton onClick={() => open()}>Добавить фотографии</AddPhotosButton>
+        <AddPhotosButton secondary onClick={() => open()}>
+          Добавить фотографии
+        </AddPhotosButton>
       </ButtonContainer>
       <input {...getInputProps()} />
     </InformationContainer>
