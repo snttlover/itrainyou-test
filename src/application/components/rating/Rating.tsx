@@ -1,3 +1,4 @@
+import React from "react"
 import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import styled from "styled-components"
@@ -20,18 +21,16 @@ type RatingProps = {
 }
 
 export const Rating = styled(({ value, ...props }: RatingProps) => {
-  const nameByType = {
-    empty: "star",
-    half: "half-star",
-    full: "full-star"
-  }
-  return (
-    <StarsContainer {...props}>
-      <Star name='full-star' />
-      <Star name='full-star' />
-      <Star name='full-star' />
-      <Star name='half-star' />
-      <Star name='star' />
-    </StarsContainer>
-  )
+  const stars = Array.from({ length: 5 })
+    .map((_, index) => index + 1)
+    .map(num => {
+      const isFull = value >= num
+      const isHalf = num - value > 0 && num - value < 1
+
+      if (isHalf) return <Star name='half-star' />
+      if (isFull) return <Star name='full-star' />
+      return <Star name='star' />
+    })
+
+  return <StarsContainer {...props}>{stars}</StarsContainer>
 })``
