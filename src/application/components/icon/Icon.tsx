@@ -23,6 +23,7 @@ export type IconName =
   | "close"
   | "calendar"
   | "contacts"
+  | "star"
   | "hand"
   | "help"
   | "home"
