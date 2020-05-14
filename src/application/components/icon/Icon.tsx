@@ -24,6 +24,8 @@ export type IconName =
   | "calendar"
   | "contacts"
   | "star"
+  | "full-star"
+  | "half-star"
   | "hand"
   | "help"
   | "home"

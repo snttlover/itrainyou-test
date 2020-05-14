@@ -12,7 +12,7 @@ const StyledDashboardLayout = styled(DashboardLayout)`
 `
 
 const Content = styled.div`
-  margin: 20px 8px 0;
+  margin: 20px 8px;
   min-width: 304px;
 `
 
@@ -51,6 +51,14 @@ const CouchInfoContainer = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+
+  ${Reviews} {
+    margin-top: 24px;
+
+    ${MediaRange.greaterThan("mobile")`
+      margin-top: 32px;
+    `}
+  }
 `
 
 const MainCouchBlock = styled.div`
@@ -61,6 +69,7 @@ const MainCouchBlock = styled.div`
   ${MediaRange.greaterThan("laptop")`
     background: #FFFFFF;
     border-radius: 2px;
+    padding: 20px 8px;
   `}
 
   ${BuyBlock} {

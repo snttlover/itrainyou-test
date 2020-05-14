@@ -2,10 +2,14 @@ import { AppStyles } from "@/application/AppStyles"
 import { withHydrate } from "effector-next"
 import App from "next/app"
 import * as React from "react"
+import dayjs from "dayjs"
+import "dayjs/locale/ru"
 import "react-image-crop/dist/ReactCrop.css"
 import "../../public/fonts/gilroy/fonts-list.css"
 import "react-multi-carousel/lib/styles.css"
-import 'simplebar/dist/simplebar.min.css'
+import "simplebar/dist/simplebar.min.css"
+
+dayjs.locale("ru")
 
 class MyApp extends App {
   render() {
