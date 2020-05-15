@@ -1,8 +1,10 @@
 import { Avatar } from "@/application/components/avatar/Avatar"
 import { Rating } from "@/application/components/rating/Rating"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { $reviews } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { Block } from "@/application/pages/coach/pages/by-id/components/common/Block"
 import dayjs from "dayjs"
+import { useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
 
@@ -158,20 +160,26 @@ const ReviewsList = styled.div`
 `
 
 export const Reviews = styled(props => {
+  const reviews = useStore($reviews).filter(review => review.reviewerClient)
+
   return (
-    <Container {...props}>
-      <Title>Отзывы</Title>
-      <ReviewsList>
-        <Review
-          name='Bernard Fox'
-          rating={0.5}
-          avatar={null}
-          text={
-            "Самые позитивные впечатления о тренинге. Много нового, большой объем новых инструментов для работы, которые были даны в очень удобной для меня форме. Вне сомнений профессионал. Михаил, спасибо! Обязательно посещу еще какой-нибудь тренинг у Вас. Все достойно."
-          }
-          date={dayjs().toISOString()}
-        />
-      </ReviewsList>
-    </Container>
+    (reviews.length > 0 && (
+      <Container {...props}>
+        <Title>Отзывы</Title>
+        <ReviewsList>
+          {reviews.map(review => (
+            <Review
+              key={review.id}
+              name={`${review.reviewerClient?.firstName} ${review.reviewerClient?.lastName}`}
+              rating={review.grade}
+              avatar={review.reviewerClient?.avatar || null}
+              text={review.text}
+              date={review.creationDatetime}
+            />
+          ))}
+        </ReviewsList>
+      </Container>
+    )) ||
+    null
   )
 })``
