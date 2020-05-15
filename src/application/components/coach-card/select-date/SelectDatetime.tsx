@@ -178,7 +178,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const [tabs, _] = useState(props.sessionsData.tabs.list)
 
-  const [currentDate, changeCurrentDate] = useState<Date>(new Date())
+  const [currentDate, changeCurrentDate] = useState<Date | undefined>()
   const pinnedDates = sessions.map(session => session.startDatetime)
 
   const formattedDate = dayjs(currentDate).format("DD MMMM")

@@ -8,7 +8,7 @@ import rightImage from "./images/right.svg"
 
 dayjs.locale('ru')
 
-export type CalendarDateType = Date | Date[]
+export type CalendarDateType = Date | Date[] | undefined
 
 type CalendarTypes = {
   value: CalendarDateType
@@ -118,6 +118,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
   }
   .not-pinned {
     opacity: 0.5;
+    pointer-events: none;
   }
   .pinned {
     position: relative;
@@ -128,6 +129,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     margin-top: 10px;
     margin-bottom: 10px;
     height: 17px;
+   
   }
   .react-calendar__tile--active {
     background: #3358D4;
