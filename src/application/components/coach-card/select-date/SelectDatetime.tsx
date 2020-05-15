@@ -37,7 +37,7 @@ const Block = styled.div<StyledTabTypes>`
 `
 
 const Datepicker = styled.div`
-  max-width: 252px;
+  min-width: 252px;
   display: flex;
   align-items: center;
   justify-content: center;

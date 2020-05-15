@@ -5,6 +5,7 @@ import 'dayjs/locale/ru'
 import { Dispatch, SetStateAction, useState } from "react"
 import leftImage from "./images/left.svg"
 import rightImage from "./images/right.svg"
+import { Icon } from "@/application/components/icon/Icon"
 
 dayjs.locale('ru')
 
@@ -47,6 +48,21 @@ const Header = styled.div`
 type CalendarWrapperTypes = {
   isBig?: boolean
 }
+
+type LeftButtonTypes = {
+  disabled?: boolean
+}
+
+const LeftIcon = styled(Icon).attrs({ name: `left-icon` })<LeftButtonTypes>`
+  width: 5px;
+  height: 9px;
+  fill: #4858CC;
+  cursor: pointer;
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${props => (props.disabled ? `none` : `auto`)};
+`
+
+const RightIcon = styled(LeftIcon).attrs({ name: `right-icon` })``
 
 const BigCalendarStyles = css`
   ${Header} {
@@ -117,8 +133,8 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     position: relative;
   }
   .not-pinned {
-    opacity: 0.5;
     pointer-events: none;
+    color: #DBDEE0;
   }
   .pinned {
     position: relative;
@@ -148,24 +164,6 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     height: 0px;
   }
   ${(props) => props.isBig && BigCalendarStyles}
-`
-
-type LeftButtonTypes = {
-  disabled: boolean
-}
-
-const LeftButton = styled.img.attrs({ src: leftImage })<LeftButtonTypes>`
-  width: 4.9px;
-  height: 8.4px;
-  cursor: pointer;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
-  pointer-events: ${props => (props.disabled ? `none` : `auto`)};
-`
-
-const RightButton = styled.img.attrs({ src: rightImage })`
-  width: 4.9px;
-  height: 8.4px;
-  cursor: pointer;
 `
 
 const MonthContainer = styled.div`
@@ -247,9 +245,9 @@ export const Calendar = (props: CalendarTypes) => {
     <CalendarWrapper isBig={props.isBig}>
       <Header>
         <MonthContainer>
-          <LeftButton disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
+          <LeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
           <MonthName>{dayjs(startDate).format(`MMMM`)}</MonthName>
-          <RightButton onClick={nextMonth} />
+          <RightIcon onClick={nextMonth} />
         </MonthContainer>
         <Year>{dayjs(startDate).format(`YYYY`)}</Year>
       </Header>

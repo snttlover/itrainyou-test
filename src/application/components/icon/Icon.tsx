@@ -12,6 +12,8 @@ export type IconName =
   | "mark"
   | "ruble"
   | "delete"
+  | "left-icon"
+  | "right-icon"
   | "rotate"
   | "tail-arrow"
   | "vk"
