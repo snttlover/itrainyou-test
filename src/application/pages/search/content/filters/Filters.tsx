@@ -27,7 +27,9 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
   overflow: hidden;
   transition: all 50ms;
   margin-bottom: 20px;
+  margin-top: -105px;
   @media screen and (max-width: 768px) {
+    margin-top: 0;
     margin-bottom: 0;
     width: 100%;
     height: 100%;
