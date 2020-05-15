@@ -53,7 +53,7 @@ const TabletFiltersButton = styled.div`
   cursor: pointer;
     
   ${MediaRange.greaterThan("tablet")`  
-    display: block;
+    display: none;
   `}
 `
 
