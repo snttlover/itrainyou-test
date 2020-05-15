@@ -26,11 +26,17 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
   position: relative;
   overflow: hidden;
   transition: all 50ms;
+  margin-bottom: 20px;
+  margin-top: 44px;
+
   @media screen and (max-width: 768px) {
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 276px;
+    height: 100%;
     position: fixed;
     top: 0;
     z-index: 300;
-    width: 276px;
     transition: left 300ms;
     right: ${props => (props.showOnMobile ? 0 : `-276px`)};
     background: #fff;
@@ -82,51 +88,10 @@ const Header = styled.div`
   line-height: 22px;
 `
 
-const useWindowSize = () => {
-  const initial = { height: `100%`, transform: `none` }
-  const [size, setSize] = useState({...initial});
-  // @ts-ignore
-  if (typeof window !== "undefined") {
-    useLayoutEffect(() => {
-      const scrollingElement = window.document.scrollingElement as HTMLDivElement
-      const filtersContainer = window.document.getElementById(`filters-container`) as HTMLDivElement
-
-      function updateSizes() {
-        if (window.innerWidth <= 768) {
-          return setSize({...initial})
-        }
-
-        const scrollTopOffset = filtersContainer.offsetTop - scrollingElement.scrollTop
-        let height = `${window.innerHeight - scrollTopOffset}px`
-        let transform = `none`
-
-        if (scrollTopOffset < 0) {
-          height =  `${window.innerHeight}px`
-          transform = `translateY(${scrollingElement.scrollTop - filtersContainer.offsetTop}px)`
-        }
-
-        setSize({ height, transform });
-      }
-      window.addEventListener(`resize`, updateSizes);
-      window.addEventListener(`scroll`, updateSizes)
-      updateSizes();
-      return () => {
-        window.removeEventListener(`scroll`, updateSizes)
-        window.removeEventListener(`resize`, updateSizes);
-      }
-    }, []);
-  }
-
-  return size;
-}
-
 export const Filters = () => {
   const showOnMobile = useStore($mobileFiltersVisibility)
-
-  let modalStyles = useWindowSize()
-
   return (
-    <Modal showOnMobile={showOnMobile} style={modalStyles}>
+    <Modal showOnMobile={showOnMobile}>
       <StyledSimpleBar>
         <Container>
           <MobileClose onClick={() => changeMobileFiltersVisibility(false)} />
