@@ -13,7 +13,7 @@ import {
   photoRemoved,
   photoUploadFx,
   workExperienceChanged
-} from "@/application/pages/auth/pages/signup/content/step-4/step-4-couch.model"
+} from "@/application/pages/auth/pages/signup/content/step-4/step-4-coach.model"
 import { useStore } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"

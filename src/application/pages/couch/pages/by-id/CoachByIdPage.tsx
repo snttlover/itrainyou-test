@@ -1,8 +1,8 @@
 import { DashboardLayout } from "@/application/components/layouts/dashboard/DashboardLayout"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { AboutCouch } from "@/application/pages/couch/pages/by-id/components/AboutCouch"
-import { BaseCouchInfo } from "@/application/pages/couch/pages/by-id/components/BaseCouchInfo"
-import { Reviews } from "@/application/pages/couch/pages/by-id/components/Reviews"
+import { AboutCoach } from "@/application/pages/coach/pages/by-id/components/AboutCoach"
+import { BaseCoachInfo } from "@/application/pages/coach/pages/by-id/components/BaseCoachInfo"
+import { Reviews } from "@/application/pages/coach/pages/by-id/components/Reviews"
 import { useRouter } from "next/router"
 import React from "react"
 import styled from "styled-components"
@@ -47,7 +47,7 @@ const BuyBlock = styled.div`
   `}
 `
 
-const CouchInfoContainer = styled.div`
+const CoachInfoContainer = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -61,7 +61,7 @@ const CouchInfoContainer = styled.div`
   }
 `
 
-const MainCouchBlock = styled.div`
+const MainCoachBlock = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -80,7 +80,7 @@ const MainCouchBlock = styled.div`
     `}
   }
 
-  ${AboutCouch} {
+  ${AboutCoach} {
     margin-top: 16px;
 
     ${MediaRange.greaterThan("laptop")`
@@ -89,21 +89,21 @@ const MainCouchBlock = styled.div`
   }
 `
 // А файл ТО БОЛЬШОЙ да? интересно что там в конце, наверное шрифты красивые?
-export const CouchByIdPage = () => {
+export const CoachByIdPage = () => {
   const router = useRouter()
 
   return (
     <StyledDashboardLayout>
       <Content>
         <InfoWithSidebar>
-          <CouchInfoContainer>
-            <MainCouchBlock>
-              <BaseCouchInfo />
+          <CoachInfoContainer>
+            <MainCoachBlock>
+              <BaseCoachInfo />
               <BuyBlock>{/* Вставь свой блок сюда */}</BuyBlock>
-              <AboutCouch />
-            </MainCouchBlock>
+              <AboutCoach />
+            </MainCoachBlock>
             <Reviews />
-          </CouchInfoContainer>
+          </CoachInfoContainer>
           <BuySidebar>{/* Вставь свой блок сюда */}</BuySidebar>
         </InfoWithSidebar>
       </Content>

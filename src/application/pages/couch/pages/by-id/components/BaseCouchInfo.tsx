@@ -2,7 +2,7 @@ import { Avatar } from "@/application/components/avatar/Avatar"
 import { Icon } from "@/application/components/icon/Icon"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { Block } from "@/application/pages/couch/pages/by-id/components/common/Block"
+import { Block } from "@/application/pages/coach/pages/by-id/components/common/Block"
 import React from "react"
 import styled from "styled-components"
 
@@ -84,7 +84,7 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   `}
 `
 
-export const BaseCouchInfo = styled(({ ...props }) => {
+export const BaseCoachInfo = styled(({ ...props }) => {
   const name = "Вика Иванова"
   const year = "27"
   return (

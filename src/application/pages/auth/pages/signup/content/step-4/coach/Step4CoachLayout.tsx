@@ -1,7 +1,7 @@
 import { AuthLayoutLogo } from "@/application/components/layouts/auth/AuthLayoutLogo"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
-import bgImage from "@/application/pages/auth/pages/signup/content/step-4/couch/backgrounds/bg-image.svg"
+import bgImage from "@/application/pages/auth/pages/signup/content/step-4/coach/backgrounds/bg-image.svg"
 import desktop from "./backgrounds/desktop.svg"
 import mobile from "./backgrounds/mobile.svg"
 import tablet from "./backgrounds/tablet.svg"
@@ -72,7 +72,7 @@ type Step4ClientLayoutProps = {
   renderHeader: () => React.ReactNode
 }
 
-export const Step4CouchLayout = (props: Step4ClientLayoutProps) => (
+export const Step4CoachLayout = (props: Step4ClientLayoutProps) => (
   <StyledLayout>
     <Header>
       <HeaderContent>

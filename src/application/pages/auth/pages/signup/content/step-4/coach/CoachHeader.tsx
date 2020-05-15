@@ -156,9 +156,9 @@ const SkipButton = styled(Button)`
   `}
 `
 
-type CouchHeaderProps = { avatar: string; fullName: string; years: number; sex: string }
+type CoachHeaderProps = { avatar: string; fullName: string; years: number; sex: string }
 
-export const CouchHeader = ({ avatar, fullName, sex, years }: CouchHeaderProps) => (
+export const CoachHeader = ({ avatar, fullName, sex, years }: CoachHeaderProps) => (
   <HeaderContent>
     <Title>Заполните полную информацию о себе</Title>
     <Content>

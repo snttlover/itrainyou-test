@@ -52,7 +52,7 @@ export const registerAsClient = (data: RegisterAsClientRequest) =>
     .then(response => response.data)
     .then(keysToCamel)
 
-export interface RegisterAsCouchRequest {
+export interface RegisterAsCoachRequest {
   firstName: string
   lastName: string
   birthDate: string | null
@@ -66,7 +66,7 @@ export interface RegisterAsCouchRequest {
   videoInterview: string
 }
 
-export interface RegisterAsCouchResponse {
+export interface RegisterAsCoachResponse {
   user: {
     id: number,
     email: string,
@@ -82,8 +82,8 @@ export interface RegisterAsCouchResponse {
   creationDatetime: string
 }
 
-export const registerAsCouch = (data: RegisterAsCouchRequest) =>
-  post<RegisterAsCouchResponse, RegisterAsCouchRequest>(
+export const registerAsCoach = (data: RegisterAsCoachRequest) =>
+  post<RegisterAsCoachResponse, RegisterAsCoachRequest>(
     `https://dev.itrainyou.heksray.com/api/v1/web/coaches/`,
     keysToSnake(data)
   )

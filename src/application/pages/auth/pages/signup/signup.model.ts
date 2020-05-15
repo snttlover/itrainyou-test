@@ -1,4 +1,4 @@
-import { registerAsClient, registerAsCouch } from "@/application/lib/api/register"
+import { registerAsClient, registerAsCoach } from "@/application/lib/api/register"
 import { createEffect, createEvent, createStore, merge, sample } from "effector-next"
 import Router from "next/router"
 
@@ -12,7 +12,7 @@ type ClientData = {
   avatar: string | null
 }
 
-type CouchData = {
+type CoachData = {
   workExperience: string
   education: string
   description: string
@@ -27,13 +27,13 @@ type UserData =
       categories: number[]
     }
   | {
-      type: "couch"
+      type: "coach"
       clientData?: ClientData
       categories: number[]
-      couchData?: CouchData
+      coachData?: CoachData
     }
 
-export type RegisterUserType = "client" | "couch"
+export type RegisterUserType = "client" | "coach"
 
 export const pageMounted = createEvent()
 
@@ -41,13 +41,13 @@ export const userTypeChanged = createEvent<RegisterUserType>()
 export const userDataChanged = createEvent<UserData>()
 export const clientDataChanged = createEvent<ClientData>()
 export const toggleCategorySelection = createEvent<number>()
-export const couchDataChanged = createEvent<CouchData>()
+export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
 
 export const $userData = createStore<UserData>({ type: "client", categories: [] })
   .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
-  .on(couchDataChanged, (state, payload) => ({ ...state, couchData: payload }))
+  .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(toggleCategorySelection, (state, id) => {
     const isAlreadyExists = state.categories.includes(id)
     if (isAlreadyExists) state.categories = state.categories.filter(catId => catId !== id)
@@ -57,7 +57,7 @@ export const $userData = createStore<UserData>({ type: "client", categories: [] 
   .on(userDataChanged, (_, payload) => payload)
   .reset(userDataReset)
 
-const watchedEvents = merge([userTypeChanged, clientDataChanged, couchDataChanged, toggleCategorySelection, userDataReset])
+const watchedEvents = merge([userTypeChanged, clientDataChanged, coachDataChanged, toggleCategorySelection, userDataReset])
 
 $userData.watch(watchedEvents, userData => {
   try {
@@ -82,7 +82,7 @@ export const registerUserFx = createEffect({
     if (params.type === "client") {
       return registerAsClient({ ...params.clientData!, categories: params.categories })
     } else {
-      return registerAsCouch({ ...params.clientData!, categories: params.categories, ...params.couchData! })
+      return registerAsCoach({ ...params.clientData!, categories: params.categories, ...params.coachData! })
     }
   }
 })

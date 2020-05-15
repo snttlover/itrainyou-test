@@ -1,24 +1,24 @@
-import { CouchHeader } from "@/application/pages/auth/pages/signup/content/step-4/couch/CouchHeader"
-import { CouchInformation } from "@/application/pages/auth/pages/signup/content/step-4/couch/CouchInformation"
-import { Step4CouchLayout } from "@/application/pages/auth/pages/signup/content/step-4/couch/Step4CouchLayout"
-import { step4CouchMounted } from "@/application/pages/auth/pages/signup/content/step-4/step-4-couch.model"
+import { CoachHeader } from "@/application/pages/auth/pages/signup/content/step-4/coach/CoachHeader"
+import { CoachInformation } from "@/application/pages/auth/pages/signup/content/step-4/coach/CoachInformation"
+import { Step4CoachLayout } from "@/application/pages/auth/pages/signup/content/step-4/coach/Step4CoachLayout"
+import { step4CoachMounted } from "@/application/pages/auth/pages/signup/content/step-4/step-4-coach.model"
 import { $userData } from "@/application/pages/auth/pages/signup/signup.model"
 import dayjs from "dayjs"
 import { useStore } from "effector-react"
 import { useEffect } from "react"
 import * as React from "react"
 
-export const Step4Couch = () => {
+export const Step4Coach = () => {
   const userData = useStore($userData)
   const years = dayjs().diff(dayjs(userData.clientData?.birthDate!, "YYYY-MM-DDDD"), "year")
   const sex = { M: "мужской", F: "женский" }[userData.clientData?.sex || "M"]
 
-  useEffect(() => step4CouchMounted(), [])
+  useEffect(() => step4CoachMounted(), [])
 
   return (
-    <Step4CouchLayout
+    <Step4CoachLayout
       renderHeader={() => (
-        <CouchHeader
+        <CoachHeader
           avatar={userData.clientData?.avatar!}
           fullName={`${userData.clientData?.firstName} ${userData.clientData?.lastName}`}
           years={years}
@@ -26,7 +26,7 @@ export const Step4Couch = () => {
         />
       )}
     >
-      <CouchInformation />
-    </Step4CouchLayout>
+      <CoachInformation />
+    </Step4CoachLayout>
   )
 }

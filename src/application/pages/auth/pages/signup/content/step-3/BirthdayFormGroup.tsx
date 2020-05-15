@@ -98,7 +98,7 @@ export const BirthdayFormGroup = () => {
   return (
     <React.Fragment>
       <FormGroup>
-        <StyledFormItem label='Дата рождения' required={userType === "couch"}>
+        <StyledFormItem label='Дата рождения' required={userType === "coach"}>
           <SelectInput placeholder='День' value={birthday ? birthday.date() : -1} onChange={changeDay} options={days} />
         </StyledFormItem>
         <StyledFormItem label=''>
@@ -119,7 +119,7 @@ export const BirthdayFormGroup = () => {
         </StyledFormItem>
       </FormGroup>
       <FormGroup>
-        <StyledFormItem label='Пол' error={errors.sex} required={userType === "couch"}>
+        <StyledFormItem label='Пол' error={errors.sex} required={userType === "coach"}>
           <SelectInput value={values.sex} onChange={sexChanged} options={sexItems} />
         </StyledFormItem>
       </FormGroup>

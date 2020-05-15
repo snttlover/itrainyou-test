@@ -15,7 +15,7 @@ const $isImageError = combine(
   $image,
   $userData.map(userData => userData.type),
   (img, type) => {
-    if (type === "couch" && !img.file) return "Изображение обязательно к загрузке"
+    if (type === "coach" && !img.file) return "Изображение обязательно к загрузке"
 
     return null
   }
@@ -55,7 +55,7 @@ export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = 
     const type = obj.userData.type
     const value = obj.value
 
-    if (type === "couch" && !value) return "Поле обязательно к заполению"
+    if (type === "coach" && !value) return "Поле обязательно к заполению"
     return null
   }
 })
@@ -70,7 +70,7 @@ export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
     const type = obj.userData.type
     const value = obj.value
 
-    if (type === "couch" && !value) return "Поле обязательно к заполению"
+    if (type === "coach" && !value) return "Поле обязательно к заполению"
     return null
   }
 })

@@ -127,8 +127,8 @@ export const Step2 = () => {
             title='коучем'
             color='#7D36A8'
             hoverColor="#F5EFF8"
-            selected={type === "couch"}
-            onClick={() => userTypeChanged("couch")}
+            selected={type === "coach"}
+            onClick={() => userTypeChanged("coach")}
           />
         </Cards>
         <NextButton onClick={() => Router.push('/signup/[step]', '/signup/3')} />

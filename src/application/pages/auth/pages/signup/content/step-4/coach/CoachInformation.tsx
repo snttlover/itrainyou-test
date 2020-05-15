@@ -2,11 +2,11 @@ import { Button } from "@/application/components/button/normal/Button"
 import { Icon } from "@/application/components/icon/Icon"
 import { $categoriesList } from "@/application/feature/categories/categories.store"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { CategoryCard } from "@/application/pages/auth/pages/signup/content/step-4/couch/CategoryCard"
-import { CheckStep } from "@/application/pages/auth/pages/signup/content/step-4/couch/check-step/CheckStep"
-import { Form } from "@/application/pages/auth/pages/signup/content/step-4/couch/Form"
-import { UploadVideo } from "@/application/pages/auth/pages/signup/content/step-4/couch/UploadVideo"
-import { $step4FormValid, videoUploadFx } from "@/application/pages/auth/pages/signup/content/step-4/step-4-couch.model"
+import { CategoryCard } from "@/application/pages/auth/pages/signup/content/step-4/coach/CategoryCard"
+import { CheckStep } from "@/application/pages/auth/pages/signup/content/step-4/coach/check-step/CheckStep"
+import { Form } from "@/application/pages/auth/pages/signup/content/step-4/coach/Form"
+import { UploadVideo } from "@/application/pages/auth/pages/signup/content/step-4/coach/UploadVideo"
+import { $step4FormValid, videoUploadFx } from "@/application/pages/auth/pages/signup/content/step-4/step-4-coach.model"
 import {
   $userData,
   registerUserFx,
@@ -99,7 +99,7 @@ const SendRequestButton = styled(Button)`
   margin: 32px auto 44px;
 `
 
-export const CouchInformation = () => {
+export const CoachInformation = () => {
   const selectedCategories = useStore($userData).categories
 
   const isFormValid = useStore($step4FormValid)

@@ -6,7 +6,7 @@ import {
   $videoUploadProgress,
   videoUploaded,
   videoUploadFx
-} from "@/application/pages/auth/pages/signup/content/step-4/step-4-couch.model"
+} from "@/application/pages/auth/pages/signup/content/step-4/step-4-coach.model"
 import { useStore } from "effector-react"
 import * as React from "react"
 import { useCallback, useState } from "react"

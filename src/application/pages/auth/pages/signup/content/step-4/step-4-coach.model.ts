@@ -1,7 +1,7 @@
 import { uploadMedia } from "@/application/lib/api/media"
 import { createEffectorField } from "@/application/lib/generators/efffector"
 import { trimString } from "@/application/lib/validators"
-import { $userData, couchDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
+import { $userData, coachDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
 import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-next"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
@@ -89,18 +89,18 @@ export const $step4Form = createStoreObject({
 })
 
 $step4Form.updates.watch(data => {
-  couchDataChanged({
+  coachDataChanged({
     ...data
   })
 })
 
-export const step4CouchMounted = createEvent()
+export const step4CoachMounted = createEvent()
 
-step4CouchMounted.watch(() => {
+step4CoachMounted.watch(() => {
   try {
     const stringData = localStorage.getItem(REGISTER_SAVE_KEY)
     if (!stringData) return
-    const data = JSON.parse(stringData).couchData
+    const data = JSON.parse(stringData).coachData
     data.description && descriptionChanged(data.description)
     data.education && educationChanged(data.education)
     data.phone && phoneChanged(data.phone)

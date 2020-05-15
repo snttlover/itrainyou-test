@@ -1,7 +1,7 @@
 import { Avatar } from "@/application/components/avatar/Avatar"
 import { Rating } from "@/application/components/rating/Rating"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { Block } from "@/application/pages/couch/pages/by-id/components/common/Block"
+import { Block } from "@/application/pages/coach/pages/by-id/components/common/Block"
 import dayjs from "dayjs"
 import React, { useState } from "react"
 import styled from "styled-components"

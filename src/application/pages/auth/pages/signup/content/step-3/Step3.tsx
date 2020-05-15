@@ -170,7 +170,7 @@ export const Step3 = () => {
                   onClick={() => toggleUploadModal()}
                 />
               }
-              required={userType === "couch"}
+              required={userType === "coach"}
             />
             <AvatarHint>
               <h4>Добавить фото</h4>

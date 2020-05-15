@@ -97,7 +97,7 @@ const SortingItemsWrapper = styled.div`
   flex: 1;
 `
 
-const couches: DeclOfNumListType = [`коуч отсортирован`, `коуча отсортированы`, `коучей отсортированы`]
+const coaches: DeclOfNumListType = [`коуч отсортирован`, `коуча отсортированы`, `коучей отсортированы`]
 
 export const Sorting = () => {
   const list = useStore($coachesList)
@@ -119,7 +119,7 @@ export const Sorting = () => {
           {!!list.length && (
             <>
               <SortingText>
-                {list.length} {declOfNum(list.length, couches)}
+                {list.length} {declOfNum(list.length, coaches)}
               </SortingText>
 
               <SortingLinksWrapper>

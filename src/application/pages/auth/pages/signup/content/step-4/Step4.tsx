@@ -1,5 +1,5 @@
 import { fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
-import { Step4Couch } from "@/application/pages/auth/pages/signup/content/step-4/Step4Couch"
+import { Step4Coach } from "@/application/pages/auth/pages/signup/content/step-4/Step4Coach"
 import { $userData } from "@/application/pages/auth/pages/signup/signup.model"
 import { useEffect } from "react"
 import { Step4Client } from "./Step4Client"
@@ -20,8 +20,8 @@ export const Step4 = () => {
   switch (userData.type) {
     case 'client':
       return <Step4Client />
-    case 'couch':
-      return <Step4Couch />
+    case 'coach':
+      return <Step4Coach />
     default:
       return throwCompileTimeError(userData)
   }

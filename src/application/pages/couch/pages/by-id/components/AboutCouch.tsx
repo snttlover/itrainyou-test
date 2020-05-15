@@ -1,5 +1,5 @@
 import { MediaRange } from "@/application/lib/responsive/media"
-import { Block } from "@/application/pages/couch/pages/by-id/components/common/Block"
+import { Block } from "@/application/pages/coach/pages/by-id/components/common/Block"
 import React from "react"
 import styled from "styled-components"
 
@@ -49,7 +49,7 @@ const Photo = styled.div<{ src: string }>`
   background-position: center;
 `
 
-export const AboutCouch = styled(props => {
+export const AboutCoach = styled(props => {
   const photos = [
     "https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
     "https://cdn.pinkvilla.com/files/styles/gallery-section/public/mouni_roys_these_stunning_photos_will_leave_you_spellbound_check_it_out.jpg?itok=Imrsb_ti",
