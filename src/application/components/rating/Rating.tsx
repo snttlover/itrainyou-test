@@ -27,9 +27,9 @@ export const Rating = styled(({ value, ...props }: RatingProps) => {
       const isFull = value >= num
       const isHalf = num - value > 0 && num - value < 1
 
-      if (isHalf) return <Star name='half-star' />
-      if (isFull) return <Star name='full-star' />
-      return <Star name='star' />
+      if (isHalf) return <Star key={num} name='half-star' />
+      if (isFull) return <Star key={num} name='full-star' />
+      return <Star key={num} name='star' />
     })
 
   return <StarsContainer {...props}>{stars}</StarsContainer>

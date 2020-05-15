@@ -1,10 +1,12 @@
 import { DashboardLayout } from "@/application/components/layouts/dashboard/DashboardLayout"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { $coach, mounted } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { AboutCoach } from "@/application/pages/coach/pages/by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/application/pages/coach/pages/by-id/components/BaseCoachInfo"
 import { Reviews } from "@/application/pages/coach/pages/by-id/components/Reviews"
+import { useStore } from "effector-react"
 import { useRouter } from "next/router"
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 
 const StyledDashboardLayout = styled(DashboardLayout)`
@@ -91,6 +93,10 @@ const MainCoachBlock = styled.div`
 // А файл ТО БОЛЬШОЙ да? интересно что там в конце, наверное шрифты красивые?
 export const CoachByIdPage = () => {
   const router = useRouter()
+
+  useEffect(() => {
+    mounted({ id: Number(router.query.id) })
+  }, [])
 
   return (
     <StyledDashboardLayout>

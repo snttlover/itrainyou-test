@@ -15,10 +15,14 @@ const Placeholder = styled(Icon).attrs({ name: "rounded-user" })`
   stroke: #4858cc;
 `
 
-const AvatarImage = styled.img`
+const AvatarImage = styled.div<{ src: string | null }>`
   width: 100%;
   height: 100%;
   border-radius: 50%;
+  background-image: url(${({ src }) => src});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 `
 
 type AvatarProps = {

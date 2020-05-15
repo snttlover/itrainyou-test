@@ -1,8 +1,11 @@
 import { Avatar } from "@/application/components/avatar/Avatar"
 import { Icon } from "@/application/components/icon/Icon"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
+import { getYearsCount } from "@/application/lib/helpers/date"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { $coach } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { Block } from "@/application/pages/coach/pages/by-id/components/common/Block"
+import { useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 
@@ -85,24 +88,23 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
 `
 
 export const BaseCoachInfo = styled(({ ...props }) => {
-  const name = "Вика Иванова"
-  const year = "27"
+  const coach = useStore($coach)
   return (
     <Block inline {...props}>
-      <StyledAvatar src={null} />
+      <StyledAvatar src={coach?.avatar!} />
       <UserInfo>
         <Name>
-          {name},&nbsp;
-          <Year>{year} лет</Year>
+          {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
+          <Year>{getYearsCount(coach?.birthDate!)} лет</Year>
         </Name>
         <Rating>
           <StarIcon name='star' />
-          4,5
+          {coach?.rating}
         </Rating>
         <CategoriesContainer>
-          <Tabletka color={getCategoryColorById(1)} />
-          <Tabletka color={getCategoryColorById(2)} />
-          <Tabletka color={getCategoryColorById(3)} />
+          {coach?.categories.map(cat => (
+            <Tabletka color={getCategoryColorById(cat.id)} />
+          ))}
         </CategoriesContainer>
       </UserInfo>
     </Block>

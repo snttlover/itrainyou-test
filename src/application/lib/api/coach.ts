@@ -10,10 +10,10 @@ export interface Coach {
     creationDatetime: string
   }
   prices: {
-    D30: 'None' | number
-    D45: 'None' | number
-    D60: 'None' | number
-    D90: 'None' | number
+    D30: "None" | number
+    D45: "None" | number
+    D60: "None" | number
+    D90: "None" | number
   }
   duration: string
   firstName: string
@@ -39,7 +39,6 @@ export interface Coach {
   nearestSessionDatetime: string
 }
 
-
 export type CoachSortingType = `price` | `-price` | `popularity` | `-popularity`
 
 export interface GetCoachesParamsTypes {
@@ -61,4 +60,9 @@ export const getCoaches = (params: GetCoachesParamsTypes) =>
   get<Pagination<Coach>, GetCoachesParamsTypes>("https://dev.itrainyou.heksray.com/api/v1/web/coaches/", params)
     .then(response => response.data)
     .then(data => data.results)
+    .then(keysToCamel)
+
+export const getCoach = ({ id }: { id: number }) =>
+  get<Coach, {}>(`https://dev.itrainyou.heksray.com/api/v1/web/coaches/${id}/`)
+    .then(response => response.data)
     .then(keysToCamel)
