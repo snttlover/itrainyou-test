@@ -1,7 +1,8 @@
 import { Coach, getCoach } from "@/application/lib/api/coach"
 import { CoachReviewResponse, getCoachReviews } from "@/application/lib/api/reviews"
 import { serverStarted } from "@/store"
-import { createEffect, createEvent, createStore, forward } from "effector-next"
+import { createEffect, createEvent, createStore, forward, sample } from "effector-next"
+import { genCoachSessions } from "@/application/components/coach-card/select-date/select-date.model"
 
 export const loadCoachFx = createEffect({
   handler: getCoach
@@ -18,6 +19,18 @@ export const $reviews = createStore<CoachReviewResponse[]>([]).on(
   loadReviewsFx.doneData,
   (state, payload) => payload.results
 )
+
+export const $sessionsPickerStore = genCoachSessions()
+const loadSessions = createEffect({
+  handler: (id: number) => $sessionsPickerStore.loadData({ id, params: {} })
+})
+
+sample({
+  // @ts-ignore
+  source: serverStarted.map(({ query }) => query.id),
+  clock: loadCoachFx.done,
+  target: loadSessions
+})
 
 forward({
   // @ts-ignore

@@ -2,7 +2,7 @@ import { SelectDatetime } from "@/application/components/coach-card/select-date/
 import { Coach } from "@/application/lib/api/coach"
 import { formatISOStringToLocaleDateString } from "@/application/lib/formatting/date"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import starIcon from "./images/star.svg"
@@ -281,14 +281,17 @@ type Props = {
 
 const CoachCardLayout = ({ coach, className }: Props) => {
   const [isActive, changeActive] = useState(false)
-  const sessionsListModel = genCoachSessions(coach)
+
+  const sessionsListModel = useMemo(() => genCoachSessions(coach.id), [coach.id])
 
   if (isActive) {
-    sessionsListModel.loadData({})
+    sessionsListModel.loadData({
+      params: {}
+    })
   }
 
   const minimumPrice = Object.entries(coach.prices).reduce((acc, [key, price]) => {
-    if (price !== `None` && price < acc.price) {
+    if (price !== null && price < acc.price) {
       return {
         price: Math.ceil(price),
         text: ` за ${key.slice(1, key.length)} мин`

@@ -4,27 +4,30 @@ import {
   getCoachSessions,
   GetCoachSessionsParamsTypes
 } from "@/application/lib/api/coach-sessions"
-import { combine, createEffect, createEvent, createStore, forward } from "effector-next"
-import { Coach } from "@/application/lib/api/coach"
+import { createEffect, createEvent, createStore, forward } from "effector-next"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
 }
 
-export type TimeTabType = {
-  timeInMinutes: number
-  price: number
-  key: DurationType
+type RequestType = {
+  id?: number
+  params: GetCoachSessionsParamsTypes
 }
 
-export const genCoachSessions = (coach: Coach) => {
-  const fetchCoachSessionsListFx = createEffect<GetCoachSessionsParamsTypes, CoachSession[]>().use((params) => getCoachSessions(coach.id, params))
+export const genCoachSessions = (id= 0) => {
+  const fetchCoachSessionsListFx = createEffect<RequestType, CoachSession[]>()
+    .use((req) => getCoachSessions(req.id || id, req.params))
+
+  fetchCoachSessionsListFx.watch((params) => {
+    id = params.id || id
+  })
 
   const isFetching = createStore(false)
     .on(fetchCoachSessionsListFx, () => true)
     .on(fetchCoachSessionsListFx.finally, () => false)
 
-  const loadCoachSessions = createEvent<GetCoachSessionsParamsTypes>()
+  const loadCoachSessions = createEvent<RequestType>()
   const toggleSession = createEvent<CoachSessionWithSelect>()
   const deleteSession = createEvent<number>()
 
@@ -64,22 +67,16 @@ export const genCoachSessions = (coach: Coach) => {
     to: fetchCoachSessionsListFx
   })
 
-  const [selectedTab] = Object.entries(coach.prices).find(([key, value]) => value !== `None`)
-
   const changeDurationTab = createEvent<DurationType>()
-  const $durationTab = createStore<DurationType>(selectedTab as DurationType).on(changeDurationTab, (_, payload) => payload)
+  const $durationTab = createStore<DurationType>('D30')
+    .on(changeDurationTab, (_, payload) => payload)
 
   $durationTab.watch((state) => loadCoachSessions({
-    duration_type: state
+    id,
+    params: {
+      duration_type: state
+    }
   }))
-
-  const UITabs = Object.keys(coach.prices)
-    .filter(key => coach.prices[key as DurationType] !== `None`)
-    .map((key): TimeTabType => ({
-      timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
-      key: key as DurationType,
-      price: Math.ceil(coach.prices[key as DurationType] as number)
-    }))
 
   return {
     loading: isFetching,
@@ -88,7 +85,6 @@ export const genCoachSessions = (coach: Coach) => {
     toggleSession,
     deleteSession,
     tabs: {
-      list: UITabs,
       $durationTab,
       changeDurationTab
     }

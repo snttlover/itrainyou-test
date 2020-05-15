@@ -4,10 +4,12 @@ import { $coach, mounted } from "@/application/pages/coach/pages/by-id/coach-by-
 import { AboutCoach } from "@/application/pages/coach/pages/by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/application/pages/coach/pages/by-id/components/BaseCoachInfo"
 import { Reviews } from "@/application/pages/coach/pages/by-id/components/Reviews"
-import { useStore } from "effector-react"
 import { useRouter } from "next/router"
-import React, { useEffect } from "react"
+import React, { useEffect, useMemo } from "react"
 import styled from "styled-components"
+import {$sessionsPickerStore} from "@/application/pages/coach/pages/by-id/coach-by-id.model"
+import {CoachDatepicker} from "@/application/pages/search/content/list/content/CoachDatepicker"
+import { useStore } from "effector-react"
 
 const StyledDashboardLayout = styled(DashboardLayout)`
   background-color: #eceff1;
@@ -30,7 +32,6 @@ const BuySidebar = styled.div`
   min-width: 268px;
   width: 268px;
   height: 860px;
-  background-color: #dbdee0;
   margin-left: 24px;
 
   ${MediaRange.greaterThan("laptop")`
@@ -42,7 +43,6 @@ const BuyBlock = styled.div`
   display: flex;
   width: 100%;
   height: 480px;
-  background-color: #dbdee0;
 
   ${MediaRange.greaterThan("laptop")`
     display: none;
@@ -90,7 +90,16 @@ const MainCoachBlock = styled.div`
     `}
   }
 `
-// А файл ТО БОЛЬШОЙ да? интересно что там в конце, наверное шрифты красивые?
+
+const Datepicker = () => {
+  const coach = useStore($coach)
+
+  if (coach) {
+    return <CoachDatepicker coach={coach} sessionsData={$sessionsPickerStore} />
+  }
+  return null
+}
+
 export const CoachByIdPage = () => {
   const router = useRouter()
 
@@ -105,12 +114,16 @@ export const CoachByIdPage = () => {
           <CoachInfoContainer>
             <MainCoachBlock>
               <BaseCoachInfo />
-              <BuyBlock>{/* Вставь свой блок сюда */}</BuyBlock>
+              <BuyBlock>
+                <Datepicker />
+              </BuyBlock>
               <AboutCoach />
             </MainCoachBlock>
             <Reviews />
           </CoachInfoContainer>
-          <BuySidebar>{/* Вставь свой блок сюда */}</BuySidebar>
+          <BuySidebar>
+            <Datepicker />
+          </BuySidebar>
         </InfoWithSidebar>
       </Content>
     </StyledDashboardLayout>
