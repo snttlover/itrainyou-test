@@ -1,4 +1,4 @@
-import { createEvent, createStore, Event, Store } from "effector-next"
+import { combine, createEvent, createStore, Event, Store } from "effector-next"
 type Options<T, R> = {
   defaultValue: T
   validator?: (value: R) => string | null
@@ -8,7 +8,7 @@ type Options<T, R> = {
 
 export const createEffectorField = <T, R = T>(
   options: Options<T, R>
-): [Store<T>, Event<T>, Store<string | null>, Store<boolean>] => {
+): [Store<T>, Event<T>, Store<string | false | null>, Store<boolean>] => {
   if (!options.eventMapper) {
     options.eventMapper = event => event
   }
@@ -20,8 +20,13 @@ export const createEffectorField = <T, R = T>(
     options.validator = () => null
   }
   const changeEvent = createEvent<T>()
+  const $isDirty = createStore(false).on(changeEvent, () => true)
   const $store = createStore(options.defaultValue).on(options.eventMapper(changeEvent), (_, payload) => payload)
-  const $error = options.validatorEnhancer($store).map(options.validator)
+  const $error = combine(
+    options.validatorEnhancer($store).map(options.validator),
+    $isDirty,
+    (error, isDirty) => isDirty && error
+  )
   const $isCorrect = $error.map(value => !value)
 
   return [$store, changeEvent, $error, $isCorrect]

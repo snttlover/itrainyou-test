@@ -19,7 +19,7 @@ export const Label = styled.div`
 `
 
 const Error = styled.div`
-  color: #FF6B00;
+  color: #ff6b00;
   font-size: 12px;
   line-height: 16px;
 `
@@ -30,22 +30,18 @@ const FormItemRequiredStar = styled.span`
   font-size: 12px;
   line-height: 16px;
 
-  color: #FF6B00;
+  color: #ff6b00;
 `
 
 type FormItemTypes = {
   label?: string | React.ReactNode
   children?: React.ReactNode
   required?: boolean
-  error?: string | null
+  error?: string | null | false
   className?: string
 }
 
 export const FormItem = styled(({ label, children, error, required, ...props }: FormItemTypes) => {
-  const [isTouched, changeTouched] = useState(false)
-
-  const showError = error && isTouched
-
   return (
     <StyledFormItem {...props}>
       <Label>
@@ -53,9 +49,9 @@ export const FormItem = styled(({ label, children, error, required, ...props }: 
       </Label>
       {React.Children.map(children, child => {
         if (!React.isValidElement(child)) return null
-        return React.cloneElement(child, { error: showError, onBlur: () => changeTouched(true) })
+        return React.cloneElement(child, { error: !!error })
       })}
-      {showError && <Error>{error}</Error>}
+      {error && <Error>{error}</Error>}
     </StyledFormItem>
   )
 })``

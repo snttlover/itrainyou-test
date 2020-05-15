@@ -8,18 +8,14 @@ import { combine, createEffect, createEvent, createStoreObject, sample } from "e
 import Router from "next/router"
 
 export const step1Registered = createEvent()
-export const registerFx = createEffect<
-  UnpackedStoreObjectType<typeof $step1Form>,
-  RegisterAsUserResponse,
-  AxiosError
->({
+export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form>, RegisterAsUserResponse, AxiosError>({
   handler: ({ email, password }) => registerAsUser({ email, password })
 })
 
 registerFx.doneData.watch(payload => {
   userDataReset()
   loggedIn({ token: payload.token })
-  Router.push('/signup/[step]', '/signup/2', { shallow: true })
+  Router.push("/signup/[step]", "/signup/2", { shallow: true })
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
@@ -46,8 +42,8 @@ export const [
   passwordRepeatChanged,
   $passwordRepeatError,
   $isPasswordRepeatCorrect
-] =  createEffectorField<string, {value: string, $password: string}>({
-  validatorEnhancer: $store => combine($store, $password, (value) => ({ $password: $password.getState(), value })),
+] = createEffectorField<string, { value: string; $password: string }>({
+  validatorEnhancer: $store => combine($store, $password, value => ({ $password: $password.getState(), value })),
   defaultValue: "",
   validator: v => {
     const error = passwordValidator(v.value)

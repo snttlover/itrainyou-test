@@ -152,9 +152,11 @@ export const Step1 = () => {
           </FormItem>
           <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
             <Input value={form.passwordRepeat} type='password' onChange={passwordRepeatChanged} />
-            <PasswordHint>
-              Пароль должен быть не меньше 8 символов и содержать в себе только латинские буквы или цифры
-            </PasswordHint>
+            {!errors.passwordRepeat && (
+              <PasswordHint>
+                Пароль должен быть не меньше 8 символов и содержать в себе только латинские буквы или цифры
+              </PasswordHint>
+            )}
           </FormItem>
           <NextButton disabled={!isFormValid || isFetching} />
         </Form>
