@@ -8,7 +8,7 @@ type Options<T, R> = {
 
 export const createEffectorField = <T, R = T>(
   options: Options<T, R>
-): [Store<T>, Event<T>, Store<string | false | null>, Store<boolean>] => {
+): [Store<T>, Event<T>, Store<string | null>, Store<boolean>] => {
   if (!options.eventMapper) {
     options.eventMapper = event => event
   }
@@ -22,14 +22,12 @@ export const createEffectorField = <T, R = T>(
   const changeEvent = createEvent<T>()
   const $isDirty = createStore(false).on(changeEvent, () => true)
   const $store = createStore(options.defaultValue).on(options.eventMapper(changeEvent), (_, payload) => payload)
-  const $error = combine(
-    options.validatorEnhancer($store).map(options.validator),
-    $isDirty,
-    (error, isDirty) => isDirty && error
-  )
+  const $error = options.validatorEnhancer($store).map(options.validator)
   const $isCorrect = $error.map(value => !value)
 
-  return [$store, changeEvent, $error, $isCorrect]
+  const $errorMessage = combine($error, $isDirty, (error, isDirty) => (isDirty && error) || null)
+
+  return [$store, changeEvent, $errorMessage, $isCorrect]
 }
 
 type _U<T> = T extends Store<infer U> ? U : T
