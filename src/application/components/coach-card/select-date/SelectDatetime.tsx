@@ -52,6 +52,7 @@ const SelectTimeContainer = styled.div`
   margin-left: 36px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   & > h5 {
     margin-left: 8px;
@@ -111,9 +112,18 @@ const Summary = styled.span`
 `
 
 const ButtonContainer = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+`
+
+const ButtonWrapper = styled.div`
   border-top: 1px solid #DBDEE0;
   padding-top: 10px;
   margin-left: auto;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `
 
 export type SelectDatetimeTypes = {
@@ -241,9 +251,11 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
             Итого: <Summary>{amount} ₽</Summary>
           </Text>
           <ButtonContainer>
-            <Link href='/signup/[step]' as='/signup/1'>
-              <Button>Зарегистрироваться</Button>
-            </Link>
+            <ButtonWrapper>
+              <Link href='/signup/[step]' as='/signup/1'>
+                <Button>Зарегистрироваться</Button>
+              </Link>
+            </ButtonWrapper>
           </ButtonContainer>
         </SelectTimeContainer>
       </Block>
