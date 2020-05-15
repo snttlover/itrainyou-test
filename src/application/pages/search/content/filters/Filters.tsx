@@ -31,7 +31,7 @@ const Modal = styled.div.attrs({id: `filters-container`})<ModalTypes>`
   @media screen and (max-width: 768px) {
     margin-top: 0;
     margin-bottom: 0;
-    width: 100%;
+    width: 276px;
     height: 100%;
     position: fixed;
     top: 0;
