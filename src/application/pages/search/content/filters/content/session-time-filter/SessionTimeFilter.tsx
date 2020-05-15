@@ -23,6 +23,10 @@ const StyledCheckbox = styled(Checkbox)`
   line-height: 16px;
 `
 
+const Text = styled.div`
+  margin-left: 8px;
+`
+
 export const SessionTimeFilter = () => {
   const toggle = useEvent(toggleFilter)
   return (
@@ -30,7 +34,9 @@ export const SessionTimeFilter = () => {
       <Header>Длительность сессии</Header>
       {
         useList($priceFilters, filter => (
-          <StyledCheckbox value={filter.selected} onChange={() => toggle(filter.key)}>{filter.text}</StyledCheckbox>
+          <StyledCheckbox value={filter.selected} onChange={() => toggle(filter.key)}>
+            <Text>{filter.text}</Text>
+          </StyledCheckbox>
         ))
       }
     </Container>
