@@ -145,13 +145,18 @@ export const Step1 = () => {
         <Title>Регистрация</Title>
         <Form onSubmit={handleSubmit}>
           <FormItem label='Почта' error={errors.email}>
-            <Input value={form.email} type='email' onChange={emailChanged} />
+            <Input value={form.email} type='email' name='email' onChange={emailChanged} />
           </FormItem>
           <FormItem label='Пароль' error={errors.password}>
-            <Input value={form.password} type='password' onChange={passwordChanged} />
+            <Input value={form.password} type='password' name='password' onChange={passwordChanged} />
           </FormItem>
           <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
-            <Input value={form.passwordRepeat} type='password' onChange={passwordRepeatChanged} />
+            <Input
+              value={form.passwordRepeat}
+              type='password'
+              name='repeat-password'
+              onChange={passwordRepeatChanged}
+            />
             {!errors.passwordRepeat && (
               <PasswordHint>
                 Пароль должен быть не меньше 8 символов и содержать в себе только латинские буквы или цифры
