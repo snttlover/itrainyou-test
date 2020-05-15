@@ -6,12 +6,14 @@ import {PickerTypes} from "@/application/pages/search/content/list/content/sorti
 
 export const StyledSortingItem = styled(SearchInputItem)`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   white-space: nowrap;
 `
 
 export const SortingItemIcon = styled.img`
   margin-left: 20px;
+  height: 8px;
   width: 12px;
 `
 

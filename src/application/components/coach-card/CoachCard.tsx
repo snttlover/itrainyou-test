@@ -8,11 +8,14 @@ import styled from "styled-components"
 import starIcon from "./images/star.svg"
 import arrowIcon from "./images/arrow.svg"
 import { genCoachSessions } from "@/application/components/coach-card/select-date/select-date.model"
+import { getCategoryColorById } from "@/application/feature/categories/categories.store"
+import { Icon } from "@/application/components/icon/Icon"
 
 const MainInfoContainer = styled.div`
   display: flex;
   padding: 12px 12px 12px 16px;
   background: #fff;
+  align-items: center;
 
   &:hover {
     border: 2px solid #DBDEE0;
@@ -65,6 +68,7 @@ const Name = styled.span`
   ${MediaRange.greaterThan("tablet")`
     font-size: 20px;
     line-height: 26px;
+    margin-top: 24px;
   `}
 `
 
@@ -104,6 +108,10 @@ const PriceContainer = styled.div`
     font-size: 12px;
     line-height: 16px;
   `}
+  
+  @media screen and (max-width: 480px) {
+    order: 2;
+  }
 `
 
 
@@ -124,6 +132,10 @@ const Block = styled.div<BlockTypes>`
   background: transparent;
   transition: border 200ms ease;
   cursor: pointer;
+  
+  ${Avatar} {
+    border: 2px solid ${props => props.isTopCoach ? `#F6C435` : `#fff`};
+  }
   
   ${MainInfoContainer} {
     border: 2px solid ${({isTopCoach}) => isTopCoach ? `#DBDEE0` : `#fff`};
@@ -218,6 +230,42 @@ const Date = styled.span`
     line-height: 16px;
   `}
 `
+
+type CategoryIconTypes = {
+  color: string
+}
+
+const CategoriesIcons = styled.div`
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 480px) {
+    order: 0;
+  }
+`
+
+const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  @media screen and (max-width: 480px) {
+    order: 1;
+    width: 16px;
+    height: 16px;
+  }
+`
+
+const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  fill: ${(props) => props.color};
+  
+  @media screen and (max-width: 480px) {
+    width: 16px;
+    height: 16px;
+  }
+`
+
 type ArrowType = { reverse?: boolean }
 
 const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
@@ -261,9 +309,13 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             {`${coach.firstName} ${coach.lastName}`}
           </Name>
           <Info>
-            {coach.categories.map(category => (
-              <Category key={category.id} src={category.icon} />
-            ))}
+            { coach.isTopCoach && <TopCoachIcon /> }
+            <CategoriesIcons>
+              {coach.categories.map(category => (
+                <CategoryIcon color={getCategoryColorById(category.id)} />
+              ))}
+            </CategoriesIcons>
+
             <PriceContainer>
               <Price>{minimumPrice.price}₽ {minimumPrice.text}</Price>
             </PriceContainer>

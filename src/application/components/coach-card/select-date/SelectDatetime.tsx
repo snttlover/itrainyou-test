@@ -37,7 +37,7 @@ const Block = styled.div<StyledTabTypes>`
 `
 
 const Datepicker = styled.div`
-  max-width: 252px;
+  min-width: 252px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,6 +52,7 @@ const SelectTimeContainer = styled.div`
   margin-left: 36px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   & > h5 {
     margin-left: 8px;
@@ -100,9 +101,12 @@ const SelectedDatetimeTable = styled.table`
 `
 
 const Text = styled.div`
-  margin-top: 32px;
-  font-size: 12px;
-  line-height: 16px;
+  margin-top: 32px;  
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;  
+  color: #5B6670;
 `
 
 const Summary = styled.span`
@@ -111,9 +115,18 @@ const Summary = styled.span`
 `
 
 const ButtonContainer = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+`
+
+const ButtonWrapper = styled.div`
   border-top: 1px solid #DBDEE0;
   padding-top: 10px;
   margin-left: auto;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `
 
 export type SelectDatetimeTypes = {
@@ -178,7 +191,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const [tabs, _] = useState(props.sessionsData.tabs.list)
 
-  const [currentDate, changeCurrentDate] = useState<Date>(new Date())
+  const [currentDate, changeCurrentDate] = useState<Date | undefined>()
   const pinnedDates = sessions.map(session => session.startDatetime)
 
   const formattedDate = dayjs(currentDate).format("DD MMMM")
@@ -238,12 +251,14 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
             </tbody>
           </SelectedDatetimeTable>
           <Text>
-            Итого: <Summary>{amount} ₽</Summary>
+            Итог: {amount} ₽
           </Text>
           <ButtonContainer>
-            <Link href='/signup/[step]' as='/signup/1'>
-              <Button>Зарегистрироваться</Button>
-            </Link>
+            <ButtonWrapper>
+              <Link href='/signup/[step]' as='/signup/1'>
+                <Button>Зарегистрироваться</Button>
+              </Link>
+            </ButtonWrapper>
           </ButtonContainer>
         </SelectTimeContainer>
       </Block>

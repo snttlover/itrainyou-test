@@ -12,6 +12,18 @@ import { Content } from "./content/Content"
 import { Sorting } from "./content/list/content/sorting/Sorting"
 import { MobileTabs } from "./content/mobile-tabs/MobileTabs"
 import {GrayLayout} from "@/application/components/layouts/default/GrayLayout"
+import { Filters } from "@/application/pages/search/content/filters/Filters"
+import styled from "styled-components"
+
+const StyledPageContainer = styled(PageContainer)`
+  display: flex;
+`
+
+const ContentWrapper = styled.div`
+  flex: 1;
+`
+
+const FiltersWrapper = styled.div``
 
 export const SearchPage = () => {
   const router = useRouter()
@@ -31,11 +43,18 @@ export const SearchPage = () => {
   return (
     <GrayLayout>
       <TopBar/>
-      <PageContainer>
-        <MobileTabs/>
-        <Sorting/>
-        <Content />
-      </PageContainer>
+      <StyledPageContainer>
+        <ContentWrapper>
+          <MobileTabs/>
+          <Sorting/>
+          <Content />
+        </ContentWrapper>
+        <FiltersWrapper>
+          <Filters />
+        </FiltersWrapper>
+
+
+      </StyledPageContainer>
     </GrayLayout>
   )
 }

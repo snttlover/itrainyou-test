@@ -16,6 +16,5 @@ const Container = styled.div`
 export const Content = () => (
   <Container>
     <List />
-    <Filters />
   </Container>
 )
