@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
 import dayjs from "dayjs"
@@ -7,7 +7,7 @@ import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import {Tabs, Tab} from "@/application/components/tabs/Tabs"
-import { CoachSessionWithSelect, TimeTabType } from "@/application/components/coach-card/select-date/select-date.model"
+import { CoachSessionWithSelect } from "@/application/components/coach-card/select-date/select-date.model"
 import { Coach } from "@/application/lib/api/coach"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { Button } from "@/application/components/button/normal/Button"
@@ -17,7 +17,6 @@ import {Event} from "effector-next"
 type StyledTabTypes = {
   onlyOneCard: boolean
 }
-
 
 const Block = styled.div<StyledTabTypes>`
   background: #ffffff;
@@ -138,8 +137,7 @@ export type SelectDatetimeTypes = {
     deleteSession: Event<number>
     tabs: {
       $durationTab: Store<DurationType>,
-      changeDurationTab: Event<DurationType>,
-      list: TimeTabType[]
+      changeDurationTab: Event<DurationType>
     }
   }
 }
@@ -181,15 +179,26 @@ const TimeColumn = styled.td`
   color: #9AA0A6;
 `
 
+export const genSessionTabs = (coach: Coach) => {
+  return Object.keys(coach.prices)
+    .filter(key => coach.prices[key as DurationType] !== null)
+    .map((key) => ({
+      timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
+      key: key as DurationType,
+      price: Math.ceil(coach.prices[key as DurationType] as number)
+    }))
+}
+
 const equalDateFormat = `DDMMYYYY`
 const equalTimeFormat = `HH:mm`
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
+  const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
+
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
-  const [tabs, _] = useState(props.sessionsData.tabs.list)
 
   const [currentDate, changeCurrentDate] = useState<Date | undefined>()
   const pinnedDates = sessions.map(session => session.startDatetime)

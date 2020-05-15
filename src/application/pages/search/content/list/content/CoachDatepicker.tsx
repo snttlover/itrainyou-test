@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
 import dayjs from "dayjs"
@@ -8,7 +8,7 @@ import { useEvent, useStore } from "effector-react"
 import {Tabs, Tab} from "@/application/components/tabs/Tabs"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { Button } from "@/application/components/button/normal/Button"
-import { SelectDatetimeTypes } from "@/application/components/coach-card/select-date/SelectDatetime"
+import { genSessionTabs, SelectDatetimeTypes } from "@/application/components/coach-card/select-date/SelectDatetime"
 import { Icon } from "@/application/components/icon/Icon"
 
 type StyledTabTypes = {
@@ -121,7 +121,6 @@ const ButtonContainer = styled.div`
 `
 
 const StyledTabs = styled(Tabs)`
-  margin-top: 4px;
   width: 100%;
   position: relative;
   @media screen and (max-width: 480px) {
@@ -198,7 +197,7 @@ const SessionDate = styled.div`
 const SessionTime = styled.div`
   font-size: 12px;
   line-height: 16px;
-  text-align: right;
+  text-align: left;
   color: #424242;
   flex: 1;
 `
@@ -301,7 +300,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
-  const [tabs, _] = useState(props.sessionsData.tabs.list)
+  const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const [currentDate, changeCurrentDate] = useState<Date>(new Date())
   const pinnedDates = sessions.map(session => session.startDatetime)
