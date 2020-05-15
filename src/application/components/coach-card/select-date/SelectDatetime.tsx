@@ -101,9 +101,12 @@ const SelectedDatetimeTable = styled.table`
 `
 
 const Text = styled.div`
-  margin-top: 32px;
-  font-size: 12px;
-  line-height: 16px;
+  margin-top: 32px;  
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;  
+  color: #5B6670;
 `
 
 const Summary = styled.span`
@@ -248,7 +251,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
             </tbody>
           </SelectedDatetimeTable>
           <Text>
-            Итого: <Summary>{amount} ₽</Summary>
+            Итог: {amount} ₽
           </Text>
           <ButtonContainer>
             <ButtonWrapper>
