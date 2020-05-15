@@ -15,6 +15,7 @@ const MainInfoContainer = styled.div`
   display: flex;
   padding: 12px 12px 12px 16px;
   background: #fff;
+  align-items: center;
 
   &:hover {
     border: 2px solid #DBDEE0;
@@ -67,6 +68,7 @@ const Name = styled.span`
   ${MediaRange.greaterThan("tablet")`
     font-size: 20px;
     line-height: 26px;
+    margin-top: 24px;
   `}
 `
 
