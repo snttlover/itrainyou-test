@@ -8,6 +8,8 @@ import styled from "styled-components"
 import starIcon from "./images/star.svg"
 import arrowIcon from "./images/arrow.svg"
 import { genCoachSessions } from "@/application/components/coach-card/select-date/select-date.model"
+import { getCategoryColorById } from "@/application/feature/categories/categories.store"
+import { Icon } from "@/application/components/icon/Icon"
 
 const MainInfoContainer = styled.div`
   display: flex;
@@ -218,6 +220,23 @@ const Date = styled.span`
     line-height: 16px;
   `}
 `
+
+type CategoryIconTypes = {
+  color: string
+}
+
+const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  fill: ${(props) => props.color};
+  
+  @media screen and (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
+`
+
 type ArrowType = { reverse?: boolean }
 
 const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
@@ -262,7 +281,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Name>
           <Info>
             {coach.categories.map(category => (
-              <Category key={category.id} src={category.icon} />
+              <CategoryIcon color={getCategoryColorById(category.id)} />
             ))}
             <PriceContainer>
               <Price>{minimumPrice.price}₽ {minimumPrice.text}</Price>
