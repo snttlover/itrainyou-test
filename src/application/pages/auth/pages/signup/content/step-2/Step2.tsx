@@ -1,6 +1,6 @@
 import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
+import { WhiteNextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import { UserTypeCard } from "@/application/pages/auth/pages/signup/content/step-2/UserTypeCard"
 import { userTypeChanged, $userData } from "@/application/pages/auth/pages/signup/signup.model"
@@ -17,33 +17,23 @@ const Container = styled.div`
   flex-direction: column;
   height: 440px;
 
-  ${NextButton} {
+  ${WhiteNextButton} {
     margin-left: auto;
     margin-top: 16px;
     margin-bottom: 20px;
   }
-  
+
   ${MediaRange.greaterThan("mobile")`
     margin: 182px auto 0;
-    ${NextButton} {
+    ${WhiteNextButton} {
       margin: 64px auto;
-      color: #fff;
-      
-      & svg {
-        fill: #fff;
-      } 
     }
   `}
-  
+
   ${MediaRange.greaterThan("tablet")`
     margin: 94px auto 0;
-    ${NextButton} {
+    ${WhiteNextButton} {
       margin: 36px auto;
-      color: #fff;
-      
-      & svg {
-        fill: #fff;
-      } 
     }
   `}
 `
@@ -53,17 +43,17 @@ const Cards = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  
+
   ${UserTypeCard} {
     margin: 12px auto 0;
     height: 124px;
     width: 288px;
-    
+
     &:first-of-type {
       margin-top: 0;
     }
   }
-  
+
   ${MediaRange.greaterThan("mobile")`
     ${UserTypeCard} {
       margin: 24px auto 0;
@@ -71,7 +61,7 @@ const Cards = styled.div`
       height: 160px;
     }
   `}
-  
+
   ${MediaRange.greaterThan("tablet")`
     justify-content: center;
     flex-direction: row;
@@ -92,11 +82,11 @@ const Title = styled.h1`
 
   text-align: center;
   color: #ffffff;
-  
+
   ${MediaRange.greaterThan("mobile")`
     font-size: 32px;
     margin-bottom: 52px;
-  `}  
+  `}
 
   ${MediaRange.greaterThan("mobile")`
     margin-bottom: 64px;
@@ -119,19 +109,19 @@ export const Step2 = () => {
           <UserTypeCard
             title='клиентом'
             color='#4858CC'
-            hoverColor="#EFF2FC"
+            hoverColor='#EFF2FC'
             selected={type === "client"}
             onClick={() => userTypeChanged("client")}
           />
           <UserTypeCard
             title='коучем'
             color='#7D36A8'
-            hoverColor="#F5EFF8"
+            hoverColor='#F5EFF8'
             selected={type === "coach"}
             onClick={() => userTypeChanged("coach")}
           />
         </Cards>
-        <NextButton onClick={() => Router.push('/signup/[step]', '/signup/3')} />
+        <WhiteNextButton onClick={() => Router.push("/signup/[step]", "/signup/3")} />
       </Container>
     </AuthLayout>
   )
