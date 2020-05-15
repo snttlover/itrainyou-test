@@ -18,7 +18,8 @@ const Container = styled.div`
   justify-content: flex-end;
   flex: 1;
   margin-right: 220px;
-  padding: 20px 80px 20px 26px;
+  padding: 0px 80px 20px 26px;
+  width: 100%;
 
   @media screen and (max-width: 963px) {
     padding-right: 26px;
@@ -26,6 +27,7 @@ const Container = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
     justify-content: center;
+    padding-top: 20px;
   }
   @media screen and (max-width: 480px) {
     display: none;
