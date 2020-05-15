@@ -106,6 +106,10 @@ const PriceContainer = styled.div`
     font-size: 12px;
     line-height: 16px;
   `}
+  
+  @media screen and (max-width: 480px) {
+    order: 2;
+  }
 `
 
 
@@ -126,6 +130,10 @@ const Block = styled.div<BlockTypes>`
   background: transparent;
   transition: border 200ms ease;
   cursor: pointer;
+  
+  ${Avatar} {
+    border: 2px solid ${props => props.isTopCoach ? `#F6C435` : `#fff`};
+  }
   
   ${MainInfoContainer} {
     border: 2px solid ${({isTopCoach}) => isTopCoach ? `#DBDEE0` : `#fff`};
@@ -225,13 +233,32 @@ type CategoryIconTypes = {
   color: string
 }
 
+const CategoriesIcons = styled.div`
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 480px) {
+    order: 0;
+  }
+`
+
+const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  @media screen and (max-width: 480px) {
+    order: 1;
+    width: 16px;
+    height: 16px;
+  }
+`
+
 const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>`
   width: 24px;
   height: 24px;
   margin-right: 8px;
   fill: ${(props) => props.color};
   
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 480px) {
     width: 16px;
     height: 16px;
   }
@@ -280,9 +307,13 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             {`${coach.firstName} ${coach.lastName}`}
           </Name>
           <Info>
-            {coach.categories.map(category => (
-              <CategoryIcon color={getCategoryColorById(category.id)} />
-            ))}
+            { coach.isTopCoach && <TopCoachIcon /> }
+            <CategoriesIcons>
+              {coach.categories.map(category => (
+                <CategoryIcon color={getCategoryColorById(category.id)} />
+              ))}
+            </CategoriesIcons>
+
             <PriceContainer>
               <Price>{minimumPrice.price}₽ {minimumPrice.text}</Price>
             </PriceContainer>
