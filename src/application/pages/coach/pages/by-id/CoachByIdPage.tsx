@@ -42,7 +42,6 @@ const BuySidebar = styled.div`
 const BuyBlock = styled.div`
   display: flex;
   width: 100%;
-  height: 480px;
 
   ${MediaRange.greaterThan("laptop")`
     display: none;

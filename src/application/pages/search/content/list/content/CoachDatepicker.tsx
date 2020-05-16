@@ -10,6 +10,7 @@ import { Spinner } from "@/application/components/spinner/Spinner"
 import { Button } from "@/application/components/button/normal/Button"
 import { genSessionTabs, SelectDatetimeTypes } from "@/application/components/coach-card/select-date/SelectDatetime"
 import { Icon } from "@/application/components/icon/Icon"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -19,6 +20,11 @@ const Container = styled.div`
   width: 268px;
   margin-bottom: 20px;
   position: relative;
+  
+  ${MediaRange.lessThan(`laptop`)`
+     width: 100%;
+     margin-bottom: 0;
+  `}
 `
 
 const Block = styled.div<StyledTabTypes>`
@@ -26,14 +32,37 @@ const Block = styled.div<StyledTabTypes>`
   flex-direction: column;
   background: #fff;
   padding: 24px 8px;
+  ${MediaRange.between(`mobile`, `laptop`)`
+    flex-direction: row;   
+  `}
 `
 
 const Datepicker = styled.div`
   border-bottom: 1px solid #DBDEE0;
   padding-bottom: 4px;
+  ${MediaRange.between(`mobile`, `laptop`)`
+     width: 50%;
+     padding-right: 20px;
+     padding-left: 20px;
+     border-right: 1px solid #DBDEE0;
+     border-bottom: none;
+  `}
+  ${MediaRange.lessThan(`mobile`)`
+    margin-right: 26px;
+    margin-left: 26px;
+    padding-bottom: 12px;
+    border-bottom: none;
+  `}
 `
 
 const SelectTimeContainer = styled.div`
+  margin: 0 auto;
+  width: 100%;
+
+  ${MediaRange.between(`mobile`, `laptop`)`
+    margin: 0 auto;
+    width: 252px;
+  `}
 `
 
 const Times = styled.div`
@@ -63,27 +92,6 @@ const Tag = styled.div<{ active?: boolean }>`
   }
 `
 
-const Divider = styled.div`
-  background: #efefef;
-  height: 1px;
-  margin-top: 8px;
-  margin-bottom: 20px;
-`
-
-const SelectedDatetimeTable = styled.table`
-  font-size: 12px;
-  line-height: 16px;
-  width: 100px;
-  & tr td:first-child {
-    padding-right: 24px;
-  }
-`
-
-const Text = styled.div`
-  margin-top: 32px;
-  font-size: 12px;
-  line-height: 16px;
-`
 const DeleteIcon = styled(Icon).attrs({ name: `delete` })`
   fill: #4858CC;
   width: 15px;
@@ -123,9 +131,6 @@ const ButtonContainer = styled.div`
 const StyledTabs = styled(Tabs)`
   width: 100%;
   position: relative;
-  @media screen and (max-width: 480px) {
-    display: none;
-  }
 `
 
 const StyledDateHeader = styled.div`
@@ -133,8 +138,13 @@ const StyledDateHeader = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #424242;
-  margin-left: 12px;
-  margin-top: 16px;
+  padding-left: 12px;
+  padding-top: 16px;
+  
+  ${MediaRange.lessThan(`mobile`)`
+    border-top: 1px solid #DBDEE0;
+    padding-top: 24px;
+  `}
 `
 
 const OnlyOneTabStyles = css`
@@ -147,6 +157,9 @@ const StyledTab = styled(Tab)<StyledTabTypes>`
   display: flex;
   flex-direction: column;
   padding: 8px 13px;
+  ${MediaRange.between(`mobile`, `laptop`)`
+    flex-direction: row;
+  `}
 `
 
 const TabTime = styled.div`
@@ -156,12 +169,18 @@ const TabTime = styled.div`
   line-height: 16px;
   text-align: center;
   color: #5B6670;
+  ${MediaRange.between(`mobile`, `laptop`)`
+    font-size: 16px;
+    line-height: 22px;
+  `}
 `
 
 const TabPrice = styled.div`
   font-size: 12px;
   line-height: 16px;
   text-align: center;
+  display: flex;
+  align-items: center;
   color: #9AA0A6;
 `
 
@@ -183,6 +202,10 @@ const SelectedSession = styled.div`
   &:first-child {
     margin-top: 0;
   }
+  
+  ${MediaRange.lessThan(`mobile`)`
+    width: 252px;
+  `}
 `
 
 const SessionDate = styled.div`
@@ -227,6 +250,9 @@ const Amount = styled.div`
   align-items: center;
   width: 216px;
   margin: 0 auto;
+  ${MediaRange.lessThan(`mobile`)`
+    width: 252px;
+  `}
 `
 
 const AmountText = styled.div`
@@ -236,16 +262,24 @@ const AmountText = styled.div`
   color: #424242;
 `
 
-const TimeColumn = styled.td`
-  color: #9AA0A6;
-`
-
 const SessionPackagesStatWrapper = styled.div`
   margin-top: 24px;
-  margin-top: 1px solid #DBDEE0;
+  border-top: 1px solid #DBDEE0;
   padding-top: 20px;
   width: 216px;
   margin: 0 auto;
+  
+  ${MediaRange.between(`mobile`, `laptop`)`
+    border-top: none;
+ `}
+  
+  ${MediaRange.lessThan(`mobile`)`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  `}
 `
 
 const SessionPackagePercent = styled.div`
@@ -264,6 +298,10 @@ const SessionPackage = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  ${MediaRange.lessThan(`mobile`)`
+    width: 252px;
+  `}
 `
 
 const SessionPackageText = styled.div`
@@ -280,6 +318,10 @@ const SessionPackagesDescription = styled.div`
   text-align: center;
   color: #5B6670;
   margin-top: 16px;
+  
+  ${MediaRange.lessThan(`mobile`)`
+    width: 212px;
+  `}
 `
 
 const SessionsPackagesTitle = styled.div`
@@ -289,6 +331,73 @@ const SessionsPackagesTitle = styled.div`
   line-height: 22px;
   color: #424242;
   margin-bottom: 7px;
+  
+  ${MediaRange.lessThan(`mobile`)`
+    width: 252px;
+  `}
+`
+
+const Footer = ({ className } : {className?: string}) => (
+  <SessionPackagesStatWrapper className={className}>
+    <SessionsPackagesTitle>
+      Пакеты сессий
+    </SessionsPackagesTitle>
+    <SessionPackage>
+      <SessionPackageText>
+        2 сессии
+      </SessionPackageText>
+      <SessionPackagePercent>
+        15%
+      </SessionPackagePercent>
+    </SessionPackage>
+    <SessionPackagesDescription>
+      Просто выберите сессии и акция автоматически активизируется
+    </SessionPackagesDescription>
+  </SessionPackagesStatWrapper>
+)
+
+const TabletFooter = styled(Footer)`
+  display: none;
+  ${MediaRange.between(`mobile`, `laptop`)`
+    display: block;
+    
+    ${SessionPackagesDescription} {
+      color: #4858CC;
+    }
+ `}
+`
+
+const DesktopFooter = styled(Footer)`
+  display: flex;
+  margin-top: 24px;
+  ${MediaRange.between(`mobile`, `laptop`)`
+    display: none;
+ `}
+`
+
+const StyledCalendar = styled(Calendar)`
+  ${MediaRange.between(`mobile`, `laptop`)`
+    max-width: 252px;
+    margin: 0 auto;
+ `}
+`
+
+const Delemiter = styled.div`
+  display: none;
+  ${MediaRange.between(`mobile`, `laptop`)`
+    display: flex;
+  `}
+`
+
+const FooterWrapper = styled.div`
+  display: none;
+  width: 100%;
+  border-top: 1px solid #DBDEE0;
+  ${MediaRange.between(`mobile`, `laptop`)`
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+ `}
 `
 
 const equalDateFormat = `DDMMYYYY`
@@ -302,7 +411,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const deleteSession = useEvent(props.sessionsData.deleteSession)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
-  const [currentDate, changeCurrentDate] = useState<Date>(new Date())
+  const [currentDate, changeCurrentDate] = useState<Date | undefined>()
   const pinnedDates = sessions.map(session => session.startDatetime)
 
   const formattedDate = dayjs(currentDate).format("DD MMMM")
@@ -332,14 +441,21 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
         {tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
-            <TabPrice>{tab.price} ₽</TabPrice>
+            <TabPrice>
+              <Delemiter> / </Delemiter>
+              {tab.price} ₽
+            </TabPrice>
           </StyledTab>
         ))}
       </StyledTabs>
       <Block onlyOneCard={tabs.length === 1}>
         { loading && <Spinner /> }
         <Datepicker>
-          <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
+          <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
+
+          <FooterWrapper>
+            <TabletFooter />
+          </FooterWrapper>
         </Datepicker>
         <SelectTimeContainer>
           <StyledDateHeader>{formattedDate}</StyledDateHeader>
@@ -372,22 +488,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               <StyledButton>Зарегистрироваться</StyledButton>
             </Link>
           </ButtonContainer>
-          <SessionPackagesStatWrapper>
-            <SessionsPackagesTitle>
-              Пакеты сессий
-            </SessionsPackagesTitle>
-            <SessionPackage>
-              <SessionPackageText>
-                2 сессии
-              </SessionPackageText>
-              <SessionPackagePercent>
-                15%
-              </SessionPackagePercent>
-            </SessionPackage>
-            <SessionPackagesDescription>
-              Просто выберите сессии и акция автоматически активизируется
-            </SessionPackagesDescription>
-          </SessionPackagesStatWrapper>
+          <DesktopFooter />
         </SelectTimeContainer>
       </Block>
     </Container>
