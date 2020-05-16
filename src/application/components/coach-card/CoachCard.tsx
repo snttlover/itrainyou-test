@@ -10,6 +10,7 @@ import arrowIcon from "./images/arrow.svg"
 import { genCoachSessions } from "@/application/components/coach-card/select-date/select-date.model"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { Icon } from "@/application/components/icon/Icon"
+import Router from 'next/router'
 
 const MainInfoContainer = styled.div`
   display: flex;
@@ -290,6 +291,15 @@ const CoachCardLayout = ({ coach, className }: Props) => {
     })
   }
 
+  const toggleCalendar = (e: React.SyntheticEvent) => {
+    changeActive(!isActive)
+    e.stopPropagation()
+  }
+
+  const redirectToCoach = () => {
+    Router.push(`/coach/${coach.id}`)
+  }
+
   const minimumPrice = Object.entries(coach.prices).reduce((acc, [key, price]) => {
     if (price !== null && price < acc.price) {
       return {
@@ -304,8 +314,8 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
 
   return (
-    <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
-      <MainInfoContainer onClick={() => changeActive(!isActive)} >
+    <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach} onClick={redirectToCoach}>
+      <MainInfoContainer>
         <Avatar image={coach.avatar} />
         <NameContainer>
           <Name>
@@ -330,7 +340,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             <Star />
             <Rating>{rating}</Rating>
           </Meta>
-          <Date>
+          <Date onClick={toggleCalendar}>
             {formatISOStringToLocaleDateString(coach.nearestSessionDatetime, "DD MMMM HH:mm")}
             <Arrow reverse={isActive} />
           </Date>
