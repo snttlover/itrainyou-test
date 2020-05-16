@@ -19,7 +19,6 @@ export const AuthLogoLink = styled.div`
   background: url("${mobileLogo}");
   width: 36px;
   height: 36px;
-  cursor: pointer;
 
   ${MediaRange.greaterThan("mobile")`  
     background: url("${desktopLogo}");
@@ -37,6 +36,8 @@ export const AuthLogoLink = styled.div`
 
 export const AuthLayoutLogo = () => (
   <Link href='/' as='/' passHref>
-    <AuthLogoLink />
+    <a>
+      <AuthLogoLink />
+    </a>
   </Link>
 )
