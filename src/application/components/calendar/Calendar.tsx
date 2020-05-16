@@ -178,6 +178,8 @@ function firsDayOfMonth(month: number, year: number) {
 export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
 
+  const pinnedDefined = !!props.pinnedDates
+
   const equalFormat = `DDMMYYYY`
   const pinnedDates = (props.pinnedDates || []).map(date => dayjs(date).format(equalFormat))
 
@@ -188,7 +190,7 @@ export const Calendar = (props: CalendarTypes) => {
   const customClassNames = ({ date }: CustomClassNamesTypes) => {
     const classes = []
 
-    if (pinnedDates.length) {
+    if (pinnedDefined) {
       if (pinnedDates.includes(dayjs(date).format(equalFormat))) {
         classes.push(`pinned`)
       } else {
