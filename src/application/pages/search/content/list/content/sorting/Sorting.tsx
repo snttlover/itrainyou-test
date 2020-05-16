@@ -1,5 +1,5 @@
 import * as React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { useStore } from "effector-react"
 import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
 import { declOfNum, DeclOfNumListType } from "@/application/lib/formatting/numerals"
@@ -12,6 +12,7 @@ import {
 import { SearchInputItem } from "@/application/components/search-input/SearchInputItem"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { changeMobileFiltersVisibility } from "@/application/pages/search/content/mobile-tabs/mobile-tabs.model"
+import { hasFilters } from "@/application/pages/search/content/mobile-tabs/MobileTabs"
 
 const Container = styled.div`
   display: flex;
@@ -46,17 +47,33 @@ const StyledSorting = styled.div`
   }
 `
 
-const TabletFiltersButton = styled.div`
+const TabletFiltersButton = styled.div<{ pin?: boolean }>`
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
   color: #424242;
   display: flex;
   cursor: pointer;
+  position: relative;
     
   ${MediaRange.greaterThan("tablet")`  
     display: none;
   `}
+  
+  ${({ pin }) =>
+  pin &&
+  css`
+      &:after {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #FF6B00;
+        border-radius: 50%;
+        right: -7px;
+        top: 0px;
+      }
+    `}
 `
 
 const SortingText = styled.div`
@@ -130,7 +147,7 @@ export const Sorting = () => {
             </>
           )}
         </SortingItemsWrapper>
-        <TabletFiltersButton onClick={() => changeMobileFiltersVisibility(true)}>Фильтры</TabletFiltersButton>
+        <TabletFiltersButton pin={hasFilters(query)} onClick={() => changeMobileFiltersVisibility(true)}>Фильтры</TabletFiltersButton>
       </StyledSorting>
     </Container>
   )

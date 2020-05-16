@@ -62,13 +62,29 @@ const Filters = styled.span<{ pin?: boolean }>`
         position: absolute;
         width: 6px;
         height: 6px;
-        background: #d5584d;
+        background: #FF6B00;
         border-radius: 50%;
-        right: -5px;
-        top: -3px;
+        right: -7px;
+        top: 0px;
       }
     `}
 `
+
+const usedFilters: (keyof GetCoachesParamsTypes)[] = [
+  "price__lte",
+  "price__gte",
+  "price",
+  "is_top_coach",
+  "rating",
+  "rating__gte",
+  "nearest_session_date__gte",
+  "nearest_session_date__lte",
+  "session_duration_types"
+]
+
+export const hasFilters = (params: GetCoachesParamsTypes) => {
+  return usedFilters.reduce((hasFilter, currentKey): boolean => hasFilter || !!params[currentKey], false)
+}
 
 export const MobileTabs = () => {
   const params = useStore($searchPageQuery)
@@ -86,21 +102,6 @@ export const MobileTabs = () => {
     return filter ? filter.text : `Сортировка`
   }
 
-  const usedFilters: (keyof GetCoachesParamsTypes)[] = [
-    "price__lte",
-    "price__gte",
-    "price",
-    "is_top_coach",
-    "rating",
-    "rating__gte",
-    "nearest_session_date__gte",
-    "nearest_session_date__lte"
-  ]
-
-  const hasFilters = () => {
-    return usedFilters.reduce((hasFilter, currentKey): boolean => hasFilter || !!params[currentKey], false)
-  }
-
   return (
     <Container>
       <StyledSortingPicker current={current} sort={navigate}>
@@ -110,7 +111,7 @@ export const MobileTabs = () => {
         </Tab>
       </StyledSortingPicker>
       <StyledFiltersTab onClick={() => changeMobileFiltersVisibility(true)}>
-        <Filters pin={hasFilters()}>Фильтры</Filters>
+        <Filters pin={hasFilters(params)}>Фильтры</Filters>
       </StyledFiltersTab>
     </Container>
   )
