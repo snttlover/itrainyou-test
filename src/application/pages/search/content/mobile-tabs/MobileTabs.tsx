@@ -6,6 +6,8 @@ import { $searchPageQuery, addSearchPageQuery } from "@/application/pages/search
 import { CoachSortingType, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { SortingContainer, SortingPicker } from "@/application/pages/search/content/list/content/sorting/SortingPicker"
 
+import { sortingItems, SortingItemType } from "@/application/pages/search/content/list/content/sorting/items"
+
 import sortingArrow from "./images/sorting-arrow.svg"
 const Container = styled.div`
   display: none;
@@ -79,6 +81,11 @@ export const MobileTabs = () => {
     })
   }
 
+  const getFilterName = () => {
+    const filter = sortingItems.find(item => item.value === params.ordering)
+    return filter ? filter.text : `Сортировка`
+  }
+
   const usedFilters: (keyof GetCoachesParamsTypes)[] = [
     "price__lte",
     "price__gte",
@@ -98,8 +105,8 @@ export const MobileTabs = () => {
     <Container>
       <StyledSortingPicker current={current} sort={navigate}>
         <Tab>
-          Сортировка
-          <Arrow />
+          { getFilterName() }
+          { !params.ordering && <Arrow /> }
         </Tab>
       </StyledSortingPicker>
       <StyledFiltersTab onClick={() => changeMobileFiltersVisibility(true)}>
