@@ -32,8 +32,6 @@ const Container = styled.div`
   left: 0;
   top: 0;
   padding: 16px;
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
   overflow-y: auto;
   @media screen and (min-width: 769px) {
@@ -48,33 +46,58 @@ const StyledSearch = styled(Search)`
     border-radius: 2px !important;
     padding: 14px 16px;
   }
+  ${MediaRange.lessThan(`mobile`)`
+    margin-top: 3px;
+    ${Input} {
+      padding: 8px;
+    }
+  `}
 `
 
+const tabletCloseIconSize = `36px`
+const mobileCloseIconSize = `24px`
 const Close = styled(Icon).attrs({ name: `close` })`
-  width: 36px;
-  height: 36px;
+  fill: #4858CC;
+  width: ${tabletCloseIconSize};
+  height: ${tabletCloseIconSize};
   align-self: flex-end;
+  ${MediaRange.lessThan(`mobile`)`
+    width: ${mobileCloseIconSize};
+    height: ${mobileCloseIconSize};
+  `}
 `
 
 const CategoriesWrapper = styled.div`
-  flex: 1;
-  margin-top: 40px;
+  margin-top: 64px;
   ${StyledCategoryCheckbox} {
     margin-top: 12px;
     background: #fff;  
     padding: 12px 16px;
     border-radius: 2px;
   }
+  ${MediaRange.lessThan(`mobile`)`
+    margin-top: 24px;
+  `}
+`
+
+const ItemsWrapper = styled.div`
+  height: auto;
+  min-height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 `
 
 const SearchButtonWrapper = styled.div`
   display:flex;
   align-items: center;
   justify-content: center;
+  margin-top: 54px;
   ${Button} {
     flex: 1;
   }
   ${MediaRange.greaterThan("mobile")`
+    margin-top: 64px;
     ${Button} {
       flex: 0;
       flex-basis: 160px;
@@ -87,15 +110,17 @@ export const MobileMenu = () => {
 
   const Menu = (
     <Container>
-      <Close onClick={() => changeMenuVisibility(false)} />
-      <StyledSearch />
+      <ItemsWrapper>
+        <Close onClick={() => changeMenuVisibility(false)} />
+        <StyledSearch />
 
-      <CategoriesWrapper>
-        <Categories />
-      </CategoriesWrapper>
-      <SearchButtonWrapper>
-        <Button onClick={() => changeMenuVisibility(false)} >Поиск</Button>
-      </SearchButtonWrapper>
+        <CategoriesWrapper>
+          <Categories />
+        </CategoriesWrapper>
+        <SearchButtonWrapper>
+          <Button onClick={() => changeMenuVisibility(false)} >Поиск</Button>
+        </SearchButtonWrapper>
+      </ItemsWrapper>
     </Container>
   )
 
