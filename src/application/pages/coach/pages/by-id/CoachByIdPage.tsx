@@ -10,6 +10,7 @@ import styled from "styled-components"
 import {$sessionsPickerStore} from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import {CoachDatepicker} from "@/application/pages/search/content/list/content/CoachDatepicker"
 import { useStore } from "effector-react"
+import { GrayLayout } from "@/application/components/layouts/default/GrayLayout"
 
 const StyledDashboardLayout = styled(DashboardLayout)`
   background-color: #eceff1;
@@ -107,7 +108,7 @@ export const CoachByIdPage = () => {
   }, [])
 
   return (
-    <StyledDashboardLayout>
+    <GrayLayout>
       <Content>
         <InfoWithSidebar>
           <CoachInfoContainer>
@@ -125,6 +126,6 @@ export const CoachByIdPage = () => {
           </BuySidebar>
         </InfoWithSidebar>
       </Content>
-    </StyledDashboardLayout>
+    </GrayLayout>
   )
 }
