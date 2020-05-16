@@ -6,6 +6,8 @@ import { $searchPageQuery, addSearchPageQuery } from "@/application/pages/search
 import { CoachSortingType, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { SortingContainer, SortingPicker } from "@/application/pages/search/content/list/content/sorting/SortingPicker"
 
+import { sortingItems, SortingItemType } from "@/application/pages/search/content/list/content/sorting/items"
+
 import sortingArrow from "./images/sorting-arrow.svg"
 const Container = styled.div`
   display: none;
@@ -60,13 +62,29 @@ const Filters = styled.span<{ pin?: boolean }>`
         position: absolute;
         width: 6px;
         height: 6px;
-        background: #d5584d;
+        background: #FF6B00;
         border-radius: 50%;
-        right: -5px;
-        top: -3px;
+        right: -7px;
+        top: 0px;
       }
     `}
 `
+
+const usedFilters: (keyof GetCoachesParamsTypes)[] = [
+  "price__lte",
+  "price__gte",
+  "price",
+  "is_top_coach",
+  "rating",
+  "rating__gte",
+  "nearest_session_date__gte",
+  "nearest_session_date__lte",
+  "session_duration_types"
+]
+
+export const hasFilters = (params: GetCoachesParamsTypes) => {
+  return usedFilters.reduce((hasFilter, currentKey): boolean => hasFilter || !!params[currentKey], false)
+}
 
 export const MobileTabs = () => {
   const params = useStore($searchPageQuery)
@@ -79,31 +97,21 @@ export const MobileTabs = () => {
     })
   }
 
-  const usedFilters: (keyof GetCoachesParamsTypes)[] = [
-    "price__lte",
-    "price__gte",
-    "price",
-    "is_top_coach",
-    "rating",
-    "rating__gte",
-    "nearest_session_date__gte",
-    "nearest_session_date__lte"
-  ]
-
-  const hasFilters = () => {
-    return usedFilters.reduce((hasFilter, currentKey): boolean => hasFilter || !!params[currentKey], false)
+  const getFilterName = () => {
+    const filter = sortingItems.find(item => item.value === params.ordering)
+    return filter ? filter.text : `Сортировка`
   }
 
   return (
     <Container>
       <StyledSortingPicker current={current} sort={navigate}>
         <Tab>
-          Сортировка
-          <Arrow />
+          { getFilterName() }
+          { !params.ordering && <Arrow /> }
         </Tab>
       </StyledSortingPicker>
       <StyledFiltersTab onClick={() => changeMobileFiltersVisibility(true)}>
-        <Filters pin={hasFilters()}>Фильтры</Filters>
+        <Filters pin={hasFilters(params)}>Фильтры</Filters>
       </StyledFiltersTab>
     </Container>
   )

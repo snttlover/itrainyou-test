@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { Button } from "../normal/Button";
 
-export const DashedButton = styled(Button)<{ secondary? : boolean }>`
+export const DashedButton = styled(Button)`
   background: transparent;
   color: ${({secondary}) => secondary ? '#7D36A8' : '#4858CC'};
   border: 1px solid ${({secondary}) => secondary ? '#7D36A8' : '#4858CC'};

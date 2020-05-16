@@ -54,8 +54,8 @@ const Arrow = styled.img.attrs({ src: arrowImage })<ArrowTypes>`
 export const DateFilter = () => {
   const q = useStore($searchPageQuery)
 
-  let start = q.nearest_session_date__lte ? dayjs(q.nearest_session_date__lte).valueOf() : null
-  let end = q.nearest_session_date__gte ? dayjs(q.nearest_session_date__gte).valueOf() : null
+  let start = q.nearest_session_date__gte ? dayjs(q.nearest_session_date__lte).valueOf() : null
+  let end = q.nearest_session_date__lte ? dayjs(q.nearest_session_date__gte).valueOf() : null
 
   const getRangeType = () => {
     if (!!start && !!end) {
@@ -128,9 +128,9 @@ export const DateFilter = () => {
       changeDate(date)
       addSearchPageQuery({
         // @ts-ignore
-        nearest_session_date__lte: formatDateToBackend(date[0]),
+        nearest_session_date__lte: formatDateToBackend(date[1]),
         // @ts-ignore
-        nearest_session_date__gte: formatDateToBackend(date[1])
+        nearest_session_date__gte: formatDateToBackend(date[0])
       })
       return
     }

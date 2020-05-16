@@ -64,6 +64,7 @@ type SearchInputTypes = {
   onChange?: (value: string) => void
   onKeyDown?: (e: React.KeyboardEvent) => void
   onFocus?: (e: React.FocusEvent) => void
+  onBlur?: (e: React.FocusEvent) => void
 }
 
 export const SearchInput = (props: SearchInputTypes) => {
@@ -94,6 +95,9 @@ export const SearchInput = (props: SearchInputTypes) => {
           onFocus={e => {
             changeFocus(true)
             props.onFocus && props.onFocus(e)
+          }}
+          onBlur={(e) => {
+            props.onBlur && props.onBlur(e)
           }}
           onKeyDown={props.onKeyDown}
         />

@@ -44,6 +44,7 @@ export type InputTypes = {
   className?: string
   onChange?: (value: string) => void
   onFocus?: (e: React.FocusEvent) => void
+  onBlur?: (e: React.FocusEvent) => void
   onKeyDown?: (e: React.KeyboardEvent) => void
   error?: boolean
 }
