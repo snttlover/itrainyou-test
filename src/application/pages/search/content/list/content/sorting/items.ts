@@ -17,8 +17,8 @@ export const sortingItems: SortingItemType[] = [
     hideIconOnDesktop: true
   },
   {
-    text: `По популярности`,
-    value: `-popularity`,
+    text: `По дате`,
+    value: `nearest_session_datetime`,
     icon: downArrow,
     hideIconOnDesktop: true
   },
