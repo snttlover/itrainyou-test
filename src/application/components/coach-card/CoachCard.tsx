@@ -35,7 +35,7 @@ const Avatar = styled.div<{ image: string }>`
   background-size: cover;
   border-radius: 50%;
   border: 2px solid #fff;
-  transition: border 300ms;
+  transition: border 200ms;
   
   @media screen and (max-width: 600px) {
     width: 60px;

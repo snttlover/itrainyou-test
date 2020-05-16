@@ -11,6 +11,7 @@ import {
 import { useStore } from "effector-react"
 import { useState } from "react"
 import styled from "styled-components"
+import { $searchPageQuery } from "@/application/pages/search/coaches-search.model"
 
 const Icon = styled.img.attrs({ src: searchIcon })`
   position: absolute;
@@ -37,6 +38,7 @@ type SearchProps = {
 }
 
 export const Search = (props: SearchProps) => {
+  const params = useStore($searchPageQuery)
   const query = useStore($search)
 
   const hints = useStore($hintsList)
@@ -49,15 +51,22 @@ export const Search = (props: SearchProps) => {
     changeSelectedHint(selectedHint - 1 < -1 ? hints.length - 1 : selectedHint - 1)
   }
 
+  const searchHandler = (value?: string) => {
+    if ((!params.search || !decodeURI(params.search).trim()) && !query.trim()) {
+      return
+    }
+    find(value || query)
+  }
+
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
       if (selectedHint !== -1) {
-        find(hints[selectedHint].value)
+        searchHandler(hints[selectedHint].value)
         changeSelectedHint(-1)
         return
       }
 
-      find(query)
+      searchHandler()
     }
 
     if (e.keyCode === 40) {
@@ -73,7 +82,7 @@ export const Search = (props: SearchProps) => {
 
   return (
     <Container className={props.className}>
-      <Icon onClick={() => find(query)} />
+      <Icon onClick={() => searchHandler()} />
       <SearchInput
         className={props.className}
         value={query}
@@ -85,7 +94,7 @@ export const Search = (props: SearchProps) => {
         onKeyDown={keydownHandler}
       >
         {hints.map((hint, i) => (
-          <SearchInputItem key={hint.id} onClick={() => find(hint.value)} isActive={selectedHint === i}>
+          <SearchInputItem key={hint.id} onClick={() => searchHandler()} isActive={selectedHint === i}>
             {hint.value}
           </SearchInputItem>
         ))}
