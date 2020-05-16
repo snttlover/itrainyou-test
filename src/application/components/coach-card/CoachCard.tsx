@@ -34,6 +34,8 @@ const Avatar = styled.div<{ image: string }>`
   background-position: center;
   background-size: cover;
   border-radius: 50%;
+  border: 2px solid #fff;
+  transition: border 300ms;
   
   @media screen and (max-width: 600px) {
     width: 60px;
@@ -133,9 +135,11 @@ const Block = styled.div<BlockTypes>`
   background: transparent;
   transition: border 200ms ease;
   cursor: pointer;
-  
-  ${Avatar} {
-    border: 2px solid ${props => props.isTopCoach ? `#F6C435` : `#fff`};
+
+  &:hover {
+    ${Avatar} {
+      border: 2px solid #F6C435;
+    }
   }
   
   ${MainInfoContainer} {
