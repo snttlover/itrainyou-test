@@ -1,6 +1,9 @@
 import * as React from "react"
 import styled from "styled-components"
-import { $recoveryForm, updateRecoverySuccessMessageVisibility } from "@/application/pages/auth/pages/recovery/recovery.model"
+import {
+  $recoveryForm,
+  updateRecoverySuccessMessageVisibility
+} from "@/application/pages/auth/pages/recovery/recovery.model"
 import { useStore } from "effector-react"
 
 const Title = styled.h3`
@@ -40,7 +43,7 @@ const Paragraph = styled.div`
 `
 
 const Link = styled.div`
-  color: #2e9dea;
+  color: #4858cc;
   cursor: pointer;
   display: inline;
 `
