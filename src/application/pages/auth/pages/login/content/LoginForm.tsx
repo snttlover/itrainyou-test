@@ -1,3 +1,4 @@
+import { PasswordInput } from "@/application/components/input/PasswordInput"
 import * as React from "react"
 import styled from "styled-components"
 import { Input } from "@/application/components/input/Input"
@@ -56,7 +57,7 @@ export const LoginForm = () => {
         <Input value={form.email} name='email' type='email' onChange={emailChanged} />
       </FormItem>
       <FormItem label='Пароль' error={errors.password}>
-        <Input value={form.password} name='password' onChange={passwordChanged} type='password' />
+        <PasswordInput value={form.password} name='password' onChange={passwordChanged} />
       </FormItem>
       {error && <Error>{error}</Error>}
       <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>
