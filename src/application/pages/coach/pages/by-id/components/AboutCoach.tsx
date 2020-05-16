@@ -22,6 +22,12 @@ const Title = styled.h3`
   &:not(:first-child) {
     margin-top: 12px;
   }
+
+  ${MediaRange.greaterThan("mobile")`
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 26px;
+  `}
 `
 
 const Description = styled.h3`
@@ -32,6 +38,11 @@ const Description = styled.h3`
   font-size: 14px;
   line-height: 18px;
   color: #424242;
+
+  ${MediaRange.greaterThan("mobile")`
+    font-size: 16px;
+    line-height: 22px;
+  `}
 `
 
 const Photos = styled.div`
