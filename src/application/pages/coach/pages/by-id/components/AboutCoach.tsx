@@ -63,10 +63,10 @@ export const AboutCoach = styled(props => {
           <Description>{coach?.description}</Description>
         </>
       )}
-      {coach?.workExpirience && (
+      {coach?.workExperience && (
         <>
           <Title>Опыт работы</Title>
-          <Description>{coach?.workExpirience}</Description>
+          <Description>{coach?.workExperience}</Description>
         </>
       )}
       {coach?.education && (

@@ -25,7 +25,7 @@ export interface Coach {
   isTopCoach: boolean
   photos: string[]
   description: string
-  workExpirience: string
+  workExperience: string
   education: string
   categories: {
     id: number
