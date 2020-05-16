@@ -29,6 +29,8 @@ export type IconName =
   | "star"
   | "full-star"
   | "half-star"
+  | "eye-open"
+  | "eye-close"
   | "hand"
   | "help"
   | "home"

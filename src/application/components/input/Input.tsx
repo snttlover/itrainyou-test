@@ -35,7 +35,7 @@ const TextBox = styled.input<{ error?: boolean; withoutBorder?: boolean }>`
   }
 `
 
-type InputTypes = {
+export type InputTypes = {
   name?: string
   value: string
   placeholder?: string

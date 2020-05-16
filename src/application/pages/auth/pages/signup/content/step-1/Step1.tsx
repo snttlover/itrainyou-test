@@ -1,5 +1,6 @@
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
+import { PasswordInput } from "@/application/components/input/PasswordInput"
 import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
 import { logout } from "@/application/feature/user/user.model"
 import { MediaRange } from "@/application/lib/responsive/media"
@@ -148,7 +149,7 @@ export const Step1 = () => {
             <Input value={form.email} type='email' name='email' onChange={emailChanged} />
           </FormItem>
           <FormItem label='Пароль' error={errors.password}>
-            <Input value={form.password} type='password' name='password' onChange={passwordChanged} />
+            <PasswordInput value={form.password} name='password' onChange={passwordChanged} />
           </FormItem>
           <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
             <Input
