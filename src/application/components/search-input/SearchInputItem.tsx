@@ -10,11 +10,8 @@ export const SearchInputItem = styled.div<SearchInputItemTypes>`
   padding: 8px 21px;
   font-size: 16px;
   line-height: 22px;
-  background: #fff;
+  background: ${props => props.isActive ? `#F8F8FD` : `#fff`};
   cursor: pointer;
-  &.active {
-    background: #F8F8FD;
-  }
   &:hover {
     background: #F8F8FD;
   }
