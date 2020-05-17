@@ -96,7 +96,11 @@ const ButtonContainer = styled.div`
 `
 
 const SendRequestButton = styled(Button)`
+  width: 288px;
   margin: 32px auto 44px;
+  ${MediaRange.greaterThan("mobile")`
+    width: auto;
+  `}
 `
 
 export const CoachInformation = () => {
