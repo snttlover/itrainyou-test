@@ -119,9 +119,15 @@ const Year = styled.span`
   font-size: 14px;
   line-height: 18px;
 
-  ${MediaRange.greaterThan("mobile")`    
+  ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
+    &:before {
+      content: "("
+    }
+    &:after {    
+      content: ")"
+    }
   `}
 `
 
