@@ -178,7 +178,7 @@ export const UploadVideo = () => {
             </Video>
           </VideoContainer>
         )}
-        {!isVideoUploading && <AddVideo onClick={open}>Добавить видео</AddVideo>}
+        {!isVideoUploading && <AddVideo onClick={open}>Загрузить видео</AddVideo>}
       </InterviewQuestions>
       <input {...getInputProps()} />
     </InterviewContainer>
