@@ -1,4 +1,4 @@
-import { DashedButton } from "@/application/components/button/dashed/DashedButton"
+import { Button } from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
@@ -32,7 +32,7 @@ const Warning = styled.p`
   margin-top: 12px;
 `
 
-const SelectPhotoButton = styled(DashedButton).attrs({ secondary: true })`
+const SelectPhotoButton = styled(Button)`
   margin-top: 56px;
   margin-left: auto;
   margin-right: auto;
