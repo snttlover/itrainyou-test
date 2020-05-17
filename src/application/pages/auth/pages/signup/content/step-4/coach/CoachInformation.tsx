@@ -57,6 +57,7 @@ const CategoriesTitle = styled.h3`
   font-weight: normal;
   font-size: 16px;
   line-height: 26px;
+  margin: 0 8px;
   color: #7d36a8;
   ${MediaRange.greaterThan("mobile")`
     margin: 0 auto;
