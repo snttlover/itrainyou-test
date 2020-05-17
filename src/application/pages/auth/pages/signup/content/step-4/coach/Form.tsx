@@ -103,14 +103,15 @@ export const Form = () => {
         <Textarea withoutBorder value={values.description} onChange={descriptionChanged} rows={8} />
       </FormItem>
       <FormItem label='Телефон' error={errors.phone}>
-        <InputMask
-          mask='+7 999 999-99-99'
+        <Input
+          mask='+7 111 111-11-11'
           placeholder='+7 900 000-00-00'
           value={values.phone}
           onChange={(value: any) => phoneChanged(value)}
-        >
-          {(inputProps: any) => <Input {...inputProps} withoutBorder type='tel' />}
-        </InputMask>
+          withoutBorder
+          type='tel'
+        />
+        }
       </FormItem>
       <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <Photos />

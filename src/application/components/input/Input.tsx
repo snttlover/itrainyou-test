@@ -1,4 +1,5 @@
 import * as React from "react"
+import MaskedInput from "react-maskedinput"
 import styled from "styled-components"
 
 const TextBox = styled.input<{ error?: boolean; withoutBorder?: boolean }>`
@@ -47,6 +48,7 @@ export type InputTypes = {
   onBlur?: (e: React.FocusEvent) => void
   onKeyDown?: (e: React.KeyboardEvent) => void
   error?: boolean
+  mask?: string
 }
 
 export const Input = styled((props: InputTypes) => {
@@ -56,5 +58,5 @@ export const Input = styled((props: InputTypes) => {
     }
   }
 
-  return <TextBox {...props} onChange={change} />
+  return <TextBox as={props.mask ? MaskedInput : "input"} {...props} onChange={change} />
 })``
