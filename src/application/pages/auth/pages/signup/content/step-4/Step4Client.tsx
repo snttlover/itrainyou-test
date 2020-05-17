@@ -23,7 +23,7 @@ const Container = styled.div`
   ${MediaRange.greaterThan("mobile")`    
     margin: 20px 32px 0;
   `}
-  
+
   ${MediaRange.greaterThan("tablet")`
     margin: 20px auto 0;
   `}
@@ -33,11 +33,11 @@ const Header = styled.div`
   margin: 24px 16px 0;
   ${MediaRange.greaterThan("mobile")`
     margin: 120px auto 0;
-    max-width: 540px;
+    max-width: 84%;
   `}
   ${MediaRange.greaterThan("tablet")`
     margin-top: 16px;  
-    max-width: 560px;
+    max-width: 664px;
   `}
 `
 
@@ -54,7 +54,7 @@ const Title = styled.h2`
     font-weight: bold;
     font-size: 24px;
     line-height: 26px;
-  `}  
+  `}
 
   ${MediaRange.greaterThan("tablet")`    
     width: 565px;
@@ -68,14 +68,14 @@ const Description = styled.p`
   font-size: 16px;
   line-height: 22px;
   margin: 12px 0;
-  
+
   color: #fff;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
     margin-top: 16px;
-  `}  
+  `}
 
   ${MediaRange.greaterThan("tablet")`
     margin-top: 32px;
@@ -85,7 +85,7 @@ const Description = styled.p`
 const RegisterButton = styled(Button)`
   width: 207px;
   margin: 36px auto 30px;
-  
+
   ${MediaRange.greaterThan("mobile")`
     margin: 36px 32px 30px auto;
   `}

@@ -20,7 +20,7 @@ const Container = styled.div`
   `}
   ${MediaRange.greaterThan("tablet")`    
     margin: 52px auto 0;
-    width: 600px;
+    width: 664px;
   `}
 `
 
