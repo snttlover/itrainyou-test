@@ -18,9 +18,10 @@ import { useStore } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
+import ReactIdSwiper from "react-id-swiper"
 import ReactInputMask from "react-input-mask"
 import styled from "styled-components"
-import Carousel from "react-multi-carousel"
+import { SwiperOptions } from "swiper"
 
 const InputMask: any = ReactInputMask
 
@@ -180,18 +181,54 @@ const PhotoCross = styled.div`
   }
 `
 
+const Slider320 = styled.div`
+  width: 100vw;
+  margin-left: -16px;
+  margin-right: -16px;
+  ${MediaRange.greaterThan("mobile")`
+    display: none;
+  `}
+
+  ${Photo} {
+    &:first-of-type {
+      margin-left: 16px;
+    }
+  }
+`
+
+const Other = styled.div`
+  display: none;
+
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+    flex-wrap: wrap;
+  `}
+`
+
+const swiperOptions: SwiperOptions = {
+  navigation: {
+    nextEl: ".photos__next-button",
+    prevEl: ".photos__prev-button"
+  },
+  slidesPerView: "auto"
+}
+
 const Photos = () => {
-  const photos = useStore($photos)
+  const photos = useStore($photos).map((src, index) => (
+    <Photo key={src} src={src} onClick={() => photoRemoved(index)}>
+      <PhotoCross>
+        <span />
+        <span />
+      </PhotoCross>
+    </Photo>
+  ))
+
   return (
     <PhotoList>
-      {photos.map((src, index) => (
-        <Photo key={src} src={src} onClick={() => photoRemoved(index)}>
-          <PhotoCross>
-            <span />
-            <span />
-          </PhotoCross>
-        </Photo>
-      ))}
+      <Slider320>
+        <ReactIdSwiper {...swiperOptions}>{photos}</ReactIdSwiper>
+      </Slider320>
+      <Other>{photos}</Other>
     </PhotoList>
   )
 }
