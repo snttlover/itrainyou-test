@@ -58,6 +58,7 @@ const Description = styled.p`
   line-height: 18px;
   color: #424242;
   ${MediaRange.greaterThan("mobile")`    
+    margin-top: 16px;
     font-size: 16px;
     line-height: 22px;
   `}
