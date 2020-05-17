@@ -36,26 +36,27 @@ const Content = styled.div`
   ${MediaRange.greaterThan("mobile")`
     align-items: flex-start;
   `}
-  
+
   ${ProgressBar} {
     margin-top: 20px;
   }
 `
 
-const Title = styled.h2`
+const Title = styled.h2<{ small: boolean }>`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
+  text-align: center;
   color: #424242;
-  font-size: 16px;
-  line-height: 22px;
+  font-size: ${({ small }) => (small ? "16px" : "20px")};
+  line-height: 26px;
   margin: 28px -5px 0;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
+    width: 100%;
     margin-top: 0;
-    text-align: left;
   `}
 `
 
@@ -144,7 +145,7 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
       >
         <Cross onClick={onClose} />
         <Content>
-          <Title>Загрузка фотографии профиля</Title>
+          <Title small={!image && !isUploading}>Загрузка фотографии профиля</Title>
           {component}
           <input {...getInputProps()} />
         </Content>

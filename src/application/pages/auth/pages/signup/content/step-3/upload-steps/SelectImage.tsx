@@ -5,14 +5,14 @@ import styled from "styled-components"
 
 const Description = styled.p<{ largeFileError: boolean }>`
   font-family: Roboto;
-  font-weight: ${({largeFileError}) => largeFileError ? '600' : 'normal'};
-  font-size: ${({largeFileError}) => largeFileError ? '16px' : '14px'};
-  line-height: ${({largeFileError}) => largeFileError ? '22px' : '18px'};
+  font-weight: ${({ largeFileError }) => (largeFileError ? "600" : "normal")};
+  font-size: ${({ largeFileError }) => (largeFileError ? "16px" : "14px")};
+  line-height: ${({ largeFileError }) => (largeFileError ? "22px" : "18px")};
 
   text-align: center;
   color: #424242;
 
-  margin-top: ${({largeFileError}) => largeFileError ? '100px' : '24px'};
+  margin-top: ${({ largeFileError }) => (largeFileError ? "100px" : "24px")};
 
   ${MediaRange.greaterThan("mobile")`
     margin-top: 63px;
@@ -28,7 +28,7 @@ const Warning = styled.p`
   line-height: 16px;
   width: 100%;
   text-align: center;
-  color: #FF6B00;
+  color: #ff6b00;
   margin-top: 12px;
 `
 
@@ -59,7 +59,7 @@ const DragText = styled.div`
 const BlueText = styled.div`
   font-size: 16px;
   line-height: 22px;
-  color: #449bd9;
+  color: #4858cc;
 `
 
 export const SelectImage = ({ open, largeFileError }: { open: () => void; largeFileError: boolean }) => (

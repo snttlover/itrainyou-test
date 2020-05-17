@@ -61,7 +61,7 @@ const Rotate = styled.div<{ reverse?: boolean }>`
 `
 
 const UploadButton = styled(DashedButton)`
-  margin: 76px auto 0;
+  margin: 24px auto 0;
 `
 
 function dataURItoFile(dataURI: string) {
