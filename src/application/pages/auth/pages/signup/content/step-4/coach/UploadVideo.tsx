@@ -53,7 +53,7 @@ const InterviewDescription = styled.h2`
   margin-left: 8px;
   font-size: 14px;
   line-height: 18px;
-  color: #5b6670;
+  color: #424242;
   margin-top: 4px;
 
   ${MediaRange.greaterThan("mobile")`
