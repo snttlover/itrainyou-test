@@ -4,15 +4,14 @@ import styled from "styled-components"
 import { Button } from "@/application/components/button/normal/Button"
 
 const LoginLink = styled.a`
-  font-weight: 600;
+  font-style: normal;
+  font-weight: 500;
   font-size: 16px;
   line-height: 22px;
-  color: #544274;
-  cursor: pointer;
+  color: #7D36A8;
 `
 
-const RegistrationButton = styled(Button)`
-  padding: 7px 18px;
+const RegistrationButton = styled(Button).attrs({ slim: true })`
   margin-left: 24px;
 `
 

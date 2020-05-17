@@ -10,9 +10,16 @@ import {
 } from "@/application/pages/landing/content/top-bar/search/search.model"
 import { useStore } from "effector-react"
 import { useState } from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
+import { $searchPageQuery } from "@/application/pages/search/coaches-search.model"
+import {Icon} from "@/application/components/icon/Icon"
+import {Input} from "@/application/components/input/Input"
 
-const Icon = styled.img.attrs({ src: searchIcon })`
+type SearchIconTypes = {
+  focused: boolean
+}
+
+const iconStyles = css`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -21,15 +28,26 @@ const Icon = styled.img.attrs({ src: searchIcon })`
   height: 24px;
   cursor: pointer;
   z-index: 1;
-  opacity: 0.6;
-  &:hover {
-    opacity: 1;
-  }
+`
+
+const SearchIcon = styled(Icon).attrs({ name: `search` })<SearchIconTypes>`
+  fill: ${(props) => props.focused ? `#4858CC` : `#5B6670`};
+  ${iconStyles}
+`
+
+
+const CloseIcon = styled(Icon).attrs({ name: `close` })`
+  fill: #4858CC;
+  ${iconStyles}
 `
 
 const Container = styled.div`
   position: relative;
   flex: 1;
+
+  ${Input}:focus ~ ${SearchIcon} {
+    fill: #fff;
+  }
 `
 
 type SearchProps = {
@@ -37,6 +55,8 @@ type SearchProps = {
 }
 
 export const Search = (props: SearchProps) => {
+  const [focused, changeFocus] = useState(false)
+  const params = useStore($searchPageQuery)
   const query = useStore($search)
 
   const hints = useStore($hintsList)
@@ -49,15 +69,26 @@ export const Search = (props: SearchProps) => {
     changeSelectedHint(selectedHint - 1 < -1 ? hints.length - 1 : selectedHint - 1)
   }
 
+  const searchHandler = (value?: string) => {
+    if (value !== undefined) {
+      return find(value)
+    }
+
+    if ((!params.search || !decodeURI(params.search).trim()) && !query.trim()) {
+      return
+    }
+    find(  query)
+  }
+
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
       if (selectedHint !== -1) {
-        find(hints[selectedHint].value)
+        searchHandler(hints[selectedHint].value)
         changeSelectedHint(-1)
         return
       }
 
-      find(query)
+      searchHandler()
     }
 
     if (e.keyCode === 40) {
@@ -71,21 +102,32 @@ export const Search = (props: SearchProps) => {
     }
   }
 
+  const getIcon = () => {
+    if (!query) {
+      return <SearchIcon focused={focused} onClick={() => searchHandler()} />
+    }
+    return <CloseIcon onClick={() => searchHandler(``)} />
+  }
+
   return (
     <Container className={props.className}>
-      <Icon onClick={() => find(query)} />
+      { getIcon() }
       <SearchInput
         className={props.className}
         value={query}
         onChange={updateSearch}
         onFocus={() => {
           updateSearch(query)
+          changeFocus(true)
+        }}
+        onBlur={() => {
+          changeFocus(false)
         }}
         placeholder='Поиск по коучам'
         onKeyDown={keydownHandler}
       >
         {hints.map((hint, i) => (
-          <SearchInputItem key={hint.id} onClick={() => find(hint.value)} isActive={selectedHint === i}>
+          <SearchInputItem key={hint.id} onClick={() => searchHandler(hint.value)} isActive={selectedHint === i}>
             {hint.value}
           </SearchInputItem>
         ))}

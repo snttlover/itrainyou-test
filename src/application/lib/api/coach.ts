@@ -39,7 +39,7 @@ export interface Coach {
   nearestSessionDatetime: string
 }
 
-export type CoachSortingType = `price` | `-price` | `popularity` | `-popularity`
+export type CoachSortingType = `price` | `-price` | `popularity` | `nearest_session_datetime`
 
 export interface GetCoachesParamsTypes {
   session_duration_types?: string

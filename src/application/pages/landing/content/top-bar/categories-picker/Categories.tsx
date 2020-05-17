@@ -7,6 +7,9 @@ import * as React from "react"
 import styled from "styled-components"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
 import { useState } from "react"
+import { Icon } from "@/application/components/icon/Icon"
+import { getCategoryColorById } from "@/application/feature/categories/categories.store"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 
 export const StyledCategoryCheckbox = styled(Checkbox)`
@@ -16,10 +19,20 @@ export const StyledCategoryCheckbox = styled(Checkbox)`
   }
 `
 
-const CategoryIcon = styled.img`
-  width: 24px;
-  height: 24px;
-  margin-left: 19px;
+type CategoryIconTypes = {
+  color: string
+}
+
+const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>`
+  width: 12px;
+  height: 12px;
+  margin-left: 10px;
+  fill: ${(props) => props.color};
+  
+  ${MediaRange.lessThan(`tablet`)`
+    width: 16px;
+    height: 16px;
+  `}
 `
 
 const Text = styled.div`
@@ -89,11 +102,11 @@ const CheckBoxWrapper = (props: CheckBoxWrapperTypes) => {
 export const Categories = () => {
   return (
     <>
-      {useList($categoriesList, item => (
-        <CheckBoxWrapper description={item.description}>
-          <StyledCategoryCheckbox value={item.checked} onChange={e => toggleCategorySelection(item.id)}>
-            <CategoryIcon src={item.icon} />
-            <Text>{item.name}</Text>
+      {useList($categoriesList, category => (
+        <CheckBoxWrapper description={category.description}>
+          <StyledCategoryCheckbox value={category.checked} onChange={e => toggleCategorySelection(category.id)}>
+            <CategoryIcon color={getCategoryColorById(category.id)} />
+            <Text>{category.name}</Text>
           </StyledCategoryCheckbox>
         </CheckBoxWrapper>
       ))}

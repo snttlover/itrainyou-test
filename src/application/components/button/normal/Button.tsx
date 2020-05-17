@@ -1,8 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
 
-export const Button = styled.button<{ secondary? : boolean }>`
-  padding: 8px 24px;
+export const Button = styled.button<{ secondary? : boolean, slim? : boolean }>`
+  padding: ${props => props.slim ? `4px` : `8px `} 24px;
   text-align: center;
   font-weight: 500;
   font-size: 14px;
