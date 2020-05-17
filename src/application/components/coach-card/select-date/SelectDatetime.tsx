@@ -67,6 +67,7 @@ const Times = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 4px;
+  padding-left: 3px;
 `
 
 const Tag = styled.div<{ active?: boolean }>`
@@ -98,6 +99,7 @@ const SelectedDatetimeTable = styled.table`
   font-size: 12px;
   line-height: 16px;
   width: 100px;
+  padding-left: 11px;
   & tr td:first-child {
     padding-right: 24px;
   }
@@ -110,6 +112,7 @@ const Text = styled.div`
   font-size: 14px;
   line-height: 18px;  
   color: #5B6670;
+  padding-left: 11px;
 `
 
 const Summary = styled.span`
@@ -183,6 +186,10 @@ const TimeColumn = styled.td`
   color: #9AA0A6;
 `
 
+const SelectDateHeader = styled.div`
+  padding-left: 11px;
+`
+
 const StyledCalendar = styled(Calendar)`
   max-width: 252px;
 `
@@ -248,7 +255,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
         </Datepicker>
         <SelectTimeContainer>
-          <h5>{formattedDate}</h5>
+          <SelectDateHeader>{formattedDate}</SelectDateHeader>
           <Times>
             {times.map(session => (
               <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>
