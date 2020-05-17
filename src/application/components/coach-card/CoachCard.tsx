@@ -71,7 +71,7 @@ const Name = styled.span`
   ${MediaRange.greaterThan("tablet")`
     font-size: 20px;
     line-height: 26px;
-    margin-top: 24px;
+    margin-top: 10px;
   `}
 `
 
