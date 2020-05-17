@@ -53,11 +53,13 @@ const Photos = styled.div`
   margin-top: 8px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   ${MediaRange.greaterThan("mobile")`
     margin-top: 16px;
   `}
 
   & > .swiper__container {
+    width: 100%;
     overflow: hidden;
   }
 `
@@ -76,8 +78,10 @@ const Photo = styled.div<{ src: string }>`
 `
 
 const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
-  width: 36px;
-  height: 36px;
+  min-width: 24px;
+  min-height: 24px;
+  width: 24px;
+  height: 24px;
   display: none;
   fill: #4858cc;
   cursor: pointer;
