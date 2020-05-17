@@ -111,7 +111,7 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
   const isUploading = useStore(uploadImageFx.pending)
   const uploadPercent = useStore($uploadPercent)
   const [image, setImage] = useState<File | string | null>(null)
-  const [largeFileError, setError] = useState(false)
+  const [error, setError] = useState<"large-file" | "mime-type" | null>(null)
 
   const onDropAccepted = useCallback(acceptedFiles => {
     const reader = new FileReader()
@@ -121,18 +121,24 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
     reader.readAsDataURL(acceptedFiles[0])
   }, [])
 
-  const onDropRejected = useCallback(_ => setError(true), [])
+  const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"]
+  const maxSize = 2097152
+
+  const onDropRejected = useCallback((files: File[]) => {
+    if (files[0].size > maxSize) setError("large-file")
+    else setError("mime-type")
+  }, [])
 
   const { getRootProps, getInputProps, open, isDragActive, isDragAccept, isDragReject } = useDropzone({
     onDropAccepted,
     onDropRejected,
     multiple: false,
     noClick: true,
-    maxSize: 2097152,
-    accept: "image/*"
+    maxSize,
+    accept: acceptMimeTypes
   })
 
-  let component = <SelectImage open={open} largeFileError={largeFileError} />
+  let component = <SelectImage open={open} error={error} />
 
   if (image) component = <ProcessingImage image={image} setImage={setImage} />
   if (isUploading) component = <ProgressBar percent={uploadPercent} />
@@ -141,7 +147,7 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
     <Backdrop>
       <Container
         {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
-        fullscreen={!!image || isUploading || largeFileError}
+        fullscreen={!!image || isUploading || !!error}
       >
         <Cross onClick={onClose} />
         <Content>
