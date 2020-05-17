@@ -1,6 +1,6 @@
 import { uploadMedia } from "@/application/lib/api/media"
 import { createEffectorField } from "@/application/lib/generators/efffector"
-import { trimString } from "@/application/lib/validators"
+import { phoneValidator, trimString } from "@/application/lib/validators"
 import { $userData, coachDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
 import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-next"
 
@@ -38,10 +38,7 @@ export const [$description, descriptionChanged, $descriptionError, $isDescriptio
 
 export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
   defaultValue: "",
-  validator: value => {
-    if (!value) return "Поле не должно быть пустым"
-    return null
-  },
+  validator: phoneValidator,
   eventMapper: event => event.map(trimString)
 })
 

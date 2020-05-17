@@ -19,11 +19,8 @@ import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
 import ReactIdSwiper from "react-id-swiper"
-import ReactInputMask from "react-input-mask"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
-
-const InputMask: any = ReactInputMask
 
 const InformationContainer = styled.div`
   margin: 32px 16px 0;
