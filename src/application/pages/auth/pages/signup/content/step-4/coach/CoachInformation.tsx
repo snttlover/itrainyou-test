@@ -66,7 +66,9 @@ const CategoriesTitle = styled.h3`
     line-height: 26px;
   `}
   ${MediaRange.greaterThan("tablet")`
-    width: 600px;
+    width: 600px;    
+    font-size: 24px;
+    line-height: 26px;
   `}
 `
 

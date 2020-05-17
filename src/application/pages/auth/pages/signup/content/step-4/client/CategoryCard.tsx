@@ -10,7 +10,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin: 20px 8px 0;
-  background: #FFFFFF;
+  background: #ffffff;
   padding: 12px 8px;
   border-radius: 2px;
   ${MediaRange.greaterThan("mobile")`
@@ -20,6 +20,7 @@ const Container = styled.div`
   `}
   ${MediaRange.greaterThan("tablet")`    
     margin: 52px auto 0;
+    width: 600px;
   `}
 `
 
@@ -33,18 +34,19 @@ const Title = styled.h3`
   display: flex;
   align-items: center;
 
-  ${MediaRange.greaterThan("mobile")`    
-    font-size: 20px;
+  ${MediaRange.greaterThan("mobile")`
+    font-size: 24px;
     line-height: 26px;
   `}
 `
 
-const TabletkaIcon = styled(Icon).attrs({ name: 'tabletka' })<{ color: string }>`
+const TabletkaIcon = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   width: 16px;
   height: 16px;
   margin-right: 8px;
-  fill: ${({color}) => color};
-  ${MediaRange.greaterThan("mobile")`    
+  fill: ${({ color }) => color};
+  ${MediaRange.greaterThan("mobile")`
+    margin-right: 12px;        
     width: 36px;
     height: 36px;
   `}
@@ -65,20 +67,21 @@ const ButtonsContainer = styled.div`
   width: auto;
   margin-left: auto;
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
   margin-top: 4px;
-  
+
   ${MediaRange.greaterThan("mobile")`
     width: 160px;
+    margin-top: 24px;
   `}
 `
 
-const DefaultButton = styled(Button)<{color: string}>`
+const DefaultButton = styled(Button)<{ color: string }>`
   height: 26px;
   padding: 0;
   display: none;
-  background: ${({color}) => color};
-  
+  background: ${({ color }) => color};
+
   ${MediaRange.greaterThan("mobile")`
     display: block;
   `}
@@ -88,9 +91,9 @@ const StyledDashedButton = styled(DashedButton)<{ color: string }>`
   height: 26px;
   padding: 0;
   display: none;
-  border: 1px solid ${({color}) => color};
-  color: ${({color}) => color};
-  
+  border: 1px solid ${({ color }) => color};
+  color: ${({ color }) => color};
+
   ${MediaRange.greaterThan("mobile")`
     display: block;
   `}
@@ -102,7 +105,7 @@ const TextButton = styled.div<{ color: string }>`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: ${({color}) => color};
+  color: ${({ color }) => color};
   ${MediaRange.greaterThan("mobile")`
     display: none;
   `}
@@ -124,8 +127,12 @@ export const CategoryCard = styled(({ category, className, onSelect, selected }:
       </Title>
       <Description>{category.description}</Description>
       <ButtonsContainer>
-        <ButtonComponent color={category.color} onClick={() => onSelect(category.id)}>{selected ? "Выбрано" : "Выбрать"}</ButtonComponent>
-        <TextButton color={category.color} onClick={() => onSelect(category.id)}>{selected ? "Выбрано" : "Выбрать"}</TextButton>
+        <ButtonComponent color={category.color} onClick={() => onSelect(category.id)}>
+          {selected ? "Выбрано" : "Выбрать"}
+        </ButtonComponent>
+        <TextButton color={category.color} onClick={() => onSelect(category.id)}>
+          {selected ? "Выбрано" : "Выбрать"}
+        </TextButton>
       </ButtonsContainer>
     </Container>
   )
