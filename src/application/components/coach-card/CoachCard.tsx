@@ -318,8 +318,8 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
 
   return (
-    <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach} onClick={redirectToCoach}>
-      <MainInfoContainer>
+    <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
+      <MainInfoContainer onClick={redirectToCoach}>
         <Avatar image={coach.avatar} />
         <NameContainer>
           <Name>
