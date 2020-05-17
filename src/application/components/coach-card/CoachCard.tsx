@@ -172,6 +172,16 @@ const RatingContainer = styled.div`
   margin-left: auto;
   display: flex;
   flex-direction: column;
+  
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  height: calc(100% - 24px);
+  ${MediaRange.lessThan(`mobile`)`
+    right: 8px;
+    top: 8px;
+    height: calc(100% - 8px);
+  `}
 `
 
 const Meta = styled.div`
