@@ -22,16 +22,18 @@ type CalendarTypes = {
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
 
 const Year = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #424242;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #5B6670;
 `
 
 const MonthName = styled.div`
   margin: 0 10px;
-  font-size: 12px;
-  line-height: 16px;
-  color: #424242;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #5B6670;
   text-transform: capitalize;
   width: 65px;
   text-align: center;
