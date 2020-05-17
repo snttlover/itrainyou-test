@@ -5,10 +5,9 @@ import { useStore } from "effector-react"
 import { $searchPageQuery, addSearchPageQuery } from "@/application/pages/search/coaches-search.model"
 import { CoachSortingType, GetCoachesParamsTypes } from "@/application/lib/api/coach"
 import { SortingContainer, SortingPicker } from "@/application/pages/search/content/list/content/sorting/SortingPicker"
+import downArrow from "@/application/pages/search/content/list/content/sorting/images/down-arrow.svg"
 
-import { sortingItems, SortingItemType } from "@/application/pages/search/content/list/content/sorting/items"
-
-import sortingArrow from "./images/sorting-arrow.svg"
+import { sortingItems } from "@/application/pages/search/content/list/content/sorting/items"
 const Container = styled.div`
   display: none;
   width: 100%;
@@ -35,9 +34,10 @@ const StyledFiltersTab = styled(Tab)`
   justify-content: flex-end;
 `
 
-const Arrow = styled.img.attrs({ src: sortingArrow })`
-  width: 16px;
-  height: 16px;
+const Arrow = styled.img.attrs((props) => ({ src: props.src || downArrow }))`
+  width: 9px;
+  height: 6px;
+  margin-left: 3px;
 `
 
 const StyledSortingPicker = styled(SortingPicker)`
@@ -46,9 +46,6 @@ const StyledSortingPicker = styled(SortingPicker)`
   ${SortingContainer} {
     top: 100%;
     left: 25px;
-  }
-  .opened ${Arrow} {
-    transform: rotate(-180deg);
   }
 `
 
@@ -97,8 +94,10 @@ export const MobileTabs = () => {
     })
   }
 
+  const currentFilter = sortingItems.find(item => item.value === params.ordering)
+
   const getFilterName = () => {
-    const filter = sortingItems.find(item => item.value === params.ordering)
+    const filter = currentFilter
     return filter ? filter.text : `Сортировка`
   }
 
@@ -107,7 +106,7 @@ export const MobileTabs = () => {
       <StyledSortingPicker current={current} sort={navigate}>
         <Tab>
           { getFilterName() }
-          { !params.ordering && <Arrow /> }
+          <Arrow src={currentFilter ? currentFilter.icon : undefined} />
         </Tab>
       </StyledSortingPicker>
       <StyledFiltersTab onClick={() => changeMobileFiltersVisibility(true)}>
