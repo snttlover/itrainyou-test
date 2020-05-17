@@ -11,6 +11,7 @@ import { genCoachSessions } from "@/application/components/coach-card/select-dat
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { Icon } from "@/application/components/icon/Icon"
 import Router from 'next/router'
+import { GrayTooltip } from "@/application/components/gray-tooltip/GrayTooltip"
 
 const MainInfoContainer = styled.div`
   display: flex;
@@ -336,10 +337,16 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             {`${coach.firstName} ${coach.lastName}`}
           </Name>
           <Info>
-            { coach.isTopCoach && <TopCoachIcon /> }
+            { coach.isTopCoach && (
+              <GrayTooltip text='Топ коуч'>
+                <TopCoachIcon />
+              </GrayTooltip>
+            )}
             <CategoriesIcons>
               {coach.categories.map(category => (
-                <CategoryIcon color={getCategoryColorById(category.id)} />
+                <GrayTooltip text={category.name}>
+                  <CategoryIcon color={getCategoryColorById(category.id)} />
+                </GrayTooltip>
               ))}
             </CategoriesIcons>
 
