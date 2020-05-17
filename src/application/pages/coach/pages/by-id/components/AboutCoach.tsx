@@ -56,6 +56,10 @@ const Photos = styled.div`
   ${MediaRange.greaterThan("mobile")`
     margin-top: 16px;
   `}
+
+  & > .swiper__container {
+    overflow: hidden;
+  }
 `
 
 const Photo = styled.div<{ src: string }>`
@@ -133,7 +137,7 @@ export const AboutCoach = styled(props => {
           <Title>Фотографии</Title>
           <Photos>
             <ArrowButton className='photos__prev-button' onClick={() => swiper?.slidePrev()} />
-            <ReactIdSwiper {...swiperOptions} getSwiper={updateSwiper}>
+            <ReactIdSwiper {...swiperOptions} containerClass='swiper__container' getSwiper={updateSwiper}>
               {photos}
             </ReactIdSwiper>
             <ArrowButton className='photos__next-button' onClick={() => swiper?.slideNext()} />
