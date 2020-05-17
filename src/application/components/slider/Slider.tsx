@@ -12,7 +12,7 @@ const StyledThumb = styled.div`
   z-index: 10;
   height: 12px;
   width: 12px;
-  background: #3358D4;
+  background: #4858CC;
   border-radius: 50%;
   cursor: grab;
   top: 50%;
@@ -29,7 +29,7 @@ type TrackStateTypes = {
 const StyledTrack = styled.div<TrackStateTypes>`
   top: 50%;
   transform: translateY(-50%);
-  background: ${props => (props.index === 1 ? "#859BE5" : "#3358D4")};
+  background: ${props => (props.index === 1 ? "#919BE0" : "#4858CC")};
   border-radius: 10px;
   height: 2px;
 `
@@ -63,7 +63,7 @@ const Section = styled.div<SectionTypes>`
     margin-top: -1px;
     width: 2px;
     height: 2px;
-    background: ${props => (props.filled ? "#859BE5" : "#3358D4")};
+    background: ${props => (props.filled ? "#919BE0" : "#4858CC")};
   }
   &:first-child:before {
     left: 0;

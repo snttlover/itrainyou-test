@@ -150,7 +150,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
    
   }
   .react-calendar__tile--active {
-    background: #3358D4;
+    background: #4858CC;
     color: #fff;
   }
   .react-calendar__tile--rangeStart {
