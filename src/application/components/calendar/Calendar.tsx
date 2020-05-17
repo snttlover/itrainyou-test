@@ -17,6 +17,7 @@ type CalendarTypes = {
   onChange: (value: any) => void | Dispatch<SetStateAction<CalendarDateType>>
   selectRange?: boolean
   isBig?: boolean
+  className?: string
 }
 
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
@@ -246,7 +247,7 @@ export const Calendar = (props: CalendarTypes) => {
   const lessThanTheCurrentMonth = +dayjs(startDate).format(formatter) <= +dayjs(new Date()).format(formatter)
 
   return (
-    <CalendarWrapper isBig={props.isBig}>
+    <CalendarWrapper className={props.className} isBig={props.isBig}>
       <Header>
         <MonthContainer>
           <LeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />

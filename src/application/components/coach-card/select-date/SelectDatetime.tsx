@@ -37,22 +37,23 @@ const Block = styled.div<StyledTabTypes>`
 `
 
 const Datepicker = styled.div`
-  min-width: 252px;
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-right: 32px;
   border-right: 1px solid #DBDEE0;
+  padding-right: 32px;
+  padding-left: 5px;
   @media screen and (max-width: 560px) {
     margin-bottom: 20px;
   }
 `
 
 const SelectTimeContainer = styled.div`
-  margin-left: 36px;
+  width: 50%;
+  padding-left: 36px;
   display: flex;
   flex-direction: column;
-  width: 100%;
 
   & > h5 {
     margin-left: 8px;
@@ -149,7 +150,7 @@ const StyledTabs = styled(Tabs)`
   margin-top: 4px;
   width: 100%;
   position: relative;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `
@@ -180,6 +181,10 @@ const TabPrice = styled.div`
 
 const TimeColumn = styled.td`
   color: #9AA0A6;
+`
+
+const StyledCalendar = styled(Calendar)`
+  max-width: 252px;
 `
 
 export const genSessionTabs = (coach: Coach) => {
@@ -240,7 +245,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
       <Block onlyOneCard={tabs.length === 1}>
         { loading && <Spinner /> }
         <Datepicker>
-          <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
+          <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
         </Datepicker>
         <SelectTimeContainer>
           <h5>{formattedDate}</h5>
