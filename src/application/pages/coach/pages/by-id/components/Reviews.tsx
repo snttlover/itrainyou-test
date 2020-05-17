@@ -34,8 +34,19 @@ const StyledRating = styled(Rating)`
 `
 
 const UserName = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #424242;
+
   margin-left: 8px;
   ${MediaRange.greaterThan("mobile")`
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    
     margin-left: 12px;
   `}
 `
