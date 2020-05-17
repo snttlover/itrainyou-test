@@ -8,6 +8,7 @@ import "react-image-crop/dist/ReactCrop.css"
 import "../../public/fonts/gilroy/fonts-list.css"
 import "react-multi-carousel/lib/styles.css"
 import "simplebar/dist/simplebar.min.css"
+import "swiper/css/swiper.min.css"
 
 dayjs.locale("ru")
 

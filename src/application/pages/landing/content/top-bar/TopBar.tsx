@@ -24,7 +24,7 @@ const StyledContainer = styled(LandingPageContainer)`
 
 const Container = styled.div`
   width: 100%;
-  background: #DBDEE0;
+  background: #dbdee0;
   display: flex;
   justify-content: center;
 `
@@ -67,7 +67,7 @@ const StyledLoginButtons = styled(LoginButtons)`
   }
 `
 
-const StyledLogoLink = styled(Link)`
+const StyledLogoLink = styled.a`
   display: flex;
   align-items: center;
 `
@@ -75,9 +75,11 @@ const StyledLogoLink = styled(Link)`
 export const TopBar = () => (
   <Container>
     <StyledContainer>
-      <StyledLogoLink href='/' passHref>
-        <StyledLogo />
-      </StyledLogoLink>
+      <Link href='/' passHref>
+        <StyledLogoLink>
+          <StyledLogo />
+        </StyledLogoLink>
+      </Link>
       <StyledCategoriesPicker />
       <StyledSearch />
       <StyledLoginButtons />

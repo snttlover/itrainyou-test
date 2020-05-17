@@ -159,27 +159,47 @@ const ReviewsList = styled.div`
   }
 `
 
+const EmptyPlaceholder = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+
+  color: #9aa0a6;
+  margin: 20px auto;
+  width: 240px;
+
+  ${MediaRange.greaterThan("mobile")`    
+    font-size: 16px;
+    line-height: 22px;
+    width: auto;
+  `}
+`
+
 export const Reviews = styled(props => {
-  const reviews = useStore($reviews).filter(review => review.reviewerClient)
+  const reviews = useStore($reviews)
+    .filter(review => review.reviewerClient)
+    .map(review => (
+      <Review
+        key={review.id}
+        name={`${review.reviewerClient?.firstName} ${review.reviewerClient?.lastName}`}
+        rating={review.grade}
+        avatar={review.reviewerClient?.avatar || null}
+        text={review.text}
+        date={review.creationDatetime}
+      />
+    ))
 
   return (
-    (reviews.length > 0 && (
-      <Container {...props}>
-        <Title>Отзывы</Title>
-        <ReviewsList>
-          {reviews.map(review => (
-            <Review
-              key={review.id}
-              name={`${review.reviewerClient?.firstName} ${review.reviewerClient?.lastName}`}
-              rating={review.grade}
-              avatar={review.reviewerClient?.avatar || null}
-              text={review.text}
-              date={review.creationDatetime}
-            />
-          ))}
-        </ReviewsList>
-      </Container>
-    )) ||
-    null
+    <Container {...props}>
+      <Title>Отзывы</Title>
+      <ReviewsList>
+        {(reviews.length > 0 && reviews) || (
+          <EmptyPlaceholder>У коуча нет отзывов. Вы можете стать первым!</EmptyPlaceholder>
+        )}
+      </ReviewsList>
+    </Container>
   )
 })``
