@@ -86,10 +86,12 @@ const Tag = styled.div<{ active?: boolean }>`
   border-radius: 24px;
   font-size: 12px;
   line-height: 16px;
-  &:hover {
-    background: #DBDEE0;
-    color: #fff;
-  }
+  ${MediaRange.greaterThan('tablet')`
+    &:hover {
+      background: #DBDEE0;
+      color: #fff;
+    }
+  `}
 `
 
 const DeleteIcon = styled(Icon).attrs({ name: `delete` })`
