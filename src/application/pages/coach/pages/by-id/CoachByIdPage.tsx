@@ -107,6 +107,8 @@ export const CoachByIdPage = () => {
 
   useEffect(() => {
     mounted({ id: Number(router.query.id) })
+    $sessionsPickerStore.changeId(+router.query.id)
+    $sessionsPickerStore.loadData( { params: {} })
   }, [])
 
   return (
