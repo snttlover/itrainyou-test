@@ -122,7 +122,7 @@ type CategoryCardProps = {
 export const CategoryCard = styled(({ category, className, onSelect, selected }: CategoryCardProps) => {
   const ButtonComponent = selected ? DefaultButton : StyledDashedButton
   return (
-    <Container className={className}>
+    <Container className={className} onClick={() => onSelect(category.id)}>
       <Title>
         <TabletkaIcon color={category.color} /> {category.name}
       </Title>
