@@ -4,6 +4,7 @@ import { serverStarted } from "@/store"
 import { createEffect, createEvent, forward, merge } from "effector-next"
 import { createStore } from "effector-next"
 import Router from "next/router"
+import { DurationType } from "@/application/lib/api/coach-sessions"
 
 export const setSearchPageQuery = createEvent<GetCoachesParamsTypes>()
 export const addSearchPageQuery = createEvent<GetCoachesParamsTypes>()
@@ -44,7 +45,27 @@ export const fetchCoachesListFx = createEffect<GetCoachesParamsTypes, Coach[]>({
 })
 
 export const $coachesList = createStore<Coach[]>([])
-  .on(fetchCoachesListFx.doneData, (state, payload) => payload)
+  .on(fetchCoachesListFx.doneData, (state, payload) => {
+    const query = $searchPageQuery.getState()
+    return payload.map(coach => {
+      const prices = coach.prices
+
+      if (query.session_duration_types) {
+        const durationTypes = decodeURI(query.session_duration_types).split(`,`) as DurationType[]
+        Object.keys(prices).map((key) => {
+          // @ts-ignore
+          if (!durationTypes.includes(key)) {
+            // @ts-ignore
+            prices[key] = null
+          }
+        })
+      }
+
+      return {
+        ...coach
+      }
+    })
+  })
   .reset(fetchCoachesListFx)
 
 const serverStartedQueryParams = serverStarted.map(({ query }) => query)
