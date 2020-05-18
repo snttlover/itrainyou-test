@@ -23,20 +23,25 @@ const Container = styled.div`
   ${MediaRange.greaterThan("mobile")`    
     margin: 20px 32px 0;
   `}
-
+  
   ${MediaRange.greaterThan("tablet")`
+    margin: 20px auto 0;
+  `}
+
+  ${MediaRange.greaterThan("laptop")`
     margin: 20px auto 0;
   `}
 `
 
 const Header = styled.div`
   margin: 24px 16px 0;
+
   ${MediaRange.greaterThan("mobile")`
-    margin: 120px auto 0;
-    max-width: 84%;
+    margin: 80px auto 0;
+    max-width: 70%;
   `}
-  ${MediaRange.greaterThan("tablet")`
-    margin-top: 16px;  
+  ${MediaRange.greaterThan("laptop")`
+    margin-top: 24px;  
     max-width: 664px;
   `}
 `
@@ -56,7 +61,7 @@ const Title = styled.h2`
     line-height: 26px;
   `}
 
-  ${MediaRange.greaterThan("tablet")`    
+  ${MediaRange.greaterThan("laptop")`    
     width: 565px;
     font-weight: normal;
     font-size: 32px;
@@ -80,7 +85,7 @@ const Description = styled.p`
     margin-top: 16px;
   `}
 
-  ${MediaRange.greaterThan("tablet")`
+  ${MediaRange.greaterThan("laptop")`
     margin-top: 32px;
   `}
 `
