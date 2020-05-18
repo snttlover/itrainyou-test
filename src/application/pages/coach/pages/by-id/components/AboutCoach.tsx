@@ -2,6 +2,7 @@ import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $coach } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { Block } from "@/application/pages/coach/pages/by-id/components/common/Block"
+import { ImagesViewModal } from "@/application/pages/coach/pages/by-id/ImagesViewModal"
 import { useStore } from "effector-react"
 import React, { useState } from "react"
 import ReactIdSwiper from "react-id-swiper"
@@ -107,33 +108,35 @@ const swiperOptions: SwiperOptions = {
     nextEl: ".photos__next-button",
     prevEl: ".photos__prev-button"
   },
-  slidesPerView: "auto"
+  slidesPerView: "auto",
+  a11y: false
 }
 
 export const AboutCoach = styled(props => {
-  const coach = useStore($coach)
-  const photos = coach?.photos.map((src, i) => <Photo src={src} key={i} />) || []
-
+  const [imageViewIndex, setImageViewIndex] = useState<number | null>(null)
   const [swiper, updateSwiper] = useState<SwiperInstance | null>(null)
+
+  const coach = useStore($coach)
+  const photos = coach?.photos.map((src, i) => <Photo src={src} key={i} onClick={() => setImageViewIndex(i)} />) || []
 
   return (
     <StyledBlock {...props}>
       {coach?.description && (
         <>
           <Title>О себе</Title>
-          <Description>{coach?.description}</Description>
+          <Description>{coach.description}</Description>
         </>
       )}
       {coach?.workExperience && (
         <>
           <Title>Опыт работы</Title>
-          <Description>{coach?.workExperience}</Description>
+          <Description>{coach.workExperience}</Description>
         </>
       )}
       {coach?.education && (
         <>
           <Title>Образование</Title>
-          <Description>{coach?.education}</Description>
+          <Description>{coach.education}</Description>
         </>
       )}
       {photos.length > 0 && (
@@ -147,6 +150,9 @@ export const AboutCoach = styled(props => {
             <ArrowButton className='photos__next-button' onClick={() => swiper?.slideNext()} />
           </Photos>
         </>
+      )}
+      {typeof imageViewIndex === "number" && coach?.photos && (
+        <ImagesViewModal photos={coach.photos} currentIndex={imageViewIndex} onCurrentChange={setImageViewIndex} />
       )}
     </StyledBlock>
   )
