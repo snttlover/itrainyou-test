@@ -104,8 +104,8 @@ export const Step4ClientLayout = (props: Step4ClientLayoutProps) => (
         {props.renderHeader()}
       </HeaderContent>
     </Header>
-    <AuthContainer>{props.children}</AuthContainer>
     <BGImage />
     <BGImageCloud />
+    <AuthContainer>{props.children}</AuthContainer>
   </StyledLayout>
 )
