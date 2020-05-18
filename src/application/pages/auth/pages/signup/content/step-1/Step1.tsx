@@ -151,7 +151,7 @@ export const Step1 = () => {
             <PasswordInput value={form.password} name='password' onChange={passwordChanged} />
           </FormItem>
           <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
-            <Input
+            <PasswordInput
               value={form.passwordRepeat}
               type='password'
               name='repeat-password'
