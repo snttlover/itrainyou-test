@@ -220,6 +220,11 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
 
   const formattedDate = dayjs(currentDate).format("DD MMMM")
   const currentDateEqual = dayjs(currentDate).format(equalDateFormat)
+
+  if (!props.coach.prices[activeTab] && tabs.length) {
+    changeActiveTab(tabs[0].key)
+  }
+
   const times = sessions
     .filter(session => {
       return dayjs(session.startDatetime).format(equalDateFormat) === currentDateEqual
