@@ -61,20 +61,20 @@ export const $coachesList = createStore<Coach[]>([])
         })
       }
 
-      if (query.nearest_session_date__gte) {
+      if (query.price__gte) {
         Object.keys(prices).map((key) => {
           // @ts-ignore
-          if (+prices[key] < +query.nearest_session_date__gte) {
+          if (+prices[key] < +query.price__gte) {
             // @ts-ignore
             prices[key] = null
           }
         })
       }
 
-      if (query.nearest_session_date__lte) {
+      if (query.price__lte) {
         Object.keys(prices).map((key) => {
           // @ts-ignore
-          if (+prices[key] > +query.nearest_session_date__lte) {
+          if (+prices[key] > +query.price__lte) {
             // @ts-ignore
             prices[key] = null
           }
