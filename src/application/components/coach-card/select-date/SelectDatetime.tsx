@@ -13,6 +13,7 @@ import { Spinner } from "@/application/components/spinner/Spinner"
 import { Button } from "@/application/components/button/normal/Button"
 import { DurationType } from "@/application/lib/api/coach-sessions"
 import {Event} from "effector-next"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -36,22 +37,23 @@ const Block = styled.div<StyledTabTypes>`
 `
 
 const Datepicker = styled.div`
-  min-width: 252px;
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-right: 32px;
   border-right: 1px solid #DBDEE0;
+  padding-right: 32px;
+  padding-left: 5px;
   @media screen and (max-width: 560px) {
     margin-bottom: 20px;
   }
 `
 
 const SelectTimeContainer = styled.div`
-  margin-left: 36px;
+  width: 50%;
+  padding-left: 36px;
   display: flex;
   flex-direction: column;
-  width: 100%;
 
   & > h5 {
     margin-left: 8px;
@@ -65,6 +67,7 @@ const Times = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 4px;
+  padding-left: 3px;
 `
 
 const Tag = styled.div<{ active?: boolean }>`
@@ -77,10 +80,12 @@ const Tag = styled.div<{ active?: boolean }>`
   border-radius: 24px;
   font-size: 12px;
   line-height: 16px;
-  &:hover {
-    background: #DBDEE0;
-    color: #fff;
-  }
+  ${MediaRange.greaterThan('tablet')`
+    &:hover {
+      background: #DBDEE0;
+      color: #fff;
+    }
+  `}
 `
 
 const Divider = styled.div`
@@ -94,6 +99,7 @@ const SelectedDatetimeTable = styled.table`
   font-size: 12px;
   line-height: 16px;
   width: 100px;
+  padding-left: 11px;
   & tr td:first-child {
     padding-right: 24px;
   }
@@ -106,6 +112,7 @@ const Text = styled.div`
   font-size: 14px;
   line-height: 18px;  
   color: #5B6670;
+  padding-left: 11px;
 `
 
 const Summary = styled.span`
@@ -146,7 +153,7 @@ const StyledTabs = styled(Tabs)`
   margin-top: 4px;
   width: 100%;
   position: relative;
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `
@@ -177,6 +184,14 @@ const TabPrice = styled.div`
 
 const TimeColumn = styled.td`
   color: #9AA0A6;
+`
+
+const SelectDateHeader = styled.div`
+  padding-left: 11px;
+`
+
+const StyledCalendar = styled(Calendar)`
+  max-width: 252px;
 `
 
 export const genSessionTabs = (coach: Coach) => {
@@ -237,10 +252,10 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
       <Block onlyOneCard={tabs.length === 1}>
         { loading && <Spinner /> }
         <Datepicker>
-          <Calendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
+          <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
         </Datepicker>
         <SelectTimeContainer>
-          <h5>{formattedDate}</h5>
+          <SelectDateHeader>{formattedDate}</SelectDateHeader>
           <Times>
             {times.map(session => (
               <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>

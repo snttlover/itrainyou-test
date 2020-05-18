@@ -3,16 +3,25 @@ import * as React from "react"
 import styled from "styled-components"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
 import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/application/pages/search/coaches-search.model"
+import { Icon } from "@/application/components/icon/Icon"
 
 const Container = styled.div`
   padding-top: 42px;
   padding-bottom: 36px;
 `
 
+const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+`
+
 const Text = styled.div`
   font-size: 16px;
   line-height: 22px;
   margin-left: 7px;
+  display: flex;
+  align-items: center;
 `
 
 export const OnlyTopCoachCheckbox = () => {
@@ -32,7 +41,10 @@ export const OnlyTopCoachCheckbox = () => {
   return (
     <Container>
       <Checkbox value={value} onChange={change}>
-        <Text>Только топ коуч</Text>
+        <Text>
+          <TopCoachIcon />
+          Только топ коуч
+        </Text>
       </Checkbox>
     </Container>
   )

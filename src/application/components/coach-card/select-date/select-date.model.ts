@@ -16,18 +16,20 @@ type RequestType = {
 }
 
 export const genCoachSessions = (id= 0) => {
-  const fetchCoachSessionsListFx = createEffect<RequestType, CoachSession[]>()
-    .use((req) => getCoachSessions(req.id || id, req.params))
+  const changeId = createEvent<number>()
+  const $id = createStore<number>(id)
+    .on(changeId, (_, id) => id)
 
-  fetchCoachSessionsListFx.watch((params) => {
-    id = params.id || id
-  })
+  const fetchCoachSessionsListFx = createEffect<RequestType, CoachSession[]>()
+    .use((req) => getCoachSessions($id.getState(), req.params))
+
+  const loadCoachSessions = createEvent<RequestType>()
 
   const isFetching = createStore(false)
+    .on(loadCoachSessions, () => true)
     .on(fetchCoachSessionsListFx, () => true)
     .on(fetchCoachSessionsListFx.finally, () => false)
 
-  const loadCoachSessions = createEvent<RequestType>()
   const toggleSession = createEvent<CoachSessionWithSelect>()
   const deleteSession = createEvent<number>()
 
@@ -72,13 +74,14 @@ export const genCoachSessions = (id= 0) => {
     .on(changeDurationTab, (_, payload) => payload)
 
   $durationTab.watch((state) => loadCoachSessions({
-    id,
+    id: $id.getState(),
     params: {
       duration_type: state
     }
   }))
 
   return {
+    changeId,
     loading: isFetching,
     sessionsList: $coachSessionsList,
     loadData: loadCoachSessions,

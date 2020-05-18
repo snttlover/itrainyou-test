@@ -17,21 +17,24 @@ type CalendarTypes = {
   onChange: (value: any) => void | Dispatch<SetStateAction<CalendarDateType>>
   selectRange?: boolean
   isBig?: boolean
+  className?: string
 }
 
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
 
 const Year = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #424242;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #5B6670;
 `
 
 const MonthName = styled.div`
   margin: 0 10px;
-  font-size: 12px;
-  line-height: 16px;
-  color: #424242;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #5B6670;
   text-transform: capitalize;
   width: 65px;
   text-align: center;
@@ -114,7 +117,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     }
   }
   .react-calendar__month-view__weekdays__weekday:nth-child(n + 6),
-  .day--weekend {
+  .react-calendar__month-view__days__day.day--weekend {
     color: #FF6B00;
   }
   .is-past {
@@ -131,10 +134,11 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     outline: none;
     font-size: 12px;
     position: relative;
+    color: #5B6670;
   }
   .not-pinned {
     pointer-events: none;
-    color: #DBDEE0;
+    color: #DBDEE0 !important;
   }
   .pinned {
     position: relative;
@@ -145,11 +149,10 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     margin-top: 10px;
     margin-bottom: 10px;
     height: 17px;
-   
   }
   .react-calendar__tile--active {
-    background: #3358D4;
-    color: #fff;
+    background: #4858CC;
+    color: #fff !important;
   }
   .react-calendar__tile--rangeStart {
     border-top-left-radius: 12px;
@@ -169,6 +172,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
 const MonthContainer = styled.div`
   display: flex;
   align-items: center;
+  padding-left: 10px;
 `
 
 function firsDayOfMonth(month: number, year: number) {
@@ -244,7 +248,7 @@ export const Calendar = (props: CalendarTypes) => {
   const lessThanTheCurrentMonth = +dayjs(startDate).format(formatter) <= +dayjs(new Date()).format(formatter)
 
   return (
-    <CalendarWrapper isBig={props.isBig}>
+    <CalendarWrapper className={props.className} isBig={props.isBig}>
       <Header>
         <MonthContainer>
           <LeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />

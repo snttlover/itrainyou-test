@@ -14,6 +14,7 @@ const Button = styled.button<ButtonTypes>`
   border: 1px solid rgba(0, 0, 0, 0);
   border-color: ${props => props.opened ? `#bbc2f1` : `trasparent`};
   padding: 7px 12px;
+  padding-left: 20px;
   display: flex;
   align-items: center;
   height: 36px;

@@ -11,6 +11,7 @@ import { genCoachSessions } from "@/application/components/coach-card/select-dat
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { Icon } from "@/application/components/icon/Icon"
 import Router from 'next/router'
+import { GrayTooltip } from "@/application/components/gray-tooltip/GrayTooltip"
 
 const MainInfoContainer = styled.div`
   display: flex;
@@ -71,7 +72,7 @@ const Name = styled.span`
   ${MediaRange.greaterThan("tablet")`
     font-size: 20px;
     line-height: 26px;
-    margin-top: 24px;
+    margin-top: 10px;
   `}
 `
 
@@ -172,6 +173,16 @@ const RatingContainer = styled.div`
   margin-left: auto;
   display: flex;
   flex-direction: column;
+  
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  height: calc(100% - 24px);
+  ${MediaRange.lessThan(`mobile`)`
+    right: 8px;
+    top: 8px;
+    height: calc(100% - 8px);
+  `}
 `
 
 const Meta = styled.div`
@@ -318,18 +329,24 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
 
   return (
-    <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach} onClick={redirectToCoach}>
-      <MainInfoContainer>
+    <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
+      <MainInfoContainer onClick={redirectToCoach}>
         <Avatar image={coach.avatar} />
         <NameContainer>
           <Name>
             {`${coach.firstName} ${coach.lastName}`}
           </Name>
           <Info>
-            { coach.isTopCoach && <TopCoachIcon /> }
+            { coach.isTopCoach && (
+              <GrayTooltip text='Топ коуч'>
+                <TopCoachIcon />
+              </GrayTooltip>
+            )}
             <CategoriesIcons>
               {coach.categories.map(category => (
-                <CategoryIcon color={getCategoryColorById(category.id)} />
+                <GrayTooltip text={category.name}>
+                  <CategoryIcon color={getCategoryColorById(category.id)} />
+                </GrayTooltip>
               ))}
             </CategoriesIcons>
 
