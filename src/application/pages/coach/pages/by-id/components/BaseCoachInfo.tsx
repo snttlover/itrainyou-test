@@ -103,7 +103,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
         </Rating>
         <CategoriesContainer>
           {coach?.categories.map(cat => (
-            <Tabletka color={getCategoryColorById(cat.id)} />
+            <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
           ))}
         </CategoriesContainer>
       </UserInfo>

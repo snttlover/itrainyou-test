@@ -1,24 +1,26 @@
-import { DashboardLayout } from "@/application/components/layouts/dashboard/DashboardLayout"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $coach, mounted } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { AboutCoach } from "@/application/pages/coach/pages/by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/application/pages/coach/pages/by-id/components/BaseCoachInfo"
 import { Reviews } from "@/application/pages/coach/pages/by-id/components/Reviews"
 import { useRouter } from "next/router"
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
-import {$sessionsPickerStore} from "@/application/pages/coach/pages/by-id/coach-by-id.model"
-import {CoachDatepicker} from "@/application/pages/search/content/list/content/CoachDatepicker"
+import { $sessionsPickerStore } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
+import { CoachDatepicker } from "@/application/pages/search/content/list/content/CoachDatepicker"
 import { useStore } from "effector-react"
 import { GrayLayout } from "@/application/components/layouts/default/GrayLayout"
-
-const StyledDashboardLayout = styled(DashboardLayout)`
-  background-color: #eceff1;
-`
 
 const Content = styled.div`
   margin: 20px 8px;
   min-width: 304px;
+
+  ${MediaRange.greaterThan("mobile")`
+    margin-top: 28px;
+  `}
+  ${MediaRange.greaterThan("tablet")`
+    margin-top: 36px;
+  `}
 `
 
 const InfoWithSidebar = styled.div`

@@ -37,7 +37,7 @@ const Header = styled.div`
     background-image: url(${tablet});
     height: 370px;
   `}
-  ${MediaRange.greaterThan("tablet")`
+  ${MediaRange.greaterThan("laptop")`
     background-image: url(${desktop});
     height: 312px;
   `}

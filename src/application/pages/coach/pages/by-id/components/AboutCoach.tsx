@@ -1,9 +1,13 @@
+import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $coach } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { Block } from "@/application/pages/coach/pages/by-id/components/common/Block"
 import { useStore } from "effector-react"
-import React from "react"
+import React, { useState } from "react"
+import ReactIdSwiper from "react-id-swiper"
+import { SwiperInstance } from "react-id-swiper/lib/types"
 import styled from "styled-components"
+import { SwiperOptions } from "swiper"
 
 const StyledBlock = styled(Block)`
   ${MediaRange.between("mobile", "laptop")`
@@ -22,6 +26,12 @@ const Title = styled.h3`
   &:not(:first-child) {
     margin-top: 12px;
   }
+
+  ${MediaRange.greaterThan("mobile")`
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 26px;
+  `}
 `
 
 const Description = styled.h3`
@@ -32,28 +42,79 @@ const Description = styled.h3`
   font-size: 14px;
   line-height: 18px;
   color: #424242;
+
+  ${MediaRange.greaterThan("mobile")`
+    font-size: 16px;
+    line-height: 22px;
+  `}
 `
 
 const Photos = styled.div`
+  margin-top: 8px;
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  ${MediaRange.greaterThan("mobile")`
+    margin-top: 16px;
+  `}
+
+  & > .swiper__container {
+    width: 100%;
+    overflow: hidden;
+  }
 `
 
 const Photo = styled.div<{ src: string }>`
-  margin-top: 8px;
-  margin-left: 8px;
   width: 100px;
   height: 100px;
   background: ${({ src }) => `url(${src})`};
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+
+  &:not(:first-of-type) {
+    margin-left: 8px;
+  }
 `
+
+const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
+  min-width: 24px;
+  min-height: 24px;
+  width: 24px;
+  height: 24px;
+  display: none;
+  fill: #4858cc;
+  cursor: pointer;
+
+  &.photos__prev-button {
+    transform: rotate(90deg);
+    margin-right: 10px;
+  }
+
+  &.photos__next-button {
+    transform: rotate(-90deg);
+    margin-left: 10px;
+  }
+
+  ${MediaRange.greaterThan("mobile")`
+    display: block;
+  `}
+`
+
+const swiperOptions: SwiperOptions = {
+  freeMode: true,
+  navigation: {
+    nextEl: ".photos__next-button",
+    prevEl: ".photos__prev-button"
+  },
+  slidesPerView: "auto"
+}
 
 export const AboutCoach = styled(props => {
   const coach = useStore($coach)
-  const photos = coach?.photos.map(src => <Photo src={src} />) || []
+  const photos = coach?.photos.map((src, i) => <Photo src={src} key={i} />) || []
+
+  const [swiper, updateSwiper] = useState<SwiperInstance | null>(null)
 
   return (
     <StyledBlock {...props}>
@@ -78,7 +139,13 @@ export const AboutCoach = styled(props => {
       {photos.length > 0 && (
         <>
           <Title>Фотографии</Title>
-          <Photos>{photos}</Photos>
+          <Photos>
+            <ArrowButton className='photos__prev-button' onClick={() => swiper?.slidePrev()} />
+            <ReactIdSwiper {...swiperOptions} containerClass='swiper__container' getSwiper={updateSwiper}>
+              {photos}
+            </ReactIdSwiper>
+            <ArrowButton className='photos__next-button' onClick={() => swiper?.slideNext()} />
+          </Photos>
         </>
       )}
     </StyledBlock>

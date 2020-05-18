@@ -13,11 +13,15 @@ const HeaderContent = styled.div`
   ${MediaRange.greaterThan("mobile")`
     flex-direction: row;
     flex-wrap: wrap;
-    margin: 127px 6% 0;
+    margin: 115px 10% 0;
   `}
   ${MediaRange.greaterThan("tablet")`
-    width: 680px;
-    margin: 32px auto 0;
+    width: 600px;
+    margin: 70px auto 0;
+  `}
+  ${MediaRange.greaterThan("laptop")`
+    width: 600px;
+    margin: 30px auto 0;
   `}
 `
 
@@ -25,8 +29,8 @@ const Content = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     flex-direction: row;
     justify-content: space-between;
   `}
@@ -38,14 +42,14 @@ const Title = styled.h2`
   font-weight: normal;
   font-size: 20px;
   line-height: 26px;
-  color: #FFFFFF;
+  color: #ffffff;
 
   ${MediaRange.greaterThan("mobile")`    
     font-weight: bold;
     font-size: 24px;
     line-height: 26px;
-  `}  
-  ${MediaRange.greaterThan("tablet")`
+  `}
+  ${MediaRange.greaterThan("laptop")`
     font-weight: normal;
     font-size: 32px;
     line-height: 40px;
@@ -55,11 +59,16 @@ const Title = styled.h2`
 const Avatar = styled.img`
   width: 60px;
   height: 60px;
+  min-width: 60px;
+  min-height: 60px;
   border-radius: 50%;
-  
+
   ${MediaRange.greaterThan("mobile")`
     width: 80px;
     height: 80px;
+    min-width: 80px;
+    min-height: 80px;    
+    border: 1px solid #9AA0A6;
   `}
 `
 
@@ -79,9 +88,10 @@ const UserData = styled.div`
 const FullNameSex = styled.div`
   width: 100%;
   margin-left: 8px;
-  
+
   ${MediaRange.greaterThan("mobile")`
     margin-left: 16px;
+    margin-top: 10px;
   `}
 `
 
@@ -96,6 +106,7 @@ const FullName = styled.p`
 
   ${MediaRange.greaterThan("mobile")`    
     justify-content: flex-start;
+    font-weight: normal;
     font-size: 20px;
     line-height: 26px;
   `}
@@ -107,15 +118,20 @@ const Year = styled.span`
   font-weight: normal;
   font-size: 14px;
   line-height: 18px;
-  
 
-  ${MediaRange.greaterThan("mobile")`    
+  ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
+    &:before {
+      content: "("
+    }
+    &:after {    
+      content: ")"
+    }
   `}
 `
 
-const Sex = styled.span`
+const Sex = styled.p`
   margin-top: 8px;
   font-family: Roboto;
   font-style: normal;
@@ -145,11 +161,11 @@ const ButtonContainer = styled.div`
 const SkipButton = styled(Button)`
   margin: 0 auto;
   width: 160px;
-  background: #F5EFF8;
+  background: #f5eff8;
   color: #424242;
 
   ${MediaRange.greaterThan("mobile")`
-    margin: 0 0 0 auto;
+    margin: auto 0 7px auto;
   `}
   ${MediaRange.greaterThan("laptop")`   
     margin: 0;
@@ -160,7 +176,7 @@ type CoachHeaderProps = { avatar: string; fullName: string; years: number; sex: 
 
 export const CoachHeader = ({ avatar, fullName, sex, years }: CoachHeaderProps) => (
   <HeaderContent>
-    <Title>Заполните полную информацию о себе</Title>
+    <Title>Заполните информацию о себе</Title>
     <Content>
       <UserData>
         <Avatar src={avatar} />
@@ -172,7 +188,7 @@ export const CoachHeader = ({ avatar, fullName, sex, years }: CoachHeaderProps) 
         </FullNameSex>
       </UserData>
       <ButtonContainer>
-        <SkipButton onClick={() => Router.push('/', '/')}>Пропустить</SkipButton>
+        <SkipButton onClick={() => Router.push("/", "/")}>Пропустить</SkipButton>
       </ButtonContainer>
     </Content>
   </HeaderContent>

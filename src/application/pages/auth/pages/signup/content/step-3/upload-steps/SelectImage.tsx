@@ -1,18 +1,18 @@
-import { DashedButton } from "@/application/components/button/dashed/DashedButton"
+import { Button } from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
 
-const Description = styled.p<{ largeFileError: boolean }>`
+const Description = styled.p`
   font-family: Roboto;
-  font-weight: ${({largeFileError}) => largeFileError ? '600' : 'normal'};
-  font-size: ${({largeFileError}) => largeFileError ? '16px' : '14px'};
-  line-height: ${({largeFileError}) => largeFileError ? '22px' : '18px'};
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
 
   text-align: center;
   color: #424242;
 
-  margin-top: ${({largeFileError}) => largeFileError ? '100px' : '24px'};
+  margin-top: 24px;
 
   ${MediaRange.greaterThan("mobile")`
     margin-top: 63px;
@@ -23,16 +23,29 @@ const Description = styled.p<{ largeFileError: boolean }>`
   `}
 `
 
+const ErrorText = styled.p`
+  margin-top: 80px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+
+  text-align: center;
+
+  color: #424242;
+`
+
 const Warning = styled.p`
   font-size: 12px;
   line-height: 16px;
   width: 100%;
   text-align: center;
-  color: #FF6B00;
+  color: #ff6b00;
   margin-top: 12px;
 `
 
-const SelectPhotoButton = styled(DashedButton).attrs({ secondary: true })`
+const SelectPhotoButton = styled(Button)`
   margin-top: 56px;
   margin-left: auto;
   margin-right: auto;
@@ -59,15 +72,18 @@ const DragText = styled.div`
 const BlueText = styled.div`
   font-size: 16px;
   line-height: 22px;
-  color: #449bd9;
+  color: #4858cc;
 `
 
-export const SelectImage = ({ open, largeFileError }: { open: () => void; largeFileError: boolean }) => (
+export const SelectImage = ({ open, error }: { open: () => void; error: "large-file" | "mime-type" | null }) => (
   <>
-    <Description largeFileError={largeFileError}>
-      {largeFileError ? "Слишком большой файл" : "Вы можете загрузить фотографию в формате PNG, JPG или GIF"}
-    </Description>
-    <Warning>*Максимальный размер 2 Мбайта</Warning>
+    {!error && <Description>Вы можете загрузить фотографию в формате PNG, JPG или GIF</Description>}
+    {error === "large-file" && <ErrorText>Слишком большой файл</ErrorText>}
+    {error === "mime-type" && <ErrorText>Файл не того типа</ErrorText>}
+
+    {!error && <Warning>*Максимальный размер 2 Мбайта</Warning>}
+    {error === "large-file" && <Warning>Максимальный размер 2 Мбайта</Warning>}
+    {error === "mime-type" && <Warning>Вы можете загрузить фотографию в формате PNG, JPG или GIF</Warning>}
     <SelectPhotoButton onClick={open}>Выберите фотографию</SelectPhotoButton>
     <DragText>
       или <br />

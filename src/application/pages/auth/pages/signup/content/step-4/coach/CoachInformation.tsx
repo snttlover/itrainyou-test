@@ -57,6 +57,7 @@ const CategoriesTitle = styled.h3`
   font-weight: normal;
   font-size: 16px;
   line-height: 26px;
+  margin: 0 8px;
   color: #7d36a8;
   ${MediaRange.greaterThan("mobile")`
     margin: 0 auto;
@@ -66,7 +67,9 @@ const CategoriesTitle = styled.h3`
     line-height: 26px;
   `}
   ${MediaRange.greaterThan("tablet")`
-    width: 600px;
+    width: 600px;    
+    font-size: 24px;
+    line-height: 26px;
   `}
 `
 
@@ -96,7 +99,11 @@ const ButtonContainer = styled.div`
 `
 
 const SendRequestButton = styled(Button)`
+  width: 288px;
   margin: 32px auto 44px;
+  ${MediaRange.greaterThan("mobile")`
+    width: auto;
+  `}
 `
 
 export const CoachInformation = () => {

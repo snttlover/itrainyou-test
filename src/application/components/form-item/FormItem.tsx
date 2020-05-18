@@ -1,4 +1,3 @@
-import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -16,6 +15,7 @@ export const Label = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
+  margin-bottom: 2px;
 `
 
 const Error = styled.div`

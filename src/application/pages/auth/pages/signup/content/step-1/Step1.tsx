@@ -103,19 +103,18 @@ const StyledLink = styled.a`
   color: #ffffff;
   font-family: Roboto;
   font-style: normal;
-  font-weight: 300;
+  font-weight: normal;
   font-size: 14px;
   line-height: 18px;
 
-  ${MediaRange.greaterThan("mobile")`    
-    font-weight: 500;
+  ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
   `}
 `
 
 const SignIn = styled.span`
-  font-weight: 600;
+  font-weight: 500;
 `
 
 const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

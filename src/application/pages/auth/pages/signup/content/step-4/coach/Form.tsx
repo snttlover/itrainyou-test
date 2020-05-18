@@ -18,11 +18,9 @@ import { useStore } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
-import ReactInputMask from "react-input-mask"
+import ReactIdSwiper from "react-id-swiper"
 import styled from "styled-components"
-import Carousel from "react-multi-carousel"
-
-const InputMask: any = ReactInputMask
+import { SwiperOptions } from "swiper"
 
 const InformationContainer = styled.div`
   margin: 32px 16px 0;
@@ -102,14 +100,15 @@ export const Form = () => {
         <Textarea withoutBorder value={values.description} onChange={descriptionChanged} rows={8} />
       </FormItem>
       <FormItem label='Телефон' error={errors.phone}>
-        <InputMask
-          mask='+7 999 999-99-99'
+        <Input
+          mask='+7 111 111-11-11'
           placeholder='+7 900 000-00-00'
           value={values.phone}
           onChange={(value: any) => phoneChanged(value)}
-        >
-          {(inputProps: any) => <Input {...inputProps} withoutBorder type='tel' />}
-        </InputMask>
+          withoutBorder
+          type='tel'
+        />
+        }
       </FormItem>
       <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <Photos />
@@ -180,18 +179,54 @@ const PhotoCross = styled.div`
   }
 `
 
+const Slider320 = styled.div`
+  width: 100vw;
+  margin-left: -16px;
+  margin-right: -16px;
+  ${MediaRange.greaterThan("mobile")`
+    display: none;
+  `}
+
+  ${Photo} {
+    &:first-of-type {
+      margin-left: 16px;
+    }
+  }
+`
+
+const Other = styled.div`
+  display: none;
+
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+    flex-wrap: wrap;
+  `}
+`
+
+const swiperOptions: SwiperOptions = {
+  navigation: {
+    nextEl: ".photos__next-button",
+    prevEl: ".photos__prev-button"
+  },
+  slidesPerView: "auto"
+}
+
 const Photos = () => {
-  const photos = useStore($photos)
+  const photos = useStore($photos).map((src, index) => (
+    <Photo key={src} src={src} onClick={() => photoRemoved(index)}>
+      <PhotoCross>
+        <span />
+        <span />
+      </PhotoCross>
+    </Photo>
+  ))
+
   return (
     <PhotoList>
-      {photos.map((src, index) => (
-        <Photo key={src} src={src} onClick={() => photoRemoved(index)}>
-          <PhotoCross>
-            <span />
-            <span />
-          </PhotoCross>
-        </Photo>
-      ))}
+      <Slider320>
+        <ReactIdSwiper {...swiperOptions}>{photos}</ReactIdSwiper>
+      </Slider320>
+      <Other>{photos}</Other>
     </PhotoList>
   )
 }

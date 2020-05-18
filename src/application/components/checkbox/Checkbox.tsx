@@ -2,15 +2,11 @@ import * as React from "react"
 import styled from "styled-components"
 import { Icon, IconName } from "../icon/Icon"
 
-type StyledCheckboxTypes = {
-  color?: string
-}
-
-const StyledCheckbox = (name: IconName, color?: string) => styled(Icon).attrs({ name })<StyledCheckboxTypes>`
+const StyledCheckbox = styled(Icon)<{ color?: string }>`
   width: 24px;
   height: 24px;
   position: relative;
-  fill: ${color};
+  fill: ${({ color }) => color};
 `
 
 const CheckboxInput = styled.input.attrs({ type: `checkbox` })`
@@ -43,19 +39,17 @@ type CheckboxProps = {
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = styled(({value, onChange, color = '#4858CC', ...props}: CheckboxProps) => {
+export const Checkbox = styled(({ value, onChange, color = "#4858CC", ...props }: CheckboxProps) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(e.target.checked)
     }
   }
 
-  const CheckboxIcon = StyledCheckbox(value ? `checkbox-active` : `checkbox-border`, color)
-
   return (
     <Label className={props.className}>
       <CheckboxInput checked={value} onChange={change} />
-      <CheckboxIcon />
+      <StyledCheckbox color={color} name={value ? `checkbox-active` : `checkbox-border`} />
       <Content>{props.children}</Content>
     </Label>
   )

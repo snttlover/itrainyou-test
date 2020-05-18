@@ -30,6 +30,7 @@ const Header = styled.div`
 
 const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   fill: ${({ color }) => color};
+  min-width: 16px;
   width: 16px;
   height: 16px;
   margin-left: 12px;
