@@ -188,6 +188,7 @@ const TabPrice = styled.div`
 
 const SelectedSessions = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-top: 27px;
@@ -455,9 +456,9 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
         <Datepicker>
           <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
 
-          <FooterWrapper>
-            <TabletFooter />
-          </FooterWrapper>
+          {/*<FooterWrapper>*/}
+          {/*  <TabletFooter />*/}
+          {/*</FooterWrapper>*/}
         </Datepicker>
         <SelectTimeContainer>
           <StyledDateHeader>{formattedDate}</StyledDateHeader>
@@ -490,7 +491,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               <StyledButton>Зарегистрироваться</StyledButton>
             </Link>
           </ButtonContainer>
-          <DesktopFooter />
+          {/*<DesktopFooter />*/}
         </SelectTimeContainer>
       </Block>
     </Container>
