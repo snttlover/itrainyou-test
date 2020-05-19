@@ -136,6 +136,10 @@ const Block = styled.div<BlockTypes>`
   background: transparent;
   transition: border 200ms ease;
   cursor: pointer;
+  
+  ${Avatar} {
+    border: 2px solid ${props => props.isTopCoach ? `#F6C435` : `#fff`};
+  }
 
   &:hover {
     ${Avatar} {
@@ -145,6 +149,9 @@ const Block = styled.div<BlockTypes>`
   
   ${MainInfoContainer} {
     border: 2px solid ${({isTopCoach}) => isTopCoach ? `#DBDEE0` : `#fff`};
+    &:hover {
+      border: 2px solid #DBDEE0;
+    }
   }
   ${PriceContainer} {
     background: ${props => props.isTopCoach ? `#F6C435` : `#9AA0A6`};
