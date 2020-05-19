@@ -35,11 +35,5 @@ sample({
 forward({
   // @ts-ignore
   from: [mounted, serverStarted.map(({ query }) => query)],
-  to: [loadCoachFx]
-})
-
-// Only on client
-forward({
-  from: mounted,
-  to: loadReviewsFx
+  to: [loadCoachFx, loadReviewsFx]
 })

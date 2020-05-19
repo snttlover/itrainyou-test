@@ -152,7 +152,7 @@ export const AboutCoach = styled(props => {
         </>
       )}
       {typeof imageViewIndex === "number" && coach?.photos && (
-        <ImagesViewModal photos={coach.photos} currentIndex={imageViewIndex} onCurrentChange={setImageViewIndex} />
+        <ImagesViewModal photos={coach.photos} close={() => setImageViewIndex(null)} initialSlide={imageViewIndex} />
       )}
     </StyledBlock>
   )

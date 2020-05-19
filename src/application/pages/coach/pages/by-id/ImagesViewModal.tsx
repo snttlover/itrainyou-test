@@ -1,10 +1,10 @@
 import { Icon } from "@/application/components/icon/Icon"
 import { Modal } from "@/application/components/modal/Modal"
 import { MediaRange } from "@/application/lib/responsive/media"
-import React, { useCallback } from "react"
+import React, { useState } from "react"
 import ReactIdSwiper from "react-id-swiper"
+import { SwiperInstance } from "react-id-swiper/lib/types"
 import styled from "styled-components"
-import media from "styled-media-query"
 import { SwiperOptions } from "swiper"
 
 const Layout = styled.div`
@@ -25,12 +25,17 @@ const Header = styled.div`
   font-size: 16px;
   line-height: 26px;
   color: #424242;
+  padding: 0 24px;
 
   position: relative;
   height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${MediaRange.greaterThan("mobile")`
+    justify-content: flex-start;
+  `}
 `
 
 const Cross = styled(Icon).attrs({ name: "cross" })`
@@ -71,14 +76,7 @@ const CounterText = styled.p`
   color: #ffffff;
 `
 
-const Photo = styled.img`
-  max-width: 95%;
-  max-height: 95%;
-
-  ${MediaRange.greaterThan("mobile")`
-    max-width: 80%;
-  `}
-`
+const Photo = styled.img``
 
 const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
   min-width: 40px;
@@ -106,8 +104,8 @@ const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
 
 type ImagesViewModalProps = {
   photos: string[]
-  currentIndex: number
-  onCurrentChange: (i: number | null) => void
+  initialSlide: number
+  close: () => void
 }
 
 const swiperOptions: SwiperOptions = {
@@ -119,27 +117,32 @@ const swiperOptions: SwiperOptions = {
   a11y: false
 }
 
-export const ImagesViewModal = ({ photos, currentIndex, onCurrentChange }: ImagesViewModalProps) => {
-  const onChange = (add: number) => {
-    let nextIndex = currentIndex + add
-    if (nextIndex < 0) nextIndex = photos.length - 1
-    else if (nextIndex > photos.length - 1) nextIndex = 0
-    onCurrentChange(nextIndex)
-  }
+export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModalProps) => {
+  const [swiper, updateSwiper] = useState<SwiperInstance | null>(null)
+  const [currentIndex, setCurrentIndex] = useState(initialSlide)
+
+  swiper?.on("slideChange", () => {
+    setCurrentIndex(swiper?.activeIndex)
+  })
+
   return (
     <Modal>
       <Layout>
         <Header>
           Фото
-          <Cross onClick={() => onCurrentChange(null)} />
+          <Cross onClick={close} />
         </Header>
         <Content>
           <CounterText>
             {currentIndex + 1} из {photos.length}
           </CounterText>
-          <ArrowButton className='photo-viewer__prev-button' onClick={() => onChange(-1)} />
-          <Photo src={photos[currentIndex]} />
-          <ArrowButton className='photo-viewer__next-button' onClick={() => onChange(1)} />
+          <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper?.slidePrev()} />
+          <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} getSwiper={updateSwiper}>
+            {photos.map(src => (
+              <Photo src={src} />
+            ))}
+          </ReactIdSwiper>
+          <ArrowButton className='photo-viewer__next-button' onClick={() => swiper?.slideNext()} />
         </Content>
       </Layout>
     </Modal>
