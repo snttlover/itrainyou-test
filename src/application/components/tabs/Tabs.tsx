@@ -49,6 +49,7 @@ const StyledTab = styled.div<StyledTabPropsTypes>`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   &:last-child {
     margin-right: 0;
   }
