@@ -72,6 +72,7 @@ const Photo = styled.div<{ src: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  cursor: pointer;
 
   &:not(:first-of-type) {
     margin-left: 8px;
