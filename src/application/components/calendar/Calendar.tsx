@@ -112,6 +112,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     text-transform: lowercase;
     text-decoration: none;
     font-weight: normal;
+    color: #5B6670;
     abbr {
       text-decoration: none;
     }
