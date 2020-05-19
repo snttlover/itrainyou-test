@@ -18,6 +18,7 @@ const MainInfoContainer = styled.div`
   padding: 12px 12px 12px 16px;
   background: #fff;
   align-items: center;
+  transition: border 300ms;
 
   &:hover {
     border: 2px solid #dbdee0;
@@ -139,14 +140,8 @@ const Block = styled.div<BlockTypes>`
     border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
   }
 
-  &:hover {
-    ${Avatar} {
-      border: 2px solid #f6c435;
-    }
-  }
-
   ${MainInfoContainer} {
-    border: 2px solid ${({ isTopCoach }) => (isTopCoach ? `#DBDEE0` : `#fff`)};
+    border: 2px solid #fff;
     &:hover {
       border: 2px solid #dbdee0;
     }
