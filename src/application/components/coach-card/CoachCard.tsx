@@ -10,7 +10,7 @@ import arrowIcon from "./images/arrow.svg"
 import { genCoachSessions } from "@/application/components/coach-card/select-date/select-date.model"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { Icon } from "@/application/components/icon/Icon"
-import Router from 'next/router'
+import Router from "next/router"
 import { GrayTooltip } from "@/application/components/gray-tooltip/GrayTooltip"
 
 const MainInfoContainer = styled.div`
@@ -20,9 +20,9 @@ const MainInfoContainer = styled.div`
   align-items: center;
 
   &:hover {
-    border: 2px solid #DBDEE0;
+    border: 2px solid #dbdee0;
   }
-  
+
   ${MediaRange.greaterThan("tablet")`
     padding: 8px 12px 12px;
   `}
@@ -91,7 +91,6 @@ const Category = styled.img`
   `}
 `
 
-
 const PriceContainer = styled.div`
   white-space: nowrap;
   height: 20px;
@@ -112,12 +111,11 @@ const PriceContainer = styled.div`
     font-size: 12px;
     line-height: 16px;
   `}
-  
+
   @media screen and (max-width: 480px) {
     order: 2;
   }
 `
-
 
 type BlockTypes = {
   isTopCoach: boolean
@@ -136,25 +134,25 @@ const Block = styled.div<BlockTypes>`
   background: transparent;
   transition: border 200ms ease;
   cursor: pointer;
-  
+
   ${Avatar} {
-    border: 2px solid ${props => props.isTopCoach ? `#F6C435` : `#fff`};
+    border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
   }
 
   &:hover {
     ${Avatar} {
-      border: 2px solid #F6C435;
+      border: 2px solid #f6c435;
     }
   }
-  
+
   ${MainInfoContainer} {
-    border: 2px solid ${({isTopCoach}) => isTopCoach ? `#DBDEE0` : `#fff`};
+    border: 2px solid ${({ isTopCoach }) => (isTopCoach ? `#DBDEE0` : `#fff`)};
     &:hover {
-      border: 2px solid #DBDEE0;
+      border: 2px solid #dbdee0;
     }
   }
   ${PriceContainer} {
-    background: ${props => props.isTopCoach ? `#F6C435` : `#9AA0A6`};
+    background: ${props => (props.isTopCoach ? `#F6C435` : `#9AA0A6`)};
   }
 
   @media screen and (max-width: 600px) {
@@ -169,7 +167,6 @@ const Block = styled.div<BlockTypes>`
   `}
 `
 
-
 const Duration = styled.span`
   position: relative;
 `
@@ -180,7 +177,7 @@ const RatingContainer = styled.div`
   margin-left: auto;
   display: flex;
   flex-direction: column;
-  
+
   position: absolute;
   right: 12px;
   top: 12px;
@@ -201,10 +198,12 @@ const Meta = styled.div`
 
 const ReviewsCount = styled.span`
   font-size: 12px;
+  color: #5b6670;
 `
 
 const Rating = styled.span`
   font-size: 12px;
+  color: #5b6670;
 
   @media screen and (max-width: 600px) {
     font-size: 16px;
@@ -243,7 +242,7 @@ const Date = styled.span`
   font-size: 10px;
   line-height: 12px;
   display: flex;
-  color: #4858CC;
+  color: #4858cc;
 
   @media screen and (max-width: 600px) {
     display: none;
@@ -281,8 +280,8 @@ const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>
   width: 24px;
   height: 24px;
   margin-right: 8px;
-  fill: ${(props) => props.color};
-  
+  fill: ${props => props.color};
+
   @media screen and (max-width: 480px) {
     width: 16px;
     height: 16px;
@@ -322,16 +321,19 @@ const CoachCardLayout = ({ coach, className }: Props) => {
     Router.push(`/coach/${coach.id}`)
   }
 
-  const minimumPrice = Object.entries(coach.prices).reduce((acc, [key, price]) => {
-    if (price !== null && price < acc.price) {
-      return {
-        price: Math.ceil(price),
-        text: ` за ${key.slice(1, key.length)} мин`
+  const minimumPrice = Object.entries(coach.prices).reduce(
+    (acc, [key, price]) => {
+      if (price !== null && price < acc.price) {
+        return {
+          price: Math.ceil(price),
+          text: ` за ${key.slice(1, key.length)} мин`
+        }
+      } else {
+        return acc
       }
-    } else {
-      return acc
-    }
-  }, { price: Infinity, text: `0 минут` })
+    },
+    { price: Infinity, text: `0 минут` }
+  )
 
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
 
@@ -340,11 +342,9 @@ const CoachCardLayout = ({ coach, className }: Props) => {
       <MainInfoContainer onClick={redirectToCoach}>
         <Avatar image={coach.avatar} />
         <NameContainer>
-          <Name>
-            {`${coach.firstName} ${coach.lastName}`}
-          </Name>
+          <Name>{`${coach.firstName} ${coach.lastName}`}</Name>
           <Info>
-            { coach.isTopCoach && (
+            {coach.isTopCoach && (
               <GrayTooltip text='Топ коуч'>
                 <TopCoachIcon />
               </GrayTooltip>
@@ -358,7 +358,9 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             </CategoriesIcons>
 
             <PriceContainer>
-              <Price>{minimumPrice.price}₽ {minimumPrice.text}</Price>
+              <Price>
+                {minimumPrice.price}₽ {minimumPrice.text}
+              </Price>
             </PriceContainer>
           </Info>
         </NameContainer>
@@ -374,12 +376,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Date>
         </RatingContainer>
       </MainInfoContainer>
-      {isActive && (
-        <SelectDatetime
-          coach={coach}
-          sessionsData={sessionsListModel}
-        />
-      )}
+      {isActive && <SelectDatetime coach={coach} sessionsData={sessionsListModel} />}
     </Block>
   )
 }
