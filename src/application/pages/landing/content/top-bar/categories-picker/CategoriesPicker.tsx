@@ -11,6 +11,7 @@ const Label = styled.div`
   line-height: 22px;
   position: relative;
   display: inline;
+  color: #424242;
 `
 
 const Counter = styled.div`
