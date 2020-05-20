@@ -155,11 +155,13 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     background: #4858CC;
     color: #fff !important;
   }
-  .react-calendar__tile--rangeStart {
+  .react-calendar__tile--rangeStart, 
+  .react-calendar__tile--active.day-of-week-1 {
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
   }
-  .react-calendar__tile--rangeEnd {
+  .react-calendar__tile--rangeEnd,
+  .react-calendar__tile--active.day-of-week-0 {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
   }
@@ -194,6 +196,8 @@ export const Calendar = (props: CalendarTypes) => {
 
   const customClassNames = ({ date }: CustomClassNamesTypes) => {
     const classes = []
+
+    classes.push(`day-of-week-${dayjs(date).day()}`)
 
     if (pinnedDefined) {
       if (pinnedDates.includes(dayjs(date).format(equalFormat))) {
