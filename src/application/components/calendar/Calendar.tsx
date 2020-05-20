@@ -3,8 +3,8 @@ import styled, { css } from "styled-components"
 import dayjs from "dayjs"
 import 'dayjs/locale/ru'
 import { Dispatch, SetStateAction, useState } from "react"
-import leftImage from "./images/left.svg"
-import rightImage from "./images/right.svg"
+import isBetween from  'dayjs/plugin/isBetween'
+dayjs.extend(isBetween)
 import { Icon } from "@/application/components/icon/Icon"
 
 dayjs.locale('ru')
@@ -18,6 +18,7 @@ type CalendarTypes = {
   selectRange?: boolean
   isBig?: boolean
   className?: string
+  pinTo?: Date | null
 }
 
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
@@ -151,16 +152,20 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     margin-bottom: 10px;
     height: 17px;
   }
+  .rangeStart,
+  .rangeEnd,
   .react-calendar__tile--active {
     background: #4858CC;
     color: #fff !important;
   }
-  .react-calendar__tile--rangeStart, 
+  .react-calendar__tile--rangeStart:not(.rangeEnd), 
+  .rangeStart,
   .react-calendar__tile--active.day-of-week-1 {
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
   }
-  .react-calendar__tile--rangeEnd,
+  .react-calendar__tile--rangeEnd:not(.rangeStart),
+  .rangeEnd,
   .react-calendar__tile--active.day-of-week-0 {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
@@ -182,6 +187,8 @@ function firsDayOfMonth(month: number, year: number) {
   return new Date(dayjs(`${year}-${month}-01`).valueOf())
 }
 
+const isEqualDates = (first: Date, second: Date, format: string = `DDMMYYYY`) => dayjs(first).format(format) === dayjs(second).format(format)
+
 export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
 
@@ -199,6 +206,26 @@ export const Calendar = (props: CalendarTypes) => {
 
     classes.push(`day-of-week-${dayjs(date).day()}`)
 
+    if (props.pinTo && props.value) {
+      const range = [props.pinTo]
+      const value = props.value as Date
+      if (props.pinTo > value) {
+        range.unshift(value)
+      } else {
+        range.push(value)
+      }
+
+      if (dayjs(date).isBetween(range[0], range[1])) {
+        classes.push(`react-calendar__tile--active`)
+      }
+      if (isEqualDates(range[0], date)) {
+        classes.push(`rangeStart`)
+      }
+      if (isEqualDates(range[1], date)) {
+        classes.push(`rangeEnd`)
+      }
+    }
+
     if (pinnedDefined) {
       if (pinnedDates.includes(dayjs(date).format(equalFormat))) {
         classes.push(`pinned`)
@@ -213,7 +240,7 @@ export const Calendar = (props: CalendarTypes) => {
       classes.push(`day--weekend`)
     }
 
-    if (dayjs(startDate).format(`MMYYYY`) !== dayjs(date).format(`MMYYYY`)) {
+    if (!isEqualDates(date, startDate, `MMYYYY`)) {
       classes.push(`not-current-month`)
     }
 
