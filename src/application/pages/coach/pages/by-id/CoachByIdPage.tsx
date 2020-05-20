@@ -36,6 +36,9 @@ const BuySidebar = styled.div`
   width: 268px;
   height: 860px;
   margin-left: 24px;
+  position: relative;
+  align-self: flex-start;
+  height: auto;
 
   ${MediaRange.greaterThan("laptop")`
     display: flex;
@@ -43,6 +46,7 @@ const BuySidebar = styled.div`
 `
 
 const BuyBlock = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
 
@@ -107,8 +111,6 @@ export const CoachByIdPage = () => {
 
   useEffect(() => {
     mounted({ id: Number(router.query.id) })
-    $sessionsPickerStore.changeId(+router.query.id)
-    $sessionsPickerStore.loadData( { params: {} })
   }, [])
 
   return (
