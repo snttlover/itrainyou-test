@@ -8,6 +8,9 @@ export interface RecoveryRequest {
 }
 
 export const recovery = (data: RecoveryRequest) =>
-  post<RecoveryResponse, RecoveryRequest>(`https://dev.itrainyou.heksray.com/api/v1/web/users/me/request-password-restore/`, data)
+  post<RecoveryResponse, RecoveryRequest>(
+    `${process.env.BACKEND_URL}/api/v1/web/users/me/request-password-restore/`,
+    data
+  )
     .then(response => response.data)
     .then(keysToCamel)

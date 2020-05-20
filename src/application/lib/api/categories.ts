@@ -9,6 +9,6 @@ export interface CategoryResponse {
 }
 
 export const getCategories = () =>
-  get<CategoryResponse[]>("https://dev.itrainyou.heksray.com/api/v1/web/categories/")
+  get<CategoryResponse[]>(`${process.env.BACKEND_URL}/api/v1/web/categories/`)
     .then(response => response.data)
     .then(keysToCamel)

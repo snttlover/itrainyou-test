@@ -18,6 +18,6 @@ export interface LoginRequest {
 }
 
 export const login = (data: LoginRequest) =>
-  post<LoginResponse, LoginRequest>(`https://dev.itrainyou.heksray.com/api/v1/web/auth/login/`, data)
+  post<LoginResponse, LoginRequest>(`${process.env.BACKEND_URL}/api/v1/web/auth/login/`, data)
     .then(response => response.data)
     .then(keysToCamel)

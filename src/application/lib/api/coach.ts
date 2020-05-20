@@ -57,12 +57,12 @@ export interface GetCoachesParamsTypes {
 }
 
 export const getCoaches = (params: GetCoachesParamsTypes) =>
-  get<Pagination<Coach>, GetCoachesParamsTypes>("https://dev.itrainyou.heksray.com/api/v1/web/coaches/", params)
+  get<Pagination<Coach>, GetCoachesParamsTypes>(`${process.env.BACKEND_URL}/api/v1/web/coaches/`, params)
     .then(response => response.data)
     .then(data => data.results)
     .then(keysToCamel)
 
 export const getCoach = ({ id }: { id: number }) =>
-  get<Coach, {}>(`https://dev.itrainyou.heksray.com/api/v1/web/coaches/${id}/`)
+  get<Coach, {}>(`${process.env.BACKEND_URL}/api/v1/web/coaches/${id}/`)
     .then(response => response.data)
     .then(keysToCamel)
