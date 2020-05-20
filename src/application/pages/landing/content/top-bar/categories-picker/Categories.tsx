@@ -11,6 +11,7 @@ import { Icon } from "@/application/components/icon/Icon"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { MediaRange } from "@/application/lib/responsive/media"
 
+import {CategoryDescription} from "@/application/pages/landing/content/top-bar/categories-picker/CategoryDescription"
 
 export const StyledCategoryCheckbox = styled(Checkbox)`
   padding: 7px 10px;
@@ -39,6 +40,7 @@ const Text = styled.div`
   font-size: 16px;
   line-height: 22px;
   margin-left: 8px;
+  flex: 1;
   @media screen and (max-width: 480px) {
     font-size: 12px;
   }
@@ -107,6 +109,7 @@ export const Categories = () => {
           <StyledCategoryCheckbox value={category.checked} onChange={e => toggleCategorySelection(category.id)}>
             <CategoryIcon color={getCategoryColorById(category.id)} />
             <Text>{category.name}</Text>
+            <CategoryDescription>{category.description}</CategoryDescription>
           </StyledCategoryCheckbox>
         </CheckBoxWrapper>
       ))}
