@@ -18,7 +18,7 @@ export interface GetHintsParamsTypes {
 }
 
 export const getHints = (params: GetHintsParamsTypes) =>
-  get<Pagination<Hint>, GetHintsParamsTypes>("https://dev.itrainyou.heksray.com/api/v1/web/search-hints/", params)
+  get<Pagination<Hint>, GetHintsParamsTypes>(`${process.env.BACKEND_URL}/api/v1/web/search-hints/`, params)
     .then(response => response.data)
     .then(data => data.results)
     .then(keysToCamel)

@@ -36,6 +36,6 @@ export interface CoachReviewResponse {
 }
 
 export const getCoachReviews = ({ id }: { id: number }) =>
-  get<Pagination<CoachReviewResponse>>(`https://dev.itrainyou.heksray.com/api/v1/web/coaches/${id}/reviews/`)
+  get<Pagination<CoachReviewResponse>>(`${process.env.BACKEND_URL}/api/v1/web/coaches/${id}/reviews/`)
     .then(response => response.data)
     .then(keysToCamel)

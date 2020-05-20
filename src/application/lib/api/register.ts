@@ -12,10 +12,7 @@ export interface RegisterAsUserResponse {
 }
 
 export const registerAsUser = (data: RegisterAsUserRequest) =>
-  post<RegisterAsUserResponse, RegisterAsUserRequest>(
-    `https://dev.itrainyou.heksray.com/api/v1/web/auth/register/`,
-    data
-  )
+  post<RegisterAsUserResponse, RegisterAsUserRequest>(`${process.env.BACKEND_URL}/api/v1/web/auth/register/`, data)
     .then(response => response.data)
     .then(keysToCamel)
 
@@ -30,13 +27,13 @@ export interface RegisterAsClientRequest {
 
 export interface RegisterAsClientResponse {
   user: {
-    id: number,
-    email: string,
+    id: number
+    email: string
     creationDatetime: string
   }
   firstName: string
   lastName: string
-  birthDate: string  | null
+  birthDate: string | null
   sex: "M" | "F" | ""
   avatar: string | null
   categories: CategoryResponse[]
@@ -46,7 +43,7 @@ export interface RegisterAsClientResponse {
 
 export const registerAsClient = (data: RegisterAsClientRequest) =>
   post<RegisterAsClientResponse, RegisterAsClientRequest>(
-    `https://dev.itrainyou.heksray.com/api/v1/web/clients/`,
+    `${process.env.BACKEND_URL}/api/v1/web/clients/`,
     keysToSnake(data)
   )
     .then(response => response.data)
@@ -68,8 +65,8 @@ export interface RegisterAsCoachRequest {
 
 export interface RegisterAsCoachResponse {
   user: {
-    id: number,
-    email: string,
+    id: number
+    email: string
     creationDatetime: string
   }
   firstName: string
@@ -84,7 +81,7 @@ export interface RegisterAsCoachResponse {
 
 export const registerAsCoach = (data: RegisterAsCoachRequest) =>
   post<RegisterAsCoachResponse, RegisterAsCoachRequest>(
-    `https://dev.itrainyou.heksray.com/api/v1/web/coaches/`,
+    `${process.env.BACKEND_URL}/api/v1/web/coaches/`,
     keysToSnake(data)
   )
     .then(response => response.data)

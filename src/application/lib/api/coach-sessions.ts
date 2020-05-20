@@ -10,7 +10,7 @@ export interface CoachSession {
   duration: string //example: 01:00:00
 }
 
-export type DurationType = 'D30' | 'D45' | 'D60' |'D90'
+export type DurationType = "D30" | "D45" | "D60" | "D90"
 
 export interface GetCoachSessionsParamsTypes {
   start_date__lte?: string
@@ -20,6 +20,6 @@ export interface GetCoachSessionsParamsTypes {
 }
 
 export const getCoachSessions = (id: number, params: GetCoachSessionsParamsTypes) =>
-  get<CoachSession, GetCoachSessionsParamsTypes>(`https://dev.itrainyou.heksray.com/api/v1/web/coaches/${id}/sessions`, params)
+  get<CoachSession, GetCoachSessionsParamsTypes>(`${process.env.BACKEND_URL}/api/v1/web/coaches/${id}/sessions`, params)
     .then(response => response.data)
     .then(keysToCamel)

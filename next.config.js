@@ -8,7 +8,7 @@ module.exports = enhance(
   withImages({
     optimizeImagesInDev: true,
     env: {
-      BACKEND_URL: ""
+      BACKEND_URL: process.env.BACKEND_URL || "https://dev.itrainyou.heksray.com"
     },
     webpack(config, options) {
       config.resolve.alias["@"] = path.join(__dirname, "src")

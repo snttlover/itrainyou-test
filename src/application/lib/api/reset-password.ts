@@ -10,7 +10,7 @@ export interface ResetPasswordRequest {
 
 export const resetPassword = (data: ResetPasswordRequest) =>
   post<ResetPasswordResponse, ResetPasswordRequest>(
-    `https://dev.itrainyou.heksray.com/api/v1/web/users/me/restore-password/`,
+    `${process.env.BACKEND_URL}/api/v1/web/users/me/restore-password/`,
     data
   )
     .then(response => response.data)

@@ -6,6 +6,6 @@ export interface Price {
 }
 
 export const getMaxPrice = () =>
-  get<Price, {}>("https://dev.itrainyou.heksray.com/api/v1/web/coaches/max-cost/", {})
+  get<Price, {}>(`${process.env.BACKEND_URL}/api/v1/web/coaches/max-cost/`, {})
     .then(response => response.data)
     .then(keysToCamel)
