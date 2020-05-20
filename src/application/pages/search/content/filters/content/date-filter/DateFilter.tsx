@@ -169,6 +169,14 @@ export const DateFilter = () => {
     return ``
   }
 
+  let pinTo: null | Date = null
+  if (rangeType === `to`) {
+    pinTo = dayjs(dayjs().format(`YYYY-MM-DD`)).toDate()
+  }
+  if (rangeType === `from`) {
+    pinTo = dayjs(date as Date).add(10, `year`).toDate()
+  }
+
   const calendar = () => (
     <>
       <Text>
@@ -180,7 +188,7 @@ export const DateFilter = () => {
           <StyledRadioOption value='to'>До</StyledRadioOption>
           <StyledRadioOption value='range'>Промежуток</StyledRadioOption>
         </RadioGroup>
-        <Calendar value={date} selectRange={rangeType === `range`} onChange={navigateWithDate} />
+        <Calendar value={date} selectRange={rangeType === `range`} pinTo={pinTo} onChange={navigateWithDate} />
       </RadioContainer>
     </>
   )

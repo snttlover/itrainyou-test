@@ -11,6 +11,7 @@ import { Button } from "@/application/components/button/normal/Button"
 import { genSessionTabs, SelectDatetimeTypes } from "@/application/components/coach-card/select-date/SelectDatetime"
 import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { DurationType } from "@/application/lib/api/coach-sessions"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -414,11 +415,13 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const deleteSession = useEvent(props.sessionsData.deleteSession)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
-  const [currentDate, changeCurrentDate] = useState<Date | undefined>()
+  const [currentDate, changeCurrentDate] = useState<Date | null>()
   const pinnedDates = sessions.map(session => session.startDatetime)
 
-  const formattedDate = dayjs(currentDate).format("DD MMMM")
-  const currentDateEqual = dayjs(currentDate).format(equalDateFormat)
+  const headerDate = currentDate ? currentDate : new Date()
+  const formattedDate = dayjs(headerDate).format("DD MMMM")
+  const currentDateEqual = dayjs(currentDate as Date).format(equalDateFormat)
+
   const times = sessions
     .filter(session => {
       return dayjs(session.startDatetime).format(equalDateFormat) === currentDateEqual
@@ -438,9 +441,14 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
 
+  const changeTabHandler = (durationType: DurationType) => {
+    changeActiveTab(durationType)
+    changeCurrentDate(null)
+  }
+
   return (
     <Container>
-      <StyledTabs value={activeTab} onChange={changeActiveTab}>
+      <StyledTabs value={activeTab} onChange={changeTabHandler}>
         {tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
@@ -454,7 +462,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
       <Block onlyOneCard={tabs.length === 1}>
         { loading && <Spinner /> }
         <Datepicker>
-          <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
+          <StyledCalendar value={currentDate as Date} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
 
           {/*<FooterWrapper>*/}
           {/*  <TabletFooter />*/}

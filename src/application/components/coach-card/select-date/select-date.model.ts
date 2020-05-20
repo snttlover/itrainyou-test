@@ -73,12 +73,14 @@ export const genCoachSessions = (id= 0) => {
   const $durationTab = createStore<DurationType>('D30')
     .on(changeDurationTab, (_, payload) => payload)
 
-  $durationTab.watch((state) => loadCoachSessions({
-    id: $id.getState(),
-    params: {
-      duration_type: state
-    }
-  }))
+  changeDurationTab.watch((state) => {
+    return loadCoachSessions({
+      id: $id.getState(),
+      params: {
+        duration_type: $durationTab.getState()
+      }
+    })
+  })
 
   return {
     changeId,

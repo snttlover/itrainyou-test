@@ -17,6 +17,7 @@ export type IconName =
   | "rotate"
   | "tail-arrow"
   | "vk"
+  | "info"
   | "top-coach"
   | "rounded-user"
   | "checkbox-border"

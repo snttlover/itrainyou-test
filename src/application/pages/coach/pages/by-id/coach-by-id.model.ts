@@ -3,6 +3,7 @@ import { CoachReviewResponse, getCoachReviews } from "@/application/lib/api/revi
 import { serverStarted } from "@/store"
 import { createEffect, createEvent, createStore, forward, sample } from "effector-next"
 import { genCoachSessions } from "@/application/components/coach-card/select-date/select-date.model"
+import { DurationType } from "@/application/lib/api/coach-sessions"
 
 export const loadCoachFx = createEffect({
   handler: getCoach
@@ -22,12 +23,17 @@ export const $reviews = createStore<CoachReviewResponse[]>([]).on(
 
 export const $sessionsPickerStore = genCoachSessions()
 const loadSessions = createEffect({
-  handler: (id: number) => $sessionsPickerStore.loadData({ id, params: {} })
+  handler: (coach: Coach) => {
+    $sessionsPickerStore.changeId(coach.id)
+    // @ts-ignore
+    const defaultTab = Object.keys(coach.prices).find((key) => !!coach[key]) as DurationType
+    $sessionsPickerStore.tabs.changeDurationTab(defaultTab)
+  }
 })
 
 sample({
   // @ts-ignore
-  source: serverStarted.map(({ query }) => query.id),
+  source: $coach,
   clock: loadCoachFx.done,
   target: loadSessions
 })

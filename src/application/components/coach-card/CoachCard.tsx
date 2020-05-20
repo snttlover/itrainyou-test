@@ -18,6 +18,7 @@ const MainInfoContainer = styled.div`
   padding: 12px 12px 12px 16px;
   background: #fff;
   align-items: center;
+  transition: border 300ms;
 
   &:hover {
     border: 2px solid #dbdee0;
@@ -139,14 +140,8 @@ const Block = styled.div<BlockTypes>`
     border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
   }
 
-  &:hover {
-    ${Avatar} {
-      border: 2px solid #f6c435;
-    }
-  }
-
   ${MainInfoContainer} {
-    border: 2px solid ${({ isTopCoach }) => (isTopCoach ? `#DBDEE0` : `#fff`)};
+    border: 2px solid #fff;
     &:hover {
       border: 2px solid #dbdee0;
     }
@@ -326,7 +321,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
       if (price !== null && price < acc.price) {
         return {
           price: Math.ceil(price),
-          text: ` за ${key.slice(1, key.length)} мин`
+          text: `${key.slice(1, key.length)} мин`
         }
       } else {
         return acc
@@ -336,6 +331,10 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   )
 
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
+
+  // @ts-ignore
+  const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
+  const price = filledPrices > 1 ? `от ${minimumPrice.price}₽ за ${minimumPrice.text}` : `${minimumPrice.text} / ${minimumPrice.price}₽`
 
   return (
     <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
@@ -359,7 +358,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
 
             <PriceContainer>
               <Price>
-                {minimumPrice.price}₽ {minimumPrice.text}
+                {price}
               </Price>
             </PriceContainer>
           </Info>
