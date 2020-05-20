@@ -321,7 +321,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
       if (price !== null && price < acc.price) {
         return {
           price: Math.ceil(price),
-          text: ` за ${key.slice(1, key.length)} мин`
+          text: `${key.slice(1, key.length)} мин`
         }
       } else {
         return acc
@@ -331,6 +331,10 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   )
 
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
+
+  // @ts-ignore
+  const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
+  const price = filledPrices > 1 ? `от ${minimumPrice.price}₽ за ${minimumPrice.text}` : `${minimumPrice.text} / ${minimumPrice.price}₽`
 
   return (
     <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
@@ -354,7 +358,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
 
             <PriceContainer>
               <Price>
-                {minimumPrice.price}₽ {minimumPrice.text}
+                {price}
               </Price>
             </PriceContainer>
           </Info>
