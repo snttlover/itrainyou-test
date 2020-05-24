@@ -1,7 +1,7 @@
 import { Avatar } from "@/application/components/avatar/Avatar"
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
-import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { AuthLayout } from "@/application/components/layouts/sections/auth/AuthLayout"
 import { SelectInput } from "@/application/components/select-input/SelectInput"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"

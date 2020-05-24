@@ -1,7 +1,7 @@
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
 import { PasswordInput } from "@/application/components/input/PasswordInput"
-import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { AuthLayout } from "@/application/components/layouts/sections/auth/AuthLayout"
 import { logout } from "@/application/feature/user/user.model"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"

@@ -1,4 +1,4 @@
-import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { AuthLayout } from "@/application/components/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { WhiteNextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"

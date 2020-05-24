@@ -1,5 +1,5 @@
 import React from "react"
-import {Layout} from "@/application/components/layouts/default/Layout"
+import {Layout} from "@/application/components/layouts/behaviors/default/Layout"
 import styled from "styled-components"
 import { TopBar } from "@/application/pages/landing/content/top-bar/TopBar"
 
@@ -12,7 +12,7 @@ type GrayLayoutProps = {
   children: React.ReactChild
 }
 
-export const GrayLayout = (props: GrayLayoutProps) => (
+export const GuestLayout = (props: GrayLayoutProps) => (
   <StyledLayout>
     <TopBar/>
     {props.children}

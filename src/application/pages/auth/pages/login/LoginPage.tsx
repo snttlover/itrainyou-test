@@ -1,7 +1,7 @@
 import Link from "next/link"
 import * as React from "react"
 import styled from "styled-components"
-import { AuthLayout } from "@/application/components/layouts/auth/AuthLayout"
+import { AuthLayout } from "@/application/components/layouts/sections/auth/AuthLayout"
 import { LoginForm } from "@/application/pages/auth/pages/login/content/LoginForm"
 import { WhiteContainer } from "@/application/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/application/pages/auth/components/CenterFormContainer"

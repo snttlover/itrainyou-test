@@ -10,9 +10,10 @@ import { PageContainer } from "@/application/components/page-container/PageConta
 import { Content } from "./content/Content"
 import { Sorting } from "./content/list/content/sorting/Sorting"
 import { MobileTabs } from "./content/mobile-tabs/MobileTabs"
-import {GrayLayout} from "@/application/components/layouts/default/GrayLayout"
+import {GuestLayout} from "@/application/components/layouts/behaviors/default/GuestLayout"
 import { Filters } from "@/application/pages/search/content/filters/Filters"
 import styled from "styled-components"
+import { UserLayout } from "@/application/components/layouts/behaviors/user/UserLayout"
 
 const StyledPageContainer = styled(PageContainer)`
   display: flex;
@@ -40,7 +41,7 @@ export const SearchPage = () => {
   }, [])
 
   return (
-    <GrayLayout>
+    <UserLayout>
       <StyledPageContainer>
         <ContentWrapper>
           <MobileTabs/>
@@ -53,6 +54,6 @@ export const SearchPage = () => {
 
 
       </StyledPageContainer>
-    </GrayLayout>
+    </UserLayout>
   )
 }

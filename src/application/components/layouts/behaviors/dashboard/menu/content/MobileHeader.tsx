@@ -3,7 +3,7 @@ import logoImage from '../images/logo.svg'
 import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { useEvent } from "effector-react"
-import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/dashboard/menu/blue-layout.mobile-menu"
+import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboard/menu/blue-layout.mobile-menu"
 
 const Logo = styled.img.attrs({ src: logoImage })`
   width: 36px;
