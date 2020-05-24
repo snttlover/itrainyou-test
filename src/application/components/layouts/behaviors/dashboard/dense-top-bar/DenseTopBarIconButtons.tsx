@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 import { Icon } from "@/application/components/icon/Icon"
 import { useEvent } from "effector-react"
-import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/dashboard/menu/blue-layout.mobile-menu"
+import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboard/menu/blue-layout.mobile-menu"
 
 const Wrapper = styled.div`
   position: relative;

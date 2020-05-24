@@ -1,6 +1,6 @@
 import { OurCoaches } from "@/application/pages/landing/content/our-coaches/OurCoaches"
 import * as React from "react"
-import { Layout } from "@/application/components/layouts/default/Layout"
+import { Layout } from "@/application/components/layouts/behaviors/default/Layout"
 import { TopBar } from "./content/top-bar/TopBar"
 import { Hero } from "./content/hero/Hero"
 import { AboutCoach } from "./content/about-coach/AboutCoach"

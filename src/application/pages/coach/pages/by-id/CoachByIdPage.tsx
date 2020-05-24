@@ -9,7 +9,8 @@ import styled from "styled-components"
 import { $sessionsPickerStore } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/application/pages/search/content/list/content/CoachDatepicker"
 import { useStore } from "effector-react"
-import { GrayLayout } from "@/application/components/layouts/default/GrayLayout"
+import { GuestLayout } from "@/application/components/layouts/behaviors/default/GuestLayout"
+import { UserLayout } from "@/application/components/layouts/behaviors/user/UserLayout"
 
 const Content = styled.div`
   margin: 20px 8px;
@@ -114,7 +115,7 @@ export const CoachByIdPage = () => {
   }, [])
 
   return (
-    <GrayLayout>
+    <UserLayout>
       <Content>
         <InfoWithSidebar>
           <CoachInfoContainer>
@@ -132,6 +133,6 @@ export const CoachByIdPage = () => {
           </BuySidebar>
         </InfoWithSidebar>
       </Content>
-    </GrayLayout>
+    </UserLayout>
   )
 }

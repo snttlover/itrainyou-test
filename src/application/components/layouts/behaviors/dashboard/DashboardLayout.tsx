@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Menu } from "@/application/components/layouts/dashboard/menu/Menu"
+import { Menu } from "@/application/components/layouts/behaviors/dashboard/menu/Menu"
+import { DenseTopBar } from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBar"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -14,18 +15,20 @@ const Layout = styled.div`
 
 const PageContent = styled.div`
   flex: 1;
-  height: 100%;
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
   position: relative;
   overflow: hidden;
   overflow-y: auto;
-  position: relative;
+  background: #ECEFF1;
 `
 
 export const DashboardLayout = styled(({ children, ...props }: DashboardTypes) => (
   <Layout {...props}>
     <Menu />
-    <PageContent>{children}</PageContent>
+    <PageContent>
+      <DenseTopBar />
+      {children}
+    </PageContent>
   </Layout>
 ))``
