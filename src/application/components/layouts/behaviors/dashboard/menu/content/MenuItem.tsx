@@ -1,6 +1,8 @@
+import React from "react"
 import styled from "styled-components"
 import { Icon, IconName } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
+import Link from "next/link"
 
 const MenuItemIcon = styled(Icon).attrs((props) => ({
   name: props.name
@@ -56,14 +58,19 @@ const Label = styled.div`
 
 type MenuItemTypes = {
   icon: IconName,
+  link?: string,
   children: React.ReactChild
 }
 
 export const MenuItem = (props: MenuItemTypes) => (
-  <StyledMenuItem>
-    <MenuItemIcon name={props.icon} />
-    <Label>
-      {props.children}
-    </Label>
-  </StyledMenuItem>
+  <Link href={props.link || `/search`}>
+    <StyledMenuItem>
+      <>
+        <MenuItemIcon name={props.icon} />
+        <Label>
+          {props.children}
+        </Label>
+      </>
+    </StyledMenuItem>
+  </Link>
 )

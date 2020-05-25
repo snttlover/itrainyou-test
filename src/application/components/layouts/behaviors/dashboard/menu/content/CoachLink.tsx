@@ -3,7 +3,6 @@ import { MediaRange } from "@/application/lib/responsive/media"
 
 const Container = styled.div`
   width: 100%;
-  display: flex;
   flex-direction: column;
   align-items: center;
   flex: 1;
@@ -14,12 +13,14 @@ const Container = styled.div`
   padding-top: 40px;
   cursor: pointer;
   justify-content: flex-end;
-  
-  ${MediaRange.greaterThan('mobile')`
-     padding-bottom: 20px;
+  padding-bottom: 20px;
+  display: none;
+
+  ${MediaRange.lessThan('mobile')`
+     padding-bottom: 0;
   `}
-  ${MediaRange.greaterThan('tablet')`
-    display: none;
+  ${MediaRange.lessThan('tablet')`
+    display: flex;
   `}
 `
 

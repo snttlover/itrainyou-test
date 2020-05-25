@@ -6,9 +6,9 @@ export const DesktopLogo = styled.img.attrs({ src: logo })`
   margin-top: 28px;
   width: 80px;
   height: 103px;
-  display: none;
+  display: block;
   align-self: center;
-  ${MediaRange.greaterThan('tablet')`
-    display: block;
+  ${MediaRange.lessThan('tablet')`
+    display: none;
   `}
 `

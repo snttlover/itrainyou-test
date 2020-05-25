@@ -11,27 +11,28 @@ const Logo = styled.img.attrs({ src: logoImage })`
 `
 
 const CloseIcon = styled(Icon).attrs({ name: `close` })`
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
+  display: none;
   cursor: pointer;
   fill: #fff;
-  ${MediaRange.greaterThan('mobile')`
-    width: 36px;
-    height: 36px;
+  ${MediaRange.lessThan('mobile')`
+    width: 24px;
+    height: 24px;
   `}
-  ${MediaRange.greaterThan('tablet')`
-    display: none;
+  ${MediaRange.lessThan('tablet')`
+    display: block;
   `}
 `
 
 const StyledHeader = styled.div`
   width: 100%;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
 
-  ${MediaRange.greaterThan(`tablet`)`
-    display: none;
+  ${MediaRange.lessThan(`tablet`)`
+     display: flex;
   `}
 `
 

@@ -14,24 +14,25 @@ type StyledMenuWrapperTypes = {
 }
 
 const StyledMenuWrapper = styled.div<StyledMenuWrapperTypes>`
-  width: 100vw;
   height: 100%;
   min-height: 100vh;
   z-index: 200;
   background: #4858CC;
   color: #fff;
   font-family: Roboto;
-  padding: 14px 16px;
-  display: ${({ showOnMobile }) => showOnMobile ? `flex` : `none`};
   flex-direction: column;
   overflow: hidden;
   overflow-y: auto;
 
-  ${MediaRange.greaterThan('tablet')`
-    position: relative;
-    display: flex;
-    width: 200px;
-    padding: 0;
+  position: relative;
+  display: flex;
+  width: 200px;
+  padding: 0;
+
+  ${MediaRange.lessThan<StyledMenuWrapperTypes>('tablet')`
+     display: ${({ showOnMobile }) => showOnMobile ? `flex` : `none`};
+     width: 100vw;
+     padding: 14px 16px;
   `}
 `
 

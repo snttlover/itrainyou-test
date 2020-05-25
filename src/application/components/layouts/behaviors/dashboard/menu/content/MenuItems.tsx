@@ -6,18 +6,21 @@ import { MediaRange } from "@/application/lib/responsive/media"
 const ItemsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 25px;
-  align-self: flex-end;
-  margin-right: 70px;
-  ${MediaRange.greaterThan('mobile')`
-     margin-top: 53px;
-     align-self: flex-start;
-     margin-left: 63px;
+  
+  margin-top: 36px;
+  margin-left: 0px;
+  margin-right: 0px;
+  
+  ${MediaRange.lessThan('mobile')`
+     margin-top: 25px;
+     align-self: flex-end;
+     
   `}
-  ${MediaRange.greaterThan('tablet')`
-     margin-top: 36px;
-     margin-left: 0px;
-     margin-right: 0px;
+  ${MediaRange.lessThan('tablet')`
+    margin-top: 53px;
+    align-self: flex-start;
+    margin-left: 63px;
+    margin-right: 70px;
   `}
 `
 
@@ -29,7 +32,7 @@ export const MenuItems = () => (
     <MenuItem icon='user'>Групповые сессии</MenuItem>
     <MenuItem icon='my-purse'>Кошелек</MenuItem>
     <MenuItem icon='calendar'>Календарь</MenuItem>
-    <MenuItem icon='settings'>Настройки</MenuItem>
+    <MenuItem link='/settings' icon='settings'>Настройки</MenuItem>
     <MenuItem icon='help'>Поддержка</MenuItem>
   </ItemsWrapper>
 )
