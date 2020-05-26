@@ -9,7 +9,6 @@ import styled from "styled-components"
 import { $sessionsPickerStore } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/application/pages/search/content/list/content/CoachDatepicker"
 import { useStore } from "effector-react"
-import { GuestLayout } from "@/application/components/layouts/behaviors/default/GuestLayout"
 import { UserLayout } from "@/application/components/layouts/behaviors/user/UserLayout"
 
 const Content = styled.div`
@@ -109,6 +108,7 @@ const Datepicker = () => {
 
 export const CoachByIdPage = () => {
   const router = useRouter()
+  const coachData = useStore($coach)
 
   useEffect(() => {
     mounted({ id: Number(router.query.id) })
@@ -117,22 +117,26 @@ export const CoachByIdPage = () => {
   return (
     <UserLayout>
       <Content>
-        <InfoWithSidebar>
-          <CoachInfoContainer>
-            <MainCoachBlock>
-              <BaseCoachInfo />
-              <BuyBlock>
-                <Datepicker />
-              </BuyBlock>
-              <AboutCoach />
-            </MainCoachBlock>
-            <Reviews />
-          </CoachInfoContainer>
-          <BuySidebar>
-            <Datepicker />
-          </BuySidebar>
-        </InfoWithSidebar>
+        {coachData && (
+          <InfoWithSidebar>
+            <CoachInfoContainer>
+              <MainCoachBlock>
+                <BaseCoachInfo />
+                <BuyBlock>
+                  <Datepicker />
+                </BuyBlock>
+                <AboutCoach />
+              </MainCoachBlock>
+              <Reviews />
+            </CoachInfoContainer>
+            <BuySidebar>
+              <Datepicker />
+            </BuySidebar>
+          </InfoWithSidebar>
+        )}
       </Content>
     </UserLayout>
   )
 }
+
+export default CoachByIdPage

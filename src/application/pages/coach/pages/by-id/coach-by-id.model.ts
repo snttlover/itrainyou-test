@@ -26,7 +26,7 @@ const loadSessions = createEffect({
   handler: (coach: Coach) => {
     $sessionsPickerStore.changeId(coach.id)
     // @ts-ignore
-    const defaultTab = Object.keys(coach.prices).find((key) => !!coach[key]) as DurationType
+    const defaultTab = Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
     $sessionsPickerStore.tabs.changeDurationTab(defaultTab)
   }
 })
