@@ -3,8 +3,8 @@ import { $coach, mounted } from "@/application/pages/coach/pages/by-id/coach-by-
 import { AboutCoach } from "@/application/pages/coach/pages/by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/application/pages/coach/pages/by-id/components/BaseCoachInfo"
 import { Reviews } from "@/application/pages/coach/pages/by-id/components/Reviews"
-import { useRouter } from "next/router"
-import React, { useEffect } from "react"
+import { withStart } from "effector-next"
+import React from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/application/pages/search/content/list/content/CoachDatepicker"
@@ -34,7 +34,6 @@ const BuySidebar = styled.div`
   display: none;
   min-width: 268px;
   width: 268px;
-  height: 860px;
   margin-left: 24px;
   position: relative;
   align-self: flex-start;
@@ -106,37 +105,36 @@ const Datepicker = () => {
   return null
 }
 
-export const CoachByIdPage = () => {
-  const router = useRouter()
-  const coachData = useStore($coach)
-
-  useEffect(() => {
-    mounted({ id: Number(router.query.id) })
-  }, [])
-
-  return (
-    <UserLayout>
-      <Content>
-        {coachData && (
-          <InfoWithSidebar>
-            <CoachInfoContainer>
-              <MainCoachBlock>
-                <BaseCoachInfo />
-                <BuyBlock>
-                  <Datepicker />
-                </BuyBlock>
-                <AboutCoach />
-              </MainCoachBlock>
-              <Reviews />
-            </CoachInfoContainer>
-            <BuySidebar>
-              <Datepicker />
-            </BuySidebar>
-          </InfoWithSidebar>
-        )}
-      </Content>
-    </UserLayout>
-  )
+type QueryParams = {
+  id: string
 }
 
-export default CoachByIdPage
+const triggerEventOnPageLoaded = withStart(
+  mounted.prepend(ctx => {
+    const query = ctx.query as QueryParams
+
+    return { id: parseInt(query.id) }
+  })
+)
+
+export const CoachByIdPage = triggerEventOnPageLoaded(() => (
+  <UserLayout>
+    <Content>
+      <InfoWithSidebar>
+        <CoachInfoContainer>
+          <MainCoachBlock>
+            <BaseCoachInfo />
+            <BuyBlock>
+              <Datepicker />
+            </BuyBlock>
+            <AboutCoach />
+          </MainCoachBlock>
+          <Reviews />
+        </CoachInfoContainer>
+        <BuySidebar>
+          <Datepicker />
+        </BuySidebar>
+      </InfoWithSidebar>
+    </Content>
+  </UserLayout>
+))
