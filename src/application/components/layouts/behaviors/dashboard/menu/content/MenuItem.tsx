@@ -4,24 +4,24 @@ import { Icon, IconName } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import Link from "next/link"
 
-const MenuItemIcon = styled(Icon).attrs((props) => ({
+const MenuItemIcon = styled(Icon).attrs(props => ({
   name: props.name
 }))`
   width: 24px;
   height: 24px;
   fill: #fff;
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     width: 36px;
     height: 36px;
   `}
-  ${MediaRange.greaterThan('tablet')`
+  ${MediaRange.greaterThan("tablet")`
     width: 16px;
     height: 16px;
   `}
 `
 
-const StyledMenuItem = styled.div`
+const StyledMenuItem = styled.a`
   display: flex;
   align-items: center;
   margin-bottom: 36px;
@@ -29,7 +29,7 @@ const StyledMenuItem = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
-  ${MediaRange.greaterThan('tablet')`
+  ${MediaRange.greaterThan("tablet")`
      width: 100%;
      margin-bottom: 15px;
      padding: 8px 24px;
@@ -39,15 +39,15 @@ const StyledMenuItem = styled.div`
 const Label = styled.div`
   font-size: 16px;
   line-height: 22px;
-  color: #FFFFFF;
+  color: #ffffff;
   margin-left: 8px;
-  ${MediaRange.greaterThan('mobile')`
+  ${MediaRange.greaterThan("mobile")`
      font-size: 20px;
      line-height: 26px;
      margin-left: 16px;
   `}
-  
-  ${MediaRange.greaterThan('tablet')`  
+
+  ${MediaRange.greaterThan("tablet")`  
      font-style: normal;
      font-weight: normal;
      font-size: 14px;
@@ -57,20 +57,16 @@ const Label = styled.div`
 `
 
 type MenuItemTypes = {
-  icon: IconName,
-  link?: string,
+  icon: IconName
+  link: string
   children: React.ReactChild
 }
 
 export const MenuItem = (props: MenuItemTypes) => (
-  <Link href={props.link || `/search`}>
+  <Link passHref href={props.link}>
     <StyledMenuItem>
-      <>
-        <MenuItemIcon name={props.icon} />
-        <Label>
-          {props.children}
-        </Label>
-      </>
+      <MenuItemIcon name={props.icon} />
+      <Label>{props.children}</Label>
     </StyledMenuItem>
   </Link>
 )
