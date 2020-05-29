@@ -7,7 +7,7 @@ import { SelectImage } from "@/application/pages/auth/pages/signup/content/step-
 import { useStore } from "effector-react"
 import * as React from "react"
 import { useCallback, useState } from "react"
-import { useDropzone } from "react-dropzone"
+import { FileRejection, useDropzone } from "react-dropzone"
 import styled from "styled-components"
 
 const Backdrop = styled.div`
@@ -124,8 +124,8 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
   const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"]
   const maxSize = 2097152
 
-  const onDropRejected = useCallback((files: File[]) => {
-    if (files[0].size > maxSize) setError("large-file")
+  const onDropRejected = useCallback((files: FileRejection[]) => {
+    if (files[0].file.size > maxSize) setError("large-file")
     else setError("mime-type")
   }, [])
 
