@@ -3,9 +3,8 @@ import { DocumentContext } from "next/dist/next-server/lib/utils"
 import Document from "next/document"
 import React from "react"
 import { ServerStyleSheet } from "styled-components"
-import { serverStarted } from "@/store"
 
-const enhance = withFork({ debug: false, unit: serverStarted });
+const withForkEnhance = withFork({ debug: false })
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -34,4 +33,4 @@ class MyDocument extends Document {
   }
 }
 
-export default enhance(MyDocument)
+export default withForkEnhance(MyDocument)

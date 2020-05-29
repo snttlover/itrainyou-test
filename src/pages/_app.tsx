@@ -1,5 +1,6 @@
 import { AppStyles } from "@/application/AppStyles"
-import { withHydrate } from "effector-next"
+import { serverStarted } from "@/store"
+import { withHydrate, withStart } from "effector-next"
 import App from "next/app"
 import * as React from "react"
 import dayjs from "dayjs"
@@ -24,7 +25,6 @@ class MyApp extends App {
   }
 }
 
-const enhance = withHydrate()
-
-// @ts-ignore
-export default enhance(MyApp)
+const withStartEnhance = withStart(serverStarted)
+const withHydrateEnhance = withHydrate()
+export default withStartEnhance(withHydrateEnhance(MyApp))
