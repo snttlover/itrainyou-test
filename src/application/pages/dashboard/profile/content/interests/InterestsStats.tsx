@@ -1,6 +1,8 @@
 import styled from "styled-components"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 const Container = styled.div`
+  z-index: 1;
   position: absolute;
   right: 0;
   height: 100%;
@@ -8,6 +10,15 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  
+  ${MediaRange.lessThan(`mobile`)`
+    right: unset;
+    top: 30px;
+    left: 0;
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+  `}
 `
 
 const Tab = styled.div`
@@ -23,6 +34,17 @@ const Tab = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
+  
+  ${MediaRange.lessThan(`mobile`)`
+    margin-bottom: unset;
+    margin-right: 16px;
+    width: 100px;
+    height: 100px;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  `}  
 `
 
 const Title = styled.div`
@@ -34,6 +56,11 @@ const Title = styled.div`
   margin-bottom: 16px;
   color: #FFFFFF;
   width: 91px;
+  
+  ${MediaRange.lessThan(`mobile`)`
+    width: 74px;
+    margin-bottom: 10px;
+  `}
 `
 
 const Counter = styled.div`
@@ -42,6 +69,10 @@ const Counter = styled.div`
   line-height: 44px;
   text-align: center;
   color: #FFFFFF;
+  ${MediaRange.lessThan(`mobile`)`
+     font-size: 28px;
+     line-height: 26px;
+  `}
 `
 
 export const InterestsStats = () => (

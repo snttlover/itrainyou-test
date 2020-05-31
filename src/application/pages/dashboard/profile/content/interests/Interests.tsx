@@ -13,6 +13,12 @@ const Container = styled.div`
   ${MediaRange.lessThan(`tablet`)`
     padding-right: 70px;
   `}
+  
+  ${MediaRange.lessThan(`mobile`)`
+    padding-right: 0;
+    padding-top: 100px;
+    margin-top: 16px;
+  `}
 `
 
 const Interests = styled.div`
@@ -29,6 +35,12 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 23px;
+  
+  ${MediaRange.lessThan(`mobile`)`
+     padding-top: 30px;
+     font-size: 16px;
+     line-height: 26px;
+  `}
 `
 
 export const ProfileInterests = () => (

@@ -4,6 +4,7 @@ import { CategoryDescription } from "@/application/pages/landing/content/top-bar
 import { useList } from "effector-react"
 import { $categoriesList } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 const Container = styled.div`
   margin-top: 23px;
@@ -21,6 +22,10 @@ const Name = styled.div`
   margin-left: 15px;
   display: flex;
   align-items: center;
+  ${MediaRange.lessThan(`mobile`)`
+    font-size: 14px;
+    line-height: 18px;
+  `}
 `
 
 const StyledCategoriesDescription = styled(CategoryDescription)`
