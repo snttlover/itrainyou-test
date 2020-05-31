@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import { CategoriesPicker } from "@/application/pages/landing/content/top-bar/categories-picker/CategoriesPicker"
 import { Search } from "@/application/pages/landing/content/top-bar/search/Search"
-import {DenseTopBarIconButtons} from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBarIconButtons"
+import { DenseTopBarIconButtons } from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBarIconButtons"
 import { Logo } from "@/application/pages/landing/content/top-bar/logo/Logo"
 import Link from "next/link"
 
@@ -20,19 +20,19 @@ const StyledLogo = styled(Logo)`
   }
 `
 
-const StyledLogoLink = styled(Link)`
+const StyledLogoLink = styled.a`
   display: flex;
   align-items: center;
 `
 
 const Container = styled.div`
   width: 100%;
-  background: #DBDEE0;
+  background: #dbdee0;
   display: flex;
   justify-content: center;
 
   @media screen and (max-width: 768px) {
-    background: #4858CC;
+    background: #4858cc;
   }
 `
 
@@ -40,7 +40,7 @@ const StyledContainer = styled(LandingPageContainer)`
   width: 100%;
   align-items: center;
   padding: 15px 40px;
-  display: flex; 
+  display: flex;
   @media screen and (max-width: 480px) {
     padding: 8px;
     justify-content: space-between;
@@ -71,9 +71,11 @@ const StyledSearch = styled(Search)`
 export const DenseTopBar = () => (
   <Container>
     <StyledContainer>
-      <StyledLogoLink href='/' passHref>
-        <StyledLogo />
-      </StyledLogoLink>
+      <Link href='/' passHref>
+        <StyledLogoLink>
+          <StyledLogo />
+        </StyledLogoLink>
+      </Link>
       <SearchWrapper>
         <StyledCategoriesPicker />
         <StyledSearch />
