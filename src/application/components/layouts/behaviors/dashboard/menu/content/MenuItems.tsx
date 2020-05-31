@@ -26,28 +26,28 @@ const ItemsWrapper = styled.div`
 
 export const MenuItems = () => (
   <ItemsWrapper>
-    <MenuItem link='/home' icon='home'>
+    <MenuItem link='/' icon='home'>
       Главная страница
     </MenuItem>
-    <MenuItem link='/home' icon='my-coaches'>
+    <MenuItem link='/' icon='my-coaches'>
       Мои коучи
     </MenuItem>
-    <MenuItem link='/home' icon='hand'>
+    <MenuItem link='/' icon='hand'>
       Здесь и сейчас
     </MenuItem>
-    <MenuItem link='/home' icon='user'>
+    <MenuItem link='/' icon='user'>
       Групповые сессии
     </MenuItem>
-    <MenuItem link='/home' icon='my-purse'>
+    <MenuItem link='/' icon='my-purse'>
       Кошелек
     </MenuItem>
-    <MenuItem link='/home' icon='calendar'>
+    <MenuItem link='/' icon='calendar'>
       Календарь
     </MenuItem>
     <MenuItem link='/settings' icon='settings'>
       Настройки
     </MenuItem>
-    <MenuItem link='/home' icon='help'>
+    <MenuItem link='/' icon='help'>
       Поддержка
     </MenuItem>
   </ItemsWrapper>

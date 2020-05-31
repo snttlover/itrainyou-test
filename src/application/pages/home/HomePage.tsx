@@ -6,3 +6,5 @@ export const HomePage = () => (
     <div></div>
   </UserLayout>
 )
+
+export default HomePage

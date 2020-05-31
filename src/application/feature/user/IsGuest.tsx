@@ -7,5 +7,5 @@ type IsGuestProps = {
 }
 
 export const IsGuest = ({ children }: IsGuestProps) => {
-  return useStore($isLoggedIn) ? null : children
+  return useStore($isLoggedIn) ? null : <>{children}</>
 }
