@@ -23,7 +23,7 @@ const Age = styled.div`
   color: #9AA0A6;
 `
 
-const Title = styled.div`
+const Name = styled.div`
   font-family: Roboto Slab;
   font-size: 24px;
   line-height: 26px;
@@ -34,7 +34,7 @@ const Title = styled.div`
 export const ProfileHeader = () => (
   <Container>
     <StyledAvatar src={placeholder} />
-    <Title>Константин Константинов</Title>
+    <Name>Константин Константинов</Name>
     <Age>24 года</Age>
   </Container>
 )

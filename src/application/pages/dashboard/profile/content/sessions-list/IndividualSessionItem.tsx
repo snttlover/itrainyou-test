@@ -13,7 +13,6 @@ const Item = styled.div`
 `
 
 const StyledAvatar = styled(Avatar)`
-  padding: 12px;
   width: 40px;
   height: 40px;
 `

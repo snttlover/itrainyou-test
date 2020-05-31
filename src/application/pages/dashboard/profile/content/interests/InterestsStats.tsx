@@ -2,7 +2,12 @@ import styled from "styled-components"
 
 const Container = styled.div`
   position: absolute;
-  right: -140px;
+  right: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `
 
 const Tab = styled.div`
@@ -12,9 +17,12 @@ const Tab = styled.div`
   justify-content: center;
   background: #4858CC;
   border-radius: 2px;
-  margin-top: 16px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 16px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 `
 
 const Title = styled.div`

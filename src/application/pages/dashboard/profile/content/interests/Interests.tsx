@@ -2,16 +2,25 @@ import React from 'react'
 import styled from "styled-components"
 import { InterestsStats } from "@/application/pages/dashboard/profile/content/interests/InterestsStats"
 import {InterestsCategories} from "@/application/pages/dashboard/profile/content/interests/InterestsCategories"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 const Container = styled.div`
-  margin-right: 140px;
-  padding: 24px;
-  border-radius: 2px;
-  background: #fff;
+  padding-right: 140px;
   width: 100%;
-  max-width: 650px;
   margin-top: 32px;
   position: relative;
+  max-width: 790px;
+  ${MediaRange.lessThan(`tablet`)`
+    padding-right: 70px;
+  `}
+`
+
+const Interests = styled.div`
+  max-width: 650px;
+  width: 100%;
+  border-radius: 2px;
+  background: #fff;
+  padding: 24px;
 `
 
 const Title = styled.div`
@@ -25,7 +34,9 @@ const Title = styled.div`
 export const ProfileInterests = () => (
   <Container>
     <InterestsStats />
-    <Title>Интересы</Title>
-    <InterestsCategories />
+    <Interests>
+      <Title>Интересы</Title>
+      <InterestsCategories />
+    </Interests>
   </Container>
 )

@@ -10,7 +10,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: flex-start;
   margin: 0 auto;
-  max-width: 980px;
+  width: 100%;
+  max-width: 960px;
+  padding: 0 24px;
+  position: relative;
 `
 
 export default () => (
