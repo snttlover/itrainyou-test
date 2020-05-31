@@ -1,5 +1,5 @@
 import { $isLoggedIn } from "@/application/feature/user/user.model"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import React from "react"
 
 type IsGuestProps = {
