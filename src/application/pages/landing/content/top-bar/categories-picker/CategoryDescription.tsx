@@ -43,6 +43,7 @@ const InfoIcon = styled(Icon).attrs({ name: `info` })`
 
 type CategoryDescriptionProps = {
   children: React.ReactChild
+  className?: string
 }
 
 export const CategoryDescription = (props: CategoryDescriptionProps) => {
@@ -52,7 +53,7 @@ export const CategoryDescription = (props: CategoryDescriptionProps) => {
   }
 
   return (
-    <StyledContainer onClick={clickHandler}>
+    <StyledContainer className={props.className} onClick={clickHandler}>
       <InfoIcon />
       <Tooltip>{props.children}</Tooltip>
     </StyledContainer>
