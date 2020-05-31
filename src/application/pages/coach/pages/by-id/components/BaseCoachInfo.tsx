@@ -1,23 +1,28 @@
 import { Avatar } from "@/application/components/avatar/Avatar"
+import { Button } from "@/application/components/button/normal/Button"
 import { Icon } from "@/application/components/icon/Icon"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
+import { IsAuthed } from "@/application/feature/user/IsAuthed"
 import { getYearsCount } from "@/application/lib/helpers/date"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $coach } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { Block } from "@/application/pages/coach/pages/by-id/components/common/Block"
 import { useStore } from "effector-react"
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 const StyledAvatar = styled(Avatar)`
   ${MediaRange.greaterThan("mobile")`        
     width: 120px;
+    min-width: 120px;
     height: 120px;
+    min-height: 120px;
   `}
 `
 
 const UserInfo = styled.div`
   margin-left: 16px;
+  width: 100%;
 `
 
 const Name = styled.p`
@@ -27,6 +32,11 @@ const Name = styled.p`
   font-size: 16px;
   line-height: 26px;
   color: #424242;
+  padding-right: 30px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 
   ${MediaRange.greaterThan("mobile")`        
     font-size: 20px;
@@ -87,26 +97,83 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   `}
 `
 
+const StyledBlock = styled(Block)`
+  position: relative;
+  flex-direction: column;
+`
+
+const Like = styled(Icon)`
+  position: absolute;
+  fill: #4858cc;
+  right: 8px;
+  top: 12px;
+  ${MediaRange.greaterThan("mobile")`
+    position: static;
+  `};
+`
+
+const CategoriesAndButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const UserInfoWrapper = styled.div`
+  display: flex;
+`
+
+const WriteButton = styled(Button)`
+  margin-top: 24px;
+  width: 160px;
+  display: none;
+
+  ${MediaRange.greaterThan("mobile")`
+    display: block;
+    margin-right: 8px;
+  `}
+`
+
+const MobileWriteButton = styled(WriteButton)`
+  display: block;
+  margin: 24px auto 0;
+  ${MediaRange.greaterThan("mobile")`
+    display: none;
+  `}
+`
+
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($coach)
+  const [isLiked, setLiked] = useState(false)
   return (
-    <Block inline {...props}>
-      <StyledAvatar src={coach?.avatar!} />
-      <UserInfo>
-        <Name>
-          {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-          <Year>{getYearsCount(coach?.birthDate!)} лет</Year>
-        </Name>
-        <Rating>
-          <StarIcon name='star' />
-          {coach?.rating}
-        </Rating>
-        <CategoriesContainer>
-          {coach?.categories.map(cat => (
-            <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
-          ))}
-        </CategoriesContainer>
-      </UserInfo>
-    </Block>
+    <StyledBlock inline {...props}>
+      <UserInfoWrapper>
+        <StyledAvatar src={coach?.avatar!} />
+        <UserInfo>
+          <Name>
+            {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
+            <Year>{getYearsCount(coach?.birthDate!)} лет</Year>
+            <IsAuthed>
+              <Like name={isLiked ? "hearth-full" : "hearth"} onClick={() => setLiked(!isLiked)} />
+            </IsAuthed>
+          </Name>
+          <Rating>
+            <StarIcon name='star' />
+            {coach?.rating}
+          </Rating>
+          <CategoriesAndButtonContainer>
+            <CategoriesContainer>
+              {coach?.categories.map(cat => (
+                <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
+              ))}
+            </CategoriesContainer>
+            <IsAuthed>
+              <WriteButton>Написать</WriteButton>
+            </IsAuthed>
+          </CategoriesAndButtonContainer>
+        </UserInfo>
+      </UserInfoWrapper>
+      <IsAuthed>
+        <MobileWriteButton>Написать</MobileWriteButton>
+      </IsAuthed>
+    </StyledBlock>
   )
 })``

@@ -108,7 +108,6 @@ export const Form = () => {
           withoutBorder
           type='tel'
         />
-        }
       </FormItem>
       <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <Photos />

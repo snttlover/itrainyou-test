@@ -1,8 +1,5 @@
-import { createEvent, ServerPayload } from "effector-next"
+import { createEvent, PageContext } from "effector-next"
 
-export const TOKEN_KEY = '__token__'
-type Cookies = {
-  [TOKEN_KEY]: string | undefined
-}
+export const TOKEN_KEY = "__token__"
 
-export const serverStarted = createEvent<ServerPayload<Cookies>>()
+export const serverStarted = createEvent<PageContext<{ [TOKEN_KEY]: string }>>()

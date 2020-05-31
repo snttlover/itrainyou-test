@@ -1,13 +1,13 @@
 import * as React from "react"
 import styled, { css } from "styled-components"
 import dayjs from "dayjs"
-import 'dayjs/locale/ru'
+import "dayjs/locale/ru"
 import { Dispatch, SetStateAction, useState } from "react"
-import isBetween from  'dayjs/plugin/isBetween'
+import isBetween from "dayjs/plugin/isBetween"
 dayjs.extend(isBetween)
 import { Icon } from "@/application/components/icon/Icon"
 
-dayjs.locale('ru')
+dayjs.locale("ru")
 
 export type CalendarDateType = Date | Date[] | undefined
 
@@ -27,7 +27,7 @@ const Year = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: #5B6670;
+  color: #5b6670;
 `
 
 const MonthName = styled.div`
@@ -35,7 +35,7 @@ const MonthName = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: #5B6670;
+  color: #5b6670;
   text-transform: capitalize;
   width: 65px;
   text-align: center;
@@ -60,22 +60,29 @@ type LeftButtonTypes = {
 const LeftIcon = styled(Icon).attrs({ name: `left-icon` })<LeftButtonTypes>`
   width: 5px;
   height: 9px;
-  fill: #4858CC;
+  fill: #4858cc;
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? `none` : `auto`)};
 `
 
-const RightIcon = styled(LeftIcon).attrs({ name: `right-icon` })``
+const RightIcon = styled(Icon).attrs({ name: `right-icon` })<LeftButtonTypes>`
+  width: 5px;
+  height: 9px;
+  fill: #4858cc;
+  cursor: pointer;
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${props => (props.disabled ? `none` : `auto`)};
+`
 
 const BigCalendarStyles = css`
   ${Header} {
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;
-    border-bottom: 1px solid #DBDEE0;
+    border-bottom: 1px solid #dbdee0;
     padding-bottom: 12px;
-    
+
     ${MonthName} {
       font-size: inherit;
       line-height: inherit;
@@ -86,12 +93,12 @@ const BigCalendarStyles = css`
       font-weight: inherit;
     }
   }
-  
+
   .react-calendar__tile {
     font-weight: 500;
     font-size: 16px;
     line-height: 22px;
-    
+
     margin-top: 10px;
     margin-bottom: 10px;
     height: 24px;
@@ -113,14 +120,14 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     text-transform: lowercase;
     text-decoration: none;
     font-weight: normal;
-    color: #5B6670;
+    color: #5b6670;
     abbr {
       text-decoration: none;
     }
   }
   .react-calendar__month-view__weekdays__weekday:nth-child(n + 6),
   .react-calendar__month-view__days__day.day--weekend {
-    color: #FF6B00;
+    color: #ff6b00;
   }
   .is-past {
     opacity: 0.5;
@@ -136,11 +143,11 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     outline: none;
     font-size: 12px;
     position: relative;
-    color: #5B6670;
+    color: #5b6670;
   }
   .not-pinned {
     pointer-events: none;
-    color: #DBDEE0 !important;
+    color: #dbdee0 !important;
   }
   .pinned {
     position: relative;
@@ -155,10 +162,10 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
   .rangeStart,
   .rangeEnd,
   .react-calendar__tile--active {
-    background: #4858CC;
+    background: #4858cc;
     color: #fff !important;
   }
-  .react-calendar__tile--rangeStart:not(.rangeEnd), 
+  .react-calendar__tile--rangeStart:not(.rangeEnd),
   .rangeStart,
   .react-calendar__tile--active.day-of-week-1 {
     border-top-left-radius: 12px;
@@ -174,7 +181,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     visibility: hidden;
     height: 0px;
   }
-  ${(props) => props.isBig && BigCalendarStyles}
+  ${props => props.isBig && BigCalendarStyles}
 `
 
 const MonthContainer = styled.div`
@@ -187,7 +194,8 @@ function firsDayOfMonth(month: number, year: number) {
   return new Date(dayjs(`${year}-${month}-01`).valueOf())
 }
 
-const isEqualDates = (first: Date, second: Date, format: string = `DDMMYYYY`) => dayjs(first).format(format) === dayjs(second).format(format)
+const isEqualDates = (first: Date, second: Date, format: string = `DDMMYYYY`) =>
+  dayjs(first).format(format) === dayjs(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())

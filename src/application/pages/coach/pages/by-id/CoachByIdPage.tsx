@@ -3,13 +3,12 @@ import { $coach, mounted } from "@/application/pages/coach/pages/by-id/coach-by-
 import { AboutCoach } from "@/application/pages/coach/pages/by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/application/pages/coach/pages/by-id/components/BaseCoachInfo"
 import { Reviews } from "@/application/pages/coach/pages/by-id/components/Reviews"
-import { useRouter } from "next/router"
-import React, { useEffect } from "react"
+import { withStart } from "effector-next"
+import React from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/application/pages/coach/pages/by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/application/pages/search/content/list/content/CoachDatepicker"
 import { useStore } from "effector-react"
-import { GuestLayout } from "@/application/components/layouts/behaviors/default/GuestLayout"
 import { UserLayout } from "@/application/components/layouts/behaviors/user/UserLayout"
 
 const Content = styled.div`
@@ -35,7 +34,6 @@ const BuySidebar = styled.div`
   display: none;
   min-width: 268px;
   width: 268px;
-  height: 860px;
   margin-left: 24px;
   position: relative;
   align-self: flex-start;
@@ -107,32 +105,36 @@ const Datepicker = () => {
   return null
 }
 
-export const CoachByIdPage = () => {
-  const router = useRouter()
-
-  useEffect(() => {
-    mounted({ id: Number(router.query.id) })
-  }, [])
-
-  return (
-    <UserLayout>
-      <Content>
-        <InfoWithSidebar>
-          <CoachInfoContainer>
-            <MainCoachBlock>
-              <BaseCoachInfo />
-              <BuyBlock>
-                <Datepicker />
-              </BuyBlock>
-              <AboutCoach />
-            </MainCoachBlock>
-            <Reviews />
-          </CoachInfoContainer>
-          <BuySidebar>
-            <Datepicker />
-          </BuySidebar>
-        </InfoWithSidebar>
-      </Content>
-    </UserLayout>
-  )
+type QueryParams = {
+  id: string
 }
+
+const triggerEventOnPageLoaded = withStart(
+  mounted.prepend(ctx => {
+    const query = ctx.query as QueryParams
+
+    return { id: parseInt(query.id) }
+  })
+)
+
+export const CoachByIdPage = triggerEventOnPageLoaded(() => (
+  <UserLayout>
+    <Content>
+      <InfoWithSidebar>
+        <CoachInfoContainer>
+          <MainCoachBlock>
+            <BaseCoachInfo />
+            <BuyBlock>
+              <Datepicker />
+            </BuyBlock>
+            <AboutCoach />
+          </MainCoachBlock>
+          <Reviews />
+        </CoachInfoContainer>
+        <BuySidebar>
+          <Datepicker />
+        </BuySidebar>
+      </InfoWithSidebar>
+    </Content>
+  </UserLayout>
+))

@@ -15,7 +15,7 @@ const ProtectedStep4 = withProtect({ to: "/signup/[step]", as: "/signup/1" })(St
 
 export default () => {
   const router = useRouter()
-  const currentStep = router ? +router.query.step : null
+  const currentStep = router.query.step ? +router.query.step : null
   useEffect(() => {
     if (!currentStep) router.replace("/signup/[step]", "/signup/1")
     pageMounted()

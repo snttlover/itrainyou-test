@@ -207,8 +207,10 @@ export const Reviews = styled(props => {
     <Container {...props}>
       <Title>Отзывы</Title>
       <ReviewsList>
-        {(reviews.length > 0 && reviews) || (
-          <EmptyPlaceholder>У коуча нет отзывов. Вы можете стать первым!</EmptyPlaceholder>
+        {reviews.length > 0 ? (
+          reviews
+        ) : (
+          <EmptyPlaceholder key='preview'>У коуча нет отзывов. Вы можете стать первым!</EmptyPlaceholder>
         )}
       </ReviewsList>
     </Container>
