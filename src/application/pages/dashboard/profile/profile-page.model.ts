@@ -12,8 +12,9 @@ const $profile = createStore<Partial<Client>>({}).on(loadProfileFx.doneData, (st
 
 export const $pageProfile = $profile.map(profile => ({
   ...profile,
+  avatar: profile.avatar || null,
   age: dayjs(+new Date())
-    .subtract(dayjs(profile?.birth_date).get('year'), 'year')
+    .subtract(dayjs(profile?.birthDate).get('year'), 'year')
     .get(`year`),
 }))
 

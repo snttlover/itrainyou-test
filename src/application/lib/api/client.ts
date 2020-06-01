@@ -15,16 +15,16 @@ export type User = {
 export type Client = {
   id: number,
   user: User,
-  first_name: string,
-  last_name: string,
-  birth_date: string, // YYYY-MM-DD
+  firstName: string,
+  lastName: string,
+  birthDate: string, // YYYY-MM-DD
   sex: 'M' | 'F',
   avatar: string | null,
-  favourite_coaches: Coach[],
+  favouriteCoaches: Coach[],
   categories: Category[],
-  creation_datetime: string, // iso date
-  completed_sessions_count: number,
-  spent_hours_count: number
+  creationDatetime: string, // iso date
+  completedSessions_count: number,
+  spentHoursCount: number
 }
 
 export const getMyClient = () =>

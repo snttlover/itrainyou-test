@@ -54,8 +54,8 @@ export const ProfileHeader = () => {
   const profile = useStore($pageProfile)
   return (
     <Container>
-      <StyledAvatar src={placeholder} />
-      <Name>{profile?.first_name}<br />{profile?.last_name}</Name>
+      <StyledAvatar src={profile?.avatar} />
+      <Name>{profile?.firstName}<br />{profile?.lastName}</Name>
       <Age>{profile.age} года</Age>
     </Container>
   )
