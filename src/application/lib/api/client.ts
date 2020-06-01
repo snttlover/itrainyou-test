@@ -23,7 +23,7 @@ export type Client = {
   favouriteCoaches: Coach[],
   categories: Category[],
   creationDatetime: string, // iso date
-  completedSessions_count: number,
+  completedSessionsCount: number,
   spentHoursCount: number
 }
 

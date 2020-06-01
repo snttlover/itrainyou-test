@@ -1,5 +1,7 @@
 import styled from "styled-components"
 import { MediaRange } from "@/application/lib/responsive/media"
+import {$pageProfile} from "@/application/pages/dashboard/profile/profile-page.model"
+import { useStore } from "effector-react"
 
 const Container = styled.div`
   z-index: 1;
@@ -75,15 +77,18 @@ const Counter = styled.div`
   `}
 `
 
-export const InterestsStats = () => (
-  <Container>
-    <Tab>
-      <Title>Сессий пройдено</Title>
-      <Counter>56</Counter>
-    </Tab>
-    <Tab>
-      <Title>Всего часов</Title>
-      <Counter>24</Counter>
-    </Tab>
-  </Container>
-)
+export const InterestsStats = () => {
+  const profile = useStore($pageProfile)
+  return (
+    <Container>
+      <Tab>
+        <Title>Сессий пройдено</Title>
+        <Counter>{profile.completedSessionsCount}</Counter>
+      </Tab>
+      <Tab>
+        <Title>Всего часов</Title>
+        <Counter>{profile.spentHoursCount}</Counter>
+      </Tab>
+    </Container>
+  )
+}

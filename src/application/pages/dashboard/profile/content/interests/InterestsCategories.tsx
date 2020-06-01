@@ -5,6 +5,7 @@ import { useList } from "effector-react"
 import { $categoriesList } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { $profileCategories } from "@/application/pages/dashboard/profile/profile-page.model"
 
 const Container = styled.div`
   margin-top: 23px;
@@ -36,9 +37,9 @@ const StyledCategoriesDescription = styled(CategoryDescription)`
 export const  InterestsCategories = () => {
   return (
     <Container>
-      {useList($categoriesList, category => (
+      {useList($profileCategories, category => (
         <Category>
-          <Checkbox value={true} color={getCategoryColorById(category.id)} />
+          <Checkbox value={category.selected} color={getCategoryColorById(category.id)} />
           <Name>{category.name}</Name>
           <StyledCategoriesDescription>{category.description}</StyledCategoriesDescription>
         </Category>
