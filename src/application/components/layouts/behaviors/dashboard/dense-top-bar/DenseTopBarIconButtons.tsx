@@ -2,6 +2,7 @@ import styled, { css } from "styled-components"
 import { Icon } from "@/application/components/icon/Icon"
 import { useEvent } from "effector-react"
 import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboard/menu/blue-layout.mobile-menu"
+import Link from "next/link"
 
 const Wrapper = styled.div`
   position: relative;
@@ -55,7 +56,9 @@ export const DenseTopBarIconButtons = () => {
   return (
     <Wrapper>
       <Notification />
-      <User />
+      <Link href={'/profile'}>
+        <User />
+      </Link>
       <Burger onClick={() => showMobileMenu()} />
     </Wrapper>
   )
