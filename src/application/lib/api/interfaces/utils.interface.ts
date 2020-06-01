@@ -4,3 +4,5 @@ export interface Pagination<T> {
   previous: number
   results: T[]
 }
+
+export type Sex = 'M' | 'F'

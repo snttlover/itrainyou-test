@@ -4,6 +4,8 @@ import { Avatar } from "@/application/components/avatar/Avatar"
 // @ts-ignore
 import placeholder from './images/placeholder.png'
 import { MediaRange } from "@/application/lib/responsive/media"
+import { useStore } from "effector-react"
+import { $pageProfile } from "@/application/pages/dashboard/profile/profile-page.model"
 
 const Container = styled.div`
   margin-top: 46px;
@@ -48,10 +50,13 @@ const Name = styled.div`
   `}
 `
 
-export const ProfileHeader = () => (
-  <Container>
-    <StyledAvatar src={placeholder} />
-    <Name>Константин<br />Константинов</Name>
-    <Age>24 года</Age>
-  </Container>
-)
+export const ProfileHeader = () => {
+  const profile = useStore($pageProfile)
+  return (
+    <Container>
+      <StyledAvatar src={placeholder} />
+      <Name>{profile?.first_name}<br />{profile?.last_name}</Name>
+      <Age>{profile.age} года</Age>
+    </Container>
+  )
+}

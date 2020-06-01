@@ -1,4 +1,4 @@
-import { CategoryResponse } from "@/application/lib/api/categories"
+import { Category } from "@/application/lib/api/categories"
 import { keysToCamel, keysToSnake } from "@/application/lib/network/casing"
 import { post } from "@/application/lib/network/network"
 
@@ -36,7 +36,7 @@ export interface RegisterAsClientResponse {
   birthDate: string | null
   sex: "M" | "F" | ""
   avatar: string | null
-  categories: CategoryResponse[]
+  categories: Category[]
   favouriteCoaches: []
   creationDatetime: string
 }
@@ -74,7 +74,7 @@ export interface RegisterAsCoachResponse {
   birthDate: string | null
   sex: "M" | "F" | ""
   avatar: string | null
-  categories: CategoryResponse[]
+  categories: Category[]
   favouriteCoaches: []
   creationDatetime: string
 }
