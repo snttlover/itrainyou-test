@@ -1,4 +1,4 @@
-import { CategoryResponse, getCategories } from "@/application/lib/api/categories"
+import { Category, getCategories } from "@/application/lib/api/categories"
 import { serverStarted } from "@/store"
 import { createEffect, createEvent, createStore, forward } from "effector-next"
 import {
@@ -8,7 +8,7 @@ import {
   setSearchPageQuery
 } from "@/application/pages/search/coaches-search.model"
 
-interface PickerCategory extends CategoryResponse {
+interface PickerCategory extends Category {
   checked: boolean
 }
 

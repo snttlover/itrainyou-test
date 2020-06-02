@@ -1,8 +1,8 @@
-import { CategoryResponse, getCategories } from "@/application/lib/api/categories"
+import { Category, getCategories } from "@/application/lib/api/categories"
 import { createEffect } from "effector-next"
 import { createStore } from "effector-next"
 
-export type Category = CategoryResponse & {
+export type Category = Category & {
   color: string
 }
 
@@ -25,6 +25,6 @@ export const fetchCategoriesListFx = createEffect({
 
 export const $categoriesList = createStore<Category[]>([]).on(
   fetchCategoriesListFx.doneData,
-  (state, payload: CategoryResponse[]) =>
+  (state, payload: Category[]) =>
     payload.map(category => ({ ...category, color: getCategoryColorById(category.id) }))
 )
