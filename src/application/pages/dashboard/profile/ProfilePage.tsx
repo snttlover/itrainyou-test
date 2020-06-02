@@ -18,7 +18,7 @@ const Container = styled.div`
   position: relative;
 `
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   useEffect(() => {
     mounted()
   }, [])
@@ -33,3 +33,5 @@ export const ProfilePage = () => {
     </DashboardLayout>
   )
 }
+
+export default ProfilePage

@@ -2,6 +2,8 @@ import React from "react"
 import styled from "styled-components"
 import { Menu } from "@/application/components/layouts/behaviors/dashboard/menu/Menu"
 import { DenseTopBar } from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBar"
+import { withProtect } from "@/application/feature/user/with-protect"
+import { ProfilePage } from "@/application/pages/dashboard/profile/ProfilePage"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -23,7 +25,7 @@ const PageContent = styled.div`
   background: #ECEFF1;
 `
 
-export const DashboardLayout = styled(({ children, ...props }: DashboardTypes) => (
+const Dashboard = styled(({ children, ...props }: DashboardTypes) => (
   <Layout {...props}>
     <Menu />
     <PageContent>
@@ -32,3 +34,5 @@ export const DashboardLayout = styled(({ children, ...props }: DashboardTypes) =
     </PageContent>
   </Layout>
 ))``
+
+export const DashboardLayout = withProtect({ to: "/login", as: "/login" })(Dashboard)
