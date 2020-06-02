@@ -1,7 +1,7 @@
 import { keysToCamel } from "@/application/lib/network/casing"
 import { get } from "@/application/lib/network/network"
 import { Coach } from "@/application/lib/api/coach"
-import { Category } from "@/application/lib/api/categories"
+import { SessionCategory } from "@/application/lib/api/categories"
 import {Sex} from "@/application/lib/api/interfaces/utils.interface"
 
 
@@ -21,7 +21,7 @@ export type Client = {
   sex: 'M' | 'F',
   avatar: string | null,
   favouriteCoaches: Coach[],
-  categories: Category[],
+  categories: SessionCategory[],
   creationDatetime: string, // iso date
   completedSessionsCount: number,
   spentHoursCount: number

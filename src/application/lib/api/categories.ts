@@ -1,7 +1,7 @@
 import { keysToCamel } from "@/application/lib/network/casing"
 import { get } from "@/application/lib/network/network"
 
-export interface Category {
+export interface SessionCategory {
   id: number
   name: string
   icon: string
@@ -9,6 +9,6 @@ export interface Category {
 }
 
 export const getCategories = () =>
-  get<Category[]>(`${process.env.BACKEND_URL}/api/v1/web/categories/`)
+  get<SessionCategory[]>(`${process.env.BACKEND_URL}/api/v1/web/categories/`)
     .then(response => response.data)
     .then(keysToCamel)

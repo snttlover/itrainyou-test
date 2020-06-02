@@ -1,8 +1,8 @@
-import { Category, getCategories } from "@/application/lib/api/categories"
+import { SessionCategory, getCategories } from "@/application/lib/api/categories"
 import { createEffect } from "effector-next"
 import { createStore } from "effector-next"
 
-export type Category = Category & {
+export type Category = SessionCategory & {
   color: string
 }
 
