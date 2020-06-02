@@ -107,10 +107,11 @@ const RightMobileGroup = styled.div`
 
 type IndividualSessionItemType = {
   data: {
-    avatar: string,
-    name: string,
-    price: number,
-    time: string,
+    avatar: string
+    name: string
+    price: string
+    time: string
+    isCanceled: boolean
     date: string // iso
   }
 }
@@ -119,7 +120,9 @@ export const IndividualSessionItem = (props: IndividualSessionItemType) => (
   <Item>
     <StyledAvatar src={props.data.avatar} />
     <Name>{props.data.name}</Name>
-    <Cancel>отмена</Cancel>
+    <Cancel>
+      { props.data.isCanceled && `отмена` }
+    </Cancel>
     <RightMobileGroup>
       <Price>
         {props.data.price}
