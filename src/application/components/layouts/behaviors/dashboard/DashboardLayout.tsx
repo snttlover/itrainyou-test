@@ -3,7 +3,6 @@ import styled from "styled-components"
 import { Menu } from "@/application/components/layouts/behaviors/dashboard/menu/Menu"
 import { DenseTopBar } from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBar"
 import { withProtect } from "@/application/feature/user/with-protect"
-import { ProfilePage } from "@/application/pages/dashboard/profile/ProfilePage"
 
 type DashboardTypes = {
   children: React.ReactChild
