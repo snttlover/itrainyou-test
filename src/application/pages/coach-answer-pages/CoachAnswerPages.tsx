@@ -1,7 +1,8 @@
 import styled from "styled-components"
 // import {AwaitingApproval} from "@/application/pages/coach-answer-pages/awaiting-approval/AwaitingApproval"
 // import {ApprovalFailing} from "@/application/pages/coach-answer-pages/approval-failing/ApprovalFailing"
-import { ApprovalTimer } from "@/application/pages/coach-answer-pages/approval-timer/ApprovalTimer"
+// import { ApprovalTimer } from "@/application/pages/coach-answer-pages/approval-timer/ApprovalTimer"
+import { ApprovalTimerOver } from "@/application/pages/coach-answer-pages/approval-timer-over/ApprovalTimerOver"
 
 const Container = styled.div`
   background: #eceff1;
@@ -13,6 +14,7 @@ export const CoachAnswerPages = () => (
   <Container>
     {/*<AwaitingApproval />*/}
     {/*<ApprovalFailing />*/}
-    <ApprovalTimer />
+    {/*<ApprovalTimer />*/}
+    <ApprovalTimerOver />
   </Container>
 )
