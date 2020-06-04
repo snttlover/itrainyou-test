@@ -303,7 +303,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
 
   if (isActive) {
     sessionsListModel.loadData({
-      params: {}
+      params: {},
     })
   }
 
@@ -321,7 +321,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
       if (price !== null && price < acc.price) {
         return {
           price: Math.ceil(price),
-          text: `${key.slice(1, key.length)} мин`
+          text: `${key.slice(1, key.length)} мин`,
         }
       } else {
         return acc
@@ -334,7 +334,10 @@ const CoachCardLayout = ({ coach, className }: Props) => {
 
   // @ts-ignore
   const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
-  const price = filledPrices > 1 ? `от ${minimumPrice.price}₽ за ${minimumPrice.text}` : `${minimumPrice.text} / ${minimumPrice.price}₽`
+  const price =
+    filledPrices > 1
+      ? `от ${minimumPrice.price}₽ за ${minimumPrice.text}`
+      : `${minimumPrice.text} / ${minimumPrice.price}₽`
 
   return (
     <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
@@ -350,16 +353,14 @@ const CoachCardLayout = ({ coach, className }: Props) => {
             )}
             <CategoriesIcons>
               {coach.categories.map(category => (
-                <GrayTooltip text={category.name}>
+                <GrayTooltip key={category.id} text={category.name}>
                   <CategoryIcon color={getCategoryColorById(category.id)} />
                 </GrayTooltip>
               ))}
             </CategoriesIcons>
 
             <PriceContainer>
-              <Price>
-                {price}
-              </Price>
+              <Price>{price}</Price>
             </PriceContainer>
           </Info>
         </NameContainer>

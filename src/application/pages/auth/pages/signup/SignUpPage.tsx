@@ -1,4 +1,3 @@
-import { withGuest } from "@/application/feature/user/with-guest"
 import { withProtect } from "@/application/feature/user/with-protect"
 import { pageMounted } from "@/application/pages/auth/pages/signup/signup.model"
 import { useRouter } from "next/router"

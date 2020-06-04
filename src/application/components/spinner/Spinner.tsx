@@ -23,9 +23,9 @@ const rotate = keyframes`
   to {
     transform: rotate(360deg);
   }
-`;
+`
 
-const Loader = styled.img.attrs({ src: spinner })`
+export const Loader = styled.img.attrs({ src: spinner })`
   width: auto;
   height: auto;
   animation: ${rotate} 1s linear infinite;

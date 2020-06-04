@@ -66,3 +66,16 @@ export const getCoach = ({ id }: { id: number }) =>
   get<Coach, {}>(`${process.env.BACKEND_URL}/api/v1/web/coaches/${id}/`)
     .then(response => response.data)
     .then(keysToCamel)
+
+export interface RecommendationsParamsTypes {
+  page: number
+  page_size: number
+}
+
+export const getRecommendations = (params: RecommendationsParamsTypes) =>
+  get<Pagination<Coach>, RecommendationsParamsTypes>(
+    `${process.env.BACKEND_URL}/api/v1/web/clients/me/recommendations/`,
+    params
+  )
+    .then(response => response.data)
+    .then(keysToCamel)
