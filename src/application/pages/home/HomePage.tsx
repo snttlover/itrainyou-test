@@ -1,13 +1,33 @@
+import { Button } from "@/application/components/button/normal/Button"
 import { CoachCard } from "@/application/components/coach-card/CoachCard"
 import { UserLayout } from "@/application/components/layouts/behaviors/user/UserLayout"
+import { Loader, Spinner } from "@/application/components/spinner/Spinner"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { SessionCard } from "@/application/pages/home/SessionCard"
 import { useStore } from "effector-react"
-
-import { $recommendations, mounted } from "./home.model"
+import InfiniteScroll from "react-infinite-scroll-component"
+import {
+  $activeSessions,
+  $isHasMoreRecommendations,
+  $recommendations,
+  $todaySessions,
+  loadActiveSessionsFx,
+  loadMore,
+  loadRecommendationsFx,
+  loadTodaySessionsFx,
+  mounted,
+} from "./home.model"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 
 const Container = styled.div`
-  padding: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px 16px;
+`
+
+const Block = styled.div`
+  position: relative;
 `
 
 const Title = styled.div`
@@ -17,14 +37,61 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #424242;
+  margin-top: 24px;
+`
+
+const ActiveSessionCard = styled(SessionCard)`
+  margin-top: 12px;
+`
+
+const TodaySessionCard = styled(SessionCard)`
+  margin-top: 12px;
+
+  ${MediaRange.greaterThan("mobile")`
+    margin-top: 24px;
+  `}
 `
 
 const RecommendationCoachCard = styled(CoachCard)`
   margin-top: 12px;
+
+  ${MediaRange.greaterThan("mobile")`
+    margin-top: 24px;
+  `}
+`
+
+const SessionEnterButton = styled(Button)`
+  display: none;
+  margin-top: auto;
+  ${MediaRange.greaterThan("mobile")`
+    display: block;
+  `}
+`
+
+const SessionEnterText = styled.p`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #4858cc;
+  margin-top: auto;
+  white-space: nowrap;
+
+  ${MediaRange.greaterThan("mobile")`
+    display: none;
+  `}
 `
 
 export const HomePage = () => {
+  const activeSessions = useStore($activeSessions)
+  const todaySessions = useStore($todaySessions)
   const recommendations = useStore($recommendations)
+  const isHasMoreRecommendations = useStore($isHasMoreRecommendations)
+  const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
+  const todaySessionsPending = useStore(loadTodaySessionsFx.pending)
+  const recomendationPending = useStore(loadRecommendationsFx.pending)
+
   useEffect(() => {
     mounted()
   }, [])
@@ -32,12 +99,43 @@ export const HomePage = () => {
   return (
     <UserLayout>
       <Container>
-        <Title>Сессия уже началась!</Title>
-        <Title>У вас сегодня</Title>
-        <Title>Рекомендации</Title>
-        {recommendations.map(coach => (
-          <RecommendationCoachCard coach={coach} />
-        ))}
+        {activeSessions.length > 0 && (
+          <Block>
+            <Title>Сессия уже началась!</Title>
+            {activeSessions.map(session => (
+              <ActiveSessionCard session={session} key={session.id}>
+                <SessionEnterButton slim>Зайти в сессию</SessionEnterButton>
+                <SessionEnterText>Зайти в сессию</SessionEnterText>
+              </ActiveSessionCard>
+            ))}
+            {activeSessionsPending && <Loader />}
+          </Block>
+        )}
+        {todaySessions.length > 0 && (
+          <Block>
+            <Title>У вас сегодня</Title>
+            {todaySessions.map(session => (
+              <TodaySessionCard session={session} key={session.id}>
+                <SessionEnterButton slim>Зайти в сессию</SessionEnterButton>
+                <SessionEnterText>Зайти в сессию</SessionEnterText>
+              </TodaySessionCard>
+            ))}
+            {todaySessionsPending && <Loader />}
+          </Block>
+        )}
+        <Block>
+          <Title>Рекомендации</Title>
+          <InfiniteScroll
+            loader={<Loader />}
+            next={loadMore as any}
+            hasMore={isHasMoreRecommendations}
+            dataLength={recommendations.length}
+          >
+            {recommendations.map(coach => (
+              <RecommendationCoachCard key={coach.id} coach={coach} />
+            ))}
+          </InfiniteScroll>
+        </Block>
       </Container>
     </UserLayout>
   )
