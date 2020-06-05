@@ -4,7 +4,6 @@ import styled from "styled-components"
 import {ProfileHeader} from "./content/profile-header/ProfileHeader"
 import {ProfileInterests} from "@/application/pages/dashboard/profile/content/interests/Interests"
 import {IndividualSessions} from "@/application/pages/dashboard/profile/content/sessions-list/IndividualSessions"
-import { withStart } from "effector-next"
 import { mounted } from "./profile-page.model"
 
 const Container = styled.div`

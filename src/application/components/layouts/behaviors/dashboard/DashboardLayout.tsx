@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Menu } from "@/application/components/layouts/behaviors/dashboard/menu/Menu"
 import { DenseTopBar } from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBar"
 import { withProtect } from "@/application/feature/user/with-protect"
+import { ToastsContainer } from "@/application/components/layouts/behaviors/dashboard/toasts/ToastsContainer"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -21,12 +22,13 @@ const PageContent = styled.div`
   position: relative;
   overflow: hidden;
   overflow-y: auto;
-  background: #ECEFF1;
+  background: #eceff1;
 `
 
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => (
   <Layout {...props}>
     <Menu />
+    <ToastsContainer />
     <PageContent>
       <DenseTopBar />
       {children}
