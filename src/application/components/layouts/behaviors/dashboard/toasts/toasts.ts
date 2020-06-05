@@ -1,6 +1,6 @@
 import { createApi, createStore } from "effector-next"
 
-type ToastType = "error" | "info"
+export type ToastType = "error" | "info"
 
 export type Toast = {
   type: ToastType

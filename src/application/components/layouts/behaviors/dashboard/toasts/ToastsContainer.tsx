@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useList } from "effector-react"
-import { $toasts, toasts } from "@/application/components/layouts/behaviors/dashboard/toasts/toasts"
+import { $toasts, toasts, ToastType } from "@/application/components/layouts/behaviors/dashboard/toasts/toasts"
 import { Icon } from "@/application/components/icon/Icon"
 
 const Container = styled.div`
@@ -13,10 +13,10 @@ const Container = styled.div`
   z-index: 10;
 `
 
-const Toast = styled.div`
+const Toast = styled.div<{ type: ToastType }>`
   margin-top: 10px;
   padding: 12px;
-  background: #4858cc;
+  background: ${({type}) => type === `info` ? `#4858cc` : `#FF6000`};
   border-radius: 2px;
   color: #fff;
   display: flex;
@@ -34,7 +34,7 @@ const Close = styled(Icon).attrs({ name: `close` })`
 export const ToastsContainer = () => (
   <Container>
     {useList($toasts, toast => (
-      <Toast>
+      <Toast type={toast.type}>
         {toast.text}
         <Close onClick={() => toasts.remove(toast)} />
       </Toast>
