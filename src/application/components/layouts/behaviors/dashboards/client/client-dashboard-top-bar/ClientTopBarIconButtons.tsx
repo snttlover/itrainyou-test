@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 import { Icon } from "@/application/components/icon/Icon"
 import { useEvent } from "effector-react"
-import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboard/menu/blue-layout.mobile-menu"
+import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import Link from "next/link"
 
 const Wrapper = styled.div`
@@ -50,7 +50,7 @@ const Burger = styled(Icon).attrs({ name: `burger` })`
   ${IconStyles}
 `
 
-export const DenseTopBarIconButtons = () => {
+export const ClientTopBarIconButtons = () => {
   const showMobileMenu = useEvent(toggleBlueLayoutMobileMenuVisibility)
 
   return (

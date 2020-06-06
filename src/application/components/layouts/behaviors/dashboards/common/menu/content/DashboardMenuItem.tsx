@@ -5,54 +5,57 @@ import { MediaRange } from "@/application/lib/responsive/media"
 import Link from "next/link"
 
 const MenuItemIcon = styled(Icon).attrs(props => ({
-  name: props.name
+  name: props.name,
 }))`
-  width: 24px;
-  height: 24px;
   fill: #fff;
+  width: 16px;
+  height: 16px;
 
-  ${MediaRange.greaterThan("mobile")`
-    width: 36px;
-    height: 36px;
+  ${MediaRange.lessThan(`tablet`)`
+    width: 32px;
+    height: 32px;
   `}
-  ${MediaRange.greaterThan("tablet")`
-    width: 16px;
-    height: 16px;
+
+  ${MediaRange.lessThan(`mobile`)`
+    width: 24px;
+    height: 24px;
   `}
 `
 
 const StyledMenuItem = styled.a`
   display: flex;
   align-items: center;
-  margin-bottom: 36px;
   cursor: pointer;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 8px 24px;
   &:last-child {
     margin-bottom: 0;
   }
-  ${MediaRange.greaterThan("tablet")`
-     width: 100%;
-     margin-bottom: 15px;
-     padding: 8px 24px;
+  ${MediaRange.lessThan(`tablet`)`
+    margin-bottom: 36px;
   `}
 `
 
 const Label = styled.div`
-  font-size: 16px;
-  line-height: 22px;
   color: #ffffff;
   margin-left: 8px;
-  ${MediaRange.greaterThan("mobile")`
-     font-size: 20px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  white-space: nowrap;
+
+  ${MediaRange.lessThan(`tablet`)`
+    font-size: 20px;
      line-height: 26px;
      margin-left: 16px;
   `}
 
-  ${MediaRange.greaterThan("tablet")`  
-     font-style: normal;
-     font-weight: normal;
-     font-size: 14px;
-     line-height: 18px;
-     white-space: nowrap;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 16px;
+    line-height: 22px; 
   `}
 `
 
@@ -62,7 +65,7 @@ type MenuItemTypes = {
   children: React.ReactChild
 }
 
-export const MenuItem = (props: MenuItemTypes) => (
+export const DashboardMenuItem = (props: MenuItemTypes) => (
   <Link passHref href={props.link}>
     <StyledMenuItem>
       <MenuItemIcon name={props.icon} />

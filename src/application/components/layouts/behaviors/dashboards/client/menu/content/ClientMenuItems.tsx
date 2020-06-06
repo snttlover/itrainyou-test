@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import React from "react"
-import { MenuItem } from "@/application/components/layouts/behaviors/dashboard/menu/content/MenuItem"
+import { DashboardMenuItem } from "@/application/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
 import { MediaRange } from "@/application/lib/responsive/media"
 
 const ItemsWrapper = styled.div`
@@ -24,31 +24,31 @@ const ItemsWrapper = styled.div`
   `}
 `
 
-export const MenuItems = () => (
+export const ClientMenuItems = () => (
   <ItemsWrapper>
-    <MenuItem link='/' icon='home'>
+    <DashboardMenuItem link='/' icon='home'>
       Главная страница
-    </MenuItem>
-    <MenuItem link='/' icon='my-coaches'>
+    </DashboardMenuItem>
+    <DashboardMenuItem link='/' icon='my-coaches'>
       Мои коучи
-    </MenuItem>
-    <MenuItem link='/' icon='hand'>
+    </DashboardMenuItem>
+    <DashboardMenuItem link='/' icon='hand'>
       Здесь и сейчас
-    </MenuItem>
-    <MenuItem link='/' icon='user'>
+    </DashboardMenuItem>
+    <DashboardMenuItem link='/' icon='user'>
       Групповые сессии
-    </MenuItem>
-    <MenuItem link='/' icon='my-purse'>
+    </DashboardMenuItem>
+    <DashboardMenuItem link='/' icon='my-purse'>
       Кошелек
-    </MenuItem>
-    <MenuItem link='/' icon='calendar'>
+    </DashboardMenuItem>
+    <DashboardMenuItem link='/' icon='calendar'>
       Календарь
-    </MenuItem>
-    <MenuItem link='/settings' icon='settings'>
+    </DashboardMenuItem>
+    <DashboardMenuItem link='/settings' icon='settings'>
       Настройки
-    </MenuItem>
-    <MenuItem link='/' icon='help'>
+    </DashboardMenuItem>
+    <DashboardMenuItem link='/' icon='help'>
       Поддержка
-    </MenuItem>
+    </DashboardMenuItem>
   </ItemsWrapper>
 )

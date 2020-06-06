@@ -12,7 +12,7 @@ const List = styled.div`
 export const MenuItems = () => (
   <List>
     {/*menu.map((item, i) => (
-      <MenuItem key={i}>{item.text}</MenuItem>
+      <DashboardMenuItem key={i}>{item.text}</DashboardMenuItem>
     ))*/}
   </List>
 )

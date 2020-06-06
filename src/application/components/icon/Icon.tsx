@@ -2,6 +2,9 @@ import React from "react"
 import styled from "styled-components"
 
 export type IconName =
+  | "none"
+  | "star-with-user"
+  | "calendar-with-clock"
   | "tabletka"
   | "arrow"
   | "cross"

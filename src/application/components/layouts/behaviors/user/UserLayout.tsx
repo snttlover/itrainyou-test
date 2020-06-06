@@ -3,7 +3,7 @@ import {useStore} from "effector-react"
 import { $isLoggedIn } from "@/application/feature/user/user.model"
 
 import {GuestLayout} from "@/application/components/layouts/behaviors/default/GuestLayout"
-import {DashboardLayout} from "@/application/components/layouts/behaviors/dashboard/DashboardLayout"
+import {ClientDashboardLayout} from "@/application/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 
 type UserLayoutTypes = {
   children: React.ReactChild
@@ -11,7 +11,7 @@ type UserLayoutTypes = {
 
 export const UserLayout = (props: UserLayoutTypes) => {
   const isLoggedIn = useStore($isLoggedIn)
-  const Layout = isLoggedIn ? DashboardLayout : GuestLayout
+  const Layout = isLoggedIn ? ClientDashboardLayout : GuestLayout
 
   return (
     <Layout>{props.children}</Layout>

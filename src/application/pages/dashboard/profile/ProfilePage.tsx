@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import {DashboardLayout} from "@/application/components/layouts/behaviors/dashboard/DashboardLayout"
+import {ClientDashboardLayout} from "@/application/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import styled from "styled-components"
 import {ProfileHeader} from "./content/profile-header/ProfileHeader"
 import {ProfileInterests} from "@/application/pages/dashboard/profile/content/interests/Interests"
@@ -23,13 +23,13 @@ const ProfilePage = () => {
   }, [])
 
   return (
-    <DashboardLayout>
+    <ClientDashboardLayout>
       <Container>
         <ProfileHeader />
         <ProfileInterests />
         <IndividualSessions />
       </Container>
-    </DashboardLayout>
+    </ClientDashboardLayout>
   )
 }
 

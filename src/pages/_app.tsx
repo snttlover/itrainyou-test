@@ -10,6 +10,7 @@ import "../../public/fonts/gilroy/fonts-list.css"
 import "react-multi-carousel/lib/styles.css"
 import "simplebar/dist/simplebar.min.css"
 import "swiper/css/swiper.min.css"
+import { ClientTheme } from "@/application/components/layouts/themes"
 
 dayjs.locale("ru")
 
@@ -17,10 +18,10 @@ class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props
     return (
-      <>
+      <ClientTheme>
         <AppStyles />
         <Component {...pageProps} />
-      </>
+      </ClientTheme>
     )
   }
 }

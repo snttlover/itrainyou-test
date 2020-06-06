@@ -4,6 +4,7 @@ import { AuthLayoutLogo } from "./AuthLayoutLogo"
 import desktopBackgroundImage from './images/desktop-background.svg'
 import tabletBackgroundImage from './images/tablet-background.svg'
 import mobileBackgroundImage from './images/mobile-background.svg'
+import { ClientTheme } from "@/application/components/layouts/themes"
 
 const StyledLayout = styled.div`
   width: 100vw;

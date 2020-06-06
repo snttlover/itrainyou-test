@@ -7,3 +7,4 @@ export const Layout = styled.div.attrs({ id: 'app-layouts' })`
   overflow: hidden;
   background: #ECEFF1;
 `
+

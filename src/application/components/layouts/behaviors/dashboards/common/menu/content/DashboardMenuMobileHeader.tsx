@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import logoImage from '../images/logo.svg'
+import logoImage from '../../../client/menu/images/logo.svg'
 import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { useEvent } from "effector-react"
-import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboard/menu/blue-layout.mobile-menu"
+import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 
 const Logo = styled.img.attrs({ src: logoImage })`
   width: 36px;
@@ -36,7 +36,7 @@ const StyledHeader = styled.div`
   `}
 `
 
-export const MobileHeader = () => {
+export const DashboardMenuMobileHeader = () => {
   const toggle = useEvent(toggleBlueLayoutMobileMenuVisibility)
 
   return (
