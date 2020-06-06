@@ -207,7 +207,7 @@ const VideoContainer = styled.div`
   `}
 `
 
-const AddVideo = styled(DashedButton).attrs({ secondary: true })`
+const AddVideo = styled(DashedButton).attrs({ 'data-secondary': true })`
   margin: 28px auto 0;
   display: flex;
   justify-content: center;
