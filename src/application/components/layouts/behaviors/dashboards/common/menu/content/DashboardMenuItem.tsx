@@ -12,8 +12,8 @@ const MenuItemIcon = styled(Icon).attrs(props => ({
   height: 16px;
 
   ${MediaRange.lessThan(`tablet`)`
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
   `}
 
   ${MediaRange.lessThan(`mobile`)`
@@ -25,15 +25,15 @@ const MenuItemIcon = styled(Icon).attrs(props => ({
 const StyledMenuItem = styled.a`
   display: flex;
   align-items: center;
-  margin-bottom: 36px;
   cursor: pointer;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 8px 24px;
   &:last-child {
     margin-bottom: 0;
   }
-  ${MediaRange.greaterThan("tablet")`
-     width: 100%;
-     margin-bottom: 15px;
-     padding: 8px 24px;
+  ${MediaRange.lessThan(`tablet`)`
+    margin-bottom: 36px;
   `}
 `
 
