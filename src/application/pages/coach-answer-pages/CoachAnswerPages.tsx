@@ -6,6 +6,7 @@ import styled from "styled-components"
 // import { WithPhoneExample } from "@/application/pages/coach-answer-pages/demo-page-template/examples/WithPhoneExample"
 // import {WithClockExample} from "@/application/pages/coach-answer-pages/demo-page-template/examples/WithClockExample"
 import {WithPeopleExample} from "@/application/pages/coach-answer-pages/demo-page-template/examples/WithPeopleExample"
+import { CoachTheme } from "@/application/components/layouts/themes"
 
 const Container = styled.div`
   background: #eceff1;
@@ -14,13 +15,15 @@ const Container = styled.div`
 `
 
 export const CoachAnswerPages = () => (
-  <Container>
-    {/*<AwaitingApproval />*/}
-    {/*<ApprovalFailing />*/}
-    {/*<ApprovalTimer />*/}
-    {/*<ApprovalTimerOver />*/}
-    {/*<WithPhoneExample />*/}
-    {/*<WithClockExample />*/}
-    <WithPeopleExample />
-  </Container>
+  <CoachTheme>
+    <Container>
+      {/*<AwaitingApproval />*/}
+      {/*<ApprovalFailing />*/}
+      {/*<ApprovalTimer />*/}
+      {/*<ApprovalTimerOver />*/}
+      {/*<WithPhoneExample />*/}
+      {/*<WithClockExample />*/}
+      <WithPeopleExample />
+    </Container>
+  </CoachTheme>
 )

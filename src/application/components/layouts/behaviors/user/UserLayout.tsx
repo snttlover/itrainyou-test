@@ -13,5 +13,7 @@ export const UserLayout = (props: UserLayoutTypes) => {
   const isLoggedIn = useStore($isLoggedIn)
   const Layout = isLoggedIn ? DashboardLayout : GuestLayout
 
-  return <Layout>{props.children}</Layout>
+  return (
+    <Layout>{props.children}</Layout>
+  )
 }
