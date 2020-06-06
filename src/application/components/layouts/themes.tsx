@@ -16,7 +16,7 @@ const coachTheme: typeof clientTheme = {
 }
 
 type ProviderTypes = {
-  children: React.ReactChild
+  children: React.ReactChild | React.ReactChild[]
 }
 
 const theme = (theme: typeof clientTheme) => ({ children }: ProviderTypes) => (

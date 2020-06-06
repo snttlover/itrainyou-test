@@ -13,16 +13,14 @@ type DashboardTypes = {
 }
 
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => (
-  <ClientTheme>
-    <DashboardContainer {...props}>
-      <ClientMenu />
-      <ToastsContainer />
-      <DashboardPageContent>
-        <ClientTopBar />
-        {children}
-      </DashboardPageContent>
-    </DashboardContainer>
-  </ClientTheme>
+  <DashboardContainer {...props}>
+    <ClientMenu />
+    <ToastsContainer />
+    <DashboardPageContent>
+      <ClientTopBar />
+      {children}
+    </DashboardPageContent>
+  </DashboardContainer>
 ))``
 
 export const ClientDashboardLayout = withProtect({ to: "/login", as: "/login" })(Dashboard)

@@ -14,10 +14,8 @@ type GrayLayoutProps = {
 }
 
 export const GuestLayout = (props: GrayLayoutProps) => (
-  <ClientTheme>
-    <StyledLayout>
-      <TopBar/>
-      {props.children}
-    </StyledLayout>
-  </ClientTheme>
+  <StyledLayout>
+    <TopBar/>
+    {props.children}
+  </StyledLayout>
 )
