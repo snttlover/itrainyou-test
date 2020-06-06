@@ -1,11 +1,11 @@
 import styled from "styled-components"
 import React from "react"
-import { MobileHeader } from "@/application/components/layouts/behaviors/dashboard/menu/content/MobileHeader"
-import { ProfileHeader } from "@/application/components/layouts/behaviors/dashboard/menu/content/ProfileHeader"
+import { MobileHeader } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/MobileHeader"
+import { ProfileHeader } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/ProfileHeader"
 import { MenuItems } from "./content/MenuItems"
-import { CoachLink } from "@/application/components/layouts/behaviors/dashboard/menu/content/CoachLink"
+import { CoachLink } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/CoachLink"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { DesktopLogo } from "@/application/components/layouts/behaviors/dashboard/menu/content/DesktopLogo"
+import { DesktopLogo } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/DesktopLogo"
 import { blueLayoutMobileMenuVisibility } from "./blue-layout.mobile-menu"
 import { useStore } from "effector-react"
 
@@ -36,7 +36,7 @@ const StyledMenuWrapper = styled.div<StyledMenuWrapperTypes>`
   `}
 `
 
-export const Menu = () => {
+export const ClientMenu = () => {
   const mobileMenuVisibility = useStore(blueLayoutMobileMenuVisibility)
 
   return (

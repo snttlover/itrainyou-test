@@ -1,9 +1,9 @@
 import React from "react"
 import styled from "styled-components"
-import { Menu } from "@/application/components/layouts/behaviors/dashboard/menu/Menu"
-import { DenseTopBar } from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBar"
+import { ClientMenu } from "@/application/components/layouts/behaviors/dashboards/client/menu/ClientMenu"
+import { ClientTopBar } from "@/application/components/layouts/behaviors/dashboards/client/client-dashboard-top-bar/ClientTopBar"
 import { withProtect } from "@/application/feature/user/with-protect"
-import { ToastsContainer } from "@/application/components/layouts/behaviors/dashboard/toasts/ToastsContainer"
+import { ToastsContainer } from "@/application/components/layouts/behaviors/dashboards/client/toasts/ToastsContainer"
 import { ClientTheme } from "@/application/components/layouts/themes"
 
 type DashboardTypes = {
@@ -29,14 +29,14 @@ const PageContent = styled.div`
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => (
   <ClientTheme>
     <Layout {...props}>
-      <Menu />
+      <ClientMenu />
       <ToastsContainer />
       <PageContent>
-        <DenseTopBar />
+        <ClientTopBar />
         {children}
       </PageContent>
     </Layout>
   </ClientTheme>
 ))``
 
-export const DashboardLayout = withProtect({ to: "/login", as: "/login" })(Dashboard)
+export const ClientDashboardLayout = withProtect({ to: "/login", as: "/login" })(Dashboard)

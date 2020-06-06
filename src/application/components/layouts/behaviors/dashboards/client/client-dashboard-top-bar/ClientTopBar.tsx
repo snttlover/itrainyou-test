@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { LandingPageContainer } from "@/application/pages/landing/common/LandingPageContainer"
 import { CategoriesPicker } from "@/application/pages/landing/content/top-bar/categories-picker/CategoriesPicker"
 import { Search } from "@/application/pages/landing/content/top-bar/search/Search"
-import { DenseTopBarIconButtons } from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBarIconButtons"
+import { ClientTopBarIconButtons } from "@/application/components/layouts/behaviors/dashboards/client/client-dashboard-top-bar/ClientTopBarIconButtons"
 import { Logo } from "@/application/pages/landing/content/top-bar/logo/Logo"
 import Link from "next/link"
 
@@ -68,7 +68,7 @@ const StyledSearch = styled(Search)`
   }
 `
 
-export const DenseTopBar = () => (
+export const ClientTopBar = () => (
   <Container>
     <StyledContainer>
       <Link href='/' passHref>
@@ -80,7 +80,7 @@ export const DenseTopBar = () => (
         <StyledCategoriesPicker />
         <StyledSearch />
       </SearchWrapper>
-      <DenseTopBarIconButtons />
+      <ClientTopBarIconButtons />
     </StyledContainer>
   </Container>
 )

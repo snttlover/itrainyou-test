@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import React from "react"
-import { MenuItem } from "@/application/components/layouts/behaviors/dashboard/menu/content/MenuItem"
+import { MenuItem } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/MenuItem"
 import { MediaRange } from "@/application/lib/responsive/media"
 
 const ItemsWrapper = styled.div`

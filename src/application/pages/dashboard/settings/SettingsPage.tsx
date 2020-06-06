@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { DashboardLayout } from "@/application/components/layouts/behaviors/dashboard/DashboardLayout"
+import { ClientDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import { GeneralSettingsForm } from "./content/GeneralSettingsForm"
 import { PasswordForm } from "./content/PasswordForm"
 
@@ -19,11 +19,11 @@ const Title = styled.div`
 `
 
 export const SettingsPage = () => (
-  <DashboardLayout>
+  <ClientDashboardLayout>
     <Container>
       <Title>Настройки</Title>
       <GeneralSettingsForm />
       <PasswordForm />
     </Container>
-  </DashboardLayout>
+  </ClientDashboardLayout>
 )
