@@ -1,18 +1,30 @@
 import * as React from "react"
 import styled from "styled-components"
 
-export const Button = styled.button<{ secondary? : boolean, slim? : boolean }>`
+type ButtonTypes = {
+  'data-secondary': any,
+  slim? : boolean
+}
+
+export const Button = styled.button<ButtonTypes>`
   padding: ${props => props.slim ? `4px` : `8px `} 24px;
   text-align: center;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  background: ${({secondary}) => secondary ? '#7D36A8' : '#4858CC'};
+  background: ${props => props.theme.colors.primary};
   border-radius: 32px;
   border: none;
   outline: none;
   color: #FFFFFF;
   cursor: pointer;
+
+  [data-secondary] {
+    background: #7D36A8;
+    &:active {
+      background: #75309E;
+    }
+  }
   
   transition: all 200ms ease;
   
@@ -21,7 +33,7 @@ export const Button = styled.button<{ secondary? : boolean, slim? : boolean }>`
   }
   &:active {
     box-shadow: none;
-    background: ${({secondary}) => secondary ? '#75309E' : '#3746B0'};
+    background: ${props => props.theme};
   }
   &:disabled {
     background: #EFEFEF;

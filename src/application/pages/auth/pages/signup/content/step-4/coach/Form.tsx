@@ -112,7 +112,7 @@ export const Form = () => {
       <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <Photos />
       <ButtonContainer>
-        <AddPhotosButton secondary onClick={() => open()}>
+        <AddPhotosButton data-secondary onClick={() => open()}>
           Добавить фотографии
         </AddPhotosButton>
       </ButtonContainer>

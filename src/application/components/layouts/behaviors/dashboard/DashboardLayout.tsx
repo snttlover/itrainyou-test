@@ -4,6 +4,7 @@ import { Menu } from "@/application/components/layouts/behaviors/dashboard/menu/
 import { DenseTopBar } from "@/application/components/layouts/behaviors/dashboard/dense-top-bar/DenseTopBar"
 import { withProtect } from "@/application/feature/user/with-protect"
 import { ToastsContainer } from "@/application/components/layouts/behaviors/dashboard/toasts/ToastsContainer"
+import { ClientTheme } from "@/application/components/layouts/themes"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -26,14 +27,16 @@ const PageContent = styled.div`
 `
 
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => (
-  <Layout {...props}>
-    <Menu />
-    <ToastsContainer />
-    <PageContent>
-      <DenseTopBar />
-      {children}
-    </PageContent>
-  </Layout>
+  <ClientTheme>
+    <Layout {...props}>
+      <Menu />
+      <ToastsContainer />
+      <PageContent>
+        <DenseTopBar />
+        {children}
+      </PageContent>
+    </Layout>
+  </ClientTheme>
 ))``
 
 export const DashboardLayout = withProtect({ to: "/login", as: "/login" })(Dashboard)

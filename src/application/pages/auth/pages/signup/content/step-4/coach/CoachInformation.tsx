@@ -141,7 +141,7 @@ export const CoachInformation = () => {
       </CheckStepsContainer>
       <ButtonContainer>
         <SendRequestButton
-          secondary
+          data-secondary
           disabled={loading || isVideoUploading || !isFormValid}
           onClick={() => userRegistered()}
         >
