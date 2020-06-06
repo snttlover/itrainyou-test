@@ -1,51 +1,25 @@
 import styled from "styled-components"
 import React from "react"
-import { MobileHeader } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/MobileHeader"
+import { DashboardMenuMobileHeader } from "@/application/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuMobileHeader"
 import { ProfileHeader } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/ProfileHeader"
-import { MenuItems } from "./content/MenuItems"
+import { ClientMenuItems } from "./content/ClientMenuItems"
 import { CoachLink } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/CoachLink"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { DesktopLogo } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/DesktopLogo"
+import { DesktopDashboardMenuLogo } from "@/application/components/layouts/behaviors/dashboards/common/menu/content/DesktopDashboardMenuLogo"
 import { blueLayoutMobileMenuVisibility } from "./blue-layout.mobile-menu"
 import { useStore } from "effector-react"
-
-type StyledMenuWrapperTypes = {
-  showOnMobile: boolean
-}
-
-const StyledMenuWrapper = styled.div<StyledMenuWrapperTypes>`
-  height: 100%;
-  min-height: 100vh;
-  z-index: 200;
-  background: #4858cc;
-  color: #fff;
-  font-family: Roboto;
-  flex-direction: column;
-  overflow: hidden;
-  overflow-y: auto;
-
-  position: relative;
-  display: flex;
-  width: 200px;
-  padding: 0;
-
-  ${MediaRange.lessThan<StyledMenuWrapperTypes>("tablet")`
-     display: ${({ showOnMobile }) => (showOnMobile ? `flex` : `none`)};
-     width: 100vw;
-     padding: 14px 16px;
-  `}
-`
+import { DashboardMenuContainer } from "@/application/components/layouts/behaviors/dashboards/common/menu/MenuContainer"
 
 export const ClientMenu = () => {
   const mobileMenuVisibility = useStore(blueLayoutMobileMenuVisibility)
 
   return (
-    <StyledMenuWrapper showOnMobile={mobileMenuVisibility}>
-      <DesktopLogo />
-      <MobileHeader />
+    <DashboardMenuContainer showOnMobile={mobileMenuVisibility}>
+      <DesktopDashboardMenuLogo />
+      <DashboardMenuMobileHeader />
       <ProfileHeader />
-      <MenuItems />
-      <CoachLink />
-    </StyledMenuWrapper>
+      <ClientMenuItems />
+      <CoachLink>Стать коучем</CoachLink>
+    </DashboardMenuContainer>
   )
 }

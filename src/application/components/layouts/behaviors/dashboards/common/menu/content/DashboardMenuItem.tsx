@@ -5,19 +5,20 @@ import { MediaRange } from "@/application/lib/responsive/media"
 import Link from "next/link"
 
 const MenuItemIcon = styled(Icon).attrs(props => ({
-  name: props.name
+  name: props.name,
 }))`
-  width: 24px;
-  height: 24px;
   fill: #fff;
+  width: 16px;
+  height: 16px;
 
-  ${MediaRange.greaterThan("mobile")`
+  ${MediaRange.lessThan(`tablet`)`
     width: 36px;
     height: 36px;
   `}
-  ${MediaRange.greaterThan("tablet")`
-    width: 16px;
-    height: 16px;
+
+  ${MediaRange.lessThan(`mobile`)`
+    width: 24px;
+    height: 24px;
   `}
 `
 
@@ -37,22 +38,24 @@ const StyledMenuItem = styled.a`
 `
 
 const Label = styled.div`
-  font-size: 16px;
-  line-height: 22px;
   color: #ffffff;
   margin-left: 8px;
-  ${MediaRange.greaterThan("mobile")`
-     font-size: 20px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  white-space: nowrap;
+
+  ${MediaRange.lessThan(`tablet`)`
+    font-size: 20px;
      line-height: 26px;
      margin-left: 16px;
   `}
 
-  ${MediaRange.greaterThan("tablet")`  
-     font-style: normal;
-     font-weight: normal;
-     font-size: 14px;
-     line-height: 18px;
-     white-space: nowrap;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 16px;
+    line-height: 22px; 
   `}
 `
 
@@ -62,7 +65,7 @@ type MenuItemTypes = {
   children: React.ReactChild
 }
 
-export const MenuItem = (props: MenuItemTypes) => (
+export const DashboardMenuItem = (props: MenuItemTypes) => (
   <Link passHref href={props.link}>
     <StyledMenuItem>
       <MenuItemIcon name={props.icon} />

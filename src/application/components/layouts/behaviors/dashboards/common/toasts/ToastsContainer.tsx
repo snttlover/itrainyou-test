@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useList } from "effector-react"
-import { $toasts, toasts, ToastType } from "@/application/components/layouts/behaviors/dashboards/client/toasts/toasts"
+import { $toasts, toasts, ToastType } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { Icon } from "@/application/components/icon/Icon"
 
 const Container = styled.div`

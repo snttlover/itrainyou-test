@@ -6,7 +6,7 @@ import styled from "styled-components"
 // import { WithPhoneExample } from "@/application/pages/coach-answer-pages/demo-page-template/examples/WithPhoneExample"
 // import {WithClockExample} from "@/application/pages/coach-answer-pages/demo-page-template/examples/WithClockExample"
 import {WithPeopleExample} from "@/application/pages/coach-answer-pages/demo-page-template/examples/WithPeopleExample"
-import { CoachTheme } from "@/application/components/layouts/themes"
+import { CoachDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 const Container = styled.div`
   background: #eceff1;
@@ -15,7 +15,7 @@ const Container = styled.div`
 `
 
 export const CoachAnswerPages = () => (
-  <CoachTheme>
+  <CoachDashboardLayout>
     <Container>
       {/*<AwaitingApproval />*/}
       {/*<ApprovalFailing />*/}
@@ -25,5 +25,5 @@ export const CoachAnswerPages = () => (
       {/*<WithClockExample />*/}
       <WithPeopleExample />
     </Container>
-  </CoachTheme>
+  </CoachDashboardLayout>
 )

@@ -24,8 +24,12 @@ const Container = styled.div`
   `}
 `
 
-export const CoachLink = () => (
+type CoachLinkTypes = {
+  children: React.ReactChild
+}
+
+export const CoachLink = ({ children }: CoachLinkTypes) => (
   <Container>
-    Стать коучем
+    {children}
   </Container>
 )

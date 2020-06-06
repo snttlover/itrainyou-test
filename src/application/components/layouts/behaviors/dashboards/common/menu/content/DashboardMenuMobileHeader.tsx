@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import logoImage from '../images/logo.svg'
+import logoImage from '../../../client/menu/images/logo.svg'
 import { Icon } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { useEvent } from "effector-react"
@@ -36,7 +36,7 @@ const StyledHeader = styled.div`
   `}
 `
 
-export const MobileHeader = () => {
+export const DashboardMenuMobileHeader = () => {
   const toggle = useEvent(toggleBlueLayoutMobileMenuVisibility)
 
   return (
