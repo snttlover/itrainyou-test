@@ -1,9 +1,9 @@
-import { loggedIn } from "@/application/feature/user/user.model"
+import { loggedIn, setUserData } from "@/application/feature/user/user.model"
 import { login, LoginResponse } from "@/application/lib/api/login"
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
 import { emailValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createEffect, createEvent, createStore, createStoreObject, sample } from "effector-next"
+import { combine, createEffect, createEvent, createStore, createStoreObject, forward, sample } from "effector-next"
 import Router from "next/router"
 
 export const loginFormSent = createEvent()
@@ -19,6 +19,11 @@ loginFx.doneData.watch(data => {
   } else {
     Router.push("/client/", "/client/")
   }
+})
+
+forward({
+  from: loginFx.doneData.map(response => ({ client: response.user.client, coach: response.user.coach })),
+  to: setUserData,
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({

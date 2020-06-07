@@ -1,9 +1,23 @@
+import { ClientSelfData, CoachSelfData } from "@/application/lib/api/login"
 import { serverStarted, TOKEN_KEY } from "@/store"
-import { createEvent, createStore } from "effector-next"
+import { createEffect, createEvent, createStore } from "effector-next"
 import Cookies from "js-cookie"
 
+export type UserData = {
+  coach: CoachSelfData | null
+  client: ClientSelfData | null
+}
+
 export const loggedIn = createEvent<{ token: string }>()
+export const setUserData = createEvent<UserData>()
 export const logout = createEvent()
+
+const loadUserDataFx = createEffect({})
+
+export const $userData = createStore<UserData>({ client: null, coach: null }).on(
+  setUserData,
+  (state, payload) => payload
+)
 
 export const $token = createStore<string | undefined>("")
   .on(serverStarted, (state, payload) => payload.cookies[TOKEN_KEY])
