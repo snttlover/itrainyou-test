@@ -13,12 +13,11 @@ const Container = styled.div<{ disabled?: boolean }>`
   user-select: none;
   opacity: ${({ disabled }) => (disabled ? "0.6" : "1")};
   ${MediaRange.greaterThan("mobile")`
-    width: 80%;
     padding: 20px;
     margin: 0 auto;
   `}
   ${MediaRange.greaterThan("tablet")`
-    width: 600px;
+    width: 100%;
   `}
 `
 

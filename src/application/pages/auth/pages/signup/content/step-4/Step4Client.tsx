@@ -5,8 +5,8 @@ import { Step4ClientLayout } from "@/application/pages/auth/pages/signup/content
 import {
   $userData,
   registerUserFx,
-  toggleCategorySelection,
-  userRegistered
+  categoriesChanged,
+  userRegistered,
 } from "@/application/pages/auth/pages/signup/signup.model"
 import { CategoryCard } from "./client/CategoryCard"
 import { useStore } from "effector-react"
@@ -108,7 +108,7 @@ export const Step4Client = () => {
       key={category.id}
       category={category}
       selected={selectedCategories.includes(category.id)}
-      onSelect={id => toggleCategorySelection(id)}
+      onSelect={id => categoriesChanged(id)}
     />
   ))
 

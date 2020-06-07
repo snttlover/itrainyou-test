@@ -17,7 +17,7 @@ import {
   nameChanged,
   sexChanged,
   step3Mounted,
-  toggleUploadModal
+  toggleUploadModal,
 } from "@/application/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/application/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/application/pages/auth/pages/signup/signup.model"
@@ -81,10 +81,10 @@ const Form = styled.form`
   flex-direction: column;
   color: #fff;
   ${NextButton} {
-    margin-left: auto
+    margin-left: auto;
   }
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     color: #424242;
   `}
 `
@@ -94,13 +94,13 @@ const AvatarWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 16px;
-  
+
   ${FormItem} {
     margin-bottom: 0;
     width: auto;
   }
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     margin-top: 36px;
   `}
 `
@@ -120,7 +120,7 @@ const AvatarHint = styled.div`
     line-height: 16px;
     color: #424242;
   }
-  
+
   p {
     margin-top: 8px;
     font-family: Roboto;
@@ -128,10 +128,10 @@ const AvatarHint = styled.div`
     font-weight: normal;
     font-size: 12px;
     line-height: 16px;
-    color: #9AA0A6;
+    color: #9aa0a6;
   }
-  
-  ${MediaRange.greaterThan('mobile')`
+
+  ${MediaRange.greaterThan("mobile")`
     display: flex;
   `}
 `
@@ -164,12 +164,7 @@ export const Step3 = () => {
         <Form onSubmit={handleSubmit}>
           <AvatarWrapper>
             <FormItem
-              label={
-                <UserAvatar
-                  src={values.image.file}
-                  onClick={() => toggleUploadModal()}
-                />
-              }
+              label={<UserAvatar src={values.image.file} onClick={() => toggleUploadModal()} />}
               required={userType === "coach"}
             />
             <AvatarHint>

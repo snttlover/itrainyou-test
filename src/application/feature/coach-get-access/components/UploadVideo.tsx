@@ -1,18 +1,18 @@
 import { DashedButton } from "@/application/components/button/dashed/DashedButton"
 import { ProgressBar } from "@/application/components/progress-bar/ProgressBar"
-import { MediaRange } from "@/application/lib/responsive/media"
 import {
-  $step4Form,
+  $form,
   $videoUploadProgress,
   videoUploaded,
-  videoUploadFx
-} from "@/application/pages/auth/pages/signup/content/step-4/step-4-coach.model"
+  videoUploadFx,
+} from "@/application/feature/coach-get-access/coach-get-access.model"
+import { MediaRange } from "@/application/lib/responsive/media"
 import { useStore } from "effector-react"
 import * as React from "react"
 import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components"
-import play from "./play.svg"
+import play from "../../../pages/auth/pages/signup/content/step-4/coach/play.svg"
 
 const Video = styled.video`
   max-width: 100%;
@@ -25,10 +25,12 @@ const InterviewContainer = styled.div`
 
   ${MediaRange.greaterThan("mobile")`
     max-width: 600px;
-    width: 80%;
     margin: 44px auto 0;
-  `};
-  //
+  `}
+
+  ${MediaRange.greaterThan("tablet")`
+    width: 600px;
+  `}
 `
 
 const InterviewTitle = styled.h2`
@@ -114,7 +116,7 @@ const InterviewQuestions = styled.ol`
 `
 
 export const UploadVideo = () => {
-  const video = useStore($step4Form.map(form => form.videoInterview))
+  const video = useStore($form.map(form => form.videoInterview))
   const isVideoUploading = useStore(videoUploadFx.pending)
   const videoUploadProgress = useStore($videoUploadProgress)
 
@@ -129,7 +131,7 @@ export const UploadVideo = () => {
     onDropAccepted,
     multiple: false,
     noClick: true,
-    accept: "video/*"
+    accept: "video/*",
   })
 
   return (
@@ -207,7 +209,7 @@ const VideoContainer = styled.div`
   `}
 `
 
-const AddVideo = styled(DashedButton).attrs({ 'data-secondary': true })`
+const AddVideo = styled(DashedButton).attrs({ "data-secondary": true })`
   margin: 28px auto 0;
   display: flex;
   justify-content: center;

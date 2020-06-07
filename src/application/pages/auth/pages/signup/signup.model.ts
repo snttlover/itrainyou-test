@@ -40,7 +40,7 @@ export const pageMounted = createEvent()
 export const userTypeChanged = createEvent<RegisterUserType>()
 export const userDataChanged = createEvent<UserData>()
 export const clientDataChanged = createEvent<ClientData>()
-export const toggleCategorySelection = createEvent<number>()
+export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
 
@@ -48,16 +48,11 @@ export const $userData = createStore<UserData>({ type: "client", categories: [] 
   .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
-  .on(toggleCategorySelection, (state, id) => {
-    const isAlreadyExists = state.categories.includes(id)
-    if (isAlreadyExists) state.categories = state.categories.filter(catId => catId !== id)
-    else state.categories.push(id)
-    return { ...state, categories: [...state.categories] }
-  })
+  .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
   .reset(userDataReset)
 
-const watchedEvents = merge([userTypeChanged, clientDataChanged, coachDataChanged, toggleCategorySelection, userDataReset])
+const watchedEvents = merge([userTypeChanged, clientDataChanged, coachDataChanged, categoriesChanged, userDataReset])
 
 $userData.watch(watchedEvents, userData => {
   try {
@@ -84,7 +79,7 @@ export const registerUserFx = createEffect({
     } else {
       return registerAsCoach({ ...params.clientData!, categories: params.categories, ...params.coachData! })
     }
-  }
+  },
 })
 
 registerUserFx.doneData.watch(data => {
@@ -95,5 +90,5 @@ registerUserFx.doneData.watch(data => {
 sample({
   source: $userData,
   clock: userRegistered,
-  target: registerUserFx
+  target: registerUserFx,
 })

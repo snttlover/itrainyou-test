@@ -1,6 +1,5 @@
 import * as React from "react"
 import styled, { keyframes } from "styled-components"
-import spinner from "./spinner.svg"
 
 const Wrapper = styled.div`
   position: absolute;
@@ -25,9 +24,31 @@ const rotate = keyframes`
   }
 `
 
-export const Loader = styled.img.attrs({ src: spinner })`
+const LoaderSvg = ({ className }: { className?: string }) => (
+  <svg
+    style={{ margin: "auto", background: "rgb(255, 255, 255, 0)", display: "block", shapeRendering: "auto" }}
+    width='200px'
+    height='200px'
+    className={className}
+    viewBox='0 0 100 100'
+    preserveAspectRatio='xMidYMid'
+  >
+    <circle
+      cx='50'
+      cy='50'
+      fill='none'
+      strokeWidth='2'
+      r='8'
+      strokeDasharray='37.69911184307752 14.566370614359172'
+      transform='rotate(12.1817 50 50)'
+    />
+  </svg>
+)
+
+export const Loader = styled(LoaderSvg)`
   width: auto;
   height: auto;
+  stroke: ${props => props.theme.colors.primary};
   animation: ${rotate} 1s linear infinite;
 `
 

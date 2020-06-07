@@ -1,18 +1,18 @@
 import { Button } from "@/application/components/button/normal/Button"
 import { Icon } from "@/application/components/icon/Icon"
-import { $categoriesList } from "@/application/feature/categories/categories.store"
-import { MediaRange } from "@/application/lib/responsive/media"
-import { CategoryCard } from "@/application/pages/auth/pages/signup/content/step-4/coach/CategoryCard"
-import { CheckStep } from "@/application/pages/auth/pages/signup/content/step-4/coach/check-step/CheckStep"
-import { Form } from "@/application/pages/auth/pages/signup/content/step-4/coach/Form"
-import { UploadVideo } from "@/application/pages/auth/pages/signup/content/step-4/coach/UploadVideo"
-import { $step4FormValid, videoUploadFx } from "@/application/pages/auth/pages/signup/content/step-4/step-4-coach.model"
+import { Loader } from "@/application/components/spinner/Spinner"
+import { $categoriesList, fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
 import {
-  $userData,
-  registerUserFx,
-  toggleCategorySelection,
-  userRegistered
-} from "@/application/pages/auth/pages/signup/signup.model"
+  $formValid,
+  $selectedCategories,
+  toggleCategory,
+  videoUploadFx,
+} from "@/application/feature/coach-get-access/coach-get-access.model"
+import { MediaRange } from "@/application/lib/responsive/media"
+import { CategoryCard } from "@/application/feature/coach-get-access/components/CategoryCard"
+import { CheckStep } from "@/application/feature/coach-get-access/components/check-step/CheckStep"
+import { Form } from "@/application/feature/coach-get-access/components/Form"
+import { UploadVideo } from "@/application/feature/coach-get-access/components/UploadVideo"
 import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
@@ -37,6 +37,7 @@ const CategoriesContainer = styled.div`
   }
 
   ${MediaRange.greaterThan("mobile")`
+    margin: 0;
     ${CategoryCard} {
       margin-top: 24px;
       
@@ -46,7 +47,7 @@ const CategoriesContainer = styled.div`
     }
   `}
   ${MediaRange.greaterThan("tablet")`
-    width: 600px;
+    max-width: 600px;
     margin: 0 auto;
   `}
 `
@@ -61,13 +62,11 @@ const CategoriesTitle = styled.h3`
   color: #7d36a8;
   ${MediaRange.greaterThan("mobile")`
     margin: 0 auto;
-    width: 80%;
     max-width: 600px;
     font-size: 20px;
     line-height: 26px;
   `}
-  ${MediaRange.greaterThan("tablet")`
-    width: 600px;    
+  ${MediaRange.greaterThan("tablet")` 
     font-size: 24px;
     line-height: 26px;
   `}
@@ -106,13 +105,23 @@ const SendRequestButton = styled(Button)`
   `}
 `
 
-export const CoachInformation = () => {
-  const selectedCategories = useStore($userData).categories
+const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
-  const isFormValid = useStore($step4FormValid)
+type CoachInformationProps = {
+  onRegisterClick: () => void
+  loading: boolean
+}
 
-  const loading = useStore(registerUserFx.pending)
+export const CoachInformation = ({ onRegisterClick, loading }: CoachInformationProps) => {
+  const selectedCategories = useStore($selectedCategories)
+
+  const isFormValid = useStore($formValid)
   const isVideoUploading = useStore(videoUploadFx.pending)
+  const categoriesLoading = useStore(fetchCategoriesListFx.pending)
 
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
@@ -120,7 +129,7 @@ export const CoachInformation = () => {
       category={category}
       selected={selectedCategories.includes(category.id)}
       disabled={selectedCategories.length >= 3}
-      onSelect={id => toggleCategorySelection(id)}
+      onSelect={id => toggleCategory(id)}
     />
   ))
 
@@ -128,7 +137,13 @@ export const CoachInformation = () => {
     <Container>
       <CategoriesContainer>
         <CategoriesTitle>Выберите направления, в которых Вы проводите сессии:</CategoriesTitle>
-        {categories}
+        {categoriesLoading ? (
+          <LoaderContainer>
+            <Loader />
+          </LoaderContainer>
+        ) : (
+          categories
+        )}
       </CategoriesContainer>
       <Form />
       <UploadVideo />
@@ -143,7 +158,7 @@ export const CoachInformation = () => {
         <SendRequestButton
           data-secondary
           disabled={loading || isVideoUploading || !isFormValid}
-          onClick={() => userRegistered()}
+          onClick={onRegisterClick}
         >
           Зарегистрироваться
         </SendRequestButton>

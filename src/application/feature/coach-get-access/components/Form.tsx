@@ -2,18 +2,18 @@ import { DashedButton } from "@/application/components/button/dashed/DashedButto
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
 import { Textarea } from "@/application/components/textarea/Textarea"
-import { MediaRange } from "@/application/lib/responsive/media"
 import {
-  $photos,
-  $step4Form,
-  $step4FormErrors,
-  descriptionChanged,
-  educationChanged,
-  phoneChanged,
-  photoRemoved,
+  $form,
+  $formErrors,
   photoUploadFx,
-  workExperienceChanged
-} from "@/application/pages/auth/pages/signup/content/step-4/step-4-coach.model"
+  educationChanged,
+  descriptionChanged,
+  workExperienceChanged,
+  phoneChanged,
+  $photos,
+  photoRemoved,
+} from "@/application/feature/coach-get-access/coach-get-access.model"
+import { MediaRange } from "@/application/lib/responsive/media"
 import { useStore } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"
@@ -31,8 +31,8 @@ const InformationContainer = styled.div`
 
   ${MediaRange.greaterThan("mobile")`
     max-width: 600px;
-    width: 80%;
     margin: 52px auto 0;
+    width: 100%;
   `}
 `
 
@@ -72,8 +72,8 @@ const AddPhotosButton = styled(DashedButton)`
 `
 
 export const Form = () => {
-  const values = useStore($step4Form)
-  const errors = useStore($step4FormErrors)
+  const values = useStore($form)
+  const errors = useStore($formErrors)
 
   const onDropAccepted = useCallback(acceptedFiles => {
     acceptedFiles.forEach(photoUploadFx)
@@ -84,7 +84,7 @@ export const Form = () => {
     multiple: true,
     noClick: true,
     maxSize: 2097152,
-    accept: ["image/gif", "image/png", "image/jpg", "image/jpeg"]
+    accept: ["image/gif", "image/png", "image/jpg", "image/jpeg"],
   })
 
   return (
@@ -205,9 +205,9 @@ const Other = styled.div`
 const swiperOptions: SwiperOptions = {
   navigation: {
     nextEl: ".photos__next-button",
-    prevEl: ".photos__prev-button"
+    prevEl: ".photos__prev-button",
   },
-  slidesPerView: "auto"
+  slidesPerView: "auto",
 }
 
 const Photos = () => {
