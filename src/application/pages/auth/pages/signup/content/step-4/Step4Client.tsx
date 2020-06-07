@@ -108,7 +108,10 @@ export const Step4Client = () => {
       key={category.id}
       category={category}
       selected={selectedCategories.includes(category.id)}
-      onSelect={id => categoriesChanged(id)}
+      onSelect={id => {
+        if (selectedCategories.includes(id)) categoriesChanged(selectedCategories.filter(cat => cat !== id))
+        else categoriesChanged([...selectedCategories, id])
+      }}
     />
   ))
 
