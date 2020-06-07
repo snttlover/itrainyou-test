@@ -114,9 +114,10 @@ const LoaderContainer = styled.div`
 type CoachInformationProps = {
   onRegisterClick: () => void
   loading: boolean
+  withoutCheckStep?: boolean
 }
 
-export const CoachInformation = ({ onRegisterClick, loading }: CoachInformationProps) => {
+export const CoachInformation = ({ onRegisterClick, loading, withoutCheckStep = false }: CoachInformationProps) => {
   const selectedCategories = useStore($selectedCategories)
 
   const isFormValid = useStore($formValid)
@@ -147,13 +148,15 @@ export const CoachInformation = ({ onRegisterClick, loading }: CoachInformationP
       </CategoriesContainer>
       <Form />
       <UploadVideo />
-      <CheckStepsContainer>
-        <CheckStep description='Эта заявка отправится супервизору' img={study} />
-        <CheckStepArrow />
-        <CheckStep description='Супервизор одобрит вашу заявку' img={approve} />
-        <CheckStepArrow />
-        <CheckStep description='Эта анкета будет видна клиентам<br /> (кроме контактов)' img={peoples} />
-      </CheckStepsContainer>
+      {!withoutCheckStep && (
+        <CheckStepsContainer>
+          <CheckStep description='Эта заявка отправится супервизору' img={study} />
+          <CheckStepArrow />
+          <CheckStep description='Супервизор одобрит вашу заявку' img={approve} />
+          <CheckStepArrow />
+          <CheckStep description='Эта анкета будет видна клиентам<br /> (кроме контактов)' img={peoples} />
+        </CheckStepsContainer>
+      )}
       <ButtonContainer>
         <SendRequestButton
           data-secondary
