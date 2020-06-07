@@ -79,15 +79,16 @@ const Counter = styled.div`
 
 export const InterestsStats = () => {
   const profile = useStore($pageProfile)
+
   return (
     <Container>
       <Tab>
         <Title>Сессий пройдено</Title>
-        <Counter>{profile.completedSessionsCount}</Counter>
+        <Counter>{profile?.completedSessionsCount}</Counter>
       </Tab>
       <Tab>
         <Title>Всего часов</Title>
-        <Counter>{profile.spentHoursCount}</Counter>
+        <Counter>{profile?.spentHoursCount}</Counter>
       </Tab>
     </Container>
   )
