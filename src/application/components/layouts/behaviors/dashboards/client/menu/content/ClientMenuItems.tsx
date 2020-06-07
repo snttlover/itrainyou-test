@@ -26,28 +26,28 @@ const ItemsWrapper = styled.div`
 
 export const ClientMenuItems = () => (
   <ItemsWrapper>
-    <DashboardMenuItem link='/' icon='home'>
+    <DashboardMenuItem link='/client/' icon='home'>
       Главная страница
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='my-coaches'>
+    <DashboardMenuItem link='/client/' icon='my-coaches'>
       Мои коучи
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='hand'>
+    <DashboardMenuItem link='/client/' icon='hand'>
       Здесь и сейчас
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='user'>
+    <DashboardMenuItem link='/client/' icon='user'>
       Групповые сессии
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='my-purse'>
+    <DashboardMenuItem link='/client/' icon='my-purse'>
       Кошелек
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='calendar'>
+    <DashboardMenuItem link='/client/' icon='calendar'>
       Календарь
     </DashboardMenuItem>
-    <DashboardMenuItem link='/settings' icon='settings'>
+    <DashboardMenuItem link='/client/settings' icon='settings'>
       Настройки
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='help'>
+    <DashboardMenuItem link='/client/' icon='help'>
       Поддержка
     </DashboardMenuItem>
   </ItemsWrapper>
