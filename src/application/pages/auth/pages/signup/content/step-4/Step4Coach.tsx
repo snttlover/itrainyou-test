@@ -6,7 +6,7 @@ import { step4CoachMounted } from "@/application/pages/auth/pages/signup/content
 import {
   $userData,
   registerUserFx,
-  skipCoachFx,
+  skipCoach,
   userRegistered,
 } from "@/application/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react"
@@ -29,7 +29,7 @@ export const Step4Coach = () => {
           fullName={`${userData.clientData?.firstName} ${userData.clientData?.lastName}`}
           years={years}
           sex={sex}
-          onSkip={() => skipCoachFx({})}
+          onSkip={() => skipCoach()}
         />
       )}
     >

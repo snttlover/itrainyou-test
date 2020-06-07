@@ -1,5 +1,5 @@
 import { registerAsClient, registerAsCoach } from "@/application/lib/api/register"
-import { attach, createEffect, createEvent, createStore, merge, sample } from "effector-next"
+import { attach, createEffect, createEvent, createStore, forward, merge, sample } from "effector-next"
 import Router from "next/router"
 
 export const REGISTER_SAVE_KEY = "__register-data__"
@@ -82,25 +82,9 @@ export const registerUserFx = createEffect({
   },
 })
 
-export const skipCoachFx = attach({
-  source: $userData,
-  mapParams: (params: UserData, data) => ({ ...data }),
-  effect: createEffect({
-    handler(params: UserData) {
-      return registerAsCoach({
-        ...params.clientData!,
-        categories: [],
-        workExperience: "",
-        education: "",
-        description: "",
-        phone: "",
-        videoInterview: "",
-      })
-    },
-  }),
-})
+export const skipCoach = createEvent()
 
-merge([registerUserFx.done, skipCoachFx.done]).watch(response => {
+registerUserFx.done.watch(response => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
   if (response.params.type === "client") {
     Router.push("/client", "/client")
@@ -113,4 +97,21 @@ sample({
   source: $userData,
   clock: userRegistered,
   target: registerUserFx,
+})
+
+sample({
+  source: $userData,
+  clock: skipCoach,
+  target: registerUserFx,
+  fn: userData => ({
+    ...userData,
+    categories: [],
+    coachData: {
+      workExperience: "",
+      education: "",
+      description: "",
+      phone: "",
+      videoInterview: "",
+    },
+  }),
 })
