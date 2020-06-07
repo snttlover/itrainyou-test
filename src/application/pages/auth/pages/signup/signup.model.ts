@@ -1,4 +1,3 @@
-import { User } from "@/application/lib/api/client"
 import { registerAsClient, registerAsCoach } from "@/application/lib/api/register"
 import { attach, createEffect, createEvent, createStore, merge, sample } from "effector-next"
 import Router from "next/router"
