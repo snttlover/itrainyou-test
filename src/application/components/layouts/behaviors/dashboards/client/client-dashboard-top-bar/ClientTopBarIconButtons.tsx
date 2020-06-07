@@ -1,8 +1,7 @@
 import styled, { css } from "styled-components"
 import { Icon } from "@/application/components/icon/Icon"
-import { useEvent } from "effector-react"
-import { toggleBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import Link from "next/link"
+import { Burger } from "@/application/components/layouts/behaviors/dashboards/common/menu/content/Burger"
 
 const Wrapper = styled.div`
   position: relative;
@@ -41,25 +40,13 @@ const User = styled(Icon).attrs({ name: `user` })`
   ${IconStyles}
 `
 
-const Burger = styled(Icon).attrs({ name: `burger` })`
-  margin-left: 24px;
-  display: none;
-  @media screen and (max-width: 768px) {
-    display: block;
-  }
-  ${IconStyles}
-`
 
-export const ClientTopBarIconButtons = () => {
-  const showMobileMenu = useEvent(toggleBlueLayoutMobileMenuVisibility)
-
-  return (
-    <Wrapper>
-      <Notification />
-      <Link href={'/profile'}>
-        <User />
-      </Link>
-      <Burger onClick={() => showMobileMenu()} />
-    </Wrapper>
-  )
-}
+export const ClientTopBarIconButtons = () => (
+  <Wrapper>
+    <Notification />
+    <Link href={'/profile'}>
+      <User />
+    </Link>
+    <Burger />
+  </Wrapper>
+)

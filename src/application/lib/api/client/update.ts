@@ -14,4 +14,5 @@ export type UpdateClientRequest = {
 
 export const updateMyClient = (user: UpdateClientRequest) =>
   put<Client, UpdateClientRequest>(`${process.env.BACKEND_URL}/api/v1/web/clients/me/`, keysToSnake(user))
+    .then(res => res.data)
     .then(keysToCamel)
