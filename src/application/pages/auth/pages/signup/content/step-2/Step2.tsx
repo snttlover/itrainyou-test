@@ -121,7 +121,7 @@ export const Step2 = () => {
             onClick={() => userTypeChanged("coach")}
           />
         </Cards>
-        <WhiteNextButton onClick={() => Router.push("/signup/[step]", "/signup/3")} />
+        <WhiteNextButton onClick={() => Router.push("/auth/signup/[step]", "/auth/signup/3")} />
       </Container>
     </AuthLayout>
   )

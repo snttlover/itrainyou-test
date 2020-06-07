@@ -24,6 +24,7 @@ export const Step4Coach = () => {
           fullName={`${userData.clientData?.firstName} ${userData.clientData?.lastName}`}
           years={years}
           sex={sex}
+          onSkip={() => userRegistered()}
         />
       )}
     >

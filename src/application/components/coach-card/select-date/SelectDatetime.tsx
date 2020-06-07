@@ -6,13 +6,13 @@ import dayjs from "dayjs"
 import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
-import {Tabs, Tab} from "@/application/components/tabs/Tabs"
+import { Tabs, Tab } from "@/application/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/application/components/coach-card/select-date/select-date.model"
 import { Coach } from "@/application/lib/api/coach"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { Button } from "@/application/components/button/normal/Button"
 import { DurationType } from "@/application/lib/api/coach-sessions"
-import {Event} from "effector-next"
+import { Event } from "effector-next"
 import { MediaRange } from "@/application/lib/responsive/media"
 
 type StyledTabTypes = {
@@ -23,7 +23,7 @@ const Block = styled.div<StyledTabTypes>`
   background: #ffffff;
   border-radius: 2px;
   padding: 24px 24px 20px;
-  padding-top: ${props => props.onlyOneCard ? 0 : 24}px;
+  padding-top: ${props => (props.onlyOneCard ? 0 : 24)}px;
   display: flex;
   min-height: 300px;
   position: relative;
@@ -41,7 +41,7 @@ const Datepicker = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid #DBDEE0;
+  border-right: 1px solid #dbdee0;
   padding-right: 32px;
   padding-left: 5px;
   @media screen and (max-width: 560px) {
@@ -74,13 +74,13 @@ const Tag = styled.div<{ active?: boolean }>`
   display: flex;
   flex-direction: row;
   padding: 2px 8px;
-  background: ${({active}) => active ? `#4858CC` : `#fff`};
-  color: ${({active}) => active ? `#fff` : `#5B6670`};
+  background: ${({ active }) => (active ? `#4858CC` : `#fff`)};
+  color: ${({ active }) => (active ? `#fff` : `#5B6670`)};
   box-sizing: border-box;
   border-radius: 24px;
   font-size: 12px;
   line-height: 16px;
-  ${MediaRange.greaterThan('tablet')`
+  ${MediaRange.greaterThan("tablet")`
     &:hover {
       background: #DBDEE0;
       color: #fff;
@@ -106,12 +106,12 @@ const SelectedDatetimeTable = styled.table`
 `
 
 const Text = styled.div`
-  margin-top: 32px;  
+  margin-top: 32px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  line-height: 18px;  
-  color: #5B6670;
+  line-height: 18px;
+  color: #5b6670;
   padding-left: 11px;
 `
 
@@ -127,7 +127,7 @@ const ButtonContainer = styled.div`
 `
 
 const ButtonWrapper = styled.div`
-  border-top: 1px solid #DBDEE0;
+  border-top: 1px solid #dbdee0;
   padding-top: 10px;
   margin-left: auto;
   width: 100%;
@@ -138,12 +138,12 @@ const ButtonWrapper = styled.div`
 export type SelectDatetimeTypes = {
   coach: Coach
   sessionsData: {
-    loading: Store<boolean>,
+    loading: Store<boolean>
     sessionsList: Store<CoachSessionWithSelect[]>
     toggleSession: Event<CoachSessionWithSelect>
     deleteSession: Event<number>
     tabs: {
-      $durationTab: Store<DurationType>,
+      $durationTab: Store<DurationType>
       changeDurationTab: Event<DurationType>
     }
   }
@@ -172,18 +172,18 @@ const TabTime = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
-  color: #5B6670;
+  color: #5b6670;
 `
 
 const TabPrice = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: #9AA0A6;
+  color: #9aa0a6;
 `
 
 const TimeColumn = styled.td`
-  color: #9AA0A6;
+  color: #9aa0a6;
 `
 
 const SelectDateHeader = styled.div`
@@ -199,10 +199,10 @@ const StyledCalendar = styled(Calendar)`
 export const genSessionTabs = (coach: Coach) => {
   return Object.keys(coach.prices)
     .filter(key => coach.prices[key as DurationType] !== null)
-    .map((key) => ({
-      timeInMinutes: parseInt(key.replace( /^\D+/g, '')) as number,
+    .map(key => ({
+      timeInMinutes: parseInt(key.replace(/^\D+/g, "")) as number,
       key: key as DurationType,
-      price: Math.ceil(coach.prices[key as DurationType] as number)
+      price: Math.ceil(coach.prices[key as DurationType] as number),
     }))
 }
 
@@ -233,7 +233,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     })
     .map(session => ({
       ...session,
-      start_datetime: dayjs(session.startDatetime).format(equalTimeFormat)
+      start_datetime: dayjs(session.startDatetime).format(equalTimeFormat),
     }))
 
   const selected = sessions
@@ -241,7 +241,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     .map(session => ({
       ...session,
       date: dayjs(session.startDatetime).format(`DD.MM.YY`),
-      time: dayjs(session.startDatetime).format(equalTimeFormat)
+      time: dayjs(session.startDatetime).format(equalTimeFormat),
     }))
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
@@ -257,7 +257,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
         ))}
       </StyledTabs>
       <Block onlyOneCard={tabs.length === 1}>
-        { loading && <Spinner /> }
+        {loading && <Spinner />}
         <Datepicker>
           <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
         </Datepicker>
@@ -273,20 +273,18 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           <Divider />
           <SelectedDatetimeTable>
             <tbody>
-            {selected.map(session => (
-              <tr key={session.id}>
-                <td>{session.date}</td>
-                <TimeColumn>{session.time}</TimeColumn>
-              </tr>
-            ))}
+              {selected.map(session => (
+                <tr key={session.id}>
+                  <td>{session.date}</td>
+                  <TimeColumn>{session.time}</TimeColumn>
+                </tr>
+              ))}
             </tbody>
           </SelectedDatetimeTable>
-          <Text>
-            Итог: {amount} ₽
-          </Text>
+          <Text>Итог: {amount} ₽</Text>
           <ButtonContainer>
             <ButtonWrapper>
-              <Link href='/signup/[step]' as='/signup/1'>
+              <Link href='/auth/signup/[step]' as='/auth/signup/1'>
                 <Button>Зарегистрироваться</Button>
               </Link>
             </ButtonWrapper>

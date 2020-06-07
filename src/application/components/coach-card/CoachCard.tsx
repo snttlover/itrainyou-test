@@ -313,7 +313,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   }
 
   const redirectToCoach = () => {
-    Router.push(`/coach/${coach.id}`)
+    Router.push(`/search/coach/${coach.id}`)
   }
 
   const minimumPrice = Object.entries(coach.prices).reduce(

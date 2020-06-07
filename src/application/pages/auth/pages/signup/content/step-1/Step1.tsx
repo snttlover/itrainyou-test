@@ -17,7 +17,7 @@ import {
   passwordChanged,
   passwordRepeatChanged,
   registerFx,
-  step1Registered
+  step1Registered,
 } from "./step1.model"
 import { useStore } from "effector-react"
 import * as React from "react"
@@ -167,7 +167,7 @@ export const Step1 = () => {
         </Form>
       </Container>
       <Footer>
-        <Link href='/login' as='/login' passHref>
+        <Link href='/auth/login' as='/auth/login' passHref>
           <StyledLink>
             Уже есть аккаунт? <SignIn>Войдите</SignIn>
           </StyledLink>

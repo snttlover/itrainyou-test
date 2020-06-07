@@ -180,7 +180,7 @@ export const Step3 = () => {
           </FormItem>
           <BirthdayFormGroup />
 
-          <NextButton onClick={() => Router.push("/signup/[step]", "/signup/4")} disabled={!isFormValid} />
+          <NextButton onClick={() => Router.push("/auth/signup/[step]", "/auth/signup/4")} disabled={!isFormValid} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => toggleUploadModal()} />}

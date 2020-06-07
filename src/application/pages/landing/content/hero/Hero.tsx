@@ -11,19 +11,9 @@ const GradientContainer = styled.div`
   height: auto;
   position: relative;
 
-  background: linear-gradient(
-      199.33deg,
-      #a3cff3 14.5%,
-      rgba(255, 255, 255, 0) 85.5%
-    ),
-    #9f8dc1;
+  background: linear-gradient(199.33deg, #a3cff3 14.5%, rgba(255, 255, 255, 0) 85.5%), #9f8dc1;
   @media screen and (max-width: 480px) {
-    background: linear-gradient(
-        232.7deg,
-        #a3cff3 14.5%,
-        rgba(255, 255, 255, 0) 85.5%
-      ),
-      #9f8dc1;
+    background: linear-gradient(232.7deg, #a3cff3 14.5%, rgba(255, 255, 255, 0) 85.5%), #9f8dc1;
   }
 `
 
@@ -89,14 +79,11 @@ const RegistrationButton = styled(Button)`
 export const Hero = () => (
   <GradientContainer>
     <StyledLandingPageContainer>
-      <Title>
-        Площадка по работе с проверенными коучами из любой точки мира
-      </Title>
+      <Title>Площадка по работе с проверенными коучами из любой точки мира</Title>
       <Description>
-        Подберите специалиста на сайте, чтобы грамотно поставить и
-        гарантированно достичь своей цели
+        Подберите специалиста на сайте, чтобы грамотно поставить и гарантированно достичь своей цели
       </Description>
-      <Link href='/signup/[step]' as='/signup/1'>
+      <Link href='/auth/signup/[step]' as='/auth/signup/1'>
         <RegistrationButton>Зарегистрироваться</RegistrationButton>
       </Link>
     </StyledLandingPageContainer>

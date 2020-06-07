@@ -9,19 +9,19 @@ import Router from "next/router"
 
 export const step1Registered = createEvent()
 export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form>, RegisterAsUserResponse, AxiosError>({
-  handler: ({ email, password }) => registerAsUser({ email, password })
+  handler: ({ email, password }) => registerAsUser({ email, password }),
 })
 
 registerFx.doneData.watch(payload => {
   userDataReset()
   loggedIn({ token: payload.token })
-  Router.push("/signup/[step]", "/signup/2", { shallow: true })
+  Router.push("/auth/signup/[step]", "/auth/signup/2", { shallow: true })
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
   defaultValue: "",
   validator: emailValidator,
-  eventMapper: event => event.map(trimString)
+  eventMapper: event => event.map(trimString),
 })
 
 $emailError.on(registerFx.fail, (state, { error }) => {
@@ -34,14 +34,14 @@ $emailError.on(registerFx.fail, (state, { error }) => {
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
   defaultValue: "",
   validator: passwordValidator,
-  eventMapper: event => event.map(trimString)
+  eventMapper: event => event.map(trimString),
 })
 
 export const [
   $passwordRepeat,
   passwordRepeatChanged,
   $passwordRepeatError,
-  $isPasswordRepeatCorrect
+  $isPasswordRepeatCorrect,
 ] = createEffectorField<string, { value: string; $password: string }>({
   validatorEnhancer: $store => combine($store, $password, value => ({ $password: $password.getState(), value })),
   defaultValue: "",
@@ -50,19 +50,19 @@ export const [
     if (v.$password !== v.value) return "Пароли не совпадают"
     return error
   },
-  eventMapper: event => event.map(trimString)
+  eventMapper: event => event.map(trimString),
 })
 
 export const $step1Form = createStoreObject({
   email: $email,
   password: $password,
-  passwordRepeat: $passwordRepeat
+  passwordRepeat: $passwordRepeat,
 })
 
 export const $step1FormErrors = createStoreObject({
   email: $emailError,
   password: $passwordError,
-  passwordRepeat: $passwordRepeatError
+  passwordRepeat: $passwordRepeatError,
 })
 
 export const $isFormValid = combine(
@@ -76,5 +76,5 @@ export const $isFormValid = combine(
 sample({
   source: $step1Form,
   clock: step1Registered,
-  target: registerFx
+  target: registerFx,
 })

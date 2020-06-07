@@ -9,22 +9,22 @@ import Router from "next/router"
 export const loginFormSent = createEvent()
 
 export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, LoginResponse, AxiosError>({
-  handler: ({ email, password }) => login({ email, password })
+  handler: ({ email, password }) => login({ email, password }),
 })
 
 loginFx.doneData.watch(data => {
   loggedIn({ token: data.token })
   if (!data.user.client && !data.user.coach) {
-    Router.push('/signup/[step]', '/signup/2')
+    Router.push("/auth/signup/[step]", "/auth/signup/2")
   } else {
-    Router.push('/', '/')
+    Router.push("/client/", "/client/")
   }
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
   defaultValue: "",
   validator: emailValidator,
-  eventMapper: event => event.map(trimString)
+  eventMapper: event => event.map(trimString),
 })
 
 export const $commonError = createStore<string | null>(null)
@@ -34,17 +34,17 @@ export const $commonError = createStore<string | null>(null)
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
   defaultValue: "",
   validator: () => null,
-  eventMapper: event => event.map(trimString)
+  eventMapper: event => event.map(trimString),
 })
 
 export const $loginForm = createStoreObject({
   email: $email,
-  password: $password
+  password: $password,
 })
 
 export const $loginFormErrors = createStoreObject({
   email: $emailError,
-  password: $passwordError
+  password: $passwordError,
 })
 
 export const $isFormValid = combine(
@@ -56,5 +56,5 @@ export const $isFormValid = combine(
 sample({
   source: $loginForm,
   clock: loginFormSent,
-  target: loginFx
+  target: loginFx,
 })

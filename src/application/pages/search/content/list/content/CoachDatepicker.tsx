@@ -422,7 +422,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     })
     .map(session => ({
       ...session,
-      start_datetime: dayjs(session.startDatetime).format(equalTimeFormat)
+      start_datetime: dayjs(session.startDatetime).format(equalTimeFormat),
     }))
 
   const selected = sessions
@@ -430,7 +430,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     .map(session => ({
       ...session,
       date: dayjs(session.startDatetime).format(`DD.MM.YY`),
-      time: dayjs(session.startDatetime).format(equalTimeFormat)
+      time: dayjs(session.startDatetime).format(equalTimeFormat),
     }))
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
@@ -500,7 +500,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               <StyledButton>Купить</StyledButton>
             </IsAuthed>
             <IsGuest>
-              <Link href='/signup/[step]' as='/signup/1'>
+              <Link href='/auth/signup/[step]' as='/auth/signup/1'>
                 <StyledButton>Зарегистрироваться</StyledButton>
               </Link>
             </IsGuest>

@@ -1,6 +1,5 @@
 import { Button } from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
-import Router from "next/router"
 import * as React from "react"
 import styled from "styled-components"
 

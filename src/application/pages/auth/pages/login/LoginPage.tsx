@@ -7,7 +7,7 @@ import { WhiteContainer } from "@/application/pages/auth/components/WhiteContain
 import { CenterFormContainer } from "@/application/pages/auth/components/CenterFormContainer"
 
 const Header = styled.h3`
-  font-family: 'Roboto Slab';
+  font-family: "Roboto Slab";
   font-weight: 600;
   font-size: 32px;
   line-height: 26px;
@@ -45,7 +45,7 @@ export default () => (
         <Header>Вход</Header>
         <LoginForm />
       </WhiteContainer>
-      <Link href='/recovery' as='/recovery' passHref>
+      <Link href='/auth/recovery' as='/auth/recovery' passHref>
         <ResetPasswordLink>Забыли пароль?</ResetPasswordLink>
       </Link>
     </CenterFormContainer>

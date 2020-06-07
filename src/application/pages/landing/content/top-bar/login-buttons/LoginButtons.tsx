@@ -8,7 +8,7 @@ const LoginLink = styled.a`
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
-  color: #7D36A8;
+  color: #7d36a8;
 `
 
 const RegistrationButton = styled(Button).attrs({ slim: true })`
@@ -26,10 +26,10 @@ type LoginButtonsTypes = {
 
 export const LoginButtons = (props: LoginButtonsTypes) => (
   <ButtonsContainer className={props.className}>
-    <Link href='/login' as='/login' passHref>
+    <Link href='/auth/login' as='/auth/login' passHref>
       <LoginLink>Войти</LoginLink>
     </Link>
-    <Link href='/signup/[step]' as='/signup/1'>
+    <Link href='/auth/signup/[step]' as='/auth/signup/1'>
       <RegistrationButton>Зарегистрироваться</RegistrationButton>
     </Link>
   </ButtonsContainer>

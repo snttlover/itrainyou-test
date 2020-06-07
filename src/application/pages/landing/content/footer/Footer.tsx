@@ -103,7 +103,7 @@ export const Footer = () => (
     <StyledContainer>
       <Header>
         <Title>Вы коуч?</Title>
-        <Link href='/signup/[step]' as='/signup/1'>
+        <Link href='/auth/signup/[step]' as='/auth/signup/1'>
           <RegistrationButton>Вам сюда!</RegistrationButton>
         </Link>
       </Header>
