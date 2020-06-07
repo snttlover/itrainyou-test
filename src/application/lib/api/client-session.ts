@@ -1,4 +1,4 @@
-import { Category } from "@/application/lib/api/categories"
+import { SessionCategory } from "@/application/lib/api/categories"
 import { Pagination } from "@/application/lib/api/interfaces/utils.interface"
 import { keysToCamel, keysToSnake } from "@/application/lib/network/casing"
 import { get } from "@/application/lib/network/network"
@@ -19,7 +19,7 @@ export interface ClientSession {
     avatar: string
     isTopCoach: boolean
     creation_datetime: string
-    categories: Category[]
+    categories: SessionCategory[]
   }
   clientPrice: string
   coachPrice: string

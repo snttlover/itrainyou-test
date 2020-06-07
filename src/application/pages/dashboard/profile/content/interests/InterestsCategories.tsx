@@ -1,11 +1,10 @@
 import styled from "styled-components"
 import { Checkbox } from "@/application/components/checkbox/Checkbox"
 import { CategoryDescription } from "@/application/pages/landing/content/top-bar/categories-picker/CategoryDescription"
-import { useList } from "effector-react"
-import { $categoriesList } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
+import { useEvent, useList } from "effector-react"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { $profileCategories } from "@/application/pages/dashboard/profile/profile-page.model"
+import { $profileCategories, toggleInterestCategory } from "@/application/pages/dashboard/profile/profile-page.model"
 
 const Container = styled.div`
   margin-top: 23px;
@@ -35,10 +34,12 @@ const StyledCategoriesDescription = styled(CategoryDescription)`
 `
 
 export const  InterestsCategories = () => {
+  const toggleCategory = useEvent(toggleInterestCategory)
+
   return (
     <Container>
       {useList($profileCategories, category => (
-        <Category>
+        <Category onClick={() => toggleCategory(category.id)}>
           <Checkbox value={category.selected} color={getCategoryColorById(category.id)} />
           <Name>{category.name}</Name>
           <StyledCategoriesDescription>{category.description}</StyledCategoriesDescription>
