@@ -6,5 +6,6 @@ export const CoachGetAccess = () => {
   useEffect(() => {
     fetchCategoriesListFx({})
   }, [])
+
   return <CoachInformation onRegisterClick={() => {}} loading={false} />
 }

@@ -3,7 +3,12 @@ import { CoachHeader } from "@/application/pages/auth/pages/signup/content/step-
 import { CoachInformation } from "@/application/feature/coach-get-access/components/CoachInformation"
 import { Step4CoachLayout } from "@/application/pages/auth/pages/signup/content/step-4/coach/Step4CoachLayout"
 import { step4CoachMounted } from "@/application/pages/auth/pages/signup/content/step-4/step-4-coach.model"
-import { $userData, registerUserFx, userRegistered } from "@/application/pages/auth/pages/signup/signup.model"
+import {
+  $userData,
+  registerUserFx,
+  skipCoachFx,
+  userRegistered,
+} from "@/application/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react"
 import { useEffect } from "react"
 import * as React from "react"
@@ -24,7 +29,7 @@ export const Step4Coach = () => {
           fullName={`${userData.clientData?.firstName} ${userData.clientData?.lastName}`}
           years={years}
           sex={sex}
-          onSkip={() => userRegistered()}
+          onSkip={() => skipCoachFx({})}
         />
       )}
     >

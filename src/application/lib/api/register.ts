@@ -41,7 +41,7 @@ export interface RegisterAsClientResponse {
   creationDatetime: string
 }
 
-export const registerAsClient = (data: RegisterAsClientRequest) =>
+export const registerAsClient = (data: RegisterAsClientRequest): Promise<RegisterAsClientResponse> =>
   post<RegisterAsClientResponse, RegisterAsClientRequest>(
     `${process.env.BACKEND_URL}/api/v1/web/clients/`,
     keysToSnake(data)
@@ -79,7 +79,7 @@ export interface RegisterAsCoachResponse {
   creationDatetime: string
 }
 
-export const registerAsCoach = (data: RegisterAsCoachRequest) =>
+export const registerAsCoach = (data: RegisterAsCoachRequest): Promise<RegisterAsCoachResponse> =>
   post<RegisterAsCoachResponse, RegisterAsCoachRequest>(
     `${process.env.BACKEND_URL}/api/v1/web/coaches/`,
     keysToSnake(data)
