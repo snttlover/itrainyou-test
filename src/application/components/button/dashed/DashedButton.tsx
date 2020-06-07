@@ -7,7 +7,17 @@ type ButtonTypes = {
   slim?: boolean
 }
 
-export const DashedButton = styled(Button)<ButtonTypes>`
+export const DashedButton = styled.button<ButtonTypes>`
+  padding: ${props => (props.slim ? `4px` : `8px `)} 24px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  background: ${props => props.theme.colors.primary};
+  border-radius: 32px;
+  outline: none;
+  cursor: pointer;
+
   background: transparent;
   color: ${props => props.theme.colors.primary};
   border: 1px solid ${props => props.theme.colors.primary};
