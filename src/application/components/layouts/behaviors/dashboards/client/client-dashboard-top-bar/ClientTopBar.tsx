@@ -32,7 +32,7 @@ const Container = styled.div`
   justify-content: center;
 
   @media screen and (max-width: 768px) {
-    background: #4858cc;
+    background: ${props => props.theme.colors.primary};
   }
 `
 
