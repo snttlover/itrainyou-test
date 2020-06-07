@@ -33,14 +33,18 @@ const StyledCategoriesDescription = styled(CategoryDescription)`
   margin-top: 3px;
 `
 
-export const  InterestsCategories = () => {
+export const InterestsCategories = () => {
   const toggleCategory = useEvent(toggleInterestCategory)
 
   return (
     <Container>
       {useList($profileCategories, category => (
-        <Category onClick={() => toggleCategory(category.id)}>
-          <Checkbox value={category.selected} color={getCategoryColorById(category.id)} />
+        <Category>
+          <Checkbox
+            value={category.selected}
+            color={getCategoryColorById(category.id)}
+            onChange={() => toggleCategory(category.id)}
+          />
           <Name>{category.name}</Name>
           <StyledCategoriesDescription>{category.description}</StyledCategoriesDescription>
         </Category>
