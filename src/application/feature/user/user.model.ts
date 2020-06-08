@@ -1,4 +1,6 @@
-import { ClientSelfData, CoachSelfData } from "@/application/lib/api/login"
+import { ClientSelfData } from "@/application/lib/api/client/client"
+import { CoachSelfData } from "@/application/lib/api/coach/get-my-coach"
+import { getMyUser, GetMyUserResponse } from "@/application/lib/api/users/get-my-user"
 import { serverStarted, TOKEN_KEY } from "@/store"
 import { createEffect, createEvent, createStore } from "effector-next"
 import Cookies from "js-cookie"
@@ -12,10 +14,12 @@ export const loggedIn = createEvent<{ token: string }>()
 export const setUserData = createEvent<UserData>()
 export const logout = createEvent()
 
-const loadUserDataFx = createEffect({})
+export const loadUserDataFx = createEffect<void, GetMyUserResponse>({
+  handler: getMyUser,
+})
 
 export const $userData = createStore<UserData>({ client: null, coach: null }).on(
-  setUserData,
+  [setUserData, loadUserDataFx.doneData],
   (state, payload) => payload
 )
 

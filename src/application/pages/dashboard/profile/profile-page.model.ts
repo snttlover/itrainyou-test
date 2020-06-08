@@ -1,4 +1,4 @@
-import { getMyClient, Client } from "@/application/lib/api/client/client"
+import { getMyClient, ClientSelfData } from "@/application/lib/api/client/client"
 import dayjs from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector"
 import { $categoriesList, fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
@@ -14,23 +14,24 @@ export const mounted = createEvent()
 
 export const toggleInterestCategory = createEvent<number>()
 
-const updateProfile = createEffect<UpdateClientRequest, Client>({
+const updateProfile = createEffect<UpdateClientRequest, ClientSelfData>({
   handler: updateMyClient,
 })
 
 const profileIsSaved = createEffect({
-  handler: () => toasts.add({
-    type: `info`,
-    text: `Данные сохранены`,
-  })
+  handler: () =>
+    toasts.add({
+      type: `info`,
+      text: `Данные сохранены`,
+    }),
 })
 
 forward({
   from: updateProfile.doneData,
-  to: profileIsSaved
+  to: profileIsSaved,
 })
 
-const $profile = createStore<Client | null>(null).on(
+const $profile = createStore<ClientSelfData | null>(null).on(
   [loadProfileFx.doneData, updateProfile.doneData],
   (state, payload) => payload
 )
@@ -49,14 +50,14 @@ sample({
     }
 
     return {
-      ...(profile as Client),
+      ...(profile as ClientSelfData),
       categories,
     }
   },
 })
 
 export const $pageProfile = $profile.map(profile => ({
-  ...(profile as Client),
+  ...(profile as ClientSelfData),
   avatar: profile?.avatar || null,
   age: dayjs(+new Date())
     .subtract(dayjs(profile?.birthDate).get("year"), "year")
