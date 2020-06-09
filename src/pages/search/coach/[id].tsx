@@ -1,4 +1,4 @@
 import React from "react"
-import { CoachByIdPage } from "@/application/pages/coach/pages/by-id/CoachByIdPage"
+import { CoachByIdPage } from "@/application/pages/search/coach-by-id/CoachByIdPage"
 
 export default CoachByIdPage
