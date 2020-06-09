@@ -1,12 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import { ClientDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import { GeneralSettingsForm } from "./content/GeneralSettingsForm"
 import { PasswordForm } from "./content/PasswordForm"
 
 const Container = styled.div`
   width: 100%;
-  max-width: 736px; 
+  max-width: 736px;
   margin-top: 36px;
   padding: 0 24px;
 `
@@ -19,11 +18,9 @@ const Title = styled.div`
 `
 
 export const SettingsPage = () => (
-  <ClientDashboardLayout>
-    <Container>
-      <Title>Настройки</Title>
-      <GeneralSettingsForm />
-      <PasswordForm />
-    </Container>
-  </ClientDashboardLayout>
+  <Container>
+    <Title>Настройки</Title>
+    <GeneralSettingsForm />
+    <PasswordForm />
+  </Container>
 )

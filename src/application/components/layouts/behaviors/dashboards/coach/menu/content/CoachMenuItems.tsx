@@ -18,7 +18,7 @@ const ItemsWrapper = styled.div`
     margin-right: 70px;
     width: calc(100% - 56px);
   `}
-  
+
   ${MediaRange.lessThan("mobile")`
      margin-top: 25px;
      align-self: flex-end;
@@ -29,7 +29,7 @@ const ItemsWrapper = styled.div`
 
 const Delimiter = styled.div`
   width: auto;
-  border-top: 1px solid rgb(177, 134, 203);;
+  border-top: 1px solid rgb(177, 134, 203);
   margin: 0 8px 21px 12px;
 
   ${MediaRange.lessThan(`mobile`)`
@@ -42,38 +42,38 @@ const Delimiter = styled.div`
 
 export const CoachMenuItems = () => (
   <ItemsWrapper>
-    <DashboardMenuItem link='/' icon='home'>
+    <DashboardMenuItem link='/coach/' icon='home'>
       Главная страница
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='my-coaches'>
+    <DashboardMenuItem link='/coach/' icon='my-coaches'>
       Мои клиенты
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='hand'>
+    <DashboardMenuItem link='/coach/' icon='hand'>
       Здесь и сейчас
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='user'>
+    <DashboardMenuItem link='/coach/' icon='user'>
       Групповые сессии
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='my-purse'>
+    <DashboardMenuItem link='/coach/' icon='my-purse'>
       Кошелек
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='calendar'>
+    <DashboardMenuItem link='/coach/' icon='calendar'>
       Календарь
     </DashboardMenuItem>
-    <DashboardMenuItem link='/settings' icon='settings'>
+    <DashboardMenuItem link='/coach/settings' icon='settings'>
       Настройки
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='help'>
+    <DashboardMenuItem link='/coach/' icon='help'>
       Поддержка
     </DashboardMenuItem>
     <Delimiter />
-    <DashboardMenuItem link='/' icon='none'>
+    <DashboardMenuItem link='/coach/' icon='none'>
       Расписание
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='star-with-user'>
+    <DashboardMenuItem link='/coach/' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>
-    <DashboardMenuItem link='/' icon='calendar-with-clock'>
+    <DashboardMenuItem link='/coach/' icon='calendar-with-clock'>
       Заблокированные
     </DashboardMenuItem>
   </ItemsWrapper>

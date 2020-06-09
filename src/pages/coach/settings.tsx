@@ -1,11 +1,11 @@
-import { ClientDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { CoachDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { SettingsPage } from "@/application/pages/dashboard/settings/SettingsPage"
 import React from "react"
 
 const Settings = () => (
-  <ClientDashboardLayout>
+  <CoachDashboardLayout>
     <SettingsPage />
-  </ClientDashboardLayout>
+  </CoachDashboardLayout>
 )
 
 export default Settings
