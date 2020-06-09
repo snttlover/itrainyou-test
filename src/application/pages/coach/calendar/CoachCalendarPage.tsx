@@ -21,3 +21,5 @@ export const CoachCalendarPage = () => {
     </CoachDashboardLayout>
   )
 }
+
+export default CoachCalendarPage

@@ -1,6 +1,10 @@
 import { CoachDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
-import { SettingsPage } from "@/application/pages/common/settings/SettingsPage"
+import dynamic from "next/dynamic"
 import React from "react"
+
+const SettingsPage = dynamic(() => import("@/application/pages/common/settings/SettingsPage"), {
+  ssr: false,
+})
 
 const Settings = () => (
   <CoachDashboardLayout>

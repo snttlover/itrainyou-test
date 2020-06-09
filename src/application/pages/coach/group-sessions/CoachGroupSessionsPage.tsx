@@ -25,3 +25,5 @@ export const CoachGroupSessionsPage = () => {
     </CoachDashboardLayout>
   )
 }
+
+export default CoachGroupSessionsPage

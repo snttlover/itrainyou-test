@@ -24,3 +24,5 @@ export const CoachSupervisorPage = () => {
     </CoachDashboardLayout>
   )
 }
+
+export default CoachSupervisorPage
