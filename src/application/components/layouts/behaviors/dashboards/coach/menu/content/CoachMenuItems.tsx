@@ -54,7 +54,7 @@ export const CoachMenuItems = () => (
     <DashboardMenuItem link='/coach/group-sessions' icon='user'>
       Групповые сессии
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/' icon='my-purse'>
+    <DashboardMenuItem link='/coach/wallet' icon='my-purse'>
       Кошелек
     </DashboardMenuItem>
     <DashboardMenuItem link='/coach/' icon='calendar'>
