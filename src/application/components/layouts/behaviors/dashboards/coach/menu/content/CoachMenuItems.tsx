@@ -57,23 +57,23 @@ export const CoachMenuItems = () => (
     <DashboardMenuItem link='/coach/wallet' icon='my-purse'>
       Кошелек
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/' icon='calendar'>
+    <DashboardMenuItem link='/coach/calendar' icon='calendar'>
       Календарь
     </DashboardMenuItem>
     <DashboardMenuItem link='/coach/settings' icon='settings'>
       Настройки
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/' icon='help'>
+    <DashboardMenuItem link='/coach/support' icon='help'>
       Поддержка
     </DashboardMenuItem>
     <Delimiter />
-    <DashboardMenuItem link='/coach/' icon='none'>
+    <DashboardMenuItem link='/coach/schedule' icon='none'>
       Расписание
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/' icon='star-with-user'>
+    <DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/' icon='calendar-with-clock'>
+    <DashboardMenuItem link='/coach/blocked' icon='calendar-with-clock'>
       Заблокированные
     </DashboardMenuItem>
   </ItemsWrapper>
