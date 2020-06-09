@@ -1,6 +1,13 @@
 import { CoachDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { ApprovalFailing } from "@/application/pages/coach-home/approval-failing/ApprovalFailing"
+import { ApprovalTimerOver } from "@/application/pages/coach-home/approval-timer-over/ApprovalTimerOver"
+import { ApprovalTimer } from "@/application/pages/coach-home/approval-timer/ApprovalTimer"
+import { AwaitingApproval } from "@/application/pages/coach-home/awaiting-approval /AwaitingApproval"
+import { $coachHomeState } from "@/application/pages/coach-home/coach-home.model"
 import { CoachGetAccess } from "@/application/pages/coach-home/get-access/CoachGetAccess"
+import { CoachHomePage } from "@/application/pages/coach-home/home/CoachHomePage"
+import { useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 
@@ -59,14 +66,23 @@ const Description = styled.p`
 `
 
 export const CoachHome = () => {
+  const state = useStore($coachHomeState)
+
   return (
     <CoachDashboardLayout>
       <TopLevelContainer>
-        <Container>
-          <Title>У вас пока закрыт доступ к функционалу коуча</Title>
-          <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
-          <CoachGetAccess />
-        </Container>
+        {state === "profile-fill" && (
+          <Container>
+            <Title>У вас пока закрыт доступ к функционалу коуча</Title>
+            <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
+            <CoachGetAccess />
+          </Container>
+        )}
+        {state === "approve-wait" && <AwaitingApproval />}
+        {state === "forever-rejected" && <ApprovalFailing />}
+        {state === "temporary-rejected-wait" && <ApprovalTimer />}
+        {state === "temporary-rejected-done" && <ApprovalTimerOver />}
+        {state === "approved" && <CoachHomePage />}
       </TopLevelContainer>
     </CoachDashboardLayout>
   )

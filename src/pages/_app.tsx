@@ -1,7 +1,8 @@
 import { AppStyles } from "@/application/AppStyles"
-import { $isLoggedIn, loadUserDataFx } from "@/application/feature/user/user.model"
+import { $isLoggedIn, setUserData } from "@/application/feature/user/user.model"
+import { getMyUser, GetMyUserResponse } from "@/application/lib/api/users/get-my-user"
 import { serverStarted } from "@/store"
-import { withHydrate, withStart } from "effector-next"
+import { createEffect, forward, withHydrate, withStart } from "effector-next"
 import { useStore } from "effector-react"
 import App from "next/app"
 import { useEffect } from "react"
@@ -18,11 +19,17 @@ import { ClientTheme } from "@/application/components/layouts/themes"
 dayjs.locale("ru")
 const isServer = typeof window === "undefined"
 
+const firstLoadUser = createEffect<void, GetMyUserResponse>({
+  handler: getMyUser,
+})
+
+forward({ from: firstLoadUser.doneData, to: setUserData })
+
 const WaitLoadUserData = ({ children }: any) => {
-  const isLoading = useStore(loadUserDataFx.pending)
+  const isLoading = useStore(firstLoadUser.pending)
   const isAuthed = useStore($isLoggedIn)
   useEffect(() => {
-    isAuthed && loadUserDataFx()
+    isAuthed && firstLoadUser()
   }, [])
 
   return isLoading && isAuthed ? null : children

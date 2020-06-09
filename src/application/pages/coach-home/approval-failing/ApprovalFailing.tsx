@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import { Title } from "@/application/pages/coach-answer-pages/awaiting-approval /common/Title"
-import { SubTitle } from "@/application/pages/coach-answer-pages/awaiting-approval /common/SubTitle"
+import { Title } from "@/application/pages/coach-home/awaiting-approval /common/Title"
+import { SubTitle } from "@/application/pages/coach-home/awaiting-approval /common/SubTitle"
 import { Button } from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
 import peoples from "./images/peoples.svg"

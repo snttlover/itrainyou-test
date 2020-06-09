@@ -23,6 +23,14 @@ export const $userData = createStore<UserData>({ client: null, coach: null }).on
   (state, payload) => payload
 )
 
+export const $coachAccess = $userData.map(userData => ({
+  isApproved: userData.coach?.isApproved,
+  isForeverRejected: userData.coach?.isForeverRejected,
+  isProfileFilled: userData.coach?.isProfileFilled,
+  isTemporarilyRejected: userData.coach?.isTemporarilyRejected,
+  lastRegistrationApplyDatetime: userData.coach?.lastRegistrationApplyDatetime,
+}))
+
 export const $token = createStore<string | undefined>("")
   .on(serverStarted, (state, payload) => payload.cookies[TOKEN_KEY])
   .on(loggedIn, (state, payload) => payload.token)

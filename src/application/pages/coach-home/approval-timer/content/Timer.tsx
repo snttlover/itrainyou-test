@@ -1,3 +1,5 @@
+import { $datetimeLeft } from "@/application/pages/coach-home/coach-home.model"
+import { useStore } from "effector-react"
 import styled from "styled-components"
 import { MediaRange } from "@/application/lib/responsive/media"
 
@@ -75,29 +77,32 @@ const SectionDescription = styled.div`
   `}
 `
 
-export const Timer = () => (
-  <Container>
-    <Title>Осталось</Title>
-    <Sections>
-      <Section>
-        <Numeric>89</Numeric>
-        <SectionDescription>дней</SectionDescription>
-      </Section>
+export const Timer = () => {
+  const dateTime = useStore($datetimeLeft)
+  return (
+    <Container>
+      <Title>Осталось</Title>
+      <Sections>
+        <Section>
+          <Numeric>{dateTime.days}</Numeric>
+          <SectionDescription>дней</SectionDescription>
+        </Section>
 
-      <Section>
-        <Numeric>89</Numeric>
-        <SectionDescription>часов</SectionDescription>
-      </Section>
+        <Section>
+          <Numeric>{dateTime.hours}</Numeric>
+          <SectionDescription>часов</SectionDescription>
+        </Section>
 
-      <Section>
-        <Numeric>89</Numeric>
-        <SectionDescription>минут</SectionDescription>
-      </Section>
+        <Section>
+          <Numeric>{dateTime.minutes}</Numeric>
+          <SectionDescription>минут</SectionDescription>
+        </Section>
 
-      <Section>
-        <Numeric>89</Numeric>
-        <SectionDescription>секунды</SectionDescription>
-      </Section>
-    </Sections>
-  </Container>
-)
+        <Section>
+          <Numeric>{dateTime.seconds}</Numeric>
+          <SectionDescription>секунды</SectionDescription>
+        </Section>
+      </Sections>
+    </Container>
+  )
+}

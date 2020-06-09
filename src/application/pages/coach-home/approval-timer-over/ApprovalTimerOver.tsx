@@ -1,6 +1,7 @@
+import { updateRegistrationFx } from "@/application/pages/coach-home/coach-home.model"
 import styled from "styled-components"
-import { Title } from "@/application/pages/coach-answer-pages/awaiting-approval /common/Title"
-import { SubTitle } from "@/application/pages/coach-answer-pages/awaiting-approval /common/SubTitle"
+import { Title } from "@/application/pages/coach-home/awaiting-approval /common/Title"
+import { SubTitle } from "@/application/pages/coach-home/awaiting-approval /common/SubTitle"
 import { Button } from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
 
@@ -104,7 +105,7 @@ export const ApprovalTimerOver = () => (
     <Content>
       <TimeIsOver>90 дней прошли!</TimeIsOver>
       <LeaveARequest>Отправьте заявку еще раз!</LeaveARequest>
-      <StyledButton>Оставить заявку</StyledButton>
+      <StyledButton onClick={() => updateRegistrationFx()}>Оставить заявку</StyledButton>
     </Content>
     <LearnHere>Здесь можно подучиться!</LearnHere>
     <TryLink>Попробовать</TryLink>

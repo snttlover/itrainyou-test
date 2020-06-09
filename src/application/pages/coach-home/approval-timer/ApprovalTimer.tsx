@@ -1,9 +1,11 @@
+import { updateTime } from "@/application/pages/coach-home/coach-home.model"
+import { useEffect } from "react"
 import styled from "styled-components"
-import { Title } from "@/application/pages/coach-answer-pages/awaiting-approval /common/Title"
-import { SubTitle } from "@/application/pages/coach-answer-pages/awaiting-approval /common/SubTitle"
+import { Title } from "@/application/pages/coach-home/awaiting-approval /common/Title"
+import { SubTitle } from "@/application/pages/coach-home/awaiting-approval /common/SubTitle"
 import { Button } from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { Timer } from "@/application/pages/coach-answer-pages/approval-timer/content/Timer"
+import { Timer } from "@/application/pages/coach-home/approval-timer/content/Timer"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -66,16 +68,24 @@ const LearnHere = styled.div`
   `}
 `
 
-export const ApprovalTimer = () => (
-  <Container>
-    <StyledTitle>К сожалению, ваша заявка не прошла</StyledTitle>
-    <StyledSubTitle>
-      Вы нам понравились, но пока нам кажется, что вам надо чуть-чуть подучиться. Попробуйте повторить попытку через 90
-      дней.
-    </StyledSubTitle>
-    <Timer />
-    <LearnHere>Здесь можно подучиться!</LearnHere>
-    <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
-    <StyledButton>Попробовать</StyledButton>
-  </Container>
-)
+export const ApprovalTimer = () => {
+  useEffect(() => {
+    const timer = setInterval(() => updateTime(), 1000)
+
+    return () => clearInterval(timer)
+  })
+
+  return (
+    <Container>
+      <StyledTitle>К сожалению, ваша заявка не прошла</StyledTitle>
+      <StyledSubTitle>
+        Вы нам понравились, но пока нам кажется, что вам надо чуть-чуть подучиться. Попробуйте повторить попытку через
+        90 дней.
+      </StyledSubTitle>
+      <Timer />
+      <LearnHere>Здесь можно подучиться!</LearnHere>
+      <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
+      <StyledButton>Попробовать</StyledButton>
+    </Container>
+  )
+}
