@@ -48,7 +48,7 @@ export const CoachMenuItems = () => (
     <DashboardMenuItem link='/coach/clients' icon='my-coaches'>
       Мои клиенты
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/' icon='hand'>
+    <DashboardMenuItem link='/coach/now' icon='hand'>
       Здесь и сейчас
     </DashboardMenuItem>
     <DashboardMenuItem link='/coach/' icon='user'>
