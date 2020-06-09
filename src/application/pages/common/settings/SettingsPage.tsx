@@ -24,3 +24,5 @@ export const SettingsPage = () => (
     <PasswordForm />
   </Container>
 )
+
+export default SettingsPage

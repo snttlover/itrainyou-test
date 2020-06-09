@@ -25,4 +25,4 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => (
   </CoachTheme>
 ))``
 
-export const CoachDashboardLayout = withProtect({ to: "/login", as: "/login" })(Dashboard)
+export const CoachDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(Dashboard)

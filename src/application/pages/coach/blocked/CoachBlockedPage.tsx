@@ -21,3 +21,5 @@ export const CoachBlockedPage = () => {
     </CoachDashboardLayout>
   )
 }
+
+export default CoachBlockedPage

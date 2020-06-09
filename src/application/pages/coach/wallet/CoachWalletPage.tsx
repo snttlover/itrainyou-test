@@ -25,3 +25,5 @@ export const CoachWalletPage = () => {
     </CoachDashboardLayout>
   )
 }
+
+export default CoachWalletPage

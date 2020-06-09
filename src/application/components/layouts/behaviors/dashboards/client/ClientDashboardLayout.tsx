@@ -23,4 +23,4 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => (
   </DashboardContainer>
 ))``
 
-export const ClientDashboardLayout = withProtect({ to: "/login", as: "/login" })(Dashboard)
+export const ClientDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(Dashboard)
