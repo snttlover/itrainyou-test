@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const IconStyles = css`
   cursor: pointer;
-  fill: #4858CC;
+  fill: #4858cc;
   width: 28px;
   height: 28px;
   @media screen and (max-width: 768px) {
@@ -40,11 +40,10 @@ const User = styled(Icon).attrs({ name: `user` })`
   ${IconStyles}
 `
 
-
 export const ClientTopBarIconButtons = () => (
   <Wrapper>
     <Notification />
-    <Link href={'/profile'}>
+    <Link href={"/client/profile"}>
       <User />
     </Link>
     <Burger />
