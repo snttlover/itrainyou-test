@@ -10,7 +10,7 @@ const Container = styled.div`
   height: 100vh;
 `
 
-const features = ["Просматривать свои сессии и групповые сессии на календаре"]
+const features = ["Настраивать свое расписание", "Настраивать пакеты сессий", "Управлять доступностью профиля"]
 
 export const CoachSchedulePage = () => {
   return (
