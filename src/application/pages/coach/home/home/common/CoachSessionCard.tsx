@@ -42,7 +42,7 @@ const Name = styled.div`
   color: #424242;
   margin-top: 5px;
   margin-bottom: 20px;
-  
+
   ${MediaRange.lessThan(`mobile`)`
     font-size: 16px;
     line-height: 22px;
@@ -100,7 +100,7 @@ const StyledButton = styled(Button).attrs({ slim: true })`
 
 export const CoachSessionCard = () => (
   <Container>
-    <StyledAvatar />
+    <StyledAvatar src={"/"} />
     <NameContainer>
       <Name>Tanya Mccoy</Name>
       <Duration>65 мин</Duration>

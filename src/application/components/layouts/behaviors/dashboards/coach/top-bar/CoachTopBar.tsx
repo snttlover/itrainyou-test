@@ -28,12 +28,12 @@ const StyledContainer = styled(LandingPageContainer)`
 `
 
 const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
-   fill: ${props => props.theme.colors.primary};
-   margin-left: 37px;
-   cursor: pointer;
-   height: auto;
-   width: 25px;
-   ${MediaRange.lessThan(`tablet`)`
+  fill: ${props => props.theme.colors.primary};
+  margin-left: 37px;
+  cursor: pointer;
+  height: auto;
+  width: 25px;
+  ${MediaRange.lessThan(`tablet`)`
     display: none;
   `}
 `
@@ -43,7 +43,7 @@ const StyledAvatar = styled(Avatar)`
   height: 40px;
   margin-left: 36px;
   cursor: pointer;
-  
+
   ${MediaRange.lessThan(`tablet`)`
     display: none;
   `}
@@ -64,12 +64,12 @@ const NotificationButton = styled(Icon).attrs({ name: `notification` })`
 `
 
 export const CoachTopBar = () => (
-    <Container>
-      <StyledContainer>
-        <NotificationButton />
-        <StyledAvatar />
-        <DropdownButton />
-        <Burger />
-      </StyledContainer>
-    </Container>
+  <Container>
+    <StyledContainer>
+      <NotificationButton />
+      <StyledAvatar src={""} />
+      <DropdownButton />
+      <Burger />
+    </StyledContainer>
+  </Container>
 )
