@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { StartedSessions } from "@/application/pages/coach/home/home/content/StartedSessions"
+import { StartedSessions } from "@/application/pages/coach/home/sessions/content/StartedSessions"
 import { MediaRange } from "@/application/lib/responsive/media"
 
 const Container = styled.div`
@@ -14,7 +14,7 @@ const Container = styled.div`
   `}
 `
 
-export const CoachHomePage = () => (
+export const CoachSessionsPage = () => (
   <Container>
     <StartedSessions />
     <StartedSessions />
