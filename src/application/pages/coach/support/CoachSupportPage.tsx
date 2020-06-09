@@ -10,7 +10,7 @@ const Container = styled.div`
   height: 100vh;
 `
 
-const features = ["Просматривать свои сессии и групповые сессии на календаре"]
+const features = ["Начать онлайн чат с агентом поддержки", "Решить возникшую проблему или уточнить интересующий вопрос"]
 
 export const CoachSupportPage = () => {
   return (
