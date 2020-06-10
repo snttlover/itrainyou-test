@@ -1,5 +1,6 @@
 import { Button } from "@/application/components/button/normal/Button"
 import { Icon } from "@/application/components/icon/Icon"
+import { RegisterSteps } from "@/application/components/register-steps/RegisterSteps"
 import { Loader } from "@/application/components/spinner/Spinner"
 import { $categoriesList, fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
 import {
@@ -111,6 +112,16 @@ const LoaderContainer = styled.div`
   align-items: center;
 `
 
+const StyledRegisterSteps = styled(RegisterSteps)`
+  margin-top: 52px;
+  margin-bottom: 24px;
+  display: none;
+
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+  `}
+`
+
 type CoachInformationProps = {
   onRegisterClick: () => void
   loading: boolean
@@ -157,6 +168,7 @@ export const CoachInformation = ({ onRegisterClick, loading, withoutCheckStep = 
           <CheckStep description='Эта анкета будет видна клиентам<br /> (кроме контактов)' img={peoples} />
         </CheckStepsContainer>
       )}
+      {withoutCheckStep && <StyledRegisterSteps />}
       <ButtonContainer>
         <SendRequestButton
           data-secondary

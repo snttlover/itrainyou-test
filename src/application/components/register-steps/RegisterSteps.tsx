@@ -82,8 +82,8 @@ const ArrowDelimiter = styled.div`
    `}
 `
 
-export const Steps = () => (
-  <Container>
+export const RegisterSteps = styled(({ className }) => (
+  <Container className={className}>
     <Step>
       <StepTitle>Эта заявка отправится супервизору</StepTitle>
       <Star />
@@ -99,4 +99,4 @@ export const Steps = () => (
       <Smile />
     </Step>
   </Container>
-)
+))``
