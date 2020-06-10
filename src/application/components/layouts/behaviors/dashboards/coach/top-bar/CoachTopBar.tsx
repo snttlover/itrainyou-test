@@ -4,6 +4,7 @@ import { Icon } from "@/application/components/icon/Icon"
 import { Avatar } from "@/application/components/avatar/Avatar"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { Burger } from "@/application/components/layouts/behaviors/dashboards/common/menu/content/Burger"
+import { CoachTooltip } from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
 
 const Container = styled.div`
   width: 100%;
@@ -68,7 +69,9 @@ export const CoachTopBar = () => (
     <StyledContainer>
       <NotificationButton />
       <StyledAvatar src={""} />
-      <DropdownButton />
+      <CoachTooltip>
+        <DropdownButton />
+      </CoachTooltip>
       <Burger />
     </StyledContainer>
   </Container>

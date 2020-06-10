@@ -3,6 +3,8 @@ import { Avatar } from "@/application/components/avatar/Avatar"
 // @ts-ignore
 import profilePlaceholder from "@/application/pages/landing/content/top-bar/mobile-menu/images/profile-placeholder.png"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { Icon } from "@/application/components/icon/Icon"
+import {CoachTooltip} from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
 
 const StyledHeader = styled.div`
   width: 100%;
@@ -55,9 +57,31 @@ const StyledAvatar = styled(Avatar).attrs({ src: profilePlaceholder })`
   `}
 `
 
+const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
+  fill: #fff;
+  margin-left: 31px;
+  margin-right: 31px;
+  cursor: pointer;
+  height: auto;
+  width: 40px;
+  align-self: center;
+  ${MediaRange.lessThan(`mobile`)`
+    margin-left: 16px;
+    margin-right: 16px;
+    width: 20px;
+  `}
+`
+
+const StyledCoachTooltip = styled(CoachTooltip)`
+  align-self: center;
+`
+
 export const ProfileHeader = ({ ...props }) => (
   <StyledHeader {...props}>
     <Name>Bessie Williamson</Name>
     <StyledAvatar />
+    <StyledCoachTooltip withBack={true}>
+      <DropdownButton />
+    </StyledCoachTooltip>
   </StyledHeader>
 )

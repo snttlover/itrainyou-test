@@ -14,6 +14,7 @@ export type IconName =
   | "google"
   | "mark"
   | "ruble"
+  | "people-notification"
   | "delete"
   | "left-icon"
   | "right-icon"
