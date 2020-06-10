@@ -1,6 +1,8 @@
 import { $form, $selectedCategories } from "@/application/feature/coach-get-access/coach-get-access.model"
+import { loadUserDataFx } from "@/application/feature/user/user.model"
+import { updateMyCoach, UpdateMyCoachRequest } from "@/application/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/application/lib/types/effector"
-import { combine } from "effector"
+import { combine, createEffect, createEvent, forward, sample } from "effector"
 
 const calculateProgress = ({
   form,
@@ -25,4 +27,22 @@ const calculateProgress = ({
   return (filledValues / length) * 100
 }
 
-export const $progress = combine({ form: $form, categories: $selectedCategories }).map(calculateProgress)
+const $fullForm = combine({ form: $form, categories: $selectedCategories })
+
+export const $progress = $fullForm.map(calculateProgress)
+
+export const updateCoachData = createEvent()
+export const patchCoachDataFx = createEffect({
+  handler: updateMyCoach,
+})
+
+sample({
+  source: $fullForm.map(({ form, categories }) => ({ ...form, categories })),
+  clock: updateCoachData,
+  target: patchCoachDataFx,
+})
+
+forward({
+  from: patchCoachDataFx.done,
+  to: loadUserDataFx,
+})

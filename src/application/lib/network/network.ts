@@ -23,5 +23,11 @@ export const get = <R, Params = {}>(url: string, params?: Params): Promise<Axios
 export const post = <R, Data>(url: string, data: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<Response>> =>
   axios.post(url, data, config)
 
+export const patch = <R, Data>(
+  url: string,
+  data: Data,
+  config?: AxiosRequestConfig
+): Promise<AxiosResponse<Response>> => axios.patch(url, data, config)
+
 export const put = <R, Data>(url: string, data: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<Response>> =>
   axios.put(url, data, config)

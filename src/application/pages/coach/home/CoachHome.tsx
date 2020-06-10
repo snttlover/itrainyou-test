@@ -1,4 +1,6 @@
 import { CoachDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { Loader } from "@/application/components/spinner/Spinner"
+import { loadUserDataFx } from "@/application/feature/user/user.model"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { ApprovalFailing } from "@/application/pages/coach/home/approval-failing/ApprovalFailing"
 import { ApprovalTimerOver } from "@/application/pages/coach/home/approval-timer-over/ApprovalTimerOver"
@@ -65,25 +67,33 @@ const Description = styled.p`
   `}
 `
 
-export const CoachHome = () => {
+const CurrentState = () => {
   const state = useStore($coachHomeState)
+  return (
+    <>
+      {state === "profile-fill" && (
+        <Container>
+          <Title>У вас пока закрыт доступ к функционалу коуча</Title>
+          <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
+          <CoachGetAccess />
+        </Container>
+      )}
+      {state === "approve-wait" && <AwaitingApproval />}
+      {state === "forever-rejected" && <ApprovalFailing />}
+      {state === "temporary-rejected-wait" && <ApprovalTimer />}
+      {state === "temporary-rejected-done" && <ApprovalTimerOver />}
+      {state === "approved" && <CoachHomePage />}
+    </>
+  )
+}
+
+export const CoachHome = () => {
+  const isUserDataLoading = useStore(loadUserDataFx.pending)
 
   return (
     <CoachDashboardLayout>
-      <TopLevelContainer>
-        {state === "profile-fill" && (
-          <Container>
-            <Title>У вас пока закрыт доступ к функционалу коуча</Title>
-            <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
-            <CoachGetAccess />
-          </Container>
-        )}
-        {state === "approve-wait" && <AwaitingApproval />}
-        {state === "forever-rejected" && <ApprovalFailing />}
-        {state === "temporary-rejected-wait" && <ApprovalTimer />}
-        {state === "temporary-rejected-done" && <ApprovalTimerOver />}
-        {state === "approved" && <CoachHomePage />}
-      </TopLevelContainer>
+      {!isUserDataLoading && <CurrentState />}
+      {isUserDataLoading && <Loader />}
     </CoachDashboardLayout>
   )
 }

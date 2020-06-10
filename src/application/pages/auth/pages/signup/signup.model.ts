@@ -1,3 +1,4 @@
+import { loadUserDataFx } from "@/application/feature/user/user.model"
 import { registerAsClient, registerAsCoach } from "@/application/lib/api/register"
 import { attach, createEffect, createEvent, createStore, forward, merge, sample } from "effector-next"
 import Router from "next/router"
@@ -83,6 +84,8 @@ export const registerUserFx = createEffect({
 })
 
 export const skipCoach = createEvent()
+
+forward({ from: registerUserFx.done, to: loadUserDataFx })
 
 registerUserFx.done.watch(response => {
   localStorage.removeItem(REGISTER_SAVE_KEY)

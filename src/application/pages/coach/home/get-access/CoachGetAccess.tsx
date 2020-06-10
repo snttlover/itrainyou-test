@@ -1,7 +1,11 @@
 import { fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
 import { CoachInformation } from "@/application/feature/coach-get-access/components/CoachInformation"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { $progress } from "@/application/pages/coach/home/get-access/coach-get-access.model"
+import {
+  $progress,
+  patchCoachDataFx,
+  updateCoachData,
+} from "@/application/pages/coach/home/get-access/coach-get-access.model"
 import { useStore } from "effector-react"
 import React, { useEffect } from "react"
 import styled from "styled-components"
@@ -179,6 +183,7 @@ const CoachFilledPercentContainerLaptop = styled.div`
 
 export const CoachGetAccess = () => {
   const progress = useStore($progress)
+  const isLoading = useStore(patchCoachDataFx.pending)
   useEffect(() => {
     fetchCategoriesListFx({})
   }, [])
@@ -200,7 +205,7 @@ export const CoachGetAccess = () => {
         <FilledDescription>При заполнении 100%, вы сможете отправить заявку.</FilledDescription>
       </CoachFilledPercentContainerLaptop>
 
-      <CoachInformation withoutCheckStep onRegisterClick={() => {}} loading={false} />
+      <CoachInformation withoutCheckStep onRegisterClick={() => updateCoachData()} loading={isLoading} />
     </>
   )
 }
