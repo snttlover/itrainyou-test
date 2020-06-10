@@ -1,3 +1,4 @@
+import Router from "next/router"
 import styled from "styled-components"
 import { Button } from "@/application/components/button/normal/Button"
 import { FeatureItem } from "@/application/feature/coach-placeholder/FeatureItem"
@@ -113,7 +114,7 @@ export const CoachSectionPlaceholder = (props: DemoPageTemplateTypes) => (
   <Container>
     <Title>У вас пока закрыт доступ к функционалу коуча</Title>
     <SubTitle>Отслеживайте состояние вашей заявки на главной странице</SubTitle>
-    <StyledButton>Перейти</StyledButton>
+    <StyledButton onClick={() => Router.push("/coach", "/coach")}>Перейти</StyledButton>
     <Content>
       <TextContent>
         <ContentTitle>На этой странице вы сможете:</ContentTitle>
