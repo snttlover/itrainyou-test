@@ -8,7 +8,7 @@ import { ApprovalTimer } from "@/application/pages/coach/home/approval-timer/App
 import { AwaitingApproval } from "@/application/pages/coach/home/awaiting-approval /AwaitingApproval"
 import { $coachHomeState } from "@/application/pages/coach/home/coach-home.model"
 import { CoachGetAccess } from "@/application/pages/coach/home/get-access/CoachGetAccess"
-import { CoachHomePage } from "@/application/pages/coach/home/home/CoachHomePage"
+import { CoachSessionsPage } from "@/application/pages/coach/home/sessions/CoachSessionsPage"
 import { useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
@@ -82,7 +82,7 @@ const CurrentState = () => {
       {state === "forever-rejected" && <ApprovalFailing />}
       {state === "temporary-rejected-wait" && <ApprovalTimer />}
       {state === "temporary-rejected-done" && <ApprovalTimerOver />}
-      {state === "approved" && <CoachHomePage />}
+      {state === "approved" && <CoachSessionsPage />}
     </>
   )
 }
