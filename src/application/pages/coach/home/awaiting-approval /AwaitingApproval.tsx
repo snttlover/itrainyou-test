@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { Title } from "@/application/pages/coach/home/awaiting-approval /common/Title"
 import { SubTitle } from "@/application/pages/coach/home/awaiting-approval /common/SubTitle"
-import { Steps } from "./content/Steps"
+import { RegisterSteps } from "../../../../components/register-steps/RegisterSteps"
 import { Button } from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
 
@@ -51,7 +51,7 @@ export const AwaitingApproval = () => (
   <Container>
     <StyledTitle>Ваша заявка ждет одобрения!</StyledTitle>
     <StyledSubTitle>В среднем заявка обрабатывается около 2 дней</StyledSubTitle>
-    <Steps />
+    <RegisterSteps />
     <StyledBottomSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomSubtitle>
     <StyledButton>Попробовать</StyledButton>
   </Container>
