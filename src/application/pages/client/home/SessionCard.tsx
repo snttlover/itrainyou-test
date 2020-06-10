@@ -129,7 +129,7 @@ export const SessionCard = ({ session, children, className }: SessionCardProps) 
               <TopCoachIcon />
             </GrayTooltip>
           )}
-          {session.coach.categories.map(category => (
+          {session.coach?.categories?.map(category => (
             <GrayTooltip text={category.name} key={category.id}>
               <CategoryIcon color={getCategoryColorById(category.id)} />
             </GrayTooltip>

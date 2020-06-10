@@ -1,6 +1,6 @@
 import { $form, $selectedCategories } from "@/application/feature/coach-get-access/coach-get-access.model"
 import { loadUserDataFx } from "@/application/feature/user/user.model"
-import { updateMyCoach, UpdateMyCoachRequest } from "@/application/lib/api/coach/update-my-coach"
+import { updateMyCoach } from "@/application/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/application/lib/types/effector"
 import { combine, createEffect, createEvent, forward, sample } from "effector"
 
