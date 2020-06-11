@@ -347,7 +347,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           <Name>{`${coach.firstName} ${coach.lastName}`}</Name>
           <Info>
             {coach.isTopCoach && (
-              <GrayTooltip text='Топ коуч'>
+              <GrayTooltip text='Топ-коуч'>
                 <TopCoachIcon />
               </GrayTooltip>
             )}
