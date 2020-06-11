@@ -1,3 +1,4 @@
+import Router from "next/router"
 import styled from "styled-components"
 import { Title } from "@/application/pages/coach/home/awaiting-approval /common/Title"
 import { SubTitle } from "@/application/pages/coach/home/awaiting-approval /common/SubTitle"
@@ -92,6 +93,6 @@ export const ApprovalFailing = () => (
     <StyledBottomMobileSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomMobileSubtitle>
     <But>Но!</But>
     <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
-    <StyledButton>Попробовать</StyledButton>
+    <StyledButton onClick={() => Router.push("/client", "/client")}>Попробовать</StyledButton>
   </Container>
 )

@@ -1,3 +1,4 @@
+import Router from "next/router"
 import React from "react"
 import styled from "styled-components"
 import { Title } from "@/application/pages/coach/home/awaiting-approval /common/Title"
@@ -53,6 +54,6 @@ export const AwaitingApproval = () => (
     <StyledSubTitle>В среднем заявка обрабатывается около 2 дней</StyledSubTitle>
     <RegisterSteps />
     <StyledBottomSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomSubtitle>
-    <StyledButton>Попробовать</StyledButton>
+    <StyledButton onClick={() => Router.push("/client", "/client")}>Попробовать</StyledButton>
   </Container>
 )

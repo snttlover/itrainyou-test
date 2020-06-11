@@ -1,4 +1,5 @@
 import { updateTime } from "@/application/pages/coach/home/coach-home.model"
+import Router from "next/router"
 import { useEffect } from "react"
 import styled from "styled-components"
 import { Title } from "@/application/pages/coach/home/awaiting-approval /common/Title"
@@ -85,7 +86,7 @@ export const ApprovalTimer = () => {
       <Timer />
       <LearnHere>Здесь можно подучиться!</LearnHere>
       <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
-      <StyledButton>Попробовать</StyledButton>
+      <StyledButton onClick={() => Router.push("/client", "/client")}>Попробовать</StyledButton>
     </Container>
   )
 }

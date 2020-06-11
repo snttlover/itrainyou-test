@@ -1,4 +1,5 @@
 import { updateRegistrationFx } from "@/application/pages/coach/home/coach-home.model"
+import Router from "next/router"
 import styled from "styled-components"
 import { Title } from "@/application/pages/coach/home/awaiting-approval /common/Title"
 import { SubTitle } from "@/application/pages/coach/home/awaiting-approval /common/SubTitle"
@@ -108,6 +109,6 @@ export const ApprovalTimerOver = () => (
       <StyledButton onClick={() => updateRegistrationFx()}>Оставить заявку</StyledButton>
     </Content>
     <LearnHere>Здесь можно подучиться!</LearnHere>
-    <TryLink>Попробовать</TryLink>
+    <TryLink onClick={() => Router.push("/client", "/client")}>Попробовать</TryLink>
   </Container>
 )
