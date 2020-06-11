@@ -97,6 +97,17 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   `}
 `
 
+const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+
+  ${MediaRange.greaterThan("mobile")`
+    width: 24px;
+    height: 24px;
+  `}
+`
+
 const StyledBlock = styled(Block)`
   position: relative;
   flex-direction: column;
@@ -161,6 +172,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
           </Rating>
           <CategoriesAndButtonContainer>
             <CategoriesContainer>
+              {coach?.isTopCoach && <TopCoachIcon />}
               {coach?.categories.map(cat => (
                 <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
               ))}
