@@ -41,7 +41,7 @@ type StyledTabPropsTypes = {
 const StyledTab = styled.div<StyledTabPropsTypes>`
   background: ${({active}) => active ? `#fff` : `#DBDEE0`};
   border-radius: 2px 2px 0px 0px;
-  padding: 11px 30px;
+  padding: 11px 0;
   flex: 1;
   margin-right: 1px;
   font-size: 16px;

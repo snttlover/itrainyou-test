@@ -29,7 +29,11 @@ const StyledTitle = styled(Title)`
   `}
 `
 
-const StyledSubTitle = styled(SubTitle)``
+const StyledSubTitle = styled(SubTitle)`
+  ${MediaRange.lessThan(`mobile`)`
+    width: 246px;
+  `}
+`
 
 const StyledBottomSubtitle = styled(StyledSubTitle)`
   ${MediaRange.lessThan(`mobile`)`
