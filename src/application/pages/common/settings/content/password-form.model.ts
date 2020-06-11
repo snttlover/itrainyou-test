@@ -56,6 +56,15 @@ export const [$oldPassword, oldPasswordChanged, $oldPasswordError, $isOldPasswor
   }
 )
 
+
+$oldPasswordError.on(changePasswordFx.fail, (state, { error }) => {
+  if (error.response?.data.old_password) {
+    return `Вы указали неверный пароль`
+  }
+
+  return state
+})
+
 export const [
   $passwordRepeat,
   passwordRepeatChanged,
