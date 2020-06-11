@@ -3,7 +3,7 @@ import { createEffectorField } from "@/application/lib/generators/efffector"
 import { passwordValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
 import { combine, createEffect, createStoreObject } from "effector-next"
-import { toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import Cookies from "js-cookie"
 import { TOKEN_KEY } from "@/store"
 
@@ -16,20 +16,25 @@ export const changePasswordFx = createEffect<ResetRType, ChangePasswordRequest, 
   handler: ({ password, oldPassword }) => changePassword({ newPassword: password, oldPassword }),
 })
 
+const successToast: Toast = {
+  type: `info`,
+  text: `Пароль изменен`,
+}
 changePasswordFx.done.watch(data => {
   // @ts-ignore
   Cookies.set(TOKEN_KEY, data.result.token)
-  toasts.add({
-    type: `info`,
-    text: `Пароль изменен`,
-  })
+  toasts.remove(successToast)
+  toasts.add(successToast)
 })
 
+const errorToast: Toast = {
+  type: `error`,
+  text: `Произошла ошибка при изменении пароля`,
+}
+
 changePasswordFx.fail.watch(data => {
-  toasts.add({
-    type: `error`,
-    text: `Произошла ошибка при изменении пароля`,
-  })
+  toasts.remove(errorToast)
+  toasts.add(errorToast)
 })
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
