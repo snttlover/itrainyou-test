@@ -1,4 +1,4 @@
-import { ClientSelfData } from "@/application/lib/api/client/client"
+import { ClientSelfData } from "@/application/lib/api/client/clientInfo"
 import { CoachSelfData } from "@/application/lib/api/coach/get-my-coach"
 import { getMyUser, GetMyUserResponse } from "@/application/lib/api/users/get-my-user"
 import { serverStarted, TOKEN_KEY } from "@/store"

@@ -1,22 +1,13 @@
 import { keysToCamel, keysToSnake } from "@/application/lib/network/casing"
 import { get } from "@/application/lib/network/network"
-import { ISODate, Sex, Pagination, Day } from "@/application/lib/api/interfaces/utils.interface"
+import { ISODate, Day } from "@/application/lib/api/interfaces/utils.interface"
 import { DurationType } from "@/application/lib/api/coach-sessions"
-
-type DashboardSessionClient = {
-  id: number
-  firstName: string
-  lastName: string
-  birthDate: Day
-  sex: Sex
-  avatar: string
-  creationDatetime: ISODate
-}
+import { Client } from "@/application/lib/api/client/clientInfo"
 
 export interface DashboardSession {
   id: number
   coach: number
-  clients: [DashboardSessionClient]
+  clients: [Client]
   clientPrice: string
   coachPrice: string
   startDatetime: ISODate

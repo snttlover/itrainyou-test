@@ -6,13 +6,15 @@ const AvatarContainer = styled.div<{ size: number }>`
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
-const Placeholder = styled(Icon).attrs({ name: "rounded-user" })`
-  width: 100%;
-  height: 100%;
-  fill: #4858cc;
-  stroke: #4858cc;
+export const AvatarPlaceholder = styled(Icon).attrs({ name: "user" })`
+  width: 70%;
+  height: 70%;
+  fill: ${props => props.theme.colors.primary};
 `
 
 const AvatarImage = styled.div<{ src: string | null }>`
@@ -33,6 +35,6 @@ type AvatarProps = {
 
 export const Avatar = ({ src, size = 80, ...props }: AvatarProps) => (
   <AvatarContainer size={size} {...props}>
-    {src ? <AvatarImage src={src} /> : <Placeholder />}
+    {src ? <AvatarImage src={src} /> : <AvatarPlaceholder />}
   </AvatarContainer>
 )

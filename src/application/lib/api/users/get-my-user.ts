@@ -1,4 +1,4 @@
-import { ClientSelfData } from "@/application/lib/api/client/client"
+import { ClientSelfData } from "@/application/lib/api/client/clientInfo"
 import { CoachSelfData } from "@/application/lib/api/coach/get-my-coach"
 import { keysToCamel } from "@/application/lib/network/casing"
 import { get } from "@/application/lib/network/network"

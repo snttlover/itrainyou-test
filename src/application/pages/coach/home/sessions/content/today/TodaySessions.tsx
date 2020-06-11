@@ -6,7 +6,7 @@ import { $todaySessionsList } from "@/application/pages/coach/home/sessions/cont
 
 export const TodaySessions = () => (
   <Container>
-    <Title>Сессия уже началась!</Title>
+    <Title>У вас сегодня</Title>
     {useList($todaySessionsList, session => (
       <Card {...session} />
     ))}
