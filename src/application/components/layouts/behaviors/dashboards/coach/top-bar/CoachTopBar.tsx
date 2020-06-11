@@ -92,7 +92,6 @@ const CoachLinkWrapper = styled.div`
   flex: 1;
 `
 
-
 export const CoachTopBar = () => {
   const user = useStore($userData)
 
@@ -104,7 +103,7 @@ export const CoachTopBar = () => {
             <StyledLogo />
           </Link>
         </CoachLinkWrapper>
-        <NotificationButton />
+        {user.coach?.isApproved && <NotificationButton />}
         <StyledAvatar src={user.coach?.avatar || null} />
         <CoachTooltip>
           <DropdownButton />
