@@ -9,6 +9,7 @@ import { blueLayoutMobileMenuVisibility } from "@/application/components/layouts
 import { CoachLink } from "@/application/components/layouts/behaviors/dashboards/client/menu/content/CoachLink"
 import { CoachMenuItems } from "@/application/components/layouts/behaviors/dashboards/coach/menu/content/CoachMenuItems"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { $userData } from "@/application/feature/user/user.model"
 
 const StyledProfileHeader = styled(ProfileHeader)`
   border-bottom: 1px solid #b186cb;
@@ -17,7 +18,7 @@ const StyledProfileHeader = styled(ProfileHeader)`
     min-width: calc(100% - 64px);
     margin-left: 64px;
   `}
-  
+
   ${MediaRange.lessThan(`mobile`)`
     max-width: 260px;
   `}
@@ -25,12 +26,18 @@ const StyledProfileHeader = styled(ProfileHeader)`
 
 export const CoachMenu = () => {
   const mobileMenuVisibility = useStore(blueLayoutMobileMenuVisibility)
+  const user = useStore($userData)
 
   return (
     <DashboardMenuContainer showOnMobile={mobileMenuVisibility}>
       <DesktopDashboardMenuLogo />
       <DashboardMenuMobileHeader />
-      <StyledProfileHeader />
+      <StyledProfileHeader
+        firstName={user.coach?.firstName}
+        lastName={user.coach?.lastName}
+        showCoachDropdown={true}
+        avatar={user.coach?.avatar}
+      />
       <CoachMenuItems />
       <CoachLink>Думатете вы топ-коуч?</CoachLink>
     </DashboardMenuContainer>

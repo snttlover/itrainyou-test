@@ -5,6 +5,8 @@ import { Burger } from "@/application/components/layouts/behaviors/dashboards/co
 import { Avatar, AvatarPlaceholder } from "@/application/components/avatar/Avatar"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { CoachTooltip } from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
+import { useStore } from "effector-react"
+import { $userData } from "@/application/feature/user/user.model"
 
 const Wrapper = styled.div`
   position: relative;
@@ -67,15 +69,18 @@ const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
   `}
 `
 
-export const ClientTopBarIconButtons = () => (
-  <Wrapper>
-    <Notification />
-    <Link href={"/client/profile"}>
-      <StyledAvatar />
-    </Link>
-    <Burger />
-    <CoachTooltip>
-      <DropdownButton />
-    </CoachTooltip>
-  </Wrapper>
-)
+export const ClientTopBarIconButtons = () => {
+  const user = useStore($userData)
+  return (
+    <Wrapper>
+      <Notification />
+      <Link href={"/client/profile"}>
+        <StyledAvatar src={user.client?.avatar || null} />
+      </Link>
+      <Burger />
+      <CoachTooltip>
+        <DropdownButton />
+      </CoachTooltip>
+    </Wrapper>
+  )
+}

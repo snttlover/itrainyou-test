@@ -5,6 +5,8 @@ import { Avatar } from "@/application/components/avatar/Avatar"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { Burger } from "@/application/components/layouts/behaviors/dashboards/common/menu/content/Burger"
 import { CoachTooltip } from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
+import { useStore } from "effector-react"
+import { $userData } from "@/application/feature/user/user.model"
 
 const Container = styled.div`
   width: 100%;
@@ -64,15 +66,19 @@ const NotificationButton = styled(Icon).attrs({ name: `notification` })`
   `}
 `
 
-export const CoachTopBar = () => (
-  <Container>
-    <StyledContainer>
-      <NotificationButton />
-      <StyledAvatar src={""} />
-      <CoachTooltip>
-        <DropdownButton />
-      </CoachTooltip>
-      <Burger />
-    </StyledContainer>
-  </Container>
-)
+export const CoachTopBar = () => {
+  const user = useStore($userData)
+
+  return (
+    <Container>
+      <StyledContainer>
+        <NotificationButton />
+        <StyledAvatar src={user.coach?.avatar || null} />
+        <CoachTooltip>
+          <DropdownButton />
+        </CoachTooltip>
+        <Burger />
+      </StyledContainer>
+    </Container>
+  )
+}

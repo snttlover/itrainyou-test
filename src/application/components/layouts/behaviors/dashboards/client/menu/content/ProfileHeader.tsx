@@ -1,10 +1,10 @@
 import styled from "styled-components"
-import { Avatar } from "@/application/components/avatar/Avatar"
+import { Avatar, AvatarPlaceholder } from "@/application/components/avatar/Avatar"
 // @ts-ignore
 import profilePlaceholder from "@/application/pages/landing/content/top-bar/mobile-menu/images/profile-placeholder.png"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { Icon } from "@/application/components/icon/Icon"
-import {CoachTooltip} from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
+import { CoachTooltip } from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
 
 const StyledHeader = styled.div`
   width: 100%;
@@ -22,7 +22,7 @@ const StyledHeader = styled.div`
   ${MediaRange.lessThan("tablet")`
      display: flex;
   `}
-  
+
   ${MediaRange.lessThan("mobile")`
      max-width: 260px;
      align-items: center;
@@ -48,13 +48,16 @@ const Name = styled.div`
   `}
 `
 
-const StyledAvatar = styled(Avatar).attrs({ src: profilePlaceholder })`
+const StyledAvatar = styled(Avatar)`
   width: 120px;
   height: 120px;
   ${MediaRange.lessThan("mobile")`
     width: 40px;
     height: 40px;
   `}
+  ${AvatarPlaceholder} {
+    fill: #fff;
+  }
 `
 
 const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
@@ -76,12 +79,24 @@ const StyledCoachTooltip = styled(CoachTooltip)`
   align-self: center;
 `
 
-export const ProfileHeader = ({ ...props }) => (
+type ProfileHeaderTypes = {
+  firstName?: string
+  lastName?: string
+  showCoachDropdown?: boolean
+  avatar?: string
+}
+
+export const ProfileHeader = (props: ProfileHeaderTypes) => (
   <StyledHeader {...props}>
-    <Name>Bessie Williamson</Name>
-    <StyledAvatar />
-    <StyledCoachTooltip withBack={true}>
-      <DropdownButton />
-    </StyledCoachTooltip>
+    <Name>
+      {props.firstName}
+      <br /> {props.lastName}
+    </Name>
+    <StyledAvatar src={props.avatar || null} />
+    {props.showCoachDropdown && (
+      <StyledCoachTooltip withBack={true}>
+        <DropdownButton />
+      </StyledCoachTooltip>
+    )}
   </StyledHeader>
 )
