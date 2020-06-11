@@ -74,7 +74,7 @@ const Content = styled.div`
 `
 
 const TextContent = styled.div`
-  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   ${MediaRange.lessThan(`tablet`)`
@@ -82,6 +82,7 @@ const TextContent = styled.div`
     margin-top: 63px;
   `}
   ${MediaRange.lessThan(`mobile`)`
+    padding: 0 20px;
     margin-top: 40px;
   `}
 `
