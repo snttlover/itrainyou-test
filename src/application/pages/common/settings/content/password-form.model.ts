@@ -7,7 +7,6 @@ import { toasts } from "@/application/components/layouts/behaviors/dashboards/co
 import Cookies from "js-cookie"
 import { TOKEN_KEY } from "@/store"
 
-
 type ResetRType = {
   oldPassword: string
   password: string

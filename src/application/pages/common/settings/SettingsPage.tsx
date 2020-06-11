@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { GeneralSettingsForm } from "./content/GeneralSettingsForm"
+import { GeneralSettingsForm } from "./content/general-settings-form/GeneralSettingsForm"
 import { PasswordForm } from "./content/PasswordForm"
 
 const Container = styled.div`
