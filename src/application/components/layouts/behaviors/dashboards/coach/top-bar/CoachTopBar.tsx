@@ -28,6 +28,10 @@ const StyledContainer = styled(LandingPageContainer)`
   padding: 15px 40px;
   display: flex;
   justify-content: flex-end;
+  ${MediaRange.lessThan(`tablet`)`
+    padding: 15px 25px;
+    margin: 0;
+  `}
   ${MediaRange.lessThan(`mobile`)`
     padding: 8px;
   `}
