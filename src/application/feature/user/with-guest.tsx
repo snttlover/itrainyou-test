@@ -12,8 +12,10 @@ export const withGuest = ({ to = "/", as = "/" }: Options) => (Child: React.Comp
   return ({ ...props }) => {
     const isAuthed = useStore($isLoggedIn)
 
-    if (isAuthed && typeof document !== "undefined") {
-      Router.replace(to, as, { shallow: true })
+    if (isAuthed) {
+      if (typeof document !== "undefined") {
+        Router.replace(to, as, { shallow: true })
+      }
       return null
     }
 
