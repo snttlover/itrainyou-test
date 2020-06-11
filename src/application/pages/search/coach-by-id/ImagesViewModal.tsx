@@ -14,7 +14,7 @@ const Layout = styled.div`
   width: 100%;
   height: 100%;
   background-color: #424242;
-  z-index: 10;
+  z-index: 999;
 `
 
 const Header = styled.div`
@@ -111,10 +111,10 @@ type ImagesViewModalProps = {
 const swiperOptions: SwiperOptions = {
   navigation: {
     nextEl: ".photo-viewer__next-button",
-    prevEl: ".photo-viewer__prev-button"
+    prevEl: ".photo-viewer__prev-button",
   },
   slidesPerView: 1,
-  a11y: false
+  a11y: false,
 }
 
 export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModalProps) => {
