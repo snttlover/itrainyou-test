@@ -22,8 +22,14 @@ import styled from "styled-components"
 
 const Container = styled.div`
   max-width: 640px;
-  margin: 0 auto;
   padding: 0 16px 16px;
+
+  ${MediaRange.greaterThan("mobile")`
+    margin: 0 auto;
+  `}
+  ${MediaRange.greaterThan("laptop")`
+    margin: 0 0 0 25px;
+  `}
 `
 
 const Block = styled.div`
