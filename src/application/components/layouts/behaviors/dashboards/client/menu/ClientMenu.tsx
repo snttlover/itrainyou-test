@@ -8,6 +8,7 @@ import { blueLayoutMobileMenuVisibility } from "./blue-layout.mobile-menu"
 import { useStore } from "effector-react"
 import { DashboardMenuContainer } from "@/application/components/layouts/behaviors/dashboards/common/menu/MenuContainer"
 import { $userData } from "@/application/feature/user/user.model"
+import Link from "next/link"
 
 export const ClientMenu = () => {
   const mobileMenuVisibility = useStore(blueLayoutMobileMenuVisibility)
@@ -15,7 +16,9 @@ export const ClientMenu = () => {
 
   return (
     <DashboardMenuContainer showOnMobile={mobileMenuVisibility}>
-      <DesktopDashboardMenuLogo />
+      <Link href='/client' passHref>
+        <DesktopDashboardMenuLogo />
+      </Link>
       <DashboardMenuMobileHeader />
       <ProfileHeader
         firstName={user.client?.firstName}

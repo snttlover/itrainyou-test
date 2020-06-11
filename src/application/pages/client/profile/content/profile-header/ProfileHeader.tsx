@@ -11,7 +11,12 @@ const Container = styled.div`
   margin-top: 46px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  position: relative;
+  width: 100%;
+  ${MediaRange.lessThan(`mobile`)`
+    padding-left: 8px;
+    padding-right: 8px;
+  `}
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -19,19 +24,19 @@ const StyledAvatar = styled(Avatar)`
   height: 80px;
 
   ${MediaRange.lessThan(`mobile`)`
-    font-size: 60px;
-    line-height: 60px;
+    width: 60px;
+    height: 60px;
   `}
 `
 
 const Age = styled.div`
-  margin-left: 143px;
   font-size: 20px;
   line-height: 26px;
   color: #9aa0a6;
 
   ${MediaRange.lessThan(`mobile`)`
     margin-left: 30px;
+    text-align: right;
   `}
 `
 
@@ -41,11 +46,14 @@ const Name = styled.div`
   line-height: 26px;
   color: #424242;
   margin-left: 16px;
+  flex-basis: calc(50% - 100px);
 
   ${MediaRange.lessThan(`mobile`)`
     font-size: 16px;
     line-height: 26px;
     margin-left: 12px;
+    flex-basis: unset;
+    flex: 1;
   `}
 `
 

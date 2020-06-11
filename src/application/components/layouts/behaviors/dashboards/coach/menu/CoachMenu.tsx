@@ -10,6 +10,7 @@ import { CoachLink } from "@/application/components/layouts/behaviors/dashboards
 import { CoachMenuItems } from "@/application/components/layouts/behaviors/dashboards/coach/menu/content/CoachMenuItems"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $userData } from "@/application/feature/user/user.model"
+import Link from "next/link"
 
 const StyledProfileHeader = styled(ProfileHeader)`
   border-bottom: 1px solid #b186cb;
@@ -30,7 +31,9 @@ export const CoachMenu = () => {
 
   return (
     <DashboardMenuContainer showOnMobile={mobileMenuVisibility}>
-      <DesktopDashboardMenuLogo />
+      <Link href='/coach' passHref>
+        <DesktopDashboardMenuLogo />
+      </Link>
       <DashboardMenuMobileHeader />
       <StyledProfileHeader
         firstName={user.coach?.firstName}
