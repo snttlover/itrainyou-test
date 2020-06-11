@@ -22,9 +22,9 @@ export const $datetimeLeft = combine({ now: $now, lastRegistrationDaytime: $last
     const diffInMs = now.diff(lastRegistrationDaytime, "millisecond", true)
     return {
       days: 90 - Math.ceil(now.diff(lastRegistrationDaytime, "day", true)),
-      hours: 24 - dayjs(diffInMs).hour(),
-      minutes: 60 - dayjs(diffInMs).minute(),
-      seconds: 60 - dayjs(diffInMs).second(),
+      hours: 23 - dayjs(diffInMs).hour(),
+      minutes: 59 - dayjs(diffInMs).minute(),
+      seconds: 59 - dayjs(diffInMs).second(),
     }
   }
 )

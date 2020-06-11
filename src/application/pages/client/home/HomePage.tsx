@@ -1,6 +1,6 @@
 import { Button } from "@/application/components/button/normal/Button"
 import { CoachCard } from "@/application/components/coach-card/CoachCard"
-import { UserLayout } from "@/application/components/layouts/behaviors/user/UserLayout"
+import { ClientDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import { Loader, Spinner } from "@/application/components/spinner/Spinner"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { SessionCard } from "@/application/pages/client/home/SessionCard"
@@ -97,7 +97,7 @@ export const HomePage = () => {
   }, [])
 
   return (
-    <UserLayout>
+    <ClientDashboardLayout>
       <Container>
         {activeSessions.length > 0 && (
           <Block>
@@ -137,7 +137,7 @@ export const HomePage = () => {
           </InfiniteScroll>
         </Block>
       </Container>
-    </UserLayout>
+    </ClientDashboardLayout>
   )
 }
 

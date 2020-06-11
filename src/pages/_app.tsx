@@ -15,8 +15,11 @@ import "react-multi-carousel/lib/styles.css"
 import "simplebar/dist/simplebar.min.css"
 import "swiper/css/swiper.min.css"
 import { ClientTheme } from "@/application/components/layouts/themes"
+import utc from "dayjs/plugin/utc"
 
+dayjs.extend(utc)
 dayjs.locale("ru")
+
 const isServer = typeof window === "undefined"
 
 const firstLoadUser = createEffect<void, GetMyUserResponse>({
