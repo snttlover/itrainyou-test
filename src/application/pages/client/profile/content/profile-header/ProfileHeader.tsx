@@ -13,6 +13,10 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   width: 100%;
+  ${MediaRange.lessThan(`mobile`)`
+    padding-left: 8px;
+    padding-right: 8px;
+  `}
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -20,8 +24,8 @@ const StyledAvatar = styled(Avatar)`
   height: 80px;
 
   ${MediaRange.lessThan(`mobile`)`
-    font-size: 60px;
-    line-height: 60px;
+    width: 60px;
+    height: 60px;
   `}
 `
 
