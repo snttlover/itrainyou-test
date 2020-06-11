@@ -20,11 +20,6 @@ const StyledLogo = styled(Logo)`
   }
 `
 
-const StyledLogoLink = styled.a`
-  display: flex;
-  align-items: center;
-`
-
 const Container = styled.div`
   width: 100%;
   background: #dbdee0;
@@ -71,10 +66,8 @@ const StyledSearch = styled(Search)`
 export const ClientTopBar = () => (
   <Container>
     <StyledContainer>
-      <Link href='/' passHref>
-        <StyledLogoLink>
-          <StyledLogo />
-        </StyledLogoLink>
+      <Link href='/client' passHref>
+        <StyledLogo />
       </Link>
       <SearchWrapper>
         <StyledCategoriesPicker />
