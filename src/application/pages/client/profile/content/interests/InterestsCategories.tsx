@@ -8,6 +8,7 @@ import { $profileCategories, toggleInterestCategory } from "@/application/pages/
 
 const Container = styled.div`
   margin-top: 23px;
+  margin-left: 3px;
 `
 
 const Category = styled.div`
