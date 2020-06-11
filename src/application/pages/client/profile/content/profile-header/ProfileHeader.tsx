@@ -11,7 +11,8 @@ const Container = styled.div`
   margin-top: 46px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  position: relative;
+  width: 100%;
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -25,13 +26,13 @@ const StyledAvatar = styled(Avatar)`
 `
 
 const Age = styled.div`
-  margin-left: 143px;
   font-size: 20px;
   line-height: 26px;
   color: #9aa0a6;
 
   ${MediaRange.lessThan(`mobile`)`
     margin-left: 30px;
+    text-align: right;
   `}
 `
 
@@ -41,11 +42,14 @@ const Name = styled.div`
   line-height: 26px;
   color: #424242;
   margin-left: 16px;
+  flex-basis: calc(50% - 100px);
 
   ${MediaRange.lessThan(`mobile`)`
     font-size: 16px;
     line-height: 26px;
     margin-left: 12px;
+    flex-basis: unset;
+    flex: 1;
   `}
 `
 
