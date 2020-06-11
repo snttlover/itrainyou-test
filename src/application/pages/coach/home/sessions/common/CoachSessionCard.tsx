@@ -98,16 +98,24 @@ const StyledButton = styled(Button).attrs({ slim: true })`
   `}
 `
 
-export const CoachSessionCard = () => (
+type CoachSessionCardTypes = {
+  avatar: null | string,
+  name: string
+  duration: string
+  time: string
+  isActive?: boolean
+}
+
+export const CoachSessionCard = (props: CoachSessionCardTypes) => (
   <Container>
-    <StyledAvatar src={"/"} />
+    <StyledAvatar src={props.avatar} />
     <NameContainer>
-      <Name>Tanya Mccoy</Name>
-      <Duration>65 мин</Duration>
+      <Name>{props.name}</Name>
+      <Duration>{props.duration}</Duration>
     </NameContainer>
     <ActionsContainer>
-      <Time>12:00</Time>
-      <StyledButton>Зайти в сессию</StyledButton>
+      <Time>{props.time}</Time>
+      {props.isActive && <StyledButton>Зайти в сессию</StyledButton>}
     </ActionsContainer>
   </Container>
 )
