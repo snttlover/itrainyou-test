@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Icon, IconName } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import Link from "next/link"
+import { useRouter } from "next/router"
 
 const MenuItemIcon = styled(Icon).attrs(props => ({
   name: props.name,
@@ -29,6 +30,9 @@ const StyledMenuItem = styled.a`
   width: 100%;
   margin-bottom: 15px;
   padding: 8px 24px;
+  &.selected {
+    background: #9BA9B4;
+  }
   &:last-child {
     margin-bottom: 0;
   }
@@ -65,11 +69,20 @@ type MenuItemTypes = {
   children: React.ReactChild
 }
 
-export const DashboardMenuItem = (props: MenuItemTypes) => (
-  <Link passHref href={props.link}>
-    <StyledMenuItem>
-      <MenuItemIcon name={props.icon} />
-      <Label>{props.children}</Label>
-    </StyledMenuItem>
-  </Link>
-)
+export const DashboardMenuItem = (props: MenuItemTypes) => {
+  const router = useRouter()
+
+  let className = ``
+  if (router.pathname === props.link) {
+    className += `selected`
+  }
+
+  return (
+    <Link passHref href={props.link}>
+      <StyledMenuItem className={className}>
+        <MenuItemIcon name={props.icon} />
+        <Label>{props.children}</Label>
+      </StyledMenuItem>
+    </Link>
+  )
+}
