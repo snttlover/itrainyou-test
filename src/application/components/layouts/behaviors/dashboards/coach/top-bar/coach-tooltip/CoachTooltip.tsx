@@ -36,6 +36,7 @@ const CoachRow = styled(CoachTooltipRow)`
 
 const ClientRow = styled(CoachTooltipRow)`
   background: #4858cc;
+  cursor: pointer;
   &:hover {
     background: #3746b0;
   }
