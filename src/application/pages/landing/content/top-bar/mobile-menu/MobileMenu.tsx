@@ -8,7 +8,7 @@ import { Categories, StyledCategoryCheckbox } from "@/application/pages/landing/
 import {Button} from "@/application/components/button/normal/Button"
 import { MediaRange } from "@/application/lib/responsive/media"
 
-const MobileSearchButton = styled(Icon).attrs({ name: `search` })`
+export const MobileSearchButton = styled(Icon).attrs({ name: `search` })`
   width: 36px;
   height: 36px;
   fill: #4858CC;
@@ -105,7 +105,13 @@ const SearchButtonWrapper = styled.div`
   `}
 `
 
-export const MobileMenu = () => {
+const StyledContainer = styled.div``
+
+type MobileMenuTypes = {
+  className?: string
+}
+
+export const MobileMenu = (props: MobileMenuTypes) => {
   const [menuVisibility, changeMenuVisibility] = useState(false)
 
   const Menu = (
@@ -125,10 +131,10 @@ export const MobileMenu = () => {
   )
 
   return (
-    <>
+    <StyledContainer className={props.className}>
       <MobileSearchButton onClick={() => changeMenuVisibility(true)} />
 
       {menuVisibility && Menu}
-    </>
+    </StyledContainer>
   )
 }

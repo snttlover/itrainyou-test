@@ -7,6 +7,8 @@ import { MediaRange } from "@/application/lib/responsive/media"
 import { CoachTooltip } from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
 import { useStore } from "effector-react"
 import { $userData } from "@/application/feature/user/user.model"
+import { Search } from "@/application/pages/landing/content/top-bar/search/Search"
+import {MobileMenu, MobileSearchButton} from "@/application/pages/landing/content/top-bar/mobile-menu/MobileMenu"
 
 const Wrapper = styled.div`
   position: relative;
@@ -43,19 +45,15 @@ const StyledAvatar = styled(Avatar)`
   margin-left: 36px;
   cursor: pointer;
   
-  @media screen and (max-width: 768px) {
-    margin-left: 24px;
-    width: 50px;
-    height: 50px;
-    
-    ${AvatarPlaceholder} {
-      fill: #fff;
-    }
-  }
-  ${MediaRange.lessThan(`mobile`)`
-    width: 35px;
-    height: 35px;
+  ${MediaRange.lessThan(`tablet`)`
+    display: none;
   `}
+`
+
+const StyledMobileMenu = styled(MobileMenu)`
+  ${MobileSearchButton} {
+    fill: #fff;
+  }
 `
 
 const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
@@ -77,6 +75,7 @@ export const ClientTopBarIconButtons = () => {
       <Link href={"/client/profile"}>
         <StyledAvatar src={user.client?.avatar || null} />
       </Link>
+      <StyledMobileMenu />
       <Burger />
       <CoachTooltip>
         <DropdownButton />
