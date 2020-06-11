@@ -48,18 +48,18 @@ export const CoachMenuItems = () => (
     <DashboardMenuItem link='/coach/clients' icon='my-coaches'>
       Мои клиенты
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/now' icon='hand'>
+    {/*<DashboardMenuItem link='/coach/now' icon='hand'>
       Здесь и сейчас
     </DashboardMenuItem>
     <DashboardMenuItem link='/coach/group-sessions' icon='user'>
       Групповые сессии
-    </DashboardMenuItem>
+    </DashboardMenuItem>*/}
     <DashboardMenuItem link='/coach/wallet' icon='my-purse'>
       Кошелек
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/calendar' icon='calendar'>
+    {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
       Календарь
-    </DashboardMenuItem>
+    </DashboardMenuItem>*/}
     <DashboardMenuItem link='/coach/settings' icon='settings'>
       Настройки
     </DashboardMenuItem>
@@ -70,9 +70,9 @@ export const CoachMenuItems = () => (
     <DashboardMenuItem link='/coach/schedule' icon='none'>
       Расписание
     </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
+    {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
-    </DashboardMenuItem>
+    </DashboardMenuItem>*/}
     <DashboardMenuItem link='/coach/blocked' icon='calendar-with-clock'>
       Заблокированные
     </DashboardMenuItem>

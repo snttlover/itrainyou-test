@@ -32,18 +32,18 @@ export const ClientMenuItems = () => (
     <DashboardMenuItem link='/client/' icon='my-coaches'>
       Мои коучи
     </DashboardMenuItem>
-    <DashboardMenuItem link='/client/' icon='hand'>
+    {/*<DashboardMenuItem link='/client/' icon='hand'>
       Здесь и сейчас
     </DashboardMenuItem>
     <DashboardMenuItem link='/client/' icon='user'>
       Групповые сессии
-    </DashboardMenuItem>
+    </DashboardMenuItem>*/}
     <DashboardMenuItem link='/client/' icon='my-purse'>
       Кошелек
     </DashboardMenuItem>
-    <DashboardMenuItem link='/client/' icon='calendar'>
+    {/*<DashboardMenuItem link='/client/' icon='calendar'>
       Календарь
-    </DashboardMenuItem>
+    </DashboardMenuItem>*/}
     <DashboardMenuItem link='/client/settings' icon='settings'>
       Настройки
     </DashboardMenuItem>
