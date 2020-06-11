@@ -33,6 +33,11 @@ const StyledMenuItem = styled.a`
   &.selected {
     background: #9BA9B4;
   }
+  ${MediaRange.lessThan(`tablet`)`
+    &.selected {
+      background: transparent;
+    }
+  `}
   &:last-child {
     margin-bottom: 0;
   }

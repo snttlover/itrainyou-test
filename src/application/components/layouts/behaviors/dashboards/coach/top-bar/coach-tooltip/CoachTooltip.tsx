@@ -4,6 +4,7 @@ import { ClickOutside } from "@/application/components/click-outside/ClickOutsid
 import { CoachTooltipRow } from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltipRow"
 import { useStore } from "effector-react"
 import { $userData } from "@/application/feature/user/user.model"
+import { changeBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 
 const Tooltip = styled.div`
   position: absolute;
@@ -60,6 +61,10 @@ export const CoachTooltip = (props: CoachTooltipTypes) => {
     e.stopPropagation()
   }
 
+  const hideSideBar = () => {
+    changeBlueLayoutMobileMenuVisibility(false)
+  }
+
   if (!user.coach) {
     return null
   }
@@ -70,7 +75,7 @@ export const CoachTooltip = (props: CoachTooltipTypes) => {
         {props.children}
         {visibility && (
           <>
-            <Tooltip>
+            <Tooltip onClick={hideSideBar}>
               <CoachRow label='Коуч' notificationsCount={0} messagesCount={0} to='/coach' />
               <ClientRow label='Клиент' notificationsCount={0} messagesCount={0} to='/client' />
             </Tooltip>
