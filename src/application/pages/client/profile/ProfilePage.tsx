@@ -5,6 +5,7 @@ import { ProfileHeader } from "./content/profile-header/ProfileHeader"
 import { ProfileInterests } from "@/application/pages/client/profile/content/interests/Interests"
 import { IndividualSessions } from "@/application/pages/client/profile/content/sessions-list/IndividualSessions"
 import { mounted } from "./profile-page.model"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 const Container = styled.div`
   display: flex;
@@ -15,6 +16,9 @@ const Container = styled.div`
   max-width: 960px;
   padding: 0 24px;
   position: relative;
+  ${MediaRange.lessThan(`mobile`)`
+    padding: 0 8px;
+  `}
 `
 
 const ProfilePage = () => {

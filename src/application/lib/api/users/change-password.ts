@@ -1,9 +1,7 @@
 import { keysToCamel, keysToSnake } from "@/application/lib/network/casing"
 import { post } from "@/application/lib/network/network"
-import Cookies from "js-cookie"
-import { TOKEN_KEY } from "@/store"
 
-type ChangePasswordResponse = {
+export type ChangePasswordResponse = {
   token: string
 }
 

@@ -99,7 +99,7 @@ export const CoachTopBar = () => {
     <Container>
       <StyledContainer>
         <CoachLinkWrapper>
-          <Link href='/client' passHref>
+          <Link href='/coach' passHref>
             <StyledLogo />
           </Link>
         </CoachLinkWrapper>
