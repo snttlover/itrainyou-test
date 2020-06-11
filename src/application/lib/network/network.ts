@@ -20,7 +20,7 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
 export const get = <R, Params = {}>(url: string, params?: Params): Promise<AxiosResponse<R>> =>
   axios.get(url, { params })
 
-export const post = <R, Data>(url: string, data: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<Response>> =>
+export const post = <R, Data>(url: string, data: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> =>
   axios.post(url, data, config)
 
 export const patch = <R, Data>(

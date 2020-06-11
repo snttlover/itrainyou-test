@@ -1,17 +1,18 @@
-import {Participants, getNewestParticipants} from "@/application/lib/api/coach/get-newest-participants"
 // import { Coach, getRecommendations } from "@/application/lib/api/coach"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-next"
+import { DashboardSession, getDashboardSessions } from "@/application/lib/api/coach/get-dashboard-sessions"
+import dayjs from "dayjs"
 
 // export const loadRecommendationsFx = createEffect({
 //   handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 5 }),
 // })
 
 export const loadActiveSessionsFx = createEffect({
-  handler: () => getNewestParticipants({ active: true })
+  handler: () => getDashboardSessions({ active: true })
 })
 
 export const loadTodaySessionsFx = createEffect({
-  handler: getNewestParticipants
+  handler: () => getDashboardSessions({ date: dayjs().format(`YYYY-MM-DD`) })
 })
 
 // export const $recommendationsCount = createStore<number>(100).on(
@@ -33,13 +34,13 @@ export const loadTodaySessionsFx = createEffect({
 //   }
 // )
 
-export const $activeCoachSessions = createStore<Participants[]>([]).on(
+export const $activeCoachSessions = createStore<DashboardSession[]>([]).on(
   loadActiveSessionsFx.doneData,
-  (state, payload) => payload.results
+  (state, payload) => payload
 )
-export const $todayCoachSessions = createStore<Participants[]>([]).on(
+export const $todayCoachSessions = createStore<DashboardSession[]>([]).on(
   loadTodaySessionsFx.doneData,
-  (state, payload) => payload.results
+  (state, payload) => payload
 )
 
 export const mounted = createEvent()
