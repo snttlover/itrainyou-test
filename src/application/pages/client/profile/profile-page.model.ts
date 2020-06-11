@@ -1,4 +1,4 @@
-import { getMyClient, ClientSelfData } from "@/application/lib/api/client/client"
+import { getMyClient, ClientSelfData } from "@/application/lib/api/client/clientInfo"
 import dayjs from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector"
 import { $categoriesList, fetchCategoriesListFx } from "@/application/feature/categories/categories.store"

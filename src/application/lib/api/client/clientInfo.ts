@@ -28,21 +28,25 @@ export type User = {
 }
 
 export type Client = {
-  id: number
-  user: User
+  id: string
   firstName: string
   lastName: string
   birthDate: Day
   sex: Sex
   avatar: string | null
+  creationDatetime: ISODate
+}
+
+export type ClientInfo = Client & {
+  user: User
+  birthDate: Day
   favouriteCoaches: Coach[]
   categories: SessionCategory[]
-  creationDatetime: ISODate
   completedSessionsCount: number
   spentHoursCount: number
 }
 
 export const getMyClient = () =>
-  get<Client, {}>(`${process.env.BACKEND_URL}/api/v1/web/clients/me/`)
+  get<ClientInfo, {}>(`${process.env.BACKEND_URL}/api/v1/web/clients/me/`)
     .then(response => response.data)
     .then(keysToCamel)
