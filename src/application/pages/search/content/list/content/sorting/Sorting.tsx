@@ -52,13 +52,13 @@ const TabletFiltersButton = styled.div<{ pin?: boolean }>`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
-  display: flex;
   cursor: pointer;
   position: relative;
-    
-  ${MediaRange.greaterThan("tablet")`  
-    display: none;
-  `}
+  display: none;
+  
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
+  `}    
   
   ${({ pin }) =>
   pin &&
