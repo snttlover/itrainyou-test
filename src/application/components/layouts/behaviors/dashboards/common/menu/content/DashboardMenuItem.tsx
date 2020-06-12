@@ -23,15 +23,16 @@ const MenuItemIcon = styled(Icon).attrs(props => ({
   `}
 `
 
-const StyledMenuItem = styled.a`
+const StyledMenuItem = styled.a<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
   width: 100%;
   margin-bottom: 15px;
   padding: 8px 24px;
+  opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
   &.selected {
-    background: #9BA9B4;
+    background: #9ba9b4;
   }
   ${MediaRange.lessThan(`tablet`)`
     &.selected {
@@ -72,6 +73,7 @@ type MenuItemTypes = {
   icon: IconName
   link: string
   children: React.ReactChild
+  disabled?: boolean
 }
 
 export const DashboardMenuItem = (props: MenuItemTypes) => {
@@ -84,7 +86,11 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
 
   return (
     <Link passHref href={props.link}>
-      <StyledMenuItem className={className}>
+      <StyledMenuItem
+        onClick={e => props.disabled && e.preventDefault()}
+        disabled={props.disabled}
+        className={className}
+      >
         <MenuItemIcon name={props.icon} />
         <Label>{props.children}</Label>
       </StyledMenuItem>
