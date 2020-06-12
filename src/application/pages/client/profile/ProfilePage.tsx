@@ -4,9 +4,10 @@ import styled from "styled-components"
 import { ProfileHeader } from "./content/profile-header/ProfileHeader"
 import { ProfileInterests } from "@/application/pages/client/profile/content/interests/Interests"
 import { IndividualSessions } from "@/application/pages/client/profile/content/sessions-list/IndividualSessions"
-import { $profilePageSessionsCount, mounted } from "./profile-page.model"
+import { $profilePageLoading, $profilePageSessionsCount, mounted } from "./profile-page.model"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { useStore } from "effector-react"
+import { Loader } from "@/application/components/spinner/Spinner"
 
 const Container = styled.div`
   display: flex;
@@ -24,6 +25,7 @@ const Container = styled.div`
 
 const ProfilePage = () => {
   const sessionsCount = useStore($profilePageSessionsCount)
+  const pageLoading = useStore($profilePageLoading)
 
   useEffect(() => {
     mounted()
@@ -31,11 +33,15 @@ const ProfilePage = () => {
 
   return (
     <ClientDashboardLayout>
-      <Container>
-        <ProfileHeader />
-        <ProfileInterests />
-        {sessionsCount && <IndividualSessions />}
-      </Container>
+      {
+        !pageLoading ? (
+          <Container>
+            <ProfileHeader />
+            <ProfileInterests />
+            {sessionsCount && <IndividualSessions />}
+          </Container>
+        ) : <Loader />
+      }
     </ClientDashboardLayout>
   )
 }

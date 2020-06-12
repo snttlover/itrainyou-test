@@ -1,10 +1,16 @@
 import styled from "styled-components"
-import dayjs from "dayjs"
 import { IndividualSessionItem } from "@/application/pages/client/profile/content/sessions-list/IndividualSessionItem"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { useList } from "effector-react"
-import { $categoriesList } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
-import { $profilePageSessions } from "@/application/pages/client/profile/profile-page.model"
+import { useList, useStore } from "effector-react"
+import {
+  $isHasMoreProfileSessions,
+  $profilePageSessions,
+  $ProfileSessions,
+  loadMoreProfileSessions,
+} from "@/application/pages/client/profile/profile-page.model"
+import { Loader } from "@/application/components/spinner/Spinner"
+import SimpleBar from "simplebar-react"
+import InfiniteScroll from "react-infinite-scroll-component"
 
 const Container = styled.div`
   width: 100%;
@@ -40,13 +46,59 @@ const ListContainer = styled.div`
   width: 100%;
 `
 
-export const IndividualSessions = () => (
-  <Container>
-    <Title>Индивидуальные сессии</Title>
-    <ListContainer>
-      {useList($profilePageSessions, session => (
-        <IndividualSessionItem data={session} />
-      ))}
-    </ListContainer>
-  </Container>
-)
+const StyledSimpleBar = styled(SimpleBar)`
+  width: 100%;
+  height: 100%;
+  & .simplebar-content-wrapper {
+    overflow: auto;
+  }
+  .simplebar-track.simplebar-horizotal {
+    height: 7px;
+    background: #000;
+  }
+`
+
+const ItemsContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  overflow-x: auto;
+`
+const Items = styled.div`
+  position: relative;
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: baseline;
+  flex-direction: column;
+`
+
+export const IndividualSessions = () => {
+  const hasMore = useStore($isHasMoreProfileSessions)
+  const sessions = useStore($ProfileSessions)
+
+  return (
+    <Container>
+      <Title>Индивидуальные сессии</Title>
+      <ListContainer>
+        <InfiniteScroll
+          loader={<Loader />}
+          next={loadMoreProfileSessions as any}
+          hasMore={hasMore}
+          dataLength={sessions.length}
+        >
+          <ItemsContainer>
+            <StyledSimpleBar>
+              <Items>
+                {useList($profilePageSessions, session => (
+                  <IndividualSessionItem data={session} />
+                ))}
+              </Items>
+            </StyledSimpleBar>
+          </ItemsContainer>
+        </InfiniteScroll>
+      </ListContainer>
+    </Container>
+  )
+}

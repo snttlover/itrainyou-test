@@ -4,7 +4,8 @@ import { combine, createEffect, createEvent, createStore, forward, sample } from
 import { $categoriesList, fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
 import { getMyTransactions, SessionTransaction } from "@/application/lib/api/transactions/client/list-transaction"
 import { UpdateClientRequest, updateMyClient } from "@/application/lib/api/client/update"
-import { toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { guard } from "effector-next"
 
 export const loadProfileFx = createEffect({
   handler: getMyClient,
@@ -18,12 +19,16 @@ const updateProfile = createEffect<UpdateClientRequest, ClientSelfData>({
   handler: updateMyClient,
 })
 
+const successToast: Toast = {
+  type: `info`,
+  text: `Данные сохранены`,
+}
+
 const profileIsSaved = createEffect({
-  handler: () =>
-    toasts.add({
-      type: `info`,
-      text: `Данные сохранены`,
-    }),
+  handler: () => {
+    toasts.remove(successToast)
+    toasts.add(successToast)
+  },
 })
 
 forward({
@@ -71,16 +76,47 @@ export const $profileCategories = combine($categoriesList, $profile, (categories
   }))
 )
 
-export const loadProfileTransactionsFx = createEffect({
-  handler: getMyTransactions,
+export const loadProfileSessionsFx = createEffect({
+  handler: ({ page }: { page: number }) => getMyTransactions({ page, pageSize: 5 }),
 })
 
-const $sessionsTransactions = createStore<SessionTransaction[]>([]).on(
-  loadProfileTransactionsFx.done,
-  (state, payload) => payload.result
+export const $ProfileSessionsCount = createStore<number>(100).on(
+  loadProfileSessionsFx.doneData,
+  (state, payload) => payload.count
 )
 
-export const $profilePageSessions = $sessionsTransactions.map(transactions =>
+export const $ProfileSessions = createStore<SessionTransaction[]>([]).on(
+  loadProfileSessionsFx.doneData,
+  (state, payload) => [...state, ...payload.results]
+)
+
+const $ProfileSessionsLoadFailed = createStore(false).on(loadProfileSessionsFx.fail, () => true)
+
+export const $isHasMoreProfileSessions = combine(
+  { count: $ProfileSessionsCount, ProfileSessions: $ProfileSessions, isFailed: $ProfileSessionsLoadFailed },
+  ({ count, ProfileSessions, isFailed }) => {
+    return !isFailed && count !== ProfileSessions.length
+  }
+)
+
+export const loadMoreProfileSessions = createEvent()
+
+const guardedProfileSessionsLoadMore = guard({
+  source: loadMoreProfileSessions,
+  filter: loadProfileSessionsFx.pending.map(pending => !pending),
+})
+
+const $participantsCurrentPage = createStore(0).on(loadProfileSessionsFx.done, (_, payload) => payload.params.page)
+
+sample({
+  source: $participantsCurrentPage,
+  clock: guardedProfileSessionsLoadMore,
+  fn: source => ({ page: source + 1 }),
+  target: loadProfileSessionsFx,
+})
+
+
+export const $profilePageSessions = $ProfileSessions.map(transactions =>
   transactions.map(transaction => {
     const session = transaction.session
     return {
@@ -94,9 +130,19 @@ export const $profilePageSessions = $sessionsTransactions.map(transactions =>
   })
 )
 
-export const $profilePageSessionsCount = $profilePageSessions.map(sessions => sessions.length)
+export const $profilePageSessionsCount = $profilePageSessions.map(sessions => !!sessions.length)
+
+export const $profilePageLoading = combine(
+  $profile,
+  loadProfileFx.pending,
+  fetchCategoriesListFx.pending,
+  $profilePageSessionsCount,
+  loadProfileSessionsFx.pending,
+  (profile, profileLoading, categoriesLoading, sessionsCount, loadSessions) =>
+    !profile || profileLoading || categoriesLoading || (loadSessions && !sessionsCount)
+)
 
 forward({
   from: mounted,
-  to: [fetchCategoriesListFx, loadProfileFx, loadProfileTransactionsFx],
+  to: [fetchCategoriesListFx, loadProfileFx, loadMoreProfileSessions],
 })
