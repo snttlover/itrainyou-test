@@ -42,7 +42,7 @@ export const CoachMenu = () => {
         avatar={user.coach?.avatar}
       />
       <CoachMenuItems />
-      <CoachLink>Думатете вы топ-коуч?</CoachLink>
+      <CoachLink>Думаете вы топ-коуч?</CoachLink>
     </DashboardMenuContainer>
   )
 }
