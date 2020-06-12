@@ -43,7 +43,6 @@ const Cancel = styled.div`
   font-size: 14px;
   line-height: 18px;
   color: #9AA0A6;
-  cursor: pointer;
   ${MediaRange.lessThan(`mobile`)`
     align-self: flex-end;
     font-size: 12px;
