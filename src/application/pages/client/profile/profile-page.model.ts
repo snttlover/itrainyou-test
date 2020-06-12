@@ -4,7 +4,7 @@ import { combine, createEffect, createEvent, createStore, forward, sample } from
 import { $categoriesList, fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
 import { getMyTransactions, SessionTransaction } from "@/application/lib/api/transactions/client/list-transaction"
 import { UpdateClientRequest, updateMyClient } from "@/application/lib/api/client/update"
-import { toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export const loadProfileFx = createEffect({
   handler: getMyClient,
@@ -18,7 +18,7 @@ const updateProfile = createEffect<UpdateClientRequest, ClientSelfData>({
   handler: updateMyClient,
 })
 
-const successToast = {
+const successToast: Toast = {
   type: `info`,
   text: `Данные сохранены`,
 }
@@ -27,7 +27,7 @@ const profileIsSaved = createEffect({
   handler: () => {
     toasts.remove(successToast)
     toasts.add(successToast)
-  }
+  },
 })
 
 forward({
@@ -99,6 +99,16 @@ export const $profilePageSessions = $sessionsTransactions.map(transactions =>
 )
 
 export const $profilePageSessionsCount = $profilePageSessions.map(sessions => !!sessions.length)
+
+export const $profilePageLoading = combine(
+  $profile,
+  loadProfileFx.pending,
+  fetchCategoriesListFx.pending,
+  $profilePageSessionsCount,
+  loadProfileTransactionsFx.pending,
+  (profile, profileLoading, categoriesLoading, sessionsCount, loadSessions) =>
+    !profile || profileLoading || categoriesLoading || (loadSessions && !sessionsCount)
+)
 
 forward({
   from: mounted,
