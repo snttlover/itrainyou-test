@@ -49,11 +49,16 @@ const Autocomplete = styled.div`
   height: auto;
   padding: 8px 0;
   background: #ffffff;
-  border: 1px solid #919BE0;
+  border: 1px solid #919be0;
   border-top: 0;
   border-radius: 0px 0px 4px 4px;
   max-height: 300px;
   overflow: auto;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 type SearchInputTypes = {
@@ -96,7 +101,7 @@ export const SearchInput = (props: SearchInputTypes) => {
             changeFocus(true)
             props.onFocus && props.onFocus(e)
           }}
-          onBlur={(e) => {
+          onBlur={e => {
             props.onBlur && props.onBlur(e)
           }}
           onKeyDown={props.onKeyDown}
