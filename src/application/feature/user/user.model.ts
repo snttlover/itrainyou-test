@@ -4,6 +4,7 @@ import { getMyUser, GetMyUserResponse } from "@/application/lib/api/users/get-my
 import { serverStarted, TOKEN_KEY } from "@/store"
 import { createEffect, createEvent, createStore } from "effector-next"
 import Cookies from "js-cookie"
+import Router from "next/router"
 
 export type UserData = {
   coach: CoachSelfData | null
@@ -40,6 +41,10 @@ export const $isLoggedIn = createStore(false)
   .on(loggedIn, () => true)
   .on($token, (state, payload) => !!payload)
   .reset(logout)
+
+logout.watch(() => {
+  setTimeout(() =>  Router.push(`/`, `/`), 0)
+})
 
 if (process.browser) {
   const tokenCookie = Cookies.get(TOKEN_KEY)

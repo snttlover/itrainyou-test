@@ -12,6 +12,7 @@ import {
   emailChanged,
 } from "@/application/pages/common/settings/content/general-settings-form/general-settings.model"
 import { Spinner } from "@/application/components/spinner/Spinner"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 
 const StyledForm = styled.form`
@@ -25,6 +26,10 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 20px;
+  ${MediaRange.lessThan(`mobile`)`
+    font-size: 16px;
+    line-height: 22px;
+  `}
 `
 
 const StyledFormItem = styled(FormItem)`
@@ -33,6 +38,13 @@ const StyledFormItem = styled(FormItem)`
 
 const StyledSpinner = styled(Spinner)`
   background: rgba(236,239,241,0.24);
+`
+
+const Actions = styled.div`
+   ${MediaRange.lessThan(`tablet`)`
+     display: flex;
+     justify-content: center;
+   `}
 `
 
 export const GeneralSettingsForm = () => {
@@ -55,9 +67,11 @@ export const GeneralSettingsForm = () => {
       <StyledFormItem label='Часовой пояс'>
         <Input value='' />
       </StyledFormItem>
-      <DashedButton slim disabled={!isFormValid || isFetching}>
-        Сохранить изменения
-      </DashedButton>
+      <Actions>
+        <DashedButton slim disabled={!isFormValid || isFetching}>
+          Сохранить изменения
+        </DashedButton>
+      </Actions>
       {isFetching && <StyledSpinner />}
     </StyledForm>
   )
