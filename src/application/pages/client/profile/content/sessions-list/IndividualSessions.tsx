@@ -1,10 +1,20 @@
 import styled from "styled-components"
-import dayjs from "dayjs"
 import { IndividualSessionItem } from "@/application/pages/client/profile/content/sessions-list/IndividualSessionItem"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { useList } from "effector-react"
-import { $categoriesList } from "@/application/pages/landing/content/top-bar/categories-picker/categories-picker.model"
-import { $profilePageSessions } from "@/application/pages/client/profile/profile-page.model"
+import { useList, useStore } from "effector-react"
+import {
+  $isHasMoreProfileSessions,
+  $profilePageSessions,
+  $ProfileSessions, loadMoreProfileSessions
+} from "@/application/pages/client/profile/profile-page.model"
+import { Loader } from "@/application/components/spinner/Spinner"
+import {
+  $isHasMoreParticipants, $newestParticipants,
+  loadMoreParticipants
+} from "@/application/pages/coach/home/sessions/coach-sessions-page.model"
+import { $newestParticipantsList } from "@/application/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
+import { CoachSessionCard as Card } from "@/application/pages/coach/home/sessions/common/CoachSessionCard"
+import InfiniteScroll from "react-infinite-scroll-component"
 
 const Container = styled.div`
   width: 100%;
@@ -40,13 +50,27 @@ const ListContainer = styled.div`
   width: 100%;
 `
 
-export const IndividualSessions = () => (
-  <Container>
-    <Title>Индивидуальные сессии</Title>
-    <ListContainer>
-      {useList($profilePageSessions, session => (
-        <IndividualSessionItem data={session} />
-      ))}
-    </ListContainer>
-  </Container>
-)
+
+export const IndividualSessions = () => {
+
+  const hasMore = useStore($isHasMoreProfileSessions)
+  const sessions = useStore($ProfileSessions)
+
+  return (
+    <Container>
+      <Title>Индивидуальные сессии</Title>
+      <ListContainer>
+        <InfiniteScroll
+          loader={<Loader />}
+          next={loadMoreProfileSessions as any}
+          hasMore={hasMore}
+          dataLength={sessions.length}
+        >
+          {useList($profilePageSessions, session => (
+            <IndividualSessionItem data={session} />
+          ))}
+        </InfiniteScroll>
+      </ListContainer>
+    </Container>
+  )
+}
