@@ -13,10 +13,6 @@ import { useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 
-const TopLevelContainer = styled.div`
-  margin: 0 150px 0 0;
-`
-
 const Container = styled.div`
   max-width: 600px;
   margin: 36px auto 0;
