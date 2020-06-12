@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react"
+import React, { FormEvent, useEffect } from "react"
 import styled from "styled-components"
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
@@ -10,10 +10,13 @@ import {
   $isGeneralSettingsFormFormValid,
   changeGeneralSettingsFx,
   emailChanged,
+  timeZoneChanged,
 } from "@/application/pages/common/settings/content/general-settings-form/general-settings.model"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { MediaRange } from "@/application/lib/responsive/media"
-
+import { SelectInput, SelectInputProps } from "@/application/components/select-input/SelectInput"
+import { timeZones } from "@/application/pages/common/settings/content/general-settings-form/time-zones"
+import { mounted } from "@/application/pages/common/settings/content/general-settings-form/general-settings.model"
 
 const StyledForm = styled.form`
   width: 100%;
@@ -37,14 +40,18 @@ const StyledFormItem = styled(FormItem)`
 `
 
 const StyledSpinner = styled(Spinner)`
-  background: rgba(236,239,241,0.24);
+  background: rgba(236, 239, 241, 0.24);
 `
 
 const Actions = styled.div`
-   ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan(`tablet`)`
      display: flex;
      justify-content: center;
    `}
+`
+
+const StyledSelectInput = styled(SelectInput)<SelectInputProps<string>>`
+   height: 36px;
 `
 
 export const GeneralSettingsForm = () => {
@@ -58,6 +65,10 @@ export const GeneralSettingsForm = () => {
     e.preventDefault()
   }
 
+  useEffect(() => {
+    mounted()
+  }, [])
+
   return (
     <StyledForm onSubmit={submitHandler}>
       <Title>Общие</Title>
@@ -65,7 +76,12 @@ export const GeneralSettingsForm = () => {
         <Input value={form.email} onChange={emailChanged} />
       </StyledFormItem>
       <StyledFormItem label='Часовой пояс'>
-        <Input value='' />
+        <StyledSelectInput
+          value={form.timeZone}
+          placeholder='Выберите часовой пояс'
+          options={timeZones}
+          onChange={(value: string | number) => {timeZoneChanged(value.toString())}}
+        />
       </StyledFormItem>
       <Actions>
         <DashedButton slim disabled={!isFormValid || isFetching}>

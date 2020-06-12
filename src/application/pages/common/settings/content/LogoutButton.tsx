@@ -7,6 +7,7 @@ const StyledLogoutButton = styled.div`
   font-size: 16px;
   line-height: 22px;
   margin-top: 32px;
+  cursor: pointer;
 `
 
 export const LogoutButton = () => <StyledLogoutButton onClick={() => logout()}>Выйти</StyledLogoutButton>

@@ -4,8 +4,8 @@ import { useRef, useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 
-const Arrow = styled(Icon).attrs({ name: 'arrow' })`
-  fill: #919BE0;
+const Arrow = styled(Icon).attrs({ name: "arrow" })`
+  fill: #919be0;
 `
 
 const Placeholder = styled.p`
@@ -18,7 +18,7 @@ const DropdownItem = styled.div`
   width: 100%;
   cursor: pointer;
   padding: 9px 12px;
-  
+
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -34,7 +34,7 @@ const Dropdown = styled.div`
   position: absolute;
   width: calc(100% + 2px);
   max-height: 150px;
-  border: 1px solid #919BE0;
+  border: 1px solid #919be0;
   box-sizing: border-box;
   border-radius: 0 0 4px 4px;
   background: #ffffff;
@@ -65,7 +65,7 @@ const SelectBox = styled.div<{ isOpen: boolean; error?: boolean }>`
 
 type Value = string | number
 
-type SelectInputProps<T extends Value> = {
+export type SelectInputProps<T extends Value> = {
   value: T
   placeholder?: string
   onChange: (value: T) => void
@@ -84,7 +84,8 @@ export const SelectInput = <T extends Value = Value>({
   onChange,
   options,
   error,
-  onBlur
+  onBlur,
+  className
 }: SelectInputProps<T>) => {
   const [isOpen, changeOpen] = useState(false)
 
@@ -110,6 +111,7 @@ export const SelectInput = <T extends Value = Value>({
       error={error}
       ref={selectBoxRef}
       placeholder={placeholder}
+      className={className}
       onClick={() => {
         const newValue = !isOpen
         changeOpen(newValue)
