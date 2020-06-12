@@ -90,12 +90,38 @@ const Description = styled.p`
   `}
 `
 
+const ButtonContainer = styled.div`
+  min-width: 320px;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  ${MediaRange.greaterThan("mobile")`    
+    margin: 20px 32px 0;
+  `}
+  
+  ${MediaRange.greaterThan("tablet")`
+    width: 664px;
+    margin: 20px auto 0;
+  `}
+
+  ${MediaRange.greaterThan("laptop")`
+    margin: 20px auto 0;
+  `}
+`
+
 const RegisterButton = styled(Button)`
   width: 207px;
   margin: 36px auto 30px;
+  transition: none;
 
   ${MediaRange.greaterThan("mobile")`
     margin: 36px 32px 30px auto;
+  `}
+  ${MediaRange.greaterThan("tablet")`
+    margin: 36px 0 30px auto;
   `}
 `
 
@@ -126,9 +152,11 @@ export const Step4Client = () => {
     >
       <Container>
         {categories}
-        <RegisterButton disabled={loading} onClick={() => userRegistered()}>
-          Зарегистрироваться
-        </RegisterButton>
+        <ButtonContainer>
+          <RegisterButton disabled={loading} onClick={() => userRegistered()}>
+            Зарегистрироваться
+          </RegisterButton>
+        </ButtonContainer>
       </Container>
     </Step4ClientLayout>
   )

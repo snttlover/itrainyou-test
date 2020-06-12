@@ -16,7 +16,6 @@ const Container = styled.div`
   cursor: pointer;
   user-select: none;
   ${MediaRange.greaterThan("mobile")`
-    width: 92%;
     padding: 24px 36px;
     margin: 36px auto 0;
   `}
