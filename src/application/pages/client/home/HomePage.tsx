@@ -21,9 +21,13 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 
 const Container = styled.div`
-  max-width: 640px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 0 16px 16px;
+
+  ${MediaRange.greaterThan("tablet")`
+    padding: 0;
+  `}
 `
 
 const Block = styled.div`
