@@ -85,7 +85,9 @@ type DropdownTypes = {
   renderTitle: () => React.ReactNode
   children: React.ReactNode[] | React.ReactNode
   className?: string
-  onClose?: () => any
+  opened?: boolean
+  onClose?: (value: boolean) => any
+  onOpen?: (value: boolean) => any
 }
 
 export const Dropdown = (props: DropdownTypes) => {
@@ -93,13 +95,17 @@ export const Dropdown = (props: DropdownTypes) => {
 
   const changeFocusHandler = (focus: boolean) => {
     if (!focus) {
-      props.onClose && props.onClose()
+      props.onClose && props.onClose(focus)
+    } else {
+      props.onOpen && props.onOpen(focus)
     }
-    changeFocus(focus)
+    if (props.opened !== undefined) {
+      changeFocus(focus)
+    }
   }
 
   const autocomplete = <Items>{props.children}</Items>
-  const autocompleteVisibility = !!props.children && focused
+  const autocompleteVisibility = !!props.children && (props.opened || focused)
 
   return (
     <ClickOutside

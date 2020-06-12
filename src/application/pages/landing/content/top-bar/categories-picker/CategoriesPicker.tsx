@@ -2,7 +2,13 @@ import { useEffect } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import { Dropdown } from "@/application/components/dropdown/Dropdown"
-import { $categoriesList, fetchCategoriesListFx, updatePickerQuery } from "./categories-picker.model"
+import {
+  $categoriesList,
+  $categoriesPickerVisibility,
+  changeCategoriesPickerVisibility,
+  fetchCategoriesListFx,
+  updatePickerQuery,
+} from "./categories-picker.model"
 import { useEvent, useStore } from "effector-react"
 import { Categories } from "@/application/pages/landing/content/top-bar/categories-picker/Categories"
 
@@ -33,17 +39,24 @@ type CategoriesPickerTypes = {
 }
 
 export const CategoriesPicker = (props: CategoriesPickerTypes) => {
-  const navigate = useEvent(updatePickerQuery)
-
   const selectedCategories = useStore($categoriesList).filter(category => category.checked).length
   const titleRenderer = () => <Label>Категории {!!selectedCategories && <Counter>{selectedCategories}</Counter>}</Label>
+
+  const pickerVisibility = useStore($categoriesPickerVisibility)
+  const changeStatus = useEvent(changeCategoriesPickerVisibility)
 
   useEffect(() => {
     fetchCategoriesListFx()
   }, [])
 
   return (
-    <StyledDropdown className={props.className} renderTitle={titleRenderer} onClose={() => navigate()}>
+    <StyledDropdown
+      className={props.className}
+      renderTitle={titleRenderer}
+      opened={pickerVisibility}
+      onOpen={changeStatus}
+      onClose={changeStatus}
+    >
       <Categories />
     </StyledDropdown>
   )
