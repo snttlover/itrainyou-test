@@ -15,6 +15,7 @@ import {
 } from "@/application/pages/common/settings/content/password-form.model"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { resetFx } from "@/application/pages/auth/pages/reset-password/reset-password.model"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 const StyledForm = styled.form`
   width: 100%;
@@ -28,6 +29,10 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 20px;
+  ${MediaRange.lessThan(`mobile`)`
+    font-size: 16px;
+    line-height: 22px;
+  `}
 `
 
 const StyledFormItem = styled(FormItem)`
@@ -36,6 +41,13 @@ const StyledFormItem = styled(FormItem)`
 
 const StyledSpinner = styled(Spinner)`
   background: rgba(236,239,241,0.24);
+`
+
+const Actions = styled.div`
+   ${MediaRange.lessThan(`tablet`)`
+     display: flex;
+     justify-content: center;
+   `}
 `
 
 export const PasswordForm = () => {
@@ -51,7 +63,7 @@ export const PasswordForm = () => {
 
   return (
     <StyledForm onSubmit={submitHandler}>
-      <Title>Общие</Title>
+      <Title>Новый пароль</Title>
       <StyledFormItem label='Старый пароль' error={errors.oldPassword}>
         <Input type='password' value={form.oldPassword} onChange={oldPasswordChanged} />
       </StyledFormItem>
@@ -61,9 +73,11 @@ export const PasswordForm = () => {
       <StyledFormItem label='Повторите новый пароль' error={errors.passwordRepeat}>
         <Input type='password' value={form.passwordRepeat} onChange={passwordRepeatChanged} />
       </StyledFormItem>
-      <DashedButton slim disabled={!isFormValid || isFetching}>
-        Изменить пароль
-      </DashedButton>
+      <Actions>
+        <DashedButton slim disabled={!isFormValid || isFetching}>
+          Изменить пароль
+        </DashedButton>
+      </Actions>
       {isFetching && <StyledSpinner />}
     </StyledForm>
   )
