@@ -14,6 +14,7 @@ import Router from "next/router"
 import { GrayTooltip } from "@/application/components/gray-tooltip/GrayTooltip"
 
 const MainInfoContainer = styled.div`
+  position: relative;
   display: flex;
   padding: 12px 12px 12px 16px;
   background: #fff;
