@@ -115,33 +115,40 @@ const SessionTime = styled.p`
 
 type SessionCardProps = { session: ClientSession; children?: React.ReactNode; className?: string }
 
-export const SessionCard = ({ session, children, className }: SessionCardProps) => (
-  <SessionCardContainer className={className}>
-    <CoachInfoContainer>
-      <CoachAvatar src={session.coach.avatar} isTopCoach={session.coach.isTopCoach} />
-      <CoachInfo>
-        <Name>
-          {session.coach.firstName} {session.coach.lastName}
-        </Name>
-        <CategoriesContainer>
-          {session.coach.isTopCoach && (
-            <GrayTooltip text='Топ коуч'>
-              <TopCoachIcon />
-            </GrayTooltip>
-          )}
-          {session.coach?.categories?.map(category => (
-            <GrayTooltip text={category.name} key={category.id}>
-              <CategoryIcon color={getCategoryColorById(category.id)} />
-            </GrayTooltip>
-          ))}
-        </CategoriesContainer>
-      </CoachInfo>
-    </CoachInfoContainer>
-    <SessionInfo>
-      <SessionTime>
-        {dayjs(session.startDatetime).format("HH:MM")}-{dayjs(session.endDatetime).format("HH:MM")}
-      </SessionTime>
-      {children}
-    </SessionInfo>
-  </SessionCardContainer>
-)
+export const SessionCard = ({ session, children, className }: SessionCardProps) => {
+  const now = dayjs()
+  const startDate = dayjs(session.startDatetime)
+  const endDate = dayjs(session.endDatetime)
+  const isBetween = now.isBetween(startDate, endDate, "minute")
+
+  return (
+    <SessionCardContainer className={className}>
+      <CoachInfoContainer>
+        <CoachAvatar src={session.coach.avatar} isTopCoach={session.coach.isTopCoach} />
+        <CoachInfo>
+          <Name>
+            {session.coach.firstName} {session.coach.lastName}
+          </Name>
+          <CategoriesContainer>
+            {session.coach.isTopCoach && (
+              <GrayTooltip text='Топ коуч'>
+                <TopCoachIcon />
+              </GrayTooltip>
+            )}
+            {session.coach?.categories?.map(category => (
+              <GrayTooltip text={category.name} key={category.id}>
+                <CategoryIcon color={getCategoryColorById(category.id)} />
+              </GrayTooltip>
+            ))}
+          </CategoriesContainer>
+        </CoachInfo>
+      </CoachInfoContainer>
+      <SessionInfo>
+        <SessionTime>
+          {dayjs(session.startDatetime).format("HH:mm")}-{dayjs(session.endDatetime).format("HH:mm")}
+        </SessionTime>
+        {isBetween && children}
+      </SessionInfo>
+    </SessionCardContainer>
+  )
+}
