@@ -7,6 +7,6 @@ export type UpdateMyUserRequest = {
 }
 
 export const updateMyUser = (data: UpdateMyUserRequest) =>
-  patch(`${process.env.BACKEND_URL}/api/v1/web/coaches/me/`, keysToSnake(data))
+  patch(`${process.env.BACKEND_URL}/api/v1/web/users/me/`, keysToSnake(data))
     .then(response => response.data)
     .then(keysToCamel)

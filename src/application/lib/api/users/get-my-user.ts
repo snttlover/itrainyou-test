@@ -7,6 +7,9 @@ export type GetMyUserResponse = {
   id: number
   client: ClientSelfData
   coach: CoachSelfData
+  email: string
+  timeZone: string
+  creationDatetime: string
 }
 
 export const getMyUser = (): Promise<GetMyUserResponse> =>
