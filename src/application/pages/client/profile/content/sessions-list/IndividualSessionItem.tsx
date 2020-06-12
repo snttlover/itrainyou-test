@@ -15,10 +15,12 @@ const Item = styled.div`
 const StyledAvatar = styled(Avatar)`
   width: 40px;
   height: 40px;
+  min-width: 40px;
   margin-left: 16px;
   
   ${MediaRange.lessThan(`mobile`)`
     width: 24px;
+    min-width: 24px;
     height: 24px;
   `}
 `
@@ -43,6 +45,8 @@ const Cancel = styled.div`
   font-size: 14px;
   line-height: 18px;
   color: #9AA0A6;
+  white-space: pre-wrap;
+  margin-left: 15px;
   ${MediaRange.lessThan(`mobile`)`
     align-self: flex-end;
     font-size: 12px;
@@ -63,6 +67,7 @@ const Price = styled.div`
   line-height: 22px;
   color: #424242;
   margin-left: 21px;
+  white-space: nowrap;
   
   ${MediaRange.lessThan(`mobile`)`
     font-size: 12px;
@@ -120,7 +125,7 @@ export const IndividualSessionItem = (props: IndividualSessionItemType) => (
     <StyledAvatar src={props.data.avatar} />
     <Name>{props.data.name}</Name>
     <Cancel>
-      { props.data.isCanceled && `отмена` }
+      { props.data.isCanceled && `сессия отменена` }
     </Cancel>
     <RightMobileGroup>
       <Price>
