@@ -5,15 +5,11 @@ import { useList, useStore } from "effector-react"
 import {
   $isHasMoreProfileSessions,
   $profilePageSessions,
-  $ProfileSessions, loadMoreProfileSessions
+  $ProfileSessions,
+  loadMoreProfileSessions,
 } from "@/application/pages/client/profile/profile-page.model"
 import { Loader } from "@/application/components/spinner/Spinner"
-import {
-  $isHasMoreParticipants, $newestParticipants,
-  loadMoreParticipants
-} from "@/application/pages/coach/home/sessions/coach-sessions-page.model"
-import { $newestParticipantsList } from "@/application/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
-import { CoachSessionCard as Card } from "@/application/pages/coach/home/sessions/common/CoachSessionCard"
+import SimpleBar from "simplebar-react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 const Container = styled.div`
@@ -50,9 +46,35 @@ const ListContainer = styled.div`
   width: 100%;
 `
 
+const StyledSimpleBar = styled(SimpleBar)`
+  width: 100%;
+  height: 100%;
+  & .simplebar-content-wrapper {
+    overflow: auto;
+  }
+  .simplebar-track.simplebar-horizotal {
+    height: 7px;
+    background: #000;
+  }
+`
+
+const ItemsContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  overflow-x: auto;
+`
+const Items = styled.div`
+  position: relative;
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: baseline;
+  flex-direction: column;
+`
 
 export const IndividualSessions = () => {
-
   const hasMore = useStore($isHasMoreProfileSessions)
   const sessions = useStore($ProfileSessions)
 
@@ -66,9 +88,15 @@ export const IndividualSessions = () => {
           hasMore={hasMore}
           dataLength={sessions.length}
         >
-          {useList($profilePageSessions, session => (
-            <IndividualSessionItem data={session} />
-          ))}
+          <ItemsContainer>
+            <StyledSimpleBar>
+              <Items>
+                {useList($profilePageSessions, session => (
+                  <IndividualSessionItem data={session} />
+                ))}
+              </Items>
+            </StyledSimpleBar>
+          </ItemsContainer>
         </InfiniteScroll>
       </ListContainer>
     </Container>

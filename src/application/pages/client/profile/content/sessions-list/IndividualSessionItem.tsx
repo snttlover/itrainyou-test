@@ -51,7 +51,7 @@ const canceledStyles = css`
 `
 
 const Item = styled.div`
-  width: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #efefef;
