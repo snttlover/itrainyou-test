@@ -94,6 +94,8 @@ export const $profilePageSessions = $sessionsTransactions.map(transactions =>
   })
 )
 
+export const $profilePageSessionsCount = $profilePageSessions.map(sessions => sessions.length)
+
 forward({
   from: mounted,
   to: [fetchCategoriesListFx, loadProfileFx, loadProfileTransactionsFx],
