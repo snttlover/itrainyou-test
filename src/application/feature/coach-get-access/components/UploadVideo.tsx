@@ -39,7 +39,7 @@ const InterviewTitle = styled.h2`
   font-weight: normal;
   font-size: 16px;
   line-height: 26px;
-  color: #7d36a8;
+  color: #424242;
   margin-left: 8px;
 
   ${MediaRange.greaterThan("mobile")`    
@@ -55,7 +55,7 @@ const InterviewDescription = styled.h2`
   margin-left: 8px;
   font-size: 14px;
   line-height: 18px;
-  color: #424242;
+  color: #5b6670;
   margin-top: 4px;
 
   ${MediaRange.greaterThan("mobile")`
