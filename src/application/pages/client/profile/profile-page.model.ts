@@ -94,7 +94,7 @@ export const $profilePageSessions = $sessionsTransactions.map(transactions =>
   })
 )
 
-export const $profilePageSessionsCount = $profilePageSessions.map(sessions => sessions.length)
+export const $profilePageSessionsCount = $profilePageSessions.map(sessions => !!sessions.length)
 
 forward({
   from: mounted,
