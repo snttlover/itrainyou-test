@@ -86,7 +86,11 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
 
   return (
     <Link passHref href={props.link}>
-      <StyledMenuItem disabled={props.disabled} className={className}>
+      <StyledMenuItem
+        onClick={e => props.disabled && e.preventDefault()}
+        disabled={props.disabled}
+        className={className}
+      >
         <MenuItemIcon name={props.icon} />
         <Label>{props.children}</Label>
       </StyledMenuItem>
