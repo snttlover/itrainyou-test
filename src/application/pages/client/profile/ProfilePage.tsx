@@ -4,8 +4,9 @@ import styled from "styled-components"
 import { ProfileHeader } from "./content/profile-header/ProfileHeader"
 import { ProfileInterests } from "@/application/pages/client/profile/content/interests/Interests"
 import { IndividualSessions } from "@/application/pages/client/profile/content/sessions-list/IndividualSessions"
-import { mounted } from "./profile-page.model"
+import { $profilePageSessionsCount, mounted } from "./profile-page.model"
 import { MediaRange } from "@/application/lib/responsive/media"
+import { useStore } from "effector-react"
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +23,8 @@ const Container = styled.div`
 `
 
 const ProfilePage = () => {
+  const sessionsCount = useStore($profilePageSessionsCount)
+
   useEffect(() => {
     mounted()
   }, [])
@@ -31,7 +34,7 @@ const ProfilePage = () => {
       <Container>
         <ProfileHeader />
         <ProfileInterests />
-        <IndividualSessions />
+        {sessionsCount && <IndividualSessions />}
       </Container>
     </ClientDashboardLayout>
   )
