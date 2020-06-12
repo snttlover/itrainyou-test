@@ -18,12 +18,16 @@ const updateProfile = createEffect<UpdateClientRequest, ClientSelfData>({
   handler: updateMyClient,
 })
 
+const successToast = {
+  type: `info`,
+  text: `Данные сохранены`,
+}
+
 const profileIsSaved = createEffect({
-  handler: () =>
-    toasts.add({
-      type: `info`,
-      text: `Данные сохранены`,
-    }),
+  handler: () => {
+    toasts.remove(successToast)
+    toasts.add(successToast)
+  }
 })
 
 forward({
