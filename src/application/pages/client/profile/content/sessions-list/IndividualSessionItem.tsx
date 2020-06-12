@@ -138,8 +138,8 @@ export const IndividualSessionItem = (props: IndividualSessionItemType) => (
         {props.data.price}
         <Ruble />
       </Price>
-      <Time canceled={props.data.isCanceled}>{props.data.time}</Time>
-      <Date canceled={props.data.isCanceled}>{props.data.date}</Date>
+      <Time>{props.data.time}</Time>
+      <Date>{props.data.date}</Date>
     </RightMobileGroup>
   </Item>
 )
