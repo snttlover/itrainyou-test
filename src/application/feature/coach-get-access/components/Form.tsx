@@ -42,7 +42,7 @@ const InformationTitle = styled.h2`
   font-weight: normal;
   font-size: 16px;
   line-height: 26px;
-  color: #7d36a8;
+  color: #424242;
 
   ${MediaRange.greaterThan("mobile")`    
     font-size: 24px;

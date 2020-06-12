@@ -42,8 +42,10 @@ export const $isLoggedIn = createStore(false)
   .on($token, (state, payload) => !!payload)
   .reset(logout)
 
-logout.watch(() => {
-  setTimeout(() =>  Router.push(`/`, `/`), 0)
+$isLoggedIn.updates.watch(state => {
+  if (!state) {
+    setTimeout(() => Router.push(`/`, `/`), 0)
+  }
 })
 
 if (process.browser) {

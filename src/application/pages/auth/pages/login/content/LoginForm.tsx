@@ -10,11 +10,10 @@ import {
   $isFormValid,
   $loginForm,
   $loginFormErrors,
-  $commonError,
   emailChanged,
   passwordChanged,
   loginFx,
-  loginFormSent
+  loginFormSent,
 } from "@/application/pages/auth/pages/login/login.model"
 import { FormEvent } from "react"
 
@@ -34,17 +33,11 @@ const StyledButton = styled(DashedButton)`
   }
 `
 
-const Error = styled.div`
-  color: crimson;
-  padding: 10px 0;
-`
-
 export const LoginForm = () => {
   const form = useStore($loginForm)
   const errors = useStore($loginFormErrors)
   const isFormValid = useStore($isFormValid)
   const isFetching = useStore(loginFx.pending)
-  const error = useStore($commonError)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     loginFormSent()
@@ -59,7 +52,6 @@ export const LoginForm = () => {
       <FormItem label='Пароль' error={errors.password}>
         <PasswordInput value={form.password} name='password' onChange={passwordChanged} />
       </FormItem>
-      {error && <Error>{error}</Error>}
       <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>
       {isFetching && <Spinner />}
     </StyledForm>

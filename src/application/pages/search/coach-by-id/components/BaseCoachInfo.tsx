@@ -120,6 +120,7 @@ const Like = styled(Icon)`
   top: 12px;
   ${MediaRange.greaterThan("mobile")`
     position: static;
+    margin-left: 8px;
   `};
 `
 

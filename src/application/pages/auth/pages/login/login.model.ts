@@ -3,7 +3,7 @@ import { login, LoginResponse } from "@/application/lib/api/login"
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
 import { emailValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createEffect, createEvent, createStore, createStoreObject, forward, sample } from "effector-next"
+import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-next"
 import Router from "next/router"
 
 export const loginFormSent = createEvent()
@@ -32,9 +32,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   eventMapper: event => event.map(trimString),
 })
 
-export const $commonError = createStore<string | null>(null)
-  .on(loginFx, () => null)
-  .on(loginFx.fail, (state, { error }) => `Неверные данные`)
+$emailError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => `Неверные данные`)
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
   defaultValue: "",
