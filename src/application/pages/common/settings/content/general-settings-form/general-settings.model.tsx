@@ -3,7 +3,7 @@ import { createEffectorField } from "@/application/lib/generators/efffector"
 import { emailValidator, passwordValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-next"
-import { toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import Cookies from "js-cookie"
 import { TOKEN_KEY } from "@/store"
 import { getMyUser } from "@/application/lib/api/users/get-my-user"
@@ -23,18 +23,24 @@ const loadProfileFx = createEffect({
 
 export const mounted = createEvent()
 
+const successToast: Toast = {
+  type: `info`,
+  text: `Данные профиля сохранены`,
+}
+
 changeGeneralSettingsFx.done.watch(data => {
-  toasts.add({
-    type: `info`,
-    text: `Данные профиля сохранены`,
-  })
+  toasts.remove(successToast)
+  toasts.add(successToast)
 })
 
+const errorToast: Toast = {
+  type: `error`,
+  text: `Произошла ошибка при изменении профиля`,
+}
+
 changeGeneralSettingsFx.fail.watch(data => {
-  toasts.add({
-    type: `error`,
-    text: `Произошла ошибка при изменении профиля`,
-  })
+  toasts.remove(errorToast)
+  toasts.add(errorToast)
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
