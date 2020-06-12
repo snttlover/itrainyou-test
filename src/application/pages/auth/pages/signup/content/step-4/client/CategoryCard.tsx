@@ -13,6 +13,8 @@ const Container = styled.div`
   background: #ffffff;
   padding: 12px 8px;
   border-radius: 2px;
+  cursor: pointer;
+  user-select: none;
   ${MediaRange.greaterThan("mobile")`
     width: 92%;
     padding: 24px 36px;
