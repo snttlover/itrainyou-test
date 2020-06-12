@@ -9,10 +9,9 @@ const Container = styled.div`
   width: 100%;
   max-width: 736px;
   margin-top: 36px;
-  padding: 0 24px;
+  padding: 0 24px 20px;
   ${MediaRange.lessThan(`tablet`)`
-    margin: 0 auto;
-    margin-top: 28px;
+    margin: 40px auto 0;
   `}
 `
 
