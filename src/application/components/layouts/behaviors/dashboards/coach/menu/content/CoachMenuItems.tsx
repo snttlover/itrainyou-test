@@ -1,3 +1,5 @@
+import { $coachAccess } from "@/application/feature/user/user.model"
+import { useStore } from "effector-react"
 import styled from "styled-components"
 import React from "react"
 import { DashboardMenuItem } from "@/application/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
@@ -40,41 +42,44 @@ const Delimiter = styled.div`
   `}
 `
 
-export const CoachMenuItems = () => (
-  <ItemsWrapper>
-    <DashboardMenuItem link='/coach/' icon='home'>
-      Главная страница
-    </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/clients' icon='my-coaches'>
-      Мои клиенты
-    </DashboardMenuItem>
-    {/*<DashboardMenuItem link='/coach/now' icon='hand'>
+export const CoachMenuItems = () => {
+  const isApproved = useStore($coachAccess).isApproved
+  return (
+    <ItemsWrapper>
+      <DashboardMenuItem link='/coach/' icon='home'>
+        Главная страница
+      </DashboardMenuItem>
+      <DashboardMenuItem disabled={isApproved} link='/coach/clients' icon='my-coaches'>
+        Мои клиенты
+      </DashboardMenuItem>
+      {/*<DashboardMenuItem link='/coach/now' icon='hand'>
       Здесь и сейчас
     </DashboardMenuItem>
     <DashboardMenuItem link='/coach/group-sessions' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-    <DashboardMenuItem link='/coach/wallet' icon='my-purse'>
-      Кошелек
-    </DashboardMenuItem>
-    {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
+      <DashboardMenuItem disabled={isApproved} link='/coach/wallet' icon='my-purse'>
+        Кошелек
+      </DashboardMenuItem>
+      {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}
-    <DashboardMenuItem link='/coach/settings' icon='settings'>
-      Настройки
-    </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/support' icon='help'>
-      Поддержка
-    </DashboardMenuItem>
-    <Delimiter />
-    <DashboardMenuItem link='/coach/schedule' icon='none'>
-      Расписание
-    </DashboardMenuItem>
-    {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
+      <DashboardMenuItem link='/coach/settings' icon='settings'>
+        Настройки
+      </DashboardMenuItem>
+      <DashboardMenuItem disabled={isApproved} link='/coach/support' icon='help'>
+        Поддержка
+      </DashboardMenuItem>
+      <Delimiter />
+      <DashboardMenuItem disabled={isApproved} link='/coach/schedule' icon='none'>
+        Расписание
+      </DashboardMenuItem>
+      {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>*/}
-    <DashboardMenuItem link='/coach/blocked' icon='calendar-with-clock'>
-      Заблокированные
-    </DashboardMenuItem>
-  </ItemsWrapper>
-)
+      <DashboardMenuItem disabled={isApproved} link='/coach/blocked' icon='calendar-with-clock'>
+        Заблокированные
+      </DashboardMenuItem>
+    </ItemsWrapper>
+  )
+}
