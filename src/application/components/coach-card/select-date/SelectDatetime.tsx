@@ -162,6 +162,7 @@ const OnlyOneTabStyles = css`
   justify-content: flex-end;
   padding-top: 16px;
   padding-bottom: 8px;
+  padding-right: 24px;
 `
 
 const StyledTab = styled(Tab)<StyledTabTypes>`
