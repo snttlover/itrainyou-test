@@ -7,6 +7,6 @@ export const $newestParticipantsList = $newestParticipants.map(participants => p
     avatar: client.avatar,
     name: `${client.firstName} ${client.lastName}`,
     duration: `${session.durationType.slice(1, session.durationType.length)} мин`,
-    time: dayjs(session.startDatetime).format(`HH:mm`)
+    time: dayjs(session.startDatetime).format(`DD MMM HH:mm`)
   }
 }))
