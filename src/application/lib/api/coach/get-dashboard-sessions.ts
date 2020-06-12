@@ -24,6 +24,9 @@ type getDashboardSessionsParams = {
 }
 
 export const getDashboardSessions = (params?: getDashboardSessionsParams) =>
-  get<DashboardSession[], getDashboardSessionsParams>(`${process.env.BACKEND_URL}/api/v1/web/coaches/me/dashboard/sessions//`, keysToSnake(params))
+  get<DashboardSession[], getDashboardSessionsParams>(
+    `${process.env.BACKEND_URL}/api/v1/web/coaches/me/dashboard/sessions/`,
+    keysToSnake(params)
+  )
     .then(response => response.data)
     .then(keysToCamel)
