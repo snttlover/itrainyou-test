@@ -14,7 +14,7 @@ const Placeholder = styled.p`
   line-height: 22px;
 `
 
-const DropdownItem = styled.div`
+export const DropdownItem = styled.div`
   width: 100%;
   cursor: pointer;
   padding: 9px 12px;
@@ -43,6 +43,7 @@ const Dropdown = styled.div`
   margin-bottom: 16px;
   z-index: 1;
   overflow: auto;
+  overflow-x: hidden;
 `
 
 const SelectBox = styled.div<{ isOpen: boolean; error?: boolean }>`
@@ -56,11 +57,20 @@ const SelectBox = styled.div<{ isOpen: boolean; error?: boolean }>`
   display: flex;
   align-items: center;
   padding: 0 12px 0 8px;
+  
 
   ${Arrow} {
     margin-left: auto;
     transform: rotate(${({ isOpen }) => (isOpen ? "180deg" : "0deg")});
   }
+`
+
+const Label = styled.div`
+  width: 100%;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 
 type Value = string | number
@@ -120,7 +130,7 @@ export const SelectInput = <T extends Value = Value>({
         }
       }}
     >
-      {selectedItem ? selectedItem.label : <Placeholder>{placeholder}</Placeholder>}
+      {selectedItem ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
     </SelectBox>

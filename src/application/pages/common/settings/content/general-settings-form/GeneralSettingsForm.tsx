@@ -14,7 +14,7 @@ import {
 } from "@/application/pages/common/settings/content/general-settings-form/general-settings.model"
 import { Spinner } from "@/application/components/spinner/Spinner"
 import { MediaRange } from "@/application/lib/responsive/media"
-import { SelectInput, SelectInputProps } from "@/application/components/select-input/SelectInput"
+import { DropdownItem, SelectInput, SelectInputProps } from "@/application/components/select-input/SelectInput"
 import { timeZones } from "@/application/pages/common/settings/content/general-settings-form/time-zones"
 import { mounted } from "@/application/pages/common/settings/content/general-settings-form/general-settings.model"
 
@@ -52,6 +52,13 @@ const Actions = styled.div`
 
 const StyledSelectInput = styled(SelectInput)<SelectInputProps<string>>`
    height: 36px;
+   ${DropdownItem} {
+    width: 100%;
+    position: relative;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+   }
 `
 
 export const GeneralSettingsForm = () => {
