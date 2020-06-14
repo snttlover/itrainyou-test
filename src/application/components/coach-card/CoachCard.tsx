@@ -104,6 +104,7 @@ const PriceContainer = styled.div`
   display: flex;
   align-items: center;
   color: #fff;
+  margin-top: -4px;
 
   font-weight: normal;
   font-size: 12px;
