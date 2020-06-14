@@ -32,9 +32,12 @@ export const $coachAccess = $userData.map(userData => ({
   lastRegistrationApplyDatetime: userData.coach?.lastRegistrationApplyDatetime,
 }))
 
+export const changeToken = createEvent<string>()
+
 export const $token = createStore<string | undefined>("")
   .on(serverStarted, (state, payload) => payload.cookies[TOKEN_KEY])
   .on(loggedIn, (state, payload) => payload.token)
+  .on(changeToken, (_, token) => token)
   .reset(logout)
 
 export const $isLoggedIn = createStore(false)

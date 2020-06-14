@@ -6,6 +6,8 @@ import { combine, createEffect, createStoreObject } from "effector-next"
 import { Toast, toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import Cookies from "js-cookie"
 import { TOKEN_KEY } from "@/store"
+import { videoUploadProgressChanged } from "@/application/feature/coach-get-access/coach-get-access.model"
+import { changeToken } from "@/application/feature/user/user.model"
 
 type ResetRType = {
   oldPassword: string
@@ -22,7 +24,9 @@ const successToast: Toast = {
 }
 changePasswordFx.done.watch(data => {
   // @ts-ignore
-  Cookies.set(TOKEN_KEY, data.result.token)
+  const token: string = data.result.token
+  Cookies.set(TOKEN_KEY, token)
+  changeToken(token)
   toasts.remove(successToast)
   toasts.add(successToast)
 })
@@ -56,8 +60,9 @@ export const [$oldPassword, oldPasswordChanged, $oldPasswordError, $isOldPasswor
   }
 )
 
-
-$oldPasswordError.on(changePasswordFx.fail, (state, { error }) => {
+$oldPasswordError
+  .on(changePasswordFx, () => ``)
+  .on(changePasswordFx.fail, (state, { error }) => {
   if (error.response?.data.old_password) {
     return `Вы указали неверный пароль`
   }
