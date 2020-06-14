@@ -29,7 +29,7 @@ export const ClientMenuItems = () => (
     <DashboardMenuItem link='/client/' icon='home'>
       Главная страница
     </DashboardMenuItem>
-    <DashboardMenuItem disabled link='/client/coaches' icon='my-coaches'>
+    <DashboardMenuItem disabled link='/client/coaches/' icon='my-coaches'>
       Мои коучи
     </DashboardMenuItem>
     {/*<DashboardMenuItem link='/client/' icon='hand'>
@@ -38,16 +38,16 @@ export const ClientMenuItems = () => (
     <DashboardMenuItem link='/client/' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-    <DashboardMenuItem disabled link='/client/wallet' icon='my-purse'>
+    <DashboardMenuItem disabled link='/client/wallet/' icon='my-purse'>
       Кошелек
     </DashboardMenuItem>
     {/*<DashboardMenuItem link='/client/' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}
-    <DashboardMenuItem link='/client/settings' icon='settings'>
+    <DashboardMenuItem link='/client/settings/' icon='settings'>
       Настройки
     </DashboardMenuItem>
-    <DashboardMenuItem disabled link='/client/support' icon='help'>
+    <DashboardMenuItem disabled link='/client/support/' icon='help'>
       Поддержка
     </DashboardMenuItem>
   </ItemsWrapper>

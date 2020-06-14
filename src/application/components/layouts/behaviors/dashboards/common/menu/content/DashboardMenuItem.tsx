@@ -5,6 +5,7 @@ import { MediaRange } from "@/application/lib/responsive/media"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { changeBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
+import { route } from "next/dist/next-server/server/router"
 
 const MenuItemIcon = styled(Icon).attrs(props => ({
   name: props.name,
@@ -31,20 +32,20 @@ const StyledMenuItem = styled.a<{ disabled?: boolean }>`
   width: 100%;
   margin-bottom: 15px;
   padding: 8px 24px;
-  opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
-  &.selected {
-    background: #9ba9b4;
-  }
-  ${MediaRange.lessThan(`tablet`)`
-    &.selected {
-      background: transparent;
-    }
-  `}
+  opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};  
   &:last-child {
     margin-bottom: 0;
   }
   ${MediaRange.lessThan(`tablet`)`
     margin-bottom: 36px;
+  `}
+  &[data-selected="true"] {
+    background: #9ba9b4;
+  }
+  ${MediaRange.lessThan(`tablet`)`
+    &[data-selected="true"] {
+      background: transparent;
+    }
   `}
 `
 
@@ -80,11 +81,6 @@ type MenuItemTypes = {
 export const DashboardMenuItem = (props: MenuItemTypes) => {
   const router = useRouter()
 
-  let className = ``
-  if (router.pathname === props.link) {
-    className += `selected`
-  }
-
   const clickHandler = (e: SyntheticEvent) => {
     if (props.disabled) {
       e.preventDefault()
@@ -95,7 +91,7 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
 
   return (
     <Link passHref href={props.link}>
-      <StyledMenuItem onClick={clickHandler} disabled={props.disabled} className={className}>
+      <StyledMenuItem onClick={clickHandler} disabled={props.disabled} data-selected={router.asPath === props.link}>
         <MenuItemIcon name={props.icon} />
         <Label>{props.children}</Label>
       </StyledMenuItem>

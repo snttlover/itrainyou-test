@@ -49,7 +49,7 @@ export const CoachMenuItems = () => {
       <DashboardMenuItem link='/coach/' icon='home'>
         Главная страница
       </DashboardMenuItem>
-      <DashboardMenuItem disabled={isApproved} link='/coach/clients' icon='my-coaches'>
+      <DashboardMenuItem disabled={isApproved} link='/coach/clients/' icon='my-coaches'>
         Мои клиенты
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/now' icon='hand'>
@@ -58,26 +58,26 @@ export const CoachMenuItems = () => {
     <DashboardMenuItem link='/coach/group-sessions' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link='/coach/wallet' icon='my-purse'>
+      <DashboardMenuItem disabled={isApproved} link='/coach/wallet/' icon='my-purse'>
         Кошелек
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}
-      <DashboardMenuItem link='/coach/settings' icon='settings'>
+      <DashboardMenuItem link='/coach/settings/' icon='settings'>
         Настройки
       </DashboardMenuItem>
-      <DashboardMenuItem disabled={isApproved} link='/coach/support' icon='help'>
+      <DashboardMenuItem disabled={isApproved} link='/coach/support/' icon='help'>
         Поддержка
       </DashboardMenuItem>
       <Delimiter />
-      <DashboardMenuItem disabled={isApproved} link='/coach/schedule' icon='none'>
+      <DashboardMenuItem disabled={isApproved} link='/coach/schedule/' icon='none'>
         Расписание
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link='/coach/blocked' icon='calendar-with-clock'>
+      <DashboardMenuItem disabled={isApproved} link='/coach/blocked/' icon='calendar-with-clock'>
         Заблокированные
       </DashboardMenuItem>
     </ItemsWrapper>
