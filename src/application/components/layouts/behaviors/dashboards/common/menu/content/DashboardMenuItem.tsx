@@ -1,9 +1,10 @@
-import React from "react"
+import React, { SyntheticEvent } from "react"
 import styled from "styled-components"
 import { Icon, IconName } from "@/application/components/icon/Icon"
 import { MediaRange } from "@/application/lib/responsive/media"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { changeBlueLayoutMobileMenuVisibility } from "@/application/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 
 const MenuItemIcon = styled(Icon).attrs(props => ({
   name: props.name,
@@ -84,13 +85,17 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
     className += `selected`
   }
 
+  const clickHandler = (e: SyntheticEvent) => {
+    if (props.disabled) {
+      e.preventDefault()
+    } else {
+      changeBlueLayoutMobileMenuVisibility(false)
+    }
+  }
+
   return (
     <Link passHref href={props.link}>
-      <StyledMenuItem
-        onClick={e => props.disabled && e.preventDefault()}
-        disabled={props.disabled}
-        className={className}
-      >
+      <StyledMenuItem onClick={clickHandler} disabled={props.disabled} className={className}>
         <MenuItemIcon name={props.icon} />
         <Label>{props.children}</Label>
       </StyledMenuItem>
