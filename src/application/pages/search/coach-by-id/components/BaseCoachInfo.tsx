@@ -11,7 +11,9 @@ import { useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
 
-const StyledAvatar = styled(Avatar)`
+const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
+  border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
+
   ${MediaRange.greaterThan("mobile")`        
     width: 120px;
     min-width: 120px;
@@ -158,7 +160,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
   return (
     <StyledBlock inline {...props}>
       <UserInfoWrapper>
-        <StyledAvatar src={coach?.avatar!} />
+        <StyledAvatar src={coach?.avatar!} isTopCoach={!!coach?.isTopCoach} />
         <UserInfo>
           <Name>
             {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
