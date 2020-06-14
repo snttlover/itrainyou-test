@@ -10,3 +10,5 @@ export const $newestParticipantsList = $newestParticipants.map(participants => p
     time: dayjs(session.startDatetime).format(`DD MMM HH:mm`)
   }
 }))
+
+export const $hasNewestParticipantsList = $newestParticipantsList.map(participantsList => !!participantsList.length)

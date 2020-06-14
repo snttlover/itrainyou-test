@@ -9,6 +9,7 @@ import { useStore } from "effector-react"
 import { $hasTodaySessions } from "@/application/pages/coach/home/sessions/content/today/today-sessions.model"
 import { $hasStartedSessions } from "@/application/pages/coach/home/sessions/content/started/started-sessions.model"
 import { Loader } from "@/application/components/spinner/Spinner"
+import { $hasNewestParticipantsList } from "@/application/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
 
 const Container = styled.div`
   width: 100%;
@@ -25,12 +26,13 @@ const Container = styled.div`
 const Sessions = () => {
   const hasToday = useStore($hasTodaySessions)
   const hasStarted = useStore($hasStartedSessions)
+  const hasNewest = useStore($hasNewestParticipantsList)
 
   return (
     <>
       {hasStarted && <StartedSessions />}
       {hasToday && <TodaySessions />}
-      <NewestParticipants />
+      {hasNewest && <NewestParticipants />}
     </>
   )
 }
