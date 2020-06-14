@@ -1,4 +1,5 @@
 import { CoachDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { ContentContainer } from "@/application/components/layouts/ContentContainer"
 import { Loader } from "@/application/components/spinner/Spinner"
 import { loadUserDataFx } from "@/application/feature/user/user.model"
 import { MediaRange } from "@/application/lib/responsive/media"
@@ -15,7 +16,7 @@ import styled from "styled-components"
 
 const Container = styled.div`
   max-width: 600px;
-  margin: 36px auto 0;
+  margin: 36px 0 0;
   position: relative;
   ${MediaRange.greaterThan("mobile")`
     width: 80%;
@@ -88,8 +89,10 @@ export const CoachHome = () => {
 
   return (
     <CoachDashboardLayout>
-      {!isUserDataLoading && <CurrentState />}
-      {isUserDataLoading && <Loader />}
+      <ContentContainer>
+        {!isUserDataLoading && <CurrentState />}
+        {isUserDataLoading && <Loader />}
+      </ContentContainer>
     </CoachDashboardLayout>
   )
 }
