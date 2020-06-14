@@ -11,7 +11,7 @@ const LoginLink = styled.a`
   color: #7d36a8;
 `
 
-const RegistrationButton = styled(Button).attrs({ slim: true })`
+const RegistrationButton = styled(Button)`
   margin-left: 24px;
 `
 

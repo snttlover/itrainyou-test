@@ -74,7 +74,7 @@ export const PasswordForm = () => {
         <Input type='password' value={form.passwordRepeat} onChange={passwordRepeatChanged} />
       </StyledFormItem>
       <Actions>
-        <DashedButton slim disabled={!isFormValid || isFetching}>
+        <DashedButton disabled={!isFormValid || isFetching}>
           Изменить пароль
         </DashedButton>
       </Actions>

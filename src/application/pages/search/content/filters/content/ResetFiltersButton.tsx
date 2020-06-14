@@ -23,7 +23,7 @@ export const ResetFiltersButton = (props: ResetFiltersButtonTypes) => {
 
   return (
     <Container className={props.className}>
-      <StyledButton slim={true} onClick={() => clickHandler()}>Сбросить</StyledButton>
+      <StyledButton onClick={() => clickHandler()}>Сбросить</StyledButton>
     </Container>
   )
 }

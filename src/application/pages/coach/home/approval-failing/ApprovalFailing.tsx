@@ -93,7 +93,7 @@ export const ApprovalFailing = () => (
     <StyledBottomMobileSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomMobileSubtitle>
     <But>Но!</But>
     <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
-    <StyledButton slim onClick={() => Router.push("/client", "/client")}>
+    <StyledButton onClick={() => Router.push("/client", "/client")}>
       Попробовать
     </StyledButton>
   </Container>

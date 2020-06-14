@@ -100,7 +100,7 @@ export const HomePage = () => {
             <Title>Сессия уже началась!</Title>
             {activeSessions.map(session => (
               <ActiveSessionCard session={session} key={session.id}>
-                <SessionEnterButton slim>Зайти в сессию</SessionEnterButton>
+                <SessionEnterButton data-slim>Зайти в сессию</SessionEnterButton>
                 <SessionEnterText>Зайти в сессию</SessionEnterText>
               </ActiveSessionCard>
             ))}

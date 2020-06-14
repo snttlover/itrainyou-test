@@ -1,13 +1,14 @@
 import * as React from "react"
 import styled from "styled-components"
+import { MediaRange } from "@/application/lib/responsive/media"
 
 type ButtonTypes = {
   "data-secondary"?: any
-  slim?: boolean
+  "data-slim"?: any
 }
 
 export const Button = styled.button<ButtonTypes>`
-  padding: ${props => (props.slim ? `4px` : `8px `)} 24px;
+  padding: 4px 24px;
   text-align: center;
   font-weight: 500;
   font-size: 14px;
@@ -18,6 +19,10 @@ export const Button = styled.button<ButtonTypes>`
   outline: none;
   color: #ffffff;
   cursor: pointer;
+  
+  &[data-slim="true"] {
+   padding: 4px 24px;
+  }
 
   &[data-secondary="true"] {
     background: #7d36a8;
@@ -27,6 +32,14 @@ export const Button = styled.button<ButtonTypes>`
   }
 
   transition: all 200ms ease;
+  
+  ${MediaRange.lessThan(`tablet`)`
+    padding: 8px 24px;
+    &[data-slim="true"] {
+      padding: 4px 24px;
+    }
+
+  `}
 
   &:hover {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12), 1px 1px 3px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.12);

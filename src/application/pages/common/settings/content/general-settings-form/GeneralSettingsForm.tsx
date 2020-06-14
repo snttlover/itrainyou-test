@@ -91,7 +91,7 @@ export const GeneralSettingsForm = () => {
         />
       </StyledFormItem>
       <Actions>
-        <DashedButton slim disabled={!isFormValid || isFetching}>
+        <DashedButton disabled={!isFormValid || isFetching}>
           Сохранить изменения
         </DashedButton>
       </Actions>

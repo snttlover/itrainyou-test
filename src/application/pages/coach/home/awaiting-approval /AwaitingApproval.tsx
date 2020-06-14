@@ -58,7 +58,7 @@ export const AwaitingApproval = () => (
     <StyledSubTitle>В среднем заявка обрабатывается около 2 дней</StyledSubTitle>
     <RegisterSteps />
     <StyledBottomSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomSubtitle>
-    <StyledButton slim onClick={() => Router.push("/client", "/client")}>
+    <StyledButton onClick={() => Router.push("/client", "/client")}>
       Попробовать
     </StyledButton>
   </>

@@ -90,7 +90,7 @@ const Time = styled.div`
   `}
 `
 
-const StyledButton = styled(Button).attrs({ slim: true })`
+const StyledButton = styled(Button)`
   width: 151px;
   font-weight: normal;
   ${MediaRange.lessThan(`mobile`)`
@@ -115,7 +115,7 @@ export const CoachSessionCard = (props: CoachSessionCardTypes) => (
     </NameContainer>
     <ActionsContainer>
       <Time>{props.time}</Time>
-      {props.isActive && <StyledButton>Зайти в сессию</StyledButton>}
+      {props.isActive && <StyledButton data-slim>Зайти в сессию</StyledButton>}
     </ActionsContainer>
   </Container>
 )

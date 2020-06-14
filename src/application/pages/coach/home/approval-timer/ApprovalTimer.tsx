@@ -86,7 +86,7 @@ export const ApprovalTimer = () => {
       <Timer />
       <LearnHere>Здесь можно подучиться!</LearnHere>
       <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
-      <StyledButton slim onClick={() => Router.push("/client", "/client")}>
+      <StyledButton onClick={() => Router.push("/client", "/client")}>
         Попробовать
       </StyledButton>
     </Container>
