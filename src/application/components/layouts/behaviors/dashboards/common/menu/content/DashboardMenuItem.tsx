@@ -71,6 +71,8 @@ const Label = styled.div`
   `}
 `
 
+const prepareLink = (value: string) =>  value.replace(/\/$/g, ``) + `/`
+
 type MenuItemTypes = {
   icon: IconName
   link: string
@@ -89,9 +91,13 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
     }
   }
 
+  const routerPath = prepareLink(router.asPath)
+  const currentLink = prepareLink(props.link)
+  const isSelectedLink = routerPath === currentLink
+
   return (
     <Link passHref href={props.link}>
-      <StyledMenuItem onClick={clickHandler} disabled={props.disabled} data-selected={router.asPath === props.link}>
+      <StyledMenuItem onClick={clickHandler} disabled={props.disabled} data-selected={isSelectedLink}>
         <MenuItemIcon name={props.icon} />
         <Label>{props.children}</Label>
       </StyledMenuItem>
