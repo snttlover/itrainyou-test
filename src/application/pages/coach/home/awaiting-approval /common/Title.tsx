@@ -6,7 +6,7 @@ export const Title = styled.div`
   font-size: 24px;
   line-height: 26px;
   text-align: center;
-  color: #75309e;
+  color: #7d36a8;
   ${MediaRange.lessThan(`mobile`)`
     font-size: 20px;
     line-height: 26px;
