@@ -126,9 +126,15 @@ type CoachInformationProps = {
   onRegisterClick: () => void
   loading: boolean
   withoutCheckStep?: boolean
+  className?: string
 }
 
-export const CoachInformation = ({ onRegisterClick, loading, withoutCheckStep = false }: CoachInformationProps) => {
+export const CoachInformation = ({
+  onRegisterClick,
+  loading,
+  withoutCheckStep = false,
+  className,
+}: CoachInformationProps) => {
   const selectedCategories = useStore($selectedCategories)
 
   const isFormValid = useStore($formValid)
@@ -146,7 +152,7 @@ export const CoachInformation = ({ onRegisterClick, loading, withoutCheckStep = 
   ))
 
   return (
-    <Container>
+    <Container className={className}>
       <CategoriesContainer>
         <CategoriesTitle>Выберите направления, в которых Вы проводите сессии:</CategoriesTitle>
         {categoriesLoading ? (

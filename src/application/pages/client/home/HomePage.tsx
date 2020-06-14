@@ -1,6 +1,7 @@
 import { Button } from "@/application/components/button/normal/Button"
 import { CoachCard } from "@/application/components/coach-card/CoachCard"
 import { ClientDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { ContentContainer } from "@/application/components/layouts/ContentContainer"
 import { Loader, Spinner } from "@/application/components/spinner/Spinner"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { SessionCard } from "@/application/pages/client/home/SessionCard"
@@ -20,18 +21,9 @@ import {
 import React, { useEffect } from "react"
 import styled from "styled-components"
 
-const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 16px 16px;
-
-  ${MediaRange.greaterThan("tablet")`
-    padding: 0;
-  `}
-`
-
 const Block = styled.div`
   position: relative;
+  max-width: 600px;
 `
 
 const Title = styled.div`
@@ -102,7 +94,7 @@ export const HomePage = () => {
 
   return (
     <ClientDashboardLayout>
-      <Container>
+      <ContentContainer>
         {activeSessions.length > 0 && (
           <Block>
             <Title>Сессия уже началась!</Title>
@@ -140,7 +132,7 @@ export const HomePage = () => {
             ))}
           </InfiniteScroll>
         </Block>
-      </Container>
+      </ContentContainer>
     </ClientDashboardLayout>
   )
 }

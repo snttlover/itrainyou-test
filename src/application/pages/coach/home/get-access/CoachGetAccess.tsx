@@ -181,7 +181,7 @@ const CoachFilledPercentContainerLaptop = styled.div`
   `}
 `
 
-export const CoachGetAccess = () => {
+export const CoachGetAccess = ({ className }: { className?: string }) => {
   const progress = useStore($progress)
   const isLoading = useStore(patchCoachDataFx.pending)
   useEffect(() => {
@@ -205,7 +205,12 @@ export const CoachGetAccess = () => {
         <FilledDescription>При заполнении 100%, вы сможете отправить заявку.</FilledDescription>
       </CoachFilledPercentContainerLaptop>
 
-      <CoachInformation withoutCheckStep onRegisterClick={() => updateCoachData()} loading={isLoading} />
+      <CoachInformation
+        className={className}
+        withoutCheckStep
+        onRegisterClick={() => updateCoachData()}
+        loading={isLoading}
+      />
     </>
   )
 }

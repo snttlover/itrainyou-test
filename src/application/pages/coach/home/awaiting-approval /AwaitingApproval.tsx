@@ -53,7 +53,7 @@ const StyledButton = styled(Button)`
 `
 
 export const AwaitingApproval = () => (
-  <Container>
+  <>
     <StyledTitle>Ваша заявка ждет одобрения!</StyledTitle>
     <StyledSubTitle>В среднем заявка обрабатывается около 2 дней</StyledSubTitle>
     <RegisterSteps />
@@ -61,5 +61,5 @@ export const AwaitingApproval = () => (
     <StyledButton slim onClick={() => Router.push("/client", "/client")}>
       Попробовать
     </StyledButton>
-  </Container>
+  </>
 )

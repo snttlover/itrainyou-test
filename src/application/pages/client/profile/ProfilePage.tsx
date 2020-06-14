@@ -1,3 +1,4 @@
+import { ContentContainer } from "@/application/components/layouts/ContentContainer"
 import React, { useEffect } from "react"
 import { ClientDashboardLayout } from "@/application/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import styled from "styled-components"
@@ -9,13 +10,10 @@ import { MediaRange } from "@/application/lib/responsive/media"
 import { useStore } from "effector-react"
 import { Loader } from "@/application/components/spinner/Spinner"
 
-const Container = styled.div`
+const Container = styled(ContentContainer)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 960px;
   padding: 0 24px;
   position: relative;
   ${MediaRange.lessThan(`mobile`)`
@@ -33,15 +31,15 @@ const ProfilePage = () => {
 
   return (
     <ClientDashboardLayout>
-      {
-        !pageLoading ? (
-          <Container>
-            <ProfileHeader />
-            <ProfileInterests />
-            {sessionsCount && <IndividualSessions />}
-          </Container>
-        ) : <Loader />
-      }
+      {!pageLoading ? (
+        <Container>
+          <ProfileHeader />
+          <ProfileInterests />
+          {sessionsCount && <IndividualSessions />}
+        </Container>
+      ) : (
+        <Loader />
+      )}
     </ClientDashboardLayout>
   )
 }
