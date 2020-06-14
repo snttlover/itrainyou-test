@@ -175,7 +175,7 @@ export const CoachInformation = ({ onRegisterClick, loading, withoutCheckStep = 
           disabled={loading || isVideoUploading || !isFormValid}
           onClick={onRegisterClick}
         >
-          Зарегистрироваться
+          Отправить заявку
         </SendRequestButton>
       </ButtonContainer>
     </Container>
