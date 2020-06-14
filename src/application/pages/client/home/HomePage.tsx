@@ -111,10 +111,7 @@ export const HomePage = () => {
           <Block>
             <Title>У вас сегодня</Title>
             {todaySessions.map(session => (
-              <TodaySessionCard session={session} key={session.id}>
-                <SessionEnterButton slim>Зайти в сессию</SessionEnterButton>
-                <SessionEnterText>Зайти в сессию</SessionEnterText>
-              </TodaySessionCard>
+              <TodaySessionCard session={session} key={session.id} />
             ))}
             {todaySessionsPending && <Loader />}
           </Block>
