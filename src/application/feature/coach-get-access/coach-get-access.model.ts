@@ -2,8 +2,6 @@ import { uploadMedia } from "@/application/lib/api/media"
 import { createEffectorField } from "@/application/lib/generators/efffector"
 import { phoneValidator, trimString } from "@/application/lib/validators"
 import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-next"
-import { $userData } from "../../pages/auth/pages/signup/signup.model"
-import { Category } from "../categories/categories.store"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",

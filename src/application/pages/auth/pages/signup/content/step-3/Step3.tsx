@@ -2,12 +2,10 @@ import { Avatar } from "@/application/components/avatar/Avatar"
 import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
 import { AuthLayout } from "@/application/components/layouts/sections/auth/AuthLayout"
-import { SelectInput } from "@/application/components/select-input/SelectInput"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
 import { BirthdayFormGroup } from "@/application/pages/auth/pages/signup/content/step-3/BirthdayFormGroup"
-import { FormGroup } from "@/application/pages/auth/pages/signup/content/step-3/FormGroup"
 import {
   $isStep3FormValid,
   $isUploadModelOpen,
@@ -15,7 +13,6 @@ import {
   $step3FormErrors,
   lastNameChanged,
   nameChanged,
-  sexChanged,
   step3Mounted,
   toggleUploadModal,
 } from "@/application/pages/auth/pages/signup/content/step-3/step3.model"
@@ -74,6 +71,9 @@ const UserAvatar = styled(Avatar)`
   width: 60px;
   height: 60px;
   cursor: pointer;
+  & > svg {
+    fill: #fff;
+  }
 `
 
 const Form = styled.form`
