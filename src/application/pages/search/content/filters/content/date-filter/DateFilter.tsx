@@ -1,3 +1,4 @@
+import { date as formatedDate } from "@/application/lib/formatting/date"
 import * as React from "react"
 import styled from "styled-components"
 import { RadioGroup, RadioOption } from "@/application/components/radio/Radio"
@@ -5,7 +6,6 @@ import { useState } from "react"
 import { Calendar, CalendarDateType } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import arrowImage from "./images/arrow.svg"
-import { date as formatedDate } from "@/application/lib/helpers/date"
 import {
   $searchPageQuery,
   addSearchPageQuery,

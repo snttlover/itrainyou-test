@@ -1,6 +1,6 @@
 import { ClientSession, getClientSessions } from "@/application/lib/api/client-session"
 import { Coach, getRecommendations } from "@/application/lib/api/coach"
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-next"
 
 export const loadRecommendationsFx = createEffect({

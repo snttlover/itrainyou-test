@@ -1,4 +1,4 @@
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import { $activeCoachSessions } from "@/application/pages/coach/home/sessions/coach-sessions-page.model"
 
 export const $startedSessionsList = $activeCoachSessions.map(sessions =>

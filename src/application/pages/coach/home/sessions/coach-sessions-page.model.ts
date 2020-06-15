@@ -1,4 +1,4 @@
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-next"
 import { DashboardSession, getDashboardSessions } from "@/application/lib/api/coach/get-dashboard-sessions"
 

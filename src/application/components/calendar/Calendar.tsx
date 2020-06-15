@@ -1,4 +1,4 @@
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import * as React from "react"
 import styled, { css } from "styled-components"
 import { Dispatch, SetStateAction, useState } from "react"

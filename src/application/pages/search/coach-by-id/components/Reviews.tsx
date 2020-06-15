@@ -1,6 +1,6 @@
 import { Avatar } from "@/application/components/avatar/Avatar"
 import { Rating } from "@/application/components/rating/Rating"
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $reviews } from "@/application/pages/search/coach-by-id/coach-by-id.model"
 import { Block } from "@/application/pages/search/coach-by-id/components/common/Block"

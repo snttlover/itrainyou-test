@@ -1,6 +1,6 @@
 import { IsAuthed } from "@/application/feature/user/IsAuthed"
 import { IsGuest } from "@/application/feature/user/IsGuest"
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import * as React from "react"

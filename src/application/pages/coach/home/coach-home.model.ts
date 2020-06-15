@@ -1,6 +1,6 @@
 import { $coachAccess, loadUserDataFx } from "@/application/feature/user/user.model"
 import { updateRegistrationApplication } from "@/application/lib/api/coach/update-registration-application"
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import { InferStoreType } from "@/application/lib/types/effector"
 import { combine, createEffect, createEvent, createStore, forward } from "effector"
 

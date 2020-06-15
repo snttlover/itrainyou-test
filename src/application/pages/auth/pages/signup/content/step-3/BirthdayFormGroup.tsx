@@ -1,6 +1,6 @@
 import { FormItem, Label } from "@/application/components/form-item/FormItem"
 import { SelectInput } from "@/application/components/select-input/SelectInput"
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { FormGroup } from "@/application/pages/auth/pages/signup/content/step-3/FormGroup"
 import {

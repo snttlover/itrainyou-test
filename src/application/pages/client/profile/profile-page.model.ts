@@ -1,5 +1,5 @@
 import { getMyClient, ClientSelfData } from "@/application/lib/api/client/clientInfo"
-import { date } from "@/application/lib/helpers/date"
+import { date } from "@/application/lib/formatting/date"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector"
 import { $categoriesList, fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
 import { getMyTransactions, SessionTransaction } from "@/application/lib/api/transactions/client/list-transaction"

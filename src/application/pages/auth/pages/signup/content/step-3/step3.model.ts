@@ -1,6 +1,6 @@
 import { UploadMediaResponse } from "@/application/lib/api/media"
+import { date } from "@/application/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
-import { date } from "@/application/lib/helpers/date"
 import { trimString } from "@/application/lib/validators"
 import { $userData, clientDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
 import { Dayjs } from "dayjs"
