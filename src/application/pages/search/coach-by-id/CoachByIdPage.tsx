@@ -1,9 +1,9 @@
+import { ContentContainer } from "@/application/components/layouts/ContentContainer"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $coach, mounted } from "@/application/pages/search/coach-by-id/coach-by-id.model"
 import { AboutCoach } from "@/application/pages/search/coach-by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/application/pages/search/coach-by-id/components/BaseCoachInfo"
 import { Reviews } from "@/application/pages/search/coach-by-id/components/Reviews"
-import { withStart } from "effector-next"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import styled from "styled-components"
@@ -12,9 +12,11 @@ import { CoachDatepicker } from "@/application/pages/search/content/list/content
 import { useStore } from "effector-react"
 import { UserLayout } from "@/application/components/layouts/behaviors/user/UserLayout"
 
-const Content = styled.div`
-  margin: 20px 8px;
-  min-width: 304px;
+const InfoWithSidebar = styled.div`
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  max-width: 900px;
 
   ${MediaRange.greaterThan("mobile")`
     margin-top: 28px;
@@ -22,13 +24,6 @@ const Content = styled.div`
   ${MediaRange.greaterThan("tablet")`
     margin-top: 36px;
   `}
-`
-
-const InfoWithSidebar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  max-width: 900px;
-  margin: 0 auto;
 `
 
 const BuySidebar = styled.div`
@@ -113,7 +108,7 @@ export const CoachByIdPage = () => {
   }, [])
   return (
     <UserLayout>
-      <Content>
+      <ContentContainer>
         <InfoWithSidebar>
           <CoachInfoContainer>
             <MainCoachBlock>
@@ -129,7 +124,7 @@ export const CoachByIdPage = () => {
             <Datepicker />
           </BuySidebar>
         </InfoWithSidebar>
-      </Content>
+      </ContentContainer>
     </UserLayout>
   )
 }
