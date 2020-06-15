@@ -2,11 +2,9 @@ import { Icon } from "@/application/components/icon/Icon"
 import * as React from "react"
 import styled from "styled-components"
 
-const AvatarContainer = styled.div<{ size: number }>`
-  width: ${({ size }) => size}px;
-  min-width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-  min-height: ${({ size }) => size}px;
+const AvatarContainer = styled.div`
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -31,12 +29,9 @@ const AvatarImage = styled.div<{ src: string | null }>`
 
 type AvatarProps = {
   src: string | null
-  size?: number
   onClick?: () => void
 }
 
-export const Avatar = ({ src, size = 80, ...props }: AvatarProps) => (
-  <AvatarContainer size={size} {...props}>
-    {src ? <AvatarImage src={src} /> : <AvatarPlaceholder />}
-  </AvatarContainer>
+export const Avatar = ({ src, ...props }: AvatarProps) => (
+  <AvatarContainer {...props}>{src ? <AvatarImage src={src} /> : <AvatarPlaceholder />}</AvatarContainer>
 )

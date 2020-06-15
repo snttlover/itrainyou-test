@@ -93,6 +93,11 @@ const Date = styled.p`
   margin-left: auto;
 `
 
+const StyledAvatar = styled(Avatar)`
+  width: 40px;
+  height: 40px;
+`
+
 type ReviewProps = {
   name: string
   rating: number
@@ -108,7 +113,7 @@ const Review = styled(({ name, rating, avatar, text, date, ...props }: ReviewPro
   return (
     <StyledBlock {...props}>
       <UserInfoContainer>
-        <Avatar src={avatar} size={40} />
+        <StyledAvatar src={avatar} />
         <UserName>{name}</UserName>
         <StyledRating value={rating} />
       </UserInfoContainer>
