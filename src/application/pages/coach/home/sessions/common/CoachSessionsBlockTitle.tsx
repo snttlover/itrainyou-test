@@ -16,8 +16,9 @@ const StyledTitle = styled.div`
 
 type CoachSessionsBlockTitleTypes = {
   children: React.ReactChild
+  className?: string
 }
 
-export const CoachSessionsBlockTitle = ({ children }: CoachSessionsBlockTitleTypes) => (
-  <StyledTitle>{children}</StyledTitle>
+export const CoachSessionsBlockTitle = ({ children, className }: CoachSessionsBlockTitleTypes) => (
+  <StyledTitle className={className}>{children}</StyledTitle>
 )
