@@ -5,7 +5,8 @@ import { ClientTopBar } from "@/application/components/layouts/behaviors/dashboa
 import { withProtect } from "@/application/feature/user/with-protect"
 import { ToastsContainer } from "@/application/components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
 import { DashboardContainer } from "@/application/components/layouts/behaviors/dashboards/common/DashboardContainer"
-import { DashboardPageContent } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageContent"
+import { DashboardContent } from "@/application/components/layouts/behaviors/dashboards/common/DashboardContent"
+import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -15,10 +16,12 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => (
   <DashboardContainer {...props}>
     <ClientMenu />
     <ToastsContainer />
-    <DashboardPageContent>
+    <DashboardContent>
       <ClientTopBar />
-      {children}
-    </DashboardPageContent>
+      <DashboardPageWrapper>
+        {children}
+      </DashboardPageWrapper>
+    </DashboardContent>
   </DashboardContainer>
 ))``
 
