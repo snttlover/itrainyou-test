@@ -1,13 +1,8 @@
+import { date } from "@/application/lib/helpers/date"
 import * as React from "react"
 import styled, { css } from "styled-components"
-import dayjs from "dayjs"
-import "dayjs/locale/ru"
 import { Dispatch, SetStateAction, useState } from "react"
-import isBetween from "dayjs/plugin/isBetween"
-dayjs.extend(isBetween)
 import { Icon } from "@/application/components/icon/Icon"
-
-dayjs.locale("ru")
 
 export type CalendarDateType = Date | Date[] | undefined
 
@@ -191,11 +186,11 @@ const MonthContainer = styled.div`
 `
 
 function firsDayOfMonth(month: number, year: number) {
-  return new Date(dayjs(`${year}-${month}-01`).valueOf())
+  return new Date(date(`${year}-${month}-01`).valueOf())
 }
 
 const isEqualDates = (first: Date, second: Date, format: string = `DDMMYYYY`) =>
-  dayjs(first).format(format) === dayjs(second).format(format)
+  date(first).format(format) === date(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
@@ -203,16 +198,16 @@ export const Calendar = (props: CalendarTypes) => {
   const pinnedDefined = !!props.pinnedDates
 
   const equalFormat = `DDMMYYYY`
-  const pinnedDates = (props.pinnedDates || []).map(date => dayjs(date).format(equalFormat))
+  const pinnedDates = (props.pinnedDates || []).map(pinnedDate => date(pinnedDate).format(equalFormat))
 
   type CustomClassNamesTypes = {
     date: Date
   }
 
-  const customClassNames = ({ date }: CustomClassNamesTypes) => {
+  const customClassNames = ({ date: dat }: CustomClassNamesTypes) => {
     const classes = []
 
-    classes.push(`day-of-week-${dayjs(date).day()}`)
+    classes.push(`day-of-week-${date(dat).day()}`)
 
     if (props.pinTo && props.value) {
       const range = [props.pinTo]
@@ -223,41 +218,36 @@ export const Calendar = (props: CalendarTypes) => {
         range.push(value)
       }
 
-      if (dayjs(date).isBetween(range[0], range[1])) {
+      if (date(dat).isBetween(range[0], range[1])) {
         classes.push(`react-calendar__tile--active`)
       }
-      if (isEqualDates(range[0], date)) {
+      if (isEqualDates(range[0], dat)) {
         classes.push(`rangeStart`)
       }
-      if (isEqualDates(range[1], date)) {
+      if (isEqualDates(range[1], dat)) {
         classes.push(`rangeEnd`)
       }
     }
 
     if (pinnedDefined) {
-      if (pinnedDates.includes(dayjs(date).format(equalFormat))) {
+      if (pinnedDates.includes(date(dat).format(equalFormat))) {
         classes.push(`pinned`)
       } else {
         classes.push(`not-pinned`)
       }
     }
 
-    const day = date.getDay()
+    const day = dat.getDay()
     const isWeekend = day === 6 || day === 0
     if (isWeekend) {
       classes.push(`day--weekend`)
     }
 
-    if (!isEqualDates(date, startDate, `MMYYYY`)) {
+    if (!isEqualDates(dat, startDate, `MMYYYY`)) {
       classes.push(`not-current-month`)
     }
 
-    if (
-      date.valueOf() <
-      dayjs()
-        .subtract(1, `day`)
-        .valueOf()
-    ) {
+    if (dat.valueOf() < date().subtract(1, `day`).valueOf()) {
       classes.push(`is-past`)
     }
 
@@ -265,37 +255,25 @@ export const Calendar = (props: CalendarTypes) => {
   }
 
   const prevMonth = () => {
-    changeActiveStartDate(
-      new Date(
-        dayjs(startDate)
-          .subtract(1, "month")
-          .valueOf()
-      )
-    )
+    changeActiveStartDate(new Date(date(startDate).subtract(1, "month").valueOf()))
   }
 
   const nextMonth = () => {
-    changeActiveStartDate(
-      new Date(
-        dayjs(startDate)
-          .add(1, "month")
-          .valueOf()
-      )
-    )
+    changeActiveStartDate(new Date(date(startDate).add(1, "month").valueOf()))
   }
 
   const formatter = `YYYYMM`
-  const lessThanTheCurrentMonth = +dayjs(startDate).format(formatter) <= +dayjs(new Date()).format(formatter)
+  const lessThanTheCurrentMonth = +date(startDate).format(formatter) <= +date(new Date()).format(formatter)
 
   return (
     <CalendarWrapper className={props.className} isBig={props.isBig}>
       <Header>
         <MonthContainer>
           <LeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
-          <MonthName>{dayjs(startDate).format(`MMMM`)}</MonthName>
+          <MonthName>{date(startDate).format(`MMMM`)}</MonthName>
           <RightIcon onClick={nextMonth} />
         </MonthContainer>
-        <Year>{dayjs(startDate).format(`YYYY`)}</Year>
+        <Year>{date(startDate).format(`YYYY`)}</Year>
       </Header>
       <ReactCalendar
         tileClassName={customClassNames}

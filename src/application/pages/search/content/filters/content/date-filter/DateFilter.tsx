@@ -5,9 +5,16 @@ import { useState } from "react"
 import { Calendar, CalendarDateType } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import arrowImage from "./images/arrow.svg"
-import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/application/pages/search/coaches-search.model"
-import {$calendarVisibility, changeVisibility} from "@/application/pages/search/content/filters/content/date-filter/calendar.model"
-import dayjs from "dayjs"
+import { date as formatedDate } from "@/application/lib/helpers/date"
+import {
+  $searchPageQuery,
+  addSearchPageQuery,
+  removeSearchPageQuery,
+} from "@/application/pages/search/coaches-search.model"
+import {
+  $calendarVisibility,
+  changeVisibility,
+} from "@/application/pages/search/content/filters/content/date-filter/calendar.model"
 
 const Container = styled.div`
   padding-top: 16px;
@@ -48,14 +55,14 @@ const Arrow = styled.img.attrs({ src: arrowImage })<ArrowTypes>`
   cursor: pointer;
   right: 0;
   top: 0;
-  transform: rotate(${props => props.opened ? `180deg` : `0`})
+  transform: rotate(${props => (props.opened ? `180deg` : `0`)});
 `
 
 export const DateFilter = () => {
   const q = useStore($searchPageQuery)
 
-  let start = q.nearest_session_date__gte ? dayjs(q.nearest_session_date__lte).valueOf() : null
-  let end = q.nearest_session_date__lte ? dayjs(q.nearest_session_date__gte).valueOf() : null
+  let start = q.nearest_session_date__gte ? formatedDate(q.nearest_session_date__lte).valueOf() : null
+  let end = q.nearest_session_date__lte ? formatedDate(q.nearest_session_date__gte).valueOf() : null
 
   const getRangeType = () => {
     if (!!start && !!end) {
@@ -89,14 +96,14 @@ export const DateFilter = () => {
   const getCalendarValue = (): CalendarDateType => {
     if (rangeType === `range`) {
       // @ts-ignore
-      return [new Date(dayjs(start).valueOf()), new Date(dayjs(end).valueOf())]
+      return [new Date(date(start).valueOf()), new Date(date(end).valueOf())]
     }
     if (rangeType === `to`) {
       // @ts-ignore
-      return new Date(dayjs(end).valueOf())
+      return new Date(date(end).valueOf())
     }
     // @ts-ignore
-    return new Date(dayjs(start).valueOf() || Date.now())
+    return new Date(date(start).valueOf() || Date.now())
   }
 
   const [date, changeDate] = useState<CalendarDateType>(getCalendarValue())
@@ -108,18 +115,18 @@ export const DateFilter = () => {
     if (date && [`from`, `range`].includes(rangeType)) {
       // @ts-ignore
       const currentDate: Date = date.length ? date[0] : date
-      return `c ${dayjs(currentDate).format(`D MMM`)}`
+      return `c ${formatedDate(currentDate).format(`D MMM`)}`
     }
   }
   const endText = () => {
     if (date && [`to`, `range`].includes(rangeType)) {
       // @ts-ignore
       const currentDate: Date = date.length ? date[1] : date
-      return `до ${dayjs(currentDate).format(`D MMM`)}`
+      return `до ${formatedDate(currentDate).format(`D MMM`)}`
     }
   }
 
-  const formatDateToBackend = (date: Date) => dayjs(date).format(`YYYY-MM-DD`)
+  const formatDateToBackend = (date: Date) => formatedDate(date).format(`YYYY-MM-DD`)
 
   const navigateWithDate = (date: CalendarDateType, range?: string | undefined) => {
     range = range || rangeType
@@ -130,7 +137,7 @@ export const DateFilter = () => {
         // @ts-ignore
         nearest_session_date__lte: formatDateToBackend(date[1]),
         // @ts-ignore
-        nearest_session_date__gte: formatDateToBackend(date[0])
+        nearest_session_date__gte: formatDateToBackend(date[0]),
       })
       return
     }
@@ -138,14 +145,14 @@ export const DateFilter = () => {
     if (range === `to`) {
       removeSearchPageQuery(["nearest_session_date__gte"])
       addSearchPageQuery({
-        nearest_session_date__lte: formatDateToBackend(date as Date)
+        nearest_session_date__lte: formatDateToBackend(date as Date),
       })
     }
 
     if (range === `from`) {
       removeSearchPageQuery(["nearest_session_date__lte"])
       addSearchPageQuery({
-        nearest_session_date__gte: formatDateToBackend(date as Date)
+        nearest_session_date__gte: formatDateToBackend(date as Date),
       })
     }
 
@@ -171,10 +178,12 @@ export const DateFilter = () => {
 
   let pinTo: null | Date = null
   if (rangeType === `to`) {
-    pinTo = dayjs(dayjs().format(`YYYY-MM-DD`)).toDate()
+    pinTo = formatedDate(formatedDate().format(`YYYY-MM-DD`)).toDate()
   }
   if (rangeType === `from`) {
-    pinTo = dayjs(date as Date).add(10, `year`).toDate()
+    pinTo = formatedDate(date as Date)
+      .add(10, `year`)
+      .toDate()
   }
 
   const calendar = () => (

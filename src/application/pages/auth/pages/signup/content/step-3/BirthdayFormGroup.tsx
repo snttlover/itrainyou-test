@@ -1,14 +1,15 @@
 import { FormItem, Label } from "@/application/components/form-item/FormItem"
 import { SelectInput } from "@/application/components/select-input/SelectInput"
+import { date } from "@/application/lib/helpers/date"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { FormGroup } from "@/application/pages/auth/pages/signup/content/step-3/FormGroup"
 import {
-  $step3Form, $step3FormErrors,
+  $step3Form,
+  $step3FormErrors,
   birthdayChanged,
-  sexChanged
+  sexChanged,
 } from "@/application/pages/auth/pages/signup/content/step-3/step3.model"
 import { $userData } from "@/application/pages/auth/pages/signup/signup.model"
-import dayjs from "dayjs"
 import { useStore } from "effector-react"
 import * as React from "react"
 import { useState } from "react"
@@ -40,21 +41,21 @@ const months = [
   "Сентябрь",
   "Октябрь",
   "Ноябрь",
-  "Декабрь"
+  "Декабрь",
 ].map((label, index) => ({ label, value: index }))
 
-const currentYear = dayjs().year()
+const currentYear = date().year()
 const years = Array.from({ length: 100 }, (v, k) => currentYear - k).map(year => ({ label: `${year}`, value: year }))
 
 const sexItems: { label: string; value: "M" | "F" }[] = [
   {
     label: "Мужской",
-    value: "M"
+    value: "M",
   },
   {
     label: "Женский",
-    value: "F"
-  }
+    value: "F",
+  },
 ]
 
 export const BirthdayFormGroup = () => {
@@ -69,20 +70,20 @@ export const BirthdayFormGroup = () => {
 
   const changeYear = (year: number) => {
     if (!birthday) {
-      birthday = dayjs()
+      birthday = date()
     }
     birthdayChanged(birthday.set("year", year))
   }
   const changeDay = (day: number) => {
     if (!birthday) {
-      birthday = dayjs()
+      birthday = date()
     }
     birthdayChanged(birthday.set("date", day))
   }
 
   const changeMonth = (month: number) => {
     if (!birthday) {
-      birthday = dayjs()
+      birthday = date()
     }
     const newDate = birthday.set("month", month)
     const date2 = newDate.add(1, "month")

@@ -1,8 +1,9 @@
 import { UploadMediaResponse } from "@/application/lib/api/media"
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
+import { date } from "@/application/lib/helpers/date"
 import { trimString } from "@/application/lib/validators"
 import { $userData, clientDataChanged, REGISTER_SAVE_KEY } from "@/application/pages/auth/pages/signup/signup.model"
-import dayjs, { Dayjs } from "dayjs"
+import { Dayjs } from "dayjs"
 import { combine, createEvent, createStore, createStoreObject } from "effector-next"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
@@ -33,7 +34,7 @@ export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorFi
     if (!value) return "Поле обязательно к заполению"
     return null
   },
-  eventMapper: event => event.map(trimString)
+  eventMapper: event => event.map(trimString),
 })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
@@ -42,7 +43,7 @@ export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = 
     if (!value) return "Поле обязательно к заполению"
     return null
   },
-  eventMapper: event => event.map(trimString)
+  eventMapper: event => event.map(trimString),
 })
 
 export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<
@@ -57,7 +58,7 @@ export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = 
 
     if (type === "coach" && !value) return "Поле обязательно к заполению"
     return null
-  }
+  },
 })
 
 export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
@@ -72,7 +73,7 @@ export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
 
     if (type === "coach" && !value) return "Поле обязательно к заполению"
     return null
-  }
+  },
 })
 
 export const $step3Form = createStoreObject({
@@ -80,7 +81,7 @@ export const $step3Form = createStoreObject({
   name: $name,
   lastName: $lastName,
   birthday: $birthday,
-  sex: $sex
+  sex: $sex,
 })
 
 $step3Form.updates.watch(data => {
@@ -89,7 +90,7 @@ $step3Form.updates.watch(data => {
     birthDate: data.birthday ? data.birthday.format("YYYY-MM-DD") : null,
     firstName: data.name,
     lastName: data.lastName,
-    sex: data.sex
+    sex: data.sex,
   })
 })
 
@@ -102,7 +103,7 @@ step3Mounted.watch(() => {
     const data = JSON.parse(stringData).clientData
     data?.firstName && nameChanged(data.firstName)
     data?.lastName && lastNameChanged(data.lastName)
-    data?.birthDate && birthdayChanged(dayjs(data.birthDate, "YYYY-MM-DD"))
+    data?.birthDate && birthdayChanged(date(data.birthDate, "YYYY-MM-DD"))
     data?.sex && sexChanged(data.sex)
     data?.avatar && imageUploaded({ id: -1, type: "IMAGE", file: data.avatar })
   } catch (e) {}
@@ -112,7 +113,7 @@ export const $step3FormErrors = createStoreObject({
   name: $nameError,
   lastName: $lastNameError,
   birthday: $birthdayError,
-  sex: $sexError
+  sex: $sexError,
 })
 
 export const $isStep3FormValid = combine(

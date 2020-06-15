@@ -1,7 +1,7 @@
 import { $coachAccess, loadUserDataFx } from "@/application/feature/user/user.model"
 import { updateRegistrationApplication } from "@/application/lib/api/coach/update-registration-application"
+import { date } from "@/application/lib/helpers/date"
 import { InferStoreType } from "@/application/lib/types/effector"
-import dayjs from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward } from "effector"
 
 type CoachState =
@@ -14,17 +14,17 @@ type CoachState =
 
 export const updateTime = createEvent()
 
-const $now = createStore(dayjs()).on(updateTime, () => dayjs())
-export const $lastRegistrationDaytime = $coachAccess.map(access => dayjs(access.lastRegistrationApplyDatetime))
+const $now = createStore(date()).on(updateTime, () => date())
+export const $lastRegistrationDaytime = $coachAccess.map(access => date(access.lastRegistrationApplyDatetime))
 
 export const $datetimeLeft = combine({ now: $now, lastRegistrationDaytime: $lastRegistrationDaytime }).map(
   ({ now, lastRegistrationDaytime }) => {
     const diffInMs = now.diff(lastRegistrationDaytime, "millisecond", true)
     return {
       days: 90 - Math.ceil(now.diff(lastRegistrationDaytime, "day", true)),
-      hours: 23 - dayjs.utc(diffInMs).hour(),
-      minutes: 59 - dayjs.utc(diffInMs).minute(),
-      seconds: 59 - dayjs.utc(diffInMs).second(),
+      hours: 23 - date.utc(diffInMs).hour(),
+      minutes: 59 - date.utc(diffInMs).minute(),
+      seconds: 59 - date.utc(diffInMs).second(),
     }
   }
 )

@@ -1,10 +1,10 @@
 import { IsAuthed } from "@/application/feature/user/IsAuthed"
 import { IsGuest } from "@/application/feature/user/IsGuest"
+import { date } from "@/application/lib/helpers/date"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
-import dayjs from "dayjs"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import { Tabs, Tab } from "@/application/components/tabs/Tabs"
@@ -414,24 +414,24 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const pinnedDates = sessions.map(session => session.startDatetime)
 
   const headerDate = currentDate ? currentDate : new Date()
-  const formattedDate = dayjs(headerDate).format("DD MMMM")
-  const currentDateEqual = dayjs(currentDate as Date).format(equalDateFormat)
+  const formattedDate = date(headerDate).format("DD MMMM")
+  const currentDateEqual = date(currentDate as Date).format(equalDateFormat)
 
   const times = sessions
     .filter(session => {
-      return dayjs(session.startDatetime).format(equalDateFormat) === currentDateEqual
+      return date(session.startDatetime).format(equalDateFormat) === currentDateEqual
     })
     .map(session => ({
       ...session,
-      start_datetime: dayjs(session.startDatetime).format(equalTimeFormat),
+      start_datetime: date(session.startDatetime).format(equalTimeFormat),
     }))
 
   const selected = sessions
     .filter(session => session.selected)
     .map(session => ({
       ...session,
-      date: dayjs(session.startDatetime).format(`DD.MM.YY`),
-      time: dayjs(session.startDatetime).format(equalTimeFormat),
+      date: date(session.startDatetime).format(`DD.MM.YY`),
+      time: date(session.startDatetime).format(equalTimeFormat),
     }))
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)

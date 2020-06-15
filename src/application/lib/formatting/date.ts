@@ -1,12 +1,9 @@
-import dayjs from "dayjs"
+import { date } from "@/application/lib/helpers/date"
 
-export const formatISOStringToLocaleDateString = (
-  iso: string,
-  format: string
-) => {
-  const date = dayjs(iso)
+export const formatISOStringToLocaleDateString = (iso: string, format: string) => {
+  const localDate = date(iso)
 
-  if (!date.isValid()) return 'Invalid Date'
+  if (!localDate.isValid()) return "Invalid Date"
 
-  return dayjs(iso).format(format)
+  return date(iso).format(format)
 }

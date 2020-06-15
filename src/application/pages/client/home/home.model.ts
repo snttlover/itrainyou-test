@@ -1,6 +1,6 @@
 import { ClientSession, getClientSessions } from "@/application/lib/api/client-session"
 import { Coach, getRecommendations } from "@/application/lib/api/coach"
-import dayjs from "dayjs"
+import { date } from "@/application/lib/helpers/date"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-next"
 
 export const loadRecommendationsFx = createEffect({
@@ -12,7 +12,7 @@ export const loadActiveSessionsFx = createEffect({
 })
 
 export const loadTodaySessionsFx = createEffect({
-  handler: () => getClientSessions({ startDate: dayjs().toISOString() }),
+  handler: () => getClientSessions({ startDate: date().toISOString() }),
 })
 
 export const $recommendationsCount = createStore<number>(100).on(

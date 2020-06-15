@@ -1,5 +1,5 @@
 import { getMyClient, ClientSelfData } from "@/application/lib/api/client/clientInfo"
-import dayjs from "dayjs"
+import { date } from "@/application/lib/helpers/date"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector"
 import { $categoriesList, fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
 import { getMyTransactions, SessionTransaction } from "@/application/lib/api/transactions/client/list-transaction"
@@ -64,8 +64,8 @@ sample({
 export const $pageProfile = $profile.map(profile => ({
   ...(profile as ClientSelfData),
   avatar: profile?.avatar || null,
-  age: dayjs(+new Date())
-    .subtract(dayjs(profile?.birthDate).get("year"), "year")
+  age: date(+new Date())
+    .subtract(date(profile?.birthDate).get("year"), "year")
     .get(`year`),
 }))
 
@@ -115,7 +115,6 @@ sample({
   target: loadProfileSessionsFx,
 })
 
-
 export const $profilePageSessions = $ProfileSessions.map(transactions =>
   transactions.map(transaction => {
     const session = transaction.session
@@ -123,8 +122,8 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
       avatar: session.coach.avatar,
       name: `${session.coach.firstName} ${session.coach.lastName}`,
       price: `${+session.clientPrice > 0 ? `+` : `-`} ${session.clientPrice}`,
-      time: dayjs(session.startDatetime).format(`hh:mm`),
-      date: dayjs(session.startDatetime).format(`DD.MM.YYYY`),
+      time: date(session.startDatetime).format(`hh:mm`),
+      date: date(session.startDatetime).format(`DD.MM.YYYY`),
       isCanceled: transaction.type === `SESSION_CANCELLATION`,
     }
   })
