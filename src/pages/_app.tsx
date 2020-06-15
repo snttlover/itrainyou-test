@@ -1,4 +1,5 @@
 import { AppStyles } from "@/application/AppStyles"
+import { loadDashboardType } from "@/application/feature/dashboard/dashboard"
 import { $isLoggedIn, setUserData } from "@/application/feature/user/user.model"
 import { getMyUser, GetMyUserResponse } from "@/application/lib/api/users/get-my-user"
 import { serverStarted } from "@/store"
@@ -42,6 +43,7 @@ class MyApp extends App {
   constructor(props: any) {
     super(props)
     if (isServer) return
+    loadDashboardType()
   }
 
   render() {
