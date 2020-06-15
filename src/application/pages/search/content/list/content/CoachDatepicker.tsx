@@ -404,6 +404,7 @@ const equalTimeFormat = `HH:mm`
 export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
+  const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
@@ -497,7 +498,12 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
           </Amount>
           <ButtonContainer>
             <IsAuthed>
-              <StyledButton>Купить</StyledButton>
+              <StyledButton
+                disabled={buyLoading || selected.length === 0}
+                onClick={() => props.sessionsData.buySessionBulk(selected.map(item => item.id))}
+              >
+                Купить
+              </StyledButton>
             </IsAuthed>
             <IsGuest>
               <Link href='/auth/signup/[step]' as='/auth/signup/1'>
