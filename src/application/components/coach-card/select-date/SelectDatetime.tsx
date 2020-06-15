@@ -1,9 +1,12 @@
+import { IsAuthed } from "@/application/feature/user/IsAuthed"
+import { IsGuest } from "@/application/feature/user/IsGuest"
+import { BulkBookSessionsRequest } from "@/application/lib/api/sessions requests/client/bulk-book-sessions"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
 import dayjs from "dayjs"
-import { Store } from "effector-next"
+import { Effect, Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import { Tabs, Tab } from "@/application/components/tabs/Tabs"
@@ -135,20 +138,6 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `
 
-export type SelectDatetimeTypes = {
-  coach: Coach
-  sessionsData: {
-    loading: Store<boolean>
-    sessionsList: Store<CoachSessionWithSelect[]>
-    toggleSession: Event<CoachSessionWithSelect>
-    deleteSession: Event<number>
-    tabs: {
-      $durationTab: Store<DurationType>
-      changeDurationTab: Event<DurationType>
-    }
-  }
-}
-
 const StyledTabs = styled(Tabs)`
   margin-top: 4px;
   width: 100%;
@@ -210,11 +199,28 @@ export const genSessionTabs = (coach: Coach) => {
 const equalDateFormat = `DDMMYYYY`
 const equalTimeFormat = `HH:mm`
 
+export type SelectDatetimeTypes = {
+  coach: Coach
+  sessionsData: {
+    loading: Store<boolean>
+    sessionsList: Store<CoachSessionWithSelect[]>
+    toggleSession: Event<CoachSessionWithSelect>
+    deleteSession: Event<number>
+    tabs: {
+      $durationTab: Store<DurationType>
+      changeDurationTab: Event<DurationType>
+    }
+    buySessionsLoading: Store<boolean>
+    buySessionBulk: Event<number[]>
+  }
+}
+
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
+  const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
 
@@ -285,9 +291,19 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
           <Text>Итог: {amount} ₽</Text>
           <ButtonContainer>
             <ButtonWrapper>
-              <Link href='/auth/signup/[step]' as='/auth/signup/1'>
-                <Button>Зарегистрироваться</Button>
-              </Link>
+              <IsAuthed>
+                <Button
+                  disabled={buyLoading || selected.length === 0}
+                  onClick={() => props.sessionsData.buySessionBulk(selected.map(item => item.id))}
+                >
+                  Забронировать
+                </Button>
+              </IsAuthed>
+              <IsGuest>
+                <Link href='/auth/signup/[step]' as='/auth/signup/1'>
+                  <Button>Зарегистрироваться</Button>
+                </Link>
+              </IsGuest>
             </ButtonWrapper>
           </ButtonContainer>
         </SelectTimeContainer>

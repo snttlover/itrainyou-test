@@ -4,7 +4,9 @@ import styled from "styled-components"
 
 const AvatarContainer = styled.div<{ size: number }>`
   width: ${({ size }) => size}px;
+  min-width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
+  min-height: ${({ size }) => size}px;
   border-radius: 50%;
   display: flex;
   align-items: center;
