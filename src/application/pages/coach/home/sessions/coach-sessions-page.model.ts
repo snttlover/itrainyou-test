@@ -11,10 +11,6 @@ export const loadParticipantsFx = createEffect({
   handler: ({ page }: { page: number }) => getDashboardNewestParticipants({ page, pageSize: 5 }),
 })
 
-export const loadActiveSessionsFx = createEffect({
-  handler: () => getDashboardSessions({ active: true }),
-})
-
 export const loadTodaySessionsFx = createEffect({
   handler: () => getDashboardSessions({ date: dayjs().format(`YYYY-MM-DD`) }),
 })
@@ -38,19 +34,23 @@ export const $isHasMoreParticipants = combine(
   }
 )
 
-export const $coachSessionsPageLoading = combine(
-  loadActiveSessionsFx.pending,
-  loadTodaySessionsFx.pending,
-  (isActiveSessionsLoading, isTodaySessionsLoading) => isActiveSessionsLoading || isTodaySessionsLoading
+export const $coachSessionsPageLoading = loadTodaySessionsFx.pending.map(status => status)
+
+const $coachSessions = createStore<DashboardSession[]>([]).on(loadTodaySessionsFx.doneData, (state, payload) => payload)
+
+const changeTickTime = createEvent<Date>()
+const $tickTime = createStore(new Date()).on(changeTickTime, (_, newDate) => newDate)
+
+if (process.browser) {
+  setInterval(() => changeTickTime(new Date()), 1000)
+}
+
+export const $activeCoachSessions = combine($tickTime, $coachSessions, (time, sessions) =>
+  sessions.filter(session => dayjs(time).isAfter(dayjs(session.startDatetime)))
 )
 
-export const $activeCoachSessions = createStore<DashboardSession[]>([]).on(
-  loadActiveSessionsFx.doneData,
-  (state, payload) => payload
-)
-export const $todayCoachSessions = createStore<DashboardSession[]>([]).on(
-  loadTodaySessionsFx.doneData,
-  (state, payload) => payload
+export const $todayCoachSessions = combine($tickTime, $coachSessions, (time, sessions) =>
+  sessions.filter(session => dayjs(time).isBefore(dayjs(session.startDatetime)))
 )
 
 export const mounted = createEvent()
@@ -72,5 +72,5 @@ sample({
 
 forward({
   from: mounted,
-  to: [loadActiveSessionsFx, loadTodaySessionsFx, loadMoreParticipants],
+  to: [loadTodaySessionsFx, loadMoreParticipants],
 })
