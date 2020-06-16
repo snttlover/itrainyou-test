@@ -22,6 +22,6 @@ COPY public ./public
 COPY src/ ./src
 
 RUN npm i
-COPY .next/ ./.next
+#COPY .next/ ./.next
 
 CMD npm start
