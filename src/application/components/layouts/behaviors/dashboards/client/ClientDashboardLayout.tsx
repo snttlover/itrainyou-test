@@ -1,4 +1,5 @@
 import { changeDashboardType } from "@/application/feature/dashboard/dashboard"
+import { withFullRegister } from "@/application/feature/user/with-full-register"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { ClientMenu } from "@/application/components/layouts/behaviors/dashboards/client/menu/ClientMenu"
@@ -28,4 +29,4 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   )
 })``
 
-export const ClientDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(Dashboard)
+export const ClientDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(withFullRegister(Dashboard))

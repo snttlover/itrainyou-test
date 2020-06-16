@@ -1,4 +1,4 @@
-import { $isLoggedIn } from "@/application/feature/user/user.model"
+import { $isFullRegistered, $isLoggedIn } from "@/application/feature/user/user.model"
 import { useStore } from "effector-react"
 import Router from "next/router"
 import React from "react"
@@ -11,8 +11,9 @@ type Options = {
 export const withGuest = ({ to = "/", as = "/" }: Options) => (Child: React.ComponentType) => {
   return ({ ...props }) => {
     const isAuthed = useStore($isLoggedIn)
+    const isFullRegistered = useStore($isFullRegistered)
 
-    if (isAuthed) {
+    if (isAuthed && isFullRegistered) {
       if (typeof document !== "undefined") {
         Router.replace(to, as, { shallow: true })
       }

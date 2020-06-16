@@ -1,4 +1,5 @@
 import { changeDashboardType } from "@/application/feature/dashboard/dashboard"
+import { withFullRegister } from "@/application/feature/user/with-full-register"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { withProtect } from "@/application/feature/user/with-protect"
@@ -31,4 +32,4 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   )
 })``
 
-export const CoachDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(Dashboard)
+export const CoachDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(withFullRegister(Dashboard))
