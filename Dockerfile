@@ -20,6 +20,8 @@ RUN npm i
 COPY server.js ./server.js
 COPY public ./public
 COPY src/ ./src
+
+RUN npm i
 COPY .next/ ./.next
 
 CMD npm start
