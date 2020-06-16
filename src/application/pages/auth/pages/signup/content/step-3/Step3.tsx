@@ -71,9 +71,6 @@ const UserAvatar = styled(Avatar)`
   width: 60px;
   height: 60px;
   cursor: pointer;
-  & > svg {
-    fill: #fff;
-  }
 `
 
 const Form = styled.form`
