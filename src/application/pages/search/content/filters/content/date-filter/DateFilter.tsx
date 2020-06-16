@@ -96,14 +96,14 @@ export const DateFilter = () => {
   const getCalendarValue = (): CalendarDateType => {
     if (rangeType === `range`) {
       // @ts-ignore
-      return [new Date(date(start).valueOf()), new Date(date(end).valueOf())]
+      return [new Date(formatedDate(start).valueOf()), new Date(formatedDate(end).valueOf())]
     }
     if (rangeType === `to`) {
       // @ts-ignore
-      return new Date(date(end).valueOf())
+      return new Date(formatedDate(end).valueOf())
     }
     // @ts-ignore
-    return new Date(date(start).valueOf() || Date.now())
+    return new Date(formatedDate(start).valueOf() || Date.now())
   }
 
   const [date, changeDate] = useState<CalendarDateType>(getCalendarValue())
