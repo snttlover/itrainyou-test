@@ -1,6 +1,7 @@
 import {
-  fetchCoachesListFx, resetSearchQuery,
-  setSearchPageQuery
+  fetchCoachesListFx,
+  resetSearchQuery,
+  setSearchPageQuery,
 } from "@/application/pages/search/coaches-search.model"
 import { fetchMaxPriceFx } from "@/application/pages/search/content/filters/content/price-filter/price-filter.model"
 import { useRouter } from "next/router"
@@ -10,7 +11,7 @@ import { PageContainer } from "@/application/components/page-container/PageConta
 import { Content } from "./content/Content"
 import { Sorting } from "./content/list/content/sorting/Sorting"
 import { MobileTabs } from "./content/mobile-tabs/MobileTabs"
-import {GuestLayout} from "@/application/components/layouts/behaviors/default/GuestLayout"
+import { GuestLayout } from "@/application/components/layouts/behaviors/default/GuestLayout"
 import { Filters } from "@/application/pages/search/content/filters/Filters"
 import styled from "styled-components"
 import { UserLayout } from "@/application/components/layouts/behaviors/user/UserLayout"
@@ -44,16 +45,16 @@ export const SearchPage = () => {
     <UserLayout>
       <StyledPageContainer>
         <ContentWrapper>
-          <MobileTabs/>
-          <Sorting/>
+          <MobileTabs />
+          <Sorting />
           <Content />
         </ContentWrapper>
         <FiltersWrapper>
           <Filters />
         </FiltersWrapper>
-
-
       </StyledPageContainer>
     </UserLayout>
   )
 }
+
+export default SearchPage

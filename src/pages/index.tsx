@@ -1,5 +1,6 @@
-import { withGuest } from "@/application/feature/user/with-guest"
-import { LandingPage } from "@/application/pages/landing/LandingPage"
+import dynamic from "next/dynamic"
 import React from "react"
 
-export default withGuest({ to: "/client", as: "/client" })(LandingPage)
+const Page = dynamic(() => import("@/application/pages/landing/LandingPage"), { ssr: false })
+
+export default Page
