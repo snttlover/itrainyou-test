@@ -3,6 +3,7 @@ import styled from "styled-components"
 
 export type IconName =
   | "none"
+  | "video"
   | "star-with-user"
   | "calendar-with-clock"
   | "tabletka"
