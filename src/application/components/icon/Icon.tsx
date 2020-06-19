@@ -4,6 +4,7 @@ import styled from "styled-components"
 export type IconName =
   | "none"
   | "video"
+  | "clip"
   | "star-with-user"
   | "calendar-with-clock"
   | "tabletka"

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { Avatar } from "@/application/components/avatar/Avatar"
 import { Icon } from "@/application/components/icon/Icon"
+import { Button } from "@/application/components/button/normal/Button"
 
 const Container = styled.div`
   display: flex;
@@ -31,6 +32,9 @@ const MessageColumn = styled(Column)`
 
 const ActionsColumn = styled(Column)`
   padding-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -91,6 +95,8 @@ const VideoIcon = styled(Icon).attrs({ name: `video` })`
 const ActionsHeader = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
+  width: 100%;
 `
 
 const SessionStatus = styled.div`
@@ -100,6 +106,27 @@ const SessionStatus = styled.div`
   margin-left: 10px;
   flex: 1;
 `
+
+const Materials = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 22px;
+  color: #424242;
+`
+
+const ActionsFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`
+
+const Clip = styled(Icon).attrs({ name: `clip` })`
+  fill: #4858cc;
+  margin-right: 8px;
+`
+
+const SessionButton = styled(Button)``
 
 export const ChatLink = () => (
   <Container>
@@ -119,6 +146,14 @@ export const ChatLink = () => (
         <VideoIcon />
         <SessionStatus>Сессия началась</SessionStatus>
       </ActionsHeader>
+      <ActionsFooter>
+        <Materials>
+          <Clip />2
+        </Materials>
+        <SessionButton data-slim>
+          ЗАЙТИ В СЕССИЮ
+        </SessionButton>
+      </ActionsFooter>
     </ActionsColumn>
   </Container>
 )

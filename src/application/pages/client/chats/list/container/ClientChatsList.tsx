@@ -7,7 +7,7 @@ const Container = styled.div`
     margin-top: 20px;
     margin-bottom: 20px;
     width: 100%;
-    min-width: 734px;
+    max-width: 734px;
 `
 
 export const ClientChatsList = () => (
