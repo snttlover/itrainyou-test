@@ -6,9 +6,10 @@ import { withProtect } from "@/application/feature/user/with-protect"
 import { ToastsContainer } from "@/application/components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
 import { CoachTheme } from "@/application/components/layouts/themes"
 import { DashboardContainer } from "@/application/components/layouts/behaviors/dashboards/common/DashboardContainer"
-import { DashboardPageContent } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageContent"
+import { DashboardContent } from "@/application/components/layouts/behaviors/dashboards/common/DashboardContent"
 import { CoachMenu } from "@/application/components/layouts/behaviors/dashboards/coach/menu/CoachMenu"
 import { CoachTopBar } from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/CoachTopBar"
+import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -23,10 +24,10 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
       <DashboardContainer {...props}>
         <CoachMenu />
         <ToastsContainer />
-        <DashboardPageContent>
+        <DashboardContent>
           <CoachTopBar />
-          {children}
-        </DashboardPageContent>
+          <DashboardPageWrapper>{children}</DashboardPageWrapper>
+        </DashboardContent>
       </DashboardContainer>
     </CoachTheme>
   )
