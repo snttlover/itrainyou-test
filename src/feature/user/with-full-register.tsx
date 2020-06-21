@@ -1,16 +1,16 @@
 import { $isFullRegistered, $isLoggedIn } from "@/feature/user/user.model"
 import { useStore } from "effector-react/ssr"
-import { useRouter } from "next/router"
 import React from "react"
+import { useHistory } from "react-router-dom"
 
 export const withFullRegister = (Child: React.ComponentType) => {
   return ({ ...props }) => {
     const isFullRegister = useStore($isFullRegistered)
     const isLoggedIn = useStore($isLoggedIn)
-    const router = useRouter()
+    const history = useHistory()
 
     if (isLoggedIn && !isFullRegister) {
-      router.replace("/auth/signup/[step]", "/auth/signup/2", { shallow: true })
+      history.replace("/auth/signup/2")
       return null
     }
 

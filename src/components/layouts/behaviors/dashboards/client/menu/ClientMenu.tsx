@@ -1,6 +1,7 @@
 import React from "react"
 import { DashboardMenuMobileHeader } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuMobileHeader"
 import { ProfileHeader } from "@/components/layouts/behaviors/dashboards/client/menu/content/ProfileHeader"
+import { Link } from "react-router-dom"
 import { ClientMenuItems } from "./content/ClientMenuItems"
 import { CoachLink } from "@/components/layouts/behaviors/dashboards/client/menu/content/CoachLink"
 import { DesktopDashboardMenuLogo } from "@/components/layouts/behaviors/dashboards/common/menu/content/DesktopDashboardMenuLogo"
@@ -8,7 +9,6 @@ import { blueLayoutMobileMenuVisibility } from "./blue-layout.mobile-menu"
 import { useStore } from "effector-react/ssr"
 import { DashboardMenuContainer } from "@/components/layouts/behaviors/dashboards/common/menu/MenuContainer"
 import { $userData } from "@/feature/user/user.model"
-import Link from "next/link"
 
 export const ClientMenu = () => {
   const mobileMenuVisibility = useStore(blueLayoutMobileMenuVisibility)
@@ -16,7 +16,7 @@ export const ClientMenu = () => {
 
   return (
     <DashboardMenuContainer showOnMobile={mobileMenuVisibility}>
-      <Link href='/client' passHref>
+      <Link to='/client'>
         <DesktopDashboardMenuLogo />
       </Link>
       <DashboardMenuMobileHeader />

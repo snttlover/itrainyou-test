@@ -2,10 +2,8 @@ import React, { SyntheticEvent } from "react"
 import styled from "styled-components"
 import { Icon, IconName } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import Link from "next/link"
-import { useRouter } from "next/router"
 import { changeBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
-import { route } from "next/dist/next-server/server/router"
+import { Link, useLocation } from "react-router-dom"
 
 const MenuItemIcon = styled(Icon).attrs(props => ({
   name: props.name,
@@ -25,14 +23,14 @@ const MenuItemIcon = styled(Icon).attrs(props => ({
   `}
 `
 
-const StyledMenuItem = styled.a<{ disabled?: boolean }>`
+const StyledMenuItem = styled(Link)<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
   width: 100%;
   margin-bottom: 15px;
   padding: 8px 24px;
-  opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};  
+  opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
   &:last-child {
     margin-bottom: 0;
   }
@@ -71,7 +69,7 @@ const Label = styled.div`
   `}
 `
 
-const prepareLink = (value: string) =>  value.replace(/\/$/g, ``) + `/`
+const prepareLink = (value: string) => value.replace(/\/$/g, ``) + `/`
 
 type MenuItemTypes = {
   icon: IconName
@@ -81,7 +79,7 @@ type MenuItemTypes = {
 }
 
 export const DashboardMenuItem = (props: MenuItemTypes) => {
-  const router = useRouter()
+  const location = useLocation()
 
   const clickHandler = (e: SyntheticEvent) => {
     if (props.disabled) {
@@ -91,16 +89,14 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
     }
   }
 
-  const routerPath = prepareLink(router.asPath)
+  const routerPath = prepareLink(location.pathname)
   const currentLink = prepareLink(props.link)
   const isSelectedLink = routerPath === currentLink
 
   return (
-    <Link passHref href={props.link}>
-      <StyledMenuItem onClick={clickHandler} disabled={props.disabled} data-selected={isSelectedLink}>
-        <MenuItemIcon name={props.icon} />
-        <Label>{props.children}</Label>
-      </StyledMenuItem>
-    </Link>
+    <StyledMenuItem to={props.link} onClick={clickHandler} disabled={props.disabled} data-selected={isSelectedLink}>
+      <MenuItemIcon name={props.icon} />
+      <Label>{props.children}</Label>
+    </StyledMenuItem>
   )
 }

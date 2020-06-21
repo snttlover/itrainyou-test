@@ -1,20 +1,15 @@
-import {
-  fetchCoachesListFx,
-  resetSearchQuery,
-  setSearchPageQuery,
-} from "@/pages/search/coaches-search.model"
+import { fetchCoachesListFx, resetSearchQuery, setSearchPageQuery } from "@/pages/search/coaches-search.model"
 import { fetchMaxPriceFx } from "@/pages/search/content/filters/content/price-filter/price-filter.model"
-import { useRouter } from "next/router"
 import { useEffect } from "react"
 import * as React from "react"
 import { PageContainer } from "@/components/page-container/PageContainer"
 import { Content } from "./content/Content"
 import { Sorting } from "./content/list/content/sorting/Sorting"
 import { MobileTabs } from "./content/mobile-tabs/MobileTabs"
-import { GuestLayout } from "@/components/layouts/behaviors/default/GuestLayout"
 import { Filters } from "@/pages/search/content/filters/Filters"
 import styled from "styled-components"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
+import { useLocation } from "react-router-dom"
 
 const StyledPageContainer = styled(PageContainer)`
   display: flex;
@@ -27,12 +22,13 @@ const ContentWrapper = styled.div`
 const FiltersWrapper = styled.div``
 
 export const SearchPage = () => {
-  const router = useRouter()
+  const location = useLocation()
 
   useEffect(() => {
-    setSearchPageQuery(router.query)
-    fetchCoachesListFx(router.query)
-  }, [router.asPath])
+    console.log(location.search)
+    /*setSearchPageQuery(router.query)
+    fetchCoachesListFx(router.query)*/
+  }, [location.pathname])
 
   useEffect(() => {
     fetchMaxPriceFx()

@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
-import Link from "next/link"
+import React from "react"
 
 const Container = styled.div`
   display: flex;
@@ -47,13 +48,13 @@ const Counter = styled.div`
 `
 
 export const CoachTooltipRow = (props: CoachTooltipRowTypes) => (
-  <Link href={props.to}>
+  <Link to={props.to}>
     <Container className={props.className}>
       <Label>{props.label}</Label>
       <NotificationIcon />
-      <Counter>{ props.notificationsCount ? `+ ${props.notificationsCount}` : 0 }</Counter>
+      <Counter>{props.notificationsCount ? `+ ${props.notificationsCount}` : 0}</Counter>
       <PeopleNotificationIcon />
-      <Counter>{ props.messagesCount ? `+ ${props.messagesCount}` : 0 }</Counter>
+      <Counter>{props.messagesCount ? `+ ${props.messagesCount}` : 0}</Counter>
     </Container>
   </Link>
 )
