@@ -1,17 +1,8 @@
 {
-  "presets": [
-    "next/babel"
-  ],
   "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "@effector/babel-plugin",
-    ["styled-components", { "ssr": true }]
-  ],
-  "env": {
-    "development": {
-      "plugins": [
-        "babel-plugin-styled-components"
-      ]
-    }
-  }
+    ["effector/babel-plugin", {
+      "addLoc": true
+    }],
+    ["styled-components", {"displayName": true, "ssr": true}]
+  ]
 }

@@ -1,0 +1,52 @@
+import { Hint, getHints, GetHintsParamsTypes } from "@/lib/api/hint"
+import { createDomain, forward } from "effector-root"
+import {
+  addSearchPageQuery,
+  removeSearchPageQuery,
+  resetSearchQuery,
+  setSearchPageQuery,
+} from "@/pages/search/coaches-search.model"
+
+// coaches
+const searchDomain = createDomain()
+
+export const updateSearch = searchDomain.createEvent<string>()
+export const $search = searchDomain
+  .createStore(``)
+  .on(updateSearch, (_, search) => search)
+  .on(setSearchPageQuery, (_, query) => query.search || ``)
+  .on(resetSearchQuery, () => ``)
+
+updateSearch.watch((search: string) => loadHints({ search }))
+
+export const find = searchDomain.createEvent<string>()
+
+find.watch((search: string) => {
+  setTimeout(() => {
+    updateSearch(search)
+    if (search) {
+      addSearchPageQuery({ search })
+    } else {
+      removeSearchPageQuery([`search`])
+    }
+  }, 0)
+})
+
+export const fetchHintsList = searchDomain.createEffect<GetHintsParamsTypes, Hint[]>().use(params => getHints(params))
+
+export const loadHints = searchDomain.createEvent<GetHintsParamsTypes>()
+
+export const $hintsList = searchDomain
+  .createStore<Hint[]>([])
+  .on(fetchHintsList.doneData, (_, list) => list)
+  .reset(fetchHintsList)
+
+export const $searchLoading = searchDomain
+  .createStore(false)
+  .on(fetchHintsList.finally, () => false)
+  .on(fetchHintsList, () => true)
+
+forward({
+  from: loadHints,
+  to: fetchHintsList,
+})

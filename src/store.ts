@@ -1,5 +1,13 @@
-import { createEvent, PageContext } from "effector-next"
+import { root } from "effector-root"
 
 export const TOKEN_KEY = "__token__"
 
-export const serverStarted = createEvent<PageContext<{ [TOKEN_KEY]: string }>>()
+type ServerStartedEventPayload<PARAMS = {}, QUERY = {}> = {
+  cookies: {
+    [TOKEN_KEY]: string | undefined
+  }
+  params: PARAMS
+  query: QUERY
+}
+
+export const serverStarted = root.createEvent<ServerStartedEventPayload>()
