@@ -2,7 +2,6 @@ import { FormItem } from "@/application/components/form-item/FormItem"
 import { Input } from "@/application/components/input/Input"
 import { PasswordInput } from "@/application/components/input/PasswordInput"
 import { AuthLayout } from "@/application/components/layouts/sections/auth/AuthLayout"
-import { logout } from "@/application/feature/user/user.model"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { NextButton } from "@/application/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/application/pages/auth/pages/signup/components/Steps"
@@ -130,7 +129,6 @@ export const Step1 = () => {
 
   useEffect(() => {
     userDataReset()
-    logout()
   }, [])
 
   return (

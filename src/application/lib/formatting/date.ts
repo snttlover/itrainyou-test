@@ -1,12 +1,19 @@
 import dayjs from "dayjs"
 
-export const formatISOStringToLocaleDateString = (
-  iso: string,
-  format: string
-) => {
-  const date = dayjs(iso)
+export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string) => {
+  return dayjs(date, option, locale)
+}
+date.utc = dayjs.utc
 
-  if (!date.isValid()) return 'Invalid Date'
+export const getYearsCount = (birthday: string) => {
+  !birthday && (birthday = date().toISOString())
+  return date().diff(date(birthday, "YYYY-MM-DD"), "year")
+}
 
-  return dayjs(iso).format(format)
+export const formatISOStringToLocaleDateString = (iso: string, format: string) => {
+  const localDate = date(iso)
+
+  if (!localDate.isValid()) return "Invalid Date"
+
+  return date(iso).format(format)
 }

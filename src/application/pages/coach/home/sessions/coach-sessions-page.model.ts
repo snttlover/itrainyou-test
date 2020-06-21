@@ -1,6 +1,6 @@
+import { date } from "@/application/lib/formatting/date"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-next"
 import { DashboardSession, getDashboardSessions } from "@/application/lib/api/coach/get-dashboard-sessions"
-import dayjs from "dayjs"
 
 import {
   DashboardNewestParticipant,
@@ -12,7 +12,7 @@ export const loadParticipantsFx = createEffect({
 })
 
 export const loadTodaySessionsFx = createEffect({
-  handler: () => getDashboardSessions({ date: dayjs().format(`YYYY-MM-DD`) }),
+  handler: () => getDashboardSessions({ date: date().format(`YYYY-MM-DD`) }),
 })
 
 export const $newestParticipantsCount = createStore<number>(100).on(
@@ -46,11 +46,11 @@ if (process.browser) {
 }
 
 export const $activeCoachSessions = combine($tickTime, $coachSessions, (time, sessions) =>
-  sessions.filter(session => dayjs(time).isAfter(dayjs(session.startDatetime)))
+  sessions.filter(session => date(time).isAfter(date(session.startDatetime)))
 )
 
 export const $todayCoachSessions = combine($tickTime, $coachSessions, (time, sessions) =>
-  sessions.filter(session => dayjs(time).isBefore(dayjs(session.startDatetime)))
+  sessions.filter(session => date(time).isBefore(date(session.startDatetime)))
 )
 
 export const mounted = createEvent()

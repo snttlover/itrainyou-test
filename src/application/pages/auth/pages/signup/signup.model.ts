@@ -96,25 +96,10 @@ registerUserFx.done.watch(response => {
   }
 })
 
-sample({
-  source: $userData,
-  clock: userRegistered,
-  target: registerUserFx,
-})
+const registerUser = merge([userRegistered, skipCoach])
 
 sample({
   source: $userData,
-  clock: skipCoach,
+  clock: registerUser,
   target: registerUserFx,
-  fn: userData => ({
-    ...userData,
-    categories: [],
-    coachData: {
-      workExperience: "",
-      education: "",
-      description: "",
-      phone: "",
-      videoInterview: "",
-    },
-  }),
 })

@@ -1,8 +1,19 @@
-import { $form, $selectedCategories } from "@/application/feature/coach-get-access/coach-get-access.model"
-import { loadUserDataFx } from "@/application/feature/user/user.model"
+import { fetchCategoriesListFx } from "@/application/feature/categories/categories.store"
+import {
+  $form,
+  $selectedCategories,
+  descriptionChanged,
+  educationChanged,
+  phoneChanged,
+  restorePhotos,
+  toggleCategory,
+  videoInterviewChanged,
+  workExperienceChanged,
+} from "@/application/feature/coach-get-access/coach-get-access.model"
+import { $userData, loadUserDataFx, UserData } from "@/application/feature/user/user.model"
 import { updateMyCoach } from "@/application/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/application/lib/types/effector"
-import { combine, createEffect, createEvent, forward, sample } from "effector"
+import { attach, combine, createEffect, createEvent, forward, sample } from "effector"
 
 const calculateProgress = ({
   form,
@@ -45,4 +56,33 @@ sample({
 forward({
   from: patchCoachDataFx.done,
   to: loadUserDataFx,
+})
+
+export const coachGetAccessMounted = createEvent()
+
+const fillCoachData = attach({
+  source: $userData,
+  effect: createEffect({
+    handler: (userData: UserData) => {
+      const coach = userData.coach
+      coach?.description && descriptionChanged(coach.description)
+      coach?.education && educationChanged(coach.education)
+      coach?.phone && phoneChanged(coach.phone)
+      coach?.photos && restorePhotos(coach.photos)
+      coach?.videoInterview && videoInterviewChanged(coach.videoInterview)
+      coach?.workExperience && workExperienceChanged(coach.workExperience)
+      coach?.categories && coach.categories.forEach(cat => toggleCategory(cat.id))
+    },
+  }),
+  mapParams: (_: void, userData: UserData) => userData,
+})
+
+forward({
+  from: coachGetAccessMounted,
+  to: fetchCategoriesListFx,
+})
+
+forward({
+  from: coachGetAccessMounted,
+  to: fillCoachData,
 })

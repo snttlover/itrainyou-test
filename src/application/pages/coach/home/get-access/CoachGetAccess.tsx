@@ -3,6 +3,7 @@ import { CoachInformation } from "@/application/feature/coach-get-access/compone
 import { MediaRange } from "@/application/lib/responsive/media"
 import {
   $progress,
+  coachGetAccessMounted,
   patchCoachDataFx,
   updateCoachData,
 } from "@/application/pages/coach/home/get-access/coach-get-access.model"
@@ -185,7 +186,7 @@ export const CoachGetAccess = ({ className }: { className?: string }) => {
   const progress = useStore($progress)
   const isLoading = useStore(patchCoachDataFx.pending)
   useEffect(() => {
-    fetchCategoriesListFx({})
+    coachGetAccessMounted()
   }, [])
 
   return (

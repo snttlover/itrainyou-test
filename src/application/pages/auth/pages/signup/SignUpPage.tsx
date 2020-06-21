@@ -1,5 +1,7 @@
+import { $isFullRegistered, $isLoggedIn } from "@/application/feature/user/user.model"
 import { withProtect } from "@/application/feature/user/with-protect"
 import { pageMounted } from "@/application/pages/auth/pages/signup/signup.model"
+import { useStore } from "effector-react"
 import { useRouter } from "next/router"
 import { useLayoutEffect } from "react"
 import * as React from "react"
@@ -13,6 +15,8 @@ const ProtectedStep3 = withProtect({ to: "/auth/signup/[step]", as: "/auth/signu
 const ProtectedStep4 = withProtect({ to: "/auth/signup/[step]", as: "/auth/signup/1" })(Step4)
 
 export default () => {
+  const isLoggedIn = useStore($isLoggedIn)
+  const isFullRegistered = useStore($isFullRegistered)
   const router = useRouter()
   const currentStep = router.query.step ? +router.query.step : null
   useLayoutEffect(() => {
@@ -22,6 +26,9 @@ export default () => {
 
   switch (currentStep) {
     case 1:
+      if (isLoggedIn && !isFullRegistered) {
+        router.replace("/auth/signup/[step]", "/auth/signup/2")
+      }
       return <Step1 />
     case 2:
       return <ProtectedStep2 />

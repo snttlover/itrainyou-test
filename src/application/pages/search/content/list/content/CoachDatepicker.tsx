@@ -1,10 +1,10 @@
 import { IsAuthed } from "@/application/feature/user/IsAuthed"
 import { IsGuest } from "@/application/feature/user/IsGuest"
+import { date } from "@/application/lib/formatting/date"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
-import dayjs from "dayjs"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import { Tabs, Tab } from "@/application/components/tabs/Tabs"
@@ -404,6 +404,7 @@ const equalTimeFormat = `HH:mm`
 export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
+  const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
@@ -413,24 +414,24 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const pinnedDates = sessions.map(session => session.startDatetime)
 
   const headerDate = currentDate ? currentDate : new Date()
-  const formattedDate = dayjs(headerDate).format("DD MMMM")
-  const currentDateEqual = dayjs(currentDate as Date).format(equalDateFormat)
+  const formattedDate = date(headerDate).format("DD MMMM")
+  const currentDateEqual = date(currentDate as Date).format(equalDateFormat)
 
   const times = sessions
     .filter(session => {
-      return dayjs(session.startDatetime).format(equalDateFormat) === currentDateEqual
+      return date(session.startDatetime).format(equalDateFormat) === currentDateEqual
     })
     .map(session => ({
       ...session,
-      start_datetime: dayjs(session.startDatetime).format(equalTimeFormat),
+      start_datetime: date(session.startDatetime).format(equalTimeFormat),
     }))
 
   const selected = sessions
     .filter(session => session.selected)
     .map(session => ({
       ...session,
-      date: dayjs(session.startDatetime).format(`DD.MM.YY`),
-      time: dayjs(session.startDatetime).format(equalTimeFormat),
+      date: date(session.startDatetime).format(`DD.MM.YY`),
+      time: date(session.startDatetime).format(equalTimeFormat),
     }))
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
@@ -497,7 +498,12 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
           </Amount>
           <ButtonContainer>
             <IsAuthed>
-              <StyledButton>Купить</StyledButton>
+              <StyledButton
+                disabled={buyLoading || selected.length === 0}
+                onClick={() => props.sessionsData.buySessionBulk(selected.map(item => item.id))}
+              >
+                Купить
+              </StyledButton>
             </IsAuthed>
             <IsGuest>
               <Link href='/auth/signup/[step]' as='/auth/signup/1'>

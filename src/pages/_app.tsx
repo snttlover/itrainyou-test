@@ -1,4 +1,5 @@
 import { AppStyles } from "@/application/AppStyles"
+import { loadDashboardType } from "@/application/feature/dashboard/dashboard"
 import { $isLoggedIn, setUserData } from "@/application/feature/user/user.model"
 import { getMyUser, GetMyUserResponse } from "@/application/lib/api/users/get-my-user"
 import { serverStarted } from "@/store"
@@ -16,7 +17,9 @@ import "simplebar/dist/simplebar.min.css"
 import "swiper/css/swiper.min.css"
 import { ClientTheme } from "@/application/components/layouts/themes"
 import utc from "dayjs/plugin/utc"
+import isBetween from "dayjs/plugin/isBetween"
 
+dayjs.extend(isBetween)
 dayjs.extend(utc)
 dayjs.locale("ru")
 
@@ -42,6 +45,7 @@ class MyApp extends App {
   constructor(props: any) {
     super(props)
     if (isServer) return
+    loadDashboardType()
   }
 
   render() {

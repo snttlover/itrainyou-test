@@ -1,9 +1,10 @@
+import { $dashboard, DashboardType } from "@/application/feature/dashboard/dashboard"
 import { loggedIn, setUserData } from "@/application/feature/user/user.model"
 import { login, LoginResponse } from "@/application/lib/api/login"
 import { createEffectorField, UnpackedStoreObjectType } from "@/application/lib/generators/efffector"
 import { emailValidator, trimString } from "@/application/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-next"
+import { attach, combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-next"
 import Router from "next/router"
 
 export const loginFormSent = createEvent()
@@ -12,13 +13,43 @@ export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, 
   handler: ({ email, password }) => login({ email, password }),
 })
 
-loginFx.doneData.watch(data => {
-  loggedIn({ token: data.token })
-  if (!data.user.client && !data.user.coach) {
-    Router.push("/auth/signup/[step]", "/auth/signup/2")
-  } else {
-    Router.push("/client/", "/client/")
-  }
+type RedirectParams = { data: LoginResponse; dashboard: DashboardType }
+
+const _loginRedirectFx = createEffect({
+  handler: ({ data, dashboard }: RedirectParams) => {
+    if (!data.user.client && !data.user.coach) {
+      Router.push("/auth/signup/[step]", "/auth/signup/2")
+    } else if (data.user.coach?.isForeverRejected) {
+      Router.push("/client/", "/client/")
+    } else if (dashboard === "client") {
+      Router.push("/client/", "/client/")
+    } else if (dashboard === "coach") {
+      Router.push("/coach/", "/coach/")
+    } else if (data.user.coach) {
+      Router.push("/coach", "/coach/")
+    } else {
+      Router.push("/client/", "/client/")
+    }
+  },
+})
+
+const loginRedirectFx = attach({
+  effect: _loginRedirectFx,
+  mapParams: (response: LoginResponse, dashboard) => ({
+    data: response,
+    dashboard,
+  }),
+  source: $dashboard,
+})
+
+forward({
+  from: loginFx.doneData,
+  to: loggedIn,
+})
+
+forward({
+  from: loginFx.doneData,
+  to: loginRedirectFx,
 })
 
 forward({

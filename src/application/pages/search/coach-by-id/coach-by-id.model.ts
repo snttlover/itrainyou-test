@@ -5,16 +5,19 @@ import { genCoachSessions } from "@/application/components/coach-card/select-dat
 import { DurationType } from "@/application/lib/api/coach-sessions"
 
 export const loadCoachFx = createEffect({
-  handler: getCoach
+  handler: getCoach,
 })
 
 export const loadReviewsFx = createEffect({
-  handler: getCoachReviews
+  handler: getCoachReviews,
 })
 
 export const mounted = createEvent<{ id: number }>()
 
-export const $coach = createStore<Coach | null>(null).on(loadCoachFx.doneData, (state, payload) => payload)
+export const $coach = createStore<Coach | null>(null)
+  .on(mounted, () => null)
+  .on(loadCoachFx.doneData, (state, payload) => payload)
+
 export const $reviews = createStore<CoachReviewResponse[]>([]).on(
   loadReviewsFx.doneData,
   (state, payload) => payload.results
@@ -27,15 +30,15 @@ const loadSessions = createEffect({
     // @ts-ignore
     const defaultTab = Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
     $sessionsPickerStore.tabs.changeDurationTab(defaultTab)
-  }
+  },
 })
 
 sample({
   source: loadCoachFx.doneData,
-  target: loadSessions
+  target: loadSessions,
 })
 
 forward({
   from: mounted,
-  to: [loadCoachFx, loadReviewsFx]
+  to: [loadCoachFx, loadReviewsFx],
 })

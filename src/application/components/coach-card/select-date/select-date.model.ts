@@ -1,10 +1,12 @@
+import { toasts } from "@/application/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import {
   CoachSession,
   DurationType,
   getCoachSessions,
-  GetCoachSessionsParamsTypes
+  GetCoachSessionsParamsTypes,
 } from "@/application/lib/api/coach-sessions"
-import { createEffect, createEvent, createStore, forward } from "effector-next"
+import { bulkBookSessions } from "@/application/lib/api/sessions requests/client/bulk-book-sessions"
+import { attach, createEffect, createEvent, createStore, forward, restore } from "effector-next"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -15,15 +17,19 @@ type RequestType = {
   params: GetCoachSessionsParamsTypes
 }
 
-export const genCoachSessions = (id= 0) => {
+export const genCoachSessions = (id = 0) => {
   const changeId = createEvent<number>()
-  const $id = createStore<number>(id)
-    .on(changeId, (_, id) => id)
+  const $id = createStore<number>(id).on(changeId, (_, id) => id)
 
-  const fetchCoachSessionsListFx = createEffect<RequestType, CoachSession[]>()
-    .use((req) => getCoachSessions($id.getState(), req.params))
+  const fetchCoachSessionsListFx = createEffect<GetCoachSessionsParamsTypes, CoachSession[]>().use(params =>
+    getCoachSessions($id.getState(), params)
+  )
 
   const loadCoachSessions = createEvent<RequestType>()
+  const loadParams = restore(
+    loadCoachSessions.map(req => req.params),
+    {}
+  )
 
   const isFetching = createStore(false)
     .on(loadCoachSessions, () => true)
@@ -49,14 +55,14 @@ export const genCoachSessions = (id= 0) => {
       const ids = selectedSessionIds.getState()
       return payload.result.map(session => ({ ...session, selected: ids.includes(session.id) }))
     })
-    .on(toggleSession, (state) => {
+    .on(toggleSession, state => {
       const ids = selectedSessionIds.getState()
       return state.map(session => {
         session.selected = ids.includes(session.id)
         return session
       })
     })
-    .on(deleteSession, (state) => {
+    .on(deleteSession, state => {
       const ids = selectedSessionIds.getState()
       return state.map(session => {
         session.selected = ids.includes(session.id)
@@ -65,20 +71,44 @@ export const genCoachSessions = (id= 0) => {
     })
 
   forward({
-    from: loadCoachSessions,
-    to: fetchCoachSessionsListFx
+    from: loadCoachSessions.map(req => req.params),
+    to: fetchCoachSessionsListFx,
+  })
+
+  const buySessionBulk = createEvent<number[]>()
+
+  const buySessionsFx = createEffect({
+    handler: bulkBookSessions,
+  })
+
+  forward({
+    from: buySessionBulk.map(sessions => ({ sessions })),
+    to: buySessionsFx,
+  })
+
+  forward({
+    from: buySessionsFx.done,
+    to: toasts.add.prepend(() => ({ type: "info", text: "Сессии успешно забронированы" })),
+  })
+
+  forward({
+    from: buySessionsFx.done,
+    to: attach({
+      source: loadParams,
+      effect: fetchCoachSessionsListFx,
+      mapParams: (_, params) => params,
+    }),
   })
 
   const changeDurationTab = createEvent<DurationType>()
-  const $durationTab = createStore<DurationType>('D30')
-    .on(changeDurationTab, (_, payload) => payload)
+  const $durationTab = createStore<DurationType>("D30").on(changeDurationTab, (_, payload) => payload)
 
-  changeDurationTab.watch((state) => {
+  changeDurationTab.watch(state => {
     return loadCoachSessions({
       id: $id.getState(),
       params: {
-        duration_type: $durationTab.getState()
-      }
+        duration_type: $durationTab.getState(),
+      },
     })
   })
 
@@ -91,7 +121,9 @@ export const genCoachSessions = (id= 0) => {
     deleteSession,
     tabs: {
       $durationTab,
-      changeDurationTab
-    }
+      changeDurationTab,
+    },
+    buySessionsLoading: buySessionsFx.pending,
+    buySessionBulk,
   }
 }

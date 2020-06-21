@@ -1,4 +1,4 @@
-import { getYearsCount } from "@/application/lib/helpers/date"
+import { getYearsCount } from "@/application/lib/formatting/date"
 import { CoachHeader } from "@/application/pages/auth/pages/signup/content/step-4/coach/CoachHeader"
 import { CoachInformation } from "@/application/feature/coach-get-access/components/CoachInformation"
 import { Step4CoachLayout } from "@/application/pages/auth/pages/signup/content/step-4/coach/Step4CoachLayout"

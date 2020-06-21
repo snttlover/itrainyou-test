@@ -2,13 +2,12 @@ import styled, { css } from "styled-components"
 import { Icon } from "@/application/components/icon/Icon"
 import Link from "next/link"
 import { Burger } from "@/application/components/layouts/behaviors/dashboards/common/menu/content/Burger"
-import { Avatar, AvatarPlaceholder } from "@/application/components/avatar/Avatar"
+import { Avatar } from "@/application/components/avatar/Avatar"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { CoachTooltip } from "@/application/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
 import { useStore } from "effector-react"
 import { $userData } from "@/application/feature/user/user.model"
-import { Search } from "@/application/pages/landing/content/top-bar/search/Search"
-import {MobileMenu, MobileSearchButton} from "@/application/pages/landing/content/top-bar/mobile-menu/MobileMenu"
+import { MobileMenu, MobileSearchButton } from "@/application/pages/landing/content/top-bar/mobile-menu/MobileMenu"
 
 const Wrapper = styled.div`
   position: relative;
@@ -44,7 +43,7 @@ const StyledAvatar = styled(Avatar)`
   height: 40px;
   margin-left: 36px;
   cursor: pointer;
-  
+
   ${MediaRange.lessThan(`tablet`)`
     display: none;
   `}
