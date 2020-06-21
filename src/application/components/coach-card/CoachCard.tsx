@@ -305,7 +305,9 @@ const CoachCardLayout = ({ coach, className }: Props) => {
 
   if (isActive) {
     sessionsListModel.loadData({
-      params: {},
+      params: {
+        duration_type: "D30",
+      },
     })
   }
 

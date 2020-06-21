@@ -1,4 +1,5 @@
 import { ContentContainer } from "@/application/components/layouts/ContentContainer"
+import { Loader, Spinner } from "@/application/components/spinner/Spinner"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $coach, mounted } from "@/application/pages/search/coach-by-id/coach-by-id.model"
 import { AboutCoach } from "@/application/pages/search/coach-by-id/components/AboutCoach"
@@ -102,29 +103,36 @@ const Datepicker = () => {
 }
 
 export const CoachByIdPage = () => {
+  const coach = useStore($coach)
   const router = useRouter()
   useEffect(() => {
     mounted({ id: parseInt(router.query.id as string) })
   }, [])
+
   return (
     <UserLayout>
       <ContentContainer>
-        <InfoWithSidebar>
-          <CoachInfoContainer>
-            <MainCoachBlock>
-              <BaseCoachInfo />
-              <BuyBlock>
-                <Datepicker />
-              </BuyBlock>
-              <AboutCoach />
-            </MainCoachBlock>
-            <Reviews />
-          </CoachInfoContainer>
-          <BuySidebar>
-            <Datepicker />
-          </BuySidebar>
-        </InfoWithSidebar>
+        {!coach && <Loader />}
+        {coach && (
+          <InfoWithSidebar>
+            <CoachInfoContainer>
+              <MainCoachBlock>
+                <BaseCoachInfo />
+                <BuyBlock>
+                  <Datepicker />
+                </BuyBlock>
+                <AboutCoach />
+              </MainCoachBlock>
+              <Reviews />
+            </CoachInfoContainer>
+            <BuySidebar>
+              <Datepicker />
+            </BuySidebar>
+          </InfoWithSidebar>
+        )}
       </ContentContainer>
     </UserLayout>
   )
 }
+
+export default CoachByIdPage

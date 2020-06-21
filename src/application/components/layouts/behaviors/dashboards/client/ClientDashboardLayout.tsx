@@ -1,4 +1,5 @@
 import { changeDashboardType } from "@/application/feature/dashboard/dashboard"
+import { withFullRegister } from "@/application/feature/user/with-full-register"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { ClientMenu } from "@/application/components/layouts/behaviors/dashboards/client/menu/ClientMenu"
@@ -6,7 +7,8 @@ import { ClientTopBar } from "@/application/components/layouts/behaviors/dashboa
 import { withProtect } from "@/application/feature/user/with-protect"
 import { ToastsContainer } from "@/application/components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
 import { DashboardContainer } from "@/application/components/layouts/behaviors/dashboards/common/DashboardContainer"
-import { DashboardPageContent } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageContent"
+import { DashboardContent } from "@/application/components/layouts/behaviors/dashboards/common/DashboardContent"
+import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -20,12 +22,12 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
     <DashboardContainer {...props}>
       <ClientMenu />
       <ToastsContainer />
-      <DashboardPageContent>
+      <DashboardContent>
         <ClientTopBar />
-        {children}
-      </DashboardPageContent>
+        <DashboardPageWrapper>{children}</DashboardPageWrapper>
+      </DashboardContent>
     </DashboardContainer>
   )
 })``
 
-export const ClientDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(Dashboard)
+export const ClientDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(withFullRegister(Dashboard))

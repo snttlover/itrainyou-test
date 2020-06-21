@@ -14,7 +14,10 @@ export const loadReviewsFx = createEffect({
 
 export const mounted = createEvent<{ id: number }>()
 
-export const $coach = createStore<Coach | null>(null).on(loadCoachFx.doneData, (state, payload) => payload)
+export const $coach = createStore<Coach | null>(null)
+  .on(mounted, () => null)
+  .on(loadCoachFx.doneData, (state, payload) => payload)
+
 export const $reviews = createStore<CoachReviewResponse[]>([]).on(
   loadReviewsFx.doneData,
   (state, payload) => payload.results

@@ -3,8 +3,8 @@ import { GrayTooltip } from "@/application/components/gray-tooltip/GrayTooltip"
 import { Icon } from "@/application/components/icon/Icon"
 import { getCategoryColorById } from "@/application/feature/categories/categories.store"
 import { ClientSession } from "@/application/lib/api/client-session"
+import { date } from "@/application/lib/formatting/date"
 import { MediaRange } from "@/application/lib/responsive/media"
-import dayjs from "dayjs"
 import React from "react"
 import styled from "styled-components"
 
@@ -116,9 +116,9 @@ const SessionTime = styled.p`
 type SessionCardProps = { session: ClientSession; children?: React.ReactNode; className?: string }
 
 export const SessionCard = ({ session, children, className }: SessionCardProps) => {
-  const now = dayjs()
-  const startDate = dayjs(session.startDatetime)
-  const endDate = dayjs(session.endDatetime)
+  const now = date()
+  const startDate = date(session.startDatetime)
+  const endDate = date(session.endDatetime)
   const isBetween = now.isBetween(startDate, endDate, "minute")
 
   return (
@@ -145,7 +145,7 @@ export const SessionCard = ({ session, children, className }: SessionCardProps) 
       </CoachInfoContainer>
       <SessionInfo>
         <SessionTime>
-          {dayjs(session.startDatetime).format("HH:mm")}-{dayjs(session.endDatetime).format("HH:mm")}
+          {date(session.startDatetime).format("HH:mm")}-{date(session.endDatetime).format("HH:mm")}
         </SessionTime>
         {isBetween && children}
       </SessionInfo>

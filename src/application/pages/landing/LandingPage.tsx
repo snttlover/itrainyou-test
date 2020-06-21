@@ -1,3 +1,4 @@
+import { withGuest } from "@/application/feature/user/with-guest"
 import { OurCoaches } from "@/application/pages/landing/content/our-coaches/OurCoaches"
 import * as React from "react"
 import { Layout } from "@/application/components/layouts/behaviors/default/Layout"
@@ -29,3 +30,5 @@ export const LandingPage = () => (
     <Footer />
   </Layout>
 )
+
+export default withGuest({ to: "/client", as: "/client" })(LandingPage)

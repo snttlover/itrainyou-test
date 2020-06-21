@@ -1,9 +1,9 @@
 import { Avatar } from "@/application/components/avatar/Avatar"
 import { Rating } from "@/application/components/rating/Rating"
+import { date } from "@/application/lib/formatting/date"
 import { MediaRange } from "@/application/lib/responsive/media"
 import { $reviews } from "@/application/pages/search/coach-by-id/coach-by-id.model"
 import { Block } from "@/application/pages/search/coach-by-id/components/common/Block"
-import dayjs from "dayjs"
 import { useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
@@ -106,7 +106,7 @@ type ReviewProps = {
   date: string
 }
 
-const Review = styled(({ name, rating, avatar, text, date, ...props }: ReviewProps) => {
+const Review = styled(({ name, rating, avatar, text, date: reviewDate, ...props }: ReviewProps) => {
   const [isOpen, setOpen] = useState(false)
   const isTextOverflow = text.length >= 229
   const fixedText = !isOpen && isTextOverflow ? text.slice(0, 229) + "…" : text
@@ -122,7 +122,7 @@ const Review = styled(({ name, rating, avatar, text, date, ...props }: ReviewPro
         {isTextOverflow && (
           <OpenFullReview onClick={() => setOpen(!isOpen)}>{isOpen ? "Скрыть отзыв" : "Весь отзыв"}</OpenFullReview>
         )}
-        <Date>{dayjs(date).format("DD MMM YYYY")}</Date>
+        <Date>{date(reviewDate).format("DD MMM YYYY")}</Date>
       </BottomLine>
     </StyledBlock>
   )

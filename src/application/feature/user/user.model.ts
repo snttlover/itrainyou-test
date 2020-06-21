@@ -24,6 +24,8 @@ export const $userData = createStore<UserData>({ client: null, coach: null }).on
   (state, payload) => payload
 )
 
+export const $isFullRegistered = $userData.map(userData => userData.client || userData.coach)
+
 export const $coachAccess = $userData.map(userData => ({
   isApproved: userData.coach?.isApproved,
   isForeverRejected: userData.coach?.isForeverRejected,

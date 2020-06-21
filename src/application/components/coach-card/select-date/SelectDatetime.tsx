@@ -1,12 +1,11 @@
 import { IsAuthed } from "@/application/feature/user/IsAuthed"
 import { IsGuest } from "@/application/feature/user/IsGuest"
-import { BulkBookSessionsRequest } from "@/application/lib/api/sessions requests/client/bulk-book-sessions"
+import { date } from "@/application/lib/formatting/date"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
-import dayjs from "dayjs"
-import { Effect, Store } from "effector-next"
+import { Store } from "effector-next"
 import { Calendar } from "@/application/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import { Tabs, Tab } from "@/application/components/tabs/Tabs"
@@ -227,8 +226,8 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | undefined>()
   const pinnedDates = sessions.map(session => session.startDatetime)
 
-  const formattedDate = dayjs(currentDate).format("DD MMMM")
-  const currentDateEqual = dayjs(currentDate).format(equalDateFormat)
+  const formattedDate = date(currentDate).format("DD MMMM")
+  const currentDateEqual = date(currentDate).format(equalDateFormat)
 
   if (!props.coach.prices[activeTab] && tabs.length) {
     changeActiveTab(tabs[0].key)
@@ -236,19 +235,19 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
 
   const times = sessions
     .filter(session => {
-      return dayjs(session.startDatetime).format(equalDateFormat) === currentDateEqual
+      return date(session.startDatetime).format(equalDateFormat) === currentDateEqual
     })
     .map(session => ({
       ...session,
-      start_datetime: dayjs(session.startDatetime).format(equalTimeFormat),
+      start_datetime: date(session.startDatetime).format(equalTimeFormat),
     }))
 
   const selected = sessions
     .filter(session => session.selected)
     .map(session => ({
       ...session,
-      date: dayjs(session.startDatetime).format(`DD.MM.YY`),
-      time: dayjs(session.startDatetime).format(equalTimeFormat),
+      date: date(session.startDatetime).format(`DD.MM.YY`),
+      time: date(session.startDatetime).format(equalTimeFormat),
     }))
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)

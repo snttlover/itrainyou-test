@@ -17,7 +17,9 @@ import "simplebar/dist/simplebar.min.css"
 import "swiper/css/swiper.min.css"
 import { ClientTheme } from "@/application/components/layouts/themes"
 import utc from "dayjs/plugin/utc"
+import isBetween from "dayjs/plugin/isBetween"
 
+dayjs.extend(isBetween)
 dayjs.extend(utc)
 dayjs.locale("ru")
 
