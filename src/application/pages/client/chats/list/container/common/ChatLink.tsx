@@ -114,7 +114,7 @@ const Counter = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #ffffff;
-  background: #4858cc;
+  background: ${props => props.theme.colors.primary};
   border-radius: 16px;
   padding: 3px 4px;
   @media screen and (max-width: 560px) {
