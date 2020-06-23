@@ -28,7 +28,7 @@ const Container = styled.div<ContainerTypes>`
   align-items: flex-end;
 
   &[data-self="true"] {
-    background: #4858cc;
+    background: ${props => props.theme.colors.primary};
     border-radius: 12px 12px 0px 12px;
     color: #ffffff;
     align-self: flex-end;
