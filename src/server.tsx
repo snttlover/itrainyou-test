@@ -1,4 +1,4 @@
-import { Provider } from "effector-react/ssr"
+import { changeToken, TOKEN_COOKIE_KEY } from "@/feature/user/user.model"
 import { performance } from "perf_hooks"
 import express from "express"
 import serialize from "serialize-javascript"
@@ -11,11 +11,10 @@ import { ServerStyleSheet } from "styled-components"
 import cookieParser from "cookie-parser"
 
 import { fork, serialize as effectorSerialize, allSettled } from "effector/fork"
-import { root, guard, Event, forward } from "effector-root"
+import { root, Event, forward, guard } from "effector-root"
 import { config } from "./config"
-import { serverStarted as appServerStarted } from "./store"
 
-import { START } from "./lib/effector"
+import { getStart, START } from "./lib/effector"
 import { Application } from "./application"
 import { ROUTES } from "./pages/routes"
 
@@ -24,21 +23,39 @@ const serverStarted = root.createEvent<{
   res: express.Response
 }>()
 
-forward({
-  from: serverStarted.map(({ req }) => ({ cookies: req.cookies, query: req.query, params: {} })),
-  to: appServerStarted,
-})
-
 const requestHandled = serverStarted.map(({ req }) => req)
 
-const routesMatched = requestHandled.map(req => matchRoutes(ROUTES, req.url).map(lookupStartEvent).filter(Boolean))
+const tokenCookie = requestHandled.map(req => req.cookies[TOKEN_COOKIE_KEY] as string)
+
+guard({
+  source: tokenCookie,
+  filter: token => !!token,
+  target: changeToken,
+})
+
+const routesMatched = requestHandled.map(req => ({
+  query: req.query as Record<string, string>,
+  routes: matchRoutes(ROUTES, req.url).filter(lookupStartEvent).filter(Boolean),
+}))
 
 for (const { component } of ROUTES) {
-  guard({
-    source: routesMatched,
-    filter: matchedEvents => matchedEvents.includes(component[START]),
-    target: component[START],
-  })
+  const startPageEvent = getStart(component)
+
+  if (startPageEvent) {
+    const matchedRoute = routesMatched.filterMap(({ routes, query }) => {
+      const filteredRoutes = routes.filter(route => lookupStartEvent(route) === startPageEvent)
+
+      return {
+        route: filteredRoutes[0],
+        query,
+      }
+    })
+
+    forward({
+      from: matchedRoute.map(({ query, route }) => ({ query, params: route?.match?.params })),
+      to: startPageEvent,
+    })
+  }
 }
 
 let assets: {
@@ -71,14 +88,22 @@ export const server = express()
       console.log(error)
     }
 
+    if (res.statusCode >= 300 && res.statusCode < 400) {
+      console.info(
+        "[REDIRECT] from %s to %s at %sms",
+        req.url,
+        res.get("Location"),
+        (performance.now() - timeStart).toFixed(2)
+      )
+      return
+    }
+
     const context = {}
     const sheet = new ServerStyleSheet()
 
     const jsx = sheet.collectStyles(
       <StaticRouter context={context} location={req.url}>
-        <Provider value={scope}>
-          <Application />
-        </Provider>
+        <Application root={scope} />
       </StaticRouter>
     )
 

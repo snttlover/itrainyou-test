@@ -1,4 +1,4 @@
-import { useList } from "effector-react/ssr"
+import { useEvent, useList } from "effector-react/ssr"
 import {
   $categoriesList,
   toggleCategorySelection,
@@ -101,11 +101,12 @@ const CheckBoxWrapper = (props: CheckBoxWrapperTypes) => {
 }
 
 export const Categories = () => {
+  const toggleCategory = useEvent(toggleCategorySelection)
   return (
     <>
       {useList($categoriesList, category => (
         <CheckBoxWrapper description={category.description}>
-          <StyledCategoryCheckbox value={category.checked} onChange={e => toggleCategorySelection(category.id)}>
+          <StyledCategoryCheckbox value={category.checked} onChange={e => toggleCategory(category.id)}>
             <CategoryIcon color={getCategoryColorById(category.id)} />
             <Text>{category.name}</Text>
             <CategoryDescription>{category.description}</CategoryDescription>

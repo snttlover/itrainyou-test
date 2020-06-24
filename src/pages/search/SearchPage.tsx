@@ -1,4 +1,11 @@
-import { fetchCoachesListFx, resetSearchQuery, setSearchPageQuery } from "@/pages/search/coaches-search.model"
+import { START } from "@/lib/effector"
+import { parseQueryString } from "@/lib/helpers/query"
+import {
+  fetchCoachesListFx,
+  resetSearchQuery,
+  serverStartedQueryParams,
+  setSearchPageQuery,
+} from "@/pages/search/coaches-search.model"
 import { fetchMaxPriceFx } from "@/pages/search/content/filters/content/price-filter/price-filter.model"
 import { useEffect } from "react"
 import * as React from "react"
@@ -25,9 +32,9 @@ export const SearchPage = () => {
   const location = useLocation()
 
   useEffect(() => {
-    console.log(location.search)
-    /*setSearchPageQuery(router.query)
-    fetchCoachesListFx(router.query)*/
+    const query = parseQueryString(location.search)
+    setSearchPageQuery(query)
+    fetchCoachesListFx(query)
   }, [location.pathname])
 
   useEffect(() => {
@@ -53,4 +60,4 @@ export const SearchPage = () => {
   )
 }
 
-export default SearchPage
+SearchPage[START] = serverStartedQueryParams

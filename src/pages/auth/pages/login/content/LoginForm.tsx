@@ -5,7 +5,7 @@ import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Spinner } from "@/components/spinner/Spinner"
-import { useStore } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react/ssr"
 import {
   $isFormValid,
   $loginForm,
@@ -39,18 +39,22 @@ export const LoginForm = () => {
   const isFormValid = useStore($isFormValid)
   const isFetching = useStore(loginFx.pending)
 
+  const _loginFormSent = useEvent(loginFormSent)
+  const _emailChanged = useEvent(emailChanged)
+  const _passwordChanged = useEvent(passwordChanged)
+
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    loginFormSent()
+    _loginFormSent()
     e.preventDefault()
   }
 
   return (
     <StyledForm onSubmit={submitHandler}>
       <FormItem label='Почта' error={errors.email}>
-        <Input value={form.email} name='email' type='email' onChange={emailChanged} />
+        <Input value={form.email} name='email' type='email' onChange={_emailChanged} />
       </FormItem>
       <FormItem label='Пароль' error={errors.password}>
-        <PasswordInput value={form.password} name='password' onChange={passwordChanged} />
+        <PasswordInput value={form.password} name='password' onChange={_passwordChanged} />
       </FormItem>
       <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>
       {isFetching && <Spinner />}

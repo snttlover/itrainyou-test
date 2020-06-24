@@ -26,7 +26,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2016",
     "typeRoots": ["node_modules/@types", "typings"],
-    "types": ["react", "jest", "node", "webpack-env"],
+    "types": ["react", "jest", "node"]
   },
   "exclude": [
     "build",

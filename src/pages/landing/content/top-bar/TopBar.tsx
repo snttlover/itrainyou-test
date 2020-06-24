@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/routes"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
@@ -75,7 +76,7 @@ const StyledLogoLink = styled(Link)`
 export const TopBar = () => (
   <Container>
     <StyledContainer>
-      <StyledLogoLink to='/'>
+      <StyledLogoLink to={{ pathname: routeNames.landing(), search: "" }}>
         <StyledLogo />
       </StyledLogoLink>
       <StyledCategoriesPicker />

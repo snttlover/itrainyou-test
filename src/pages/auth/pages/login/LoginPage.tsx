@@ -1,5 +1,5 @@
-import Link from "next/link"
 import * as React from "react"
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { LoginForm } from "@/pages/auth/pages/login/content/LoginForm"
@@ -22,7 +22,7 @@ const Header = styled.h3`
   }
 `
 
-const ResetPasswordLink = styled.a`
+const ResetPasswordLink = styled(Link)`
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
@@ -38,16 +38,14 @@ const ResetPasswordLink = styled.a`
   }
 `
 
-export default () => (
+export const LoginPage = () => (
   <AuthLayout>
     <CenterFormContainer>
       <WhiteContainer>
         <Header>Вход</Header>
         <LoginForm />
       </WhiteContainer>
-      <Link href='/auth/recovery' as='/auth/recovery' passHref>
-        <ResetPasswordLink>Забыли пароль?</ResetPasswordLink>
-      </Link>
+      <ResetPasswordLink to='/auth/recovery'>Забыли пароль?</ResetPasswordLink>
     </CenterFormContainer>
   </AuthLayout>
 )

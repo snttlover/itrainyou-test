@@ -1,4 +1,4 @@
-import { $coachAccess, loadUserDataFx } from "@/feature/user/user.model"
+import { $coachAccess, loadUserData } from "@/feature/user/user.model"
 import { updateRegistrationApplication } from "@/lib/api/coach/update-registration-application"
 import { date } from "@/lib/formatting/date"
 import { InferStoreType } from "@/lib/types/effector"
@@ -54,4 +54,4 @@ export const updateRegistrationFx = createEffect({
   handler: updateRegistrationApplication,
 })
 
-forward({ from: updateRegistrationFx.done, to: loadUserDataFx })
+forward({ from: updateRegistrationFx.done, to: loadUserData })

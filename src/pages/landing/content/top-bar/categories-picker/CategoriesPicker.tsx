@@ -1,3 +1,4 @@
+import { fetchCategoriesList } from "@/feature/categories/categories.store"
 import { useEffect } from "react"
 import * as React from "react"
 import styled from "styled-components"
@@ -6,8 +7,6 @@ import {
   $categoriesList,
   $categoriesPickerVisibility,
   changeCategoriesPickerVisibility,
-  fetchCategoriesListFx,
-  updatePickerQuery,
 } from "./categories-picker.model"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Categories } from "@/pages/landing/content/top-bar/categories-picker/Categories"
@@ -44,9 +43,10 @@ export const CategoriesPicker = (props: CategoriesPickerTypes) => {
 
   const pickerVisibility = useStore($categoriesPickerVisibility)
   const changeStatus = useEvent(changeCategoriesPickerVisibility)
+  const fetchCategories = useEvent(fetchCategoriesList)
 
   useEffect(() => {
-    fetchCategoriesListFx()
+    fetchCategories()
   }, [])
 
   return (

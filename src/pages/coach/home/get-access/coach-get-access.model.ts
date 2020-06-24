@@ -1,4 +1,4 @@
-import { fetchCategoriesListFx } from "@/feature/categories/categories.store"
+import { fetchCategoriesList } from "@/feature/categories/categories.store"
 import {
   $form,
   $selectedCategories,
@@ -10,7 +10,7 @@ import {
   videoInterviewChanged,
   workExperienceChanged,
 } from "@/feature/coach-get-access/coach-get-access.model"
-import { $userData, loadUserDataFx, UserData } from "@/feature/user/user.model"
+import { $userData, loadUserData, UserData } from "@/feature/user/user.model"
 import { updateMyCoach } from "@/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/lib/types/effector"
 import { attach, combine, createEffect, createEvent, forward, sample } from "effector"
@@ -55,7 +55,7 @@ sample({
 
 forward({
   from: patchCoachDataFx.done,
-  to: loadUserDataFx,
+  to: loadUserData,
 })
 
 export const coachGetAccessMounted = createEvent()
@@ -79,7 +79,7 @@ const fillCoachData = attach({
 
 forward({
   from: coachGetAccessMounted,
-  to: fetchCategoriesListFx,
+  to: fetchCategoriesList,
 })
 
 forward({

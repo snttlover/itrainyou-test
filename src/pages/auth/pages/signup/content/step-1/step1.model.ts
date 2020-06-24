@@ -1,11 +1,11 @@
 import { loggedIn } from "@/feature/user/user.model"
 import { registerAsUser, RegisterAsUserResponse } from "@/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
+import { history } from "@/feature/navigation"
 import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
 import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, sample } from "effector-root"
-import Router from "next/router"
 
 export const step1Registered = createEvent()
 export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form>, RegisterAsUserResponse, AxiosError>({
@@ -15,7 +15,7 @@ export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form
 registerFx.doneData.watch(payload => {
   userDataReset()
   loggedIn({ token: payload.token })
-  Router.push("/auth/signup/[step]", "/auth/signup/2", { shallow: true })
+  history.push("/auth/signup/2")
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({

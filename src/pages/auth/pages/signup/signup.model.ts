@@ -1,7 +1,8 @@
-import { loadUserDataFx } from "@/feature/user/user.model"
+import { loadUserData } from "@/feature/user/user.model"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
-import { attach, createEffect, createEvent, createStore, forward, merge, sample } from "effector-root"
-import Router from "next/router"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/routes"
+import { createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
 
 export const REGISTER_SAVE_KEY = "__register-data__"
 
@@ -85,15 +86,25 @@ export const registerUserFx = createEffect({
 
 export const skipCoach = createEvent()
 
-forward({ from: registerUserFx.done, to: loadUserDataFx })
+forward({ from: registerUserFx.done, to: loadUserData })
 
-registerUserFx.done.watch(response => {
+registerUserFx.done.watch(_ => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
-  if (response.params.type === "client") {
-    Router.push("/client", "/client")
-  } else {
-    Router.push("/coach", "/coach")
-  }
+})
+
+const userType = split(registerUserFx.done, {
+  client: ({ params }) => params.type === "client",
+  coach: ({ params }) => params.type === "coach",
+})
+
+forward({
+  from: userType.client.map(() => ({ url: routeNames.client() })),
+  to: navigatePush,
+})
+
+forward({
+  from: userType.coach.map(() => ({ url: routeNames.coach() })),
+  to: navigatePush,
 })
 
 const registerUser = merge([userRegistered, skipCoach])

@@ -1,6 +1,6 @@
-import Link from "next/link"
 import * as React from "react"
 import { MediaRange } from "@/lib/responsive/media"
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 import desktopLogo from "./images/desktop-logo.svg"
 import mobileLogo from "./images/mobile-logo.svg"
@@ -35,9 +35,7 @@ export const AuthLogoLink = styled.div`
 `
 
 export const AuthLayoutLogo = () => (
-  <Link href='/' as='/' passHref>
-    <a>
-      <AuthLogoLink />
-    </a>
+  <Link to='/'>
+    <AuthLogoLink />
   </Link>
 )

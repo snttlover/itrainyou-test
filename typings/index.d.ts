@@ -12,6 +12,13 @@ declare namespace NodeJS {
     [key: string]: string | undefined
     RAZZLE_ASSETS_MANIFEST: string
     RAZZLE_PUBLIC_DIR: string
+    BUILD_TARGET: "client" | "server"
+  }
+}
+
+declare interface NodeModule {
+  hot: {
+    accept(path?: string, cb?: () => void): void
   }
 }
 

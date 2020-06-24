@@ -1,8 +1,7 @@
-import { ClientSelfData } from "../../lib/api/client/clientInfo"
-import { CoachSelfData } from "../../lib/api/coach/get-my-coach"
-import { getMyUser, GetMyUserResponse } from "../../lib/api/users/get-my-user"
-import { serverStarted, TOKEN_KEY } from "../../store"
-import { createEffect, createEvent, createStore } from "effector-root"
+import { ClientSelfData } from "@/lib/api/client/clientInfo"
+import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
+import { getMyUser } from "@/lib/api/users/get-my-user"
+import { combine, createEffect, createEvent, createStore, forward, guard } from "effector-root"
 import Cookies from "js-cookie"
 
 export type UserData = {
@@ -10,11 +9,14 @@ export type UserData = {
   client: ClientSelfData | null
 }
 
+export const TOKEN_COOKIE_KEY = "token"
+
 export const loggedIn = createEvent<{ token: string }>()
+export const loadUserData = createEvent()
 export const setUserData = createEvent<UserData>()
 export const logout = createEvent()
 
-export const loadUserDataFx = createEffect<void, GetMyUserResponse>({
+export const loadUserDataFx = createEffect({
   handler: getMyUser,
 })
 
@@ -35,23 +37,23 @@ export const $coachAccess = $userData.map(userData => ({
 
 export const changeToken = createEvent<string>()
 
-export const $token = createStore<string | undefined>("")
-  .on(serverStarted, (state, payload) => payload.cookies[TOKEN_KEY])
-  .on(loggedIn, (state, payload) => payload.token)
+export const $token = createStore<string>("")
   .on(changeToken, (_, token) => token)
   .reset(logout)
 
-export const $isLoggedIn = createStore(false)
-  .on(loggedIn, () => true)
-  .on($token, (state, payload) => !!payload)
-  .reset(logout)
+export const $isLoggedIn = $token.map(token => !!token)
 
-if (typeof window !== "undefined") {
-  const tokenCookie = Cookies.get(TOKEN_KEY)
-  tokenCookie && loggedIn({ token: tokenCookie })
+forward({
+  from: loggedIn.map(({ token }) => token),
+  to: changeToken,
+})
 
-  $token.updates.watch(token => {
-    if (token) Cookies.set(TOKEN_KEY, token)
-    else Cookies.remove(TOKEN_KEY)
-  })
+guard({
+  source: loadUserData,
+  filter: combine(loadUserDataFx.pending, $isLoggedIn, (pending, isLoggedIn) => !pending && isLoggedIn),
+  target: loadUserDataFx,
+})
+
+if (process.env.BUILD_TARGET === "client") {
+  $token.updates.watch(token => Cookies.set(TOKEN_COOKIE_KEY, token))
 }

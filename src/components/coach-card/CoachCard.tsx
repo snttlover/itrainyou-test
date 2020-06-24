@@ -11,6 +11,7 @@ import { genCoachSessions } from "@/components/coach-card/select-date/select-dat
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { Icon } from "@/components/icon/Icon"
 import { GrayTooltip } from "@/components/gray-tooltip/GrayTooltip"
+import { useHistory } from "react-router-dom"
 
 const MainInfoContainer = styled.div`
   position: relative;
@@ -299,6 +300,7 @@ type Props = {
 
 const CoachCardLayout = ({ coach, className }: Props) => {
   const [isActive, changeActive] = useState(false)
+  const history = useHistory()
 
   const sessionsListModel = useMemo(() => genCoachSessions(coach.id), [coach.id])
 
@@ -316,7 +318,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   }
 
   const redirectToCoach = () => {
-    //TODO: history Router.push(`/search/coach/${coach.id}`)
+    history.push(`/search/coach/${coach.id}`)
   }
 
   const minimumPrice = Object.entries(coach.prices).reduce(

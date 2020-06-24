@@ -1,5 +1,5 @@
 import { SessionCategory, getCategories } from "@/lib/api/categories"
-import { createEffect } from "effector-root"
+import { createEffect, createEvent, forward } from "effector-root"
 import { createStore } from "effector-root"
 
 export type Category = SessionCategory & {
@@ -19,6 +19,8 @@ export const getCategoryColorById = (id: number) => {
   return map[id] || "#000"
 }
 
+export const fetchCategoriesList = createEvent()
+
 export const fetchCategoriesListFx = createEffect({
   handler: getCategories,
 })
@@ -27,3 +29,8 @@ export const $categoriesList = createStore<Category[]>([]).on(
   fetchCategoriesListFx.doneData,
   (state, payload: Category[]) => payload.map(category => ({ ...category, color: getCategoryColorById(category.id) }))
 )
+
+forward({
+  from: fetchCategoriesList,
+  to: fetchCategoriesListFx,
+})

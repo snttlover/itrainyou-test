@@ -1,4 +1,3 @@
-import { fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import { CoachInformation } from "@/feature/coach-get-access/components/CoachInformation"
 import { MediaRange } from "@/lib/responsive/media"
 import {

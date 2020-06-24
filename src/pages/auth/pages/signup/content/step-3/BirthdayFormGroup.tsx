@@ -59,8 +59,8 @@ const sexItems: { label: string; value: "M" | "F" }[] = [
 ]
 
 export const BirthdayFormGroup = () => {
-  let birthday = useStore($step3Form.map(form => form.birthday))
-  const userType = useStore($userData.map(data => data.type))
+  let birthday = useStore($step3Form).birthday
+  const userType = useStore($userData).type
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
 

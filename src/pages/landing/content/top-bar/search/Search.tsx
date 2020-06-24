@@ -2,8 +2,8 @@ import * as React from "react"
 import { SearchInput } from "@/components/search-input/SearchInput"
 import { SearchInputItem } from "@/components/search-input/SearchInputItem"
 import searchIcon from "./images/search.svg"
-import { updateSearch, $search, find, $hintsList } from "@/pages/landing/content/top-bar/search/search.model"
-import { useStore } from "effector-react/ssr"
+import { updateSearch, $search, $hintsList, find } from "@/pages/landing/content/top-bar/search/search.model"
+import { useStore, useEvent } from "effector-react/ssr"
 import { useState } from "react"
 import styled, { css } from "styled-components"
 import { $searchPageQuery } from "@/pages/search/coaches-search.model"
@@ -52,8 +52,9 @@ export const Search = (props: SearchProps) => {
   const [focused, changeFocus] = useState(false)
   const params = useStore($searchPageQuery)
   const query = useStore($search)
-
   const hints = useStore($hintsList)
+  const search = useEvent(find)
+  const onSearchChanged = useEvent(updateSearch)
   const [selectedHint, changeSelectedHint] = useState(-1)
   const next = () => {
     changeSelectedHint(selectedHint + 1 >= hints.length ? -1 : selectedHint + 1)
@@ -63,15 +64,15 @@ export const Search = (props: SearchProps) => {
     changeSelectedHint(selectedHint - 1 < -1 ? hints.length - 1 : selectedHint - 1)
   }
 
-  const searchHandler = (value?: string) => {
+  const searchHandler = (value?: string): any => {
     if (value !== undefined) {
-      return find(value)
+      return search(value)
     }
 
     if ((!params.search || !decodeURI(params.search).trim()) && !query.trim()) {
       return
     }
-    find(query)
+    search(query)
   }
 
   const keydownHandler = (e: React.KeyboardEvent) => {
@@ -109,9 +110,9 @@ export const Search = (props: SearchProps) => {
       <SearchInput
         className={props.className}
         value={query}
-        onChange={updateSearch}
+        onChange={onSearchChanged}
         onFocus={() => {
-          updateSearch(query)
+          onSearchChanged(query)
           changeFocus(true)
         }}
         onBlur={() => {

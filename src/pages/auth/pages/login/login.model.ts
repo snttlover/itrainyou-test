@@ -2,10 +2,10 @@ import { $dashboard, DashboardType } from "@/feature/dashboard/dashboard"
 import { loggedIn, setUserData } from "@/feature/user/user.model"
 import { login, LoginResponse } from "@/lib/api/login"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
+import { history } from "@/feature/navigation"
 import { emailValidator, trimString } from "@/lib/validators"
 import { AxiosError } from "axios"
 import { attach, combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
-import Router from "next/router"
 
 export const loginFormSent = createEvent()
 
@@ -18,17 +18,17 @@ type RedirectParams = { data: LoginResponse; dashboard: DashboardType }
 const _loginRedirectFx = createEffect({
   handler: ({ data, dashboard }: RedirectParams) => {
     if (!data.user.client && !data.user.coach) {
-      Router.push("/auth/signup/[step]", "/auth/signup/2")
+      history.push("/auth/signup/2")
     } else if (data.user.coach?.isForeverRejected) {
-      Router.push("/client/", "/client/")
+      history.push("/client/")
     } else if (dashboard === "client") {
-      Router.push("/client/", "/client/")
+      history.push("/client/")
     } else if (dashboard === "coach") {
-      Router.push("/coach/", "/coach/")
+      history.push("/coach/")
     } else if (data.user.coach) {
-      Router.push("/coach", "/coach/")
+      history.push("/coach/")
     } else {
-      Router.push("/client/", "/client/")
+      history.push("/client/")
     }
   },
 })

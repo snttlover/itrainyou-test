@@ -1,11 +1,11 @@
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
+import { history } from "@/feature/navigation"
 import { MediaRange } from "@/lib/responsive/media"
 import { WhiteNextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { UserTypeCard } from "@/pages/auth/pages/signup/content/step-2/UserTypeCard"
 import { userTypeChanged, $userData } from "@/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react/ssr"
-import Router from "next/router"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -121,7 +121,7 @@ export const Step2 = () => {
             onClick={() => userTypeChanged("coach")}
           />
         </Cards>
-        <WhiteNextButton onClick={() => Router.push("/auth/signup/[step]", "/auth/signup/3")} />
+        <WhiteNextButton onClick={() => history.push("/auth/signup/3")} />
       </Container>
     </AuthLayout>
   )

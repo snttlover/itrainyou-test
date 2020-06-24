@@ -4,9 +4,6 @@ import { passwordValidator, trimString } from "@/lib/validators"
 import { AxiosError } from "axios"
 import { combine, createEffect, createStoreObject } from "effector-root"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import Cookies from "js-cookie"
-import { TOKEN_KEY } from "@/store"
-import { videoUploadProgressChanged } from "@/feature/coach-get-access/coach-get-access.model"
 import { changeToken } from "@/feature/user/user.model"
 
 type ResetRType = {
@@ -25,7 +22,6 @@ const successToast: Toast = {
 changePasswordFx.done.watch(data => {
   // @ts-ignore
   const token: string = data.result.token
-  Cookies.set(TOKEN_KEY, token)
   changeToken(token)
   toasts.remove(successToast)
   toasts.add(successToast)

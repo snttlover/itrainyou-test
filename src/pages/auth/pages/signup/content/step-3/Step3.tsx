@@ -2,6 +2,7 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
+import { history } from "@/feature/navigation"
 import { MediaRange } from "@/lib/responsive/media"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
@@ -19,7 +20,6 @@ import {
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
 import { useStore } from "effector-react/ssr"
-import Router from "next/router"
 import * as React from "react"
 import { useEffect } from "react"
 import styled from "styled-components"
@@ -141,7 +141,7 @@ export const Step3 = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
   const isFormValid = useStore($isStep3FormValid)
-  const userType = useStore($userData.map(data => data.type))
+  const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
 
   useEffect(() => {
@@ -177,7 +177,7 @@ export const Step3 = () => {
           </FormItem>
           <BirthdayFormGroup />
 
-          <NextButton onClick={() => Router.push("/auth/signup/[step]", "/auth/signup/4")} disabled={!isFormValid} />
+          <NextButton onClick={() => history.push("/auth/signup/4")} disabled={!isFormValid} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => toggleUploadModal()} />}

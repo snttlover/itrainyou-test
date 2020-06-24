@@ -1,93 +1,32 @@
-import { SessionCategory, getCategories } from "@/lib/api/categories"
-import { serverStarted } from "@/store"
-import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
-import {
-  $searchPageQuery,
-  addSearchPageQuery,
-  removeSearchPageQuery,
-  setSearchPageQuery,
-} from "@/pages/search/coaches-search.model"
-
-interface PickerCategory extends SessionCategory {
-  checked: boolean
-}
-
-export const fetchCategoriesListFx = createEffect<void, PickerCategory[]>().use(() => getCategories())
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/routes"
+import { combine, createEvent, createStore, restore, sample } from "effector-root"
+import { $categoriesList as $categories } from "@/feature/categories/categories.store"
 
 export const toggleCategorySelection = createEvent<number>()
 export const resetCategories = createEvent()
 
-export const $categoriesList = createStore<PickerCategory[]>([])
-  .on(setSearchPageQuery, (state, query) => {
-    const categories = query.categories ? query.categories.split(",").map(id => +id) : []
-    return state.map(item => ({ ...item, checked: categories.includes(item.id) }))
+const $selectedCategories = createStore<number[]>([])
+  .on(toggleCategorySelection, (categories, catId) => {
+    if (categories.includes(catId)) return categories.filter(id => id !== catId)
+    else return [...categories, catId]
   })
-  .on(fetchCategoriesListFx.done, (state, payload) => {
-    const query = $searchPageQuery.getState()
-    const categories = query.categories ? query.categories.split(",").map(id => +id) : []
+  .reset(resetCategories)
 
-    return payload.result.map(item => ({ ...item, checked: categories.includes(item.id) }))
-  })
-  .on(resetCategories, state =>
-    state.map(category => ({
-      ...category,
-      checked: false,
-    }))
-  )
-  .on(toggleCategorySelection, (list, id: number) => {
-    return list.map(item => {
-      if (item.id === id) {
-        return {
-          ...item,
-          checked: !item.checked,
-        }
-      }
-      return item
-    })
-  })
-
-const navigateWithFilters = createEffect({
-  handler() {
-    updatePickerQuery()
-  },
-})
-
-sample({
-  clock: toggleCategorySelection,
-  source: $categoriesList,
-  target: navigateWithFilters,
-})
-
-export const changeCategoriesPickerVisibility = createEvent<boolean>()
-export const $categoriesPickerVisibility = createStore(false).on(
-  changeCategoriesPickerVisibility,
-
-  (_, status) => status
+export const $categoriesList = combine([$categories, $selectedCategories], ([categories, selectedIds]) =>
+  categories.map(cat => ({ ...cat, checked: selectedIds.includes(cat.id) }))
 )
 
-export const updatePickerQuery = createEvent()
+export const changeCategoriesPickerVisibility = createEvent<boolean>()
+export const $categoriesPickerVisibility = restore(changeCategoriesPickerVisibility, false)
 
-updatePickerQuery.watch(() => {
-  const query = $searchPageQuery.getState()
-  const selectedCategoriesIds = $categoriesList
-    .getState()
-    .filter(category => category.checked)
-    .map(category => category.id)
-
-  if (selectedCategoriesIds.length) {
-    if (selectedCategoriesIds.join(`,`) !== query.categories) {
-      addSearchPageQuery({
-        categories: selectedCategoriesIds.join(","),
-      })
-    }
-  } else {
-    if (query.categories) {
-      removeSearchPageQuery([`categories`])
-    }
-  }
-})
-
-forward({
-  from: serverStarted,
-  to: fetchCategoriesListFx,
+sample({
+  source: $selectedCategories,
+  fn: categories => ({
+    url: routeNames.search(),
+    query: {
+      categories,
+    },
+  }),
+  target: navigatePush,
 })

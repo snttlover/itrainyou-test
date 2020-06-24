@@ -1,6 +1,8 @@
 import { Coach, getCoaches, GetCoachesParamsTypes } from "@/lib/api/coach"
+import { ServerParams } from "@/lib/effector"
 import { debounce } from "@/lib/helpers/debounce"
-import { serverStarted } from "@/store"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/routes"
 import { createEffect, createEvent, forward, merge } from "effector-root"
 import { createStore } from "effector-root"
 import { DurationType } from "@/lib/api/coach-sessions"
@@ -31,7 +33,7 @@ if (typeof window !== "undefined") {
   $searchPageQuery.watch(
     updateEvents,
     debounce((query: GetCoachesParamsTypes) => {
-      // TODO: history Router.push({ pathname: `/search`, query: { ...query } }, { pathname: "/search", query: { ...query } })
+      navigatePush({ url: routeNames.search(), query })
     }, 300)
   )
 }
@@ -85,9 +87,9 @@ export const $coachesList = createStore<Coach[]>([])
   })
   .reset(fetchCoachesListFx)
 
-const serverStartedQueryParams = serverStarted.map(({ query }) => query)
+export const serverStartedQueryParams = createEvent<ServerParams>()
 
 forward({
-  from: serverStartedQueryParams,
+  from: serverStartedQueryParams.map(params => params.query),
   to: [fetchCoachesListFx, setSearchPageQuery],
 })

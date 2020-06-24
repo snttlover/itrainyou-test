@@ -6,8 +6,8 @@ import { MediaRange } from "@/lib/responsive/media"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
-import Link from "next/link"
 import { useEffect } from "react"
+import { Link } from "react-router-dom"
 import {
   $isFormValid,
   $step1Form,
@@ -98,7 +98,7 @@ const Footer = styled.div`
   `}
 `
 
-const StyledLink = styled.a`
+const StyledLink = styled(Link)`
   color: #ffffff;
   font-family: Roboto;
   font-style: normal;
@@ -165,11 +165,9 @@ export const Step1 = () => {
         </Form>
       </Container>
       <Footer>
-        <Link href='/auth/login' as='/auth/login' passHref>
-          <StyledLink>
-            Уже есть аккаунт? <SignIn>Войдите</SignIn>
-          </StyledLink>
-        </Link>
+        <StyledLink to='/auth/login'>
+          Уже есть аккаунт? <SignIn>Войдите</SignIn>
+        </StyledLink>
       </Footer>
     </AuthLayout>
   )
