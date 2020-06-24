@@ -1,3 +1,4 @@
+import { AsyncDataLoader } from "@/lib/AsyncDataLoader"
 import * as React from "react"
 import { Scope } from "effector/fork"
 import { Provider } from "effector-react/ssr"
@@ -28,7 +29,9 @@ export const Application: React.FC<ApplicationProps> = ({ root }) => {
     <Provider value={root}>
       <ClientTheme>
         <AppStyles />
-        <Pages />
+        <AsyncDataLoader scope={root}>
+          <Pages />
+        </AsyncDataLoader>
       </ClientTheme>
     </Provider>
   )

@@ -105,11 +105,6 @@ const Datepicker = () => {
 
 export const CoachByIdPage = () => {
   const coach = useStore($coach)
-  const params = useParams<{ id: string }>()
-  const _mounted = useEvent(mounted)
-  useEffect(() => {
-    _mounted({ id: parseInt(params.id as string) })
-  }, [])
 
   return (
     <UserLayout>

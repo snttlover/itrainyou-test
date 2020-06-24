@@ -38,6 +38,8 @@ sample({
   target: loadSessions,
 })
 
+mounted.watch(console.log)
+
 forward({
   from: mounted,
   to: [loadCoachFx, loadReviewsFx],

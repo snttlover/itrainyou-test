@@ -1,11 +1,5 @@
 import { START } from "@/lib/effector"
-import { parseQueryString } from "@/lib/helpers/query"
-import {
-  fetchCoachesListFx,
-  resetSearchQuery,
-  serverStartedQueryParams,
-  setSearchPageQuery,
-} from "@/pages/search/coaches-search.model"
+import { resetSearchQuery, serverStartedQueryParams } from "@/pages/search/coaches-search.model"
 import { fetchMaxPriceFx } from "@/pages/search/content/filters/content/price-filter/price-filter.model"
 import { useEffect } from "react"
 import * as React from "react"
@@ -16,7 +10,6 @@ import { MobileTabs } from "./content/mobile-tabs/MobileTabs"
 import { Filters } from "@/pages/search/content/filters/Filters"
 import styled from "styled-components"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
-import { useLocation } from "react-router-dom"
 
 const StyledPageContainer = styled(PageContainer)`
   display: flex;
@@ -29,14 +22,6 @@ const ContentWrapper = styled.div`
 const FiltersWrapper = styled.div``
 
 export const SearchPage = () => {
-  const location = useLocation()
-
-  useEffect(() => {
-    const query = parseQueryString(location.search)
-    setSearchPageQuery(query)
-    fetchCoachesListFx(query)
-  }, [location.pathname])
-
   useEffect(() => {
     fetchMaxPriceFx()
     return () => {

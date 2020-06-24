@@ -1,4 +1,4 @@
-import { Event } from "effector-root"
+import { createEvent, Event, restore } from "effector-root"
 
 export const START = `☄️/start-event`
 export type ServerParams = {
@@ -9,3 +9,9 @@ export type ServerParams = {
 export function getStart<T>(component: T): undefined | Event<ServerParams> {
   return component && component[START]
 }
+
+export const clientStarted = createEvent()
+export const $isClient = restore(
+  clientStarted.map(() => true),
+  false
+)
