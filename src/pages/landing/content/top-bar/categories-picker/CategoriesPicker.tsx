@@ -1,4 +1,5 @@
 import { fetchCategoriesList } from "@/feature/categories/categories.store"
+import { parseQueryString } from "@/lib/helpers/query"
 import { useEffect } from "react"
 import * as React from "react"
 import styled from "styled-components"
@@ -7,9 +8,11 @@ import {
   $categoriesList,
   $categoriesPickerVisibility,
   changeCategoriesPickerVisibility,
+  setSelectedCategories,
 } from "./categories-picker.model"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Categories } from "@/pages/landing/content/top-bar/categories-picker/Categories"
+import { useLocation } from "react-router-dom"
 
 const Label = styled.div`
   font-size: 16px;
@@ -39,20 +42,29 @@ type CategoriesPickerTypes = {
 
 export const CategoriesPicker = (props: CategoriesPickerTypes) => {
   const selectedCategories = useStore($categoriesList).filter(category => category.checked).length
-  const titleRenderer = () => <Label>Категории {!!selectedCategories && <Counter>{selectedCategories}</Counter>}</Label>
 
   const pickerVisibility = useStore($categoriesPickerVisibility)
   const changeStatus = useEvent(changeCategoriesPickerVisibility)
   const fetchCategories = useEvent(fetchCategoriesList)
+  const setCategories = useEvent(setSelectedCategories)
+
+  const location = useLocation()
 
   useEffect(() => {
     fetchCategories()
   }, [])
 
+  useEffect(() => {
+    const query = parseQueryString<{ categories?: string }>(location.search)
+    const categoriesId = (query.categories?.split(",") || []).map(id => parseInt(id, 10)).filter(Number)
+    console.log(categoriesId)
+    setCategories(categoriesId)
+  }, [location.search])
+
   return (
     <StyledDropdown
       className={props.className}
-      renderTitle={titleRenderer}
+      renderTitle={() => <Label>Категории {!!selectedCategories && <Counter>{selectedCategories}</Counter>}</Label>}
       opened={pickerVisibility}
       onOpen={changeStatus}
       onClose={changeStatus}

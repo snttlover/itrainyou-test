@@ -1,17 +1,12 @@
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/routes"
-import { combine, createEvent, createStore, restore, sample } from "effector-root"
+import { combine, createEvent, restore, sample } from "effector-root"
 import { $categoriesList as $categories } from "@/feature/categories/categories.store"
 
 export const toggleCategorySelection = createEvent<number>()
-export const resetCategories = createEvent()
+export const setSelectedCategories = createEvent<number[]>()
 
-const $selectedCategories = createStore<number[]>([])
-  .on(toggleCategorySelection, (categories, catId) => {
-    if (categories.includes(catId)) return categories.filter(id => id !== catId)
-    else return [...categories, catId]
-  })
-  .reset(resetCategories)
+const $selectedCategories = restore(setSelectedCategories, [])
 
 export const $categoriesList = combine([$categories, $selectedCategories], ([categories, selectedIds]) =>
   categories.map(cat => ({ ...cat, checked: selectedIds.includes(cat.id) }))
@@ -22,11 +17,18 @@ export const $categoriesPickerVisibility = restore(changeCategoriesPickerVisibil
 
 sample({
   source: $selectedCategories,
-  fn: categories => ({
-    url: routeNames.search(),
-    query: {
-      categories,
-    },
-  }),
+  clock: toggleCategorySelection,
+  fn: (categories, catId) => {
+    let newCategories
+    if (categories.includes(catId)) newCategories = categories.filter(id => id !== catId)
+    else newCategories = [...categories, catId]
+
+    return {
+      url: routeNames.search(),
+      query: {
+        categories: newCategories,
+      },
+    }
+  },
   target: navigatePush,
 })
