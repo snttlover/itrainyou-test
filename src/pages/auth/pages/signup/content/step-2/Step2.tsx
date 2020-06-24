@@ -5,7 +5,7 @@ import { WhiteNextButton } from "@/pages/auth/pages/signup/components/NextButton
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { UserTypeCard } from "@/pages/auth/pages/signup/content/step-2/UserTypeCard"
 import { userTypeChanged, $userData } from "@/pages/auth/pages/signup/signup.model"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -95,6 +95,7 @@ const Title = styled.h1`
 
 export const Step2 = () => {
   const type = useStore($userData).type
+  const changeType = useEvent(userTypeChanged)
   return (
     <AuthLayout>
       <Steps activeId='2'>
@@ -111,17 +112,17 @@ export const Step2 = () => {
             color='#4858CC'
             hoverColor='#EFF2FC'
             selected={type === "client"}
-            onClick={() => userTypeChanged("client")}
+            onClick={() => changeType("client")}
           />
           <UserTypeCard
             title='коучем'
             color='#7D36A8'
             hoverColor='#F5EFF8'
             selected={type === "coach"}
-            onClick={() => userTypeChanged("coach")}
+            onClick={() => changeType("coach")}
           />
         </Cards>
-        <WhiteNextButton onClick={() => history.push("/auth/signup/3")} />
+        <WhiteNextButton onClick={() => history!.push("/auth/signup/3")} />
       </Container>
     </AuthLayout>
   )

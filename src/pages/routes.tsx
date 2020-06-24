@@ -1,6 +1,7 @@
+import HomePage from "@/pages/client/home/HomePage"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
 import React from "react"
-import { RouteConfig } from "react-router-config"
+import { renderRoutes, RouteConfig, RouteConfigComponentProps } from "react-router-config"
 import { LoginPage } from "@/pages/auth/pages/login/LoginPage"
 import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import { LandingPage } from "./landing/LandingPage"
@@ -41,10 +42,17 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: routeNames.client(),
-    routes: [],
+    render: ({ route }) => <>{renderRoutes(route?.routes)}</>,
+    routes: [
+      {
+        path: "/",
+        component: HomePage,
+      },
+    ],
   },
   {
     path: routeNames.coach(),
+    render: ({ route }: RouteConfigComponentProps) => <>{renderRoutes(route?.routes)}</>,
     routes: [],
   },
   {

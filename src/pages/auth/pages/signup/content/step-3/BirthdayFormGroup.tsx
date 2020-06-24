@@ -10,7 +10,7 @@ import {
   sexChanged,
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import { useState } from "react"
 import styled from "styled-components"
@@ -64,6 +64,9 @@ export const BirthdayFormGroup = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
 
+  const _birthdayChanged = useEvent(birthdayChanged)
+  const _sexChanged = useEvent(sexChanged)
+
   const [days, setDays] = useState<{ label: string; value: number }[]>(
     Array.from({ length: 31 }, (v, k) => k + 1).map(day => ({ label: `${day}`, value: day }))
   )
@@ -72,13 +75,13 @@ export const BirthdayFormGroup = () => {
     if (!birthday) {
       birthday = date()
     }
-    birthdayChanged(birthday.set("year", year))
+    _birthdayChanged(birthday.set("year", year))
   }
   const changeDay = (day: number) => {
     if (!birthday) {
       birthday = date()
     }
-    birthdayChanged(birthday.set("date", day))
+    _birthdayChanged(birthday.set("date", day))
   }
 
   const changeMonth = (month: number) => {
@@ -88,7 +91,7 @@ export const BirthdayFormGroup = () => {
     const newDate = birthday.set("month", month)
     const date2 = newDate.add(1, "month")
     const days = date2.diff(newDate, "day")
-    birthdayChanged(newDate)
+    _birthdayChanged(newDate)
     setDays(Array.from({ length: days }, (v, k) => k + 1).map(day => ({ label: `${day}`, value: day })))
     if (birthday.day() > days) {
       // Если переключили на февраль, а день больше чем максимальный в феврале
@@ -121,7 +124,7 @@ export const BirthdayFormGroup = () => {
       </FormGroup>
       <FormGroup>
         <StyledFormItem label='Пол' error={errors.sex} required={userType === "coach"}>
-          <SelectInput value={values.sex} onChange={sexChanged} options={sexItems} />
+          <SelectInput value={values.sex} onChange={_sexChanged} options={sexItems} />
         </StyledFormItem>
       </FormGroup>
     </React.Fragment>

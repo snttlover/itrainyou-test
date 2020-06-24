@@ -4,7 +4,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { Step4ClientLayout } from "@/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"
 import { $userData, registerUserFx, categoriesChanged, userRegistered } from "@/pages/auth/pages/signup/signup.model"
 import { CategoryCard } from "./client/CategoryCard"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -123,6 +123,7 @@ const RegisterButton = styled(Button)`
 export const Step4Client = () => {
   const selectedCategories = useStore($userData).categories
   const loading = useStore(registerUserFx.pending)
+  const _categoriesChanged = useEvent(categoriesChanged)
 
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
@@ -130,8 +131,8 @@ export const Step4Client = () => {
       category={category}
       selected={selectedCategories.includes(category.id)}
       onSelect={id => {
-        if (selectedCategories.includes(id)) categoriesChanged(selectedCategories.filter(cat => cat !== id))
-        else categoriesChanged([...selectedCategories, id])
+        if (selectedCategories.includes(id)) _categoriesChanged(selectedCategories.filter(cat => cat !== id))
+        else _categoriesChanged([...selectedCategories, id])
       }}
     />
   ))

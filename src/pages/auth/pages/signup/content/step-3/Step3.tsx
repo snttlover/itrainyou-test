@@ -19,7 +19,7 @@ import {
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import { useEffect } from "react"
 import styled from "styled-components"
@@ -144,8 +144,13 @@ export const Step3 = () => {
   const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
 
+  const mounted = useEvent(step3Mounted)
+  const _toggleUploadModal = useEvent(toggleUploadModal)
+  const _nameChanged = useEvent(nameChanged)
+  const _lastNameChanged = useEvent(lastNameChanged)
+
   useEffect(() => {
-    step3Mounted()
+    mounted()
   }, [])
 
   return (
@@ -161,7 +166,7 @@ export const Step3 = () => {
         <Form onSubmit={handleSubmit}>
           <AvatarWrapper>
             <FormItem
-              label={<UserAvatar src={values.image.file} onClick={() => toggleUploadModal()} />}
+              label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />}
               required={userType === "coach"}
             />
             <AvatarHint>
@@ -170,17 +175,17 @@ export const Step3 = () => {
             </AvatarHint>
           </AvatarWrapper>
           <FormItem label='Имя' error={errors.name} required>
-            <Input value={values.name} onChange={nameChanged} />
+            <Input value={values.name} onChange={_nameChanged} />
           </FormItem>
           <FormItem label='Фамилия' error={errors.lastName} required>
-            <Input value={values.lastName} onChange={lastNameChanged} />
+            <Input value={values.lastName} onChange={_lastNameChanged} />
           </FormItem>
           <BirthdayFormGroup />
 
-          <NextButton onClick={() => history.push("/auth/signup/4")} disabled={!isFormValid} />
+          <NextButton onClick={() => history!.push("/auth/signup/4")} disabled={!isFormValid} />
         </Form>
       </Container>
-      {isUploadModalShowed && <UploadModal onClose={() => toggleUploadModal()} />}
+      {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
     </AuthLayout>
   )
 }

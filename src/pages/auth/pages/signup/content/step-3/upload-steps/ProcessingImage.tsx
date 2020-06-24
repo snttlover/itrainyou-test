@@ -1,6 +1,7 @@
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { MediaRange } from "@/lib/responsive/media"
 import { uploadImage } from "@/pages/auth/pages/signup/content/step-3/upload-modal.model"
+import { useEvent } from "effector-react/ssr"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
@@ -70,10 +71,7 @@ function dataURItoFile(dataURI: string) {
   const byteString = atob(dataURI.split(",")[1])
 
   // separate out the mime component
-  const mimeString = dataURI
-    .split(",")[0]
-    .split(":")[1]
-    .split(";")[0]
+  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0]
 
   // write the bytes of the string to an ArrayBuffer
   const ab = new ArrayBuffer(byteString.length)
@@ -120,7 +118,7 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop): Promise<Blob> 
 
 let imageRef: HTMLImageElement | null = null
 
-const processFile = (crop: Crop) => async () => {
+const processFile = (crop: Crop, uploadImage: Function) => async () => {
   if (!imageRef) return
   const file = await cropAndUploadImage(imageRef, crop)
   uploadImage(file)
@@ -160,6 +158,7 @@ type CropState = {
 
 export const ProcessingImage = ({ image, setImage }: ProcessingImageProps) => {
   const [crop, setCrop] = useState<CropState>({ aspect: 1, unit: "%", width: 50, height: 50, x: 25, y: 25 })
+  const _uploadImage = useEvent(uploadImage)
   return (
     <>
       <ControllersContainer>
@@ -179,7 +178,7 @@ export const ProcessingImage = ({ image, setImage }: ProcessingImageProps) => {
           </Rotate>
         </div>
       </ControllersContainer>
-      <UploadButton onClick={processFile(crop as any)}>Загрузить фотографию</UploadButton>
+      <UploadButton onClick={processFile(crop as any, _uploadImage)}>Загрузить фотографию</UploadButton>
     </>
   )
 }

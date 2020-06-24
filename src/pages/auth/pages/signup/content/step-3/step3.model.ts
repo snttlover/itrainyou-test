@@ -4,7 +4,7 @@ import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/e
 import { trimString } from "@/lib/validators"
 import { $userData, clientDataChanged, REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/signup.model"
 import { Dayjs } from "dayjs"
-import { combine, createEvent, createStore, createStoreObject } from "effector-root"
+import { combine, createEvent, createStore, createStoreObject, sample } from "effector-root"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -84,14 +84,17 @@ export const $step3Form = createStoreObject({
   sex: $sex,
 })
 
-$step3Form.updates.watch(data => {
-  clientDataChanged({
+sample({
+  source: $step3Form,
+  clock: $step3Form.updates,
+  fn: data => ({
     avatar: data.image.file || null,
     birthDate: data.birthday ? data.birthday.format("YYYY-MM-DD") : null,
     firstName: data.name,
     lastName: data.lastName,
     sex: data.sex,
-  })
+  }),
+  target: clientDataChanged,
 })
 
 export const step3Mounted = createEvent()

@@ -1,11 +1,12 @@
-import { $dashboard, DashboardType } from "@/feature/dashboard/dashboard"
+import { $dashboard } from "@/feature/dashboard/dashboard"
 import { loggedIn, setUserData } from "@/feature/user/user.model"
 import { login, LoginResponse } from "@/lib/api/login"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
-import { history } from "@/feature/navigation"
+import { navigateReplace } from "@/feature/navigation"
 import { emailValidator, trimString } from "@/lib/validators"
+import { routeNames } from "@/pages/routes"
 import { AxiosError } from "axios"
-import { attach, combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
 
 export const loginFormSent = createEvent()
 
@@ -13,43 +14,34 @@ export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, 
   handler: ({ email, password }) => login({ email, password }),
 })
 
-type RedirectParams = { data: LoginResponse; dashboard: DashboardType }
-
-const _loginRedirectFx = createEffect({
-  handler: ({ data, dashboard }: RedirectParams) => {
+sample({
+  source: $dashboard,
+  clock: loginFx.doneData,
+  fn: (dashboard, data) => {
+    let url
     if (!data.user.client && !data.user.coach) {
-      history.push("/auth/signup/2")
+      url = routeNames.signup("2")
     } else if (data.user.coach?.isForeverRejected) {
-      history.push("/client/")
+      url = routeNames.client()
     } else if (dashboard === "client") {
-      history.push("/client/")
+      url = routeNames.client()
     } else if (dashboard === "coach") {
-      history.push("/coach/")
+      url = routeNames.coach()
     } else if (data.user.coach) {
-      history.push("/coach/")
+      url = routeNames.coach()
     } else {
-      history.push("/client/")
+      url = routeNames.client()
+    }
+    return {
+      url,
     }
   },
-})
-
-const loginRedirectFx = attach({
-  effect: _loginRedirectFx,
-  mapParams: (response: LoginResponse, dashboard) => ({
-    data: response,
-    dashboard,
-  }),
-  source: $dashboard,
+  target: navigateReplace,
 })
 
 forward({
   from: loginFx.doneData,
   to: loggedIn,
-})
-
-forward({
-  from: loginFx.doneData,
-  to: loginRedirectFx,
 })
 
 forward({

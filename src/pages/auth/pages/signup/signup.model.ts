@@ -1,6 +1,6 @@
+import { navigatePush } from "@/feature/navigation"
 import { loadUserData } from "@/feature/user/user.model"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
-import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/routes"
 import { createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
 
@@ -56,21 +56,33 @@ export const $userData = createStore<UserData>({ type: "client", categories: [] 
 
 const watchedEvents = merge([userTypeChanged, clientDataChanged, coachDataChanged, categoriesChanged, userDataReset])
 
-$userData.watch(watchedEvents, userData => {
-  try {
-    const data = JSON.stringify(userData)
-    localStorage.setItem(REGISTER_SAVE_KEY, data)
-  } catch (e) {}
+const saveDataFx = createEffect({
+  handler: (userData: UserData) => {
+    try {
+      const data = JSON.stringify(userData)
+      localStorage.setItem(REGISTER_SAVE_KEY, data)
+    } catch (e) {}
+  },
 })
 
-pageMounted.watch(() => {
-  try {
-    const data = localStorage.getItem(REGISTER_SAVE_KEY)
-    if (!data) return
-    const userData = JSON.parse(data)
-    userDataChanged(userData)
-  } catch (e) {}
+sample({
+  source: $userData,
+  clock: watchedEvents,
+  target: saveDataFx,
 })
+
+const loadDataFx = createEffect({
+  handler: () => {
+    try {
+      const data = localStorage.getItem(REGISTER_SAVE_KEY)
+      if (!data) return
+      return JSON.parse(data)
+    } catch (e) {}
+  },
+})
+
+forward({ from: loadDataFx.doneData, to: $userData })
+forward({ from: pageMounted, to: loadDataFx })
 
 export const userRegistered = createEvent()
 
