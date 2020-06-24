@@ -2,7 +2,7 @@ import { date as formatedDate } from "@/lib/formatting/date"
 import * as React from "react"
 import styled from "styled-components"
 import { RadioGroup, RadioOption } from "@/components/radio/Radio"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Calendar, CalendarDateType } from "@/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react/ssr"
 import arrowImage from "./images/arrow.svg"
@@ -106,6 +106,8 @@ export const DateFilter = () => {
 
   const calendarVisibility = useStore($calendarVisibility)
   const changeCalendarVisibility = useEvent(changeVisibility)
+  const addQuery = useEvent(addSearchPageQuery)
+  const removeQuery = useEvent(removeSearchPageQuery)
 
   const startText = () => {
     if (date && [`from`, `range`].includes(rangeType)) {
@@ -113,6 +115,7 @@ export const DateFilter = () => {
       const currentDate: Date = date.length ? date[0] : date
       return `c ${formatedDate(currentDate).format(`D MMM`)}`
     }
+    return ``
   }
   const endText = () => {
     if (date && [`to`, `range`].includes(rangeType)) {
@@ -120,6 +123,7 @@ export const DateFilter = () => {
       const currentDate: Date = date.length ? date[1] : date
       return `до ${formatedDate(currentDate).format(`D MMM`)}`
     }
+    return ``
   }
 
   const formatDateToBackend = (date: Date) => formatedDate(date).format(`YYYY-MM-DD`)
@@ -129,7 +133,7 @@ export const DateFilter = () => {
 
     if (range === `range`) {
       changeDate(date)
-      addSearchPageQuery({
+      addQuery({
         // @ts-ignore
         nearest_session_date__lte: formatDateToBackend(date[1]),
         // @ts-ignore
@@ -139,15 +143,15 @@ export const DateFilter = () => {
     }
 
     if (range === `to`) {
-      removeSearchPageQuery(["nearest_session_date__gte"])
-      addSearchPageQuery({
+      removeQuery(["nearest_session_date__gte"])
+      addQuery({
         nearest_session_date__lte: formatDateToBackend(date as Date),
       })
     }
 
     if (range === `from`) {
-      removeSearchPageQuery(["nearest_session_date__lte"])
-      addSearchPageQuery({
+      removeQuery(["nearest_session_date__lte"])
+      addQuery({
         nearest_session_date__gte: formatDateToBackend(date as Date),
       })
     }
@@ -161,7 +165,7 @@ export const DateFilter = () => {
       changeRangeType(`from`)
       changeDate(new Date())
     } else {
-      removeSearchPageQuery(["nearest_session_date__gte", "nearest_session_date__lte"])
+      removeQuery(["nearest_session_date__gte", "nearest_session_date__lte"])
     }
   }
 

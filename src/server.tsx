@@ -1,3 +1,4 @@
+import { $lastUrlServerNavigation } from "@/feature/navigation"
 import { changeToken, TOKEN_COOKIE_KEY } from "@/feature/user/user.model"
 import { performance } from "perf_hooks"
 import express from "express"
@@ -11,7 +12,7 @@ import { ServerStyleSheet } from "styled-components"
 import cookieParser from "cookie-parser"
 
 import { fork, serialize as effectorSerialize, allSettled } from "effector/fork"
-import { root, Event, forward, guard } from "effector-root"
+import { root, Event, forward, guard, sample } from "effector-root"
 import { config } from "./config"
 
 import { getStart, START } from "./lib/effector"
@@ -35,28 +36,36 @@ guard({
 
 const routesMatched = requestHandled.map(req => ({
   query: req.query as Record<string, string>,
-  routes: matchRoutes(ROUTES, req.url).filter(lookupStartEvent).filter(Boolean),
+  routes: matchRoutes(ROUTES, req.url.split("?")[0]).filter(lookupStartEvent).filter(Boolean),
 }))
 
 for (const { component } of ROUTES) {
   const startPageEvent = getStart(component)
 
-  if (startPageEvent) {
-    const matchedRoute = routesMatched.filterMap(({ routes, query }) => {
-      const filteredRoutes = routes.filter(route => lookupStartEvent(route) === startPageEvent)
+  if (!startPageEvent) continue
 
-      return {
-        route: filteredRoutes[0],
-        query,
-      }
-    })
+  const matchedRoute = routesMatched.filterMap(({ routes, query }) => {
+    const filteredRoutes = routes.filter(route => lookupStartEvent(route) === startPageEvent)
 
-    forward({
-      from: matchedRoute.map(({ query, route }) => ({ query, params: route?.match?.params })),
-      to: startPageEvent,
-    })
-  }
+    return filteredRoutes.length > 0
+      ? {
+          route: filteredRoutes[0],
+          query,
+        }
+      : undefined
+  })
+
+  forward({
+    from: matchedRoute.map(({ query, route }) => ({ query, params: route?.match?.params })),
+    to: startPageEvent,
+  })
 }
+
+sample({
+  source: serverStarted,
+  clock: $lastUrlServerNavigation,
+  fn: ({ res }, url) => ({ res, url }),
+}).watch(({ res, url }) => res.redirect(url))
 
 let assets: {
   client: {

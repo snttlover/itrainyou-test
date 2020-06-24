@@ -1,11 +1,12 @@
 import { Coach, getCoaches, GetCoachesParamsTypes } from "@/lib/api/coach"
 import { ServerParams } from "@/lib/effector"
-import { debounce } from "@/lib/helpers/debounce"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/routes"
-import { createEffect, createEvent, forward, merge } from "effector-root"
+import { fetchMaxPriceFx } from "@/pages/search/content/filters/content/price-filter/price-filter.model"
+import { createEffect, createEvent, forward, merge, sample } from "effector-root"
 import { createStore } from "effector-root"
 import { DurationType } from "@/lib/api/coach-sessions"
+import { debounce, throttle } from "patronum"
 
 export const setSearchPageQuery = createEvent<GetCoachesParamsTypes>()
 export const addSearchPageQuery = createEvent<GetCoachesParamsTypes>()
@@ -28,15 +29,14 @@ export const $searchPageQuery = createStore<GetCoachesParamsTypes>({})
   })
   .reset(resetSearchQuery)
 
-if (typeof window !== "undefined") {
-  const updateEvents = merge([addSearchPageQuery, removeSearchPageQuery])
-  $searchPageQuery.watch(
-    updateEvents,
-    debounce((query: GetCoachesParamsTypes) => {
-      navigatePush({ url: routeNames.search(), query })
-    }, 300)
-  )
-}
+const updateEvents = merge([addSearchPageQuery, removeSearchPageQuery])
+
+sample({
+  clock: updateEvents,
+  source: $searchPageQuery,
+  fn: query => ({ url: routeNames.search(), query }),
+  target: navigatePush,
+})
 
 export const fetchCoachesListFx = createEffect<GetCoachesParamsTypes, Coach[]>({
   handler: getCoaches,
@@ -87,9 +87,22 @@ export const $coachesList = createStore<Coach[]>([])
   })
   .reset(fetchCoachesListFx)
 
-export const serverStartedQueryParams = createEvent<ServerParams>()
+export const loadCoaches = createEvent()
+
+sample({
+  source: $searchPageQuery,
+  clock: throttle(loadCoaches, 100),
+  target: fetchCoachesListFx,
+})
+
+export const pageLoaded = createEvent<ServerParams>()
 
 forward({
-  from: serverStartedQueryParams.map(params => params.query),
+  from: pageLoaded.map(params => params.query),
   to: [fetchCoachesListFx, setSearchPageQuery],
+})
+
+forward({
+  from: pageLoaded,
+  to: fetchMaxPriceFx,
 })

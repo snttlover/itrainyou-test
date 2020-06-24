@@ -40,6 +40,7 @@ const RangeNumber = styled.div``
 export const PriceFilter = () => {
   const maxPrice = useStore($maxPrice)
   const params = useStore($searchPageQuery)
+  const addQuery = useEvent(addSearchPageQuery)
 
   const start = params.price__gte ? +params.price__gte : 0
   const end = params.price__lte ? +params.price__lte : maxPrice
@@ -54,7 +55,7 @@ export const PriceFilter = () => {
         value={[start, end]}
         min={0}
         max={maxPrice}
-        onChange={([price__gte, price__lte]) => addSearchPageQuery({ price__gte, price__lte })}
+        onChange={([price__gte, price__lte]) => addQuery({ price__gte, price__lte })}
       />
       <RangeNumbers>
         <RangeNumber>{formatCurrency(0)} руб.</RangeNumber>

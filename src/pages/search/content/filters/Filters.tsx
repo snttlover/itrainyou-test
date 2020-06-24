@@ -9,7 +9,7 @@ import {
   $mobileFiltersVisibility,
   changeMobileFiltersVisibility,
 } from "@/pages/search/content/mobile-tabs/mobile-tabs.model"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import close from "./images/close.svg"
 import SimpleBar from "simplebar-react"
 import { SessionTimeFilter } from "./content/session-time-filter/SessionTimeFilter"
@@ -89,11 +89,12 @@ const Header = styled.div`
 
 export const Filters = () => {
   const showOnMobile = useStore($mobileFiltersVisibility)
+  const changeVisibility = useEvent(changeMobileFiltersVisibility)
   return (
     <Modal showOnMobile={showOnMobile}>
       <StyledSimpleBar>
         <Container>
-          <MobileClose onClick={() => changeMobileFiltersVisibility(false)} />
+          <MobileClose onClick={() => changeVisibility(false)} />
           <Header>Фильтры</Header>
           <SessionTimeFilter />
           <PriceFilter />

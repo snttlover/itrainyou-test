@@ -1,14 +1,16 @@
+import { parseQueryString } from "@/lib/helpers/query"
 import * as React from "react"
 import { SearchInput } from "@/components/search-input/SearchInput"
 import { SearchInputItem } from "@/components/search-input/SearchInputItem"
 import searchIcon from "./images/search.svg"
 import { updateSearch, $search, $hintsList, find } from "@/pages/landing/content/top-bar/search/search.model"
 import { useStore, useEvent } from "effector-react/ssr"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled, { css } from "styled-components"
 import { $searchPageQuery } from "@/pages/search/coaches-search.model"
 import { Icon } from "@/components/icon/Icon"
 import { Input } from "@/components/input/Input"
+import { useLocation } from "react-router-dom"
 
 type SearchIconTypes = {
   focused: boolean
@@ -51,11 +53,18 @@ type SearchProps = {
 export const Search = (props: SearchProps) => {
   const [focused, changeFocus] = useState(false)
   const params = useStore($searchPageQuery)
-  const query = useStore($search)
+  const searchValue = useStore($search)
   const hints = useStore($hintsList)
   const search = useEvent(find)
   const onSearchChanged = useEvent(updateSearch)
   const [selectedHint, changeSelectedHint] = useState(-1)
+  const location = useLocation()
+
+  useEffect(() => {
+    const querySearch = parseQueryString<{ search?: string }>(location.search).search || ""
+    if (searchValue !== querySearch) onSearchChanged(querySearch)
+  }, [location.search])
+
   const next = () => {
     changeSelectedHint(selectedHint + 1 >= hints.length ? -1 : selectedHint + 1)
   }
@@ -69,10 +78,10 @@ export const Search = (props: SearchProps) => {
       return search(value)
     }
 
-    if ((!params.search || !decodeURI(params.search).trim()) && !query.trim()) {
+    if ((!params.search || !decodeURI(params.search).trim()) && !searchValue.trim()) {
       return
     }
-    search(query)
+    search(searchValue)
   }
 
   const keydownHandler = (e: React.KeyboardEvent) => {
@@ -98,7 +107,7 @@ export const Search = (props: SearchProps) => {
   }
 
   const getIcon = () => {
-    if (!query) {
+    if (!searchValue) {
       return <SearchIcon focused={focused} onClick={() => searchHandler()} />
     }
     return <CloseIcon onClick={() => searchHandler(``)} />
@@ -109,10 +118,10 @@ export const Search = (props: SearchProps) => {
       {getIcon()}
       <SearchInput
         className={props.className}
-        value={query}
+        value={searchValue}
         onChange={onSearchChanged}
         onFocus={() => {
-          onSearchChanged(query)
+          onSearchChanged(searchValue)
           changeFocus(true)
         }}
         onBlur={() => {

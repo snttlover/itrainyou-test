@@ -57,7 +57,6 @@ export const CategoriesPicker = (props: CategoriesPickerTypes) => {
   useEffect(() => {
     const query = parseQueryString<{ categories?: string }>(location.search)
     const categoriesId = (query.categories?.split(",") || []).map(id => parseInt(id, 10)).filter(Number)
-    console.log(categoriesId)
     setCategories(categoriesId)
   }, [location.search])
 

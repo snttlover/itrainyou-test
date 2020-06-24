@@ -1,4 +1,4 @@
-import { createDomain } from "effector-root"
+import { createDomain, forward, sample, split } from "effector-root"
 import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
 import { DurationType } from "@/lib/api/coach-sessions"
 
@@ -39,16 +39,28 @@ export const $priceFilters = priceFilterDomain
     }))
   )
 
-toggleFilter.watch(() => {
-  const filters = $priceFilters.getState().filter(filter => filter.selected)
-
-  if (filters.length) {
-    addSearchPageQuery({
-      session_duration_types: filters.map(filter => filter.key).join(`,`),
-    })
-  } else {
-    removeSearchPageQuery([`session_duration_types`])
-  }
+const filterChanged = sample({
+  clock: toggleFilter,
+  source: $priceFilters,
+  fn: source => source.filter(filter => filter.selected),
 })
 
-$searchPageQuery.watch(value => setPricesFromQueryString(value.session_duration_types || ``))
+const { add, remove } = split(filterChanged, {
+  add: filters => filters.length > 0,
+  remove: filters => filters.length === 0,
+})
+
+forward({
+  from: add.map(filters => ({ session_duration_types: filters.map(filter => filter.key).join(`,`) })),
+  to: addSearchPageQuery,
+})
+
+forward({
+  from: remove.map<["session_duration_types"]>(_ => [`session_duration_types`]),
+  to: removeSearchPageQuery,
+})
+
+forward({
+  from: $searchPageQuery.map(value => value.session_duration_types || ``),
+  to: setPricesFromQueryString,
+})

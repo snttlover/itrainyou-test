@@ -1,7 +1,6 @@
-import { navigatePush } from "@/feature/navigation"
-import { routeNames } from "@/pages/routes"
-import { combine, createEvent, restore, sample } from "effector-root"
+import { combine, createEvent, forward, restore, sample, split } from "effector-root"
 import { $categoriesList as $categories } from "@/feature/categories/categories.store"
+import { addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
 
 export const toggleCategorySelection = createEvent<number>()
 export const setSelectedCategories = createEvent<number[]>()
@@ -15,7 +14,33 @@ export const $categoriesList = combine([$categories, $selectedCategories], ([cat
 export const changeCategoriesPickerVisibility = createEvent<boolean>()
 export const $categoriesPickerVisibility = restore(changeCategoriesPickerVisibility, false)
 
-sample({
+const { remove, add } = split(
+  sample({
+    source: $selectedCategories,
+    clock: toggleCategorySelection,
+    fn: (categories, catId) => {
+      if (categories.includes(catId)) return categories.filter(id => id !== catId)
+
+      return [...categories, catId]
+    },
+  }),
+  {
+    remove: categories => categories.length === 0,
+    add: categories => categories.length > 0,
+  }
+)
+
+forward({
+  from: add.map(categories => ({ categories: categories.join(",") })),
+  to: addSearchPageQuery,
+})
+
+forward({
+  from: remove.map<["categories"]>(_ => ["categories"]),
+  to: removeSearchPageQuery,
+})
+
+/*sample({
   source: $selectedCategories,
   clock: toggleCategorySelection,
   fn: (categories, catId) => {
@@ -31,4 +56,4 @@ sample({
     }
   },
   target: navigatePush,
-})
+})*/

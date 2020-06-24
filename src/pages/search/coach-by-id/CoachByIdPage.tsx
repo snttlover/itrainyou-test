@@ -6,13 +6,12 @@ import { $coach, mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { AboutCoach } from "@/pages/search/coach-by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/pages/search/coach-by-id/components/BaseCoachInfo"
 import { Reviews } from "@/pages/search/coach-by-id/components/Reviews"
-import React, { useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore } from "effector-react/ssr"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
-import { useParams } from "react-router-dom"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
