@@ -1,7 +1,7 @@
 import { IsAuthed } from "@/feature/user/IsAuthed"
 import { IsGuest } from "@/feature/user/IsGuest"
 import { date } from "@/lib/formatting/date"
-import Link from "next/link"
+import { routeNames } from "@/pages/routes"
 import { useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
@@ -14,6 +14,7 @@ import { genSessionTabs, SelectDatetimeTypes } from "@/components/coach-card/sel
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { DurationType } from "@/lib/api/coach-sessions"
+import { Link } from "react-router-dom"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -506,7 +507,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               </StyledButton>
             </IsAuthed>
             <IsGuest>
-              <Link href='/auth/signup/[step]' as='/auth/signup/1'>
+              <Link to={routeNames.signup("1")}>
                 <StyledButton>Зарегистрироваться</StyledButton>
               </Link>
             </IsGuest>

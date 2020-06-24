@@ -1,17 +1,18 @@
 import { ContentContainer } from "@/components/layouts/ContentContainer"
-import { Loader, Spinner } from "@/components/spinner/Spinner"
+import { Loader } from "@/components/spinner/Spinner"
+import { ServerParams, START } from "@/lib/effector"
 import { MediaRange } from "@/lib/responsive/media"
 import { $coach, mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { AboutCoach } from "@/pages/search/coach-by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/pages/search/coach-by-id/components/BaseCoachInfo"
 import { Reviews } from "@/pages/search/coach-by-id/components/Reviews"
-import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
-import { useStore } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react/ssr"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
+import { useParams } from "react-router-dom"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -104,9 +105,10 @@ const Datepicker = () => {
 
 export const CoachByIdPage = () => {
   const coach = useStore($coach)
-  const router = useRouter()
+  const params = useParams<{ id: string }>()
+  const _mounted = useEvent(mounted)
   useEffect(() => {
-    mounted({ id: parseInt(router.query.id as string) })
+    _mounted({ id: parseInt(params.id as string) })
   }, [])
 
   return (
@@ -135,4 +137,4 @@ export const CoachByIdPage = () => {
   )
 }
 
-export default CoachByIdPage
+CoachByIdPage[START] = mounted.prepend<ServerParams>(({ params }) => ({ id: parseInt(params.id) }))
