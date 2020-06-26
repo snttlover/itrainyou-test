@@ -1,12 +1,45 @@
-import { $token, logout } from "@/feature/user/user.model"
+import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
+import { attach, createEffect, forward } from "effector-root"
+import Cookies from "js-cookie"
 
 export type NetworkError = AxiosError
 
 const axios = Axios.create()
+
+const requestFx = createEffect({
+  handler: (params: AxiosRequestConfig) => axios.request(params),
+})
+
+type Params = {
+  url: string
+  method: "get"
+  params?: Record<string, any>
+}
+
+export const authorizedRequestFx = attach({
+  effect: requestFx,
+  source: $token,
+  mapParams: (params: Params, token: string) => {
+    return {
+      ...params,
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    }
+  },
+})
+
+forward({
+  from: requestFx.failData.filterMap(error => ((error as AxiosError)?.response?.status === 401 ? true : undefined)),
+  to: logout,
+})
+
 axios.interceptors.request.use(config => {
-  const token = $token.getState()
-  token && (config.headers["Authorization"] = `JWT ${token}`)
+  if (process.env.BUILD_TARGET === "client") {
+    const token = Cookies.get(TOKEN_COOKIE_KEY)
+    token && (config.headers["Authorization"] = `JWT ${token}`)
+  }
   return config
 })
 

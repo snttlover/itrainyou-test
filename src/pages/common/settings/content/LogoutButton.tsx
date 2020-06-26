@@ -1,5 +1,6 @@
+import { logout } from "@/lib/network/token"
+import React from "react"
 import styled from "styled-components"
-import { logout } from "@/feature/user/user.model"
 
 const StyledLogoutButton = styled.div`
   color: #ff6b00;

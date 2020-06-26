@@ -1,7 +1,9 @@
 import { ClientSelfData } from "@/lib/api/client/clientInfo"
 import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
-import { getMyUser } from "@/lib/api/users/get-my-user"
-import { createEffect, createEvent, createStore, forward, guard } from "effector-root"
+import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { keysToCamel } from "@/lib/network/casing"
+import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { createEvent, createStore, forward, guard } from "effector-root"
 import Cookies from "js-cookie"
 
 export type UserData = {
@@ -9,21 +11,13 @@ export type UserData = {
   client: ClientSelfData | null
 }
 
-export const TOKEN_COOKIE_KEY = "token"
-
 export const loggedIn = createEvent<{ token: string }>()
 export const loadUserData = createEvent()
 export const setUserData = createEvent<UserData>()
-export const logout = createEvent()
 
-export const loadUserDataFx = createEffect({
-  handler: getMyUser,
-})
-
-export const $userData = createStore<UserData>({ client: null, coach: null }).on(
-  [setUserData, loadUserDataFx.doneData],
-  (state, payload) => payload
-)
+export const $userData = createStore<UserData>({ client: null, coach: null })
+  .on([setUserData, getMyUserFx.doneData.map(data => keysToCamel(data.data))], (state, payload) => payload)
+  .reset(logout)
 
 export const $isFullRegistered = $userData.map(userData => userData.client || userData.coach)
 
@@ -35,12 +29,6 @@ export const $coachAccess = $userData.map(userData => ({
   lastRegistrationApplyDatetime: userData.coach?.lastRegistrationApplyDatetime,
 }))
 
-export const changeToken = createEvent<string>()
-
-export const $token = createStore<string>("")
-  .on(changeToken, (_, token) => token)
-  .reset(logout)
-
 export const $isLoggedIn = $token.map(token => !!token)
 
 forward({
@@ -51,7 +39,7 @@ forward({
 guard({
   source: loadUserData,
   filter: $isLoggedIn,
-  target: loadUserDataFx,
+  target: getMyUserFx,
 })
 
 if (process.env.BUILD_TARGET === "client") {

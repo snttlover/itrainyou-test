@@ -1,5 +1,6 @@
 import { $lastUrlServerNavigation } from "@/feature/navigation"
-import { $token, changeToken, TOKEN_COOKIE_KEY } from "@/feature/user/user.model"
+import { loadUserData } from "@/feature/user/user.model"
+import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import { performance } from "perf_hooks"
 import express from "express"
 import serialize from "serialize-javascript"
@@ -22,11 +23,12 @@ import { ROUTES } from "./pages/routes"
 const serverStarted = root.createEvent<{
   req: express.Request
   res: express.Response
+  isSSR: boolean
 }>()
 
-const requestHandled = serverStarted.map(({ req }) => req)
+const requestHandled = serverStarted.map(({ req, isSSR }) => ({ req, isSSR }))
 
-const tokenCookie = requestHandled.map(req => req.cookies[TOKEN_COOKIE_KEY] as string)
+const tokenCookie = requestHandled.map(({ req }) => req.cookies[TOKEN_COOKIE_KEY] as string)
 
 guard({
   source: tokenCookie,
@@ -34,9 +36,15 @@ guard({
   target: changeToken,
 })
 
-const routesMatched = requestHandled.map(req => ({
+guard({
+  source: changeToken,
+  filter: token => !!token,
+  target: loadUserData,
+})
+
+const routesMatched = requestHandled.map(({ req, isSSR }) => ({
   query: req.query as Record<string, string>,
-  routes: matchRoutes(ROUTES, req.url.split("?")[0]).filter(lookupStartEvent).filter(Boolean),
+  routes: isSSR ? matchRoutes(ROUTES, req.url.split("?")[0]).filter(lookupStartEvent).filter(Boolean) : [],
 }))
 
 for (const { component } of ROUTES) {
@@ -67,6 +75,12 @@ sample({
   fn: ({ res }, url) => ({ res, url }),
 }).watch(({ res, url }) => res.redirect(url))
 
+sample({
+  source: serverStarted,
+  clock: logout,
+  fn: ({ res }) => ({ res }),
+}).watch(({ res }) => res.clearCookie(TOKEN_COOKIE_KEY))
+
 let assets: {
   client: {
     css: string
@@ -89,18 +103,18 @@ export const server = express()
 
     const currentRoutes = matchRoutes(ROUTES, req.url.split("?")[0])
     const isSSR = currentRoutes.reduce((_, route) => route.route.ssr, false)
+    const scope = fork(root)
+
+    try {
+      await allSettled(serverStarted, {
+        scope,
+        params: { req, res, isSSR },
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
     if (isSSR) {
-      const scope = fork(root)
-
-      try {
-        await allSettled(serverStarted, {
-          scope,
-          params: { req, res },
-        })
-      } catch (error) {
-        console.log(error)
-      }
-
       if (res.statusCode >= 300 && res.statusCode < 400) {
         console.info(
           "[REDIRECT] from %s to %s at %sms",
@@ -131,8 +145,9 @@ export const server = express()
         console.info("[PERF] sent page at %sms", (performance.now() - timeStart).toFixed(2))
       })
     } else {
+      const storesValues = effectorSerialize(scope, { ignore: [$token] })
       res.write(htmlStart(assets.client.css, assets.client.js))
-      res.end(htmlEnd({}))
+      res.end(htmlEnd(storesValues))
       console.info("[PERF] sent page at %sms", (performance.now() - timeStart).toFixed(2))
     }
   })

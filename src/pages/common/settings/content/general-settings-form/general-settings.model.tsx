@@ -1,12 +1,10 @@
+import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { UpdateMyUserRequest, updateMyUser } from "@/lib/api/users/update-my-user"
 import { createEffectorField } from "@/lib/generators/efffector"
-import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
+import { emailValidator, trimString } from "@/lib/validators"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import Cookies from "js-cookie"
-import { TOKEN_KEY } from "@/store"
-import { getMyUser } from "@/lib/api/users/get-my-user"
 
 type ResetRType = {
   email: string
@@ -15,10 +13,6 @@ type ResetRType = {
 
 export const changeGeneralSettingsFx = createEffect<ResetRType, UpdateMyUserRequest, AxiosError>({
   handler: ({ email, timeZone }) => updateMyUser({ email, timeZone }),
-})
-
-const loadProfileFx = createEffect({
-  handler: getMyUser,
 })
 
 export const mounted = createEvent()
@@ -49,7 +43,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   eventMapper: event => event.map(trimString),
 })
 
-$email.on(loadProfileFx.doneData, (state, user) => user.email)
+$email.on(getMyUserFx.doneData, (state, user) => user.data.email)
 
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -62,7 +56,7 @@ export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = 
   eventMapper: event => event.map(trimString),
 })
 
-$timeZone.on(loadProfileFx.doneData, (state, user) => user.timeZone)
+$timeZone.on(getMyUserFx.doneData, (state, user) => user.data.timeZone)
 
 export const $changeGeneralSettingsForm = createStoreObject({
   email: $email,
@@ -82,5 +76,5 @@ export const $isGeneralSettingsFormFormValid = combine(
 
 forward({
   from: mounted,
-  to: [loadProfileFx],
+  to: [getMyUserFx],
 })

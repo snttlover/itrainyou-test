@@ -1,7 +1,7 @@
+import { navigatePush } from "@/feature/navigation"
 import { $isLoggedIn } from "@/feature/user/user.model"
-import { useStore } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react/ssr"
 import React from "react"
-import { Redirect } from "react-router-dom"
 
 type Options = {
   to?: string
@@ -10,9 +10,11 @@ type Options = {
 export const withProtect = ({ to = "/" }: Options) => (Child: React.ComponentType) => {
   return ({ ...props }) => {
     const isAuthed = useStore($isLoggedIn)
+    const navigate = useEvent(navigatePush)
 
     if (!isAuthed) {
-      return <Redirect to={to} />
+      navigate({ url: to })
+      return null
     }
 
     return <Child {...props} />
