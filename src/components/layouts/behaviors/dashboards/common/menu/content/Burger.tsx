@@ -1,3 +1,4 @@
+import React from "react"
 import styled from "styled-components"
 import { useEvent } from "effector-react/ssr"
 import { toggleBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"

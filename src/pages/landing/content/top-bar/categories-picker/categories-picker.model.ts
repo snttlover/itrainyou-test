@@ -1,6 +1,7 @@
-import { combine, createEvent, forward, restore, sample, split } from "effector-root"
+import { combine, createEvent, forward, restore, sample } from "effector-root"
 import { $categoriesList as $categories } from "@/feature/categories/categories.store"
 import { addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
+import { splitMap } from "patronum"
 
 export const toggleCategorySelection = createEvent<number>()
 export const setSelectedCategories = createEvent<number[]>()
@@ -14,7 +15,7 @@ export const $categoriesList = combine([$categories, $selectedCategories], ([cat
 export const changeCategoriesPickerVisibility = createEvent<boolean>()
 export const $categoriesPickerVisibility = restore(changeCategoriesPickerVisibility, false)
 
-const { remove, add } = split(
+const { remove, add } = splitMap(
   sample({
     source: $selectedCategories,
     clock: toggleCategorySelection,
@@ -25,35 +26,17 @@ const { remove, add } = split(
     },
   }),
   {
-    remove: categories => categories.length === 0,
-    add: categories => categories.length > 0,
+    remove: categories => (categories.length === 0 ? (["categories"] as ["categories"]) : undefined),
+    add: categories => (categories.length > 0 ? { categories: categories.join(",") } : undefined),
   }
 )
 
 forward({
-  from: add.map(categories => ({ categories: categories.join(",") })),
+  from: add,
   to: addSearchPageQuery,
 })
 
 forward({
-  from: remove.map<["categories"]>(_ => ["categories"]),
+  from: remove,
   to: removeSearchPageQuery,
 })
-
-/*sample({
-  source: $selectedCategories,
-  clock: toggleCategorySelection,
-  fn: (categories, catId) => {
-    let newCategories
-    if (categories.includes(catId)) newCategories = categories.filter(id => id !== catId)
-    else newCategories = [...categories, catId]
-
-    return {
-      url: routeNames.search(),
-      query: {
-        categories: newCategories,
-      },
-    }
-  },
-  target: navigatePush,
-})*/

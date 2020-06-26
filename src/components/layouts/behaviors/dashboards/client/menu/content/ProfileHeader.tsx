@@ -1,10 +1,9 @@
 import styled from "styled-components"
 import { Avatar, AvatarPlaceholder } from "@/components/avatar/Avatar"
-// @ts-ignore
-import profilePlaceholder from "@/pages/landing/content/top-bar/mobile-menu/images/profile-placeholder.png"
 import { MediaRange } from "@/lib/responsive/media"
 import { Icon } from "@/components/icon/Icon"
 import { CoachTooltip } from "@/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
+import React from "react"
 
 const StyledHeader = styled.div`
   width: 100%;

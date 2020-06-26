@@ -1,3 +1,4 @@
+import React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 
@@ -9,17 +10,17 @@ const Container = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: #D3D7F3;
+  color: #d3d7f3;
   padding-top: 40px;
   cursor: pointer;
   justify-content: flex-end;
   padding-bottom: 20px;
   display: none;
 
-  ${MediaRange.lessThan('mobile')`
+  ${MediaRange.lessThan("mobile")`
      padding-bottom: 0;
   `}
-  ${MediaRange.lessThan('tablet')`
+  ${MediaRange.lessThan("tablet")`
     display: flex;
   `}
 `
@@ -28,8 +29,4 @@ type CoachLinkTypes = {
   children: React.ReactChild
 }
 
-export const CoachLink = ({ children }: CoachLinkTypes) => (
-  <Container>
-    {children}
-  </Container>
-)
+export const CoachLink = ({ children }: CoachLinkTypes) => <Container>{children}</Container>

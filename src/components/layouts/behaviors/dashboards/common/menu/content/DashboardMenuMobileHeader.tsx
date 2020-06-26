@@ -1,3 +1,4 @@
+import React from "react"
 import styled from "styled-components"
 import logoImage from "../../../client/menu/images/logo.svg"
 import { Icon } from "@/components/icon/Icon"

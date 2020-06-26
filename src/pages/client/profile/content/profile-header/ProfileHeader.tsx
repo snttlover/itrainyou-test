@@ -1,8 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
-// @ts-ignore
-import placeholder from "./images/placeholder.png"
 import { MediaRange } from "@/lib/responsive/media"
 import { useStore } from "effector-react/ssr"
 import { $pageProfile } from "@/pages/client/profile/profile-page.model"

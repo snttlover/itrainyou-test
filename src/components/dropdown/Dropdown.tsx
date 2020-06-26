@@ -12,7 +12,7 @@ const Button = styled.button<ButtonTypes>`
   width: 100%;
   border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0);
-  border-color: ${props => props.opened ? `#bbc2f1` : `trasparent`};
+  border-color: ${props => (props.opened ? `#bbc2f1` : `transparent`)};
   padding: 7px 12px;
   padding-left: 20px;
   display: flex;
@@ -73,7 +73,7 @@ const Items = styled.div`
   margin-top: 35px;
   height: auto;
   padding: 8px 0;
-  background: #ffffff;  
+  background: #ffffff;
   border-radius: 0px 2px 2px 2px;
   border: 1px solid #bbc2f1;
   @media screen and (max-width: 480px) {
@@ -109,10 +109,17 @@ export const Dropdown = (props: DropdownTypes) => {
 
   return (
     <ClickOutside
-      onClickOutside={() => {changeFocusHandler(false)}}
+      onClickOutside={() => {
+        changeFocusHandler(false)
+      }}
     >
       <Container className={props.className} expanded={autocompleteVisibility}>
-        <Button opened={focused} onClick={() => {changeFocusHandler(!focused)}}>
+        <Button
+          opened={focused}
+          onClick={() => {
+            changeFocusHandler(!focused)
+          }}
+        >
           {props.renderTitle()}
           <Arrow />
         </Button>
