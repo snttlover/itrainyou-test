@@ -26,15 +26,19 @@ const StyledProfileHeader = styled(ProfileHeader)`
   `}
 `
 
+const StyledLink = styled(Link)`
+  margin: 0 auto;
+`
+
 export const CoachMenu = () => {
   const mobileMenuVisibility = useStore(blueLayoutMobileMenuVisibility)
   const user = useStore($userData)
 
   return (
     <DashboardMenuContainer showOnMobile={mobileMenuVisibility}>
-      <Link to={routeNames.coach()}>
+      <StyledLink to={routeNames.coach()}>
         <DesktopDashboardMenuLogo />
-      </Link>
+      </StyledLink>
       <DashboardMenuMobileHeader />
       <StyledProfileHeader
         firstName={user.coach?.firstName}
