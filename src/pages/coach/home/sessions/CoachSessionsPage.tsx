@@ -2,10 +2,10 @@ import styled from "styled-components"
 import { StartedSessions } from "@/pages/coach/home/sessions/content/started/StartedSessions"
 import { NewestParticipants } from "@/pages/coach/home/sessions/content/newest-participants/NewestParticipants"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { $coachSessionsPageLoading, mounted } from "./coach-sessions-page.model"
 import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySessions"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
 import { $hasStartedSessions } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
 import { Loader } from "@/components/spinner/Spinner"
@@ -42,9 +42,10 @@ const Sessions = () => {
 
 export const CoachSessionsPage = () => {
   const pageLoading = useStore($coachSessionsPageLoading)
+  const _mounted = useEvent(mounted)
 
   useEffect(() => {
-    mounted()
+    _mounted()
   }, [])
 
   return <Container>{pageLoading ? <Loader /> : <Sessions />}</Container>

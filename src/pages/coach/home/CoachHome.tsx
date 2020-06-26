@@ -1,7 +1,7 @@
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { Loader } from "@/components/spinner/Spinner"
-import { loadUserDataFx } from "@/feature/user/user.model"
+import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { MediaRange } from "@/lib/responsive/media"
 import { ApprovalFailing } from "@/pages/coach/home/approval-failing/ApprovalFailing"
 import { ApprovalTimerOver } from "@/pages/coach/home/approval-timer-over/ApprovalTimerOver"
@@ -85,7 +85,7 @@ const CurrentState = () => {
 }
 
 export const CoachHome = () => {
-  const isUserDataLoading = useStore(loadUserDataFx.pending)
+  const isUserDataLoading = useStore(getMyUserFx.pending)
 
   return (
     <CoachDashboardLayout>

@@ -4,7 +4,7 @@ import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
 import { keysToCamel } from "@/lib/network/casing"
 import { authorizedRequestFx } from "@/lib/network/network"
 import { AxiosResponse } from "axios"
-import { attach, Effect } from "effector"
+import { attach, Effect } from "effector-root"
 
 export type GetMyUserResponse = {
   id: number

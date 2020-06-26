@@ -1,10 +1,13 @@
+import { navigatePush } from "@/feature/navigation"
 import { updateRegistrationFx } from "@/pages/coach/home/coach-home.model"
-import Router from "next/router"
+import { routeNames } from "@/pages/route-names"
+import { useEvent } from "effector-react/ssr"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval /common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval /common/SubTitle"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
+import React from "react"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -96,19 +99,23 @@ const TimeIsOver = styled(StyledSubTitle)`
   margin-bottom: 8px;
 `
 
-export const ApprovalTimerOver = () => (
-  <Container>
-    <StyledTitle>К сожалению, ваша заявка не прошла</StyledTitle>
-    <StyledSubTitle>
-      Вы нам понравились, но пока нам кажется, что вам надо чуть-чуть подучиться. Попробуйте повторить попытку через 90
-      дней.
-    </StyledSubTitle>
-    <Content>
-      <TimeIsOver>90 дней прошли!</TimeIsOver>
-      <LeaveARequest>Отправьте заявку еще раз!</LeaveARequest>
-      <StyledButton onClick={() => updateRegistrationFx()}>Оставить заявку</StyledButton>
-    </Content>
-    <LearnHere>Здесь можно подучиться!</LearnHere>
-    <TryLink onClick={() => Router.push("/client", "/client")}>Попробовать</TryLink>
-  </Container>
-)
+export const ApprovalTimerOver = () => {
+  const navigate = useEvent(navigatePush)
+  const _updateRegistrationFx = useEvent(updateRegistrationFx)
+  return (
+    <Container>
+      <StyledTitle>К сожалению, ваша заявка не прошла</StyledTitle>
+      <StyledSubTitle>
+        Вы нам понравились, но пока нам кажется, что вам надо чуть-чуть подучиться. Попробуйте повторить попытку через
+        90 дней.
+      </StyledSubTitle>
+      <Content>
+        <TimeIsOver>90 дней прошли!</TimeIsOver>
+        <LeaveARequest>Отправьте заявку еще раз!</LeaveARequest>
+        <StyledButton onClick={() => _updateRegistrationFx()}>Оставить заявку</StyledButton>
+      </Content>
+      <LearnHere>Здесь можно подучиться!</LearnHere>
+      <TryLink onClick={() => navigate({ url: routeNames.client() })}>Попробовать</TryLink>
+    </Container>
+  )
+}

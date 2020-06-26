@@ -13,7 +13,7 @@ import {
 import { $userData, loadUserData, UserData } from "@/feature/user/user.model"
 import { updateMyCoach } from "@/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/lib/types/effector"
-import { attach, combine, createEffect, createEvent, forward, sample } from "effector"
+import { attach, combine, createEffect, createEvent, forward, sample } from "effector-root"
 
 const calculateProgress = ({
   form,

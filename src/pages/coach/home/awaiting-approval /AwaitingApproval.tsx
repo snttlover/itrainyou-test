@@ -1,9 +1,11 @@
-import Router from "next/router"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
+import { useEvent } from "effector-react/ssr"
 import React from "react"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval /common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval /common/SubTitle"
-import { RegisterSteps } from "../../../../components/register-steps/RegisterSteps"
+import { RegisterSteps } from "@/components/register-steps/RegisterSteps"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 
@@ -52,14 +54,15 @@ const StyledButton = styled(Button)`
   `}
 `
 
-export const AwaitingApproval = () => (
-  <>
-    <StyledTitle>Ваша заявка ждет одобрения!</StyledTitle>
-    <StyledSubTitle>В среднем заявка обрабатывается около 2 дней</StyledSubTitle>
-    <RegisterSteps />
-    <StyledBottomSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomSubtitle>
-    <StyledButton onClick={() => Router.push("/client", "/client")}>
-      Попробовать
-    </StyledButton>
-  </>
-)
+export const AwaitingApproval = () => {
+  const navigate = useEvent(navigatePush)
+  return (
+    <>
+      <StyledTitle>Ваша заявка ждет одобрения!</StyledTitle>
+      <StyledSubTitle>В среднем заявка обрабатывается около 2 дней</StyledSubTitle>
+      <RegisterSteps />
+      <StyledBottomSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomSubtitle>
+      <StyledButton onClick={() => navigate({ url: routeNames.client() })}>Попробовать</StyledButton>
+    </>
+  )
+}

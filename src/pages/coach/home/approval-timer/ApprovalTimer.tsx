@@ -1,6 +1,8 @@
+import { navigatePush } from "@/feature/navigation"
 import { updateTime } from "@/pages/coach/home/coach-home.model"
-import Router from "next/router"
-import { useEffect } from "react"
+import { routeNames } from "@/pages/route-names"
+import { useEvent } from "effector-react/ssr"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval /common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval /common/SubTitle"
@@ -70,8 +72,11 @@ const LearnHere = styled.div`
 `
 
 export const ApprovalTimer = () => {
+  const navigate = useEvent(navigatePush)
+  const _updateTime = useEvent(updateTime)
+
   useEffect(() => {
-    const timer = setInterval(() => updateTime(), 1000)
+    const timer = setInterval(() => _updateTime(), 1000)
 
     return () => clearInterval(timer)
   })
@@ -86,9 +91,7 @@ export const ApprovalTimer = () => {
       <Timer />
       <LearnHere>Здесь можно подучиться!</LearnHere>
       <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
-      <StyledButton onClick={() => Router.push("/client", "/client")}>
-        Попробовать
-      </StyledButton>
+      <StyledButton onClick={() => navigate({ url: routeNames.client() })}>Попробовать</StyledButton>
     </Container>
   )
 }

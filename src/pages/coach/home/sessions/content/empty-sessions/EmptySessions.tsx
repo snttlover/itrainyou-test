@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { CoachSessionsBlockTitle as Title } from "@/pages/coach/home/sessions/common/CoachSessionsBlockTitle"
 import emptyImage from "./images/empty.svg"
 import { MediaRange } from "@/lib/responsive/media"
+import React from "react"
 
 const Container = styled.div`
   ${MediaRange.lessThan(`mobile`)`

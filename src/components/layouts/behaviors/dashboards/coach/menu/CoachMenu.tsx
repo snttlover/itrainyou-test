@@ -1,3 +1,5 @@
+import { routeNames } from "@/pages/route-names"
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { DesktopDashboardMenuLogo } from "@/components/layouts/behaviors/dashboards/common/menu/content/DesktopDashboardMenuLogo"
 import { DashboardMenuMobileHeader } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuMobileHeader"
@@ -10,7 +12,6 @@ import { CoachLink } from "@/components/layouts/behaviors/dashboards/client/menu
 import { CoachMenuItems } from "@/components/layouts/behaviors/dashboards/coach/menu/content/CoachMenuItems"
 import { MediaRange } from "@/lib/responsive/media"
 import { $userData } from "@/feature/user/user.model"
-import Link from "next/link"
 
 const StyledProfileHeader = styled(ProfileHeader)`
   border-bottom: 1px solid #b186cb;
@@ -31,7 +32,7 @@ export const CoachMenu = () => {
 
   return (
     <DashboardMenuContainer showOnMobile={mobileMenuVisibility}>
-      <Link href='/coach' passHref>
+      <Link to={routeNames.coach()}>
         <DesktopDashboardMenuLogo />
       </Link>
       <DashboardMenuMobileHeader />

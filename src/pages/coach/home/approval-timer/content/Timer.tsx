@@ -2,6 +2,7 @@ import { $datetimeLeft } from "@/pages/coach/home/coach-home.model"
 import { useStore } from "effector-react/ssr"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
+import React from "react"
 
 const Container = styled.div`
   display: flex;

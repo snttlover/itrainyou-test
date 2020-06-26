@@ -3,6 +3,7 @@ import { LoginPage } from "@/pages/auth/pages/login/LoginPage"
 import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import HomePage from "@/pages/client/home/HomePage"
 import ProfilePage from "@/pages/client/profile/ProfilePage"
+import CoachHome from "@/pages/coach/home/CoachHome"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
 import { routeNames } from "@/pages/route-names"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
@@ -57,6 +58,7 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.coach(),
     exact: true,
+    component: CoachHome,
   },
   {
     path: "*",

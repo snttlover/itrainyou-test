@@ -2,7 +2,7 @@ import { $coachAccess, loadUserData } from "@/feature/user/user.model"
 import { updateRegistrationApplication } from "@/lib/api/coach/update-registration-application"
 import { date } from "@/lib/formatting/date"
 import { InferStoreType } from "@/lib/types/effector"
-import { combine, createEffect, createEvent, createStore, forward } from "effector"
+import { combine, createEffect, createEvent, createStore, forward } from "effector-root"
 
 type CoachState =
   | "approved"
@@ -19,9 +19,9 @@ export const $lastRegistrationDaytime = $coachAccess.map(access => date(access.l
 
 export const $datetimeLeft = combine({ now: $now, lastRegistrationDaytime: $lastRegistrationDaytime }).map(
   ({ now, lastRegistrationDaytime }) => {
-    const diffInMs = now.diff(lastRegistrationDaytime, "millisecond", true)
+    const diffInMs = date(now).diff(lastRegistrationDaytime, "millisecond", true)
     return {
-      days: 90 - Math.ceil(now.diff(lastRegistrationDaytime, "day", true)),
+      days: 90 - Math.ceil(date(now).diff(lastRegistrationDaytime, "day", true)),
       hours: 23 - date.utc(diffInMs).hour(),
       minutes: 59 - date.utc(diffInMs).minute(),
       seconds: 59 - date.utc(diffInMs).second(),

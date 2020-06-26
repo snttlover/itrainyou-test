@@ -1,10 +1,13 @@
-import Router from "next/router"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
+import { useEvent } from "effector-react/ssr"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval /common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval /common/SubTitle"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import peoples from "./images/peoples.svg"
+import React from "react"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -85,16 +88,17 @@ const But = styled.div`
   `}
 `
 
-export const ApprovalFailing = () => (
-  <Container>
-    <StyledTitle>К сожалению, ваша заявка не прошла</StyledTitle>
-    <StyledSubTitle>Мы очень заботимся о качестве наших коучей, и к сожалению, вы нам не подходите</StyledSubTitle>
-    <Peoples />
-    <StyledBottomMobileSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomMobileSubtitle>
-    <But>Но!</But>
-    <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
-    <StyledButton onClick={() => Router.push("/client", "/client")}>
-      Попробовать
-    </StyledButton>
-  </Container>
-)
+export const ApprovalFailing = () => {
+  const navigate = useEvent(navigatePush)
+  return (
+    <Container>
+      <StyledTitle>К сожалению, ваша заявка не прошла</StyledTitle>
+      <StyledSubTitle>Мы очень заботимся о качестве наших коучей, и к сожалению, вы нам не подходите</StyledSubTitle>
+      <Peoples />
+      <StyledBottomMobileSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomMobileSubtitle>
+      <But>Но!</But>
+      <StyledBottomSubtitle>Мы будем рады видеть вас в виде нашего клиента</StyledBottomSubtitle>
+      <StyledButton onClick={() => navigate({ url: routeNames.client() })}>Попробовать</StyledButton>
+    </Container>
+  )
+}

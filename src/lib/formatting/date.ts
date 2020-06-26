@@ -1,4 +1,11 @@
 import dayjs from "dayjs"
+import "dayjs/locale/ru"
+import utc from "dayjs/plugin/utc"
+import isBetween from "dayjs/plugin/isBetween"
+
+dayjs.extend(isBetween)
+dayjs.extend(utc)
+dayjs.locale("ru")
 
 export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string) => {
   return dayjs(date, option, locale)
