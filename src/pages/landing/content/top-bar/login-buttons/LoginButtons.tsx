@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/routes"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
@@ -26,8 +27,8 @@ type LoginButtonsTypes = {
 
 export const LoginButtons = (props: LoginButtonsTypes) => (
   <ButtonsContainer className={props.className}>
-    <LoginLink to='/auth/login'>Войти</LoginLink>
-    <Link to='/auth/signup/1'>
+    <LoginLink to={routeNames.login()}>Войти</LoginLink>
+    <Link to={routeNames.signup("1")}>
       <RegistrationButton>Зарегистрироваться</RegistrationButton>
     </Link>
   </ButtonsContainer>

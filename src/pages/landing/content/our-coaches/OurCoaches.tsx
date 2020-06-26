@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/routes"
 import { Link } from "react-router-dom"
 import { CoachCard } from "@/components/coach-card/CoachCard"
 import * as React from "react"
@@ -101,7 +102,7 @@ export const OurCoaches = () => {
           <CoachCard key={coach.id} coach={coach} />
         ))}
       </CoachList>
-      <ShowMoreButton to='/search'>Показать еще</ShowMoreButton>
+      <ShowMoreButton to={routeNames.search()}>Показать еще</ShowMoreButton>
     </Container>
   )
 }

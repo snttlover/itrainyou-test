@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/routes"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
@@ -83,7 +84,7 @@ export const Hero = () => (
       <Description>
         Подберите специалиста на сайте, чтобы грамотно поставить и гарантированно достичь своей цели
       </Description>
-      <Link to='/auth/signup/1'>
+      <Link to={routeNames.signup("1")}>
         <RegistrationButton>Зарегистрироваться</RegistrationButton>
       </Link>
     </StyledLandingPageContainer>

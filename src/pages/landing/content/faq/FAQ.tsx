@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/routes"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
@@ -111,7 +112,7 @@ export const FAQ = () => (
         ))}
       </QuestionsList>
       <PeopleImage />
-      <Link to='/auth/signup/1'>
+      <Link to={routeNames.signup("1")}>
         <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
       </Link>
     </Content>

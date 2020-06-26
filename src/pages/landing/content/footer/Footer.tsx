@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/routes"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
@@ -103,7 +104,7 @@ export const Footer = () => (
     <StyledContainer>
       <Header>
         <Title>Вы коуч?</Title>
-        <RegistrationButton to='/auth/signup/1'>Вам сюда!</RegistrationButton>
+        <RegistrationButton to={routeNames.signup("1")}>Вам сюда!</RegistrationButton>
       </Header>
       <Description>
         <p>
