@@ -24,15 +24,13 @@ type ApplicationProps = {
   root: Scope
 }
 
-export const Application: React.FC<ApplicationProps> = ({ root }) => {
-  return (
-    <Provider value={root}>
-      <ClientTheme>
-        <AppStyles />
-        <AsyncDataLoader scope={root}>
-          <Pages />
-        </AsyncDataLoader>
-      </ClientTheme>
-    </Provider>
-  )
-}
+export const Application: React.FC<ApplicationProps> = ({ root }) => (
+  <Provider value={root}>
+    <ClientTheme>
+      <AppStyles />
+      <AsyncDataLoader scope={root}>
+        <Pages />
+      </AsyncDataLoader>
+    </ClientTheme>
+  </Provider>
+)

@@ -1,7 +1,7 @@
 import { navigatePush } from "@/feature/navigation"
 import { loadUserData } from "@/feature/user/user.model"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
-import { routeNames } from "@/pages/routes"
+import { routeNames } from "@/pages/route-names"
 import { createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
 
 export const REGISTER_SAVE_KEY = "__register-data__"

@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/route-names"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
 import { Icon } from "@/components/icon/Icon"
@@ -8,8 +9,8 @@ import { CoachTooltip } from "@/components/layouts/behaviors/dashboards/coach/to
 import { useStore } from "effector-react/ssr"
 import { $userData } from "@/feature/user/user.model"
 import { Logo } from "@/pages/landing/content/top-bar/logo/Logo"
-import Link from "next/link"
 import React from "react"
+import { Link } from "react-router-dom"
 
 const Container = styled.div`
   width: 100%;
@@ -99,7 +100,7 @@ export const CoachTopBar = () => {
     <Container>
       <StyledContainer>
         <CoachLinkWrapper>
-          <Link href='/coach' passHref>
+          <Link to={routeNames.coach()}>
             <StyledLogo />
           </Link>
         </CoachLinkWrapper>

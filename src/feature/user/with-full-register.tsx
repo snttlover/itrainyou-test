@@ -1,16 +1,17 @@
+import { navigateReplace } from "@/feature/navigation"
 import { $isFullRegistered, $isLoggedIn } from "@/feature/user/user.model"
-import { useStore } from "effector-react/ssr"
+import { routeNames } from "@/pages/route-names"
+import { useEvent, useStore } from "effector-react/ssr"
 import React from "react"
-import { useHistory } from "react-router-dom"
 
 export const withFullRegister = (Child: React.ComponentType) => {
   return ({ ...props }) => {
     const isFullRegister = useStore($isFullRegistered)
     const isLoggedIn = useStore($isLoggedIn)
-    const history = useHistory()
+    const navigate = useEvent(navigateReplace)
 
     if (isLoggedIn && !isFullRegister) {
-      history.replace("/auth/signup/2")
+      navigate({ url: routeNames.signup("2") })
       return null
     }
 

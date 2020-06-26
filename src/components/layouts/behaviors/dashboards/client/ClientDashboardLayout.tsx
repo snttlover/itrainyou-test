@@ -1,5 +1,7 @@
 import { changeDashboardType } from "@/feature/dashboard/dashboard"
 import { withFullRegister } from "@/feature/user/with-full-register"
+import { routeNames } from "@/pages/route-names"
+import { useEvent } from "effector-react/ssr"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { ClientMenu } from "@/components/layouts/behaviors/dashboards/client/menu/ClientMenu"
@@ -14,8 +16,9 @@ type DashboardTypes = {
 }
 
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
+  const changeDashboard = useEvent(changeDashboardType)
   useEffect(() => {
-    changeDashboardType("client")
+    changeDashboard("client")
   }, [])
   return (
     <DashboardContainer {...props}>
@@ -29,4 +32,4 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   )
 })``
 
-export const ClientDashboardLayout = withProtect({ to: "/auth/login", as: "/auth/login" })(withFullRegister(Dashboard))
+export const ClientDashboardLayout = withProtect({ to: routeNames.login() })(withFullRegister(Dashboard))

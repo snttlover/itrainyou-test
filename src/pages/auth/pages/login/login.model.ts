@@ -4,7 +4,7 @@ import { login, LoginResponse } from "@/lib/api/login"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigateReplace } from "@/feature/navigation"
 import { emailValidator, trimString } from "@/lib/validators"
-import { routeNames } from "@/pages/routes"
+import { routeNames } from "@/pages/route-names"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
 

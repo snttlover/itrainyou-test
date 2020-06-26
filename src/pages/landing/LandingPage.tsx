@@ -19,11 +19,6 @@ import { FAQ } from "./content/faq/FAQ"
 import { Footer } from "./content/footer/Footer"
 
 const LandingPageMarkup = () => {
-  const loadCoaches = useEvent(ourCoachesModel.loadCoaches)
-  useEffect(() => {
-    loadCoaches()
-  }, [])
-
   return (
     <Layout>
       <TopBar />

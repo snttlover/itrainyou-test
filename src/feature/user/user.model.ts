@@ -1,7 +1,7 @@
 import { ClientSelfData } from "@/lib/api/client/clientInfo"
 import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
 import { getMyUser } from "@/lib/api/users/get-my-user"
-import { combine, createEffect, createEvent, createStore, forward, guard } from "effector-root"
+import { createEffect, createEvent, createStore, forward, guard } from "effector-root"
 import Cookies from "js-cookie"
 
 export type UserData = {
@@ -50,7 +50,7 @@ forward({
 
 guard({
   source: loadUserData,
-  filter: combine(loadUserDataFx.pending, $isLoggedIn, (pending, isLoggedIn) => !pending && isLoggedIn),
+  filter: $isLoggedIn,
   target: loadUserDataFx,
 })
 

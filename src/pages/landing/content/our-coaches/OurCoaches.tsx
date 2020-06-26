@@ -1,4 +1,4 @@
-import { routeNames } from "@/pages/routes"
+import { routeNames } from "@/pages/route-names"
 import { Link } from "react-router-dom"
 import { CoachCard } from "@/components/coach-card/CoachCard"
 import * as React from "react"

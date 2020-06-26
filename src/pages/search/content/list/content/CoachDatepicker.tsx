@@ -1,7 +1,7 @@
 import { IsAuthed } from "@/feature/user/IsAuthed"
 import { IsGuest } from "@/feature/user/IsGuest"
 import { date } from "@/lib/formatting/date"
-import { routeNames } from "@/pages/routes"
+import { routeNames } from "@/pages/route-names"
 import { useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
