@@ -13,7 +13,3 @@ export const toasts = createApi($toasts, {
   add: (toasts, toast: Toast) => [...toasts, toast],
   remove: (toasts, toast: Toast) => toasts.filter(item => item !== toast),
 })
-
-toasts.add.watch(toast => {
-  setTimeout(() => toasts.remove(toast), 3000)
-})

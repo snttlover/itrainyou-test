@@ -1,6 +1,7 @@
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { UpdateMyUserRequest, updateMyUser } from "@/lib/api/users/update-my-user"
 import { createEffectorField } from "@/lib/generators/efffector"
+import { keysToCamel } from "@/lib/network/casing"
 import { emailValidator, trimString } from "@/lib/validators"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
@@ -22,9 +23,9 @@ const successToast: Toast = {
   text: `Данные профиля сохранены`,
 }
 
-changeGeneralSettingsFx.done.watch(data => {
-  toasts.remove(successToast)
-  toasts.add(successToast)
+forward({
+  from: changeGeneralSettingsFx.done.map(_ => successToast),
+  to: [toasts.remove, toasts.add],
 })
 
 const errorToast: Toast = {
@@ -32,9 +33,9 @@ const errorToast: Toast = {
   text: `Произошла ошибка при изменении профиля`,
 }
 
-changeGeneralSettingsFx.fail.watch(data => {
-  toasts.remove(errorToast)
-  toasts.add(errorToast)
+forward({
+  from: changeGeneralSettingsFx.fail.map(_ => errorToast),
+  to: [toasts.remove, toasts.add],
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
@@ -43,7 +44,9 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   eventMapper: event => event.map(trimString),
 })
 
-$email.on(getMyUserFx.doneData, (state, user) => user.data.email)
+const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
+
+$email.on(userDoneData, (state, user) => user.email)
 
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -56,7 +59,7 @@ export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = 
   eventMapper: event => event.map(trimString),
 })
 
-$timeZone.on(getMyUserFx.doneData, (state, user) => user.data.timeZone)
+$timeZone.on(userDoneData, (state, user) => user.timeZone)
 
 export const $changeGeneralSettingsForm = createStoreObject({
   email: $email,

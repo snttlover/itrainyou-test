@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import {
   $changeGeneralSettingsForm,
   $changeGeneralSettingsFormErrors,
@@ -66,21 +66,25 @@ export const GeneralSettingsForm = () => {
   const errors = useStore($changeGeneralSettingsFormErrors)
   const isFormValid = useStore($isGeneralSettingsFormFormValid)
   const isFetching = useStore(changeGeneralSettingsFx.pending)
+  const changeGeneralSettings = useEvent(changeGeneralSettingsFx)
+  const _mounted = useEvent(mounted)
+  const emailChange = useEvent(emailChanged)
+  const timeZoneChange = useEvent(timeZoneChanged)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    changeGeneralSettingsFx({ email: form.email, timeZone: form.timeZone })
+    changeGeneralSettings({ email: form.email, timeZone: form.timeZone })
     e.preventDefault()
   }
 
   useEffect(() => {
-    mounted()
+    _mounted()
   }, [])
 
   return (
     <StyledForm onSubmit={submitHandler}>
       <Title>Общие</Title>
       <StyledFormItem label='Почта' error={errors.email}>
-        <Input value={form.email} onChange={emailChanged} />
+        <Input value={form.email} onChange={emailChange} />
       </StyledFormItem>
       <StyledFormItem label='Часовой пояс'>
         <StyledSelectInput
@@ -88,7 +92,7 @@ export const GeneralSettingsForm = () => {
           placeholder='Выберите часовой пояс'
           options={timeZones}
           onChange={(value: string | number) => {
-            timeZoneChanged(value.toString())
+            timeZoneChange(value.toString())
           }}
         />
       </StyledFormItem>

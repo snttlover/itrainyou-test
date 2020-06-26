@@ -13,7 +13,7 @@ import { ServerStyleSheet } from "styled-components"
 import cookieParser from "cookie-parser"
 
 import { fork, serialize as effectorSerialize, allSettled } from "effector/fork"
-import { root, Event, forward, guard, sample } from "effector-root"
+import { root, Event, forward, guard, sample, clearNode } from "effector-root"
 import { config } from "./config"
 
 import { getStart, START } from "./lib/effector"

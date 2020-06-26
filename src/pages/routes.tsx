@@ -1,6 +1,9 @@
+import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import { LoginPage } from "@/pages/auth/pages/login/LoginPage"
 import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import HomePage from "@/pages/client/home/HomePage"
+import ProfilePage from "@/pages/client/profile/ProfilePage"
+import SettingsPage from "@/pages/common/settings/SettingsPage"
 import { routeNames } from "@/pages/route-names"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
 import React from "react"
@@ -36,18 +39,24 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: routeNames.client(),
-    render: ({ route }) => <>{renderRoutes(route?.routes)}</>,
-    routes: [
-      {
-        path: "/",
-        component: HomePage,
-      },
-    ],
+    exact: true,
+    component: HomePage,
+  },
+  {
+    path: routeNames.clientProfile(),
+    component: ProfilePage,
+  },
+  {
+    path: routeNames.clientSettings(),
+    component: () => (
+      <ClientDashboardLayout>
+        <SettingsPage />
+      </ClientDashboardLayout>
+    ),
   },
   {
     path: routeNames.coach(),
-    render: ({ route }: RouteConfigComponentProps) => <>{renderRoutes(route?.routes)}</>,
-    routes: [],
+    exact: true,
   },
   {
     path: "*",

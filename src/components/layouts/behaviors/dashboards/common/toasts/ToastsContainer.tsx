@@ -1,8 +1,8 @@
 import styled from "styled-components"
-import { useList } from "effector-react/ssr"
+import { useEvent, useList } from "effector-react/ssr"
 import { $toasts, toasts, ToastType } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { Icon } from "@/components/icon/Icon"
-import React from "react"
+import React, { useEffect } from "react"
 
 const Container = styled.div`
   display: flex;
@@ -34,11 +34,25 @@ const Close = styled(Icon).attrs({ name: `close` })`
 
 export const ToastsContainer = () => (
   <Container>
-    {useList($toasts, toast => (
-      <Toast type={toast.type}>
-        {toast.text}
-        <Close onClick={() => toasts.remove(toast)} />
-      </Toast>
-    ))}
+    {useList($toasts, toast => {
+      const remove = useEvent(toasts.remove)
+
+      useEffect(() => {
+        const timeoutId = setTimeout(() => {
+          remove(toast)
+        }, 3000)
+
+        return () => {
+          timeoutId && clearTimeout(timeoutId)
+        }
+      }, [])
+
+      return (
+        <Toast type={toast.type}>
+          {toast.text}
+          <Close onClick={() => remove(toast)} />
+        </Toast>
+      )
+    })}
   </Container>
 )

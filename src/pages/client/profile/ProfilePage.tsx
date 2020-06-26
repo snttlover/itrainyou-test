@@ -7,7 +7,7 @@ import { ProfileInterests } from "@/pages/client/profile/content/interests/Inter
 import { IndividualSessions } from "@/pages/client/profile/content/sessions-list/IndividualSessions"
 import { $profilePageLoading, $profilePageSessionsCount, mounted } from "./profile-page.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
 
 const Container = styled(ContentContainer)`
@@ -24,9 +24,10 @@ const Container = styled(ContentContainer)`
 const ProfilePage = () => {
   const sessionsCount = useStore($profilePageSessionsCount)
   const pageLoading = useStore($profilePageLoading)
+  const _mounted = useEvent(mounted)
 
   useEffect(() => {
-    mounted()
+    _mounted()
   }, [])
 
   return (

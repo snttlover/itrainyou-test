@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import {
   $changePasswordForm,
   passwordChanged,
@@ -14,7 +14,6 @@ import {
   changePasswordFx,
 } from "@/pages/common/settings/content/password-form.model"
 import { Spinner } from "@/components/spinner/Spinner"
-import { resetFx } from "@/pages/auth/pages/reset-password/reset-password.model"
 import { MediaRange } from "@/lib/responsive/media"
 
 const StyledForm = styled.form`
@@ -55,9 +54,13 @@ export const PasswordForm = () => {
   const errors = useStore($changePasswordFormErrors)
   const isFormValid = useStore($isPasswordFormFormValid)
   const isFetching = useStore(changePasswordFx.pending)
+  const changePassword = useEvent(changePasswordFx)
+  const oldPasswordChange = useEvent(oldPasswordChanged)
+  const passwordChange = useEvent(passwordChanged)
+  const passwordRepeatChange = useEvent(passwordRepeatChanged)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    changePasswordFx({ password: form.password, oldPassword: form.oldPassword })
+    changePassword({ password: form.password, oldPassword: form.oldPassword })
     e.preventDefault()
   }
 
@@ -65,13 +68,13 @@ export const PasswordForm = () => {
     <StyledForm onSubmit={submitHandler}>
       <Title>Новый пароль</Title>
       <StyledFormItem label='Старый пароль' error={errors.oldPassword}>
-        <Input type='password' value={form.oldPassword} onChange={oldPasswordChanged} />
+        <Input type='password' value={form.oldPassword} onChange={oldPasswordChange} />
       </StyledFormItem>
       <StyledFormItem label='Новый пароль' error={errors.password}>
-        <Input type='password' value={form.password} onChange={passwordChanged} />
+        <Input type='password' value={form.password} onChange={passwordChange} />
       </StyledFormItem>
       <StyledFormItem label='Повторите новый пароль' error={errors.passwordRepeat}>
-        <Input type='password' value={form.passwordRepeat} onChange={passwordRepeatChanged} />
+        <Input type='password' value={form.passwordRepeat} onChange={passwordRepeatChange} />
       </StyledFormItem>
       <Actions>
         <DashedButton disabled={!isFormValid || isFetching}>Изменить пароль</DashedButton>

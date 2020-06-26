@@ -1,11 +1,10 @@
 import { getMyClient, ClientSelfData } from "@/lib/api/client/clientInfo"
 import { date } from "@/lib/formatting/date"
-import { combine, createEffect, createEvent, createStore, forward, sample } from "effector"
+import { combine, createEffect, createEvent, createStore, forward, sample, guard } from "effector-root"
 import { $categoriesList, fetchCategoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import { getMyTransactions, SessionTransaction } from "@/lib/api/transactions/client/list-transaction"
 import { UpdateClientRequest, updateMyClient } from "@/lib/api/client/update"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { guard } from "effector-root"
 
 export const loadProfileFx = createEffect({
   handler: getMyClient,
@@ -24,16 +23,9 @@ const successToast: Toast = {
   text: `Данные сохранены`,
 }
 
-const profileIsSaved = createEffect({
-  handler: () => {
-    toasts.remove(successToast)
-    toasts.add(successToast)
-  },
-})
-
 forward({
-  from: updateProfile.doneData,
-  to: profileIsSaved,
+  from: updateProfile.doneData.map(_ => successToast),
+  to: [toasts.remove, toasts.add],
 })
 
 const $profile = createStore<ClientSelfData | null>(null).on(

@@ -1,17 +1,17 @@
-import { ChangePasswordRequest, changePassword } from "@/lib/api/users/change-password"
+import { changePassword, ChangePasswordResponse } from "@/lib/api/users/change-password"
 import { createEffectorField } from "@/lib/generators/efffector"
+import { changeToken } from "@/lib/network/token"
 import { passwordValidator, trimString } from "@/lib/validators"
 import { AxiosError } from "axios"
-import { combine, createEffect, createStoreObject } from "effector-root"
+import { combine, createEffect, createStoreObject, forward } from "effector-root"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { changeToken } from "@/feature/user/user.model"
 
 type ResetRType = {
   oldPassword: string
   password: string
 }
 
-export const changePasswordFx = createEffect<ResetRType, ChangePasswordRequest, AxiosError>({
+export const changePasswordFx = createEffect<ResetRType, ChangePasswordResponse, AxiosError>({
   handler: ({ password, oldPassword }) => changePassword({ newPassword: password, oldPassword }),
 })
 
@@ -19,12 +19,15 @@ const successToast: Toast = {
   type: `info`,
   text: `Пароль изменен`,
 }
-changePasswordFx.done.watch(data => {
-  // @ts-ignore
-  const token: string = data.result.token
-  changeToken(token)
-  toasts.remove(successToast)
-  toasts.add(successToast)
+
+forward({
+  from: changePasswordFx.done.map(_ => successToast),
+  to: [toasts.remove, toasts.add],
+})
+
+forward({
+  from: changePasswordFx.done.map(data => data.result.token),
+  to: changeToken,
 })
 
 const errorToast: Toast = {
@@ -32,9 +35,9 @@ const errorToast: Toast = {
   text: `Произошла ошибка при изменении пароля`,
 }
 
-changePasswordFx.fail.watch(data => {
-  toasts.remove(errorToast)
-  toasts.add(errorToast)
+forward({
+  from: changePasswordFx.fail.map(_ => errorToast),
+  to: [toasts.remove, toasts.add],
 })
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({

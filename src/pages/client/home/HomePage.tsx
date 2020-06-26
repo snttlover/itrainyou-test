@@ -5,7 +5,7 @@ import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { Loader, Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { SessionCard } from "@/pages/client/home/SessionCard"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
   $activeSessions,
@@ -87,9 +87,11 @@ export const HomePage = () => {
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
   const todaySessionsPending = useStore(loadTodaySessionsFx.pending)
   const recomendationPending = useStore(loadRecommendationsFx.pending)
+  const _mounted = useEvent(mounted)
+  const _loadMore = useEvent(loadMore)
 
   useEffect(() => {
-    mounted()
+    _mounted()
   }, [])
 
   return (
@@ -120,7 +122,7 @@ export const HomePage = () => {
           <Title>Рекомендации</Title>
           <InfiniteScroll
             loader={<Loader />}
-            next={loadMore as any}
+            next={_loadMore as any}
             hasMore={isHasMoreRecommendations}
             dataLength={recommendations.length}
           >
