@@ -1,9 +1,10 @@
+import { navigatePush } from "@/feature/navigation"
 import { ResetPasswordRequest, resetPassword } from "@/lib/api/reset-password"
 import { createEffectorField } from "@/lib/generators/efffector"
 import { passwordValidator, trimString } from "@/lib/validators"
+import { routeNames } from "@/pages/route-names"
 import { AxiosError } from "axios"
-import { combine, createEffect, createEvent, createStore, createStoreObject } from "effector-root"
-import Router from "next/router"
+import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-root"
 
 export const resetFormSended = createEvent()
 
@@ -16,8 +17,9 @@ export const resetFx = createEffect<ResetRType, ResetPasswordRequest, AxiosError
   handler: ({ password, token }) => resetPassword({ password, token }),
 })
 
-resetFx.done.watch(data => {
-  Router.push(`/`)
+forward({
+  from: resetFx.done.map(() => ({ url: routeNames.landing() })),
+  to: navigatePush,
 })
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({

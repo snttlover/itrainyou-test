@@ -2,6 +2,7 @@ import styled, { css } from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
+import React from "react"
 
 const Price = styled.div`
   font-weight: 500;
@@ -34,7 +35,7 @@ const Time = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: #9AA0A6;
+  color: #9aa0a6;
   margin-left: 39px;
   ${MediaRange.lessThan(`mobile`)`
     display: none;

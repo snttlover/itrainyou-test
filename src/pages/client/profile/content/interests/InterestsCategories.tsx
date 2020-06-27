@@ -5,7 +5,7 @@ import { useEvent, useList } from "effector-react/ssr"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { MediaRange } from "@/lib/responsive/media"
 import { $profileCategories, toggleInterestCategory } from "@/pages/client/profile/profile-page.model"
-import React from "react"
+import * as React from "react"
 
 const Container = styled.div`
   margin-top: 23px;

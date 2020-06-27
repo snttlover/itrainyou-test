@@ -1,12 +1,11 @@
-import React from "react"
+import * as React from "react"
 import styled from "styled-components"
-import spread from './images/spread.svg'
-
+import spread from "./images/spread.svg"
 
 const Tooltip = styled.div`
   display: none;
   white-space: nowrap;
-  background: #5B6670;
+  background: #5b6670;
   border-radius: 4px;
   color: #fff;
   font-weight: 500;
@@ -42,7 +41,6 @@ const Container = styled.div`
   }
 `
 
-
 type GrayTooltipTypes = {
   text: string
   children: React.ReactElement
@@ -51,9 +49,7 @@ type GrayTooltipTypes = {
 export const GrayTooltip = (props: GrayTooltipTypes) => (
   <Container>
     <Tooltip>
-      <TooltipContent>
-        {props.text}
-      </TooltipContent>
+      <TooltipContent>{props.text}</TooltipContent>
     </Tooltip>
     {props.children}
   </Container>

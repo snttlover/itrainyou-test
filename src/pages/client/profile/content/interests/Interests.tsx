@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import styled from "styled-components"
 import { InterestsStats } from "@/pages/client/profile/content/interests/InterestsStats"
 import { InterestsCategories } from "@/pages/client/profile/content/interests/InterestsCategories"

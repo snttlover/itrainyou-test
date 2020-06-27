@@ -1,5 +1,5 @@
 import { routeNames } from "@/pages/route-names"
-import React from "react"
+import * as React from "react"
 import { DashboardMenuMobileHeader } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuMobileHeader"
 import { ProfileHeader } from "@/components/layouts/behaviors/dashboards/client/menu/content/ProfileHeader"
 import { Link } from "react-router-dom"

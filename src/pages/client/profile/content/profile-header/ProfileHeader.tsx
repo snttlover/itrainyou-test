@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"

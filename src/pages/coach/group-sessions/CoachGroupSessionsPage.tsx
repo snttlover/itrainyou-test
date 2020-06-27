@@ -1,7 +1,7 @@
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectionPlaceholder"
 import { PeopleOnTheClouds } from "@/feature/coach-placeholder/right-images/PeopleOnTheClouds"
-import React from "react"
+import * as React from "react"
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 const features = [

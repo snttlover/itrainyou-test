@@ -1,5 +1,5 @@
 import { ContentContainer } from "@/components/layouts/ContentContainer"
-import React from "react"
+import * as React from "react"
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectionPlaceholder"
 import { PhoneWithGirl } from "@/feature/coach-placeholder/right-images/PhoneWithGirl"

@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import React from "react"
+import * as React from "react"
 import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
 import { MediaRange } from "@/lib/responsive/media"
 

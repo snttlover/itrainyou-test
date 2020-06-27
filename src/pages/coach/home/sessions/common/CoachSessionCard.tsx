@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { Button } from "@/components/button/normal/Button"
 import { Avatar } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
+import * as React from "react"
 
 const Container = styled.div`
   margin-bottom: 24px;
@@ -99,7 +100,7 @@ const StyledButton = styled(Button)`
 `
 
 type CoachSessionCardTypes = {
-  avatar: null | string,
+  avatar: null | string
   name: string
   duration: string
   time: string

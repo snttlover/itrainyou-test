@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
-import React from "react"
+import * as React from "react"
 
 const Container = styled.div`
   display: flex;

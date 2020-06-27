@@ -3,6 +3,7 @@ import { CoachSessionCard as Card } from "@/pages/coach/home/sessions/common/Coa
 import { CoachSessionsContainer as Container } from "@/pages/coach/home/sessions/common/CoachSessionsContainer"
 import { useList } from "effector-react/ssr"
 import { $todaySessionsList } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
+import * as React from "react"
 
 export const TodaySessions = () => (
   <Container>

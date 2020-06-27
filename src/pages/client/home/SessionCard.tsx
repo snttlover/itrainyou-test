@@ -5,7 +5,7 @@ import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { ClientSession } from "@/lib/api/client-session"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
-import React from "react"
+import * as React from "react"
 import styled from "styled-components"
 
 const SessionCardContainer = styled.div`

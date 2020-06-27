@@ -10,4 +10,10 @@ export const routeNames = {
   clientSettings: () => `/client/settings`,
 
   coach: () => `/coach`,
+  coachClients: () => `/coach/clients`,
+  coachWallet: () => `/coach/wallet`,
+  coachSettings: () => `/coach/settings`,
+  coachSupport: () => `/coach/support`,
+  coachSchedule: () => `/coach/schedule`,
+  coachBlocked: () => `/coach/blocked`,
 }

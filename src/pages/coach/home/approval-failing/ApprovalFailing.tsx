@@ -7,7 +7,7 @@ import { SubTitle } from "@/pages/coach/home/awaiting-approval /common/SubTitle"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import peoples from "./images/peoples.svg"
-import React from "react"
+import * as React from "react"
 
 const Container = styled.div`
   margin: 0 auto;

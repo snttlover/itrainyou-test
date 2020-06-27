@@ -8,7 +8,7 @@ import { CoachTooltip } from "@/components/layouts/behaviors/dashboards/coach/to
 import { useStore } from "effector-react/ssr"
 import { $userData } from "@/feature/user/user.model"
 import { MobileMenu, MobileSearchButton } from "@/pages/landing/content/top-bar/mobile-menu/MobileMenu"
-import React from "react"
+import * as React from "react"
 
 const Wrapper = styled.div`
   position: relative;

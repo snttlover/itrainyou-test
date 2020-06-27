@@ -1,5 +1,6 @@
 import { logout } from "@/lib/network/token"
-import React from "react"
+import { useEvent } from "effector-react/ssr"
+import * as React from "react"
 import styled from "styled-components"
 
 const StyledLogoutButton = styled.div`
@@ -11,4 +12,7 @@ const StyledLogoutButton = styled.div`
   cursor: pointer;
 `
 
-export const LogoutButton = () => <StyledLogoutButton onClick={() => logout()}>Выйти</StyledLogoutButton>
+export const LogoutButton = () => {
+  const _logout = useEvent(logout)
+  return <StyledLogoutButton onClick={() => _logout()}>Выйти</StyledLogoutButton>
+}

@@ -41,7 +41,7 @@ const $coachSessions = createStore<DashboardSession[]>([]).on(loadTodaySessionsF
 const changeTickTime = createEvent<Date>()
 const $tickTime = createStore(new Date()).on(changeTickTime, (_, newDate) => newDate)
 
-if (process.browser) {
+if (process.env.BUILD_TARGET === "client") {
   setInterval(() => changeTickTime(new Date()), 1000)
 }
 

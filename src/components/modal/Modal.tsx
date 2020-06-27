@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import ReactDOM from "react-dom"
 
 let modalRoot!: HTMLDivElement
@@ -9,7 +9,7 @@ export class Modal extends React.Component<{}, {}> {
   constructor(props: {}) {
     super(props)
 
-    if (process.browser) {
+    if (process.env.BUILD_TARGET === "client") {
       if (!nextRoot) {
         nextRoot = document.getElementById("__next") as HTMLDivElement
         modalRoot = nextRoot.appendChild(document.createElement("div", {}))

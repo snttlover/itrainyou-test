@@ -1,8 +1,11 @@
-import Router from "next/router"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
+import { useEvent } from "effector-react/ssr"
 import styled from "styled-components"
 import { Button } from "@/components/button/normal/Button"
 import { FeatureItem } from "@/feature/coach-placeholder/FeatureItem"
 import { MediaRange } from "@/lib/responsive/media"
+import * as React from "react"
 
 const Container = styled.div`
   width: 100%;
@@ -111,19 +114,22 @@ type DemoPageTemplateTypes = {
   renderImage: () => JSX.Element
 }
 
-export const CoachSectionPlaceholder = (props: DemoPageTemplateTypes) => (
-  <Container>
-    <Title>У вас пока закрыт доступ к функционалу коуча</Title>
-    <SubTitle>Отслеживайте состояние вашей заявки на главной странице</SubTitle>
-    <StyledButton onClick={() => Router.push("/coach", "/coach")}>Перейти</StyledButton>
-    <Content>
-      <TextContent>
-        <ContentTitle>На этой странице вы сможете:</ContentTitle>
-        {props.features.map(feature => (
-          <FeatureItem key={feature}>{feature}</FeatureItem>
-        ))}
-      </TextContent>
-      <ImageContent>{props.renderImage()}</ImageContent>
-    </Content>
-  </Container>
-)
+export const CoachSectionPlaceholder = (props: DemoPageTemplateTypes) => {
+  const navigate = useEvent(navigatePush)
+  return (
+    <Container>
+      <Title>У вас пока закрыт доступ к функционалу коуча</Title>
+      <SubTitle>Отслеживайте состояние вашей заявки на главной странице</SubTitle>
+      <StyledButton onClick={() => navigate({ url: routeNames.coach() })}>Перейти</StyledButton>
+      <Content>
+        <TextContent>
+          <ContentTitle>На этой странице вы сможете:</ContentTitle>
+          {props.features.map(feature => (
+            <FeatureItem key={feature}>{feature}</FeatureItem>
+          ))}
+        </TextContent>
+        <ImageContent>{props.renderImage()}</ImageContent>
+      </Content>
+    </Container>
+  )
+}

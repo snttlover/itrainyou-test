@@ -1,7 +1,7 @@
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { useEvent } from "effector-react/ssr"
-import React from "react"
+import * as React from "react"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval /common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval /common/SubTitle"

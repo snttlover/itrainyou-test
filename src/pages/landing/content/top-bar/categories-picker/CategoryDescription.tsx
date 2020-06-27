@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
@@ -9,7 +9,7 @@ const Tooltip = styled.div`
   position: absolute;
   z-index: 1;
   padding: 8px;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 1px 3px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
   font-size: 14px;
@@ -18,7 +18,7 @@ const Tooltip = styled.div`
   left: 20px;
   top: 0;
   display: none;
-  
+
   ${MediaRange.lessThan(`tablet`)`
      left: unset;
      right: 0;
@@ -28,18 +28,17 @@ const Tooltip = styled.div`
 
 const StyledContainer = styled.div`
   position: relative;
-  
+
   &:hover ${Tooltip} {
     display: block;
   }
 `
 
 const InfoIcon = styled(Icon).attrs({ name: `info` })`
-  fill: #919BE0;
+  fill: #919be0;
   width: 17px;
   height: 17px;
 `
-
 
 type CategoryDescriptionProps = {
   children: React.ReactChild

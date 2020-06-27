@@ -3,7 +3,7 @@ import { Avatar, AvatarPlaceholder } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
 import { Icon } from "@/components/icon/Icon"
 import { CoachTooltip } from "@/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
-import React from "react"
+import * as React from "react"
 
 const StyledHeader = styled.div`
   width: 100%;

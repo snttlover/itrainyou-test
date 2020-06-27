@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import styled from "styled-components"
 import star from "./images/star.svg"
 import smile from "./images/smile.svg"

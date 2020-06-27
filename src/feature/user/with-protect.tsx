@@ -1,7 +1,7 @@
 import { navigatePush } from "@/feature/navigation"
 import { $isLoggedIn } from "@/feature/user/user.model"
 import { useStore, useEvent } from "effector-react/ssr"
-import React from "react"
+import * as React from "react"
 
 type Options = {
   to?: string

@@ -11,6 +11,7 @@ import {
 import { Loader } from "@/components/spinner/Spinner"
 import SimpleBar from "simplebar-react"
 import InfiniteScroll from "react-infinite-scroll-component"
+import React from "react"
 
 const Container = styled.div`
   width: 100%;

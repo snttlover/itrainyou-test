@@ -1,7 +1,8 @@
 import { $coachAccess } from "@/feature/user/user.model"
+import { routeNames } from "@/pages/route-names"
 import { useStore } from "effector-react/ssr"
 import styled from "styled-components"
-import React from "react"
+import * as React from "react"
 import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
 import { MediaRange } from "@/lib/responsive/media"
 
@@ -46,10 +47,10 @@ export const CoachMenuItems = () => {
   const isApproved = useStore($coachAccess).isApproved
   return (
     <ItemsWrapper>
-      <DashboardMenuItem link='/coach/' icon='home'>
+      <DashboardMenuItem link={routeNames.coach()} icon='home'>
         Главная страница
       </DashboardMenuItem>
-      <DashboardMenuItem disabled={isApproved} link='/coach/clients/' icon='my-coaches'>
+      <DashboardMenuItem disabled={isApproved} link={routeNames.coachClients()} icon='my-coaches'>
         Мои клиенты
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/now' icon='hand'>
@@ -58,26 +59,26 @@ export const CoachMenuItems = () => {
     <DashboardMenuItem link='/coach/group-sessions' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link='/coach/wallet/' icon='my-purse'>
+      <DashboardMenuItem disabled={isApproved} link={routeNames.coachWallet()} icon='my-purse'>
         Кошелек
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}
-      <DashboardMenuItem link='/coach/settings/' icon='settings'>
+      <DashboardMenuItem link={routeNames.coachSettings()} icon='settings'>
         Настройки
       </DashboardMenuItem>
-      <DashboardMenuItem disabled={isApproved} link='/coach/support/' icon='help'>
+      <DashboardMenuItem disabled={isApproved} link={routeNames.coachSupport()} icon='help'>
         Поддержка
       </DashboardMenuItem>
       <Delimiter />
-      <DashboardMenuItem disabled={isApproved} link='/coach/schedule/' icon='none'>
+      <DashboardMenuItem disabled={isApproved} link={routeNames.coachSchedule()} icon='none'>
         Расписание
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link='/coach/blocked/' icon='calendar-with-clock'>
+      <DashboardMenuItem disabled={isApproved} link={routeNames.coachBlocked()} icon='calendar-with-clock'>
         Заблокированные
       </DashboardMenuItem>
     </ItemsWrapper>

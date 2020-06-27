@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
+import * as React from "react"
 
 const Container = styled.div`
   display: flex;

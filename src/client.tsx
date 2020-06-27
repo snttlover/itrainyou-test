@@ -1,7 +1,7 @@
 import { clientStarted } from "@/lib/effector"
 import { changeToken, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import Cookies from "js-cookie"
-import React from "react"
+import * as React from "react"
 import ReactDOM from "react-dom"
 import { Router } from "react-router-dom"
 import { allSettled, fork, hydrate } from "effector/fork"

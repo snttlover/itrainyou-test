@@ -10,6 +10,7 @@ import {
 } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 import { $newestParticipantsList } from "@/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
 import InfiniteScroll from "react-infinite-scroll-component"
+import * as React from "react"
 
 export const NewestParticipants = () => {
   const hasMore = useStore($isHasMoreParticipants)

@@ -5,7 +5,7 @@ import { CoachTooltipRow } from "@/components/layouts/behaviors/dashboards/coach
 import { useStore } from "effector-react/ssr"
 import { $userData } from "@/feature/user/user.model"
 import { changeBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
-import React from "react"
+import * as React from "react"
 
 const Tooltip = styled.div`
   position: absolute;
