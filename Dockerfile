@@ -17,7 +17,7 @@ ENV NODE_ENV=production
 
 COPY package*.json ./
 RUN npm i
-COPY server.js ./server.js
+COPY ../server.js ./server.js
 COPY public ./public
 COPY src/ ./src
 COPY .next/ ./.next
