@@ -6,7 +6,7 @@ import * as React from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import { Calendar } from "@/components/calendar/Calendar"
-import { useEvent, useStore } from "effector-react" // ITS RIGHT!!! don't use effector-react/ssr
+import { useEvent, useStore } from /* ITS RIGHT!!! don't use effector-react/ssr */"effector-react"
 import { Event, Store } from "effector-root"
 import { Tabs, Tab } from "@/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/components/coach-card/select-date/select-date.model"
