@@ -10,6 +10,7 @@ import { DashboardContainer } from "@/components/layouts/behaviors/dashboards/co
 import { DashboardContent } from "@/components/layouts/behaviors/dashboards/common/DashboardPageContent"
 import { CoachMenu } from "@/components/layouts/behaviors/dashboards/coach/menu/CoachMenu"
 import { CoachTopBar } from "@/components/layouts/behaviors/dashboards/coach/top-bar/CoachTopBar"
+import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -26,7 +27,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
         <ToastsContainer />
         <DashboardContent>
           <CoachTopBar />
-          {children}
+          <DashboardPageWrapper>{children}</DashboardPageWrapper>
         </DashboardContent>
       </DashboardContainer>
     </CoachTheme>

@@ -10,6 +10,7 @@ import { withProtect } from "@/feature/user/with-protect"
 import { ToastsContainer } from "@/components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
 import { DashboardContainer } from "@/components/layouts/behaviors/dashboards/common/DashboardContainer"
 import { DashboardContent } from "@/components/layouts/behaviors/dashboards/common/DashboardPageContent"
+import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -26,7 +27,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
       <ToastsContainer />
       <DashboardContent>
         <ClientTopBar />
-        {children}
+        <DashboardPageWrapper>{children}</DashboardPageWrapper>
       </DashboardContent>
     </DashboardContainer>
   )
