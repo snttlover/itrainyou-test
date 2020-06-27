@@ -14,7 +14,6 @@ import close from "./images/close.svg"
 import SimpleBar from "simplebar-react"
 import { SessionTimeFilter } from "./content/session-time-filter/SessionTimeFilter"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEffect, useRef, useState } from "react"
 
 type ModalTypes = {
   showOnMobile: boolean
@@ -25,6 +24,7 @@ const Modal = styled.div.attrs({ id: `filters-container` })<ModalTypes>`
   border-left: 1px solid #efefef;
   position: relative;
   overflow: hidden;
+  transition: all 50ms;
   margin-bottom: 20px;
   margin-top: 44px;
 
@@ -87,58 +87,11 @@ const Header = styled.div`
   line-height: 22px;
 `
 
-const MARGIN_TOP = 44 // in px
-
 export const Filters = () => {
   const showOnMobile = useStore($mobileFiltersVisibility)
   const changeVisibility = useEvent(changeMobileFiltersVisibility)
-  const [marginTop, changeFiltersMargin] = useState(MARGIN_TOP)
-  const modalRef = useRef<HTMLDivElement>(null)
-
-  const computeSticky = () => {
-    if (window.innerWidth <= 768) {
-      changeFiltersMargin(0)
-      return
-    }
-    const scrollingElement = document.getElementById(`page-wrapper`) as HTMLElement
-    const filters = modalRef.current as HTMLElement
-
-    const offset = filters.clientHeight - scrollingElement.clientHeight
-    const positiveOffset = offset > 0
-    const range = positiveOffset ? offset : 0
-    const nextMargin = scrollingElement.scrollTop - range
-
-    const marginTop = filters.offsetTop
-
-    if (scrollingElement.scrollTop <= MARGIN_TOP) {
-      changeFiltersMargin(MARGIN_TOP)
-      return
-    }
-
-    if (nextMargin + filters.clientHeight + MARGIN_TOP < scrollingElement.scrollHeight) {
-      if (marginTop > nextMargin + offset) {
-        changeFiltersMargin(scrollingElement.scrollTop)
-        return
-      }
-
-      changeFiltersMargin(nextMargin > marginTop ? nextMargin : marginTop)
-      return
-    }
-  }
-
-  useEffect(() => {
-    const scrollingElement = document.getElementById(`page-wrapper`) as HTMLElement
-    scrollingElement.addEventListener(`scroll`, computeSticky)
-    window.addEventListener(`resize`, computeSticky)
-    computeSticky()
-    return () => {
-      scrollingElement.removeEventListener(`scroll`, computeSticky)
-      window.removeEventListener(`resize`, computeSticky)
-    }
-  }, [])
-
   return (
-    <Modal ref={modalRef} showOnMobile={showOnMobile} style={{ marginTop }}>
+    <Modal showOnMobile={showOnMobile}>
       <StyledSimpleBar>
         <Container>
           <MobileClose onClick={() => changeVisibility(false)} />

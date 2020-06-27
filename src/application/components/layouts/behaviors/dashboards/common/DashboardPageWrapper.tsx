@@ -12,4 +12,4 @@ type DashboardPageWrapperTypes = {
   children: React.ReactChild
 }
 
-export const DashboardPageWrapper = (props: DashboardPageWrapperTypes) => <Container id='page-wrapper'>{props.children}</Container>
+export const DashboardPageWrapper = (props: DashboardPageWrapperTypes) => <Container>{props.children}</Container>

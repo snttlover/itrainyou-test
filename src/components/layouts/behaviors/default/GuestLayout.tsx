@@ -3,14 +3,10 @@ import { Layout } from "@/components/layouts/behaviors/default/Layout"
 import styled from "styled-components"
 import { TopBar } from "@/pages/landing/content/top-bar/TopBar"
 import { ClientTheme } from "@/components/layouts/themes"
-import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 
 const StyledLayout = styled(Layout)`
   background: #eceff1;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  min-height: 100vh;
 `
 
 type GrayLayoutProps = {
@@ -18,10 +14,8 @@ type GrayLayoutProps = {
 }
 
 export const GuestLayout = (props: GrayLayoutProps) => (
-  <ClientTheme>
-    <StyledLayout>
-      <TopBar />
-      <DashboardPageWrapper>{props.children}</DashboardPageWrapper>
-    </StyledLayout>
-  </ClientTheme>
+  <StyledLayout>
+    <TopBar />
+    {props.children}
+  </StyledLayout>
 )
