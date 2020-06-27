@@ -4,17 +4,21 @@ import { CoachInformation } from "@/feature/coach-get-access/components/CoachInf
 import { Step4CoachLayout } from "@/pages/auth/pages/signup/content/step-4/coach/Step4CoachLayout"
 import { step4CoachMounted } from "@/pages/auth/pages/signup/content/step-4/step-4-coach.model"
 import { $userData, registerUserFx, skipCoach, userRegistered } from "@/pages/auth/pages/signup/signup.model"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import { useEffect } from "react"
 import * as React from "react"
 
 export const Step4Coach = () => {
   const userData = useStore($userData)
   const loading = useStore(registerUserFx.pending)
+  const _step4CoachMounted = useEvent(step4CoachMounted)
+  const _skipCoach = useEvent(skipCoach)
+  const _userRegistered = useEvent(userRegistered)
+
   const years = getYearsCount(userData.clientData?.birthDate!)
   const sex = { M: "мужской", F: "женский" }[userData.clientData?.sex || "M"]
 
-  useEffect(() => step4CoachMounted(), [])
+  useEffect(() => _step4CoachMounted(), [])
 
   return (
     <Step4CoachLayout
@@ -24,11 +28,11 @@ export const Step4Coach = () => {
           fullName={`${userData.clientData?.firstName} ${userData.clientData?.lastName}`}
           years={years}
           sex={sex}
-          onSkip={() => skipCoach()}
+          onSkip={() => _skipCoach()}
         />
       )}
     >
-      <CoachInformation onRegisterClick={() => userRegistered()} loading={loading} />
+      <CoachInformation onRegisterClick={() => _userRegistered()} loading={loading} />
     </Step4CoachLayout>
   )
 }

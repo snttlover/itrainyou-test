@@ -14,7 +14,7 @@ import {
   photoRemoved,
 } from "@/feature/coach-get-access/coach-get-access.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { useStore } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react/ssr"
 import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
@@ -75,8 +75,14 @@ export const Form = () => {
   const values = useStore($form)
   const errors = useStore($formErrors)
 
+  const _photoUploadFx = useEvent(photoUploadFx)
+  const _educationChanged = useEvent(educationChanged)
+  const _workExperienceChanged = useEvent(workExperienceChanged)
+  const _descriptionChanged = useEvent(descriptionChanged)
+  const _phoneChanged = useEvent(phoneChanged)
+
   const onDropAccepted = useCallback(acceptedFiles => {
-    acceptedFiles.forEach(photoUploadFx)
+    acceptedFiles.forEach(_photoUploadFx)
   }, [])
 
   const { getInputProps, open } = useDropzone({
@@ -91,20 +97,20 @@ export const Form = () => {
     <InformationContainer>
       <InformationTitle>Заполните информацию</InformationTitle>
       <FormItem label='Место обучения' error={errors.education}>
-        <Input withoutBorder value={values.education} onChange={educationChanged} />
+        <Input withoutBorder value={values.education} onChange={_educationChanged} />
       </FormItem>
       <FormItem label='Опыт работы' error={errors.workExperience}>
-        <Textarea withoutBorder value={values.workExperience} onChange={workExperienceChanged} rows={8} />
+        <Textarea withoutBorder value={values.workExperience} onChange={_workExperienceChanged} rows={8} />
       </FormItem>
       <FormItem label='О себе' error={errors.description}>
-        <Textarea withoutBorder value={values.description} onChange={descriptionChanged} rows={8} />
+        <Textarea withoutBorder value={values.description} onChange={_descriptionChanged} rows={8} />
       </FormItem>
       <FormItem label='Телефон' error={errors.phone}>
         <Input
           mask='+7 111 111-11-11'
           placeholder='+7 900 000-00-00'
           value={values.phone}
-          onChange={(value: any) => phoneChanged(value)}
+          onChange={(value: any) => _phoneChanged(value)}
           withoutBorder
           type='tel'
         />
@@ -211,8 +217,9 @@ const swiperOptions: SwiperOptions = {
 }
 
 const Photos = () => {
+  const _photoRemoved = useEvent(photoRemoved)
   const photos = useStore($photos).map((src, index) => (
-    <Photo key={src} src={src} onClick={() => photoRemoved(index)}>
+    <Photo key={src} src={src} onClick={() => _photoRemoved(index)}>
       <PhotoCross>
         <span />
         <span />

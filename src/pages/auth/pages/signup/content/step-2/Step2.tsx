@@ -1,10 +1,11 @@
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
-import { history } from "@/feature/navigation"
+import { history, navigatePush } from "@/feature/navigation"
 import { MediaRange } from "@/lib/responsive/media"
 import { WhiteNextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { UserTypeCard } from "@/pages/auth/pages/signup/content/step-2/UserTypeCard"
 import { userTypeChanged, $userData } from "@/pages/auth/pages/signup/signup.model"
+import { routeNames } from "@/pages/route-names"
 import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
@@ -96,6 +97,7 @@ const Title = styled.h1`
 export const Step2 = () => {
   const type = useStore($userData).type
   const changeType = useEvent(userTypeChanged)
+  const navigate = useEvent(navigatePush)
   return (
     <AuthLayout>
       <Steps activeId='2'>
@@ -122,7 +124,7 @@ export const Step2 = () => {
             onClick={() => changeType("coach")}
           />
         </Cards>
-        <WhiteNextButton onClick={() => history!.push("/auth/signup/3")} />
+        <WhiteNextButton onClick={() => navigate({ url: routeNames.signup("3") })} />
       </Container>
     </AuthLayout>
   )

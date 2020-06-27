@@ -124,6 +124,7 @@ export const Step4Client = () => {
   const selectedCategories = useStore($userData).categories
   const loading = useStore(registerUserFx.pending)
   const _categoriesChanged = useEvent(categoriesChanged)
+  const _userRegistered = useEvent(userRegistered)
 
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
@@ -149,7 +150,7 @@ export const Step4Client = () => {
       <Container>
         {categories}
         <ButtonContainer>
-          <RegisterButton disabled={loading} onClick={() => userRegistered()}>
+          <RegisterButton disabled={loading} onClick={() => _userRegistered()}>
             Зарегистрироваться
           </RegisterButton>
         </ButtonContainer>

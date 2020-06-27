@@ -6,7 +6,7 @@ import {
   patchCoachDataFx,
   updateCoachData,
 } from "@/pages/coach/home/get-access/coach-get-access.model"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 
@@ -184,8 +184,10 @@ const CoachFilledPercentContainerLaptop = styled.div`
 export const CoachGetAccess = ({ className }: { className?: string }) => {
   const progress = useStore($progress)
   const isLoading = useStore(patchCoachDataFx.pending)
+  const _coachGetAccessMounted = useEvent(coachGetAccessMounted)
+  const _updateCoachData = useEvent(updateCoachData)
   useEffect(() => {
-    coachGetAccessMounted()
+    _coachGetAccessMounted()
   }, [])
 
   return (
@@ -208,7 +210,7 @@ export const CoachGetAccess = ({ className }: { className?: string }) => {
       <CoachInformation
         className={className}
         withoutCheckStep
-        onRegisterClick={() => updateCoachData()}
+        onRegisterClick={() => _updateCoachData()}
         loading={isLoading}
       />
     </>

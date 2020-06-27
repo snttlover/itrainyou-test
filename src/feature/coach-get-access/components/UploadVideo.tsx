@@ -7,7 +7,7 @@ import {
   videoUploadFx,
 } from "@/feature/coach-get-access/coach-get-access.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
@@ -115,16 +115,19 @@ const InterviewQuestions = styled.ol`
   `}
 `
 
+const $videoInterview = $form.map(form => form.videoInterview)
+
 export const UploadVideo = () => {
-  const video = useStore($form.map(form => form.videoInterview))
+  const video = useStore($videoInterview)
   const isVideoUploading = useStore(videoUploadFx.pending)
   const videoUploadProgress = useStore($videoUploadProgress)
+  const _videoUploaded = useEvent(videoUploaded)
 
   const [isPlaying, setIsPlaying] = useState(false)
   const videoRef = React.createRef<HTMLVideoElement>()
 
   const onDropAccepted = useCallback(acceptedFiles => {
-    videoUploaded(acceptedFiles[0])
+    _videoUploaded(acceptedFiles[0])
   }, [])
 
   const { getRootProps, getInputProps, open } = useDropzone({

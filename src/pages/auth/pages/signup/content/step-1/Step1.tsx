@@ -18,7 +18,7 @@ import {
   registerFx,
   step1Registered,
 } from "./step1.model"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -116,20 +116,25 @@ const SignIn = styled.span`
   font-weight: 500;
 `
 
-const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault()
-  step1Registered()
-}
-
 export const Step1 = () => {
   const form = useStore($step1Form)
   const errors = useStore($step1FormErrors)
   const isFormValid = useStore($isFormValid)
   const isFetching = useStore(registerFx.pending)
+  const _userDataReset = useEvent(userDataReset)
+  const _step1Registered = useEvent(step1Registered)
+  const _emailChanged = useEvent(emailChanged)
+  const _passwordChanged = useEvent(passwordChanged)
+  const _passwordRepeatChanged = useEvent(passwordRepeatChanged)
 
   useEffect(() => {
-    userDataReset()
+    _userDataReset()
   }, [])
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    _step1Registered()
+  }
 
   return (
     <AuthLayout>
@@ -143,17 +148,17 @@ export const Step1 = () => {
         <Title>Регистрация</Title>
         <Form onSubmit={handleSubmit}>
           <FormItem label='Почта' error={errors.email}>
-            <Input value={form.email} type='email' name='email' onChange={emailChanged} />
+            <Input value={form.email} type='email' name='email' onChange={_emailChanged} />
           </FormItem>
           <FormItem label='Пароль' error={errors.password}>
-            <PasswordInput value={form.password} name='password' onChange={passwordChanged} />
+            <PasswordInput value={form.password} name='password' onChange={_passwordChanged} />
           </FormItem>
           <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
             <PasswordInput
               value={form.passwordRepeat}
               type='password'
               name='repeat-password'
-              onChange={passwordRepeatChanged}
+              onChange={_passwordRepeatChanged}
             />
             {!errors.passwordRepeat && (
               <PasswordHint>

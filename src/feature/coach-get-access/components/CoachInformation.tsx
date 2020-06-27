@@ -14,7 +14,7 @@ import { CategoryCard } from "@/feature/coach-get-access/components/CategoryCard
 import { CheckStep } from "@/feature/coach-get-access/components/check-step/CheckStep"
 import { Form } from "@/feature/coach-get-access/components/Form"
 import { UploadVideo } from "@/feature/coach-get-access/components/UploadVideo"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 import study from "./check-step/study.svg"
@@ -141,13 +141,15 @@ export const CoachInformation = ({
   const isVideoUploading = useStore(videoUploadFx.pending)
   const categoriesLoading = useStore(fetchCategoriesListFx.pending)
 
+  const _toggleCategory = useEvent(toggleCategory)
+
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
       key={category.id}
       category={category}
       selected={selectedCategories.includes(category.id)}
       disabled={selectedCategories.length >= 3}
-      onSelect={id => toggleCategory(id)}
+      onSelect={id => _toggleCategory(id)}
     />
   ))
 
