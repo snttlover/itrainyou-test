@@ -1,5 +1,6 @@
+import React from "react"
 import styled from "styled-components"
-import {ChatLink} from "@/application/pages/client/chats/list/container/common/ChatLink"
+import {ChatLink} from "@/pages/client/chats/list/container/common/ChatLink"
 
 const Container = styled.div`
     display: flex;
@@ -10,7 +11,7 @@ const Container = styled.div`
     max-width: 734px;
 `
 
-export const CoachChatsList = () => (
+export const ClientChatsList = () => (
     <Container>
       <ChatLink />
       <ChatLink />

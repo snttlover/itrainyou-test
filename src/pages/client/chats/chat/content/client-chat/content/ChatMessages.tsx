@@ -1,6 +1,7 @@
+import React from "react"
 import styled from "styled-components"
-import { ChatMessage } from "@/application/pages/client/chats/chat/content/client-chat/content/ChatMessage"
-import {MediaRange} from "@/application/lib/responsive/media"
+import { ChatMessage } from "@/pages/client/chats/chat/content/client-chat/content/ChatMessage"
+import {MediaRange} from "@/lib/responsive/media"
 
 const Container = styled.div`
   display: flex;

@@ -45,7 +45,7 @@ export const Button = styled.button<ButtonTypes>`
   }
   &:active {
     box-shadow: none;
-    background: ${props => props.theme};
+    background: ${props => props.theme.colors.primary};
   }
   &:disabled {
     background: #efefef;

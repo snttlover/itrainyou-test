@@ -1,7 +1,8 @@
+import React from "react"
 import styled from "styled-components"
-import { Avatar } from "@/application/components/avatar/Avatar"
-import { Icon } from "@/application/components/icon/Icon"
-import { MediaRange } from "@/application/lib/responsive/media"
+import {Avatar} from "@/components/avatar/Avatar"
+import {Icon} from "@/components/icon/Icon"
+import {MediaRange} from "@/lib/responsive/media"
 
 const Container = styled.div`
   width: 100%;

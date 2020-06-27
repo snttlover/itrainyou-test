@@ -1,6 +1,6 @@
-import styled from "styled-components"
-import { Icon } from "@/application/components/icon/Icon"
 import React from "react"
+import styled from "styled-components"
+import { Icon } from "@/components/icon/Icon"
 
 const Container = styled.div`
   display: flex;

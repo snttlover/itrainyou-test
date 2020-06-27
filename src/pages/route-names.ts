@@ -8,6 +8,8 @@ export const routeNames = {
   client: () => `/client`,
   clientProfile: () => `/client/profile`,
   clientSettings: () => `/client/settings`,
+  clientChatsList: () => `/client/chats`,
+  clientChat: (id: string) => `/client/chats/${id}`,
 
   coach: () => `/coach`,
   coachClients: () => `/coach/clients`,
@@ -16,4 +18,6 @@ export const routeNames = {
   coachSupport: () => `/coach/support`,
   coachSchedule: () => `/coach/schedule`,
   coachBlocked: () => `/coach/blocked`,
+  coachChatsList: () => `/coach/chats`,
+  coachChat: (id: string) => `/coach/chats/${id}`,
 }

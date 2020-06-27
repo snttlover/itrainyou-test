@@ -9,7 +9,7 @@ import { ClientTopBar } from "@/components/layouts/behaviors/dashboards/client/c
 import { withProtect } from "@/feature/user/with-protect"
 import { ToastsContainer } from "@/components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
 import { DashboardContainer } from "@/components/layouts/behaviors/dashboards/common/DashboardContainer"
-import { DashboardPageContent } from "@/components/layouts/behaviors/dashboards/common/DashboardPageContent"
+import { DashboardContent } from "@/components/layouts/behaviors/dashboards/common/DashboardPageContent"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -24,10 +24,10 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
     <DashboardContainer {...props}>
       <ClientMenu />
       <ToastsContainer />
-      <DashboardPageContent>
+      <DashboardContent>
         <ClientTopBar />
         {children}
-      </DashboardPageContent>
+      </DashboardContent>
     </DashboardContainer>
   )
 })``

@@ -1,8 +1,9 @@
+import React from "react"
 import styled from "styled-components"
-import { Avatar } from "@/application/components/avatar/Avatar"
-import { Icon } from "@/application/components/icon/Icon"
-import { Button } from "@/application/components/button/normal/Button"
-import { ChatLinkMaterials } from "@/application/pages/client/chats/list/container/common/ChatLinkMaterials"
+import {Avatar} from "@/components/avatar/Avatar"
+import {Icon} from "@/components/icon/Icon"
+import {Button} from "@/components/button/normal/Button"
+import { ChatLinkMaterials } from "@/pages/client/chats/list/container/common/ChatLinkMaterials"
 
 const Container = styled.div`
   display: flex;
