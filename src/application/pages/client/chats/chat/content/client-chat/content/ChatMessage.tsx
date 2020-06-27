@@ -1,0 +1,59 @@
+import styled from "styled-components"
+import { MediaRange } from "@/application/lib/responsive/media"
+
+type ContainerTypes = {
+  "data-self": boolean
+}
+
+const Time = styled.div`
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(66, 66, 66, 0.5);
+`
+
+const Container = styled.div<ContainerTypes>`
+  padding: 5px 8px;
+
+  background: #eceff1;
+  border-radius: 12px 12px 12px 0px;
+  width: auto;
+  max-width: 472px;
+  color: #424242;
+  margin-bottom: 8px;
+
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  &[data-self="true"] {
+    background: ${props => props.theme.colors.primary};
+    border-radius: 12px 12px 0px 12px;
+    color: #ffffff;
+    align-self: flex-end;
+    ${Time} {
+      color: #9aa0a6;
+    }
+  }
+
+  ${MediaRange.lessThan(`mobile`)`
+    font-size: 16px;
+    line-height: 22px;
+    ${Time} {
+      font-size: 12px;
+    }
+  `}
+`
+
+type ChatMessageTypes = {
+  children: React.ReactChild
+  time: string
+} & ContainerTypes
+
+export const ChatMessage = (props: ChatMessageTypes) => (
+  <Container data-self={props["data-self"]}>
+    {props.children}
+    <Time>{props.time}</Time>
+  </Container>
+)
