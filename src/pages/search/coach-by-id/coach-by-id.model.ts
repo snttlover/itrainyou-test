@@ -1,4 +1,3 @@
-import { navigatePush } from "@/feature/navigation"
 import { Coach, getCoach } from "@/lib/api/coach"
 import { CoachReviewResponse, getCoachReviews } from "@/lib/api/reviews"
 import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
