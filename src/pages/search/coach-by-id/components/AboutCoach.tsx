@@ -61,13 +61,16 @@ const Photos = styled.div`
 
   & > .swiper__container {
     width: 100%;
+    height: 100px;
     overflow: hidden;
   }
 `
 
 const Photo = styled.div<{ src: string }>`
   width: 100px;
+  max-width: 100px;
   height: 100px;
+  max-height: 100px;
   background: ${({ src }) => `url(${src})`};
   background-repeat: no-repeat;
   background-size: cover;
