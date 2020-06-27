@@ -54,14 +54,6 @@ const NotFound = () => (
   </NotFoundText>
 )
 
-
-
-const SomeBigElement = styled.div`
-  height: 2000px;
-  width: 200px;
-  background: #000;
-`
-
 export const List = () => {
   const loading = useStore(fetchCoachesListFx.pending)
   const list = useStore($coachesList)
@@ -79,7 +71,6 @@ export const List = () => {
           )}
         </div>
         <CoachList />
-        <SomeBigElement />
       </ListContainer>
     </Container>
   )
