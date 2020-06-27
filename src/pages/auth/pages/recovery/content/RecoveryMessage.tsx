@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 import { $recoveryForm, updateRecoverySuccessMessageVisibility } from "@/pages/auth/pages/recovery/recovery.model"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 
 const Title = styled.h3`
   font-weight: 600;
@@ -47,6 +47,7 @@ const Link = styled.div`
 
 export const RecoveryMessage = () => {
   const form = useStore($recoveryForm)
+  const _updateRecoverySuccessMessageVisibility = useEvent(updateRecoverySuccessMessageVisibility)
 
   return (
     <Container>
@@ -61,7 +62,7 @@ export const RecoveryMessage = () => {
       </Paragraph>
 
       <Paragraph>
-        Или <Link onClick={() => updateRecoverySuccessMessageVisibility(false)}>отправьте письмо повторно.</Link>
+        Или <Link onClick={() => _updateRecoverySuccessMessageVisibility(false)}>отправьте письмо повторно.</Link>
       </Paragraph>
     </Container>
   )

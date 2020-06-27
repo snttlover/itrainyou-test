@@ -1,6 +1,8 @@
 import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { LoginPage } from "@/pages/auth/pages/login/LoginPage"
+import RecoveryPage from "@/pages/auth/pages/recovery/RecoveryPage"
+import { ResetPasswordPage } from "@/pages/auth/pages/reset-password/ResetPasswordPage"
 import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import HomePage from "@/pages/client/home/HomePage"
 import ProfilePage from "@/pages/client/profile/ProfilePage"
@@ -43,6 +45,14 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.signup(":step"),
     component: SignUpPage,
+  },
+  {
+    path: routeNames.recovery(),
+    component: RecoveryPage,
+  },
+  {
+    path: routeNames.resetPassword(":token"),
+    render: ({ match }) => <ResetPasswordPage token={match.params.token} />,
   },
   {
     path: routeNames.client(),

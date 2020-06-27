@@ -2,8 +2,11 @@ export const routeNames = {
   landing: () => `/`,
   search: () => `/search`,
   searchCoachPage: (id: string) => `/search/coach/${id}`,
+
   login: () => `/auth/login`,
   signup: (step: string) => `/auth/signup/${step}`,
+  recovery: () => `/auth/recovery`,
+  resetPassword: (token: string) => `/reset-password/${token}`,
 
   client: () => `/client`,
   clientProfile: () => `/client/profile`,

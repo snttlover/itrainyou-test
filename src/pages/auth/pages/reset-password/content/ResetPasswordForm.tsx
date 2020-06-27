@@ -4,7 +4,7 @@ import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Spinner } from "@/components/spinner/Spinner"
-import { useStore } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react/ssr"
 import { FormEvent } from "react"
 import {
   $commonError,
@@ -57,18 +57,22 @@ export const ResetPasswordForm = (props: ResetPasswordFormTypes) => {
   const isFetching = useStore(resetFx.pending)
   const error = useStore($commonError)
 
+  const _resetFx = useEvent(resetFx)
+  const _passwordChanged = useEvent(passwordChanged)
+  const _passwordRepeatChanged = useEvent(passwordRepeatChanged)
+
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    resetFx({ password: form.password, token: props.token })
+    _resetFx({ password: form.password, token: props.token })
     e.preventDefault()
   }
 
   return (
     <StyledForm onSubmit={submitHandler}>
       <FormItem label='Пароль' error={errors.password}>
-        <Input value={form.password} onChange={passwordChanged} type='password' />
+        <Input value={form.password} onChange={_passwordChanged} type='password' />
       </FormItem>
       <FormItem label='Повторите пароль' error={errors.passwordRepeat}>
-        <Input value={form.passwordRepeat} onChange={passwordRepeatChanged} type='password' />
+        <Input value={form.passwordRepeat} onChange={_passwordRepeatChanged} type='password' />
       </FormItem>
       {error && <Error>{error}</Error>}
       <StyledButton disabled={!isFormValid || isFetching}>Вход</StyledButton>

@@ -4,7 +4,7 @@ import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Spinner } from "@/components/spinner/Spinner"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import {
   $commonError,
   $isFormValid,
@@ -84,24 +84,26 @@ const Error = styled.div`
   padding: 10px 0;
 `
 
-const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
-  recoveryFormSended()
-}
-
 export const RecoveryForm = () => {
   const form = useStore($recoveryForm)
   const errors = useStore($recoveryFormErrors)
   const isFormValid = useStore($isFormValid)
   const isFetching = useStore(recoveryFx.pending)
   const error = useStore($commonError)
+  const _recoveryFormSended = useEvent(recoveryFormSended)
+  const _emailChanged = useEvent(emailChanged)
+
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    _recoveryFormSended()
+  }
 
   return (
     <StyledForm onSubmit={submitHandler}>
       <Title>Восстановление пароля</Title>
       <SubTitle>Забыли пароль? Не страшно! Мы отправим вам на почту письмо с инструкциями по сбросу пароля.</SubTitle>
       <FormItem label='Почта' error={errors.email}>
-        <Input value={form.email} onChange={emailChanged} />
+        <Input value={form.email} onChange={_emailChanged} />
       </FormItem>
       {error && <Error>{error}</Error>}
       <StyledButton disabled={!isFormValid || isFetching}>Отправить</StyledButton>
