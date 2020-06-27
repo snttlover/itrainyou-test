@@ -4,8 +4,8 @@ import { $coach } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
 import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
 import { useStore } from "effector-react/ssr"
-import React, { useState } from "react"
-import ReactIdSwiper from "react-id-swiper"
+import React, { useRef, useState } from "react"
+import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import { SwiperInstance } from "react-id-swiper/lib/types"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
@@ -118,7 +118,7 @@ const swiperOptions: SwiperOptions = {
 
 export const AboutCoach = styled(props => {
   const [imageViewIndex, setImageViewIndex] = useState<number | null>(null)
-  const [swiper, updateSwiper] = useState<SwiperInstance | null>(null)
+  const swiper = useRef<SwiperRefNode>(null)
 
   const coach = useStore($coach)
   const photos = coach?.photos.map((src, i) => <Photo src={src} key={i} onClick={() => setImageViewIndex(i)} />) || []
@@ -147,11 +147,11 @@ export const AboutCoach = styled(props => {
         <>
           <Title>Фотографии</Title>
           <Photos>
-            <ArrowButton className='photos__prev-button' onClick={() => swiper?.slidePrev()} />
-            <ReactIdSwiper {...swiperOptions} containerClass='swiper__container' getSwiper={updateSwiper}>
+            <ArrowButton className='photos__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
+            <ReactIdSwiper {...swiperOptions} containerClass='swiper__container' ref={swiper}>
               {photos}
             </ReactIdSwiper>
-            <ArrowButton className='photos__next-button' onClick={() => swiper?.slideNext()} />
+            <ArrowButton className='photos__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
           </Photos>
         </>
       )}

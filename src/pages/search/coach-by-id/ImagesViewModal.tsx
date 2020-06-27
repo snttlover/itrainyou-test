@@ -1,9 +1,8 @@
 import { Icon } from "@/components/icon/Icon"
 import { Modal } from "@/components/modal/Modal"
 import { MediaRange } from "@/lib/responsive/media"
-import React, { useState } from "react"
-import ReactIdSwiper from "react-id-swiper"
-import { SwiperInstance } from "react-id-swiper/lib/types"
+import React, { useRef, useState } from "react"
+import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
 
@@ -118,11 +117,11 @@ const swiperOptions: SwiperOptions = {
 }
 
 export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModalProps) => {
-  const [swiper, updateSwiper] = useState<SwiperInstance | null>(null)
+  const swiper = useRef<SwiperRefNode>(null)
   const [currentIndex, setCurrentIndex] = useState(initialSlide)
 
-  swiper?.on("slideChange", () => {
-    setCurrentIndex(swiper?.activeIndex)
+  swiper.current?.swiper?.on("slideChange", () => {
+    setCurrentIndex(swiper.current?.swiper?.activeIndex!)
   })
 
   return (
@@ -136,13 +135,13 @@ export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModal
           <CounterText>
             {currentIndex + 1} из {photos.length}
           </CounterText>
-          <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper?.slidePrev()} />
-          <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} getSwiper={updateSwiper}>
+          <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
+          <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} ref={swiper}>
             {photos.map(src => (
               <Photo src={src} />
             ))}
           </ReactIdSwiper>
-          <ArrowButton className='photo-viewer__next-button' onClick={() => swiper?.slideNext()} />
+          <ArrowButton className='photo-viewer__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
         </Content>
       </Layout>
     </Modal>
