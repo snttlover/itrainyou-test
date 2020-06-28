@@ -85,8 +85,6 @@ export const $photos = createStore<string[]>([])
 export const toggleCategory = createEvent<number>()
 export const setCategories = createEvent<number[]>()
 
-setCategories.watch(console.log)
-
 export const $selectedCategories = restore(setCategories, []).on(toggleCategory, (state, payload) => {
   if (state.includes(payload)) return state.filter(category => category !== payload)
   return [...state, payload]
