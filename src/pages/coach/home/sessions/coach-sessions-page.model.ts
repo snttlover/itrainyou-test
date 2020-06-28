@@ -46,7 +46,7 @@ if (process.env.BUILD_TARGET === "client") {
 }
 
 export const $activeCoachSessions = combine($tickTime, $coachSessions, (time, sessions) =>
-  sessions.filter(session => date(time).isAfter(date(session.startDatetime)))
+  sessions.filter(session => date(time).isBetween(date(session.startDatetime), date(session.endDatetime)))
 )
 
 export const $todayCoachSessions = combine($tickTime, $coachSessions, (time, sessions) =>

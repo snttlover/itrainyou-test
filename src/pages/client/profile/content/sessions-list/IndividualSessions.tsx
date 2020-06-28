@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { IndividualSessionItem } from "@/pages/client/profile/content/sessions-list/IndividualSessionItem"
 import { MediaRange } from "@/lib/responsive/media"
-import { useList, useStore } from "effector-react/ssr"
+import { useEvent, useList, useStore } from "effector-react/ssr"
 import {
   $isHasMoreProfileSessions,
   $profilePageSessions,
@@ -78,6 +78,7 @@ const Items = styled.div`
 export const IndividualSessions = () => {
   const hasMore = useStore($isHasMoreProfileSessions)
   const sessions = useStore($ProfileSessions)
+  const loadMore = useEvent(loadMoreProfileSessions)
 
   return (
     <Container>
@@ -85,7 +86,9 @@ export const IndividualSessions = () => {
       <ListContainer>
         <InfiniteScroll
           loader={<Loader />}
-          next={loadMoreProfileSessions as any}
+          next={loadMore as any}
+          scrollableTarget='page-wrapper'
+          style={{overflow: `hidden`}}
           hasMore={hasMore}
           dataLength={sessions.length}
         >
