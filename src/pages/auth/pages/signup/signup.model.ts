@@ -22,22 +22,16 @@ type CoachData = {
   videoInterview: string
 }
 
-type UserData =
-  | {
-      type: "client"
-      clientData?: ClientData
-      categories: number[]
-    }
-  | {
-      type: "coach"
-      clientData?: ClientData
-      categories: number[]
-      coachData?: CoachData
-    }
+type UserData = {
+  type: "coach" | "client"
+  clientData: ClientData
+  categories: number[]
+  coachData: CoachData
+}
 
 export type RegisterUserType = "client" | "coach"
 
-export const pageMounted = createEvent()
+export const signUpPageMounted = createEvent()
 
 export const userTypeChanged = createEvent<RegisterUserType>()
 export const userDataChanged = createEvent<UserData>()
@@ -46,15 +40,18 @@ export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
 
-export const $userData = createStore<UserData>({ type: "client", categories: [] })
+export const $userData = createStore<UserData>({
+  type: "client",
+  clientData: { avatar: null, birthDate: null, lastName: "", sex: "", firstName: "" },
+  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "" },
+  categories: [],
+})
   .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
   .reset(userDataReset)
-
-const watchedEvents = merge([userTypeChanged, clientDataChanged, coachDataChanged, categoriesChanged, userDataReset])
 
 const saveDataFx = createEffect({
   handler: (userData: UserData) => {
@@ -65,10 +62,9 @@ const saveDataFx = createEffect({
   },
 })
 
-sample({
-  source: $userData,
-  clock: watchedEvents,
-  target: saveDataFx,
+forward({
+  from: $userData.updates,
+  to: saveDataFx,
 })
 
 const loadDataFx = createEffect({
@@ -82,7 +78,7 @@ const loadDataFx = createEffect({
 })
 
 forward({ from: loadDataFx.doneData, to: $userData })
-forward({ from: pageMounted, to: loadDataFx })
+forward({ from: signUpPageMounted, to: loadDataFx })
 
 export const userRegistered = createEvent()
 

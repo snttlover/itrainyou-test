@@ -72,20 +72,20 @@ export const BirthdayFormGroup = () => {
   )
 
   const changeYear = (year: number) => {
-    if (!birthday) {
+    if (!birthday || !birthday.isValid()) {
       birthday = date()
     }
     _birthdayChanged(birthday.set("year", year))
   }
   const changeDay = (day: number) => {
-    if (!birthday) {
+    if (!birthday || !birthday.isValid()) {
       birthday = date()
     }
     _birthdayChanged(birthday.set("date", day))
   }
 
   const changeMonth = (month: number) => {
-    if (!birthday) {
+    if (!birthday || !birthday.isValid()) {
       birthday = date()
     }
     const newDate = birthday.set("month", month)

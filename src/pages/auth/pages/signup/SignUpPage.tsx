@@ -1,7 +1,8 @@
 import { navigateReplace } from "@/feature/navigation"
 import { $isFullRegistered, $isLoggedIn } from "@/feature/user/user.model"
+import { withGuest } from "@/feature/user/with-guest"
 import { withProtect } from "@/feature/user/with-protect"
-import { pageMounted } from "@/pages/auth/pages/signup/signup.model"
+import { signUpPageMounted } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
 import { useEvent, useStore } from "effector-react/ssr"
 import { useEffect } from "react"
@@ -20,7 +21,7 @@ export const SignUpPage = () => {
   const isLoggedIn = useStore($isLoggedIn)
   const isFullRegistered = useStore($isFullRegistered)
   const navigate = useEvent(navigateReplace)
-  const _pageMounted = useEvent(pageMounted)
+  const _pageMounted = useEvent(signUpPageMounted)
   const params = useParams<{ step: string }>()
   const currentStep = params.step ? +params.step : null
 
