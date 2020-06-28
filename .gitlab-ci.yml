@@ -10,16 +10,25 @@ stages:
   - build
   - deploy
 
-build:
+.build:
   stage: build
-  variables:
-    IMAGE: $CI_REGISTRY_IMAGE:stable
-    BACKEND_URL: http://backend.itrainyou.ru
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
     - docker pull $IMAGE || true
-    - docker build --build-arg BACKEND_URL=${BACKEND_URL} -t $IMAGE .
+    - docker build -t $IMAGE .
     - docker push $IMAGE
+
+build-dev:
+  extends: .build
+  variables:
+    IMAGE: $CI_REGISTRY_IMAGE:latest
+  only:
+    - development
+
+build-prod:
+  extends: .build
+  variables:
+    IMAGE: $CI_REGISTRY_IMAGE:stable
   only:
     - master
 

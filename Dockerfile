@@ -1,25 +1,19 @@
-FROM node:12.14.0-alpine
-RUN apk add --no-cache \
-    autoconf \
-    automake \
-    bash \
-    g++ \
-    libc6-compat \
-    libjpeg-turbo-dev \
-    libpng-dev \
-    make \
-    nasm
-
-ARG BACKEND_URL
-ENV BACKEND_URL=$BACKEND_URL
-
-ENV NODE_ENV=production
+FROM node:12.18.1-alpine as builder
+WORKDIR /app
 
 COPY package*.json ./
+RUN npm ci
+ENV NODE_ENV=production
+
+COPY . ./
+RUN npm run build
+
+FROM node:12.18.1-alpine
+ENV NODE_ENV=production
+
+WORKDIR /app
+COPY package*.json ./
 RUN npm i
-COPY ../server.js ./server.js
-COPY public ./public
-COPY src/ ./src
-COPY .next/ ./.next
+COPY --from=builder /app/build /app/build
 
 CMD npm start

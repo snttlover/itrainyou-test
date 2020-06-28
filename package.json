@@ -44,6 +44,7 @@
     "@effector/babel-plugin": "^0.5.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.6",
+    "@types/jest": "^26.0.3",
     "@types/js-cookie": "^2.2.6",
     "@types/node": "^14.0.14",
     "@types/react": "^16.9.41",
