@@ -10,6 +10,7 @@ RUN npm run build
 
 FROM node:12.18.1-alpine
 ENV NODE_ENV=production
+ENV HOST=0.0.0.0
 
 WORKDIR /app
 COPY package*.json ./
