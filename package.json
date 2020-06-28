@@ -6,7 +6,8 @@
     "dev": "razzle start",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
-    "start": "NODE_ENV=production node build/server.js"
+    "start": "NODE_ENV=production node build/server.js",
+    "release:heroku": "heroku container:push web && heroku container:release web"
   },
   "resolutions": {
     "@types/react": "16.9.37"
