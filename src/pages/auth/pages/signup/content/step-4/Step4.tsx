@@ -24,6 +24,6 @@ export const Step4 = () => {
     case "coach":
       return <Step4Coach />
     default:
-      return throwCompileTimeError(userData)
+      return throwCompileTimeError(userData.type)
   }
 }
