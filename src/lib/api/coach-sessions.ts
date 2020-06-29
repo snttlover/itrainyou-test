@@ -8,6 +8,7 @@ export interface CoachSession {
   clientPrice: string // example: 12.00
   coachPrice: string // example: 10.00
   startDatetime: string // example: "2020-03-31T15:17:37Z"
+  endDatetime: string
   duration: string //example: 01:00:00
 }
 

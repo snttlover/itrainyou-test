@@ -1,10 +1,28 @@
 import { config } from "@/config"
-import { Pagination } from "./interfaces/utils.interface"
+import { Pagination, Sex } from "./interfaces/utils.interface"
 import { keysToCamel } from "../network/casing"
 import { get } from "../network/network"
 
-export interface Coach {
+type CoachCategoryListItemType =  {
   id: number
+  name: string
+  icon: string
+  description: string
+}
+
+export interface CoachUser {
+  id: number
+  firstName: string
+  lastName: string
+  birthDate: string
+  sex: Sex
+  avatar: string | null
+  isTopCoach: boolean
+  categories: CoachCategoryListItemType[]
+  creationDatetime: string
+}
+
+export type Coach = {
   user: {
     id: number
     email: string
@@ -17,28 +35,16 @@ export interface Coach {
     D90: null | number
   }
   duration: string
-  firstName: string
-  lastName: string
-  birthDate: string
-  sex: "M" | "F"
-  avatar: string
+
   isApproved: string
-  isTopCoach: boolean
   photos: string[]
   description: string
   workExperience: string
   education: string
-  categories: {
-    id: number
-    name: string
-    icon: string
-    description: string
-  }[]
   rating: number
   reviewsCount: number
-  creationDatetime: string
   nearestSessionDatetime: string
-}
+} & CoachUser
 
 export type CoachSortingType = `price` | `-price` | `popularity` | `nearest_session_datetime`
 

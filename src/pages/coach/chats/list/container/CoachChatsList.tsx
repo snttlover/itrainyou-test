@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import {ChatLink} from "@/pages/client/chats/list/container/common/ChatLink"
+import {ChatLink} from "@/pages/client/chats/list/features/chat/view/components/ChatLink"
 
 const Container = styled.div`
     display: flex;
