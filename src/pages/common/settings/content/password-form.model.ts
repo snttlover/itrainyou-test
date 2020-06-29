@@ -75,7 +75,7 @@ export const [
   $passwordRepeatError,
   $isPasswordRepeatCorrect,
 ] = createEffectorField<string, { value: string; $password: string }>({
-  validatorEnhancer: $store => combine($store, $password, value => ({ $password: $password.getState(), value })),
+  validatorEnhancer: $store => combine($store, $password, (value, password) => ({ $password: password, value })),
   defaultValue: "",
   validator: v => {
     const error = passwordValidator(v.value)
