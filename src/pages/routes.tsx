@@ -13,12 +13,16 @@ import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
 import CoachSupportPage from "@/pages/coach/support/CoachSupportPage"
 import CoachWalletPage from "@/pages/coach/wallet/CoachWalletPage"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
+import ClientChatPage from "@/pages/client/chats/chat/ClientChatPage"
+import ClientChatListPage from "@/pages/client/chats/list/ClientChatListPage"
 import { routeNames } from "@/pages/route-names"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
 import * as React from "react"
 import { RouteConfig } from "react-router-config"
 import { LandingPage } from "./landing/LandingPage"
 import { SearchPage } from "./search/SearchPage"
+import CoachChatListPage from "@/pages/coach/chats/list/CoachChatListPage"
+import CoachChatPage from "@/pages/coach/chats/chat/CoachChatPage"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -58,6 +62,16 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.client(),
     exact: true,
     component: HomePage,
+  },
+
+  {
+    path: routeNames.clientChatsList(),
+    exact: true,
+    component: ClientChatListPage
+  },
+  {
+    path: routeNames.clientChat(':id'),
+    component: ClientChatPage,
   },
   {
     path: routeNames.clientProfile(),
@@ -109,6 +123,15 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.coachBlocked(),
     exact: true,
     component: CoachBlockedPage,
+  },
+  {
+    path: routeNames.coachChatsList(),
+    exact: true,
+    component: CoachChatListPage
+  },
+  {
+    path: routeNames.coachChat(':id'),
+    component: CoachChatPage
   },
   {
     path: "*",
