@@ -20,12 +20,12 @@ export const createEffectorField = <T, R = T>(
     options.validator = () => null
   }
   const changeEvent = createEvent<T>()
-  const $isDirty = createStore(false).on(changeEvent, () => true)
   const $store = createStore(options.defaultValue).on(options.eventMapper(changeEvent), (_, payload) => payload)
+  const $isDirty = createStore(false).on($store, () => true)
   const $error = options.validatorEnhancer($store).map(options.validator)
   const $isCorrect = $error.map(value => !value)
 
-  const $errorMessage = combine($error, $isDirty, (error, isDirty) => (isDirty && error) || null)
+  const $errorMessage = combine($error, $isDirty, $store, (error, isDirty) => (isDirty && error) || null)
 
   return [$store, changeEvent, $errorMessage, $isCorrect]
 }

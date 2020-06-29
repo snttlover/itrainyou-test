@@ -1,4 +1,9 @@
-import { categoriesChanged, coachDataChanged, REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/signup.model"
+import {
+  categoriesChanged,
+  coachDataChanged,
+  REGISTER_SAVE_KEY,
+  signUpPageMounted,
+} from "@/pages/auth/pages/signup/signup.model"
 import {
   descriptionChanged,
   educationChanged,
@@ -8,26 +13,41 @@ import {
   workExperienceChanged,
   $form,
   $selectedCategories,
-  toggleCategory,
+  setCategories,
 } from "@/feature/coach-get-access/coach-get-access.model"
-import { createEvent, forward } from "effector-root"
+import { createEffect, createEvent, forward } from "effector-root"
+import { combineEvents, spread } from "patronum"
 
 export const step4CoachMounted = createEvent()
+const waitAllEvents = combineEvents([step4CoachMounted, signUpPageMounted])
 
-step4CoachMounted.watch(() => {
-  try {
+const loadDataFx = createEffect({
+  handler() {
     const stringData = localStorage.getItem(REGISTER_SAVE_KEY)
-    if (!stringData) return
-    const data = JSON.parse(stringData)
-    const coachData = data.coachData
-    coachData.description && descriptionChanged(coachData.description)
-    coachData.education && educationChanged(coachData.education)
-    coachData.phone && phoneChanged(coachData.phone)
-    coachData.photos && restorePhotos(coachData.photos)
-    coachData.videoInterview && videoInterviewChanged(coachData.videoInterview)
-    coachData.workExperience && workExperienceChanged(coachData.workExperience)
-    data.categories && data.categories.forEach(toggleCategory)
-  } catch (e) {}
+    return JSON.parse(stringData!)
+  },
+})
+
+forward({
+  from: waitAllEvents,
+  to: loadDataFx,
+})
+
+spread(
+  loadDataFx.doneData.map(data => data.coachData),
+  {
+    description: descriptionChanged,
+    education: educationChanged,
+    phone: phoneChanged,
+    photos: restorePhotos,
+    videoInterview: videoInterviewChanged,
+    workExperience: workExperienceChanged,
+  }
+)
+
+forward({
+  from: loadDataFx.doneData.map(data => data.categories),
+  to: setCategories,
 })
 
 forward({
