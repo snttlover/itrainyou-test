@@ -1,17 +1,21 @@
-import { ContentContainer } from "@/components/layouts/ContentContainer"
-import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectionPlaceholder"
-import { PhoneWithGirl } from "@/feature/coach-placeholder/right-images/PhoneWithGirl"
-import * as React from "react"
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { $coachAccess } from "@/feature/user/user.model"
+import { CoachSchedulePlaceholder } from "@/pages/coach/schedule/CoachSchedulePlaceholder"
+import { useStore } from "effector-react/ssr"
+import * as React from "react"
+import { ContentContainer } from "@/components/layouts/ContentContainer"
+import styled from "styled-components"
+import { Schedule } from "./Schedule"
 
-const features = ["Настраивать свое расписание", "Настраивать пакеты сессий", "Управлять доступностью профиля"]
+const Container = styled(ContentContainer)`
+  margin-top: 16px;
+`
 
 export const CoachSchedulePage = () => {
+  const coachAccess = useStore($coachAccess)
   return (
     <CoachDashboardLayout>
-      <ContentContainer>
-        <CoachSectionPlaceholder features={features} renderImage={() => <PhoneWithGirl />} />
-      </ContentContainer>
+      <Container>{coachAccess.isApproved ? <Schedule /> : <CoachSchedulePlaceholder />}</Container>
     </CoachDashboardLayout>
   )
 }

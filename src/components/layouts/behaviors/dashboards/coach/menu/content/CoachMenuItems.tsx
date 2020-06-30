@@ -72,13 +72,13 @@ export const CoachMenuItems = () => {
         Поддержка
       </DashboardMenuItem>
       <Delimiter />
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachSchedule()} icon='none'>
+      <DashboardMenuItem disabled={isApproved} link={routeNames.coachSchedule()} icon='calendar-with-clock'>
         Расписание
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachBlocked()} icon='calendar-with-clock'>
+      <DashboardMenuItem disabled={isApproved} link={routeNames.coachBlocked()} icon='none'>
         Заблокированные
       </DashboardMenuItem>
     </ItemsWrapper>
