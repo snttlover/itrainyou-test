@@ -57,12 +57,12 @@ const StyledButton = styled(Button)`
 export const AwaitingApproval = () => {
   const navigate = useEvent(navigatePush)
   return (
-    <>
+    <Container>
       <StyledTitle>Ваша заявка ждет одобрения!</StyledTitle>
       <StyledSubTitle>В среднем заявка обрабатывается около 2 дней</StyledSubTitle>
       <RegisterSteps />
       <StyledBottomSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomSubtitle>
       <StyledButton onClick={() => navigate({ url: routeNames.client() })}>Попробовать</StyledButton>
-    </>
+    </Container>
   )
 }
