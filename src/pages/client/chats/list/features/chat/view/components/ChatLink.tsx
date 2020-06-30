@@ -4,8 +4,10 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { Icon } from "@/components/icon/Icon"
 import { Button } from "@/components/button/normal/Button"
 import { ChatLinkMaterials } from "@/pages/client/chats/list/features/chat/view/components/ChatLinkMaterials"
+import { Link } from "react-router-dom"
 
 export type ChatLinkTypes = {
+  link: string
   avatar: string | null
   name: string
   startTime: string // 00:00
@@ -13,20 +15,24 @@ export type ChatLinkTypes = {
   materialCount: number
   isStarted: boolean
   lastMessage: string
+  lastMessageIsMine: boolean
   sessionTextStatus: string
 }
 
 export const ChatLink = (props: ChatLinkTypes) => (
-  <Container>
-    <MessageColumn>
+  <Container to={props.link}>
+    <MessageColumn data-message-is-not-mine={props.lastMessage && !props.lastMessageIsMine}>
       <StyledAvatar src={props.avatar} />
       <MessageContent>
         <UserName>{props.name}</UserName>
-        <LastMessage>{props.lastMessage}</LastMessage>
+        <LastMessage data-is-mine={props.lastMessage}>
+          {props.lastMessageIsMine && `Вы: `}
+          {props.lastMessage}
+        </LastMessage>
       </MessageContent>
       <MessageInfo>
         <Time>{props.startTime}</Time>
-        {!!props.newMessagesCount && <Counter>{props.newMessagesCount}</Counter>}
+        <Counter data-hide={!props.newMessagesCount}>{props.newMessagesCount}</Counter>
       </MessageInfo>
     </MessageColumn>
     <ActionsColumn>
@@ -48,7 +54,7 @@ export const ChatLink = (props: ChatLinkTypes) => (
   </Container>
 )
 
-const Container = styled.div`
+const Container = styled(Link)`
   display: flex;
   background: #fff;
   border-radius: 2px;
@@ -80,6 +86,11 @@ const MessageColumn = styled(Column)`
   display: flex;
   padding-left: 8px;
   border-right: 1px solid #d3d7f3;
+
+  &[data-message-is-not-mine="true"] {
+    background: ${props => props.theme.colors.primaryBackground};
+  }
+  
   @media screen and (max-width: 560px) {
     border-right: 0;
     border-bottom: 1px solid #efefef;
@@ -115,7 +126,6 @@ const UserName = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
-  margin-bottom: 8px;
   @media screen and (max-width: 560px) {
     font-weight: 500;
     font-size: 12px;
@@ -124,10 +134,16 @@ const UserName = styled.div`
   }
 `
 
+// &[data-is-mine="true"] {
+//   background: ${props => props.theme.colors.primaryBackground};
+//   border-radius: 2px;
+// }
 const LastMessage = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #424242;
+  padding: 8px 4px;
+
   @media screen and (max-width: 560px) {
     font-size: 12px;
     line-height: 16px;
@@ -161,6 +177,11 @@ const Counter = styled.div`
   background: ${props => props.theme.colors.primary};
   border-radius: 16px;
   padding: 3px 4px;
+
+  &[data-hide="true"] {
+    visibility: hidden;
+  }
+  
   @media screen and (max-width: 560px) {
     font-size: 12px;
     line-height: 16px;

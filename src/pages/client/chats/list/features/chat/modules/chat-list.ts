@@ -2,18 +2,37 @@ import { Chat } from "@/lib/api/chats/clients/get-chats"
 import { createPagination } from "@/pages/client/chats/list/features/pagination"
 import { PaginationFetchMethod } from "@/pages/client/chats/list/features/pagination/modules/pagination"
 import { date } from "@/lib/formatting/date"
-import { combine, createEvent, createStore, forward } from "effector-root"
+import { combine, createEvent, createStore, forward, guard, sample } from "effector-root"
 import { getSessionStatusByDates } from "@/pages/client/chats/list/features/chat/modules/get-session-status-by-dates"
+import { createChatsSocket } from "@/feature/socket/chats-socket"
+import { clientChatsSocket } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { logout } from "@/lib/network/token"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
   fetchChatsListMethod: PaginationFetchMethod<Chat>
+  socket: ReturnType<typeof createChatsSocket>
 }
 
 export const createChatListModule = (config: ChatListModuleConfig) => {
   const pagination = createPagination<Chat>({
     fetchMethod: config.fetchChatsListMethod,
   })
+
+  pagination.data.$list
+    .on(config.socket.events.onMessage, (chats, message) => {
+      const chatIndex = chats.findIndex(chat => chat.id === message.chat)
+      if (chatIndex) {
+        return chats.splice(chatIndex, 1, {
+          ...chats[chatIndex],
+          lastMessage: message,
+        })
+      }
+      return chats
+    })
+    .on(logout, () => [])
+
+  pagination.data.$currentPage.on(logout, () => 0)
 
   const changeTickTime = createEvent<Date>()
   const $tickTime = createStore(new Date()).on(changeTickTime, (_, newDate) => newDate)
@@ -26,19 +45,24 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   const $chatsList = combine(pagination.data.$list, $tickTime, (chats, time) => {
     return chats.map(chat => {
       const interlocutor = config.type === "client" ? chat.coach : chat.clients[0]
+      const lastMessageIsMine = !!(config.type === "client"
+        ? chat.lastMessage?.senderClient
+        : chat.lastMessage?.senderCoach)
 
       const startTime = chat.lastMessage?.creationDatetime
         ? date(chat.lastMessage?.creationDatetime).format(`HH:mm`)
         : ``
 
       return {
-        avatar: interlocutor.avatar,
-        name: `${interlocutor.firstName} ${interlocutor.lastName}`,
+        link: `/${config.type}/chats/${chat.id}`,
+        avatar: interlocutor?.avatar || null,
+        name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,
         startTime,
         newMessagesCount: 0,
         materialCount: chat.materialsCount,
         isStarted: !!chat.nearestSession,
         lastMessage: chat.lastMessage?.text || ``,
+        lastMessageIsMine,
         sessionTextStatus: getSessionStatusByDates(
           chat.nearestSession?.startDatetime,
           chat.nearestSession?.endDatetime
@@ -47,17 +71,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     })
   })
 
-  const destroy = createEvent()
-
-  destroy.watch(() => {
-    clearInterval(tick)
-  })
-
   const loadChats = createEvent()
 
   forward({
     from: loadChats,
-    to: [pagination.useCases.loadMore],
+    to: [pagination.methods.loadMore],
   })
 
   return {
@@ -67,9 +85,8 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     data: {
       $chatsList,
     },
-    useCases: {
+    methods: {
       loadChats,
-      destroy
     },
   }
 }

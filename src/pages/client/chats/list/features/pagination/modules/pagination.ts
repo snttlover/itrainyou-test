@@ -21,7 +21,7 @@ export type CreatePaginationType<ItemTypes> = {
     $hasMore: Store<boolean>
     $listIsEmpty: Store<boolean>
   }
-  useCases: {
+  methods: {
     loadMore: any
   }
 }
@@ -73,7 +73,7 @@ export const createPagination = <ListItemType>(
       $hasMore,
       $listIsEmpty
     },
-    useCases: {
+    methods: {
       loadMore,
     },
   }

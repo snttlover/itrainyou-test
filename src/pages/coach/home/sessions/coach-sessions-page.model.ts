@@ -39,5 +39,5 @@ export const mounted = createEvent()
 
 forward({
   from: mounted,
-  to: [loadTodaySessionsFx, newestParticipants.useCases.loadMore],
+  to: [loadTodaySessionsFx, newestParticipants.methods.loadMore],
 })

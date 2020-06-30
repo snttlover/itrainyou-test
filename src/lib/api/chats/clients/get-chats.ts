@@ -6,19 +6,21 @@ import { CoachUser } from "../../coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { CoachSession } from "@/lib/api/coach-sessions"
 
+export type ChatMessage = {
+  text: string,
+  chat: number
+  senderCoach: CoachUser | null
+  senderClient: Client | null
+  creationDatetime: ISODate
+}
+
 export type Chat = {
   id: number
   type: "PERSONAL" | "SYSTEM"
   support: null
-  coach: CoachUser
+  coach?: CoachUser
   clients: [Client]
-  lastMessage: null | {
-    text: string,
-    chat: number
-    senderCoach: CoachUser | null
-    senderClient: Client | null
-    creationDatetime: ISODate
-  }
+  lastMessage: null | ChatMessage
   nearestSession: null | CoachSession
   materialsCount: 0
   isFavourite: false

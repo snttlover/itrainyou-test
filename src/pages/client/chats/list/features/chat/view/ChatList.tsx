@@ -10,13 +10,11 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
   const InfScroll = createInfinityScroll($chatListModule.modules.pagination)
 
   return () => {
-    const loadData = useEvent($chatListModule.useCases.loadChats)
-    const unmounted = useEvent($chatListModule.useCases.destroy)
+    const loadData = useEvent($chatListModule.methods.loadChats)
     const listIsEmpty = useStore($chatListModule.modules.pagination.data.$listIsEmpty)
 
     useEffect(() => {
       loadData()
-      return () => unmounted()
     })
 
     return (
