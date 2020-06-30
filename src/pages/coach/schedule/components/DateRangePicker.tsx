@@ -24,6 +24,7 @@ const Dropdown = styled.div`
 `
 
 const StyledDatePicker = styled(DatePicker)`
+  width: 100%;
   &:nth-of-type(2) {
     margin-left: 8px;
   }
