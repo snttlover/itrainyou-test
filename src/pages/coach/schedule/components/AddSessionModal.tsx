@@ -58,12 +58,13 @@ const types = [
   { label: "90 минут", value: "90" },
 ]
 
-const startOptions = [
-  { label: "30 минут", value: "30" },
-  { label: "45 минут", value: "45" },
-  { label: "60 минут", value: "60" },
-  { label: "90 минут", value: "90" },
-]
+const startOptions = Array.from(Array(24).keys())
+  .map(hour => Array.from(Array(4).keys()).map(mod => ({ hour, min: mod * 15 })))
+  .flat()
+  .map(item => ({
+    label: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
+    value: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
+  }))
 
 const StyledSelectInput = styled(SelectInput)`
   margin-top: 20px;
@@ -77,7 +78,6 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }
   const blockRef = useRef(null)
 
   useClickOutside(blockRef, onCrossClick)
-
   return (
     <Modal>
       <Background>
