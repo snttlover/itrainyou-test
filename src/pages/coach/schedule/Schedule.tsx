@@ -1,6 +1,6 @@
 import { CalendarPart } from "@/pages/coach/schedule/components/Calendar"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 export const Title = styled.h2`
@@ -26,19 +26,26 @@ const PriceListContainer = styled.div`
   margin-top: 16px;
 `
 
-export const Schedule = () => (
-  <>
-    <Title>Цена</Title>
-    <Description>
-      Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
-    </Description>
-    <PriceListContainer>
-      <PriceInputGroup title='Промо сессия (15 минут)' />
-      <PriceInputGroup title='30 минут' />
-      <PriceInputGroup title='45 минут' />
-      <PriceInputGroup title='60 минут' />
-      <PriceInputGroup title='90 минут' />
-    </PriceListContainer>
-    <CalendarPart />
-  </>
-)
+export const Schedule = () => {
+  const [priceInputs1, setPriceInputs1] = useState<number[]>([])
+  const [priceInputs2, setPriceInputs2] = useState<number[]>([])
+  const [priceInputs3, setPriceInputs3] = useState<number[]>([])
+  const [priceInputs4, setPriceInputs4] = useState<number[]>([])
+  const [priceInputs5, setPriceInputs5] = useState<number[]>([])
+  return (
+    <>
+      <Title>Цена</Title>
+      <Description>
+        Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
+      </Description>
+      <PriceListContainer>
+        <PriceInputGroup title='Промо сессия (15 минут)' values={priceInputs1} onChange={setPriceInputs1} />
+        <PriceInputGroup title='30 минут' values={priceInputs2} onChange={setPriceInputs2} />
+        <PriceInputGroup title='45 минут' values={priceInputs3} onChange={setPriceInputs3} />
+        <PriceInputGroup title='60 минут' values={priceInputs4} onChange={setPriceInputs4} />
+        <PriceInputGroup title='90 минут' values={priceInputs5} onChange={setPriceInputs5} />
+      </PriceListContainer>
+      <CalendarPart />
+    </>
+  )
+}

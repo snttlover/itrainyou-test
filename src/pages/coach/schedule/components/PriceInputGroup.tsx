@@ -16,15 +16,27 @@ const SummaryPriceFormItem = styled(FormItem)`
   flex-shrink: 1.5;
 `
 
-type PriceInputGroupType = { title: string }
+type PriceInputGroupType = { title: string; values: number[]; onChange: (values: number[]) => void }
 
-export const PriceInputGroup: React.FC<PriceInputGroupType> = ({ title }) => (
+export const PriceInputGroup: React.FC<PriceInputGroupType> = ({ title, values, onChange }) => (
   <Container>
     <FormItem label={title}>
-      <Input placeholder='0' withoutBorder type='number' />
+      <Input
+        placeholder='0'
+        withoutBorder
+        type='number'
+        value={values[0]?.toString() || ""}
+        onChange={value => onChange([value ? parseFloat(value) : 0, values[1]])}
+      />
     </FormItem>
     <SummaryPriceFormItem label='Итоговая цена'>
-      <Input placeholder='0' withoutBorder type='number' />
+      <Input
+        placeholder='0'
+        withoutBorder
+        type='number'
+        value={values[1]?.toString() || ""}
+        onChange={value => onChange([values[0], value ? parseFloat(value) : 0])}
+      />
     </SummaryPriceFormItem>
   </Container>
 )
