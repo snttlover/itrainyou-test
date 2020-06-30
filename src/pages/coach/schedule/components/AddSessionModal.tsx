@@ -1,8 +1,9 @@
 import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { useClickOutside } from "@/components/click-outside/use-click-outside"
 import { Icon } from "@/components/icon/Icon"
 import { Modal } from "@/components/modal/Modal"
 import { SelectInput } from "@/components/select-input/SelectInput"
-import React from "react"
+import React, { useRef } from "react"
 import styled from "styled-components"
 
 const Background = styled.div`
@@ -72,16 +73,22 @@ const StyledDashedButton = styled(DashedButton)`
   margin-top: 16px;
 `
 
-export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }) => (
-  <Modal>
-    <Background>
-      <Block>
-        <CrossIcon onClick={onCrossClick} />
-        <Title>Добавить сессию</Title>
-        <StyledSelectInput value='' onChange={() => {}} options={startOptions} placeholder='Начало' />
-        <StyledSelectInput value='' onChange={() => {}} options={types} placeholder='Тип' />
-        <StyledDashedButton>Добавить сессию</StyledDashedButton>
-      </Block>
-    </Background>
-  </Modal>
-)
+export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }) => {
+  const blockRef = useRef(null)
+
+  useClickOutside(blockRef, onCrossClick)
+
+  return (
+    <Modal>
+      <Background>
+        <Block ref={blockRef}>
+          <CrossIcon onClick={onCrossClick} />
+          <Title>Добавить сессию</Title>
+          <StyledSelectInput value='' onChange={() => {}} options={startOptions} placeholder='Начало' />
+          <StyledSelectInput value='' onChange={() => {}} options={types} placeholder='Тип' />
+          <StyledDashedButton>Добавить сессию</StyledDashedButton>
+        </Block>
+      </Background>
+    </Modal>
+  )
+}
