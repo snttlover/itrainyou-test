@@ -116,11 +116,13 @@ const AddIcon = styled(Icon).attrs({ name: "cross" })`
   fill: #9aa0a6;
   top: 4px;
   right: 4px;
+  cursor: pointer;
 `
 
 const CrossIcon = styled(Icon).attrs({ name: "cross" })`
   width: 16px;
   height: 16px;
+  cursor: pointer;
   fill: ${({ theme }) => theme.colors.primary};
 `
 
