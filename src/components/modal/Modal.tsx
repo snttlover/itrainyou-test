@@ -1,25 +1,31 @@
 import * as React from "react"
 import ReactDOM from "react-dom"
 
-if (process.env.BUILD_TARGET === "client") {
-  let root: HTMLDivElement = document.getElementById("root") as HTMLDivElement
-  let modalRoot: HTMLDivElement = root.appendChild(document.createElement("div", {}))
-  modalRoot.setAttribute("id", "modal-root")
+let modalRoot!: HTMLDivElement
+
+const createModalRoot = () => {
+  if (process.env.BUILD_TARGET === "client") {
+    const root = document.getElementById("root") as HTMLDivElement
+    modalRoot = root.appendChild(document.createElement("div", {}))
+    modalRoot.setAttribute("id", "modal-root")
+  }
 }
 
 export class Modal extends React.Component<{}, {}> {
   el!: HTMLDivElement
   constructor(props: {}) {
     super(props)
+    if (process.env.BUILD_TARGET === "server") return
+    createModalRoot()
     this.el = document.createElement("div")
   }
 
   componentWillUnmount() {
-    document.getElementById("modal-root")?.removeChild(this.el)
+    this.el.remove()
   }
 
   componentDidMount() {
-    document.getElementById("modal-root")?.appendChild(this.el)
+    modalRoot.appendChild(this.el)
   }
 
   render() {

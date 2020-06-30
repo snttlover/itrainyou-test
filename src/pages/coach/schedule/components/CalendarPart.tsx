@@ -79,10 +79,10 @@ export const CalendarPart = () => {
         </Times>
         <Times>
           <Time />
-          <AddIcon onClick={() => setModal(!modal)} />
+          <AddIcon onClick={() => setModal(true)} />
         </Times>
       </CalendarContainer>
-      {modal && <AddSessionModal />}
+      {modal && <AddSessionModal onCrossClick={() => setModal(false)} />}
     </>
   )
 }

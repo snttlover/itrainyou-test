@@ -1,4 +1,4 @@
-import { CalendarPart } from "@/pages/coach/schedule/components/Calendar"
+import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
 import React, { useState } from "react"
 import styled from "styled-components"
