@@ -33,12 +33,14 @@ const StyledDatePicker = styled(DatePicker)`
 export const DateRangePicker: React.FC<{ className?: string }> = ({ className }) => {
   const [isOpen, setOpen] = useState(false)
   const [range, setRange] = useState([date().toDate(), date().add(3, "day").toDate()])
+
   const dropdownRef = useRef(null)
   useClickOutside(dropdownRef, () => setOpen(false))
+
   return (
     <Container className={className}>
-      <StyledDatePicker placeholder='От' value={range[0]} onFocus={() => setOpen(true)} />
-      <StyledDatePicker placeholder='До' value={range[1]} onFocus={() => setOpen(true)} />
+      <StyledDatePicker placeholder='От' value={range[0]} onClick={() => setOpen(true)} />
+      <StyledDatePicker placeholder='До' value={range[1]} onClick={() => setOpen(true)} />
       {isOpen && (
         <Dropdown ref={dropdownRef}>
           <Calendar value={range} onChange={setRange} selectRange />

@@ -1,13 +1,15 @@
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import "dayjs/locale/ru"
 import utc from "dayjs/plugin/utc"
 import isBetween from "dayjs/plugin/isBetween"
+import weekday from "dayjs/plugin/weekday"
 
+dayjs.extend(weekday)
 dayjs.extend(isBetween)
 dayjs.extend(utc)
 dayjs.locale("ru")
 
-export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string) => {
+export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string): Dayjs => {
   return dayjs(date, option, locale)
 }
 date.utc = dayjs.utc

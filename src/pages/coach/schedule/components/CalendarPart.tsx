@@ -2,8 +2,10 @@ import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { Calendar } from "@/components/calendar/Calendar"
 import { Icon } from "@/components/icon/Icon"
 import { date } from "@/lib/formatting/date"
+import { MediaRange } from "@/lib/responsive/media"
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
 import { DateRangePicker } from "@/pages/coach/schedule/components/DateRangePicker"
+import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"
 import { Description, Title } from "@/pages/coach/schedule/Schedule"
 import React, { useState } from "react"
 import styled from "styled-components"
@@ -17,10 +19,35 @@ const CalendarContainer = styled.div`
   border-radius: 2px;
   margin-top: 27px;
   padding: 16px;
+
+  ${MediaRange.greaterThan("mobile")`
+    background-color: transparent;
+    padding: 0;
+  `}
+`
+
+const RemoveDateRangeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  max-width: 700px;
+
+  ${MediaRange.greaterThan("mobile")`
+    flex-direction: row;
+    align-items: center;
+    
+    ${RemoveButton} {
+      line-height: unset;
+      margin-top: 0;
+      margin-left: 28px;
+      width: 160px;
+      height: 26px;
+    }
+  `}
 `
 
 const StyledDateRangePicker = styled(DateRangePicker)`
-  margin-top: 16px;
+  width: 100%;
 `
 
 const Divider = styled.div`
@@ -34,6 +61,21 @@ const Times = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+`
+
+const MobileCalendar = styled.div`
+  ${MediaRange.greaterThan("mobile")`
+    display: none;
+  `}
+`
+
+const DesktopCalendar = styled.div`
+  display: none;
+
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+    margin-top: 10px;
+  `}
 `
 
 const Time = styled.p`
@@ -56,31 +98,45 @@ const AddIcon = styled(Icon).attrs({ name: "cross" })`
 
 export const CalendarPart = () => {
   const [modal, setModal] = useState(false)
+  const [currentMonth, setMonth] = useState(date())
+
   return (
     <>
       <Title>Календарь</Title>
       <Description>Удалить промежуток в календаре</Description>
-      <StyledDateRangePicker />
-      <RemoveButton>Удалить</RemoveButton>
+      <RemoveDateRangeContainer>
+        <StyledDateRangePicker />
+        <RemoveButton data-slim>Удалить</RemoveButton>
+      </RemoveDateRangeContainer>
       <CalendarContainer>
-        <Calendar value={date().toDate()} onChange={() => {}} />
-        <Divider />
-        <Times>
-          <Time>16:30-17:45</Time>
-          <RemoveIcon />
-        </Times>
-        <Times>
-          <Time>16:30-17:45</Time>
-          <RemoveIcon />
-        </Times>
-        <Times>
-          <Time>16:30-17:45</Time>
-          <RemoveIcon />
-        </Times>
-        <Times>
-          <Time />
-          <AddIcon onClick={() => setModal(true)} />
-        </Times>
+        <MobileCalendar>
+          <Calendar value={currentMonth.toDate()} onChange={() => {}} />
+          <Divider />
+          <Times>
+            <Time>16:30-17:45</Time>
+            <RemoveIcon />
+          </Times>
+          <Times>
+            <Time>16:30-17:45</Time>
+            <RemoveIcon />
+          </Times>
+          <Times>
+            <Time>16:30-17:45</Time>
+            <RemoveIcon />
+          </Times>
+          <Times>
+            <Time />
+            <AddIcon onClick={() => setModal(true)} />
+          </Times>
+        </MobileCalendar>
+        <DesktopCalendar>
+          <ScheduleCalendar
+            startDate={currentMonth.toDate()}
+            nextMonth={() => setMonth(currentMonth.add(1, "month"))}
+            onAddClick={() => setModal(true)}
+            prevMonth={() => setMonth(currentMonth.subtract(1, "month"))}
+          />
+        </DesktopCalendar>
       </CalendarContainer>
       {modal && <AddSessionModal onCrossClick={() => setModal(false)} />}
     </>
