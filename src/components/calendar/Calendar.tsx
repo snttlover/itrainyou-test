@@ -55,7 +55,7 @@ type LeftButtonTypes = {
 const LeftIcon = styled(Icon).attrs({ name: `left-icon` })<LeftButtonTypes>`
   width: 5px;
   height: 9px;
-  fill: #4858cc;
+  fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? `none` : `auto`)};
@@ -64,7 +64,7 @@ const LeftIcon = styled(Icon).attrs({ name: `left-icon` })<LeftButtonTypes>`
 const RightIcon = styled(Icon).attrs({ name: `right-icon` })<LeftButtonTypes>`
   width: 5px;
   height: 9px;
-  fill: #4858cc;
+  fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? `none` : `auto`)};
@@ -157,7 +157,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
   .rangeStart,
   .rangeEnd,
   .react-calendar__tile--active {
-    background: #4858cc;
+    background: ${({ theme }) => theme.colors.primary};
     color: #fff !important;
   }
   .react-calendar__tile--rangeStart:not(.rangeEnd),
