@@ -1,4 +1,4 @@
-import { Chat } from "@/lib/api/chats/clients/get-chats"
+import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { createPagination } from "@/pages/client/chats/list/features/pagination"
 import { PaginationFetchMethod } from "@/pages/client/chats/list/features/pagination/modules/pagination"
 import { date } from "@/lib/formatting/date"
@@ -19,8 +19,10 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     fetchMethod: config.fetchChatsListMethod,
   })
 
+  const onMessage = createEvent<ChatMessage>()
+
   pagination.data.$list
-    .on(config.socket.events.onMessage, (chats, message) => {
+    .on(onMessage, (chats, message) => {
       const chatIndex = chats.findIndex(chat => chat.id === message.chat)
       if (chatIndex) {
         return chats.splice(chatIndex, 1, {
@@ -31,6 +33,12 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
       return chats
     })
     .on(logout, () => [])
+
+  guard({
+    source: config.socket.events.onMessage,
+    filter: (message: any) => !message.status,
+    target: onMessage
+  })
 
   pagination.data.$currentPage.on(logout, () => 0)
 

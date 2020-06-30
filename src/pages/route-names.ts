@@ -21,6 +21,5 @@ export const routeNames = {
   coachSupport: () => `/coach/support`,
   coachSchedule: () => `/coach/schedule`,
   coachBlocked: () => `/coach/blocked`,
-  coachChatsList: () => `/coach/chats`,
   coachChat: (id: string) => `/coach/chats/${id}`,
 }

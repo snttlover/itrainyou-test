@@ -125,11 +125,6 @@ export const ROUTES: RouteConfig[] = [
     component: CoachBlockedPage,
   },
   {
-    path: routeNames.coachChatsList(),
-    exact: true,
-    component: CoachChatListPage
-  },
-  {
     path: routeNames.coachChat(':id'),
     component: CoachChatPage
   },

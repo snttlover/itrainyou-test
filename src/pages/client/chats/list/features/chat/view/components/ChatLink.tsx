@@ -44,15 +44,22 @@ export const ChatLink = (props: ChatLinkTypes) => (
       <ActionsFooter>
         {!!props.newMessagesCount && <Materials>{props.materialCount}</Materials>}
         {props.isStarted && (
-          <>
+          <ActionsButtons>
             <SessionButton data-slim>Зайти в сессию</SessionButton>
             <MobileSessionButton>Зайти в сессию</MobileSessionButton>
-          </>
+          </ActionsButtons>
         )}
       </ActionsFooter>
     </ActionsColumn>
   </Container>
 )
+
+const ActionsButtons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+`
 
 const Container = styled(Link)`
   display: flex;
@@ -226,6 +233,7 @@ const ActionsFooter = styled.div`
 const SessionButton = styled(Button)`
   text-transform: uppercase;
   display: flex;
+  align-self: flex-end;
   @media screen and (max-width: 560px) {
     display: none;
   }
