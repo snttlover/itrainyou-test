@@ -21,10 +21,10 @@ type PriceInputGroupType = { title: string }
 export const PriceInputGroup: React.FC<PriceInputGroupType> = ({ title }) => (
   <Container>
     <FormItem label={title}>
-      <Input placeholder='0' withoutBorder />
+      <Input placeholder='0' withoutBorder type='number' />
     </FormItem>
     <SummaryPriceFormItem label='Итоговая цена'>
-      <Input placeholder='0' withoutBorder />
+      <Input placeholder='0' withoutBorder type='number' />
     </SummaryPriceFormItem>
   </Container>
 )

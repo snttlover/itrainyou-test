@@ -23,15 +23,16 @@ const CalendarIcon = styled(Icon).attrs({ name: "calendar" })`
 `
 
 export type DatePickerTypes = {
+  className?: string
   placeholder?: string
   onFocus?: (e: React.FocusEvent) => void
   onBlur?: (e: React.FocusEvent) => void
   value?: Date
 }
 
-export const DatePicker: React.FC<DatePickerTypes> = ({ placeholder, value, ...props }) => {
+export const DatePicker: React.FC<DatePickerTypes> = ({ placeholder, value, className, ...props }) => {
   return (
-    <Container>
+    <Container className={className}>
       <StyledInput withoutBorder value={date(value)?.format("DD-MM-YYYY") || ""} placeholder={placeholder} {...props} />
       <CalendarIcon />
     </Container>
