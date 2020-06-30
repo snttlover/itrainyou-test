@@ -72,7 +72,7 @@ export const CoachMenuItems = () => {
         Поддержка
       </DashboardMenuItem>
       <Delimiter />
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachSchedule()} icon='calendar-with-clock'>
+      <DashboardMenuItem link={routeNames.coachSchedule()} icon='calendar-with-clock'>
         Расписание
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
