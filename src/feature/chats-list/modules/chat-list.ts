@@ -31,7 +31,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
       }
       return chats
     })
-    .on(logout, () => [])
+    .reset(logout)
 
   guard({
     source: config.socket.events.onMessage,
