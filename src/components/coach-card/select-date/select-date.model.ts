@@ -1,6 +1,6 @@
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
-import { bulkBookSessions } from "@/lib/api/sessions requests/client/bulk-book-sessions"
+import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { attach, createEffect, createEvent, createStore, forward, restore } from "effector-root"
 
 export interface CoachSessionWithSelect extends CoachSession {

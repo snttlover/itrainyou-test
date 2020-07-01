@@ -1,6 +1,8 @@
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
-import React, { useState } from "react"
+import { $priceForm, changePrice } from "@/pages/coach/schedule/price-settings.model"
+import { useEvent, useStore } from "effector-react/ssr"
+import React  from "react"
 import styled from "styled-components"
 
 export const Title = styled.h2`
@@ -35,11 +37,8 @@ const PriceListContainer = styled.div`
 `
 
 export const Schedule = () => {
-  const [priceInputs1, setPriceInputs1] = useState<number[]>([])
-  const [priceInputs2, setPriceInputs2] = useState<number[]>([])
-  const [priceInputs3, setPriceInputs3] = useState<number[]>([])
-  const [priceInputs4, setPriceInputs4] = useState<number[]>([])
-  const [priceInputs5, setPriceInputs5] = useState<number[]>([])
+  const $prices = useStore($priceForm)
+  const updatePrice = useEvent(changePrice)
   return (
     <>
       <ScheduleSettingsContainer>
@@ -49,11 +48,31 @@ export const Schedule = () => {
             Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
           </Description>
           <PriceListContainer>
-            <PriceInputGroup title='Промо сессия (15 минут)' values={priceInputs1} onChange={setPriceInputs1} />
-            <PriceInputGroup title='30 минут' values={priceInputs2} onChange={setPriceInputs2} />
-            <PriceInputGroup title='45 минут' values={priceInputs3} onChange={setPriceInputs3} />
-            <PriceInputGroup title='60 минут' values={priceInputs4} onChange={setPriceInputs4} />
-            <PriceInputGroup title='90 минут' values={priceInputs5} onChange={setPriceInputs5} />
+            <PriceInputGroup
+              title='Промо сессия (15 минут)'
+              values={$prices.promo}
+              onChange={values => updatePrice({ promo: values })}
+            />
+            <PriceInputGroup
+              title='30 минут'
+              values={$prices.price30}
+              onChange={values => updatePrice({ price30: values })}
+            />
+            <PriceInputGroup
+              title='45 минут'
+              values={$prices.price45}
+              onChange={values => updatePrice({ price45: values })}
+            />
+            <PriceInputGroup
+              title='60 минут'
+              values={$prices.price60}
+              onChange={values => updatePrice({ price60: values })}
+            />
+            <PriceInputGroup
+              title='90 минут'
+              values={$prices.price90}
+              onChange={values => updatePrice({ price90: values })}
+            />
           </PriceListContainer>
         </PriceContainer>
       </ScheduleSettingsContainer>
