@@ -1,4 +1,5 @@
 import { createEvent } from "effector-root"
+import { runInScope } from "@/scope"
 
 export const createSocket = () => {
   let socket: WebSocket | null = null
@@ -6,10 +7,10 @@ export const createSocket = () => {
   const openSocket = (url: string) => {
     socket = new WebSocket(url)
 
-    socket.onopen = onConnect
-    socket.onclose = onClose
-    socket.onerror = onError
-    socket.onmessage = e => onMessage(JSON.parse(e.data))
+    socket.onopen = () => runInScope(onConnect)
+    socket.onclose = () => runInScope(onClose)
+    socket.onerror = () => runInScope(onError)
+    socket.onmessage = e => runInScope(onMessage, JSON.parse(e.data))
   }
 
   const closeSocket = () => socket?.close()

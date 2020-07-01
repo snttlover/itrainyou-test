@@ -20,17 +20,12 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
 
   pagination.data.$list
     .on(config.socket.events.onMessage, (chats, payload) => {
-      const chatIndex = chats.findIndex(chat => chat.id === payload.message.chat)
-      if (chatIndex !== -1) {
-        return chats.splice(chatIndex, 1, {
-          ...chats[chatIndex],
-          lastMessage: payload.message,
-        })
+      const chat = chats.find(chat => chat.id === payload.message.chat)
+      if (chat) {
+        chat.lastMessage = payload.message
       }
       return chats
     })
-
-  pagination.data.$currentPage.on(logout, () => 0)
 
   const changeTickTime = createEvent<Date>()
   const $tickTime = createStore(new Date()).on(changeTickTime, (_, newDate) => newDate)

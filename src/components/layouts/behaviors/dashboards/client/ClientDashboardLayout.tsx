@@ -23,13 +23,6 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   const changeDashboard = useEvent(changeDashboardType)
   useEffect(() => {
     changeDashboard("client")
-
-    setTimeout(() => {
-      clientChatsSocket.methods.send({
-        text: `Some text`,
-        chat: 98
-      })
-    }, 3000)
   }, [])
 
   return (
