@@ -10,3 +10,8 @@ export type Sex = 'M' | 'F'
 export type ISODate = string
 
 export type Day = string // YYYY-MM-DD string
+
+
+export interface CursorPagination {
+
+}

@@ -71,7 +71,7 @@ export const createPagination = <ListItemType>(
       $loadFailed,
       $currentPage,
       $hasMore,
-      $listIsEmpty
+      $listIsEmpty,
     },
     methods: {
       loadMore,

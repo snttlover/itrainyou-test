@@ -1,8 +1,8 @@
-import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { Chat } from "@/lib/api/chats/clients/get-chats"
 import { createPagination } from "@/feature/pagination"
 import { PaginationFetchMethod } from "@/feature/pagination/modules/pagination"
 import { date } from "@/lib/formatting/date"
-import { combine, createEvent, createStore, forward, guard, sample } from "effector-root"
+import { combine, createEvent, createStore, forward } from "effector-root"
 import { getSessionStatusByDates } from "@/feature/chats-list/modules/get-session-status-by-dates"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { logout } from "@/lib/network/token"
@@ -18,26 +18,17 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     fetchMethod: config.fetchChatsListMethod,
   })
 
-  const onMessage = createEvent<ChatMessage>()
-
   pagination.data.$list
-    .on(onMessage, (chats, message) => {
-      const chatIndex = chats.findIndex(chat => chat.id === message.chat)
-      if (chatIndex) {
+    .on(config.socket.events.onMessage, (chats, payload) => {
+      const chatIndex = chats.findIndex(chat => chat.id === payload.message.chat)
+      if (chatIndex !== -1) {
         return chats.splice(chatIndex, 1, {
           ...chats[chatIndex],
-          lastMessage: message,
+          lastMessage: payload.message,
         })
       }
       return chats
     })
-    .reset(logout)
-
-  guard({
-    source: config.socket.events.onMessage,
-    filter: (message: any) => !message.status,
-    target: onMessage
-  })
 
   pagination.data.$currentPage.on(logout, () => 0)
 
