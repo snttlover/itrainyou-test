@@ -5,7 +5,7 @@ import { useList } from "effector-react/ssr"
 import { newestParticipants } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 import { $newestParticipantsList } from "@/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
 import * as React from "react"
-import { createInfinityScroll } from "@/pages/client/chats/list/features/pagination"
+import { createInfinityScroll } from "@/feature/pagination"
 
 const InfinityScroll = createInfinityScroll(newestParticipants)
 

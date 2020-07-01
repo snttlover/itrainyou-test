@@ -1,9 +1,9 @@
 import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
-import { createPagination } from "@/pages/client/chats/list/features/pagination"
-import { PaginationFetchMethod } from "@/pages/client/chats/list/features/pagination/modules/pagination"
+import { createPagination } from "@/feature/pagination"
+import { PaginationFetchMethod } from "@/feature/pagination/modules/pagination"
 import { date } from "@/lib/formatting/date"
 import { combine, createEvent, createStore, forward, guard, sample } from "effector-root"
-import { getSessionStatusByDates } from "@/pages/client/chats/list/features/chat/modules/get-session-status-by-dates"
+import { getSessionStatusByDates } from "@/feature/chats-list/modules/get-session-status-by-dates"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { logout } from "@/lib/network/token"
 

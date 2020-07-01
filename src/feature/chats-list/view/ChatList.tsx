@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { createChatListModule } from "@/pages/client/chats/list/features/chat/modules/chat-list"
+import { createChatListModule } from "@/feature/chats-list/modules/chat-list"
 import { useEvent, useList, useStore } from "effector-react/ssr"
-import { ChatLink } from "@/pages/client/chats/list/features/chat/view/components/ChatLink"
-import { createInfinityScroll } from "@/pages/client/chats/list/features/pagination"
+import { ChatLink } from "@/feature/chats-list/view/components/ChatLink"
+import { createInfinityScroll } from "@/feature/pagination"
 import { MediaRange } from "@/lib/responsive/media"
 
 export const createChatList = ($chatListModule: ReturnType<typeof createChatListModule>) => {

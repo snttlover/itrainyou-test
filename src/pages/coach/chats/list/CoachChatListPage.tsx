@@ -1,6 +1,6 @@
 import React from "react"
 import {ContentContainer} from "@/components/layouts/ContentContainer"
-import { createChatList } from "@/pages/client/chats/list/features/chat"
+import { createChatList } from "@/feature/chats-list"
 import { coachChatsList } from "@/pages/coach/chats/list/coach-chats-list.module"
 
 const ChatsList = createChatList(coachChatsList)

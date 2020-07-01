@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { Icon } from "@/components/icon/Icon"
 import { Button } from "@/components/button/normal/Button"
-import { ChatLinkMaterials } from "@/pages/client/chats/list/features/chat/view/components/ChatLinkMaterials"
+import { ChatLinkMaterials } from "@/feature/chats-list/view/components/ChatLinkMaterials"
 import { Link } from "react-router-dom"
 
 export type ChatLinkTypes = {

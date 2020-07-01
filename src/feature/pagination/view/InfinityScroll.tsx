@@ -1,9 +1,9 @@
-import { createPagination } from "@/pages/client/chats/list/features/pagination"
+import { createPagination } from "@/feature/pagination"
 import { Loader } from "@/components/spinner/Spinner"
 import { useEvent, useStore } from "effector-react/ssr"
 import InfiniteScroll from "react-infinite-scroll-component"
 import * as React from "react"
-import { CreatePaginationType } from "@/pages/client/chats/list/features/pagination/modules/pagination"
+import { CreatePaginationType } from "@/feature/pagination/modules/pagination"
 
 type InfinityScrollPropsTypes = {
   children: React.ReactNode | React.ReactNode[]

@@ -6,7 +6,7 @@ import {
   DashboardNewestParticipant,
   getDashboardNewestParticipants,
 } from "@/lib/api/coach/get-dashboard-newest-participants"
-import { createPagination } from "@/pages/client/chats/list/features/pagination"
+import { createPagination } from "@/feature/pagination"
 
 export const newestParticipants = createPagination<DashboardNewestParticipant>({
   fetchMethod: getDashboardNewestParticipants,
