@@ -1,11 +1,67 @@
 import React from "react"
 import styled from "styled-components"
-import {Avatar} from "@/components/avatar/Avatar"
-import {Icon} from "@/components/icon/Icon"
-import {Button} from "@/components/button/normal/Button"
-import { ChatLinkMaterials } from "@/pages/client/chats/list/container/common/ChatLinkMaterials"
+import { Avatar } from "@/components/avatar/Avatar"
+import { Icon } from "@/components/icon/Icon"
+import { Button } from "@/components/button/normal/Button"
+import { ChatLinkMaterials } from "@/pages/client/chats/list/features/chat/view/components/ChatLinkMaterials"
+import { Link } from "react-router-dom"
 
-const Container = styled.div`
+export type ChatLinkTypes = {
+  link: string
+  avatar: string | null
+  name: string
+  startTime: string // 00:00
+  newMessagesCount: number
+  materialCount: number
+  isStarted: boolean
+  lastMessage: string
+  lastMessageIsMine: boolean
+  sessionTextStatus: string
+}
+
+export const ChatLink = (props: ChatLinkTypes) => (
+  <Container to={props.link}>
+    <MessageColumn data-message-is-not-mine={props.lastMessage && !props.lastMessageIsMine}>
+      <StyledAvatar src={props.avatar} />
+      <MessageContent>
+        <UserName>{props.name}</UserName>
+        <LastMessage data-is-mine={props.lastMessage}>
+          {props.lastMessageIsMine && `Вы: `}
+          {props.lastMessage}
+        </LastMessage>
+      </MessageContent>
+      <MessageInfo>
+        <Time>{props.startTime}</Time>
+        <Counter data-hide={!props.newMessagesCount}>{props.newMessagesCount}</Counter>
+      </MessageInfo>
+    </MessageColumn>
+    <ActionsColumn>
+      <ActionsHeader>
+        <VideoIcon />
+        <SessionStatus>{props.sessionTextStatus}</SessionStatus>
+        {!!props.materialCount && <MobileMaterials>{props.materialCount}</MobileMaterials>}
+      </ActionsHeader>
+      <ActionsFooter>
+        {!!props.newMessagesCount && <Materials>{props.materialCount}</Materials>}
+        {props.isStarted && (
+          <ActionsButtons>
+            <SessionButton data-slim>Зайти в сессию</SessionButton>
+            <MobileSessionButton>Зайти в сессию</MobileSessionButton>
+          </ActionsButtons>
+        )}
+      </ActionsFooter>
+    </ActionsColumn>
+  </Container>
+)
+
+const ActionsButtons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+`
+
+const Container = styled(Link)`
   display: flex;
   background: #fff;
   border-radius: 2px;
@@ -37,6 +93,11 @@ const MessageColumn = styled(Column)`
   display: flex;
   padding-left: 8px;
   border-right: 1px solid #d3d7f3;
+
+  &[data-message-is-not-mine="true"] {
+    background: ${props => props.theme.colors.primaryBackground};
+  }
+  
   @media screen and (max-width: 560px) {
     border-right: 0;
     border-bottom: 1px solid #efefef;
@@ -72,7 +133,6 @@ const UserName = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
-  margin-bottom: 8px;
   @media screen and (max-width: 560px) {
     font-weight: 500;
     font-size: 12px;
@@ -81,10 +141,16 @@ const UserName = styled.div`
   }
 `
 
+// &[data-is-mine="true"] {
+//   background: ${props => props.theme.colors.primaryBackground};
+//   border-radius: 2px;
+// }
 const LastMessage = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #424242;
+  padding: 8px 4px;
+
   @media screen and (max-width: 560px) {
     font-size: 12px;
     line-height: 16px;
@@ -118,6 +184,11 @@ const Counter = styled.div`
   background: ${props => props.theme.colors.primary};
   border-radius: 16px;
   padding: 3px 4px;
+
+  &[data-hide="true"] {
+    visibility: hidden;
+  }
+  
   @media screen and (max-width: 560px) {
     font-size: 12px;
     line-height: 16px;
@@ -162,6 +233,7 @@ const ActionsFooter = styled.div`
 const SessionButton = styled(Button)`
   text-transform: uppercase;
   display: flex;
+  align-self: flex-end;
   @media screen and (max-width: 560px) {
     display: none;
   }
@@ -194,31 +266,3 @@ const MobileMaterials = styled(ChatLinkMaterials)`
     margin-left: 8px;
   }
 `
-
-export const ChatLink = () => (
-  <Container>
-    <MessageColumn>
-      <StyledAvatar src='https://avatars.mds.yandex.net/get-ott/374297/2a000001616b87458162c9216ccd5144e94d/orig' />
-      <MessageContent>
-        <UserName>Ступин Владислав</UserName>
-        <LastMessage>Да, заходите в сессию</LastMessage>
-      </MessageContent>
-      <MessageInfo>
-        <Time>12:25</Time>
-        <Counter>12</Counter>
-      </MessageInfo>
-    </MessageColumn>
-    <ActionsColumn>
-      <ActionsHeader>
-        <VideoIcon />
-        <SessionStatus>Сессия началась</SessionStatus>
-        <MobileMaterials>2</MobileMaterials>
-      </ActionsHeader>
-      <ActionsFooter>
-        <Materials>2</Materials>
-        <SessionButton data-slim>Зайти в сессию</SessionButton>
-        <MobileSessionButton>Зайти в сессию</MobileSessionButton>
-      </ActionsFooter>
-    </ActionsColumn>
-  </Container>
-)

@@ -1,12 +1,12 @@
 import React from "react"
 import {ContentContainer} from "@/components/layouts/ContentContainer"
-import { CoachChatsList } from "@/pages/coach/chats/list/container/CoachChatsList"
-import {CoachDashboardLayout} from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { createChatList } from "@/pages/client/chats/list/features/chat"
+import { coachChatsList } from "@/pages/coach/chats/list/coach-chats-list.module"
 
-export default () => (
-  <CoachDashboardLayout>
-    <ContentContainer>
-      <CoachChatsList />
-    </ContentContainer>
-  </CoachDashboardLayout>
+const ChatsList = createChatList(coachChatsList)
+
+export const CoachChatListPage = () => (
+  <ContentContainer>
+    <ChatsList />
+  </ContentContainer>
 )

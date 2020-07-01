@@ -50,7 +50,7 @@ export const CoachMenuItems = () => {
       <DashboardMenuItem link={routeNames.coach()} icon='home'>
         Главная страница
       </DashboardMenuItem>
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachClients()} icon='my-coaches'>
+      <DashboardMenuItem link={routeNames.coachClients()} icon='my-coaches'>
         Мои клиенты
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/now' icon='hand'>

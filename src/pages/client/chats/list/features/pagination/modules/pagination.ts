@@ -6,8 +6,10 @@ export type PaginationRequest = {
   pageSize: number
 }
 
+export type PaginationFetchMethod<T> = (params: PaginationRequest) => Promise<Pagination<T>>
+
 export type PaginationModelConfigTypes<T> = {
-  fetchMethod: (params: PaginationRequest) => Promise<Pagination<T>>
+  fetchMethod: PaginationFetchMethod<T>
 }
 
 export type CreatePaginationType<ItemTypes> = {
@@ -17,8 +19,9 @@ export type CreatePaginationType<ItemTypes> = {
     $loadFailed: Store<boolean>
     $currentPage: Store<number>
     $hasMore: Store<boolean>
+    $listIsEmpty: Store<boolean>
   }
-  useCases: {
+  methods: {
     loadMore: any
   }
 }
@@ -52,6 +55,8 @@ export const createPagination = <ListItemType>(
 
   const $currentPage = createStore(0).on(loadMoreFx.done, (_, payload) => payload.params.page)
 
+  const $listIsEmpty = combine(loadMoreFx.pending, $list, (pending, list) => !pending && !list.length)
+
   sample({
     source: $currentPage,
     clock: guardedLoadMore,
@@ -66,8 +71,9 @@ export const createPagination = <ListItemType>(
       $loadFailed,
       $currentPage,
       $hasMore,
+      $listIsEmpty
     },
-    useCases: {
+    methods: {
       loadMore,
     },
   }

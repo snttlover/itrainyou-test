@@ -12,7 +12,7 @@ type InfinityScrollPropsTypes = {
 export const createInfinityScroll = ($paginationModel: CreatePaginationType<any>) => (
   props: InfinityScrollPropsTypes
 ) => {
-  const loadMore = useEvent($paginationModel.useCases.loadMore)
+  const loadMore = useEvent($paginationModel.methods.loadMore)
   const hasMore = useStore($paginationModel.data.$hasMore)
   const items = useStore($paginationModel.data.$list)
 

@@ -29,7 +29,7 @@ export const ClientMenuItems = () => (
     <DashboardMenuItem link='/client/' icon='home'>
       Главная страница
     </DashboardMenuItem>
-    <DashboardMenuItem disabled link='/client/coaches/' icon='my-coaches'>
+    <DashboardMenuItem link='/client/chats/' icon='my-coaches'>
       Мои коучи
     </DashboardMenuItem>
     {/*<DashboardMenuItem link='/client/' icon='hand'>
