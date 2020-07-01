@@ -4,7 +4,7 @@ import { createChatListModule } from "@/pages/client/chats/list/features/chat/mo
 import { useEvent, useList, useStore } from "effector-react/ssr"
 import { ChatLink } from "@/pages/client/chats/list/features/chat/view/components/ChatLink"
 import { createInfinityScroll } from "@/pages/client/chats/list/features/pagination"
-
+import { MediaRange } from "@/lib/responsive/media"
 
 export const createChatList = ($chatListModule: ReturnType<typeof createChatListModule>) => {
   const InfScroll = createInfinityScroll($chatListModule.modules.pagination)
@@ -18,13 +18,16 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
     })
 
     return (
-      <Container>
-        <InfScroll>
-          {useList($chatListModule.data.$chatsList, chat => (
-            <ChatLink {...chat} />
-          ))}
-        </InfScroll>
-      </Container>
+      <>
+        {listIsEmpty && <ListIsEmpty />}
+        <Container>
+          <InfScroll>
+            {useList($chatListModule.data.$chatsList, chat => (
+              <ChatLink {...chat} />
+            ))}
+          </InfScroll>
+        </Container>
+      </>
     )
   }
 }
@@ -36,4 +39,26 @@ const Container = styled.div`
   margin-bottom: 20px;
   width: 100%;
   max-width: 734px;
+`
+
+const ListIsEmpty = () => {
+  return <Empty>У вас пока нет сообщений</Empty>
+}
+
+const Empty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120px;
+
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  text-align: center;
+  color: #9aa0a6;
+
+  ${MediaRange.lessThan(`mobile`)`
+    font-size: 16px;
+    line-height: 22px;
+  `}
 `
