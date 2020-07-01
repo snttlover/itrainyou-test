@@ -17,15 +17,12 @@ type DashboardTypes = {
   children: React.ReactChild
 }
 
-export const clientChatsSocket = createChatsSocket(`client`)
+
 
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   const changeDashboard = useEvent(changeDashboardType)
   useEffect(() => {
     changeDashboard("client")
-    clientChatsSocket.methods.connect()
-
-    return () => clientChatsSocket.methods.disconnect()
   }, [])
 
   return (

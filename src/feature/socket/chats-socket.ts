@@ -1,8 +1,10 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
-import { createEvent, forward, sample } from "effector-root"
-import { $token } from "@/lib/network/token"
+import { combine, createEvent, forward, guard, sample } from "effector-root"
+import { $token, logout } from "@/lib/network/token"
+import { $isLoggedIn } from "@/feature/user/user.model"
+import { $isClient } from "@/lib/effector"
 
 type SocketChatMessage = {
   chat: number
@@ -24,28 +26,37 @@ export const createChatsSocket = (userType: UserType) => {
 
   const send = createEvent<SocketChatMessage>()
 
-  const connect = createEvent()
-
-  sample({
-    source: $token,
-    clock: connect,
-    fn: token => getChatSocketLink(userType, token),
-    target: socket.methods.connect,
-  })
-
   forward({
     from: send,
     to: socket.methods.send
   })
 
+  const $needConnect = combine($isLoggedIn, $isClient, (l, c) => l && c)
+  const connect = guard({
+    source: $token,
+    filter: $needConnect,
+    target: socket.methods.connect
+  })
+
+  sample({
+    source: $token,
+    clock: $needConnect,
+    fn: token => getChatSocketLink(userType, token),
+    target: connect,
+  })
+
+  forward({
+    from: logout,
+    to: socket.methods.disconnect
+  })
+
   return {
-    methods: {
-      ...socket.methods,
-      connect,
-    },
     events: {
       ...socket.events,
       onMessage,
-    },
+    }
   }
 }
+
+export const clientChatsSocket = createChatsSocket(`client`)
+export const coachChatsSocket = createChatsSocket(`coach`)

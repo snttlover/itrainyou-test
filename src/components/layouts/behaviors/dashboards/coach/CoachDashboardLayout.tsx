@@ -17,14 +17,11 @@ type DashboardTypes = {
   children: React.ReactChild
 }
 
-export const coachChatsSocket = createChatsSocket(`coach`)
+
 
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   useEffect(() => {
     changeDashboardType("coach")
-    coachChatsSocket.methods.connect()
-
-    return () => coachChatsSocket.methods.disconnect()
   }, [])
   return (
     <CoachTheme>
