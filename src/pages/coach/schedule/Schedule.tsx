@@ -2,7 +2,7 @@ import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
 import { $priceForm, changePrice } from "@/pages/coach/schedule/price-settings.model"
 import { useEvent, useStore } from "effector-react/ssr"
-import React  from "react"
+import React from "react"
 import styled from "styled-components"
 
 export const Title = styled.h2`
