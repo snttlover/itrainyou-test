@@ -8,7 +8,7 @@ const StyledContentContainer = styled(ContentContainer)`
   height: 100%;
 `
 
-export default () => (
+export const CoachChatPage =  () => (
   <CoachDashboardLayout>
     <StyledContentContainer>
       <CoachChat />

@@ -1,7 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 import { ChatMessage } from "@/pages/client/chats/chat/content/client-chat/content/ChatMessage"
-import {MediaRange} from "@/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
+import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
+import { createInfinityScroll } from "@/feature/pagination"
+import { useList } from "effector-react/ssr"
 
 const Container = styled.div`
   display: flex;
@@ -15,20 +18,18 @@ const Container = styled.div`
   `}
 `
 
-export const ChatMessages = () => (
-  <Container>
-    <ChatMessage time='12:00' data-self={false}>
-      Sint ex sint laborum reprehenderit. Deserunt cupidatat nulla incididunt fugiat officia officia nulla elit
-      adipisicing aliquip exercitation.
-    </ChatMessage>
+export const createChatMessages = ($chatMessagesModule: ReturnType<typeof createChatMessagesModule>) => {
+  const InfScroll = createInfinityScroll($chatMessagesModule.pagination)
 
-    <ChatMessage time='12:00' data-self={true}>
-      Sint ex sint laborum reprehenderit. Deserunt cupidatat nulla incididunt fugiat officia officia nulla elit
-      adipisicing aliquip exercitation.
-    </ChatMessage>
-
-    <ChatMessage time='12:00' data-self={true}>
-      Sint ex sint laborum reprehenderit.
-    </ChatMessage>
-  </Container>
-)
+  return () => (
+    <Container>
+      <InfScroll>
+        {useList($chatMessagesModule.$messages, message => (
+          <ChatMessage time={message.time} data-self={message.isMine}>
+            {message.text}
+          </ChatMessage>
+        ))}
+      </InfScroll>
+    </Container>
+  )
+}

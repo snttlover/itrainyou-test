@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import {MediaRange} from "@/lib/responsive/media"
 
@@ -31,16 +31,28 @@ const StyledInput = styled.input`
 `
 
 type ChatMessageBoxTypes = {
-  value: string
-  onChange: (value: string) => void
+  onSend: (value: string) => void
 }
 
-export const ChatMessageBox = (props: ChatMessageBoxTypes) => (
-  <Container>
-    <StyledInput
-      value={props.value}
-      placeholder='Напишите сообщение...'
-      onChange={e => props.onChange(e.target.value)}
-    />
-  </Container>
-)
+export const ChatMessageBox = (props: ChatMessageBoxTypes) => {
+  const [value, change] = useState(``)
+
+
+  const keydownHandler = (e: React.KeyboardEvent) => {
+    if (e.keyCode === 13) {
+      props.onSend(value)
+      change(``)
+    }
+  }
+
+  return (
+    <Container>
+      <StyledInput
+        value={value}
+        placeholder='Напишите сообщение...'
+        onChange={e => change(e.target.value)}
+        onKeyDown={keydownHandler}
+      />
+    </Container>
+  )
+}

@@ -53,10 +53,15 @@ const MobileBackButton = styled(Icon).attrs({ name: `left-icon` })`
   `}
 `
 
-export const ChatHeader = () => (
+type ChatHeaderTypes = {
+  avatar: string | null
+  name: string
+}
+
+export const ChatHeader = (props: ChatHeaderTypes) => (
   <Container>
     <MobileBackButton />
-    <StyledAvatar src='https://avatars.mds.yandex.net/get-ott/374297/2a000001616b87458162c9216ccd5144e94d/orig' />
-    <Title>Константин Константинович</Title>
+    <StyledAvatar src={props.avatar} />
+    <Title>{props.name}</Title>
   </Container>
 )
