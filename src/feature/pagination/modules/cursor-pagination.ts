@@ -39,7 +39,7 @@ export const createCursorPagination = <ListItemType>(
 
   const $list = createStore<ListItemType[]>([]).on(loadMoreFx.doneData, (state, payload) => [
     ...state,
-    ...payload.results.reverse(),
+    ...payload.results,
   ]).reset(reset)
 
   const $next = createStore<Next>(true).on(loadMoreFx.doneData, (_, list) =>
@@ -55,7 +55,7 @@ export const createCursorPagination = <ListItemType>(
   const loadMore = createEvent()
 
   const guardedLoadMore = guard({
-    source: combine({ loadMore, $hasMore }),
+    source: loadMore,
     filter: combine(loadMoreFx.pending, $hasMore, (pending, hasMore) => !pending && hasMore),
   })
 

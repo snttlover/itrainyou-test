@@ -6,7 +6,7 @@ import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 
 type CreateChatMessagesModuleTypes = {
-  type: 'client' | 'coach'
+  type: "client" | "coach"
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: number, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
 }
@@ -22,18 +22,22 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     fetchMethod: params => config.fetchMessages(chatId, params),
   })
 
-  pagination.data.$list.on(config.socket.events.onMessage, (messages, message) => [...messages, message.message])
+  pagination.data.$list.on(config.socket.events.onMessage, (messages, message) => [message.message, ...messages])
 
   const $messages = pagination.data.$list.map(messages => {
-    return messages.map(message => {
-      const isMine = config.type === `client` && !!message.senderClient
+    return messages
+      .slice()
+      .reverse()
+      .map(message => {
+        const isMine = config.type === `client` && !!message.senderClient
 
-      return {
-        isMine,
-        text: message.text,
-        time: date(message.creationDatetime).format(`HH:mm`)
-      }
-    })
+        return {
+          id: message.id,
+          isMine,
+          text: message.text,
+          time: date(message.creationDatetime).format(`HH:mm`),
+        }
+      })
   })
 
   return {

@@ -1,5 +1,6 @@
 import { createEvent } from "effector-root"
 import { runInScope } from "@/scope"
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 
 export const createSocket = () => {
   let socket: WebSocket | null = null
@@ -10,11 +11,11 @@ export const createSocket = () => {
     socket.onopen = () => runInScope(onConnect)
     socket.onclose = () => runInScope(onClose)
     socket.onerror = () => runInScope(onError)
-    socket.onmessage = e => runInScope(onMessage, JSON.parse(e.data))
+    socket.onmessage = e => runInScope(onMessage, keysToCamel(JSON.parse(e.data)))
   }
 
   const closeSocket = () => socket?.close()
-  const sendSocketMessage = (message: any) => socket?.send(JSON.stringify(message))
+  const sendSocketMessage = (message: any) => socket?.send(JSON.stringify(keysToSnake(message)))
 
   const onMessage = createEvent<any>()
   const onConnect = createEvent<Event>()
@@ -27,7 +28,7 @@ export const createSocket = () => {
 
   connect.watch(openSocket)
   disconnect.watch(closeSocket)
-  send.watch(sendSocketMessage)
+  send.watch((message) => sendSocketMessage(message))
 
   return {
     methods: {

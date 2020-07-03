@@ -4,11 +4,12 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import * as React from "react"
 import { Store } from "effector"
 
-type InfinityScrollPropsTypes = {
+export type InfinityScrollPropsTypes = {
   children: React.ReactNode | React.ReactNode[]
+  scrollableTarget?: string
 }
 
-type CreateInfinityScrollType<T> = {
+export type CreateInfinityScrollType<T> = {
   data: {
     $list: Store<T>,
     $hasMore: Store<boolean>
@@ -30,7 +31,7 @@ export const createInfinityScroll = ($paginationModel: CreateInfinityScrollType<
       loader={<Loader />}
       next={loadMore as any}
       hasMore={hasMore}
-      scrollableTarget='page-wrapper'
+      scrollableTarget={props.scrollableTarget || 'page-wrapper'}
       style={{ overflow: `hidden` }}
       dataLength={items.length}
     >

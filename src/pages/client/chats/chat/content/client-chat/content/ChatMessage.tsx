@@ -27,6 +27,7 @@ const Container = styled.div<ContainerTypes>`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  align-self: flex-start;
 
   &[data-self="true"] {
     background: ${props => props.theme.colors.primary};
