@@ -168,11 +168,14 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ startDate, p
     }
   }
 
+  const formatter = `YYYYMM`
+  const lessThanTheCurrentMonth = +date(startDate).format(formatter) <= +date(new Date()).format(formatter)
+
   return (
     <Container>
       <StyledHeader>
         <StyledMonthContainer>
-          <StyledLeftIcon onClick={prevMonth} />
+          <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
           <StyledMonthName>{date(startDate).format(`MMMM`)}</StyledMonthName>
           <StyledRightIcon onClick={nextMonth} />
         </StyledMonthContainer>
