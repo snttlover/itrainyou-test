@@ -4,6 +4,6 @@ import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post } from "@/lib/network/network"
 
 export const createCoachSchedule = (data: CreateCoachSchedule) =>
-  post<CoachSchedule, CreateCoachSchedule>(`${config.BACKEND_URL}/api/coach/coach-schedules/`, keysToSnake(data))
+  post<CoachSchedule, CreateCoachSchedule>(`${config.BACKEND_URL}/api/v1/web/coach/coach-schedules/`, keysToSnake(data))
     .then(res => res.data)
     .then(keysToCamel)

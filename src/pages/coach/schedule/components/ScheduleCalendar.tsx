@@ -1,6 +1,7 @@
 import { Header, LeftIcon, MonthContainer, MonthName, RightIcon, Year } from "@/components/calendar/CalendarHeader"
 import { Icon } from "@/components/icon/Icon"
 import { date } from "@/lib/formatting/date"
+import { MediaRange } from "@/lib/responsive/media"
 import { Dayjs } from "dayjs"
 import React from "react"
 import styled from "styled-components"
@@ -8,6 +9,8 @@ import styled from "styled-components"
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 704px;
 `
 
 const StyledHeader = styled(Header)`
@@ -47,12 +50,19 @@ const StyledYear = styled(Year)`
   color: #424242;
 `
 
+const HorizontalOverflowScrollContainer = styled.div`
+  overflow-y: auto;
+  ${MediaRange.greaterThan("tablet")`
+    margin-left: -4px;
+  `}
+`
+
 const CalendarTable = styled.table`
   width: 100%;
   border-spacing: 4px;
-  margin-left: -4px;
-  padding-right: 4px;
 `
+
+const WeekRow = styled.tr``
 
 const CalendarHeaderCell = styled.th`
   font-family: Roboto;
@@ -127,13 +137,14 @@ const CrossIcon = styled(Icon).attrs({ name: "cross" })`
 `
 
 export type ScheduleCalendarTypes = {
-  startDate?: Date
-  prevMonth?: () => void
-  nextMonth?: () => void
-  onAddClick?: () => void
+  startDate: Date
+  prevMonth: () => void
+  nextMonth: () => void
+  onAddClick: (day: Dayjs) => void
 }
 
 export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ startDate, prevMonth, nextMonth, onAddClick }) => {
+  const now = date()
   const monthDayStart = date(startDate).date(1)
   const monthDayEnd = date(monthDayStart).add(1, "month")
   const countPadStartDays = monthDayStart.weekday()
@@ -167,39 +178,41 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ startDate, p
         </StyledMonthContainer>
         <StyledYear>{date(startDate).format(`YYYY`)}</StyledYear>
       </StyledHeader>
-      <CalendarTable>
-        <thead>
-          <tr>
-            <CalendarHeaderCell>Понедельник</CalendarHeaderCell>
-            <CalendarHeaderCell>Вторник</CalendarHeaderCell>
-            <CalendarHeaderCell>Среда</CalendarHeaderCell>
-            <CalendarHeaderCell>Четверг</CalendarHeaderCell>
-            <CalendarHeaderCell>Пятница</CalendarHeaderCell>
-            <CalendarHeaderCell>Суббота</CalendarHeaderCell>
-            <CalendarHeaderCell>Воскресенье</CalendarHeaderCell>
-          </tr>
-        </thead>
-        <tbody>
-          {weeks.map((week, i) => (
-            <tr key={i}>
-              {week.map(day => (
-                <CalendarCell key={day.weekday()}>
-                  <DayContainer>
-                    <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
-                    <AddIcon onClick={onAddClick} />
-                    <Session>
-                      20:30-21:45 <CrossIcon />
-                    </Session>
-                    <Session>
-                      20:30-21:45 <CrossIcon />
-                    </Session>
-                  </DayContainer>
-                </CalendarCell>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </CalendarTable>
+      <HorizontalOverflowScrollContainer>
+        <CalendarTable>
+          <thead>
+            <WeekRow>
+              <CalendarHeaderCell>Понедельник</CalendarHeaderCell>
+              <CalendarHeaderCell>Вторник</CalendarHeaderCell>
+              <CalendarHeaderCell>Среда</CalendarHeaderCell>
+              <CalendarHeaderCell>Четверг</CalendarHeaderCell>
+              <CalendarHeaderCell>Пятница</CalendarHeaderCell>
+              <CalendarHeaderCell>Суббота</CalendarHeaderCell>
+              <CalendarHeaderCell>Воскресенье</CalendarHeaderCell>
+            </WeekRow>
+          </thead>
+          <tbody>
+            {weeks.map((week, i) => (
+              <WeekRow key={i}>
+                {week.map(day => (
+                  <CalendarCell key={day.weekday()}>
+                    <DayContainer>
+                      <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
+                      {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => onAddClick(day)} />}
+                      {/*<Session>
+                        20:30-21:45 <CrossIcon />
+                      </Session>
+                      <Session>
+                        20:30-21:45 <CrossIcon />
+                      </Session>*/}
+                    </DayContainer>
+                  </CalendarCell>
+                ))}
+              </WeekRow>
+            ))}
+          </tbody>
+        </CalendarTable>
+      </HorizontalOverflowScrollContainer>
     </Container>
   )
 }

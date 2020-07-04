@@ -3,6 +3,19 @@ import { useClickOutside } from "@/components/click-outside/use-click-outside"
 import { Icon } from "@/components/icon/Icon"
 import { Modal } from "@/components/modal/Modal"
 import { SelectInput } from "@/components/select-input/SelectInput"
+import { Spinner } from "@/components/spinner/Spinner"
+import { DurationType } from "@/lib/api/coach-sessions"
+import {
+  $durationOptions,
+  $form,
+  $isCreateButtonDisabled,
+  $startDatetimeOptions,
+  addSession,
+  createSessionsFx,
+  durationChanged,
+  startDatetimeChanged,
+} from "@/pages/coach/schedule/add-session.model"
+import { useStore, useEvent } from "effector-react/ssr"
 import React, { useRef } from "react"
 import styled from "styled-components"
 
@@ -51,21 +64,6 @@ type AddSessionModalProps = {
   onCrossClick: () => void
 }
 
-const types = [
-  { label: "30 минут", value: "30" },
-  { label: "45 минут", value: "45" },
-  { label: "60 минут", value: "60" },
-  { label: "90 минут", value: "90" },
-]
-
-const startOptions = Array.from(Array(24).keys())
-  .map(hour => Array.from(Array(4).keys()).map(mod => ({ hour, min: mod * 15 })))
-  .flat()
-  .map(item => ({
-    label: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
-    value: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
-  }))
-
 const StyledSelectInput = styled(SelectInput)`
   margin-top: 20px;
 `
@@ -75,6 +73,16 @@ const StyledDashedButton = styled(DashedButton)`
 `
 
 export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }) => {
+  const formData = useStore($form)
+  const durationOptions = useStore($durationOptions)
+  const startDatetimeOptions = useStore($startDatetimeOptions)
+  const isLoading = useStore(createSessionsFx.pending)
+  const isCreateButtonDisabled = useStore($isCreateButtonDisabled)
+
+  const _startDatetimeChanged = useEvent(startDatetimeChanged)
+  const _durationChanged = useEvent(durationChanged)
+  const _addSession = useEvent(addSession)
+
   const blockRef = useRef(null)
 
   useClickOutside(blockRef, onCrossClick)
@@ -84,9 +92,22 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }
         <Block ref={blockRef}>
           <CrossIcon onClick={onCrossClick} />
           <Title>Добавить сессию</Title>
-          <StyledSelectInput value='' onChange={() => {}} options={startOptions} placeholder='Начало' />
-          <StyledSelectInput value='' onChange={() => {}} options={types} placeholder='Тип' />
-          <StyledDashedButton>Добавить сессию</StyledDashedButton>
+          <StyledSelectInput
+            value={formData.startDatetime}
+            onChange={value => _startDatetimeChanged(value as string)}
+            options={startDatetimeOptions}
+            placeholder='Начало'
+          />
+          <StyledSelectInput
+            value={formData.durationType}
+            onChange={value => _durationChanged(value as DurationType)}
+            options={durationOptions}
+            placeholder='Тип'
+          />
+          <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addSession()}>
+            Добавить сессию
+          </StyledDashedButton>
+          {isLoading && <Spinner />}
         </Block>
       </Background>
     </Modal>

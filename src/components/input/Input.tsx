@@ -23,6 +23,9 @@ const TextBox = styled.input<{ error?: boolean; withoutBorder?: boolean }>`
   &:focus {
     border: 1px solid #919be0;
   }
+  &:read-only {
+    opacity: 0.8;
+  }
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -39,6 +42,7 @@ const TextBox = styled.input<{ error?: boolean; withoutBorder?: boolean }>`
 export type InputTypes = {
   name?: string
   value: string
+  readOnly?: boolean
   placeholder?: string
   withoutBorder?: boolean
   type?: string

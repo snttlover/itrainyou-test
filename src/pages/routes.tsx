@@ -21,7 +21,7 @@ import * as React from "react"
 import { RouteConfig } from "react-router-config"
 import { LandingPage } from "./landing/LandingPage"
 import { SearchPage } from "./search/SearchPage"
-import CoachChatListPage from "@/pages/coach/chats/list/CoachChatListPage"
+import { CoachChatListPage } from "@/pages/coach/chats/list/CoachChatListPage"
 import CoachChatPage from "@/pages/coach/chats/chat/CoachChatPage"
 
 export const ROUTES: RouteConfig[] = [
@@ -67,10 +67,10 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.clientChatsList(),
     exact: true,
-    component: ClientChatListPage
+    component: ClientChatListPage,
   },
   {
-    path: routeNames.clientChat(':id'),
+    path: routeNames.clientChat(":id"),
     component: ClientChatPage,
   },
   {
@@ -125,8 +125,8 @@ export const ROUTES: RouteConfig[] = [
     component: CoachBlockedPage,
   },
   {
-    path: routeNames.coachChat(':id'),
-    component: CoachChatPage
+    path: routeNames.coachChat(":id"),
+    component: CoachChatPage,
   },
   {
     path: "*",
