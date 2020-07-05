@@ -50,7 +50,7 @@ export const createPagination = <ListItemType>(
 
   const guardedLoadMore = guard({
     source: loadMore,
-    filter: loadMoreFx.pending.map(pending => !pending),
+    filter: combine(loadMoreFx.pending, $hasMore, (pending, hasMore) => !pending && hasMore),
   })
 
   const $currentPage = createStore(0).on(loadMoreFx.done, (_, payload) => payload.params.page)
@@ -71,10 +71,10 @@ export const createPagination = <ListItemType>(
       $loadFailed,
       $currentPage,
       $hasMore,
-      $listIsEmpty
+      $listIsEmpty,
     },
     methods: {
-      loadMore,
+      loadMore
     },
   }
 }

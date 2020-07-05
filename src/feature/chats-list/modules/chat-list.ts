@@ -1,11 +1,10 @@
-import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { Chat } from "@/lib/api/chats/clients/get-chats"
 import { createPagination } from "@/feature/pagination"
 import { PaginationFetchMethod } from "@/feature/pagination/modules/pagination"
 import { date } from "@/lib/formatting/date"
-import { combine, createEvent, createStore, forward, guard, sample } from "effector-root"
+import { combine, createEvent, createStore, forward } from "effector-root"
 import { getSessionStatusByDates } from "@/feature/chats-list/modules/get-session-status-by-dates"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { logout } from "@/lib/network/token"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
@@ -18,28 +17,22 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     fetchMethod: config.fetchChatsListMethod,
   })
 
-  const onMessage = createEvent<ChatMessage>()
-
   pagination.data.$list
-    .on(onMessage, (chats, message) => {
-      const chatIndex = chats.findIndex(chat => chat.id === message.chat)
-      if (chatIndex) {
-        return chats.splice(chatIndex, 1, {
-          ...chats[chatIndex],
-          lastMessage: message,
-        })
+    .on(config.socket.events.onMessage, (chats, payload) => {
+      const chat = chats.find(chat => chat.id === payload.message.chat)
+
+      if (chat) {
+        return [
+          {
+            ...chat,
+            lastMessage: payload.message
+          },
+          ...chats.filter(chat => chat.id !== payload.message.chat)
+        ]
       }
+
       return chats
     })
-    .on(logout, () => [])
-
-  guard({
-    source: config.socket.events.onMessage,
-    filter: (message: any) => !message.status,
-    target: onMessage
-  })
-
-  pagination.data.$currentPage.on(logout, () => 0)
 
   const changeTickTime = createEvent<Date>()
   const $tickTime = createStore(new Date()).on(changeTickTime, (_, newDate) => newDate)

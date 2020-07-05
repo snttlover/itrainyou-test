@@ -7,6 +7,7 @@ import { Client } from "@/lib/api/client/clientInfo"
 import { CoachSession } from "@/lib/api/coach-sessions"
 
 export type ChatMessage = {
+  id: number
   text: string,
   chat: number
   senderCoach: CoachUser | null
