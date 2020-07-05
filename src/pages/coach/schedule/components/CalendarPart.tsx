@@ -3,10 +3,13 @@ import { Calendar } from "@/components/calendar/Calendar"
 import { Icon } from "@/components/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
+import { $isAddSessionModalShowed, setAddSessionDate, setModalShow } from "@/pages/coach/schedule/add-session.model"
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
 import { DateRangePicker } from "@/pages/coach/schedule/components/DateRangePicker"
 import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"
 import { Description, Title } from "@/pages/coach/schedule/Schedule"
+import { Dayjs } from "dayjs"
+import { useEvent, useStore } from "effector-react/ssr"
 import React, { useState } from "react"
 import styled from "styled-components"
 
@@ -97,8 +100,15 @@ const AddIcon = styled(Icon).attrs({ name: "cross" })`
 `
 
 export const CalendarPart = () => {
-  const [modal, setModal] = useState(false)
-  const [currentMonth, setMonth] = useState(date())
+  const isAddSessionModalShowed = useStore($isAddSessionModalShowed)
+  const _setModalShow = useEvent(setModalShow)
+  const _setDate = useEvent(setAddSessionDate)
+  const [currentDate, setMonth] = useState(date())
+
+  const openModalCallback = (date: Dayjs) => {
+    _setDate(date)
+    _setModalShow(true)
+  }
 
   return (
     <>
@@ -110,9 +120,9 @@ export const CalendarPart = () => {
       </RemoveDateRangeContainer>
       <CalendarContainer>
         <MobileCalendar>
-          <Calendar value={currentMonth.toDate()} onChange={() => {}} />
+          <Calendar value={currentDate.toDate()} onChange={dat => setMonth(date(dat))} />
           <Divider />
-          <Times>
+          {/*<Times>
             <Time>16:30-17:45</Time>
             <RemoveIcon />
           </Times>
@@ -123,22 +133,22 @@ export const CalendarPart = () => {
           <Times>
             <Time>16:30-17:45</Time>
             <RemoveIcon />
-          </Times>
+          </Times>*/}
           <Times>
             <Time />
-            <AddIcon onClick={() => setModal(true)} />
+            <AddIcon onClick={() => openModalCallback(currentDate)} />
           </Times>
         </MobileCalendar>
         <DesktopCalendar>
           <ScheduleCalendar
-            startDate={currentMonth.toDate()}
-            nextMonth={() => setMonth(currentMonth.add(1, "month"))}
-            onAddClick={() => setModal(true)}
-            prevMonth={() => setMonth(currentMonth.subtract(1, "month"))}
+            startDate={currentDate.toDate()}
+            nextMonth={() => setMonth(currentDate.add(1, "month"))}
+            onAddClick={openModalCallback}
+            prevMonth={() => setMonth(currentDate.subtract(1, "month"))}
           />
         </DesktopCalendar>
       </CalendarContainer>
-      {modal && <AddSessionModal onCrossClick={() => setModal(false)} />}
+      {isAddSessionModalShowed && <AddSessionModal onCrossClick={() => _setModalShow(false)} />}
     </>
   )
 }

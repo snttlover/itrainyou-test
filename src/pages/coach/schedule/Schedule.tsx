@@ -1,9 +1,10 @@
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
-import { $priceForm, changePrice } from "@/pages/coach/schedule/price-settings.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { $pricesWithFeeForm, changePrices } from "@/pages/coach/schedule/price-settings.model"
+import { useEvent, useGate, useStore } from "effector-react/ssr"
 import React from "react"
 import styled from "styled-components"
+import { ScheduleGate } from "./schedule.model"
 
 export const Title = styled.h2`
   font-family: Roboto;
@@ -37,8 +38,11 @@ const PriceListContainer = styled.div`
 `
 
 export const Schedule = () => {
-  const $prices = useStore($priceForm)
-  const updatePrice = useEvent(changePrice)
+  const $prices = useStore($pricesWithFeeForm)
+  const updatePrice = useEvent(changePrices)
+
+  useGate(ScheduleGate)
+
   return (
     <>
       <ScheduleSettingsContainer>
@@ -48,30 +52,30 @@ export const Schedule = () => {
             Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
           </Description>
           <PriceListContainer>
-            <PriceInputGroup
+            {/*<PriceInputGroup
               title='Промо сессия (15 минут)'
               values={$prices.promo}
-              onChange={values => updatePrice({ promo: values })}
-            />
+              onChange={value => updatePrice({ promo: value })}
+            />*/}
             <PriceInputGroup
               title='30 минут'
               values={$prices.price30}
-              onChange={values => updatePrice({ price30: values })}
+              onChange={value => updatePrice({ price30: value })}
             />
             <PriceInputGroup
               title='45 минут'
               values={$prices.price45}
-              onChange={values => updatePrice({ price45: values })}
+              onChange={value => updatePrice({ price45: value })}
             />
             <PriceInputGroup
               title='60 минут'
               values={$prices.price60}
-              onChange={values => updatePrice({ price60: values })}
+              onChange={value => updatePrice({ price60: value })}
             />
             <PriceInputGroup
               title='90 минут'
               values={$prices.price90}
-              onChange={values => updatePrice({ price90: values })}
+              onChange={value => updatePrice({ price90: value })}
             />
           </PriceListContainer>
         </PriceContainer>

@@ -17,7 +17,7 @@
     "cookie-parser": "^1.4.5",
     "dayjs": "^1.8.28",
     "effector": "^20.17.2",
-    "effector-react": "^20.8.0",
+    "effector-react": "^20.9.0",
     "effector-root": "^0.2.0",
     "express": "^4.17.1",
     "history": "4.10.1",
