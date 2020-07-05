@@ -29,7 +29,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       .slice()
       .reverse()
       .map(message => {
-        const isMine = config.type === `client` && !!message.senderClient
+        const isMine =
+          (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
 
         return {
           id: message.id,
