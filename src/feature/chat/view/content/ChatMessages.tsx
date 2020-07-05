@@ -31,28 +31,42 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
 
   return () => {
 
-    /* scroll to start where first message is not start */
     const container = useRef<HTMLDivElement>(null)
     const messageWrapper = useRef<HTMLDivElement>(null)
     const [lastMessageId, changeLastMessage] = useState<null | number>(null)
+    const [firsMessageId, changeFirstMessage] = useState<null | number>(null)
     const messages = useStore($chatMessagesModule.$messages)
 
     useEffect(() => {
+      /* скрол к первому сообщению */
       const el = container.current
       const wrapper = messageWrapper.current
-      if (el && wrapper && lastMessageId !== messages[messages.length - 1]?.id) {
-        el.scrollTop = wrapper.clientHeight
+      if (el && wrapper) {
+        if (lastMessageId !== messages[messages.length - 1]?.id) {
+          el.scrollTop = wrapper.clientHeight
+        } else if (firsMessageId !== messages[0]?.id) {
+          // scroll to top
+          setTimeout(() => {
+            const firstMessage = wrapper.querySelector(`#message-${firsMessageId}`) as HTMLElement
+
+            if (firstMessage) {
+              el.scrollTop = firstMessage.offsetTop
+            }
+          }, 0)
+        }
       }
+
       changeLastMessage(messages[messages.length - 1]?.id || null)
+      changeFirstMessage(messages[0]?.id || null)
       return () => {}
-    })
+    }, [messages])
 
     return (
       <Container ref={container} id='messages'>
         <InfScroll scrollableTarget='messages'>
           <MessagesWrapper ref={messageWrapper}>
             {useList($chatMessagesModule.$messages, message => (
-              <ChatMessage time={message.time} data-self={message.isMine}>
+              <ChatMessage id={`message-${message.id}`} time={message.time} data-self={message.isMine}>
                 {message.text}
               </ChatMessage>
             ))}

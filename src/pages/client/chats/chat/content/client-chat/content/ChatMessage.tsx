@@ -51,10 +51,11 @@ const Container = styled.div<ContainerTypes>`
 type ChatMessageTypes = {
   children: React.ReactChild
   time: string
+  id?: string
 } & ContainerTypes
 
 export const ChatMessage = (props: ChatMessageTypes) => (
-  <Container data-self={props["data-self"]}>
+  <Container id={props.id} data-self={props["data-self"]}>
     {props.children}
     <Time>{props.time}</Time>
   </Container>
