@@ -14,6 +14,7 @@ export type ChatListModuleConfig = {
 }
 
 export const createChatModule = (config: ChatListModuleConfig) => {
+  const reset = createEvent()
   const changeId = createEvent<number>()
   const $chatId = createStore<number>(0).on(changeId, (_, id) => id)
   const chat = createChatInfoModule(config)
@@ -26,6 +27,11 @@ export const createChatModule = (config: ChatListModuleConfig) => {
   })
 
   const load = createEvent()
+
+  forward({
+    from: [reset],
+    to: [chat.reset, chatMessages.pagination.methods.reset]
+  })
 
   forward({
     from: load,
@@ -58,6 +64,7 @@ export const createChatModule = (config: ChatListModuleConfig) => {
     chatMessages,
     socket: config.socket,
     send,
-    mounted
+    mounted,
+    reset
   }
 }

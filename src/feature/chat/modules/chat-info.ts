@@ -23,6 +23,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     const interc = config.type === `client` ? chat?.coach : chat?.clients[0]
 
     return {
+      id: chat?.id,
       avatar: interc?.avatar,
       userName: `${interc?.firstName} ${interc?.lastName}`
     }
