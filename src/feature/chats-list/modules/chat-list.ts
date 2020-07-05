@@ -21,9 +21,17 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   pagination.data.$list
     .on(config.socket.events.onMessage, (chats, payload) => {
       const chat = chats.find(chat => chat.id === payload.message.chat)
+
       if (chat) {
-        chat.lastMessage = payload.message
+        return [
+          {
+            ...chat,
+            lastMessage: payload.message
+          },
+          ...chats.filter(chat => chat.id !== payload.message.chat)
+        ]
       }
+
       return chats
     })
 
