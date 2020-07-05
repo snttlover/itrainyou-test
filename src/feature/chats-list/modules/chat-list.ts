@@ -5,7 +5,6 @@ import { date } from "@/lib/formatting/date"
 import { combine, createEvent, createStore, forward } from "effector-root"
 import { getSessionStatusByDates } from "@/feature/chats-list/modules/get-session-status-by-dates"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { logout } from "@/lib/network/token"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
