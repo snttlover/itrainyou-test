@@ -69,18 +69,6 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
           <RemoveIcon onClick={() => _removeSession(session.id)} />
         </Times>
       ))}
-      {/*<Times>
-            <Time>16:30-17:45</Time>
-            <RemoveIcon />
-          </Times>
-          <Times>
-            <Time>16:30-17:45</Time>
-            <RemoveIcon />
-          </Times>
-          <Times>
-            <Time>16:30-17:45</Time>
-            <RemoveIcon />
-          </Times>*/}
       <Times>
         <Time />
         <AddIcon onClick={() => onAddClick(currentDate)} />
