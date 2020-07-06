@@ -1,8 +1,7 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { getCoachSessions } from "@/lib/api/coach-sessions"
+import { CoachSession, getCoachSessions } from "@/lib/api/coach-sessions"
 import { removeCoachSession } from "@/lib/api/coaching-sessions/remove-coach-session"
 import { date } from "@/lib/formatting/date"
-import { createSessionsFx } from "@/pages/coach/schedule/models/add-session.model"
 import { $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"
 import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
@@ -51,8 +50,9 @@ const $repeatedSessions = restore(
   loadScheduleFx.doneData.map(data => data.weekdaySlots),
   []
 )
+export const sessionAdded = createEvent<CoachSession>()
 const $sessions = restore(loadSessionsFx.doneData, [])
-  .on(createSessionsFx.doneData, (sessions, session) => [...sessions, session])
+  .on(sessionAdded, (sessions, session) => [...sessions, session])
   .on(sessionRemoved, (state, payload) => state.filter(session => session.id !== payload.params))
 
 export const $allSessions = combine(

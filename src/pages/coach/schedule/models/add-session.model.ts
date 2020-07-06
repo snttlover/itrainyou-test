@@ -3,6 +3,7 @@ import { DurationType } from "@/lib/api/coach-sessions"
 import { createSession } from "@/lib/api/coaching-sessions/create-session"
 import { date } from "@/lib/formatting/date"
 import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
+import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { combine, createEvent, sample, restore, createStore, createEffect, guard, forward } from "effector-root"
 
@@ -33,14 +34,28 @@ const $timesOptions = createStore(
     .flat()
 )
 
+const $daySessions = combine($allSessions, $sessionDate, (allSessions, dat) =>
+  allSessions.sessions.filter(
+    session => date(dat).isSame(session.startTime, "d") || date(dat).isSame(session.endTime, "d")
+  )
+)
+
 export const $startDatetimeOptions = combine(
-  { opts: $timesOptions, sessionDate: $sessionDate },
-  ({ opts, sessionDate }) => {
+  { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions },
+  ({ opts, sessionDate, sessions }) => {
     const now = date()
+
     return opts
       .filter(({ hour, min }) => {
-        const sessionDatetime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
-        return now.isBefore(sessionDatetime)
+        const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+
+        const isAfterThanNow = optionTime.isAfter(now)
+        const isCollideWithExistSessions = sessions.reduce((flag, session) => {
+          if (flag) return flag
+          return optionTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
+        }, false)
+
+        return isAfterThanNow && !isCollideWithExistSessions
       })
       .map(item => ({
         label: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
@@ -67,6 +82,11 @@ export const $form = combine({ startDatetime: $startDatetime, durationType: $dur
 
 export const createSessionsFx = createEffect({
   handler: createSession,
+})
+
+forward({
+  from: createSessionsFx.doneData,
+  to: sessionAdded,
 })
 
 const successToastMessage: Toast = { type: "info", text: "Сессиия создана" }

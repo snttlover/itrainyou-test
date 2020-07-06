@@ -97,9 +97,14 @@ const Session = styled.div`
   justify-content: space-between;
 `
 
-const DayContainer = styled.div`
-  width: 100%;
+const SessionContainer = styled.div`
+  overflow-y: auto;
   height: 100%;
+`
+
+const DayContainer = styled.div`
+  width: 96px;
+  height: 96px;
   background-color: #fff;
   position: relative;
   padding: 24px 4px 12px;
@@ -207,20 +212,16 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                     <DayContainer>
                       <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
                       {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => onAddClick(day)} />}
-                      {sessions.sessions
-                        .filter(session => session.startTime.isSame(day, "d"))
-                        .map(session => (
-                          <Session>
-                            {session.startTime.format("hh:mm")}-{session.endTime.format("hh:mm")}
-                            <CrossIcon onClick={() => _removeSession(session.id)} />
-                          </Session>
-                        ))}
-                      {/*<Session>
-                        20:30-21:45 <CrossIcon />
-                      </Session>
-                      <Session>
-                        20:30-21:45 <CrossIcon />
-                      </Session>*/}
+                      <SessionContainer>
+                        {sessions.sessions
+                          .filter(session => session.startTime.isSame(day, "d"))
+                          .map(session => (
+                            <Session key={session.id}>
+                              {session.startTime.format("hh:mm")}-{session.endTime.format("hh:mm")}
+                              <CrossIcon onClick={() => _removeSession(session.id)} />
+                            </Session>
+                          ))}
+                      </SessionContainer>
                     </DayContainer>
                   </CalendarCell>
                 ))}
