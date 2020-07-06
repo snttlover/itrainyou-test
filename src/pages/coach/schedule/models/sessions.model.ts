@@ -2,11 +2,11 @@ import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/
 import { CoachSession, getCoachSessions } from "@/lib/api/coach-sessions"
 import { removeCoachSession } from "@/lib/api/coaching-sessions/remove-coach-session"
 import { date } from "@/lib/formatting/date"
-import { $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"
+import { $monthEndDate, $monthStartDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
 import { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, forward, restore, sample } from "effector-root"
+import { combine, createEffect, createEvent, forward, restore, sample, merge } from "effector-root"
 
 type LoadSessionsParams = {
   from: string
@@ -71,7 +71,7 @@ export const $allSessions = combine(
 export const CalendarGate = createGate()
 
 sample({
-  clock: CalendarGate.open,
+  clock: merge([setCurrentMonth, CalendarGate.open]),
   source: {
     from: $monthStartDate,
     to: $monthEndDate,
