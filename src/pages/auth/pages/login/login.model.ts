@@ -14,6 +14,8 @@ export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, 
   handler: ({ email, password }) => login({ email, password }),
 })
 
+export const resetLoginForm = createEvent()
+
 sample({
   source: $dashboard,
   clock: loginFx.doneData,
@@ -53,6 +55,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   defaultValue: "",
   validator: emailValidator,
   eventMapper: event => event.map(trimString),
+  reset: resetLoginForm,
 })
 
 $emailError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => `Неверные данные`)
@@ -61,6 +64,7 @@ export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = 
   defaultValue: "",
   validator: () => null,
   eventMapper: event => event.map(trimString),
+  reset: resetLoginForm,
 })
 
 export const $loginForm = createStoreObject({

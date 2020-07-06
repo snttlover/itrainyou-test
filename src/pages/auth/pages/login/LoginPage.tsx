@@ -5,6 +5,9 @@ import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { LoginForm } from "@/pages/auth/pages/login/content/LoginForm"
 import { WhiteContainer } from "@/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/pages/auth/components/CenterFormContainer"
+import { useEvent } from "effector-react/ssr"
+import { resetLoginForm } from "@/pages/auth/pages/login/login.model"
+import { useEffect } from "react"
 
 const Header = styled.h3`
   font-family: "Roboto Slab";
@@ -38,14 +41,22 @@ const ResetPasswordLink = styled(Link)`
   }
 `
 
-export const LoginPage = () => (
-  <AuthLayout>
-    <CenterFormContainer>
-      <WhiteContainer>
-        <Header>Вход</Header>
-        <LoginForm />
-      </WhiteContainer>
-      <ResetPasswordLink to='/auth/recovery'>Забыли пароль?</ResetPasswordLink>
-    </CenterFormContainer>
-  </AuthLayout>
-)
+export const LoginPage = () => {
+  const destroyed = useEvent(resetLoginForm)
+
+  useEffect(() => {
+    return () => destroyed()
+  }, [])
+
+  return (
+    <AuthLayout>
+      <CenterFormContainer>
+        <WhiteContainer>
+          <Header>Вход</Header>
+          <LoginForm />
+        </WhiteContainer>
+        <ResetPasswordLink to='/auth/recovery'>Забыли пароль?</ResetPasswordLink>
+      </CenterFormContainer>
+    </AuthLayout>
+  )
+}

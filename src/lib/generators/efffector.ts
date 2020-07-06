@@ -4,6 +4,7 @@ type Options<T, R> = {
   validator?: (value: R) => string | null
   validatorEnhancer?: (store: Store<T>) => Store<R>
   eventMapper?: (event: Event<T>) => Event<T>
+  reset?: Event<any>
 }
 
 export const createEffectorField = <T, R = T>(
@@ -24,6 +25,11 @@ export const createEffectorField = <T, R = T>(
   const $isDirty = createStore(false).on($store, () => true)
   const $error = options.validatorEnhancer($store).map(options.validator)
   const $isCorrect = $error.map(value => !value)
+
+  if (options.reset) {
+    $store.reset(options.reset)
+    $isDirty.reset(options.reset)
+  }
 
   const $errorMessage = combine($error, $isDirty, $store, (error, isDirty) => (isDirty && error) || null)
 
