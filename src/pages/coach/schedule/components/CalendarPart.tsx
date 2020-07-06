@@ -1,8 +1,6 @@
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { Calendar } from "@/components/calendar/Calendar"
-import { Icon } from "@/components/icon/Icon"
-import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
+import { MobileCalendarManager } from "@/pages/coach/schedule/components/MobileCalendarManager"
 import {
   $isAddSessionModalShowed,
   setAddSessionDate,
@@ -11,7 +9,7 @@ import {
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
 import { DateRangePicker } from "@/pages/coach/schedule/components/DateRangePicker"
 import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"
-import { $currentMonth, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
+import { setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import { CalendarGate } from "@/pages/coach/schedule/models/sessions.model"
 import { Description, Title } from "@/pages/coach/schedule/Schedule"
 import { Dayjs } from "dayjs"
@@ -59,19 +57,6 @@ const StyledDateRangePicker = styled(DateRangePicker)`
   width: 100%;
 `
 
-const Divider = styled.div`
-  height: 1px;
-  width: 100%;
-  background: #dbdee0;
-  margin: 3px 0;
-`
-
-const Times = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-`
-
 const MobileCalendar = styled.div`
   ${MediaRange.greaterThan("mobile")`
     display: none;
@@ -87,29 +72,10 @@ const DesktopCalendar = styled.div`
   `}
 `
 
-const Time = styled.p`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 22px;
-  color: #424242;
-`
-
-const RemoveIcon = styled(Icon).attrs({ name: "cross" })`
-  fill: #5b6670;
-`
-
-const AddIcon = styled(Icon).attrs({ name: "cross" })`
-  transform: rotate(45deg);
-  fill: ${({ theme }) => theme.colors.primary};
-`
-
 export const CalendarPart = () => {
   const isAddSessionModalShowed = useStore($isAddSessionModalShowed)
   const _setModalShow = useEvent(setModalShow)
   const _setDate = useEvent(setAddSessionDate)
-  const currentDate = date(useStore($currentMonth))
   const _setCurrentMonth = useEvent(setCurrentMonth)
 
   useGate(CalendarGate)
@@ -129,35 +95,13 @@ export const CalendarPart = () => {
       </RemoveDateRangeContainer>
       <CalendarContainer>
         <MobileCalendar>
-          <Calendar
-            value={date(currentDate).toDate()}
-            onChange={dat => {
-              _setCurrentMonth(date(dat))
-            }}
-          />
-          <Divider />
-          {/*<Times>
-            <Time>16:30-17:45</Time>
-            <RemoveIcon />
-          </Times>
-          <Times>
-            <Time>16:30-17:45</Time>
-            <RemoveIcon />
-          </Times>
-          <Times>
-            <Time>16:30-17:45</Time>
-            <RemoveIcon />
-          </Times>*/}
-          <Times>
-            <Time />
-            <AddIcon onClick={() => openModalCallback(currentDate)} />
-          </Times>
+          <MobileCalendarManager onAddClick={openModalCallback} />
         </MobileCalendar>
         <DesktopCalendar>
           <ScheduleCalendar
-            nextMonth={() => _setCurrentMonth(currentDate.add(1, "month"))}
+            nextMonth={currentDate => _setCurrentMonth(currentDate.add(1, "month"))}
             onAddClick={openModalCallback}
-            prevMonth={() => _setCurrentMonth(currentDate.subtract(1, "month"))}
+            prevMonth={currentDate => _setCurrentMonth(currentDate.subtract(1, "month"))}
           />
         </DesktopCalendar>
       </CalendarContainer>

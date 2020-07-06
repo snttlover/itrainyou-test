@@ -145,8 +145,8 @@ const CrossIcon = styled(Icon).attrs({ name: "cross" })`
 `
 
 export type ScheduleCalendarTypes = {
-  prevMonth: () => void
-  nextMonth: () => void
+  prevMonth: (currentMonth: Dayjs) => void
+  nextMonth: (currentMonth: Dayjs) => void
   onAddClick: (day: Dayjs) => void
 }
 
@@ -185,9 +185,9 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
     <Container>
       <StyledHeader>
         <StyledMonthContainer>
-          <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
+          <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={() => prevMonth(currentMonth)} />
           <StyledMonthName>{currentMonth.format(`MMMM`)}</StyledMonthName>
-          <StyledRightIcon onClick={nextMonth} />
+          <StyledRightIcon onClick={() => nextMonth(currentMonth)} />
         </StyledMonthContainer>
         <StyledYear>{currentMonth.format(`YYYY`)}</StyledYear>
       </StyledHeader>
