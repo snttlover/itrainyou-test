@@ -11,10 +11,12 @@ import {
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
 import { DateRangePicker } from "@/pages/coach/schedule/components/DateRangePicker"
 import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"
+import { $currentMonth, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
+import { CalendarGate } from "@/pages/coach/schedule/models/sessions.model"
 import { Description, Title } from "@/pages/coach/schedule/Schedule"
 import { Dayjs } from "dayjs"
-import { useEvent, useStore } from "effector-react/ssr"
-import React, { useState } from "react"
+import { useEvent, useGate, useStore } from "effector-react/ssr"
+import React from "react"
 import styled from "styled-components"
 
 const RemoveButton = styled(DashedButton)`
@@ -107,7 +109,10 @@ export const CalendarPart = () => {
   const isAddSessionModalShowed = useStore($isAddSessionModalShowed)
   const _setModalShow = useEvent(setModalShow)
   const _setDate = useEvent(setAddSessionDate)
-  const [currentDate, setMonth] = useState(date())
+  const currentDate = date(useStore($currentMonth))
+  const _setCurrentMonth = useEvent(setCurrentMonth)
+
+  useGate(CalendarGate)
 
   const openModalCallback = (date: Dayjs) => {
     _setDate(date)
@@ -124,7 +129,12 @@ export const CalendarPart = () => {
       </RemoveDateRangeContainer>
       <CalendarContainer>
         <MobileCalendar>
-          <Calendar value={currentDate.toDate()} onChange={dat => setMonth(date(dat))} />
+          <Calendar
+            value={date(currentDate).toDate()}
+            onChange={dat => {
+              _setCurrentMonth(date(dat))
+            }}
+          />
           <Divider />
           {/*<Times>
             <Time>16:30-17:45</Time>
@@ -145,10 +155,9 @@ export const CalendarPart = () => {
         </MobileCalendar>
         <DesktopCalendar>
           <ScheduleCalendar
-            startDate={currentDate.toDate()}
-            nextMonth={() => setMonth(currentDate.add(1, "month"))}
+            nextMonth={() => _setCurrentMonth(currentDate.add(1, "month"))}
             onAddClick={openModalCallback}
-            prevMonth={() => setMonth(currentDate.subtract(1, "month"))}
+            prevMonth={() => _setCurrentMonth(currentDate.subtract(1, "month"))}
           />
         </DesktopCalendar>
       </CalendarContainer>

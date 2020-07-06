@@ -9,7 +9,7 @@ export interface CoachSession {
   coachPrice: string // example: 10.00
   startDatetime: string // example: "2020-03-31T15:17:37Z"
   endDatetime: string
-  duration: string //example: 01:00:00
+  durationType: DurationType //example: 01:00:00
 }
 
 export type DurationType = "D30" | "D45" | "D60" | "D90"
@@ -21,7 +21,7 @@ export interface GetCoachSessionsParamsTypes {
   duration_type?: DurationType
 }
 
-export const getCoachSessions = (id: number | "me", params: GetCoachSessionsParamsTypes) =>
-  get<CoachSession, GetCoachSessionsParamsTypes>(`${config.BACKEND_URL}/api/v1/web/coaches/${id}/sessions`, params)
+export const getCoachSessions = (id: number | "me", params: GetCoachSessionsParamsTypes): Promise<CoachSession[]> =>
+  get<CoachSession[], GetCoachSessionsParamsTypes>(`${config.BACKEND_URL}/api/v1/web/coaches/${id}/sessions`, params)
     .then(response => response.data)
     .then(keysToCamel)

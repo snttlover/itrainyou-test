@@ -2,7 +2,10 @@ import { Header, LeftIcon, MonthContainer, MonthName, RightIcon, Year } from "@/
 import { Icon } from "@/components/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
+import { $currentMonth, $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"
+import { $allSessions, removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
+import { useEvent, useStore } from "effector-react/ssr"
 import React from "react"
 import styled from "styled-components"
 
@@ -137,16 +140,18 @@ const CrossIcon = styled(Icon).attrs({ name: "cross" })`
 `
 
 export type ScheduleCalendarTypes = {
-  startDate: Date
   prevMonth: () => void
   nextMonth: () => void
   onAddClick: (day: Dayjs) => void
 }
 
-export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ startDate, prevMonth, nextMonth, onAddClick }) => {
+export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth, onAddClick }) => {
   const now = date()
-  const monthDayStart = date(startDate).date(1)
-  const monthDayEnd = date(monthDayStart).add(1, "month")
+  const currentMonth = date(useStore($currentMonth))
+  const monthDayStart = date(useStore($monthStartDate))
+  const sessions = useStore($allSessions)
+  const monthDayEnd = date(useStore($monthEndDate))
+  const _removeSession = useEvent(removeSession)
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
   const daysCount = monthDayStart.daysInMonth() + countPadStartDays + countPadEndDays
@@ -159,7 +164,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ startDate, p
     } else if (dayIndex - countPadStartDays > monthDayStart.daysInMonth()) {
       currentWeek.push(monthDayEnd.add(countPadEndDays - (daysCount - dayIndex), "day"))
     } else {
-      currentWeek.push(date(startDate).date(dayIndex - countPadStartDays + 1))
+      currentWeek.push(currentMonth.date(dayIndex - countPadStartDays + 1))
     }
 
     if (currentWeek.length === 7) {
@@ -169,17 +174,17 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ startDate, p
   }
 
   const formatter = `YYYYMM`
-  const lessThanTheCurrentMonth = +date(startDate).format(formatter) <= +date(new Date()).format(formatter)
+  const lessThanTheCurrentMonth = +currentMonth.format(formatter) <= +date().format(formatter)
 
   return (
     <Container>
       <StyledHeader>
         <StyledMonthContainer>
           <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
-          <StyledMonthName>{date(startDate).format(`MMMM`)}</StyledMonthName>
+          <StyledMonthName>{currentMonth.format(`MMMM`)}</StyledMonthName>
           <StyledRightIcon onClick={nextMonth} />
         </StyledMonthContainer>
-        <StyledYear>{date(startDate).format(`YYYY`)}</StyledYear>
+        <StyledYear>{currentMonth.format(`YYYY`)}</StyledYear>
       </StyledHeader>
       <HorizontalOverflowScrollContainer>
         <CalendarTable>
@@ -202,6 +207,14 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ startDate, p
                     <DayContainer>
                       <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
                       {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => onAddClick(day)} />}
+                      {sessions.sessions
+                        .filter(session => session.startTime.isSame(day, "d"))
+                        .map(session => (
+                          <Session>
+                            {session.startTime.format("hh:mm")}-{session.endTime.format("hh:mm")}
+                            <CrossIcon onClick={() => _removeSession(session.id)} />
+                          </Session>
+                        ))}
                       {/*<Session>
                         20:30-21:45 <CrossIcon />
                       </Session>
