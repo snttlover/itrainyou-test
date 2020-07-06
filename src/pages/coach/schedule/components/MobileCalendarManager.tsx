@@ -59,6 +59,12 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
         onChange={dat => {
           _setCurrentMonth(date(dat))
         }}
+        onNextMonth={dat => {
+          _setCurrentMonth(date(dat))
+        }}
+        onPrevMonth={dat => {
+          _setCurrentMonth(date(dat))
+        }}
       />
       <Divider />
       {selectedDaySessions.map(session => (

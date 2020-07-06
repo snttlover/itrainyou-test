@@ -22,6 +22,8 @@ type CalendarTypes = {
   isBig?: boolean
   className?: string
   pinTo?: Date | null
+  onPrevMonth?: (prevMonth: Date) => void
+  onNextMonth?: (nextMonth: Date) => void
 }
 
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
@@ -209,11 +211,15 @@ export const Calendar = (props: CalendarTypes) => {
   }
 
   const prevMonth = () => {
-    changeActiveStartDate(new Date(date(startDate).subtract(1, "month").valueOf()))
+    const prevMonthDate = new Date(date(startDate).subtract(1, "month").valueOf())
+    changeActiveStartDate(prevMonthDate)
+    props.onPrevMonth?.(prevMonthDate)
   }
 
   const nextMonth = () => {
-    changeActiveStartDate(new Date(date(startDate).add(1, "month").valueOf()))
+    const nextMonthDate = new Date(date(startDate).add(1, "month").valueOf())
+    changeActiveStartDate(nextMonthDate)
+    props.onNextMonth?.(nextMonthDate)
   }
 
   const formatter = `YYYYMM`
