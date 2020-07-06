@@ -17,6 +17,7 @@ export type CalendarDateType = Date | Date[] | undefined
 type CalendarTypes = {
   value: CalendarDateType
   pinnedDates?: string[] // iso date strings
+  enabledDates?: string[] // iso date strings
   onChange: (value: any) => void | Dispatch<SetStateAction<CalendarDateType>>
   selectRange?: boolean
   isBig?: boolean
@@ -102,14 +103,24 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     position: relative;
     color: #5b6670;
   }
-  .not-pinned {
+  .disabled {
     pointer-events: none;
     color: #dbdee0 !important;
   }
-  .pinned {
+  .enabled {
     position: relative;
     overflow: auto;
     opacity: 1;
+  }
+  .pinned:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 4px;
+    height: 4px;
+    background: ${props => props.theme.colors.primary};
+    border-radius: 4px;
   }
   .react-calendar__tile {
     margin-top: 10px;
@@ -152,9 +163,11 @@ export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
 
   const pinnedDefined = !!props.pinnedDates
+  const enabledDefined = !!props.enabledDates
 
   const equalFormat = `DDMMYYYY`
   const pinnedDates = (props.pinnedDates || []).map(pinnedDate => date(pinnedDate).format(equalFormat))
+  const enabledDates = (props.enabledDates || []).map(enabledDate => date(enabledDate).format(equalFormat))
 
   type CustomClassNamesTypes = {
     date: Date
@@ -188,8 +201,14 @@ export const Calendar = (props: CalendarTypes) => {
     if (pinnedDefined) {
       if (pinnedDates.includes(date(dat).format(equalFormat))) {
         classes.push(`pinned`)
+      }
+    }
+
+    if (enabledDefined) {
+      if (enabledDates.includes(date(dat).format(equalFormat))) {
+        classes.push(`enabled`)
       } else {
-        classes.push(`not-pinned`)
+        classes.push(`disabled`)
       }
     }
 

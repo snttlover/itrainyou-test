@@ -223,7 +223,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
 
   const [currentDate, changeCurrentDate] = useState<Date | undefined>()
-  const pinnedDates = sessions.map(session => session.startDatetime)
+  const enabledDates = sessions.map(session => session.startDatetime)
 
   const formattedDate = date(currentDate).format("DD MMMM")
   const currentDateEqual = date(currentDate).format(equalDateFormat)
@@ -264,7 +264,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
       <Block onlyOneCard={tabs.length === 1}>
         {loading && <Spinner />}
         <Datepicker>
-          <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
+          <StyledCalendar value={currentDate} enabledDates={enabledDates} onChange={changeCurrentDate} isBig={true} />
         </Datepicker>
         <SelectTimeContainer>
           <SelectDateHeader>{formattedDate}</SelectDateHeader>
