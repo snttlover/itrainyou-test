@@ -2,7 +2,7 @@ import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/
 import { DurationType } from "@/lib/api/coach-sessions"
 import { createSession } from "@/lib/api/coaching-sessions/create-session"
 import { date } from "@/lib/formatting/date"
-import { $prices } from "@/pages/coach/schedule/price-settings.model"
+import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
 import { Dayjs } from "dayjs"
 import { combine, createEvent, sample, restore, createStore, createEffect, guard, forward } from "effector-root"
 

@@ -3,7 +3,11 @@ import { Calendar } from "@/components/calendar/Calendar"
 import { Icon } from "@/components/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
-import { $isAddSessionModalShowed, setAddSessionDate, setModalShow } from "@/pages/coach/schedule/add-session.model"
+import {
+  $isAddSessionModalShowed,
+  setAddSessionDate,
+  setModalShow,
+} from "@/pages/coach/schedule/models/add-session.model"
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
 import { DateRangePicker } from "@/pages/coach/schedule/components/DateRangePicker"
 import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"

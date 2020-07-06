@@ -1,4 +1,4 @@
-import { $feeRatio, loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/schedule.model"
+import { $feeRatio, loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { combine, createEvent, createStore, forward, sample, merge } from "effector-root"
 import { debounce, spread } from "patronum"
 

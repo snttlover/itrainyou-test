@@ -21,7 +21,7 @@ export interface GetCoachSessionsParamsTypes {
   duration_type?: DurationType
 }
 
-export const getCoachSessions = (id: number, params: GetCoachSessionsParamsTypes) =>
+export const getCoachSessions = (id: number | "me", params: GetCoachSessionsParamsTypes) =>
   get<CoachSession, GetCoachSessionsParamsTypes>(`${config.BACKEND_URL}/api/v1/web/coaches/${id}/sessions`, params)
     .then(response => response.data)
     .then(keysToCamel)

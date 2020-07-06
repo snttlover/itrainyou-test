@@ -14,7 +14,7 @@ import {
   createSessionsFx,
   durationChanged,
   startDatetimeChanged,
-} from "@/pages/coach/schedule/add-session.model"
+} from "@/pages/coach/schedule/models/add-session.model"
 import { useStore, useEvent } from "effector-react/ssr"
 import React, { useRef } from "react"
 import styled from "styled-components"

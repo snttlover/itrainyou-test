@@ -1,10 +1,10 @@
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
-import { $pricesWithFeeForm, changePrices } from "@/pages/coach/schedule/price-settings.model"
+import { $pricesWithFeeForm, changePrices } from "@/pages/coach/schedule/models/price-settings.model"
 import { useEvent, useGate, useStore } from "effector-react/ssr"
 import React from "react"
 import styled from "styled-components"
-import { ScheduleGate } from "./schedule.model"
+import { ScheduleGate } from "./models/schedule.model"
 
 export const Title = styled.h2`
   font-family: Roboto;
