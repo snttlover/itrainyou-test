@@ -40,19 +40,29 @@ const $daySessions = combine($allSessions, $sessionDate, (allSessions, dat) =>
   )
 )
 
+export const durationChanged = createEvent<DurationType>()
+const $duration = restore<DurationType>(durationChanged, "D30")
+const $durationIsCorrect = combine($durationOptions, $duration, (opts, selected) =>
+  opts.map(({ value }) => value).includes(selected)
+)
+
 export const $startDatetimeOptions = combine(
-  { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions },
-  ({ opts, sessionDate, sessions }) => {
+  { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions, selectedDuration: $duration },
+  ({ opts, sessionDate, sessions, selectedDuration }) => {
     const now = date()
 
     return opts
       .filter(({ hour, min }) => {
         const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+        const endTime = optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute")
 
         const isAfterThanNow = optionTime.isAfter(now)
         const isCollideWithExistSessions = sessions.reduce((flag, session) => {
           if (flag) return flag
-          return optionTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
+          return (
+            optionTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
+            endTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
+          )
         }, false)
 
         return isAfterThanNow && !isCollideWithExistSessions
@@ -67,12 +77,6 @@ export const $startDatetimeOptions = combine(
 export const startDatetimeChanged = createEvent<string>()
 const $startDatetime = restore<string>(startDatetimeChanged, "00:00")
 const $startDatetimeIsCorrect = combine($startDatetimeOptions, $startDatetime, (opts, selected) =>
-  opts.map(({ value }) => value).includes(selected)
-)
-
-export const durationChanged = createEvent<DurationType>()
-const $duration = restore<DurationType>(durationChanged, "D30")
-const $durationIsCorrect = combine($durationOptions, $duration, (opts, selected) =>
   opts.map(({ value }) => value).includes(selected)
 )
 
