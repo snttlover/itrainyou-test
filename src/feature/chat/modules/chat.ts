@@ -3,7 +3,6 @@ import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { createChatInfoModule } from "@/feature/chat/modules/chat-info"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { createEvent, createStore, forward, sample } from "effector-root"
-import { CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 
 export type ChatListModuleConfig = {

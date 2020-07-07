@@ -1,8 +1,9 @@
 import { Chat } from "@/lib/api/chats/clients/get-chats"
 import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
+import { routeNames } from "@/pages/route-names"
 
 type createChatInfoModuleTypes = {
-  type: 'coach' | 'client'
+  type: "coach" | "client"
   fetchChat: (id: number) => Promise<Chat>
 }
 
@@ -17,7 +18,9 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
   })
 
   const loadChat = createEvent<number>()
-  const $chatInfo = createStore<null | Chat>(null).on(loadChatFx.doneData, (_, chat) => chat).reset(reset)
+  const $chatInfo = createStore<null | Chat>(null)
+    .on(loadChatFx.doneData, (_, chat) => chat)
+    .reset(reset)
 
   const $chat = $chatInfo.map(chat => {
     const interc = config.type === `client` ? chat?.coach : chat?.clients[0]
@@ -25,7 +28,8 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     return {
       id: chat?.id,
       avatar: interc?.avatar,
-      userName: `${interc?.firstName} ${interc?.lastName}`
+      userName: `${interc?.firstName} ${interc?.lastName}`,
+      link: config.type === `client` && { url: routeNames.searchCoachPage(interc?.id as string) },
     }
   })
 
@@ -41,6 +45,6 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     $chatId,
     loadChat,
     changeId,
-    reset
+    reset,
   }
 }

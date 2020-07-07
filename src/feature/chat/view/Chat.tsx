@@ -29,7 +29,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
         {chatLoading && <Loader />}
         {!chatLoading && !!chat.id && (
           <ChatContainer>
-            <ChatHeader name={chat.userName} avatar={chat.avatar || null} />
+            <ChatHeader link={chat.link} name={chat.userName} avatar={chat.avatar || null} />
             <Messages />
             <ChatMessageBox onSend={send} />
           </ChatContainer>
