@@ -57,8 +57,8 @@ export const $startDatetimeOptions = combine(
         const endTime = optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute")
 
         const isAfterThanNow = optionTime.isAfter(now)
-        const isCollideWithExistSessions = sessions.reduce((flag, session) => {
-          if (flag) return flag
+        const isCollideWithExistSessions = sessions.reduce((isCollide, session) => {
+          if (isCollide) return isCollide
           return (
             optionTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
             endTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
