@@ -1,6 +1,6 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CoachSession, getCoachSessions } from "@/lib/api/coach-sessions"
-import { removeCoachSession } from "@/lib/api/coaching-sessions/remove-coach-session"
+import { removeCoachSession, removeCoachSessionRange } from "@/lib/api/coaching-sessions/remove-coach-session"
 import { date } from "@/lib/formatting/date"
 import { $monthEndDate, $monthStartDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
@@ -8,13 +8,17 @@ import { createGate } from "@/scope"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, forward, restore, sample, merge } from "effector-root"
 
-type LoadSessionsParams = {
+type DateRange = {
   from: string
   to: string
 }
 
 export const loadSessionsFx = createEffect({
-  handler: ({ from, to }: LoadSessionsParams) => getCoachSessions("me", { start_date__gte: from, start_date__lte: to }),
+  handler: ({ from, to }: DateRange) => getCoachSessions("me", { start_date__gte: from, start_date__lte: to }),
+})
+
+export const removeSessionsRangeFx = createEffect({
+  handler: ({ from, to }: DateRange) => removeCoachSessionRange({ start_date: from, end_date: to }),
 })
 
 const CANCEL = -1
@@ -69,9 +73,10 @@ export const $allSessions = combine(
 )
 
 export const CalendarGate = createGate()
+const loadSessions = createEvent()
 
 sample({
-  clock: merge([setCurrentMonth, CalendarGate.open]),
+  clock: merge([loadSessions, setCurrentMonth, CalendarGate.open]),
   source: {
     from: $monthStartDate,
     to: $monthEndDate,
@@ -81,4 +86,25 @@ sample({
     to: to.toISOString(),
   }),
   target: loadSessionsFx,
+})
+
+type Range = [Dayjs, Dayjs]
+
+export const removeSessionsRange = createEvent<Range>()
+
+forward({
+  from: removeSessionsRange.map(range => ({ from: range[0].format("YYYY-MM-DD"), to: range[1].format("YYYY-MM-DD") })),
+  to: removeSessionsRangeFx,
+})
+
+const removeRangeSuccessMessage: Toast = { type: "info", text: "Успешно удалено" }
+forward({
+  from: removeSessionsRangeFx.done.map(_ => removeRangeSuccessMessage),
+  to: [toasts.remove, toasts.add, loadSessions.prepend(_ => {})],
+})
+
+const removeRangeFailMessage: Toast = { type: "error", text: "Ошибка при удалении" }
+forward({
+  from: removeSessionsRangeFx.failData.map(_ => removeRangeFailMessage),
+  to: [toasts.remove, toasts.add, loadSessions.prepend(_ => {})],
 })

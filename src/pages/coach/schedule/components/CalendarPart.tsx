@@ -1,4 +1,6 @@
 import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Spinner } from "@/components/spinner/Spinner"
+import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { MobileCalendarManager } from "@/pages/coach/schedule/components/MobileCalendarManager"
 import {
@@ -7,14 +9,14 @@ import {
   setModalShow,
 } from "@/pages/coach/schedule/models/add-session.model"
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
-import { DateRangePicker } from "@/pages/coach/schedule/components/DateRangePicker"
+import { RemoveSessionsDateRangePicker } from "@/pages/coach/schedule/components/RemoveSessionsDateRangePicker"
 import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"
 import { setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
-import { CalendarGate } from "@/pages/coach/schedule/models/sessions.model"
+import { CalendarGate, loadSessionsFx, removeSessionsRange } from "@/pages/coach/schedule/models/sessions.model"
 import { Description, Title } from "@/pages/coach/schedule/Schedule"
 import { Dayjs } from "dayjs"
 import { useEvent, useGate, useStore } from "effector-react/ssr"
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 const RemoveButton = styled(DashedButton)`
@@ -22,15 +24,16 @@ const RemoveButton = styled(DashedButton)`
   margin-top: 12px;
 `
 const CalendarContainer = styled.div`
+  position: relative;
   background-color: #fff;
   border-radius: 2px;
   margin-top: 27px;
   padding: 16px;
-
+  max-width: 704px;
   ${MediaRange.greaterThan("mobile")`
     background-color: transparent;
     padding: 0;
-  `}
+  `};
 `
 
 const RemoveDateRangeContainer = styled.div`
@@ -53,7 +56,7 @@ const RemoveDateRangeContainer = styled.div`
   `}
 `
 
-const StyledDateRangePicker = styled(DateRangePicker)`
+const StyledDateRangePicker = styled(RemoveSessionsDateRangePicker)`
   width: 100%;
 `
 
@@ -74,9 +77,12 @@ const DesktopCalendar = styled.div`
 
 export const CalendarPart = () => {
   const isAddSessionModalShowed = useStore($isAddSessionModalShowed)
+  const isSessionsLoading = useStore(loadSessionsFx.pending)
   const _setModalShow = useEvent(setModalShow)
   const _setDate = useEvent(setAddSessionDate)
+  const _removeSessionsRange = useEvent(removeSessionsRange)
   const _setCurrentMonth = useEvent(setCurrentMonth)
+  const [range, setRange] = useState<[Dayjs, Dayjs]>([date(), date()])
 
   useGate(CalendarGate)
 
@@ -90,8 +96,10 @@ export const CalendarPart = () => {
       <Title>Календарь</Title>
       <Description>Удалить промежуток в календаре</Description>
       <RemoveDateRangeContainer>
-        <StyledDateRangePicker />
-        <RemoveButton data-slim>Удалить</RemoveButton>
+        <StyledDateRangePicker range={range} rangeChanged={setRange} />
+        <RemoveButton data-slim onClick={() => _removeSessionsRange(range)}>
+          Удалить
+        </RemoveButton>
       </RemoveDateRangeContainer>
       <CalendarContainer>
         <MobileCalendar>
@@ -104,6 +112,7 @@ export const CalendarPart = () => {
             prevMonth={currentDate => _setCurrentMonth(currentDate.subtract(1, "month"))}
           />
         </DesktopCalendar>
+        {isSessionsLoading && <Spinner />}
       </CalendarContainer>
       {isAddSessionModalShowed && <AddSessionModal onCrossClick={() => _setModalShow(false)} />}
     </>

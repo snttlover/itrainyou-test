@@ -2,6 +2,7 @@ import { Calendar } from "@/components/calendar/Calendar"
 import { useClickOutside } from "@/components/click-outside/use-click-outside"
 import { date } from "@/lib/formatting/date"
 import { DatePicker } from "@/pages/coach/schedule/components/DatePicker"
+import dayjs, { Dayjs } from "dayjs"
 import styled from "styled-components"
 import React, { useRef, useState } from "react"
 
@@ -30,20 +31,35 @@ const StyledDatePicker = styled(DatePicker)`
   }
 `
 
-export const DateRangePicker: React.FC<{ className?: string }> = ({ className }) => {
+type DateRange = [Dayjs, Dayjs]
+
+type RemoveSessionsDateRangePickerProps = {
+  range: DateRange
+  rangeChanged: (range: DateRange) => void
+  className?: string
+}
+
+export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePickerProps> = ({
+  className,
+  range,
+  rangeChanged,
+}) => {
   const [isOpen, setOpen] = useState(false)
-  const [range, setRange] = useState([date().toDate(), date().add(3, "day").toDate()])
 
   const dropdownRef = useRef(null)
   useClickOutside(dropdownRef, () => setOpen(false))
 
   return (
     <Container className={className}>
-      <StyledDatePicker placeholder='От' value={range[0]} onClick={() => setOpen(true)} />
-      <StyledDatePicker placeholder='До' value={range[1]} onClick={() => setOpen(true)} />
+      <StyledDatePicker placeholder='От' value={range[0].toDate()} onClick={() => setOpen(true)} />
+      <StyledDatePicker placeholder='До' value={range[1].toDate()} onClick={() => setOpen(true)} />
       {isOpen && (
         <Dropdown ref={dropdownRef}>
-          <Calendar value={range} onChange={setRange} selectRange />
+          <Calendar
+            value={range.map(dat => dat.toDate())}
+            onChange={dates => rangeChanged([date(dates[0]), date(dates[1])])}
+            selectRange
+          />
         </Dropdown>
       )}
     </Container>
