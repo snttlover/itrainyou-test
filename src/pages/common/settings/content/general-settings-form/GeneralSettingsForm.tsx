@@ -3,13 +3,14 @@ import styled from "styled-components"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react/ssr"
 import {
   $changeGeneralSettingsForm,
   $changeGeneralSettingsFormErrors,
   $isGeneralSettingsFormFormValid,
   changeGeneralSettingsFx,
   emailChanged,
+  SettingsGate,
   timeZoneChanged,
 } from "@/pages/common/settings/content/general-settings-form/general-settings.model"
 import { Spinner } from "@/components/spinner/Spinner"
@@ -70,6 +71,8 @@ export const GeneralSettingsForm = () => {
   const _mounted = useEvent(mounted)
   const emailChange = useEvent(emailChanged)
   const timeZoneChange = useEvent(timeZoneChanged)
+
+  useGate(SettingsGate)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     changeGeneralSettings({ email: form.email, timeZone: form.timeZone })

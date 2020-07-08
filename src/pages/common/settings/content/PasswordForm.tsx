@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react/ssr"
 import {
   $changePasswordForm,
   passwordChanged,
@@ -12,6 +12,7 @@ import {
   $changePasswordFormErrors,
   $isPasswordFormFormValid,
   changePasswordFx,
+  PasswordFormGate,
 } from "@/pages/common/settings/content/password-form.model"
 import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
@@ -58,6 +59,8 @@ export const PasswordForm = () => {
   const oldPasswordChange = useEvent(oldPasswordChanged)
   const passwordChange = useEvent(passwordChanged)
   const passwordRepeatChange = useEvent(passwordRepeatChanged)
+
+  useGate(PasswordFormGate)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     changePassword({ password: form.password, oldPassword: form.oldPassword })

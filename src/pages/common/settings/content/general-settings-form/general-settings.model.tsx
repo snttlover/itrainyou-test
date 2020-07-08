@@ -3,9 +3,12 @@ import { UpdateMyUserRequest, updateMyUser } from "@/lib/api/users/update-my-use
 import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
 import { emailValidator, trimString } from "@/lib/validators"
+import { createGate } from "@/scope"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+
+export const SettingsGate = createGate()
 
 type ResetRType = {
   email: string
@@ -42,6 +45,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   defaultValue: "",
   validator: emailValidator,
   eventMapper: event => event.map(trimString),
+  reset: SettingsGate.open,
 })
 
 const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
@@ -57,6 +61,7 @@ export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = 
     return null
   },
   eventMapper: event => event.map(trimString),
+  reset: SettingsGate.open,
 })
 
 $timeZone.on(userDoneData, (state, user) => user.timeZone)
