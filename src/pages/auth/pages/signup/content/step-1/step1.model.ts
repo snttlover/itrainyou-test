@@ -35,9 +35,8 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   defaultValue: "",
   validator: emailValidator,
   eventMapper: event => event.map(trimString),
+  reset: step1Gate.open,
 })
-
-$email.reset(step1Gate.open)
 
 $emailError.on(registerFx.fail, (state, { error }) => {
   if (error.response?.data.email) {
@@ -50,9 +49,8 @@ export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = 
   defaultValue: "",
   validator: passwordValidator,
   eventMapper: event => event.map(trimString),
+  reset: step1Gate.open,
 })
-
-$password.reset(step1Gate.open)
 
 export const [
   $passwordRepeat,
@@ -68,9 +66,8 @@ export const [
     return error
   },
   eventMapper: event => event.map(trimString),
+  reset: step1Gate.open,
 })
-
-$passwordRepeat.reset(step1Gate.open)
 
 export const $step1Form = createStoreObject({
   email: $email,
