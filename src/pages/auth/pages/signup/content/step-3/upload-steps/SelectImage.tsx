@@ -24,6 +24,7 @@ const Description = styled.p`
 `
 
 const ErrorText = styled.p`
+  width: 100%;
   margin-top: 80px;
   font-family: Roboto;
   font-style: normal;
