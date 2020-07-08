@@ -24,7 +24,7 @@ type getDashboardSessionsParams = {
   date?: Day
 }
 
-export const getDashboardSessions = (params?: getDashboardSessionsParams) =>
+export const getDashboardSessions = (params?: getDashboardSessionsParams): Promise<DashboardSession[]> =>
   get<DashboardSession[], getDashboardSessionsParams>(
     `${config.BACKEND_URL}/api/v1/web/coaches/me/dashboard/sessions/`,
     keysToSnake(params)

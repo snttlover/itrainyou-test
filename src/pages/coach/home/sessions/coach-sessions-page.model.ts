@@ -1,6 +1,6 @@
 import { date } from "@/lib/formatting/date"
-import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
-import { DashboardSession, getDashboardSessions } from "@/lib/api/coach/get-dashboard-sessions"
+import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
+import { getDashboardSessions } from "@/lib/api/coach/get-dashboard-sessions"
 
 import {
   DashboardNewestParticipant,
@@ -18,7 +18,7 @@ export const loadTodaySessionsFx = createEffect({
 
 export const $coachSessionsPageLoading = loadTodaySessionsFx.pending.map(status => status)
 
-const $coachSessions = createStore<DashboardSession[]>([]).on(loadTodaySessionsFx.doneData, (state, payload) => payload)
+const $coachSessions = restore(loadTodaySessionsFx.doneData, [])
 
 const changeTickTime = createEvent<Date>()
 const $tickTime = createStore(new Date()).on(changeTickTime, (_, newDate) => newDate)
