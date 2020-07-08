@@ -409,10 +409,12 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
+  const toggleSession = useEvent(props.sessionsData.toggleSession)
+  const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const [currentDate, changeCurrentDate] = useState<Date | null>()
-  const pinnedDates = sessions.map(session => session.startDatetime)
+  const enabledDates = sessions.map(session => session.startDatetime)
 
   const headerDate = currentDate ? currentDate : new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
@@ -460,7 +462,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
         <Datepicker>
           <StyledCalendar
             value={currentDate as Date}
-            pinnedDates={pinnedDates}
+            enabledDates={enabledDates}
             onChange={changeCurrentDate}
             isBig={true}
           />
@@ -473,7 +475,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
           <StyledDateHeader>{formattedDate}</StyledDateHeader>
           <Times>
             {times.map(session => (
-              <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>
+              <Tag active={session.selected} key={session.id} onClick={() => toggleSession(session)}>
                 {session.start_datetime}
               </Tag>
             ))}
@@ -501,7 +503,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
             <IsAuthed>
               <StyledButton
                 disabled={buyLoading || selected.length === 0}
-                onClick={() => props.sessionsData.buySessionBulk(selected.map(item => item.id))}
+                onClick={() => buySessionBulk(selected.map(item => item.id))}
               >
                 Купить
               </StyledButton>

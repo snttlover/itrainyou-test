@@ -1,7 +1,7 @@
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
-import { attach, createEffect, createEvent, createStore, forward, restore } from "effector-root"
+import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -16,9 +16,10 @@ export const genCoachSessions = (id = 0) => {
   const changeId = createEvent<number>()
   const $id = createStore<number>(id).on(changeId, (_, id) => id)
 
-  const fetchCoachSessionsListFx = createEffect<GetCoachSessionsParamsTypes, CoachSession[]>().use(params =>
-    getCoachSessions($id.getState(), params)
-  )
+  const fetchCoachSessionsListFx = createEffect<
+    { id: number } & GetCoachSessionsParamsTypes,
+    CoachSession[]
+  >().use(({ id, ...params }) => getCoachSessions(id, params))
 
   const loadCoachSessions = createEvent<RequestType>()
   const loadParams = restore(
@@ -39,35 +40,25 @@ export const genCoachSessions = (id = 0) => {
       if (state.includes(selectedSession.id)) {
         return state.filter(id => id !== selectedSession.id)
       } else {
-        state.push(selectedSession.id)
-        return state
+        return [...state, selectedSession.id]
       }
     })
     .on(deleteSession, (state, sessionId) => state.filter(id => sessionId !== id))
 
-  const $coachSessionsList = createStore<CoachSessionWithSelect[]>([])
-    .on(fetchCoachSessionsListFx.done, (state, payload) => {
-      const ids = selectedSessionIds.getState()
-      return payload.result.map(session => ({ ...session, selected: ids.includes(session.id) }))
-    })
-    .on(toggleSession, state => {
-      const ids = selectedSessionIds.getState()
-      return state.map(session => {
-        session.selected = ids.includes(session.id)
-        return session
-      })
-    })
-    .on(deleteSession, state => {
-      const ids = selectedSessionIds.getState()
-      return state.map(session => {
-        session.selected = ids.includes(session.id)
-        return session
-      })
-    })
+  const $coachSessions = restore(fetchCoachSessionsListFx.doneData, [])
 
-  forward({
-    from: loadCoachSessions.map(req => req.params),
-    to: fetchCoachSessionsListFx,
+  const $coachSessionsList = combine($coachSessions, selectedSessionIds, (sessions, selected) =>
+    sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
+  )
+
+  sample({
+    clock: loadCoachSessions,
+    source: $id,
+    fn: (id, req) => ({
+      id,
+      ...req.params,
+    }),
+    target: fetchCoachSessionsListFx,
   })
 
   const buySessionBulk = createEvent<number[]>()
@@ -86,25 +77,33 @@ export const genCoachSessions = (id = 0) => {
     to: toasts.add.prepend(() => ({ type: "info", text: "Сессии успешно забронированы" })),
   })
 
-  forward({
-    from: buySessionsFx.done,
-    to: attach({
+  sample({
+    clock: buySessionsFx.done,
+    source: $id,
+    fn: (id, data) => ({
+      id,
+      ...data,
+    }),
+    target: attach({
       source: loadParams,
       effect: fetchCoachSessionsListFx,
-      mapParams: (_, params) => params,
+      mapParams: (_, params: any) => params,
     }),
   })
 
   const changeDurationTab = createEvent<DurationType>()
   const $durationTab = createStore<DurationType>("D30").on(changeDurationTab, (_, payload) => payload)
 
-  changeDurationTab.watch(state => {
-    return loadCoachSessions({
-      id: $id.getState(),
+  sample({
+    clock: changeDurationTab,
+    source: combine({ durationTab: $durationTab, coachId: $id }),
+    fn: ({ durationTab, coachId }) => ({
+      id: coachId,
       params: {
-        duration_type: $durationTab.getState(),
+        duration_type: durationTab,
       },
-    })
+    }),
+    target: loadCoachSessions,
   })
 
   return {

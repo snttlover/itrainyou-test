@@ -1,5 +1,6 @@
 import { Coach, getCoach } from "@/lib/api/coach"
 import { CoachReviewResponse, getCoachReviews } from "@/lib/api/reviews"
+import { runInScope } from "@/scope"
 import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { genCoachSessions } from "@/components/coach-card/select-date/select-date.model"
 import { DurationType } from "@/lib/api/coach-sessions"
@@ -24,18 +25,15 @@ export const $reviews = createStore<CoachReviewResponse[]>([]).on(
 )
 
 export const $sessionsPickerStore = genCoachSessions()
-const loadSessions = createEffect({
-  handler: (coach: Coach) => {
-    $sessionsPickerStore.changeId(coach.id)
-    // @ts-ignore
-    const defaultTab = Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
-    $sessionsPickerStore.tabs.changeDurationTab(defaultTab)
-  },
-})
 
-sample({
-  source: loadCoachFx.doneData,
-  target: loadSessions,
+const changeCoachSessionCoachId = $sessionsPickerStore.changeId.prepend<Coach>(coach => coach.id)
+const changeCoachSessionDurationTab = $sessionsPickerStore.tabs.changeDurationTab.prepend<Coach>(
+  coach => Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
+)
+
+forward({
+  from: loadCoachFx.doneData,
+  to: [changeCoachSessionCoachId, changeCoachSessionDurationTab],
 })
 
 forward({
