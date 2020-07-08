@@ -71,7 +71,7 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
       {selectedDaySessions.map(session => (
         <Times key={session.id}>
           <Time>
-            {session.startTime.format("hh:mm")}-{session.endTime.format("hh:mm")}
+            {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
           </Time>
           <RemoveIcon onClick={() => _removeSession(session.id)} />
         </Times>

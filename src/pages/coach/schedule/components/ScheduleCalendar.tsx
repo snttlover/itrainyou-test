@@ -217,7 +217,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                           .filter(session => session.startTime.isSame(day, "d"))
                           .map(session => (
                             <Session key={session.id}>
-                              {session.startTime.format("hh:mm")}-{session.endTime.format("hh:mm")}
+                              {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
                               <CrossIcon onClick={() => _removeSession(session.id)} />
                             </Session>
                           ))}
