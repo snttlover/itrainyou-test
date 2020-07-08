@@ -6,7 +6,6 @@ import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
 import { useStore } from "effector-react/ssr"
 import React, { useRef, useState } from "react"
 import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
-import { SwiperInstance } from "react-id-swiper/lib/types"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
 
@@ -90,6 +89,7 @@ const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
   display: none;
   fill: #4858cc;
   cursor: pointer;
+  user-select: none;
 
   &.photos__prev-button {
     transform: rotate(90deg);
@@ -109,11 +109,12 @@ const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
 const swiperOptions: SwiperOptions = {
   freeMode: true,
   navigation: {
-    nextEl: ".photos__next-button",
-    prevEl: ".photos__prev-button",
+    prevEl: "#photos__prev-button",
+    nextEl: "#photos__next-button",
   },
   slidesPerView: "auto",
   a11y: false,
+  watchOverflow: true,
 }
 
 export const AboutCoach = styled(props => {
@@ -147,11 +148,19 @@ export const AboutCoach = styled(props => {
         <>
           <Title>Фотографии</Title>
           <Photos>
-            <ArrowButton className='photos__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
+            <ArrowButton
+              className='photos__prev-button'
+              id='photos__prev-button'
+              onClick={() => swiper.current?.swiper?.slidePrev()}
+            />
             <ReactIdSwiper {...swiperOptions} containerClass='swiper__container' ref={swiper}>
               {photos}
             </ReactIdSwiper>
-            <ArrowButton className='photos__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
+            <ArrowButton
+              className='photos__next-button'
+              id='photos__next-button'
+              onClick={() => swiper.current?.swiper?.slideNext()}
+            />
           </Photos>
         </>
       )}
