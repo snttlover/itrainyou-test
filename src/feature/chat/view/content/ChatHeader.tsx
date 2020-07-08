@@ -1,19 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import {Avatar} from "@/components/avatar/Avatar"
-import {Icon} from "@/components/icon/Icon"
-import {MediaRange} from "@/lib/responsive/media"
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 8px 12px;
-  border-bottom: 1px solid #e5e5e5;
-  align-items: center;
-  ${MediaRange.lessThan(`mobile`)`
-    padding: 14px 8px;
-  `}
-`
+import { Avatar } from "@/components/avatar/Avatar"
+import { Icon } from "@/components/icon/Icon"
+import { MediaRange } from "@/lib/responsive/media"
+import { useEvent } from "effector-react/ssr"
+import { navigatePush } from "@/feature/navigation"
 
 const StyledAvatar = styled(Avatar)`
   width: 40px;
@@ -41,6 +32,24 @@ const Title = styled.div`
   `}
 `
 
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e5e5;
+  align-items: center;
+  ${MediaRange.lessThan(`mobile`)`
+    padding: 14px 8px;
+  `}
+  
+  &[data-has-link="true"] {
+    ${StyledAvatar},
+    ${Title} {
+      cursor: pointer;
+    }
+  }
+`
+
 const MobileBackButton = styled(Icon).attrs({ name: `left-icon` })`
   width: 18px;
   height: 18px;
@@ -56,12 +65,22 @@ const MobileBackButton = styled(Icon).attrs({ name: `left-icon` })`
 type ChatHeaderTypes = {
   avatar: string | null
   name: string
+  link?: any
 }
 
-export const ChatHeader = (props: ChatHeaderTypes) => (
-  <Container>
-    <MobileBackButton />
-    <StyledAvatar src={props.avatar} />
-    <Title>{props.name}</Title>
-  </Container>
-)
+export const ChatHeader = (props: ChatHeaderTypes) => {
+  const navigate = useEvent(navigatePush)
+  const userClick = () => {
+    if (props.link) {
+      navigate(props.link)
+    }
+  }
+
+  return (
+    <Container data-has-link={!!props.link}>
+      <MobileBackButton />
+      <StyledAvatar src={props.avatar} onClick={userClick} />
+      <Title onClick={userClick}>{props.name}</Title>
+    </Container>
+  )
+}
