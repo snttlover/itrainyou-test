@@ -5,8 +5,11 @@ import { navigatePush } from "@/feature/navigation"
 import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
 import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
+import { createGate } from "@/scope"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
+
+export const step1Gate = createGate()
 
 export const step1Registered = createEvent()
 export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form>, RegisterAsUserResponse, AxiosError>({
@@ -34,6 +37,8 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   eventMapper: event => event.map(trimString),
 })
 
+$email.reset(step1Gate.open)
+
 $emailError.on(registerFx.fail, (state, { error }) => {
   if (error.response?.data.email) {
     return "Пользователь с данным email уже существует"
@@ -46,6 +51,8 @@ export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = 
   validator: passwordValidator,
   eventMapper: event => event.map(trimString),
 })
+
+$password.reset(step1Gate.open)
 
 export const [
   $passwordRepeat,
@@ -62,6 +69,8 @@ export const [
   },
   eventMapper: event => event.map(trimString),
 })
+
+$passwordRepeat.reset(step1Gate.open)
 
 export const $step1Form = createStoreObject({
   email: $email,

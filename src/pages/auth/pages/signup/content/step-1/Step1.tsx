@@ -16,9 +16,10 @@ import {
   passwordChanged,
   passwordRepeatChanged,
   registerFx,
+  step1Gate,
   step1Registered,
 } from "./step1.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -126,6 +127,8 @@ export const Step1 = () => {
   const _emailChanged = useEvent(emailChanged)
   const _passwordChanged = useEvent(passwordChanged)
   const _passwordRepeatChanged = useEvent(passwordRepeatChanged)
+
+  useGate(step1Gate)
 
   useEffect(() => {
     _userDataReset()
