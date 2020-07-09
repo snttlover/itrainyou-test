@@ -65,8 +65,10 @@ export const createChatsSocket = (userType: UserType) => {
     (_, message) => message.data.unreadChats
   )
 
+  const onIntercMessage = createEvent<WriteChatMessageDone>()
+
   $chatsCounters
-    .on(onMessage, (counters, message) => {
+    .on(onIntercMessage, (counters, message) => {
       const currentCounter = counters.find(counter => counter.id === message.data.chat)
       let counter = {
         id: message.data.chat,
@@ -94,6 +96,13 @@ export const createChatsSocket = (userType: UserType) => {
     })
 
   const $chatsCount = $chatsCounters.map($counters => $counters.length)
+
+  guard({
+    source: onMessage,
+    filter: message =>
+      (userType === `client` && !!message.data.senderCoach) || (userType === `coach` && !!message.data.senderClient),
+    target: onIntercMessage,
+  })
 
   guard({
     source: socket.events.onMessage,
