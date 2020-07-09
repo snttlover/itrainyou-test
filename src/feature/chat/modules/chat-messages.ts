@@ -1,5 +1,5 @@
-import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { createEffect, createEvent, createStore } from "effector-root"
+import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
+import { createEffect, createEvent, createStore, guard } from "effector-root"
 import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
 import { ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
@@ -22,7 +22,9 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     fetchMethod: params => config.fetchMessages(chatId, params),
   })
 
-  pagination.data.$list.on(config.socket.events.onMessage, (messages, message) => [message.data, ...messages])
+  const addMessage = createEvent<WriteChatMessageDone>()
+
+  pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
 
   const $messages = pagination.data.$list.map(messages => {
     return messages
@@ -39,6 +41,12 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
           time: date(message.creationDatetime).format(`HH:mm`),
         }
       })
+  })
+
+  guard({
+    source: config.socket.events.onMessage,
+    filter: message => message.data.chat === chatId,
+    target: addMessage,
   })
 
   return {

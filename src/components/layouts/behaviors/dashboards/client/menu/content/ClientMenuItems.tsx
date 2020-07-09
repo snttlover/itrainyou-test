@@ -34,7 +34,7 @@ export const ClientMenuItems = () => {
         Главная страница
       </DashboardMenuItem>
       <DashboardMenuItem link='/client/chats/' icon='my-coaches'>
-        Мои коучи {chatsCount}
+        Мои коучи {chatsCount ? `+${chatsCount}` : ``}
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/client/' icon='hand'>
       Здесь и сейчас

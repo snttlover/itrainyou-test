@@ -184,6 +184,9 @@ const Counter = styled.div`
   background: ${props => props.theme.colors.primary};
   border-radius: 16px;
   padding: 3px 4px;
+  min-width: 23px;
+  display: flex;
+  justify-content: center;
 
   &[data-hide="true"] {
     visibility: hidden;

@@ -21,7 +21,7 @@ type InitMessage = {
   data: { unreadChats: ChatCounter[] }
 }
 
-type WriteChatMessageDone = {
+export type WriteChatMessageDone = {
   type: `WRITE_MESSAGE_DONE`
   data: ChatMessage
 }
@@ -39,7 +39,7 @@ export const createChatsSocket = (userType: UserType) => {
 
   const onMessage = createEvent<WriteChatMessageDone>()
 
-  const send = socket.methods.send.prepend<SendSocketChatMessage>(message => ({ type: `WRITE_MESSAGE`, message }))
+  const send = socket.methods.send.prepend<SendSocketChatMessage>(message => ({ type: `WRITE_MESSAGE`, data: message }))
 
   const $needConnect = combine($isLoggedIn, $isClient, (l, c) => l && c)
   const connect = guard({
@@ -60,8 +60,6 @@ export const createChatsSocket = (userType: UserType) => {
     filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
     target: onMessage,
   })
-
-  changeCountersFromInit.watch(console.log)
 
   guard({
     source: socket.events.onMessage,
