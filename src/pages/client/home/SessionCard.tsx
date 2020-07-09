@@ -120,6 +120,7 @@ export const SessionCard = ({ session, children, className }: SessionCardProps) 
   const startDate = date(session.startDatetime)
   const endDate = date(session.endDatetime)
   const isBetween = now.isBetween(startDate, endDate, "minute")
+  const isStartIsNowDay = now.isSame(startDate, "d")
 
   return (
     <SessionCardContainer className={className}>
@@ -145,7 +146,8 @@ export const SessionCard = ({ session, children, className }: SessionCardProps) 
       </CoachInfoContainer>
       <SessionInfo>
         <SessionTime>
-          {date(session.startDatetime).format("HH:mm")}-{date(session.endDatetime).format("HH:mm")}
+          {date(session.startDatetime).format(isStartIsNowDay ? "Сегодня HH:mm" : "DD MMMM HH:mm")}-
+          {date(session.endDatetime).format("HH:mm")}
         </SessionTime>
         {isBetween && children}
       </SessionInfo>
