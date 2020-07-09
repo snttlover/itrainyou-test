@@ -11,6 +11,10 @@ type SendSocketChatMessage = {
   text: string
 }
 
+type ReadChatMessages = {
+  messages: number[]
+}
+
 type ChatCounter = {
   id: number
   newMessagesCount: number
@@ -39,7 +43,8 @@ export const createChatsSocket = (userType: UserType) => {
 
   const onMessage = createEvent<WriteChatMessageDone>()
 
-  const send = socket.methods.send.prepend<SendSocketChatMessage>(message => ({ type: `WRITE_MESSAGE`, data: message }))
+  const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: `WRITE_MESSAGE`, data }))
+  const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: `READ_MESSAGES`, data }))
 
   const $needConnect = combine($isLoggedIn, $isClient, (l, c) => l && c)
   const connect = guard({
@@ -90,6 +95,7 @@ export const createChatsSocket = (userType: UserType) => {
     },
     methods: {
       send,
+      readMessages
     },
   }
 }

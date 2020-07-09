@@ -1,5 +1,5 @@
 import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
-import { createEffect, createEvent, createStore, guard } from "effector-root"
+import { createEffect, createEvent, createStore, guard, sample } from "effector-root"
 import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
 import { ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
@@ -41,6 +41,16 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
           time: date(message.creationDatetime).format(`HH:mm`),
         }
       })
+  })
+
+  const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({ messages: [message.data.id] }))
+
+  guard({
+    source: config.socket.events.onMessage,
+    filter: message =>
+      (config.type === `client` && !!message.data.senderCoach) ||
+      (config.type === `coach` && !!message.data.senderClient),
+    target: readMessage,
   })
 
   guard({
