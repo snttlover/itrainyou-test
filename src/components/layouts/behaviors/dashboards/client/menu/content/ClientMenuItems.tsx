@@ -2,6 +2,8 @@ import styled from "styled-components"
 import * as React from "react"
 import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
 import { MediaRange } from "@/lib/responsive/media"
+import { useStore } from "effector-react/ssr"
+import { clientChatsSocket } from "@/feature/socket/chats-socket"
 
 const ItemsWrapper = styled.div`
   display: flex;
@@ -24,31 +26,34 @@ const ItemsWrapper = styled.div`
   `}
 `
 
-export const ClientMenuItems = () => (
-  <ItemsWrapper>
-    <DashboardMenuItem link='/client/' icon='home'>
-      Главная страница
-    </DashboardMenuItem>
-    <DashboardMenuItem link='/client/chats/' icon='my-coaches'>
-      Мои коучи
-    </DashboardMenuItem>
-    {/*<DashboardMenuItem link='/client/' icon='hand'>
+export const ClientMenuItems = () => {
+  const chatsCount = useStore(clientChatsSocket.data.$chatsCount)
+  return (
+    <ItemsWrapper>
+      <DashboardMenuItem link='/client/' icon='home'>
+        Главная страница
+      </DashboardMenuItem>
+      <DashboardMenuItem link='/client/chats/' icon='my-coaches'>
+        Мои коучи {chatsCount}
+      </DashboardMenuItem>
+      {/*<DashboardMenuItem link='/client/' icon='hand'>
       Здесь и сейчас
     </DashboardMenuItem>
     <DashboardMenuItem link='/client/' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-    <DashboardMenuItem disabled link='/client/wallet/' icon='my-purse'>
-      Кошелек
-    </DashboardMenuItem>
-    {/*<DashboardMenuItem link='/client/' icon='calendar'>
+      <DashboardMenuItem disabled link='/client/wallet/' icon='my-purse'>
+        Кошелек
+      </DashboardMenuItem>
+      {/*<DashboardMenuItem link='/client/' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}
-    <DashboardMenuItem link='/client/settings/' icon='settings'>
-      Настройки
-    </DashboardMenuItem>
-    <DashboardMenuItem disabled link='/client/support/' icon='help'>
-      Поддержка
-    </DashboardMenuItem>
-  </ItemsWrapper>
-)
+      <DashboardMenuItem link='/client/settings/' icon='settings'>
+        Настройки
+      </DashboardMenuItem>
+      <DashboardMenuItem disabled link='/client/support/' icon='help'>
+        Поддержка
+      </DashboardMenuItem>
+    </ItemsWrapper>
+  )
+}

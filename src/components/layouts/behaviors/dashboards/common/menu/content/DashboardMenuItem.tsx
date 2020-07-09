@@ -74,7 +74,7 @@ const prepareLink = (value: string) => value.replace(/\/$/g, ``) + `/`
 type MenuItemTypes = {
   icon: IconName
   link: string
-  children: React.ReactChild
+  children: React.ReactChild | React.ReactChild[]
   disabled?: boolean
 }
 

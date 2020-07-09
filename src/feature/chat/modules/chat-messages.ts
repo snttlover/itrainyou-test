@@ -22,7 +22,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     fetchMethod: params => config.fetchMessages(chatId, params),
   })
 
-  pagination.data.$list.on(config.socket.events.onMessage, (messages, message) => [message.message, ...messages])
+  pagination.data.$list.on(config.socket.events.onMessage, (messages, message) => [message.data, ...messages])
 
   const $messages = pagination.data.$list.map(messages => {
     return messages

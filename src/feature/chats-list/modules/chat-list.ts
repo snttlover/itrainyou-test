@@ -18,16 +18,16 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   })
 
   pagination.data.$list
-    .on(config.socket.events.onMessage, (chats, payload) => {
-      const chat = chats.find(chat => chat.id === payload.message.chat)
+    .on(config.socket.events.onMessage, (chats, message) => {
+      const chat = chats.find(chat => chat.id === message.data.chat)
 
       if (chat) {
         return [
           {
             ...chat,
-            lastMessage: payload.message
+            lastMessage: message.data
           },
-          ...chats.filter(chat => chat.id !== payload.message.chat)
+          ...chats.filter(chat => chat.id !== message.data.chat)
         ]
       }
 
@@ -42,8 +42,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     tick = setInterval(() => changeTickTime(new Date()), 1000)
   }
 
-  const $chatsList = combine(pagination.data.$list, $tickTime, (chats, time) => {
+  const $chatsList = combine(pagination.data.$list, $tickTime, config.socket.data.$chatsCounters, (chats, time, counters) => {
     return chats.map(chat => {
+
+      const newMessagesCounter = counters.find(counter => counter.id === chat.id)
+
       const interlocutor = config.type === "client" ? chat.coach : chat.clients[0]
       const lastMessageIsMine = !!(config.type === "client"
         ? chat.lastMessage?.senderClient
@@ -58,7 +61,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
         avatar: interlocutor?.avatar || null,
         name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,
         startTime,
-        newMessagesCount: 0,
+        newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
         materialCount: chat.materialsCount,
         isStarted: !!chat.nearestSession,
         lastMessage: chat.lastMessage?.text || ``,
