@@ -1,5 +1,5 @@
-import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { createEffect, createEvent, createStore } from "effector-root"
+import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
+import { createEffect, createEvent, createStore, guard, sample } from "effector-root"
 import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
 import { ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
@@ -14,7 +14,10 @@ type CreateChatMessagesModuleTypes = {
 export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) => {
   const changeId = createEvent<number>()
   let chatId = 0
-  const $chatId = createStore(0).on(changeId, (_, id) => id)
+  const reset = createEvent()
+  const $chatId = createStore(0)
+    .on(changeId, (_, id) => id)
+    .reset(reset)
 
   $chatId.watch(id => (chatId = id))
 
@@ -22,7 +25,9 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     fetchMethod: params => config.fetchMessages(chatId, params),
   })
 
-  pagination.data.$list.on(config.socket.events.onMessage, (messages, message) => [message.message, ...messages])
+  const addMessage = createEvent<WriteChatMessageDone>()
+
+  pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
 
   const $messages = pagination.data.$list.map(messages => {
     return messages
@@ -41,10 +46,30 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       })
   })
 
+  const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({
+    messages: [message.data.id],
+  }))
+
+  guard({
+    source: config.socket.events.onMessage,
+    filter: message =>
+      ((config.type === `client` && !!message.data.senderCoach) ||
+        (config.type === `coach` && !!message.data.senderClient)) &&
+      chatId === message.data.chat,
+    target: readMessage,
+  })
+
+  guard({
+    source: config.socket.events.onMessage,
+    filter: message => message.data.chat === chatId,
+    target: addMessage,
+  })
+
   return {
     $chatId,
     pagination,
     $messages,
     changeId,
+    reset,
   }
 }

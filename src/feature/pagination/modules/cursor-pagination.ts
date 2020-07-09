@@ -1,6 +1,7 @@
 import { combine, createEffect, createEvent, createStore, guard, sample, Store, Event } from "effector-root"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 import { getUrlParamByName } from "@/lib/helpers/get-url-param-by-name"
+import { keysToSnake } from "@/lib/network/casing"
 
 export type CursorPaginationFetchMethod<T> = (params: CursorPaginationRequest) => Promise<CursorPagination<T>>
 
@@ -27,11 +28,11 @@ export const createCursorPagination = <ListItemType>(
 ): CreateCursorPaginationType<ListItemType> => {
   const loadMoreFx = createEffect({
     handler: (cursor: Next) => {
-      const params: CursorPaginationRequest = { pageSize: 12 }
+      const params: CursorPaginationRequest = { pageSize: 30 }
       if (typeof cursor === "string") {
         params.cursor = cursor
       }
-      return config.fetchMethod(params)
+      return config.fetchMethod(keysToSnake(params))
     },
   })
 
