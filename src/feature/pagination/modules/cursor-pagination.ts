@@ -28,7 +28,7 @@ export const createCursorPagination = <ListItemType>(
 ): CreateCursorPaginationType<ListItemType> => {
   const loadMoreFx = createEffect({
     handler: (cursor: Next) => {
-      const params: CursorPaginationRequest = { pageSize: 12 }
+      const params: CursorPaginationRequest = { pageSize: 30 }
       if (typeof cursor === "string") {
         params.cursor = cursor
       }
