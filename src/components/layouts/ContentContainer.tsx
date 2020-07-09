@@ -10,4 +10,8 @@ export const ContentContainer = styled.div`
   ${MediaRange.greaterThan("tablet")`
     padding: 0 36px 16px;
   `}
+
+  ${MediaRange.greaterThan("laptop")`
+    padding: 0 60px 16px;
+  `}
 `
