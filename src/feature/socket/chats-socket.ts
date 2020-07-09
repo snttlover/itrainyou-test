@@ -25,12 +25,17 @@ type InitMessage = {
   data: { unreadChats: ChatCounter[] }
 }
 
+type MessagesReadDone = {
+  type: `READ_MESSAGES_DONE`
+  data: { messages: ChatMessage[] }
+}
+
 export type WriteChatMessageDone = {
   type: `WRITE_MESSAGE_DONE`
   data: ChatMessage
 }
 
-type SocketMessageReceive = WriteChatMessageDone | InitMessage
+type SocketMessageReceive = WriteChatMessageDone | InitMessage | MessagesReadDone
 
 type UserType = "client" | "coach"
 
@@ -42,6 +47,7 @@ export const createChatsSocket = (userType: UserType) => {
   const socket = createSocket()
 
   const onMessage = createEvent<WriteChatMessageDone>()
+  const onMessagesReadDone = createEvent<MessagesReadDone>()
 
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: `WRITE_MESSAGE`, data }))
   const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: `READ_MESSAGES`, data }))
@@ -58,12 +64,47 @@ export const createChatsSocket = (userType: UserType) => {
     changeCountersFromInit,
     (_, message) => message.data.unreadChats
   )
+
+  $chatsCounters
+    .on(onMessage, (counters, message) => {
+      const currentCounter = counters.find(counter => counter.id === message.data.chat)
+      let counter = {
+        id: message.data.chat,
+        newMessagesCount: 1 + (!currentCounter ? 0 : currentCounter.newMessagesCount),
+      }
+      return [counter, ...counters.filter(c => c.id !== counter.id)]
+    })
+    .on(onMessagesReadDone, (counters, message) => {
+      const chats = message.data.messages
+        .filter(
+          message =>
+            (userType === `client` && !!message.senderCoach) || (userType === `coach` && !!message.senderClient)
+        )
+        .map(message => message.chat)
+      counters = counters.slice()
+
+      chats.forEach(id => {
+        const counter = counters.find(counter => counter.id === id)
+        if (counter) {
+          counter.newMessagesCount--
+        }
+      })
+
+      return counters.filter(counter => counter.newMessagesCount > 0)
+    })
+
   const $chatsCount = $chatsCounters.map($counters => $counters.length)
 
   guard({
     source: socket.events.onMessage,
     filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
     target: onMessage,
+  })
+
+  guard({
+    source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === `READ_MESSAGES_DONE`,
+    target: onMessagesReadDone,
   })
 
   guard({
@@ -87,7 +128,7 @@ export const createChatsSocket = (userType: UserType) => {
   return {
     data: {
       $chatsCount,
-      $chatsCounters
+      $chatsCounters,
     },
     events: {
       ...socket.events,
@@ -95,7 +136,7 @@ export const createChatsSocket = (userType: UserType) => {
     },
     methods: {
       send,
-      readMessages
+      readMessages,
     },
   }
 }

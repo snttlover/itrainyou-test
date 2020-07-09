@@ -29,7 +29,7 @@ export const createChatModule = (config: ChatListModuleConfig) => {
 
   forward({
     from: [reset],
-    to: [chat.reset, chatMessages.pagination.methods.reset]
+    to: [chat.reset, chatMessages.reset, chatMessages.pagination.methods.reset]
   })
 
   forward({

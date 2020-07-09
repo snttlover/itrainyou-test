@@ -14,7 +14,10 @@ type CreateChatMessagesModuleTypes = {
 export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) => {
   const changeId = createEvent<number>()
   let chatId = 0
-  const $chatId = createStore(0).on(changeId, (_, id) => id)
+  const reset = createEvent()
+  const $chatId = createStore(0)
+    .on(changeId, (_, id) => id)
+    .reset(reset)
 
   $chatId.watch(id => (chatId = id))
 
@@ -43,13 +46,16 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       })
   })
 
-  const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({ messages: [message.data.id] }))
+  const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({
+    messages: [message.data.id],
+  }))
 
   guard({
     source: config.socket.events.onMessage,
     filter: message =>
-      (config.type === `client` && !!message.data.senderCoach) ||
-      (config.type === `coach` && !!message.data.senderClient),
+      ((config.type === `client` && !!message.data.senderCoach) ||
+        (config.type === `coach` && !!message.data.senderClient)) &&
+      chatId === message.data.chat,
     target: readMessage,
   })
 
@@ -64,5 +70,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     pagination,
     $messages,
     changeId,
+    reset,
   }
 }
