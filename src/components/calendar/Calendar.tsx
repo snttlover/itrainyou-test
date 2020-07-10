@@ -12,7 +12,7 @@ import * as React from "react"
 import { Dispatch, SetStateAction, useState } from "react"
 import styled, { css } from "styled-components"
 
-export type CalendarDateType = Date | Date[] | undefined
+export type CalendarDateType = Date | Date[] | undefined | null
 
 type CalendarTypes = {
   value: CalendarDateType
