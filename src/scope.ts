@@ -1,3 +1,4 @@
+import { changeDashboardType, DashboardType } from "@/feature/dashboard/dashboard"
 import { changeToken, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import { Effect, Event, root } from "effector-root"
 import { createGate as createEffectorGate } from "effector-react"
@@ -25,6 +26,7 @@ export const restoreState = async () => {
   scope = fork(root)
 
   await runInScope(changeToken, Cookies.get(TOKEN_COOKIE_KEY))
+  await runInScope(changeDashboardType, Cookies.get("dashboard") as DashboardType)
 
   return scope
 }

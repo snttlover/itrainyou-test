@@ -1,8 +1,9 @@
 import { navigatePush } from "@/feature/navigation"
 import { loadUserData } from "@/feature/user/user.model"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
+import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { routeNames } from "@/pages/route-names"
-import { createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
+import { attach, createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
 
 export const REGISTER_SAVE_KEY = "__register-data__"
 
@@ -94,15 +95,22 @@ export const registerUserFx = createEffect({
 
 export const skipCoach = createEvent()
 
-forward({ from: registerUserFx.done, to: loadUserData })
+const getMyUserDataFx = attach({
+  effect: getMyUserFx as any,
+  mapParams: () => ({}),
+})
+
+forward({ from: registerUserFx.done, to: getMyUserDataFx })
 
 registerUserFx.done.watch(_ => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
 })
 
-const userType = split(registerUserFx.done, {
-  client: ({ params }) => params.type === "client",
-  coach: ({ params }) => params.type === "coach",
+const event = sample({clock: getMyUserDataFx.done, source: registerUserFx.done.map(({params}) => params)})
+
+const userType = split(event, {
+  client: ({ type }) => type === "client",
+  coach: ({ type }) => type === "coach",
 })
 
 forward({
