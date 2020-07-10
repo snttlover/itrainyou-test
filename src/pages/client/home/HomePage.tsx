@@ -125,6 +125,7 @@ export const HomePage = () => {
             next={_loadMore as any}
             hasMore={isHasMoreRecommendations}
             dataLength={recommendations.length}
+            style={{overflow: 'hidden'}}
           >
             {recommendations.map(coach => (
               <RecommendationCoachCard key={coach.id} coach={coach} />
