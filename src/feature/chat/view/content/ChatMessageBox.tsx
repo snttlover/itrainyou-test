@@ -46,7 +46,7 @@ export const ChatMessageBox = (props: ChatMessageBoxTypes) => {
   }
 
   useEffect(() => {
-    if (input.current && window.innerWidth <= 768) {
+    if (input.current && window.innerWidth > 768) {
       input.current.focus()
     }
   }, [])
