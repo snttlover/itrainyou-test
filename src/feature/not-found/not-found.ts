@@ -2,7 +2,7 @@ import { createEvent, createStore, Effect, Event, forward } from "effector-root"
 import { AxiosError } from "axios"
 
 type createNotFoundModuleConfigTypes = {
-  reset: Event<void>
+  reset?: Event<void>
   effect: Effect<any, any>
 }
 
