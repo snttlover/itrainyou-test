@@ -4,7 +4,7 @@ import { date } from "@/lib/formatting/date"
 const sessionStatuses = {
   started: `Сессия началась`,
   finished: `Сессия прошла`,
-  doesNotExist: `Не было сессий`
+  doesNotExist: `Нет ближайших сессий`
 }
 
 export const getSessionStatusByDates = (start?: ISODate, end?: ISODate) => {
