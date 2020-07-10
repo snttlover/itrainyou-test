@@ -1,6 +1,9 @@
 import { Chat } from "@/lib/api/chats/clients/get-chats"
 import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { routeNames } from "@/pages/route-names"
+import { AxiosError } from "axios"
+import { logout } from "@/lib/network/token"
+import { createNotFoundModule } from "@/feature/not-found/not-found"
 
 type createChatInfoModuleTypes = {
   type: "coach" | "client"
@@ -22,6 +25,11 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     .on(loadChatFx.doneData, (_, chat) => chat)
     .reset(reset)
 
+  const notFound =  createNotFoundModule({
+    effect: loadChatFx,
+    reset
+  })
+
   const $chat = $chatInfo.map(chat => {
     const interc = config.type === `client` ? chat?.coach : chat?.clients[0]
 
@@ -30,7 +38,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
       avatar: interc?.avatar,
       userName: `${interc?.firstName} ${interc?.lastName}`,
       link: config.type === `client` && { url: routeNames.searchCoachPage(interc?.id as string) },
-      backLink: config.type === `client` ? routeNames.clientChatsList() : routeNames.coachClients()
+      backLink: config.type === `client` ? routeNames.clientChatsList() : routeNames.coachClients(),
     }
   })
 
@@ -44,6 +52,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     $loading: loadChatFx.pending,
     $chat,
     $chatId,
+    $notFound: notFound.$isNotFound,
     loadChat,
     changeId,
     reset,

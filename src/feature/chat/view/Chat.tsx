@@ -8,6 +8,7 @@ import { createChatModule } from "@/feature/chat"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
 import { useParams } from "react-router-dom"
+import { NotFound } from "@/feature/not-found/components/NotFound"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -18,6 +19,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const params = useParams<{ id: string }>()
     const mounted = useEvent($chatModule.mounted)
     const unmounted = useEvent($chatModule.reset)
+    const chatIsNotFound = useStore($chatModule.chat.$notFound)
 
     useEffect(() => {
       mounted(parseInt(params.id))
@@ -26,6 +28,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
 
     return (
       <Container>
+        {chatIsNotFound && <NotFound />}
         {chatLoading && <Loader />}
         {!chatLoading && !!chat.id && (
           <ChatContainer>
