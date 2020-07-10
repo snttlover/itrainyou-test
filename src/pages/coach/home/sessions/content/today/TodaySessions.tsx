@@ -7,7 +7,7 @@ import * as React from "react"
 
 export const TodaySessions = () => (
   <Container>
-    <Title>У вас сегодня</Title>
+    <Title>Ближайшие сессии</Title>
     {useList($todaySessionsList, session => (
       <Card {...session} />
     ))}

@@ -13,7 +13,7 @@ export const newestParticipants = createPagination<DashboardNewestParticipant>({
 })
 
 export const loadTodaySessionsFx = createEffect({
-  handler: () => getDashboardSessions({ date: date().format(`YYYY-MM-DD`) }),
+  handler: () => getDashboardSessions({}),
 })
 
 export const $coachSessionsPageLoading = loadTodaySessionsFx.pending.map(status => status)
