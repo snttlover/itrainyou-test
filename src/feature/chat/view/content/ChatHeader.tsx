@@ -5,6 +5,7 @@ import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { useEvent } from "effector-react/ssr"
 import { navigatePush } from "@/feature/navigation"
+import { Link } from "react-router-dom"
 
 const StyledAvatar = styled(Avatar)`
   width: 40px;
@@ -65,6 +66,7 @@ const MobileBackButton = styled(Icon).attrs({ name: `left-icon` })`
 type ChatHeaderTypes = {
   avatar: string | null
   name: string
+  backLink: any
   link?: any
 }
 
@@ -78,7 +80,9 @@ export const ChatHeader = (props: ChatHeaderTypes) => {
 
   return (
     <Container data-has-link={!!props.link}>
-      <MobileBackButton />
+      <Link to={props.backLink} >
+        <MobileBackButton />
+      </Link>
       <StyledAvatar src={props.avatar} onClick={userClick} />
       <Title onClick={userClick}>{props.name}</Title>
     </Container>

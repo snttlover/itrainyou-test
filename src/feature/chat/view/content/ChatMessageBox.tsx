@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import {MediaRange} from "@/lib/responsive/media"
 
@@ -36,7 +36,7 @@ type ChatMessageBoxTypes = {
 
 export const ChatMessageBox = (props: ChatMessageBoxTypes) => {
   const [value, change] = useState(``)
-
+  const input = useRef<HTMLInputElement>(null)
 
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
@@ -45,9 +45,16 @@ export const ChatMessageBox = (props: ChatMessageBoxTypes) => {
     }
   }
 
+  useEffect(() => {
+    if (input.current && window.innerWidth <= 768) {
+      input.current.focus()
+    }
+  }, [])
+
   return (
     <Container>
       <StyledInput
+        ref={input}
         value={value}
         placeholder='Напишите сообщение...'
         onChange={e => change(e.target.value)}
