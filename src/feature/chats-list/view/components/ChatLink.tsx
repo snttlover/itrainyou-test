@@ -94,14 +94,16 @@ const MessageColumn = styled(Column)`
   display: flex;
   padding-left: 8px;
   border-right: 1px solid #d3d7f3;
+  width: 50%;
 
   &[data-message-is-not-mine="true"] {
     background: ${props => props.theme.colors.primaryBackground};
   }
-  
+
   @media screen and (max-width: 560px) {
     border-right: 0;
     border-bottom: 1px solid #efefef;
+    width: 100%;
   }
 `
 
@@ -117,16 +119,23 @@ const StyledAvatar = styled(Avatar)`
 
   width: 52px;
   height: 52px;
+  flex-basis: 52px;
 
   @media screen and (max-width: 560px) {
     width: 40px;
     height: 40px;
+    flex-basis: 40px;
     margin-right: 8px;
   }
 `
 
 const MessageContent = styled.div`
   flex: 1;
+  width: 50%;
+
+  @media screen and (max-width: 560px) {
+    width: 50%;
+  }
 `
 
 const UserName = styled.div`
@@ -151,6 +160,10 @@ const LastMessage = styled.div`
   line-height: 16px;
   color: #424242;
   padding: 8px 4px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   @media screen and (max-width: 560px) {
     font-size: 12px;
@@ -192,7 +205,7 @@ const Counter = styled.div`
   &[data-hide="true"] {
     visibility: hidden;
   }
-  
+
   @media screen and (max-width: 560px) {
     font-size: 12px;
     line-height: 16px;
