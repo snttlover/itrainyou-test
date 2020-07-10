@@ -16,12 +16,13 @@ export type ChatLinkTypes = {
   isStarted: boolean
   lastMessage: string
   lastMessageIsMine: boolean
+  highlightMessages: boolean
   sessionTextStatus: string
 }
 
 export const ChatLink = (props: ChatLinkTypes) => (
   <Container to={props.link}>
-    <MessageColumn data-message-is-not-mine={props.lastMessage && !props.lastMessageIsMine}>
+    <MessageColumn data-message-is-not-mine={props.highlightMessages}>
       <StyledAvatar src={props.avatar} />
       <MessageContent>
         <UserName>{props.name}</UserName>

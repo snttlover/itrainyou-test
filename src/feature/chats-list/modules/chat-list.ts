@@ -108,6 +108,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
           isStarted: chatSessionIsStarted(chat),
           lastMessage: chat.lastMessage?.text || ``,
           lastMessageIsMine,
+          highlightMessages: !!newMessagesCounter,
           sessionTextStatus: getSessionStatusByDates(
             chat.nearestSession?.startDatetime,
             chat.nearestSession?.endDatetime
