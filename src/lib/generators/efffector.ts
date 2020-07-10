@@ -33,7 +33,6 @@ export const createEffectorField = <T, R = T>(
     $store.reset(options.reset)
     $isDirty.reset(delay(options.reset, 0))
     $errorMessage.reset(options.reset)
-    combine({$error, $isDirty, $store}).watch(console.log)
   }
 
   return [$store, changeEvent, $errorMessage, $isCorrect]
