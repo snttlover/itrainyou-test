@@ -1,4 +1,5 @@
 import { combine, createEvent, createStore, Event, Store } from "effector-root"
+import { delay } from "patronum/delay"
 type Options<T, R> = {
   defaultValue: T
   validator?: (value: R) => string | null
@@ -26,12 +27,14 @@ export const createEffectorField = <T, R = T>(
   const $error = options.validatorEnhancer($store).map(options.validator)
   const $isCorrect = $error.map(value => !value)
 
+  const $errorMessage = combine($error, $isDirty, $store, (error, isDirty) => (isDirty && error) || null)
+
   if (options.reset) {
     $store.reset(options.reset)
-    $isDirty.reset(options.reset)
+    $isDirty.reset(delay(options.reset, 0))
+    $errorMessage.reset(options.reset)
+    combine({$error, $isDirty, $store}).watch(console.log)
   }
-
-  const $errorMessage = combine($error, $isDirty, $store, (error, isDirty) => (isDirty && error) || null)
 
   return [$store, changeEvent, $errorMessage, $isCorrect]
 }
