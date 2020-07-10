@@ -7,6 +7,7 @@ import { getSessionStatusByDates } from "@/feature/chats-list/modules/get-sessio
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { condition } from "patronum"
 import dayjs from "dayjs"
+import { chatSessionIsStarted } from "@/feature/chats-list/modules/chat-session-is-started"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
@@ -104,7 +105,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
           startTime,
           newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
           materialCount: chat.materialsCount,
-          isStarted: !!chat.nearestSession,
+          isStarted: chatSessionIsStarted(chat),
           lastMessage: chat.lastMessage?.text || ``,
           lastMessageIsMine,
           sessionTextStatus: getSessionStatusByDates(
