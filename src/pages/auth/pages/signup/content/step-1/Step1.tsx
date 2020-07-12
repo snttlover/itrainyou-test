@@ -55,7 +55,7 @@ const Title = styled.h1`
   color: #ffffff;
 
   ${MediaRange.greaterThan("mobile")`
-    font-size: 36px;
+    font-size: 32px;
     line-height: 44px;
     color: #424242;
   `}
