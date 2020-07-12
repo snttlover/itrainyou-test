@@ -23,6 +23,10 @@ const RemoveButton = styled(DashedButton)`
   width: 100%;
   margin-top: 12px;
 
+  ${MediaRange.greaterThan("mobile")`
+    padding: 0px 24px;
+  `}
+
   ${MediaRange.greaterThan("laptop")`
     width: 160px;
     min-width: 160px;
