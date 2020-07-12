@@ -101,7 +101,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     outline: none;
     font-size: 12px;
     position: relative;
-    color: #5b6670;
+    color: #424242;
   }
   .disabled {
     pointer-events: none;
@@ -113,7 +113,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     opacity: 1;
   }
   .pinned:after {
-    content: '';
+    content: "";
     position: absolute;
     right: 0;
     top: 0;
