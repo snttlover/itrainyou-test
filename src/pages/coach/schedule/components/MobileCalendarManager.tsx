@@ -57,6 +57,7 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
       <Calendar
         pinnedDates={sessions.sessions.map(session => session.startTime.toISOString())}
         value={date(currentDate).toDate()}
+        isBig
         onChange={dat => {
           _changeDate(date(dat))
         }}

@@ -5,6 +5,7 @@ import { Modal } from "@/components/modal/Modal"
 import { SelectInput } from "@/components/select-input/SelectInput"
 import { Spinner } from "@/components/spinner/Spinner"
 import { DurationType } from "@/lib/api/coach-sessions"
+import { MediaRange } from "@/lib/responsive/media"
 import {
   $durationOptions,
   $form,
@@ -41,6 +42,10 @@ const Block = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  ${MediaRange.greaterThan(`mobile`)`
+    width: 400px;
+  `}
 `
 
 const CrossIcon = styled(Icon).attrs({ name: "cross" })`
@@ -58,6 +63,11 @@ const Title = styled.h2`
   line-height: 26px;
   text-align: center;
   color: #424242;
+
+  ${MediaRange.greaterThan(`mobile`)`
+    font-size: 20px;
+    line-height: 26px;
+  `}
 `
 
 type AddSessionModalProps = {
@@ -70,6 +80,10 @@ const StyledSelectInput = styled(SelectInput)`
 
 const StyledDashedButton = styled(DashedButton)`
   margin-top: 16px;
+
+  ${MediaRange.greaterThan(`mobile`)`
+    height: 26px;
+  `}
 `
 
 export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }) => {

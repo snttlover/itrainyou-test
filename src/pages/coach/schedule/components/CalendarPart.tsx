@@ -22,6 +22,15 @@ import styled from "styled-components"
 const RemoveButton = styled(DashedButton)`
   width: 100%;
   margin-top: 12px;
+
+  ${MediaRange.greaterThan("mobile")`
+    padding: 0px 24px;
+  `}
+
+  ${MediaRange.greaterThan("laptop")`
+    width: 160px;
+    min-width: 160px;
+  `}
 `
 const CalendarContainer = styled.div`
   position: relative;
@@ -97,9 +106,7 @@ export const CalendarPart = () => {
       <Description>Удалить промежуток в календаре</Description>
       <RemoveDateRangeContainer>
         <StyledDateRangePicker range={range} rangeChanged={setRange} />
-        <RemoveButton data-slim onClick={() => _removeSessionsRange(range)}>
-          Удалить
-        </RemoveButton>
+        <RemoveButton onClick={() => _removeSessionsRange(range)}>Удалить</RemoveButton>
       </RemoveDateRangeContainer>
       <CalendarContainer>
         <MobileCalendar>
