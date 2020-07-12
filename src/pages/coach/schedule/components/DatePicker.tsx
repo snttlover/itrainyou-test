@@ -1,6 +1,7 @@
 import { Icon } from "@/components/icon/Icon"
 import { Input } from "@/components/input/Input"
 import { date } from "@/lib/formatting/date"
+import { MediaRange } from "@/lib/responsive/media"
 import React from "react"
 import styled from "styled-components"
 
@@ -10,6 +11,11 @@ const Container = styled.div`
 
 const StyledInput = styled(Input)`
   width: 100%;
+
+  ${MediaRange.greaterThan("tablet")`
+     width: 248px;
+     height: 36px;
+  `}
 `
 
 const CalendarIcon = styled(Icon).attrs({ name: "calendar" })`
