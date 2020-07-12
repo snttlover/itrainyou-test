@@ -2,7 +2,7 @@ import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { Loader } from "@/components/spinner/Spinner"
 import { ServerParams, START } from "@/lib/effector"
 import { MediaRange } from "@/lib/responsive/media"
-import { $coach, mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { $coach, loadCoachFx, mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { AboutCoach } from "@/pages/search/coach-by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/pages/search/coach-by-id/components/BaseCoachInfo"
 import { Reviews } from "@/pages/search/coach-by-id/components/Reviews"
@@ -12,6 +12,8 @@ import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.mod
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
 import { useStore } from "effector-react/ssr"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
+import { coachNotFound } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { NotFound } from "@/feature/not-found/components/NotFound"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -104,11 +106,13 @@ const Datepicker = () => {
 
 export const CoachByIdPage = () => {
   const coach = useStore($coach)
+  const pending = useStore(loadCoachFx.pending)
 
   return (
     <UserLayout>
       <ContentContainer>
-        {!coach && <Loader />}
+        {!coach && !pending && <NotFound />}
+        {!coach && pending && <Loader />}
         {coach && (
           <InfoWithSidebar>
             <CoachInfoContainer>
