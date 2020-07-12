@@ -102,9 +102,7 @@ export const CalendarPart = () => {
       <Description>Удалить промежуток в календаре</Description>
       <RemoveDateRangeContainer>
         <StyledDateRangePicker range={range} rangeChanged={setRange} />
-        <RemoveButton data-slim onClick={() => _removeSessionsRange(range)}>
-          Удалить
-        </RemoveButton>
+        <RemoveButton onClick={() => _removeSessionsRange(range)}>Удалить</RemoveButton>
       </RemoveDateRangeContainer>
       <CalendarContainer>
         <MobileCalendar>
