@@ -42,6 +42,8 @@ const Description = styled.h3`
   font-size: 14px;
   line-height: 18px;
   color: #424242;
+  word-break: break-word;
+  word-wrap: break-word;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 16px;
