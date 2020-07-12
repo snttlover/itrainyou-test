@@ -12,7 +12,6 @@ import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.mod
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
 import { useStore } from "effector-react/ssr"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
-import { coachNotFound } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 
 const InfoWithSidebar = styled.div`
