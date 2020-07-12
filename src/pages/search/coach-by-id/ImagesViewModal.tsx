@@ -2,9 +2,9 @@ import { Icon } from "@/components/icon/Icon"
 import { Modal } from "@/components/modal/Modal"
 import { MediaRange } from "@/lib/responsive/media"
 import React, { useRef, useState } from "react"
-import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
+import ReactIdSwiper, { SwiperInstance, SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
-import { SwiperOptions } from "swiper"
+import Swiper, { SwiperOptions } from "swiper"
 
 const Layout = styled.div`
   position: fixed;
@@ -107,22 +107,23 @@ type ImagesViewModalProps = {
   close: () => void
 }
 
-const swiperOptions: SwiperOptions = {
-  navigation: {
-    nextEl: ".photo-viewer__next-button",
-    prevEl: ".photo-viewer__prev-button",
-  },
-  slidesPerView: 1,
-  a11y: false,
-}
-
 export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModalProps) => {
   const swiper = useRef<SwiperRefNode>(null)
   const [currentIndex, setCurrentIndex] = useState(initialSlide)
 
-  swiper.current?.swiper?.on("slideChange", () => {
-    setCurrentIndex(swiper.current?.swiper?.activeIndex!)
-  })
+  const swiperOptions: SwiperOptions = {
+    navigation: {
+      nextEl: ".photo-viewer__next-button",
+      prevEl: ".photo-viewer__prev-button",
+    },
+    slidesPerView: 1,
+    a11y: false,
+    on: {
+      slideChange() {
+        setCurrentIndex(((this as unknown) as Swiper).activeIndex)
+      },
+    },
+  }
 
   return (
     <Modal>
@@ -138,7 +139,7 @@ export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModal
           <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
           <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} ref={swiper}>
             {photos.map(src => (
-              <Photo src={src} />
+              <Photo key={src} src={src} />
             ))}
           </ReactIdSwiper>
           <ArrowButton className='photo-viewer__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />

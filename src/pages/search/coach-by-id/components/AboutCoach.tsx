@@ -124,7 +124,7 @@ export const AboutCoach = styled(props => {
   const swiper = useRef<SwiperRefNode>(null)
 
   const coach = useStore($coach)
-  const photos = coach?.photos.map((src, i) => <Photo src={src} key={i} onClick={() => setImageViewIndex(i)} />) || []
+  const photos = coach?.photos.map((src, i) => <Photo src={src} key={src} onClick={() => setImageViewIndex(i)} />) || []
 
   return (
     <StyledBlock {...props}>
