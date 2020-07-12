@@ -22,6 +22,11 @@ import styled from "styled-components"
 const RemoveButton = styled(DashedButton)`
   width: 100%;
   margin-top: 12px;
+
+  ${MediaRange.greaterThan("laptop")`
+    width: 160px;
+    min-width: 160px;
+  `}
 `
 const CalendarContainer = styled.div`
   position: relative;
