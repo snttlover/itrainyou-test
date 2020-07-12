@@ -42,6 +42,8 @@ const Description = styled.h3`
   font-size: 14px;
   line-height: 18px;
   color: #424242;
+  word-break: break-word;
+  word-wrap: break-word;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 16px;
@@ -122,7 +124,7 @@ export const AboutCoach = styled(props => {
   const swiper = useRef<SwiperRefNode>(null)
 
   const coach = useStore($coach)
-  const photos = coach?.photos.map((src, i) => <Photo src={src} key={i} onClick={() => setImageViewIndex(i)} />) || []
+  const photos = coach?.photos.map((src, i) => <Photo src={src} key={src} onClick={() => setImageViewIndex(i)} />) || []
 
   return (
     <StyledBlock {...props}>
