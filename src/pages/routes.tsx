@@ -22,6 +22,7 @@ import { RouteConfig } from "react-router-config"
 import { LandingPage } from "./landing/LandingPage"
 import { SearchPage } from "./search/SearchPage"
 import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
+import { NotFound } from "@/feature/not-found/components/NotFound"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -129,6 +130,6 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: "*",
-    render: () => <div>not found</div>,
-  },
+    render: () => <NotFound />,
+  }
 ]

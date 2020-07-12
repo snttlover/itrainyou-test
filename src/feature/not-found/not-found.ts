@@ -23,5 +23,5 @@ export const createNotFoundModule = (config: createNotFoundModuleConfigTypes) =>
 
   return {
      $isNotFound
-   }
+  }
 }
