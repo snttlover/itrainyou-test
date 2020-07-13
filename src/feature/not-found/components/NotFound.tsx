@@ -7,26 +7,24 @@ const Container = styled.div``
 
 const DesktopIcon = styled(Icon).attrs({ name: "not-found-desktop" })`
   width: 100%;
-  margin: 0 auto;
-  margin-top: 64px;
+  margin: -64px auto 0;
   max-width: 691px;
   display: block;
   height: auto;
   fill: ${props => props.theme.colors.primary};
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan(`laptop`)`
     display: none;
   `}
 `
 
 const TabletIcon = styled(Icon).attrs({ name: "not-found-tablet" })`
   width: 100%;
-  margin: 0 auto;
-  margin-top: 204px;
+  margin: -64px auto 0;
   max-width: 691px;
   display: block;
   height: auto;
   fill: ${props => props.theme.colors.primary};
-  ${MediaRange.greaterThan(`desktop`)`
+  ${MediaRange.greaterThan(`laptop`)`
     display: none;
   `}
   ${MediaRange.lessThan(`mobile`)`
@@ -47,11 +45,10 @@ const MobileIcon = styled(Icon).attrs({ name: "not-found-mobile" })`
   `}
 `
 
-
 export const NotFound = () => (
-    <Container>
-      <DesktopIcon />
-      <TabletIcon />
-      <MobileIcon />
-    </Container>
+  <Container>
+    <DesktopIcon />
+    <TabletIcon />
+    <MobileIcon />
+  </Container>
 )
