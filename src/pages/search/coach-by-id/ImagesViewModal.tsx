@@ -55,6 +55,7 @@ const Content = styled.div`
   margin: 0 auto;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 
   ${MediaRange.greaterThan("mobile")`
     justify-content: space-between;
@@ -62,10 +63,12 @@ const Content = styled.div`
 `
 
 const CounterText = styled.p`
-  position: absolute;
+  position: relative;
   top: 12px;
   left: 50%;
   transform: translate(-50%, 0);
+  width: 100%;
+  text-align: center;
 
   font-family: Roboto;
   font-style: normal;
@@ -75,7 +78,20 @@ const CounterText = styled.p`
   color: #ffffff;
 `
 
-const Photo = styled.img``
+const Photo = styled.img`
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: calc(100vh - 60px);
+`
+
+const PhotoWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+`
 
 const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
   min-width: 40px;
@@ -99,6 +115,19 @@ const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
   ${MediaRange.greaterThan("mobile")`
     display: block;
   `}
+`
+
+const SliderWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  .swiper-wrapper {
+    display: flex;
+    align-items: center;
+  }
 `
 
 type ImagesViewModalProps = {
@@ -136,13 +165,17 @@ export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModal
           <CounterText>
             {currentIndex + 1} из {photos.length}
           </CounterText>
-          <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
-          <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} ref={swiper}>
-            {photos.map(src => (
-              <Photo key={src} src={src} />
-            ))}
-          </ReactIdSwiper>
-          <ArrowButton className='photo-viewer__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
+          <SliderWrapper>
+            <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
+            <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} ref={swiper}>
+              {photos.map(src => (
+                <PhotoWrapper>
+                  <Photo key={src} src={src} />
+                </PhotoWrapper>
+              ))}
+            </ReactIdSwiper>
+            <ArrowButton className='photo-viewer__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
+          </SliderWrapper>
         </Content>
       </Layout>
     </Modal>
