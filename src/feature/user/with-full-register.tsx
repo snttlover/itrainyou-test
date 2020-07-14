@@ -12,10 +12,10 @@ export const withFullRegister = (Child: React.ComponentType) => {
     const isLoggedIn = useStore($isLoggedIn)
     const navigate = useEvent(navigateReplace)
 
-    if (isLoggedIn && !isFullRegister && !isUserLoading) {
-      navigate({ url: routeNames.signup("2") })
-      return null
-    }
+    // if (isLoggedIn && !isFullRegister && !isUserLoading) {
+    //   navigate({ url: routeNames.signup("2") })
+    //   return null
+    // }
 
     return <Child {...props} />
   }
