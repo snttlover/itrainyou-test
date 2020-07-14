@@ -3,6 +3,7 @@ import { SessionCategory } from "@/lib/api/categories"
 import { Pagination } from "@/lib/api/interfaces/utils.interface"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
+import { CoachUser } from "@/lib/api/coach"
 
 export interface GetClientSessionsParams {
   startDate?: string
@@ -11,17 +12,7 @@ export interface GetClientSessionsParams {
 
 export interface ClientSession {
   id: number
-  coach: {
-    id: number
-    firstName: string
-    lastName: string
-    birthDate: string
-    sex: "M" | "F"
-    avatar: string
-    isTopCoach: boolean
-    creation_datetime: string
-    categories: SessionCategory[]
-  }
+  coach: CoachUser
   clientPrice: string
   coachPrice: string
   startDatetime: string

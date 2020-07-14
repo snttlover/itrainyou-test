@@ -5,8 +5,11 @@ import { navigatePush } from "@/feature/navigation"
 import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
 import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
+import { createGate } from "@/scope"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
+
+export const step1Gate = createGate()
 
 export const step1Registered = createEvent()
 export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form>, RegisterAsUserResponse, AxiosError>({
@@ -32,6 +35,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   defaultValue: "",
   validator: emailValidator,
   eventMapper: event => event.map(trimString),
+  reset: step1Gate.open,
 })
 
 $emailError.on(registerFx.fail, (state, { error }) => {
@@ -45,6 +49,7 @@ export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = 
   defaultValue: "",
   validator: passwordValidator,
   eventMapper: event => event.map(trimString),
+  reset: step1Gate.open,
 })
 
 export const [
@@ -53,7 +58,7 @@ export const [
   $passwordRepeatError,
   $isPasswordRepeatCorrect,
 ] = createEffectorField<string, { value: string; $password: string }>({
-  validatorEnhancer: $store => combine($store, $password, value => ({ $password: $password.getState(), value })),
+  validatorEnhancer: $store => combine($store, $password, (value, password) => ({ $password: password, value })),
   defaultValue: "",
   validator: v => {
     const error = passwordValidator(v.value)
@@ -61,6 +66,7 @@ export const [
     return error
   },
   eventMapper: event => event.map(trimString),
+  reset: step1Gate.open,
 })
 
 export const $step1Form = createStoreObject({

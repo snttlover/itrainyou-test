@@ -1,12 +1,12 @@
 import { IsAuthed } from "@/feature/user/IsAuthed"
 import { IsGuest } from "@/feature/user/IsGuest"
 import { date } from "@/lib/formatting/date"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import { Calendar } from "@/components/calendar/Calendar"
-import { useEvent, useStore } from "effector-react" // ITS RIGHT!!! don't use effector-react/ssr
+import { useEvent, useStore } from /* ITS RIGHT!!! don't use effector-react/ssr */"effector-react"
 import { Event, Store } from "effector-root"
 import { Tabs, Tab } from "@/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/components/coach-card/select-date/select-date.model"
@@ -222,11 +222,15 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
 
-  const [currentDate, changeCurrentDate] = useState<Date | undefined>()
-  const pinnedDates = sessions.map(session => session.startDatetime)
+  const [currentDate, changeCurrentDate] = useState<Date | null>(null)
+  const enabledDates = sessions.map(session => session.startDatetime)
 
-  const formattedDate = date(currentDate).format("DD MMMM")
-  const currentDateEqual = date(currentDate).format(equalDateFormat)
+  useEffect(() => {
+    changeCurrentDate(null)
+  }, [activeTab])
+
+  const formattedDate = date(currentDate || date()).format("DD MMMM")
+  const currentDateEqual = date(currentDate || date()).format(equalDateFormat)
 
   if (!props.coach.prices[activeTab] && tabs.length) {
     changeActiveTab(tabs[0].key)
@@ -264,7 +268,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
       <Block onlyOneCard={tabs.length === 1}>
         {loading && <Spinner />}
         <Datepicker>
-          <StyledCalendar value={currentDate} pinnedDates={pinnedDates} onChange={changeCurrentDate} isBig={true} />
+          <StyledCalendar value={currentDate} enabledDates={enabledDates} onChange={changeCurrentDate} isBig={true} />
         </Datepicker>
         <SelectTimeContainer>
           <SelectDateHeader>{formattedDate}</SelectDateHeader>

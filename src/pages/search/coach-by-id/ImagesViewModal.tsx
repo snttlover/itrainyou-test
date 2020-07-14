@@ -1,11 +1,10 @@
 import { Icon } from "@/components/icon/Icon"
 import { Modal } from "@/components/modal/Modal"
 import { MediaRange } from "@/lib/responsive/media"
-import React, { useState } from "react"
-import ReactIdSwiper from "react-id-swiper"
-import { SwiperInstance } from "react-id-swiper/lib/types"
+import React, { useRef, useState } from "react"
+import ReactIdSwiper, { SwiperInstance, SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
-import { SwiperOptions } from "swiper"
+import Swiper, { SwiperOptions } from "swiper"
 
 const Layout = styled.div`
   position: fixed;
@@ -56,6 +55,7 @@ const Content = styled.div`
   margin: 0 auto;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 
   ${MediaRange.greaterThan("mobile")`
     justify-content: space-between;
@@ -63,10 +63,12 @@ const Content = styled.div`
 `
 
 const CounterText = styled.p`
-  position: absolute;
+  position: relative;
   top: 12px;
   left: 50%;
   transform: translate(-50%, 0);
+  width: 100%;
+  text-align: center;
 
   font-family: Roboto;
   font-style: normal;
@@ -76,7 +78,20 @@ const CounterText = styled.p`
   color: #ffffff;
 `
 
-const Photo = styled.img``
+const Photo = styled.img`
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: calc(100vh - 60px);
+`
+
+const PhotoWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+`
 
 const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
   min-width: 40px;
@@ -102,28 +117,42 @@ const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
   `}
 `
 
+const SliderWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  .swiper-wrapper {
+    display: flex;
+    align-items: center;
+  }
+`
+
 type ImagesViewModalProps = {
   photos: string[]
   initialSlide: number
   close: () => void
 }
 
-const swiperOptions: SwiperOptions = {
-  navigation: {
-    nextEl: ".photo-viewer__next-button",
-    prevEl: ".photo-viewer__prev-button",
-  },
-  slidesPerView: 1,
-  a11y: false,
-}
-
 export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModalProps) => {
-  const [swiper, updateSwiper] = useState<SwiperInstance | null>(null)
+  const swiper = useRef<SwiperRefNode>(null)
   const [currentIndex, setCurrentIndex] = useState(initialSlide)
 
-  swiper?.on("slideChange", () => {
-    setCurrentIndex(swiper?.activeIndex)
-  })
+  const swiperOptions: SwiperOptions = {
+    navigation: {
+      nextEl: ".photo-viewer__next-button",
+      prevEl: ".photo-viewer__prev-button",
+    },
+    slidesPerView: 1,
+    a11y: false,
+    on: {
+      slideChange() {
+        setCurrentIndex(((this as unknown) as Swiper).activeIndex)
+      },
+    },
+  }
 
   return (
     <Modal>
@@ -136,13 +165,17 @@ export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModal
           <CounterText>
             {currentIndex + 1} из {photos.length}
           </CounterText>
-          <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper?.slidePrev()} />
-          <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} getSwiper={updateSwiper}>
-            {photos.map(src => (
-              <Photo src={src} />
-            ))}
-          </ReactIdSwiper>
-          <ArrowButton className='photo-viewer__next-button' onClick={() => swiper?.slideNext()} />
+          <SliderWrapper>
+            <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
+            <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} ref={swiper}>
+              {photos.map(src => (
+                <PhotoWrapper>
+                  <Photo key={src} src={src} />
+                </PhotoWrapper>
+              ))}
+            </ReactIdSwiper>
+            <ArrowButton className='photo-viewer__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
+          </SliderWrapper>
         </Content>
       </Layout>
     </Modal>

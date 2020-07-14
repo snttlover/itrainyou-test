@@ -2,9 +2,12 @@ import { changePassword, ChangePasswordResponse } from "@/lib/api/users/change-p
 import { createEffectorField } from "@/lib/generators/efffector"
 import { changeToken } from "@/lib/network/token"
 import { passwordValidator, trimString } from "@/lib/validators"
+import { createGate } from "@/scope"
 import { AxiosError } from "axios"
 import { combine, createEffect, createStoreObject, forward } from "effector-root"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+
+export const PasswordFormGate = createGate()
 
 type ResetRType = {
   oldPassword: string
@@ -44,6 +47,7 @@ export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = 
   defaultValue: "",
   validator: passwordValidator,
   eventMapper: event => event.map(trimString),
+  reset: PasswordFormGate.open,
 })
 
 export const [$oldPassword, oldPasswordChanged, $oldPasswordError, $isOldPasswordCorrect] = createEffectorField<string>(
@@ -56,6 +60,7 @@ export const [$oldPassword, oldPasswordChanged, $oldPasswordError, $isOldPasswor
       return null
     },
     eventMapper: event => event.map(trimString),
+    reset: PasswordFormGate.open,
   }
 )
 
@@ -75,7 +80,7 @@ export const [
   $passwordRepeatError,
   $isPasswordRepeatCorrect,
 ] = createEffectorField<string, { value: string; $password: string }>({
-  validatorEnhancer: $store => combine($store, $password, value => ({ $password: $password.getState(), value })),
+  validatorEnhancer: $store => combine($store, $password, (value, password) => ({ $password: password, value })),
   defaultValue: "",
   validator: v => {
     const error = passwordValidator(v.value)
@@ -83,6 +88,7 @@ export const [
     return error
   },
   eventMapper: event => event.map(trimString),
+  reset: PasswordFormGate.open,
 })
 
 export const $changePasswordForm = createStoreObject({

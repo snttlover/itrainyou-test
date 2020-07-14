@@ -2,16 +2,9 @@ import { config } from "@/config"
 import { Pagination } from "@/lib/api/interfaces/utils.interface"
 import { keysToCamel } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
+import { Client } from "@/lib/api/client/clientInfo"
 
-export interface ReviewClient {
-  id: number
-  firstName: string
-  lastName: string
-  birthDate: string
-  sex: "F" | "M"
-  avatar: string
-  creationDatetime: string
-}
+export type ReviewClient = Client
 
 export interface ReviewCouch {
   id: number

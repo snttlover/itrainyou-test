@@ -5,6 +5,7 @@ import styled from "styled-components"
 import * as React from "react"
 import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
 import { MediaRange } from "@/lib/responsive/media"
+import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-socket"
 
 const ItemsWrapper = styled.div`
   display: flex;
@@ -45,13 +46,14 @@ const Delimiter = styled.div`
 
 export const CoachMenuItems = () => {
   const isApproved = useStore($coachAccess).isApproved
+  const chatsCount = useStore(coachChatsSocket.data.$chatsCount)
   return (
     <ItemsWrapper>
       <DashboardMenuItem link={routeNames.coach()} icon='home'>
         Главная страница
       </DashboardMenuItem>
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachClients()} icon='my-coaches'>
-        Мои клиенты
+      <DashboardMenuItem link={routeNames.coachClients()} icon='my-coaches'>
+        Мои клиенты {chatsCount ? `+${chatsCount}` : ``}
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/now' icon='hand'>
       Здесь и сейчас
@@ -72,13 +74,13 @@ export const CoachMenuItems = () => {
         Поддержка
       </DashboardMenuItem>
       <Delimiter />
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachSchedule()} icon='none'>
+      <DashboardMenuItem link={routeNames.coachSchedule()} icon='calendar-with-clock'>
         Расписание
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachBlocked()} icon='calendar-with-clock'>
+      <DashboardMenuItem disabled={isApproved} link={routeNames.coachBlocked()} icon='none'>
         Заблокированные
       </DashboardMenuItem>
     </ItemsWrapper>

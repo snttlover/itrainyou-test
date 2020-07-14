@@ -7,9 +7,10 @@ import { getYearsCount } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { $coach } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import React, { useState } from "react"
 import styled from "styled-components"
+import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
@@ -156,6 +157,7 @@ const MobileWriteButton = styled(WriteButton)`
 
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($coach)
+  const write = useEvent(writeToCoach)
   const [isLiked, setLiked] = useState(false)
   return (
     <StyledBlock inline {...props}>
@@ -181,13 +183,13 @@ export const BaseCoachInfo = styled(({ ...props }) => {
               ))}
             </CategoriesContainer>
             <IsAuthed>
-              <WriteButton>Написать</WriteButton>
+              <WriteButton onClick={() => write(coach?.id || null)}>Написать</WriteButton>
             </IsAuthed>
           </CategoriesAndButtonContainer>
         </UserInfo>
       </UserInfoWrapper>
       <IsAuthed>
-        <MobileWriteButton>Написать</MobileWriteButton>
+        <MobileWriteButton onClick={() => write(coach?.id || null)}>Написать</MobileWriteButton>
       </IsAuthed>
     </StyledBlock>
   )

@@ -1,8 +1,9 @@
 import { navigatePush } from "@/feature/navigation"
 import { loadUserData } from "@/feature/user/user.model"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
+import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { routeNames } from "@/pages/route-names"
-import { createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
+import { attach, createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
 
 export const REGISTER_SAVE_KEY = "__register-data__"
 
@@ -22,22 +23,16 @@ type CoachData = {
   videoInterview: string
 }
 
-type UserData =
-  | {
-      type: "client"
-      clientData?: ClientData
-      categories: number[]
-    }
-  | {
-      type: "coach"
-      clientData?: ClientData
-      categories: number[]
-      coachData?: CoachData
-    }
+type UserData = {
+  type: "coach" | "client"
+  clientData: ClientData
+  categories: number[]
+  coachData: CoachData
+}
 
 export type RegisterUserType = "client" | "coach"
 
-export const pageMounted = createEvent()
+export const signUpPageMounted = createEvent()
 
 export const userTypeChanged = createEvent<RegisterUserType>()
 export const userDataChanged = createEvent<UserData>()
@@ -46,15 +41,18 @@ export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
 
-export const $userData = createStore<UserData>({ type: "client", categories: [] })
+export const $userData = createStore<UserData>({
+  type: "client",
+  clientData: { avatar: null, birthDate: null, lastName: "", sex: "", firstName: "" },
+  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "" },
+  categories: [],
+})
   .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
   .reset(userDataReset)
-
-const watchedEvents = merge([userTypeChanged, clientDataChanged, coachDataChanged, categoriesChanged, userDataReset])
 
 const saveDataFx = createEffect({
   handler: (userData: UserData) => {
@@ -65,10 +63,9 @@ const saveDataFx = createEffect({
   },
 })
 
-sample({
-  source: $userData,
-  clock: watchedEvents,
-  target: saveDataFx,
+forward({
+  from: $userData.updates,
+  to: saveDataFx,
 })
 
 const loadDataFx = createEffect({
@@ -82,7 +79,7 @@ const loadDataFx = createEffect({
 })
 
 forward({ from: loadDataFx.doneData, to: $userData })
-forward({ from: pageMounted, to: loadDataFx })
+forward({ from: signUpPageMounted, to: loadDataFx })
 
 export const userRegistered = createEvent()
 
@@ -98,15 +95,22 @@ export const registerUserFx = createEffect({
 
 export const skipCoach = createEvent()
 
-forward({ from: registerUserFx.done, to: loadUserData })
+const getMyUserDataFx = attach({
+  effect: getMyUserFx as any,
+  mapParams: () => ({}),
+})
+
+forward({ from: registerUserFx.done, to: getMyUserDataFx })
 
 registerUserFx.done.watch(_ => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
 })
 
-const userType = split(registerUserFx.done, {
-  client: ({ params }) => params.type === "client",
-  coach: ({ params }) => params.type === "coach",
+const event = sample({clock: getMyUserDataFx.done, source: registerUserFx.done.map(({params}) => params)})
+
+const userType = split(event, {
+  client: ({ type }) => type === "client",
+  coach: ({ type }) => type === "coach",
 })
 
 forward({

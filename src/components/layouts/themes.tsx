@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components"
 
 export const clientTheme = {
   colors: {
+    primaryBackground: `#D3D7F3`,
     primary: `#4858CC`,
     primaryDarker: `#3746B0`,
   },
@@ -10,6 +11,7 @@ export const clientTheme = {
 
 const coachTheme: typeof clientTheme = {
   colors: {
+    primaryBackground: `#E0CFEA`,
     primary: `#7D36A8`,
     primaryDarker: `#7D36A8`,
   },

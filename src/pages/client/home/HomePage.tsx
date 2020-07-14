@@ -111,7 +111,7 @@ export const HomePage = () => {
         )}
         {todaySessions.length > 0 && (
           <Block>
-            <Title>У вас сегодня</Title>
+            <Title>Ближайшие сессии</Title>
             {todaySessions.map(session => (
               <TodaySessionCard session={session} key={session.id} />
             ))}
@@ -125,6 +125,7 @@ export const HomePage = () => {
             next={_loadMore as any}
             hasMore={isHasMoreRecommendations}
             dataLength={recommendations.length}
+            style={{overflow: 'hidden'}}
           >
             {recommendations.map(coach => (
               <RecommendationCoachCard key={coach.id} coach={coach} />

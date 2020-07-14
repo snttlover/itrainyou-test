@@ -1,7 +1,7 @@
 import { uploadMedia } from "@/lib/api/media"
 import { createEffectorField } from "@/lib/generators/efffector"
 import { phoneValidator, trimString } from "@/lib/validators"
-import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-root"
+import { combine, createEffect, createEvent, createStore, createStoreObject, forward, restore } from "effector-root"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -9,7 +9,6 @@ export const [$education, educationChanged, $educationError, $isEducationCorrect
     if (!value) return "Поле не должно быть пустым"
     return null
   },
-  eventMapper: event => event.map(trimString),
 })
 
 export const [
@@ -84,8 +83,9 @@ export const $photos = createStore<string[]>([])
   .on(photoRemoved, (state, index) => [...state.slice(0, index), ...state.slice(index + 1)])
 
 export const toggleCategory = createEvent<number>()
+export const setCategories = createEvent<number[]>()
 
-export const $selectedCategories = createStore<number[]>([]).on(toggleCategory, (state, payload) => {
+export const $selectedCategories = restore(setCategories, []).on(toggleCategory, (state, payload) => {
   if (state.includes(payload)) return state.filter(category => category !== payload)
   return [...state, payload]
 })

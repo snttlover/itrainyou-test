@@ -6,6 +6,7 @@ import { useStore } from "effector-react/ssr"
 import { $userData } from "@/feature/user/user.model"
 import { changeBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import * as React from "react"
+import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-socket"
 
 const Tooltip = styled.div`
   position: absolute;
@@ -57,6 +58,9 @@ const Back = styled.div`
 export const CoachTooltip = (props: CoachTooltipTypes) => {
   const user = useStore($userData)
 
+  const clientChatsCount = useStore(clientChatsSocket.data.$chatsCount)
+  const coachChatsCount = useStore(coachChatsSocket.data.$chatsCount)
+
   const [visibility, changeVisibility] = useState(false)
 
   const backClick = (e: React.SyntheticEvent) => {
@@ -79,8 +83,8 @@ export const CoachTooltip = (props: CoachTooltipTypes) => {
         {visibility && (
           <>
             <Tooltip onClick={hideSideBar}>
-              <CoachRow label='Коуч' notificationsCount={0} messagesCount={0} to='/coach' />
-              <ClientRow label='Клиент' notificationsCount={0} messagesCount={0} to='/client' />
+              <CoachRow label='Коуч' notificationsCount={0} messagesCount={coachChatsCount} to='/coach' />
+              <ClientRow label='Клиент' notificationsCount={0} messagesCount={clientChatsCount} to='/client' />
             </Tooltip>
             {props.withBack && <Back onClick={backClick} />}
           </>

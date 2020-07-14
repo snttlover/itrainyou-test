@@ -1,6 +1,8 @@
 import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { LoginPage } from "@/pages/auth/pages/login/LoginPage"
+import RecoveryPage from "@/pages/auth/pages/recovery/RecoveryPage"
+import { ResetPasswordPage } from "@/pages/auth/pages/reset-password/ResetPasswordPage"
 import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import HomePage from "@/pages/client/home/HomePage"
 import ProfilePage from "@/pages/client/profile/ProfilePage"
@@ -11,12 +13,16 @@ import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
 import CoachSupportPage from "@/pages/coach/support/CoachSupportPage"
 import CoachWalletPage from "@/pages/coach/wallet/CoachWalletPage"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
+import {ClientChatPage} from "@/pages/client/chats/chat/ClientChatPage"
+import ClientChatListPage from "@/pages/client/chats/list/ClientChatListPage"
 import { routeNames } from "@/pages/route-names"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
 import * as React from "react"
 import { RouteConfig } from "react-router-config"
 import { LandingPage } from "./landing/LandingPage"
 import { SearchPage } from "./search/SearchPage"
+import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
+import { NotFound } from "@/feature/not-found/components/NotFound"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -45,9 +51,27 @@ export const ROUTES: RouteConfig[] = [
     component: SignUpPage,
   },
   {
+    path: routeNames.recovery(),
+    component: RecoveryPage,
+  },
+  {
+    path: routeNames.resetPassword(":token"),
+    render: ({ match }) => <ResetPasswordPage token={match.params.token} />,
+  },
+  {
     path: routeNames.client(),
     exact: true,
     component: HomePage,
+  },
+
+  {
+    path: routeNames.clientChatsList(),
+    exact: true,
+    component: ClientChatListPage,
+  },
+  {
+    path: routeNames.clientChat(":id"),
+    component: ClientChatPage,
   },
   {
     path: routeNames.clientProfile(),
@@ -101,7 +125,11 @@ export const ROUTES: RouteConfig[] = [
     component: CoachBlockedPage,
   },
   {
-    path: "*",
-    render: () => <div>not found</div>,
+    path: routeNames.coachChat(":id"),
+    component: CoachChatPage,
   },
+  {
+    path: "*",
+    render: () => <NotFound />,
+  }
 ]

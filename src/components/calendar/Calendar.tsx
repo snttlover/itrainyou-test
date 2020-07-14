@@ -1,74 +1,37 @@
+import {
+  CalendarHeader,
+  Header,
+  LeftIcon,
+  MonthContainer,
+  MonthName,
+  RightIcon,
+  Year,
+} from "@/components/calendar/CalendarHeader"
 import { date } from "@/lib/formatting/date"
 import * as React from "react"
-import styled, { css } from "styled-components"
 import { Dispatch, SetStateAction, useState } from "react"
-import { Icon } from "@/components/icon/Icon"
+import styled, { css } from "styled-components"
 
-export type CalendarDateType = Date | Date[] | undefined
+export type CalendarDateType = Date | Date[] | undefined | null
 
 type CalendarTypes = {
   value: CalendarDateType
   pinnedDates?: string[] // iso date strings
+  enabledDates?: string[] // iso date strings
   onChange: (value: any) => void | Dispatch<SetStateAction<CalendarDateType>>
   selectRange?: boolean
   isBig?: boolean
   className?: string
   pinTo?: Date | null
+  onPrevMonth?: (prevMonth: Date) => void
+  onNextMonth?: (nextMonth: Date) => void
 }
 
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
 
-const Year = styled.div`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: #5b6670;
-`
-
-const MonthName = styled.div`
-  margin: 0 10px;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: #5b6670;
-  text-transform: capitalize;
-  width: 65px;
-  text-align: center;
-`
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-weight: normal;
-`
-
 type CalendarWrapperTypes = {
   isBig?: boolean
 }
-
-type LeftButtonTypes = {
-  disabled?: boolean
-}
-
-const LeftIcon = styled(Icon).attrs({ name: `left-icon` })<LeftButtonTypes>`
-  width: 5px;
-  height: 9px;
-  fill: #4858cc;
-  cursor: pointer;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
-  pointer-events: ${props => (props.disabled ? `none` : `auto`)};
-`
-
-const RightIcon = styled(Icon).attrs({ name: `right-icon` })<LeftButtonTypes>`
-  width: 5px;
-  height: 9px;
-  fill: #4858cc;
-  cursor: pointer;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
-  pointer-events: ${props => (props.disabled ? `none` : `auto`)};
-`
 
 const BigCalendarStyles = css`
   ${Header} {
@@ -138,16 +101,26 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
     outline: none;
     font-size: 12px;
     position: relative;
-    color: #5b6670;
+    color: #424242;
   }
-  .not-pinned {
+  .disabled {
     pointer-events: none;
     color: #dbdee0 !important;
   }
-  .pinned {
+  .enabled {
     position: relative;
     overflow: auto;
     opacity: 1;
+  }
+  .pinned:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 4px;
+    height: 4px;
+    background: ${props => props.theme.colors.primary};
+    border-radius: 4px;
   }
   .react-calendar__tile {
     margin-top: 10px;
@@ -157,7 +130,7 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
   .rangeStart,
   .rangeEnd,
   .react-calendar__tile--active {
-    background: #4858cc;
+    background: ${({ theme }) => theme.colors.primary};
     color: #fff !important;
   }
   .react-calendar__tile--rangeStart:not(.rangeEnd),
@@ -179,12 +152,6 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
   ${props => props.isBig && BigCalendarStyles}
 `
 
-const MonthContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
-`
-
 function firsDayOfMonth(month: number, year: number) {
   return new Date(date(`${year}-${month}-01`).valueOf())
 }
@@ -196,9 +163,11 @@ export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
 
   const pinnedDefined = !!props.pinnedDates
+  const enabledDefined = !!props.enabledDates
 
   const equalFormat = `DDMMYYYY`
   const pinnedDates = (props.pinnedDates || []).map(pinnedDate => date(pinnedDate).format(equalFormat))
+  const enabledDates = (props.enabledDates || []).map(enabledDate => date(enabledDate).format(equalFormat))
 
   type CustomClassNamesTypes = {
     date: Date
@@ -232,8 +201,14 @@ export const Calendar = (props: CalendarTypes) => {
     if (pinnedDefined) {
       if (pinnedDates.includes(date(dat).format(equalFormat))) {
         classes.push(`pinned`)
+      }
+    }
+
+    if (enabledDefined) {
+      if (enabledDates.includes(date(dat).format(equalFormat))) {
+        classes.push(`enabled`)
       } else {
-        classes.push(`not-pinned`)
+        classes.push(`disabled`)
       }
     }
 
@@ -255,11 +230,15 @@ export const Calendar = (props: CalendarTypes) => {
   }
 
   const prevMonth = () => {
-    changeActiveStartDate(new Date(date(startDate).subtract(1, "month").valueOf()))
+    const prevMonthDate = new Date(date(startDate).subtract(1, "month").valueOf())
+    changeActiveStartDate(prevMonthDate)
+    props.onPrevMonth?.(prevMonthDate)
   }
 
   const nextMonth = () => {
-    changeActiveStartDate(new Date(date(startDate).add(1, "month").valueOf()))
+    const nextMonthDate = new Date(date(startDate).add(1, "month").valueOf())
+    changeActiveStartDate(nextMonthDate)
+    props.onNextMonth?.(nextMonthDate)
   }
 
   const formatter = `YYYYMM`
@@ -267,14 +246,12 @@ export const Calendar = (props: CalendarTypes) => {
 
   return (
     <CalendarWrapper className={props.className} isBig={props.isBig}>
-      <Header>
-        <MonthContainer>
-          <LeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
-          <MonthName>{date(startDate).format(`MMMM`)}</MonthName>
-          <RightIcon onClick={nextMonth} />
-        </MonthContainer>
-        <Year>{date(startDate).format(`YYYY`)}</Year>
-      </Header>
+      <CalendarHeader
+        lessThanTheCurrentMonth={lessThanTheCurrentMonth}
+        prevMonth={prevMonth}
+        nextMonth={nextMonth}
+        currentDate={startDate}
+      />
       <ReactCalendar
         tileClassName={customClassNames}
         locale='ru-RU'

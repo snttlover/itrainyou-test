@@ -13,7 +13,7 @@ import { ServerStyleSheet } from "styled-components"
 import cookieParser from "cookie-parser"
 
 import { fork, serialize as effectorSerialize, allSettled } from "effector/fork"
-import { root, Event, forward, guard, sample, clearNode } from "effector-root"
+import { root, Event, forward, guard, sample } from "effector-root"
 import { config } from "./config"
 
 import { getStart, START } from "./lib/effector"
@@ -159,7 +159,8 @@ function htmlStart(assetsCss: string, assetsJs: string) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta charSet='utf-8' />
         <title>Itrainyou</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">     
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,500,600|Roboto:400,500,700,900&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">   
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ""}
         <script>window.env = ${serialize(config)};</script>
         ${

@@ -12,7 +12,7 @@ export const loadActiveSessionsFx = createEffect({
 })
 
 export const loadTodaySessionsFx = createEffect({
-  handler: () => getClientSessions({ startDate: date().toISOString() }),
+  handler: () => getClientSessions({}),
 })
 
 export const $recommendationsCount = createStore<number>(100).on(

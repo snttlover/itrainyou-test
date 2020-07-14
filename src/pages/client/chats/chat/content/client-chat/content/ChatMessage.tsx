@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import {MediaRange} from "@/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 
 type ContainerTypes = {
   "data-self": boolean
@@ -27,6 +27,8 @@ const Container = styled.div<ContainerTypes>`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  align-self: flex-start;
+  position: relative;
 
   &[data-self="true"] {
     background: ${props => props.theme.colors.primary};
@@ -47,14 +49,21 @@ const Container = styled.div<ContainerTypes>`
   `}
 `
 
+const Text = styled.div`
+  white-space: pre-wrap;
+  width: 100%;
+  word-break: break-word;
+`
+
 type ChatMessageTypes = {
   children: React.ReactChild
   time: string
+  id?: string
 } & ContainerTypes
 
 export const ChatMessage = (props: ChatMessageTypes) => (
-  <Container data-self={props["data-self"]}>
-    {props.children}
+  <Container id={props.id} data-self={props["data-self"]}>
+    <Text>{props.children}</Text>
     <Time>{props.time}</Time>
   </Container>
 )

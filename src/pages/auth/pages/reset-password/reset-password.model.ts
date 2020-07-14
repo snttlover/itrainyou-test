@@ -6,8 +6,6 @@ import { routeNames } from "@/pages/route-names"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-root"
 
-export const resetFormSended = createEvent()
-
 type ResetRType = {
   token: string
   password: string
@@ -18,7 +16,7 @@ export const resetFx = createEffect<ResetRType, ResetPasswordRequest, AxiosError
 })
 
 forward({
-  from: resetFx.done.map(() => ({ url: routeNames.landing() })),
+  from: resetFx.done.map(() => ({ url: routeNames.login() })),
   to: navigatePush,
 })
 
@@ -34,7 +32,7 @@ export const [
   $passwordRepeatError,
   $isPasswordRepeatCorrect,
 ] = createEffectorField<string, { value: string; $password: string }>({
-  validatorEnhancer: $store => combine($store, $password, value => ({ $password: $password.getState(), value })),
+  validatorEnhancer: $store => combine($store, $password, (value, password) => ({ $password: password, value })),
   defaultValue: "",
   validator: v => {
     const error = passwordValidator(v.value)

@@ -2,9 +2,15 @@ import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { trimString } from "@/lib/validators"
-import { $userData, clientDataChanged, REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/signup.model"
+import {
+  $userData,
+  clientDataChanged,
+  REGISTER_SAVE_KEY,
+  signUpPageMounted,
+} from "@/pages/auth/pages/signup/signup.model"
 import { Dayjs } from "dayjs"
-import { combine, createEvent, createStore, createStoreObject, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, createStoreObject, forward, sample } from "effector-root"
+import { combineEvents, spread } from "patronum"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -97,19 +103,27 @@ sample({
   target: clientDataChanged,
 })
 
-export const step3Mounted = createEvent()
-
-step3Mounted.watch(() => {
-  try {
+const loadDataFx = createEffect({
+  handler() {
     const stringData = localStorage.getItem(REGISTER_SAVE_KEY)
-    if (!stringData) return
-    const data = JSON.parse(stringData).clientData
-    data?.firstName && nameChanged(data.firstName)
-    data?.lastName && lastNameChanged(data.lastName)
-    data?.birthDate && birthdayChanged(date(data.birthDate, "YYYY-MM-DD"))
-    data?.sex && sexChanged(data.sex)
-    data?.avatar && imageUploaded({ id: -1, type: "IMAGE", file: data.avatar })
-  } catch (e) {}
+    return JSON.parse(stringData!).clientData
+  },
+})
+
+export const step3Mounted = createEvent()
+const waitAllEvents = combineEvents([step3Mounted, signUpPageMounted])
+
+forward({
+  from: waitAllEvents,
+  to: loadDataFx,
+})
+
+spread(loadDataFx.doneData, {
+  firstName: nameChanged,
+  lastName: lastNameChanged,
+  birthDate: birthdayChanged.prepend((birthDate: string) => date(birthDate, "YYYY-MM-DD")),
+  sex: sexChanged,
+  avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
 })
 
 export const $step3FormErrors = createStoreObject({

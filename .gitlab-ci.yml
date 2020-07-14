@@ -10,36 +10,45 @@ stages:
   - build
   - deploy
 
-build:
+.build:
   stage: build
-  variables:
-    IMAGE: $CI_REGISTRY_IMAGE:stable
-    BACKEND_URL: http://backend.itrainyou.ru
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
     - docker pull $IMAGE || true
-    - docker build --build-arg BACKEND_URL=${BACKEND_URL} -t $IMAGE .
+    - docker build -t $IMAGE .
     - docker push $IMAGE
+
+build-dev:
+  extends: .build
+  variables:
+    IMAGE: $CI_REGISTRY_IMAGE:latest
+  only:
+    - development
+
+build-prod:
+  extends: .build
+  variables:
+    IMAGE: $CI_REGISTRY_IMAGE:stable
   only:
     - master
 
-#deploy:
-#  stage: deploy
-#  variables:
-#    IMAGE_TAG: $CI_REGISTRY_IMAGE:latest
-#    IMAGE_NAME: itrainyoufrontend
-#    SERVER_IP: '89.223.92.195'
-#  script:
-#    - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client -y)'
-#    - mkdir -p ~/.ssh
-#    - eval $(ssh-agent -s)
-#    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-#    - echo "$PRODUCTION_KEY" | tr -d '\r' | ssh-add - > /dev/null
-#    - ssh -p22 root@$SERVER_IP "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} registry.gitlab.com"
-#    - ssh -p22 root@$SERVER_IP "docker pull ${IMAGE_TAG}"
-#    - ssh -p22 root@$SERVER_IP "docker rm -f ${IMAGE_NAME}"
-#    - ssh -p22 root@$SERVER_IP "docker run --name ${IMAGE_NAME} -d -p 127.0.0.1:3000:3000 ${IMAGE_TAG}"
-#    - ssh -p22 root@$SERVER_IP "docker system prune -f"
-#    - ssh -p22 root@$SERVER_IP "docker logout registry.gitlab.com"
-#  only:
-#    - master
+deploy:
+  stage: deploy
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:stable
+    IMAGE_NAME: itrainyoufrontend
+    SERVER_IP: 'itrainyou.ru'
+    USER: 'django'
+  script:
+    - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client -y)'
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - echo "$PRODUCTION_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - ssh -p22 $USER@$SERVER_IP "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} registry.gitlab.com"
+    - ssh -p22 $USER@$SERVER_IP "docker pull ${IMAGE_TAG}"
+    - ssh -p22 $USER@$SERVER_IP "docker rm -f ${IMAGE_NAME}"
+    - ssh -p22 $USER@$SERVER_IP "docker run --network=itrainyoubackend_default --name ${IMAGE_NAME} -e BACKEND_URL=//backend.itrainyou.ru -e WS_HOST=wss://backend.itrainyou.ru -e PORT=3000 -d ${IMAGE_TAG}"
+    - ssh -p22 $USER@$SERVER_IP "docker logout registry.gitlab.com"
+  only:
+    - master

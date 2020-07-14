@@ -43,6 +43,10 @@ const StyledResetFiltersButton = styled(ResetFiltersButton)`
   margin-top: 10px;
 `
 
+const StyledSpinner = styled(Spinner)`
+  background: transparent;
+`
+
 const NotFound = () => (
   <NotFoundText>
     <p>Ничего не найдено</p>
@@ -62,7 +66,7 @@ export const List = () => {
         <div>
           {loading && (
             <SpinnerContainer>
-              <Spinner />
+              <StyledSpinner />
             </SpinnerContainer>
           )}
         </div>

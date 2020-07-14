@@ -64,3 +64,6 @@ export const patch = <R, Data>(
 
 export const put = <R, Data>(url: string, data: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<Response>> =>
   axios.put(url, data, config)
+
+export const Delete = <R, Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<Response>> =>
+  axios.delete(url, config)

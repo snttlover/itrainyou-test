@@ -6,14 +6,15 @@ import {
   educationChanged,
   phoneChanged,
   restorePhotos,
-  toggleCategory,
+  setCategories,
   videoInterviewChanged,
   workExperienceChanged,
 } from "@/feature/coach-get-access/coach-get-access.model"
-import { $userData, loadUserData, UserData } from "@/feature/user/user.model"
+import { $userData, loadUserData } from "@/feature/user/user.model"
 import { updateMyCoach } from "@/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/lib/types/effector"
-import { attach, combine, createEffect, createEvent, forward, sample } from "effector-root"
+import { combine, createEffect, createEvent, forward, sample } from "effector-root"
+import { spread } from "patronum"
 
 const calculateProgress = ({
   form,
@@ -60,29 +61,29 @@ forward({
 
 export const coachGetAccessMounted = createEvent()
 
-const fillCoachData = attach({
+const userDataLoaded = sample({
   source: $userData,
-  effect: createEffect({
-    handler: (userData: UserData) => {
-      const coach = userData.coach
-      coach?.description && descriptionChanged(coach.description)
-      coach?.education && educationChanged(coach.education)
-      coach?.phone && phoneChanged(coach.phone)
-      coach?.photos && restorePhotos(coach.photos)
-      coach?.videoInterview && videoInterviewChanged(coach.videoInterview)
-      coach?.workExperience && workExperienceChanged(coach.workExperience)
-      coach?.categories && coach.categories.forEach(cat => toggleCategory(cat.id))
-    },
-  }),
-  mapParams: (_: void, userData: UserData) => userData,
+  clock: coachGetAccessMounted,
+})
+
+spread(
+  userDataLoaded.map(data => data.coach),
+  {
+    description: descriptionChanged,
+    education: educationChanged,
+    phone: phoneChanged,
+    photos: restorePhotos,
+    videoInterview: videoInterviewChanged,
+    workExperience: workExperienceChanged,
+  }
+)
+
+forward({
+  from: userDataLoaded.map(data => data.coach?.categories.map(cat => cat.id) || []),
+  to: setCategories,
 })
 
 forward({
   from: coachGetAccessMounted,
   to: fetchCategoriesList,
-})
-
-forward({
-  from: coachGetAccessMounted,
-  to: fillCoachData,
 })

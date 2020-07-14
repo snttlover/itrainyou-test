@@ -46,6 +46,9 @@ export type IconName =
   | "my-coaches"
   | "my-purse"
   | "settings"
+  | "not-found-desktop"
+  | "not-found-tablet"
+  | "not-found-mobile"
 
 type IconProps = {
   name: IconName

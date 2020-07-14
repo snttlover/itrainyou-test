@@ -30,7 +30,7 @@ const MainInfoContainer = styled.div`
   `}
 `
 
-const Avatar = styled.div<{ image: string }>`
+const Avatar = styled.div<{ image: string | null }>`
   width: 60px;
   height: 60px;
   background-image: url("${props => props.image}");
