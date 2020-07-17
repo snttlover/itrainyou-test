@@ -96,11 +96,19 @@ const ArrowButton = styled(Icon).attrs({ name: "arrow" })`
   &.photos__prev-button {
     transform: rotate(90deg);
     margin-right: 10px;
+
+    &.swiper-button-lock {
+      display: none;
+    }
   }
 
   &.photos__next-button {
     transform: rotate(-90deg);
     margin-left: 10px;
+
+    &.swiper-button-lock {
+      display: none;
+    }
   }
 
   ${MediaRange.greaterThan("mobile")`
