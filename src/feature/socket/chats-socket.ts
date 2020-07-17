@@ -1,11 +1,13 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
-import { combine, createEvent, createStore, forward, guard, sample } from "effector-root"
+import { combine, createEvent, createStore, forward, guard, sample, merge } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
+import { combineEvents } from "patronum"
+import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
 
 type SendSocketChatMessage = {
   chat: number
@@ -137,7 +139,7 @@ export const createChatsSocket = (userType: UserType) => {
 
   sample({
     source: $token,
-    clock: $needConnect,
+    clock: merge([$needConnect, registerUserFx.done]),
     fn: token => getChatSocketLink(userType, token),
     target: connect,
   })
