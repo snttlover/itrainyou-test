@@ -1,6 +1,7 @@
-import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
+import { runInScope } from "@/scope"
 import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 
 export interface CoachSessionWithSelect extends CoachSession {
@@ -72,22 +73,19 @@ export const genCoachSessions = (id = 0) => {
     to: buySessionsFx,
   })
 
-  forward({
-    from: buySessionsFx.done,
-    to: toasts.add.prepend(() => ({ type: "info", text: "Сессии успешно забронированы" })),
+  const sessionBookSuccessToast: Toast = { type: "info", text: "Сессии успешно забронированы" }
+  buySessionsFx.done.watch(() => {
+    runInScope(toasts.remove, sessionBookSuccessToast)
+    runInScope(toasts.add, sessionBookSuccessToast)
   })
 
   sample({
     clock: buySessionsFx.done,
     source: $id,
-    fn: (id, data) => ({
-      id,
-      ...data,
-    }),
     target: attach({
       source: loadParams,
       effect: fetchCoachSessionsListFx,
-      mapParams: (_, params: any) => params,
+      mapParams: (id: number, params) => ({ id, ...params }),
     }),
   })
 

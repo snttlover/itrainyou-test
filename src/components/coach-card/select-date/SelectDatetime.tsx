@@ -6,7 +6,7 @@ import * as React from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import { Calendar } from "@/components/calendar/Calendar"
-import { useEvent, useStore } from /* ITS RIGHT!!! don't use effector-react/ssr */"effector-react"
+import { useEvent, useStore } from /* ITS RIGHT!!! don't use effector-react/ssr */ "effector-react"
 import { Event, Store } from "effector-root"
 import { Tabs, Tab } from "@/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/components/coach-card/select-date/select-date.model"
@@ -221,6 +221,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
+  const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
 
   const [currentDate, changeCurrentDate] = useState<Date | null>(null)
   const enabledDates = sessions.map(session => session.startDatetime)
@@ -296,7 +297,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
               <IsAuthed>
                 <Button
                   disabled={buyLoading || selected.length === 0}
-                  onClick={() => props.sessionsData.buySessionBulk(selected.map(item => item.id))}
+                  onClick={() => buySessionBulk(selected.map(item => item.id))}
                 >
                   Забронировать
                 </Button>
