@@ -78,11 +78,7 @@ export const genCoachSessions = (id = 0) => {
   buySessionsFx.done.watch(() => {
     runInScope(toasts.remove, sessionBookSuccessToast)
     runInScope(toasts.add, sessionBookSuccessToast)
-  })
-
-  forward({
-    from: buySessionsFx.done,
-    to: clientChatsList.methods.reset
+    runInScope(clientChatsList.methods.reset)
   })
 
   sample({
