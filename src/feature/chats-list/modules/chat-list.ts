@@ -34,6 +34,8 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   const addMessage = createEvent<ChatListMessage>()
   const loadChatByMessage = createEvent<ChatListMessage>()
 
+  const reset = createEvent()
+
   pagination.data.$list
     .on(addMessage, (chats, message) => {
       const chat = chats.find(chat => chat.id === message.chat)
@@ -52,6 +54,9 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     })
     .on(config.socket.events.onChatCreated, (chats, socketMessage) => [socketMessage.data, ...chats])
     .on(loadChatByMessageFx.doneData, (chats, chat) => [chat, ...chats])
+    .reset(reset)
+
+  pagination.data.$currentPage.reset(reset)
 
   condition({
     source: sample({
@@ -126,6 +131,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     to: [pagination.methods.loadMore],
   })
 
+  forward({
+    from: reset,
+    to: loadChats
+  })
+
   return {
     modules: {
       pagination,
@@ -135,6 +145,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     },
     methods: {
       loadChats,
+      reset
     },
   }
 }

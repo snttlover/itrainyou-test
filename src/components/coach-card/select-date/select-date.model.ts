@@ -3,6 +3,7 @@ import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTyp
 import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { runInScope } from "@/scope"
 import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
+import { clientChatsList } from "@/pages/client/chats/list/client-chats-list.module"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -77,6 +78,11 @@ export const genCoachSessions = (id = 0) => {
   buySessionsFx.done.watch(() => {
     runInScope(toasts.remove, sessionBookSuccessToast)
     runInScope(toasts.add, sessionBookSuccessToast)
+  })
+
+  forward({
+    from: buySessionsFx.done,
+    to: clientChatsList.methods.reset
   })
 
   sample({
