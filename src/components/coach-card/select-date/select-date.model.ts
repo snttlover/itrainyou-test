@@ -2,6 +2,7 @@ import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
+import { clientChatsList } from "@/pages/client/chats/list/client-chats-list.module"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -75,6 +76,11 @@ export const genCoachSessions = (id = 0) => {
   forward({
     from: buySessionsFx.done,
     to: toasts.add.prepend(() => ({ type: "info", text: "Сессии успешно забронированы" })),
+  })
+
+  forward({
+    from: buySessionsFx.done,
+    to: clientChatsList.methods.reset
   })
 
   sample({
