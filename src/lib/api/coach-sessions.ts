@@ -22,6 +22,6 @@ export interface GetCoachSessionsParamsTypes {
 }
 
 export const getCoachSessions = (id: number | "me", params: GetCoachSessionsParamsTypes): Promise<CoachSession[]> =>
-  get<CoachSession[], GetCoachSessionsParamsTypes>(`${config.BACKEND_URL}/api/v1/web/coaches/${id}/sessions`, params)
+  get<CoachSession[], GetCoachSessionsParamsTypes>(`${config.BACKEND_URL}/api/v1/web/coaches/${id}/sessions/`, params)
     .then(response => response.data)
     .then(keysToCamel)
