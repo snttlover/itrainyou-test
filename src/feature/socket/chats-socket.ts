@@ -1,10 +1,11 @@
 import { createSocket } from "@/feature/socket/create-socket"
-import { ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
 import { combine, createEvent, createStore, forward, guard, sample } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
+import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 
 type SendSocketChatMessage = {
   chat: number
@@ -35,7 +36,12 @@ export type WriteChatMessageDone = {
   data: ChatMessage
 }
 
-type SocketMessageReceive = WriteChatMessageDone | InitMessage | MessagesReadDone
+export type OnChatCreated = {
+  type: `NEW_CHAT_CREATED`
+  data: Chat
+}
+
+type SocketMessageReceive = WriteChatMessageDone | InitMessage | MessagesReadDone | OnChatCreated
 
 type UserType = "client" | "coach"
 
@@ -47,6 +53,7 @@ export const createChatsSocket = (userType: UserType) => {
   const socket = createSocket()
 
   const onMessage = createEvent<WriteChatMessageDone>()
+  const onChatCreated = createEvent<OnChatCreated>()
   const onMessagesReadDone = createEvent<MessagesReadDone>()
 
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: `WRITE_MESSAGE`, data }))
@@ -106,6 +113,12 @@ export const createChatsSocket = (userType: UserType) => {
 
   guard({
     source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === `NEW_CHAT_CREATED`,
+    target: onChatCreated,
+  })
+
+  guard({
+    source: socket.events.onMessage,
     filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
     target: onMessage,
   })
@@ -130,6 +143,16 @@ export const createChatsSocket = (userType: UserType) => {
   })
 
   forward({
+    from: changePasswordFx.done,
+    to: socket.methods.disconnect,
+  })
+
+  forward({
+    from: changePasswordFx.doneData.map(({ token }) => getChatSocketLink(userType, token)),
+    to: connect,
+  })
+
+  forward({
     from: logout,
     to: socket.methods.disconnect,
   })
@@ -142,6 +165,7 @@ export const createChatsSocket = (userType: UserType) => {
     events: {
       ...socket.events,
       onMessage,
+      onChatCreated,
     },
     methods: {
       send,

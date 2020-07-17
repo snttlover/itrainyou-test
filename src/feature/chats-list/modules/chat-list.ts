@@ -34,6 +34,8 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   const addMessage = createEvent<ChatListMessage>()
   const loadChatByMessage = createEvent<ChatListMessage>()
 
+  const reset = createEvent()
+
   pagination.data.$list
     .on(addMessage, (chats, message) => {
       const chat = chats.find(chat => chat.id === message.chat)
@@ -50,7 +52,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
 
       return chats
     })
+    .on(config.socket.events.onChatCreated, (chats, socketMessage) => [socketMessage.data, ...chats])
     .on(loadChatByMessageFx.doneData, (chats, chat) => [chat, ...chats])
+    .reset(reset)
+
+  pagination.data.$currentPage.reset(reset)
 
   condition({
     source: sample({
@@ -85,36 +91,36 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     config.socket.data.$chatsCounters,
     (chats, time, counters) => {
       return chats
-        .sort((chatA, chatB) => getChatDate(chatA) > getChatDate(chatB) ? -1 : 1 )
+        .sort((chatA, chatB) => (getChatDate(chatA) > getChatDate(chatB) ? -1 : 1))
         .map(chat => {
-        const newMessagesCounter = counters.find(counter => counter.id === chat.id)
+          const newMessagesCounter = counters.find(counter => counter.id === chat.id)
 
-        const interlocutor = config.type === "client" ? chat.coach : chat.clients[0]
-        const lastMessageIsMine = !!(config.type === "client"
-          ? chat.lastMessage?.senderClient
-          : chat.lastMessage?.senderCoach)
+          const interlocutor = config.type === "client" ? chat.coach : chat.clients[0]
+          const lastMessageIsMine = !!(config.type === "client"
+            ? chat.lastMessage?.senderClient
+            : chat.lastMessage?.senderCoach)
 
-        const startTime = chat.lastMessage?.creationDatetime
-          ? date(chat.lastMessage?.creationDatetime).format(`HH:mm`)
-          : ``
+          const startTime = chat.lastMessage?.creationDatetime
+            ? date(chat.lastMessage?.creationDatetime).format(`HH:mm`)
+            : ``
 
-        return {
-          link: `/${config.type}/chats/${chat.id}`,
-          avatar: interlocutor?.avatar || null,
-          name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,
-          startTime,
-          newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
-          materialCount: chat.materialsCount,
-          isStarted: chatSessionIsStarted(chat),
-          lastMessage: chat.lastMessage?.text || ``,
-          lastMessageIsMine,
-          highlightMessages: !!newMessagesCounter,
-          sessionTextStatus: getSessionStatusByDates(
-            chat.nearestSession?.startDatetime,
-            chat.nearestSession?.endDatetime
-          ),
-        }
-      })
+          return {
+            link: `/${config.type}/chats/${chat.id}`,
+            avatar: interlocutor?.avatar || null,
+            name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,
+            startTime,
+            newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
+            materialCount: chat.materialsCount,
+            isStarted: chatSessionIsStarted(chat),
+            lastMessage: chat.lastMessage?.text || ``,
+            lastMessageIsMine,
+            highlightMessages: !!newMessagesCounter,
+            sessionTextStatus: getSessionStatusByDates(
+              chat.nearestSession?.startDatetime,
+              chat.nearestSession?.endDatetime
+            ),
+          }
+        })
     }
   )
 
@@ -123,6 +129,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   forward({
     from: loadChats,
     to: [pagination.methods.loadMore],
+  })
+
+  forward({
+    from: reset,
+    to: loadChats
   })
 
   return {
@@ -134,6 +145,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     },
     methods: {
       loadChats,
+      reset
     },
   }
 }
