@@ -8,6 +8,7 @@ import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { condition } from "patronum"
 import dayjs from "dayjs"
 import { chatSessionIsStarted } from "@/feature/chats-list/modules/chat-session-is-started"
+import { logout } from "@/lib/network/token"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
@@ -77,6 +78,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     to: loadChatByMessageFx,
   })
 
+  forward({
+    from: logout,
+    to: reset
+  })
+
   const changeTickTime = createEvent<Date>()
   const $tickTime = createStore(new Date()).on(changeTickTime, (_, newDate) => newDate)
   let tick: any = null
@@ -129,11 +135,6 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   forward({
     from: loadChats,
     to: [pagination.methods.loadMore],
-  })
-
-  forward({
-    from: reset,
-    to: loadChats
   })
 
   return {
