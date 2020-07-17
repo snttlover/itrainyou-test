@@ -5,6 +5,7 @@ import { combine, createEvent, createStore, forward, guard, sample } from "effec
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
+import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 
 type SendSocketChatMessage = {
   chat: number
@@ -36,7 +37,7 @@ export type WriteChatMessageDone = {
 }
 
 export type OnChatCreated = {
-  type: `NEW_CHAT_CREATED`,
+  type: `NEW_CHAT_CREATED`
   data: Chat
 }
 
@@ -142,6 +143,16 @@ export const createChatsSocket = (userType: UserType) => {
   })
 
   forward({
+    from: changePasswordFx.done,
+    to: socket.methods.disconnect,
+  })
+
+  forward({
+    from: changePasswordFx.doneData.map(({ token }) => getChatSocketLink(userType, token)),
+    to: connect,
+  })
+
+  forward({
     from: logout,
     to: socket.methods.disconnect,
   })
@@ -154,7 +165,7 @@ export const createChatsSocket = (userType: UserType) => {
     events: {
       ...socket.events,
       onMessage,
-      onChatCreated
+      onChatCreated,
     },
     methods: {
       send,

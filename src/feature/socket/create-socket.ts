@@ -1,21 +1,33 @@
-import { createEvent } from "effector-root"
+import { createEffect, createEvent, forward } from "effector-root"
 import { runInScope } from "@/scope"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 
 export const createSocket = () => {
   let socket: WebSocket | null = null
 
-  const openSocket = (url: string) => {
-    socket = new WebSocket(url)
+  const openSocketFx = createEffect({
+    handler: (url: string) => {
+      socket = new WebSocket(url)
 
-    socket.onopen = () => runInScope(onConnect)
-    socket.onclose = () => runInScope(onClose)
-    socket.onerror = () => runInScope(onError)
-    socket.onmessage = e => runInScope(onMessage, keysToCamel(JSON.parse(e.data)))
-  }
+      socket.onopen = () => runInScope(onConnect)
+      socket.onclose = () => runInScope(onClose)
+      socket.onerror = () => runInScope(onError)
+      socket.onmessage = e => runInScope(onMessage, keysToCamel(JSON.parse(e.data)))
+    }
+  })
 
-  const closeSocket = () => socket?.close()
-  const sendSocketMessage = (message: any) => socket?.send(JSON.stringify(keysToSnake(message)))
+  const closeSocketFx = createEffect({
+    handler: () => {
+      socket?.close()
+      socket = null
+    }
+  })
+
+  const sendSocketMessageFx = createEffect({
+    handler: (message: any) => {
+      socket?.send(JSON.stringify(keysToSnake(message)))
+    }
+  })
 
   const onMessage = createEvent<any>()
   const onConnect = createEvent<Event>()
@@ -26,9 +38,20 @@ export const createSocket = () => {
   const disconnect = createEvent()
   const send = createEvent<any>()
 
-  connect.watch(openSocket)
-  disconnect.watch(closeSocket)
-  send.watch((message) => sendSocketMessage(message))
+  forward({
+    from: disconnect,
+    to: closeSocketFx
+  })
+
+  forward({
+    from: connect,
+    to: openSocketFx
+  })
+
+  forward({
+    from: send,
+    to: sendSocketMessageFx
+  })
 
   return {
     methods: {
