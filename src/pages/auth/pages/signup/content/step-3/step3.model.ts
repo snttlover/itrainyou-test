@@ -9,7 +9,7 @@ import {
   signUpPageMounted,
 } from "@/pages/auth/pages/signup/signup.model"
 import { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, createStore, createStoreObject, forward, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
@@ -82,7 +82,7 @@ export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
   },
 })
 
-export const $step3Form = createStoreObject({
+export const $step3Form = combine({
   image: $image,
   name: $name,
   lastName: $lastName,
@@ -121,12 +121,14 @@ forward({
 spread(loadDataFx.doneData, {
   firstName: nameChanged,
   lastName: lastNameChanged,
-  birthDate: birthdayChanged.prepend((birthDate: string) => date(birthDate, "YYYY-MM-DD")),
+  birthDate: birthdayChanged.prepend((birthDate: string) =>
+    date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
+  ),
   sex: sexChanged,
   avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
 })
 
-export const $step3FormErrors = createStoreObject({
+export const $step3FormErrors = combine({
   name: $nameError,
   lastName: $lastNameError,
   birthday: $birthdayError,
