@@ -80,13 +80,19 @@ export const genCoachSessions = (id = 0) => {
     runInScope(toasts.add, sessionBookSuccessToast)
   })
 
+  const sessionBookFailToast: Toast = { type: "error", text: "Не удалось забронировать сессию" }
+  buySessionsFx.fail.watch(() => {
+    runInScope(toasts.remove, sessionBookFailToast)
+    runInScope(toasts.add, sessionBookFailToast)
+  })
+
   forward({
     from: buySessionsFx.done,
-    to: clientChatsList.methods.reset
+    to: clientChatsList.methods.reset,
   })
 
   sample({
-    clock: buySessionsFx.done,
+    clock: buySessionsFx.finally,
     source: $id,
     target: attach({
       source: loadParams,
