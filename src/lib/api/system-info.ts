@@ -7,6 +7,6 @@ export interface SystemInfo {
 }
 
 export const getSystemInfo = (): Promise<SystemInfo> =>
-  get<SystemInfo>(`${config.BACKEND_URL}/api/v1/system-info`)
+  get<SystemInfo>(`${config.BACKEND_URL}/api/v1/system-info/`)
     .then(response => response.data)
     .then(keysToCamel)
