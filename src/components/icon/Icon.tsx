@@ -49,6 +49,9 @@ export type IconName =
   | "not-found-desktop"
   | "not-found-tablet"
   | "not-found-mobile"
+  | "camera"
+  | "image"
+  | "document"
 
 type IconProps = {
   name: IconName
