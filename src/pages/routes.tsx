@@ -23,6 +23,7 @@ import { LandingPage } from "./landing/LandingPage"
 import { SearchPage } from "./search/SearchPage"
 import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
 import { NotFound } from "@/feature/not-found/components/NotFound"
+import { ClientSessionPage } from "@/pages/client/session/ClientSessionPage"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -45,6 +46,11 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.login(),
     component: LoginPage,
+  },
+
+  {
+    path: routeNames.clientSession(),
+    component: ClientSessionPage,
   },
   {
     path: routeNames.signup(":step"),
