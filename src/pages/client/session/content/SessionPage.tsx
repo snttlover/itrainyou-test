@@ -2,11 +2,13 @@ import React from "react"
 import styled from "styled-components"
 import { UserHeader } from "@/pages/client/session/content/session-page-content/UserHeader"
 import { MediaRange } from "@/lib/responsive/media"
+import { SessionMaterials } from "@/pages/client/session/content/session-page-content/session-materials/SessionMaterials"
 
 export const SessionPage = () => (
   <Container>
     <Content>
       <UserHeader />
+      <SessionMaterials />
     </Content>
     <SessionInfoWrapper>Info</SessionInfoWrapper>
   </Container>
@@ -21,6 +23,10 @@ const Container = styled.div`
   margin: 0 auto;
   ${MediaRange.lessThan(`tablet`)`
     max-width: 600px;
+  `}
+
+  ${MediaRange.lessThan(`mobile`)`
+      padding: 24px 16px;
   `}
 `
 

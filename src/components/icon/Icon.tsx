@@ -52,6 +52,7 @@ export type IconName =
   | "camera"
   | "image"
   | "document"
+  | "play"
 
 type IconProps = {
   name: IconName
