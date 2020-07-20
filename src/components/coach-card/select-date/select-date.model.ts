@@ -78,7 +78,7 @@ export const genCoachSessions = (id = 0) => {
   buySessionsFx.done.watch(() => {
     runInScope(toasts.remove, sessionBookSuccessToast)
     runInScope(toasts.add, sessionBookSuccessToast)
-    runInScope(clientChatsList.methods.reset)
+    // runInScope(clientChatsList.methods.reset)
   })
 
   const sessionBookFailToast: Toast = { type: "error", text: "Не удалось забронировать сессию" }
