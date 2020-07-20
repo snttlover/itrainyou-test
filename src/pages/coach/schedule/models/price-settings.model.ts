@@ -2,6 +2,11 @@ import { $feeRatio, loadScheduleFx, updateScheduleFx } from "@/pages/coach/sched
 import { combine, createEvent, createStore, forward, sample, merge } from "effector-root"
 import { debounce, spread } from "patronum"
 
+type Price = {
+  isLoading: boolean
+  value: number
+}
+
 type Prices = {
   promo?: number
   price30?: number
@@ -13,11 +18,11 @@ type Prices = {
 export const changePrices = createEvent<Prices>()
 const setPrices = createEvent<Prices>()
 
-const $promoPrice = createStore<number>(0)
-const $30Price = createStore<number>(0)
-const $45Price = createStore<number>(0)
-const $60Price = createStore<number>(0)
-const $90Price = createStore<number>(0)
+const $promoPrice = createStore<Price>({ isLoading: false, value: 0 })
+const $30Price = createStore<Price>({ isLoading: false, value: 0 })
+const $45Price = createStore<Price>({ isLoading: false, value: 0 })
+const $60Price = createStore<Price>({ isLoading: false, value: 0 })
+const $90Price = createStore<Price>({ isLoading: false, value: 0 })
 
 const calculatePriceWithRatio = (price: number | null, ratio: number) => (price ? price + price * ratio : 0)
 
@@ -35,11 +40,11 @@ export const $pricesWithFeeForm = combine(
     ratio: $feeRatio,
   },
   ({ form, ratio }) => ({
-    promo: [form.promo, calculatePriceWithRatio(form.promo, ratio)],
-    price30: [form.D30, calculatePriceWithRatio(form.D30, ratio)],
-    price45: [form.D45, calculatePriceWithRatio(form.D45, ratio)],
-    price60: [form.D60, calculatePriceWithRatio(form.D60, ratio)],
-    price90: [form.D90, calculatePriceWithRatio(form.D90, ratio)],
+    promo: [form.promo.value, calculatePriceWithRatio(form.promo.value, ratio)],
+    price30: [form.D30.value, calculatePriceWithRatio(form.D30.value, ratio)],
+    price45: [form.D45.value, calculatePriceWithRatio(form.D45.value, ratio)],
+    price60: [form.D60.value, calculatePriceWithRatio(form.D60.value, ratio)],
+    price90: [form.D90.value, calculatePriceWithRatio(form.D90.value, ratio)],
   })
 )
 

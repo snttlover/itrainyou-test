@@ -1,7 +1,7 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { createCoachSchedule } from "@/lib/api/coaching-sessions/create-coach-schedule"
 import { getCoachSchedule } from "@/lib/api/coaching-sessions/get-coach-schedule"
-import { CreateCoachSchedule } from "@/lib/api/coaching-sessions/types"
+import { CreateCoachSchedule, UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
 import { updateCoachSchedule } from "@/lib/api/coaching-sessions/update-coach-schedule"
 import { getSystemInfo } from "@/lib/api/system-info"
 import { attach, createEffect, createStore, forward } from "effector-root"
@@ -20,10 +20,23 @@ export const $feeRatio = createStore(0).on(loadSystemInfoFx.doneData, (_, data) 
 
 export const updateScheduleFx = attach({
   effect: createEffect({
-    handler: ({ form, isEdit }: { form: CreateCoachSchedule; isEdit: boolean }) => {
-      const method = isEdit ? updateCoachSchedule : createCoachSchedule
-
-      return method({ weekdaySlots: [], ...form })
+    handler: ({ form, isEdit }: { form: CreateCoachSchedule | UpdateCoachSchedule; isEdit: boolean }) => {
+      if (isEdit) {
+        return updateCoachSchedule({
+          weekdaySlots: [],
+          ...(form as UpdateCoachSchedule),
+        })
+      } else {
+        return createCoachSchedule({
+          isAvailable: false,
+          d30Price: null,
+          d45Price: null,
+          d60Price: null,
+          d90Price: null,
+          weekdaySlots: [],
+          ...(form as CreateCoachSchedule),
+        })
+      }
     },
   }),
   source: $isEdit,
