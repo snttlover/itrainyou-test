@@ -9,6 +9,7 @@ import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
 import { useParams } from "react-router-dom"
 import { NotFound } from "@/feature/not-found/components/NotFound"
+import { ChatSessionsList } from "@/feature/chat/view/content/chat-sessions/ChatSessionsList"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -31,11 +32,14 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
         {chatIsNotFound && <NotFound />}
         {chatLoading && <Loader />}
         {!chatLoading && !!chat.id && (
-          <ChatContainer>
-            <ChatHeader backLink={chat.backLink} link={chat.link} name={chat.userName} avatar={chat.avatar || null} />
-            <Messages />
-            <ChatMessageBox onSend={send} />
-          </ChatContainer>
+          <>
+            <ChatContainer>
+              <ChatHeader backLink={chat.backLink} link={chat.link} name={chat.userName} avatar={chat.avatar || null} />
+              <Messages />
+              <ChatMessageBox onSend={send} />
+            </ChatContainer>
+            <ChatSessionsList />
+          </>
         )}
       </Container>
     )
@@ -47,4 +51,5 @@ const Container = styled.div`
   padding-bottom: 16px;
   position: relative;
   height: 100%;
+  display: flex;
 `
