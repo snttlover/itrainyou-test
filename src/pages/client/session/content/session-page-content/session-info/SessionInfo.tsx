@@ -22,6 +22,9 @@ const Row = styled.div`
   justify-content: space-between;
   padding: 12px 0;
   border-bottom: 1px solid #dbdee0;
+  &:last-child {
+    border-bottom: 0;
+  }
 `
 
 const Container = styled.div`
@@ -78,7 +81,7 @@ const Value = styled.div`
 `
 
 const Status = styled.div`
-  margin-top: 24px;
+  padding-top: 24px;
   margin-bottom: 10px;
   text-align: center;
   width: 100%;
@@ -87,10 +90,12 @@ const Status = styled.div`
   font-size: 14px;
   line-height: 18px;
   color: #9aa0a6;
+
+  border-top: 1px solid #dbdee0;
   ${MediaRange.lessThan(`mobile`)`
     font-size: 14px;
     line-height: 18px;
-    margin-top: 16px;
+    padding-top: 16px;
     margin-bottom: 0;
   `}
 `
