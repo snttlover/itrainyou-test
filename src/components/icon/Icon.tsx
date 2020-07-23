@@ -36,6 +36,7 @@ export type IconName =
   | "star"
   | "full-star"
   | "half-star"
+  | "plus"
   | "eye-open"
   | "hearth-full"
   | "hearth"

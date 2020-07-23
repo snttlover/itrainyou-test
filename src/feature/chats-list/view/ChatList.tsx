@@ -2,9 +2,11 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { createChatListModule } from "@/feature/chats-list/modules/chat-list"
 import { useEvent, useList, useStore } from "effector-react/ssr"
-import { ChatLink } from "@/feature/chats-list/view/components/ChatLink"
+import { ChatLink } from "@/feature/chats-list/view/components/list/ChatLink"
 import { createInfinityScroll } from "@/feature/pagination"
 import { MediaRange } from "@/lib/responsive/media"
+import { ChatsSearch } from "@/feature/chats-list/view/components/search/ChatsSearch"
+import { ChatsSearchTabs } from "@/feature/chats-list/view/components/tabs/ChatsSearchTabs"
 
 export const createChatList = ($chatListModule: ReturnType<typeof createChatListModule>) => {
   const InfScroll = createInfinityScroll($chatListModule.modules.pagination)
@@ -19,8 +21,10 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
 
     return (
       <>
-        {listIsEmpty && <ListIsEmpty />}
         <Container>
+          <ChatsSearch />
+          <ChatsSearchTabs />
+          {listIsEmpty && <ListIsEmpty />}
           <InfScroll>
             {useList($chatListModule.data.$chatsList, chat => (
               <ChatLink {...chat} />
@@ -35,14 +39,14 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 12px;
   margin-bottom: 20px;
   width: 100%;
   max-width: 734px;
 `
 
 const ListIsEmpty = () => {
-  return <Empty>У вас пока нет сообщений</Empty>
+  return <Empty>По вашему запросу ничего не найдено</Empty>
 }
 
 const Empty = styled.div`
