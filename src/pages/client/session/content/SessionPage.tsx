@@ -5,17 +5,30 @@ import { MediaRange } from "@/lib/responsive/media"
 import { SessionMaterials } from "@/pages/client/session/content/session-page-content/session-materials/SessionMaterials"
 import { SessionsHistory } from "@/pages/client/session/content/session-page-content/session-history/SessionsHistory"
 import { SessionInfo } from "@/pages/client/session/content/session-page-content/session-info/SessionInfo"
+import { AddMaterial } from "@/pages/client/session/content/session-page-content/add-material/AddMaterial"
+import { RescheduleSession } from "@/pages/client/session/content/session-page-content/reschedule-session/RescheduleSession"
+import { CancelSession } from "@/pages/client/session/content/session-page-content/cancel-session/CancelSession"
 
 export const SessionPage = () => (
   <Container>
     <Content>
       <UserHeader />
+
       <TabletSessionInfo />
+
+      <TabletAddMaterial />
+      <TabletRescheduleSession />
+      <TabletCancelSession />
+
       <SessionMaterials />
       <SessionsHistory />
     </Content>
     <SessionInfoWrapper>
       <SessionInfo />
+
+      <AddMaterial />
+      <RescheduleSession />
+      <CancelSession />
     </SessionInfoWrapper>
   </Container>
 )
@@ -53,6 +66,27 @@ const SessionInfoWrapper = styled.div`
 `
 
 const TabletSessionInfo = styled(SessionInfo)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
+  `}
+`
+
+const TabletAddMaterial = styled(AddMaterial)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
+  `}
+`
+
+const TabletRescheduleSession = styled(RescheduleSession)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
+  `}
+`
+
+const TabletCancelSession = styled(CancelSession)`
   display: none;
   ${MediaRange.lessThan(`tablet`)`
     display: flex;
