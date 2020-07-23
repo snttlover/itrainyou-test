@@ -35,11 +35,10 @@ export const Tabs = (props: TabsTypes) => {
 }
 
 type StyledTabPropsTypes = {
-  active: boolean
+  "data-active": boolean
 }
 
 const StyledTab = styled.div<StyledTabPropsTypes>`
-  background: ${({active}) => active ? `#fff` : `#DBDEE0`};
   border-radius: 2px 2px 0px 0px;
   padding: 11px 0;
   flex: 1;
@@ -50,6 +49,11 @@ const StyledTab = styled.div<StyledTabPropsTypes>`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  
+  &[data-active="true"] {
+    background: #DBDEE0;
+  }
+  
   &:last-child {
     margin-right: 0;
   }
@@ -66,7 +70,7 @@ export const Tab = (props: TabTypes) => (
     {(Tabs: any) => (
       <StyledTab
         className={props.className}
-        active={Tabs.value === props.value}
+        data-active={Tabs.value === props.value}
         onClick={() => Tabs.onChange(props.value)}
       >
         {props.children}
