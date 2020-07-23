@@ -3,12 +3,14 @@ import styled from "styled-components"
 import { UserHeader } from "@/pages/client/session/content/session-page-content/UserHeader"
 import { MediaRange } from "@/lib/responsive/media"
 import { SessionMaterials } from "@/pages/client/session/content/session-page-content/session-materials/SessionMaterials"
+import { SessionsHistory } from "@/pages/client/session/content/session-page-content/session-history/SessionsHistory"
 
 export const SessionPage = () => (
   <Container>
     <Content>
       <UserHeader />
       <SessionMaterials />
+      <SessionsHistory />
     </Content>
     <SessionInfoWrapper>Info</SessionInfoWrapper>
   </Container>
