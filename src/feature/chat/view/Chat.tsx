@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { ChatContainer } from "./content/ChatContainer"
-import { ChatHeader } from "./content/ChatHeader"
+import { ChatHeader } from "./content/header/ChatHeader"
 import { createChatMessages } from "./content/ChatMessages"
 import { ChatMessageBox } from "./content/ChatMessageBox"
 import { createChatModule } from "@/feature/chat"
@@ -34,7 +34,13 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
         {!chatLoading && !!chat.id && (
           <>
             <ChatContainer>
-              <ChatHeader backLink={chat.backLink} link={chat.link} name={chat.userName} avatar={chat.avatar || null} />
+              <ChatHeader
+                backLink={chat.backLink}
+                link={chat.link}
+                name={chat.userName}
+                avatar={chat.avatar || null}
+                chatType={chat.type}
+              />
               <Messages />
               <ChatMessageBox onSend={send} />
             </ChatContainer>

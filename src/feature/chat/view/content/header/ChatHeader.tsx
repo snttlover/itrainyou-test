@@ -6,6 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useEvent } from "effector-react/ssr"
 import { navigatePush } from "@/feature/navigation"
 import { Link } from "react-router-dom"
+import { BanTooltip } from "@/feature/chat/view/content/header/BanTooltip"
 
 const StyledAvatar = styled(Avatar)`
   width: 40px;
@@ -42,7 +43,7 @@ const Container = styled.div`
   ${MediaRange.lessThan(`mobile`)`
     padding: 14px 8px;
   `}
-  
+
   &[data-has-link="true"] {
     ${StyledAvatar},
     ${Title} {
@@ -68,6 +69,7 @@ type ChatHeaderTypes = {
   name: string
   backLink: any
   link?: any
+  chatType: string
 }
 
 export const ChatHeader = (props: ChatHeaderTypes) => {
@@ -80,11 +82,12 @@ export const ChatHeader = (props: ChatHeaderTypes) => {
 
   return (
     <Container data-has-link={!!props.link}>
-      <Link to={props.backLink} >
+      <Link to={props.backLink}>
         <MobileBackButton />
       </Link>
       <StyledAvatar src={props.avatar} onClick={userClick} />
       <Title onClick={userClick}>{props.name}</Title>
+      {props.chatType === `coach` && <BanTooltip />}
     </Container>
   )
 }

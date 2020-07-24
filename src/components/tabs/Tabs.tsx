@@ -22,14 +22,12 @@ const StyledTabs = styled.div`
 export const Tabs = (props: TabsTypes) => {
   const context = {
     value: props.value,
-    onChange: props.onChange
+    onChange: props.onChange,
   }
 
   return (
     <TabContext.Provider value={context}>
-      <StyledTabs className={props.className}>
-        {props.children}
-      </StyledTabs>
+      <StyledTabs className={props.className}>{props.children}</StyledTabs>
     </TabContext.Provider>
   )
 }
@@ -49,11 +47,12 @@ const StyledTab = styled.div<StyledTabPropsTypes>`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  
+  background: #dbdee0;
+
   &[data-active="true"] {
-    background: #DBDEE0;
+    background: #fff;
   }
-  
+
   &:last-child {
     margin-right: 0;
   }
