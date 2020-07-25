@@ -88,8 +88,20 @@ forward({
   to: setPrices,
 })
 
+const { d30Changed, d45Changed, d60Changed, d90Changed } = split(changePrice, {
+  d30Changed: ({ name }) => name === "d30Price",
+  d45Changed: ({ name }) => name === "d45Price",
+  d60Changed: ({ name }) => name === "d60Price",
+  d90Changed: ({ name }) => name === "d90Price",
+})
+
 sample({
-  clock: debounce(changePrice, 500),
+  clock: merge([
+    debounce(d30Changed, 500),
+    debounce(d45Changed, 500),
+    debounce(d60Changed, 500),
+    debounce(d90Changed, 500),
+  ]),
   source: $prices,
   fn: (_, { name, value }: ChangePriceEvent) => ({ [name]: value }),
   target: updateScheduleFx,
