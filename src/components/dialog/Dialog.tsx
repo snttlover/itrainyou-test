@@ -33,7 +33,7 @@ const Close = styled(Icon).attrs({ name: `close` })`
   width: 20px;
   cursor: pointer;
   position: absolute;
-  top: 26px;
+  top: 24px;
   right: 21px;
   fill: ${props => props.theme.colors.primary};
 `

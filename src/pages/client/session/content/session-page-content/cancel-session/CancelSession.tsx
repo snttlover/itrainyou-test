@@ -1,10 +1,19 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
+import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 
-export const CancelSession = ({ className }: { className?: string }) => (
-  <Button className={className}>Перенести сессию</Button>
-)
+export const CancelSession = ({ className }: { className?: string }) => {
+  const [cancelDialogVisibility, changeCancelDialogVisibility] = useState(false)
+  return (
+    <>
+      <Button className={className} onClick={() => changeCancelDialogVisibility(true)}>
+        Отменить сессию
+      </Button>
+      <RevocationSessionDialog visibility={cancelDialogVisibility} onChangeVisibility={changeCancelDialogVisibility} />
+    </>
+  )
+}
 
 const Button = styled.div`
   display: flex;
