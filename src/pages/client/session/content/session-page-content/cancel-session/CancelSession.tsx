@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
+import { CancelSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/CancelSessionDialog"
 
 export const CancelSession = ({ className }: { className?: string }) => {
   const [cancelDialogVisibility, changeCancelDialogVisibility] = useState(false)
@@ -10,7 +10,7 @@ export const CancelSession = ({ className }: { className?: string }) => {
       <Button className={className} onClick={() => changeCancelDialogVisibility(true)}>
         Отменить сессию
       </Button>
-      <RevocationSessionDialog visibility={cancelDialogVisibility} onChangeVisibility={changeCancelDialogVisibility} />
+      <CancelSessionDialog visibility={cancelDialogVisibility} onChangeVisibility={changeCancelDialogVisibility} />
     </>
   )
 }
