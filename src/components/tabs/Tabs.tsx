@@ -22,24 +22,21 @@ const StyledTabs = styled.div`
 export const Tabs = (props: TabsTypes) => {
   const context = {
     value: props.value,
-    onChange: props.onChange
+    onChange: props.onChange,
   }
 
   return (
     <TabContext.Provider value={context}>
-      <StyledTabs className={props.className}>
-        {props.children}
-      </StyledTabs>
+      <StyledTabs className={props.className}>{props.children}</StyledTabs>
     </TabContext.Provider>
   )
 }
 
 type StyledTabPropsTypes = {
-  active: boolean
+  "data-active": boolean
 }
 
 const StyledTab = styled.div<StyledTabPropsTypes>`
-  background: ${({active}) => active ? `#fff` : `#DBDEE0`};
   border-radius: 2px 2px 0px 0px;
   padding: 11px 0;
   flex: 1;
@@ -50,6 +47,12 @@ const StyledTab = styled.div<StyledTabPropsTypes>`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background: #dbdee0;
+
+  &[data-active="true"] {
+    background: #fff;
+  }
+
   &:last-child {
     margin-right: 0;
   }
@@ -66,7 +69,7 @@ export const Tab = (props: TabTypes) => (
     {(Tabs: any) => (
       <StyledTab
         className={props.className}
-        active={Tabs.value === props.value}
+        data-active={Tabs.value === props.value}
         onClick={() => Tabs.onChange(props.value)}
       >
         {props.children}

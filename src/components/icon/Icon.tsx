@@ -36,6 +36,7 @@ export type IconName =
   | "star"
   | "full-star"
   | "half-star"
+  | "plus"
   | "eye-open"
   | "hearth-full"
   | "hearth"
@@ -49,6 +50,10 @@ export type IconName =
   | "not-found-desktop"
   | "not-found-tablet"
   | "not-found-mobile"
+  | "camera"
+  | "image"
+  | "document"
+  | "play"
 
 type IconProps = {
   name: IconName

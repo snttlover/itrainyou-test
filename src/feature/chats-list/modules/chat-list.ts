@@ -8,6 +8,8 @@ import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { condition } from "patronum"
 import dayjs from "dayjs"
 import { chatSessionIsStarted } from "@/feature/chats-list/modules/chat-session-is-started"
+import { logout } from "@/lib/network/token"
+import {config as globalConfig} from '@/config'
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
@@ -52,7 +54,13 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
 
       return chats
     })
-    .on(config.socket.events.onChatCreated, (chats, socketMessage) => [socketMessage.data, ...chats])
+    .on(config.socket.events.onChatCreated, (chats, socketMessage) => {
+      socketMessage.data.clients.forEach(client => {client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`})
+      if (socketMessage.data.coach)
+        socketMessage.data.coach.avatar = `${globalConfig.BACKEND_URL}${socketMessage.data.coach.avatar}`
+
+      return [socketMessage.data, ...chats]
+    })
     .on(loadChatByMessageFx.doneData, (chats, chat) => [chat, ...chats])
     .reset(reset)
 
@@ -75,6 +83,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   forward({
     from: loadChatByMessage,
     to: loadChatByMessageFx,
+  })
+
+  forward({
+    from: logout,
+    to: reset
   })
 
   const changeTickTime = createEvent<Date>()
@@ -129,11 +142,6 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   forward({
     from: loadChats,
     to: [pagination.methods.loadMore],
-  })
-
-  forward({
-    from: reset,
-    to: loadChats
   })
 
   return {
