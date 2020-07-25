@@ -6,7 +6,7 @@ const StyledCheckbox = styled(Icon)<{ color?: string }>`
   width: 24px;
   height: 24px;
   position: relative;
-  fill: ${({ color }) => color};
+  fill: ${({ color, theme }) => color || theme.colors.primary};
 `
 
 const CheckboxInput = styled.input.attrs({ type: `checkbox` })`
@@ -25,7 +25,7 @@ const Label = styled.label`
   position: relative;
 `
 
-const Content = styled.div`
+export const CheckboxContent = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@ type CheckboxProps = {
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = styled(({ value, onChange, color = "#4858CC", ...props }: CheckboxProps) => {
+export const Checkbox = styled(({ value, onChange, color, ...props }: CheckboxProps) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(e.target.checked)
@@ -50,7 +50,7 @@ export const Checkbox = styled(({ value, onChange, color = "#4858CC", ...props }
     <Label className={props.className}>
       <CheckboxInput checked={value} onChange={change} />
       <StyledCheckbox color={color} name={value ? `checkbox-active` : `checkbox-border`} />
-      <Content>{props.children}</Content>
+      <CheckboxContent>{props.children}</CheckboxContent>
     </Label>
   )
 })``

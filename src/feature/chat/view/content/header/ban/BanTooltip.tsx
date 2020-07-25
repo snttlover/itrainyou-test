@@ -2,9 +2,11 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { ClickOutside } from "@/components/click-outside/ClickOutside"
+import { BanDialog } from "@/feature/chat/view/content/header/ban/BanDialog"
 
 export const BanTooltip = () => {
   const [tooltipVisibility, changeTooltipVisibility] = useState(false)
+  const [banDialogVisibility, changeBanDialogVisibility] = useState(false)
 
   return (
     <ClickOutside onClickOutside={() => changeTooltipVisibility(false)}>
@@ -13,9 +15,13 @@ export const BanTooltip = () => {
         {tooltipVisibility && (
           <Tooltip>
             <Item>Ограничить сообщения до покупки сессии</Item>
-            <Item>Заблокировать клиента</Item>
+            <Item onClick={() => changeBanDialogVisibility(true)}>Заблокировать клиента</Item>
           </Tooltip>
         )}
+        <BanDialog
+          visibility={banDialogVisibility}
+          onChangeVisibility={changeBanDialogVisibility}
+        />
       </Container>
     </ClickOutside>
   )

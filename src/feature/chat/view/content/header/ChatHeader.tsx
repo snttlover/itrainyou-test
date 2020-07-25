@@ -6,7 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useEvent } from "effector-react/ssr"
 import { navigatePush } from "@/feature/navigation"
 import { Link } from "react-router-dom"
-import { BanTooltip } from "@/feature/chat/view/content/header/BanTooltip"
+import { BanTooltip } from "@/feature/chat/view/content/header/ban/BanTooltip"
 
 const StyledAvatar = styled(Avatar)`
   width: 40px;
