@@ -2,10 +2,10 @@ import React from "react"
 import styled from "styled-components"
 import { UserHeader } from "@/pages/client/session/content/session-page-content/UserHeader"
 import { MediaRange } from "@/lib/responsive/media"
-import { SessionMaterials } from "@/pages/client/session/content/session-page-content/session-materials/SessionMaterials"
+// import { SessionMaterials } from "@/pages/client/session/content/session-page-content/session-materials/SessionMaterials"
 import { SessionsHistory } from "@/pages/client/session/content/session-page-content/session-history/SessionsHistory"
 import { SessionInfo } from "@/pages/client/session/content/session-page-content/session-info/SessionInfo"
-import { AddMaterial } from "@/pages/client/session/content/session-page-content/add-material/AddMaterial"
+// import { AddMaterial } from "@/pages/client/session/content/session-page-content/add-material/AddMaterial"
 import { RescheduleSession } from "@/pages/client/session/content/session-page-content/reschedule-session/RescheduleSession"
 import { CancelSession } from "@/pages/client/session/content/session-page-content/cancel-session/CancelSession"
 
@@ -16,17 +16,17 @@ export const SessionPage = () => (
 
       <TabletSessionInfo />
 
-      <TabletAddMaterial />
+      {/*<TabletAddMaterial />*/}
       <TabletRescheduleSession />
       <TabletCancelSession />
 
-      <SessionMaterials />
+      {/*<SessionMaterials />*/}
       <SessionsHistory />
     </Content>
     <SessionInfoWrapper>
       <SessionInfo />
 
-      <AddMaterial />
+      {/*<AddMaterial />*/}
       <RescheduleSession />
       <CancelSession />
     </SessionInfoWrapper>
@@ -72,12 +72,12 @@ const TabletSessionInfo = styled(SessionInfo)`
   `}
 `
 
-const TabletAddMaterial = styled(AddMaterial)`
-  display: none;
-  ${MediaRange.lessThan(`tablet`)`
-    display: flex;
-  `}
-`
+// const TabletAddMaterial = styled(AddMaterial)`
+//   display: none;
+//   ${MediaRange.lessThan(`tablet`)`
+//     display: flex;
+//   `}
+// `
 
 const TabletRescheduleSession = styled(RescheduleSession)`
   display: none;
