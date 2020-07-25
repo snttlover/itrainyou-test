@@ -27,8 +27,6 @@ const rotate = keyframes`
 const LoaderSvg = ({ className }: { className?: string }) => (
   <svg
     style={{ margin: "auto", background: "rgb(255, 255, 255, 0)", display: "block", shapeRendering: "auto" }}
-    width='200px'
-    height='200px'
     className={className}
     viewBox='0 0 100 100'
     preserveAspectRatio='xMidYMid'

@@ -20,7 +20,7 @@ export const $feeRatio = createStore(0).on(loadSystemInfoFx.doneData, (_, data) 
 
 export const updateScheduleFx = attach({
   effect: createEffect({
-    handler: ({ form, isEdit }: { form: CreateCoachSchedule | UpdateCoachSchedule; isEdit: boolean }) => {
+    handler: ({ form, isEdit }: { form: UpdateCoachSchedule; isEdit: boolean }) => {
       if (isEdit) {
         return updateCoachSchedule({
           weekdaySlots: [],
@@ -40,7 +40,7 @@ export const updateScheduleFx = attach({
     },
   }),
   source: $isEdit,
-  mapParams: (form: CreateCoachSchedule, isEdit) => ({
+  mapParams: (form: UpdateCoachSchedule, isEdit) => ({
     isEdit,
     form,
   }),

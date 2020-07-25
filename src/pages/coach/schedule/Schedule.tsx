@@ -1,7 +1,6 @@
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
-import { $pricesWithFeeForm, changePrices } from "@/pages/coach/schedule/models/price-settings.model"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { useGate } from "effector-react/ssr"
 import React from "react"
 import styled from "styled-components"
 import { ScheduleGate } from "./models/schedule.model"
@@ -38,9 +37,6 @@ const PriceListContainer = styled.div`
 `
 
 export const Schedule = () => {
-  const $prices = useStore($pricesWithFeeForm)
-  const updatePrice = useEvent(changePrices)
-
   useGate(ScheduleGate)
 
   return (
@@ -54,29 +50,12 @@ export const Schedule = () => {
           <PriceListContainer>
             {/*<PriceInputGroup
               title='Промо сессия (15 минут)'
-              values={$prices.promo}
-              onChange={value => updatePrice({ promo: value })}
+              name='promo'
             />*/}
-            <PriceInputGroup
-              title='30 минут'
-              values={$prices.price30}
-              onChange={value => updatePrice({ price30: value })}
-            />
-            <PriceInputGroup
-              title='45 минут'
-              values={$prices.price45}
-              onChange={value => updatePrice({ price45: value })}
-            />
-            <PriceInputGroup
-              title='60 минут'
-              values={$prices.price60}
-              onChange={value => updatePrice({ price60: value })}
-            />
-            <PriceInputGroup
-              title='90 минут'
-              values={$prices.price90}
-              onChange={value => updatePrice({ price90: value })}
-            />
+            <PriceInputGroup title='30 минут' name='d30Price' />
+            <PriceInputGroup title='45 минут' name='d45Price' />
+            <PriceInputGroup title='60 минут' name='d60Price' />
+            <PriceInputGroup title='90 минут' name='d90Price' />
           </PriceListContainer>
         </PriceContainer>
       </ScheduleSettingsContainer>
