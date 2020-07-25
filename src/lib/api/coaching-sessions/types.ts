@@ -21,10 +21,10 @@ export interface CoachSchedule {
 
 export interface CreateCoachSchedule {
   isAvailable?: boolean
-  d30Price?: number
-  d45Price?: number
-  d60Price?: number
-  d90Price?: number
+  d30Price: number | null
+  d45Price: number | null
+  d60Price: number | null
+  d90Price: number | null
   weekdaySlots?: {
     weekday: "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY"
     slots: {

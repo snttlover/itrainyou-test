@@ -25,6 +25,14 @@ const TextBox = styled.input<{ error?: boolean; withoutBorder?: boolean }>`
   }
   &:read-only {
     opacity: 0.8;
+    cursor: default;
+
+    &:hover {
+      border: 1px solid transparent;
+    }
+    &:focus {
+      border: 1px solid transparent;
+    }
   }
 
   &::-webkit-outer-spin-button,

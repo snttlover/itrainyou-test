@@ -1,4 +1,5 @@
 import { Input, InputTypes } from "@/components/input/Input"
+import { Loader } from "@/components/spinner/Spinner"
 import React from "react"
 import styled from "styled-components"
 
@@ -12,11 +13,22 @@ const RubbleSign = styled.div`
   right: 8px;
   color: #9aa0a6;
   transform: translate(0, -50%);
+  user-select: none;
+  pointer-events: none;
+  display: flex;
+  justify-content: flex-end;
 `
 
-export const PriceInput: React.FC<InputTypes> = ({ ...props }) => (
+const StyledLoader = styled(Loader)`
+  width: 100px;
+  height: 100px;
+  position: relative;
+  right: -40px;
+`
+
+export const PriceInput: React.FC<InputTypes & { loading?: boolean }> = ({ loading, ...props }) => (
   <PriceContainer>
     <Input {...props} />
-    <RubbleSign>₽</RubbleSign>
+    <RubbleSign>{loading ? <StyledLoader /> : "₽"}</RubbleSign>
   </PriceContainer>
 )

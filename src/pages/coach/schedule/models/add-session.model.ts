@@ -21,9 +21,7 @@ export const $durationList = createStore<{ label: string; value: DurationType }[
 ])
 
 export const $durationOptions = combine($durationList, $prices, (list, prices) => {
-  const keys = Object.entries(prices)
-    .filter(([, value]) => !!value)
-    .map(([key]) => key)
+  const keys = prices.filter(({ value }) => Boolean(value)).map(({ key }) => key)
 
   return list.filter(({ value }) => keys.includes(value))
 })
