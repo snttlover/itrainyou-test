@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { DialogOverlay } from "@/components/dialog/DialogOverlay"
 import { Icon } from "@/components/icon/Icon"
@@ -14,6 +14,17 @@ export const Dialog = (props: DialogProps) => {
   const close = () => {
     props.onChange(false)
   }
+
+  const documentKeypressHandler = (e: KeyboardEvent) => {
+    if (e.keyCode === 27) {
+      close()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener(`keydown`, documentKeypressHandler)
+    return () => document.removeEventListener(`keydown`, documentKeypressHandler)
+  }, [])
 
   return (
     <>
