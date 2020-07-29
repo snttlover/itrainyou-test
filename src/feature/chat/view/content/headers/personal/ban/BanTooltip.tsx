@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { ClickOutside } from "@/components/click-outside/ClickOutside"
-import { BanDialog } from "@/feature/chat/view/content/header/ban/BanDialog"
+import { BanDialog } from "@/feature/chat/view/content/headers/personal/ban/BanDialog"
 
 export const BanTooltip = () => {
   const [tooltipVisibility, changeTooltipVisibility] = useState(false)

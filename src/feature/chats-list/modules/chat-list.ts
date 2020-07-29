@@ -1,4 +1,4 @@
-import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { createPagination } from "@/feature/pagination"
 import { PaginationFetchMethod } from "@/feature/pagination/modules/pagination"
 import { date } from "@/lib/formatting/date"
@@ -13,14 +13,14 @@ import { config as globalConfig } from "@/config"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
-  fetchChatsListMethod: PaginationFetchMethod<Chat>
+  fetchChatsListMethod: PaginationFetchMethod<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
-  getChat: (id: number) => Promise<Chat>
+  getChat: (id: number) => Promise<PersonalChat>
 }
 
 type ChatListMessage = ChatMessage & { messageInChatList: boolean }
 
-const getChatDate = (chat: Chat) => {
+const getChatDate = (chat: PersonalChat) => {
   return dayjs(chat.lastMessage?.creationDatetime || chat.creationDatetime).toDate()
 }
 
@@ -41,7 +41,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
 
   const findChats = createEvent()
 
-  const pagination = createPagination<Chat>({
+  const pagination = createPagination<PersonalChat>({
     fetchMethod: config.fetchChatsListMethod,
     $query: combine($tab, $search, (tab, search) => {
       const query: any = {}

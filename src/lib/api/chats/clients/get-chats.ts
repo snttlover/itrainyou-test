@@ -39,9 +39,11 @@ export type SystemChat = {
   type: SystemChatType
 } & CommonChatFields
 
-export type Chat = {
+export type PersonalChat = {
   type: PersonalChatType
 } & CommonChatFields
+
+export type Chat = PersonalChat | SystemChat
 
 type PaginationParams = {
   page: number
@@ -49,6 +51,6 @@ type PaginationParams = {
 }
 
 export const getClientChats = (params: PaginationParams) =>
-  get<Pagination<Chat | SystemChat>, {}>(`${config.BACKEND_URL}/api/v1/web/client/chats/`, keysToSnake(params))
+  get<Pagination<Chat>, {}>(`${config.BACKEND_URL}/api/v1/web/client/chats/`, keysToSnake(params))
     .then(response => response.data)
     .then(keysToCamel)

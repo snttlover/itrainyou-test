@@ -1,4 +1,4 @@
-import { Chat } from "@/lib/api/chats/clients/get-chats"
+import { PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { routeNames } from "@/pages/route-names"
 import { AxiosError } from "axios"
@@ -7,7 +7,7 @@ import { createNotFoundModule } from "@/feature/not-found/not-found"
 
 type createChatInfoModuleTypes = {
   type: "coach" | "client"
-  fetchChat: (id: number) => Promise<Chat>
+  fetchChat: (id: number) => Promise<PersonalChat>
 }
 
 export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
@@ -21,7 +21,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
   })
 
   const loadChat = createEvent<number>()
-  const $chatInfo = createStore<null | Chat>(null)
+  const $chatInfo = createStore<null | PersonalChat>(null)
     .on(loadChatFx.doneData, (_, chat) => chat)
     .reset(reset)
 
@@ -39,7 +39,8 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
       name: `${interc?.firstName} ${interc?.lastName}`,
       link: config.type === `client` && { url: routeNames.searchCoachPage(interc?.id as string) },
       backLink: config.type === `client` ? routeNames.clientChatsList() : routeNames.coachClients(),
-      type: config.type
+      type: config.type,
+      chatType: chat?.type
     }
   })
 
