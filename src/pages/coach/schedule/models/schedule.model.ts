@@ -23,7 +23,6 @@ export const updateScheduleFx = attach({
     handler: ({ form, isEdit }: { form: UpdateCoachSchedule; isEdit: boolean }) => {
       if (isEdit) {
         return updateCoachSchedule({
-          weekdaySlots: [],
           ...(form as UpdateCoachSchedule),
         })
       } else {

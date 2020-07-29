@@ -1,6 +1,10 @@
+import { Spinner } from "@/components/spinner/Spinner"
+import { MediaRange } from "@/lib/responsive/media"
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
-import { useGate } from "effector-react/ssr"
+import { WeekDaySchedule } from "@/pages/coach/schedule/components/WeekDaySchedule"
+import { saveWeekdaySlotsFx } from "@/pages/coach/schedule/models/weekday-schedule.model"
+import { useGate, useStore } from "effector-react/ssr"
 import React from "react"
 import styled from "styled-components"
 import { ScheduleGate } from "./models/schedule.model"
@@ -26,22 +30,68 @@ export const Description = styled.p`
 
 const ScheduleSettingsContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  ${MediaRange.greaterThan("mobile")`
+    flex-direction: row;
+  `}
+
+  ${MediaRange.greaterThan("tablet")`
+    flex-wrap: wrap;
+  `}
 `
 const PriceContainer = styled.div`
+  max-width: 320px;
+  ${MediaRange.greaterThan("mobile")`
+    flex-direction: row;
+  `}
+
+  ${MediaRange.greaterThan("desktop")`
+    margin-right: 100px;
+  `}
+`
+const WeeklyScheduleContainer = styled.div`
   max-width: 320px;
 `
 
 const PriceListContainer = styled.div`
   margin-top: 16px;
+  position: relative;
+
+  ${WeekDaySchedule}:not(:first-child) {
+    margin-top: 8px;
+    ${MediaRange.greaterThan("mobile")`
+      margin-top: 16px;
+    `}
+  }
 `
 
 export const Schedule = () => {
   useGate(ScheduleGate)
 
+  const isWeekdaySchedulePending = useStore(saveWeekdaySlotsFx.pending)
+
   return (
     <>
       <ScheduleSettingsContainer>
+        <WeeklyScheduleContainer>
+          <Title>Недельное расписание</Title>
+          <Description>
+            Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
+          </Description>
+          <PriceListContainer>
+            <WeekDaySchedule title='Понедельник' weekday='MONDAY' />
+            <WeekDaySchedule title='Вторник' weekday='TUESDAY' />
+            <WeekDaySchedule title='Среда' weekday='WEDNESDAY' />
+            <WeekDaySchedule title='Четверг' weekday='THURSDAY' />
+            <WeekDaySchedule title='Пятница' weekday='FRIDAY' />
+            <WeekDaySchedule title='Суббота' weekday='SATURDAY' />
+            <WeekDaySchedule title='Воскресенье' weekday='SUNDAY' />
+            {isWeekdaySchedulePending && <Spinner />}
+          </PriceListContainer>
+        </WeeklyScheduleContainer>
         <PriceContainer>
           <Title>Цена</Title>
           <Description>
