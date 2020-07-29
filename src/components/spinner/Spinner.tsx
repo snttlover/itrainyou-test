@@ -44,8 +44,8 @@ const LoaderSvg = ({ className }: { className?: string }) => (
 )
 
 export const Loader = styled(LoaderSvg)`
-  width: auto;
-  height: auto;
+  width: 200px;
+  height: 200px;
   stroke: ${props => props.theme.colors.primary};
   animation: ${rotate} 1s linear infinite;
 `
