@@ -6,7 +6,7 @@ import { $monthEndDate, $monthStartDate, setCurrentMonth } from "@/pages/coach/s
 import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
 import { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, forward, restore, sample, merge } from "effector-root"
+import { combine, createEffect, createEvent, forward, restore, sample, merge, attach } from "effector-root"
 
 type DateRange = {
   from: string
@@ -75,17 +75,24 @@ export const $allSessions = combine(
 export const CalendarGate = createGate()
 const loadSessions = createEvent()
 
-sample({
-  clock: merge([loadSessions, setCurrentMonth, CalendarGate.open]),
-  source: {
-    from: $monthStartDate,
-    to: $monthEndDate,
-  },
-  fn: ({ from, to }: { from: Dayjs; to: Dayjs }) => ({
-    from: from.toISOString(),
-    to: to.toISOString(),
-  }),
-  target: loadSessionsFx,
+export const loadSessionsWithParamsFx = attach({
+  effect: loadSessionsFx,
+  source: combine(
+    {
+      from: $monthStartDate,
+      to: $monthEndDate,
+    },
+    ({ from, to }) => ({
+      from: from.toISOString(),
+      to: to.toISOString(),
+    })
+  ),
+  mapParams: (_, data) => ({ ...data }),
+})
+
+forward({
+  from: merge([loadSessions, setCurrentMonth, CalendarGate.open]),
+  to: loadSessionsWithParamsFx,
 })
 
 type Range = [Dayjs, Dayjs]

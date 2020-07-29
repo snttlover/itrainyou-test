@@ -3,11 +3,17 @@ import { DurationType } from "@/lib/api/coach-sessions"
 import { UpdateCoachSchedule, WeekDayName, WeekDaySlot } from "@/lib/api/coaching-sessions/types"
 import { date } from "@/lib/formatting/date"
 import { loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
+import { loadSessionsWithParamsFx } from "@/pages/coach/schedule/models/sessions.model"
 import { attach, combine, createEvent, createStore, forward, restore, sample, merge } from "effector-root"
 
 export const saveWeekdaySlotsFx = attach({
   effect: updateScheduleFx,
   mapParams: (params: UpdateCoachSchedule) => params,
+})
+
+forward({
+  from: saveWeekdaySlotsFx.done,
+  to: loadSessionsWithParamsFx,
 })
 
 const saveWeekdaysSlotsSuccessMessage: Toast = { text: "Недельное расписание изменено", type: "info" }
