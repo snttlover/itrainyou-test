@@ -39,15 +39,17 @@ const Row = styled.div`
   margin-top: 14px;
 `
 
+const StyledSelectInput = styled(SelectInput)`
+  &:not(:first-child) {
+    margin-left: 4px;
+    margin-right: 10px;
+  }
+`
+
 const SettingsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 4px;
-
-  ${SelectInput}:not(:first-child) {
-    margin-left: 4px;
-    margin-right: 10px;
-  }
 `
 
 const Prefix = styled.span`
@@ -140,13 +142,13 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
       )}
       {isAdd && (
         <SettingsContainer>
-          <SelectInput
+          <StyledSelectInput
             value={startTime}
             onChange={value => setStartTime((value as unknown) as string)}
             options={freeTimes}
             placeholder='Начало'
           />
-          <SelectInput
+          <StyledSelectInput
             value={duration}
             onChange={value => setDuration((value as unknown) as DurationType)}
             options={durationOptions}

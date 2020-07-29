@@ -87,53 +87,51 @@ export type SelectInputProps<T extends Value> = {
   className?: string
 }
 
-export const SelectInput = styled(
-  <T extends Value = Value>({
-    value,
-    placeholder,
-    onChange,
-    options,
-    error,
-    onBlur,
-    className,
-  }: SelectInputProps<T>) => {
-    const [isOpen, changeOpen] = useState(false)
+export const SelectInput = <T extends Value = Value>({
+  value,
+  placeholder,
+  onChange,
+  options,
+  error,
+  onBlur,
+  className,
+}: SelectInputProps<T>) => {
+  const [isOpen, changeOpen] = useState(false)
 
-    const dropdownItems = options.map(item => {
-      return (
-        <DropdownItem key={item.value} onClick={() => onChange(item.value)}>
-          {item.label}
-        </DropdownItem>
-      )
-    })
-
-    const selectedItem = options.find(item => item.value === value)
-
-    const selectBoxRef = useRef<HTMLDivElement>(null)
-
-    useClickOutside(selectBoxRef, () => {
-      changeOpen(false)
-    })
-
+  const dropdownItems = options.map(item => {
     return (
-      <SelectBox
-        isOpen={isOpen}
-        error={error}
-        ref={selectBoxRef}
-        placeholder={placeholder}
-        className={className}
-        onClick={() => {
-          const newValue = !isOpen
-          changeOpen(newValue)
-          if (!newValue && onBlur) {
-            onBlur()
-          }
-        }}
-      >
-        {selectedItem ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
-        <Arrow />
-        {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
-      </SelectBox>
+      <DropdownItem key={item.value} onClick={() => onChange(item.value)}>
+        {item.label}
+      </DropdownItem>
     )
-  }
-)``
+  })
+
+  const selectedItem = options.find(item => item.value === value)
+
+  const selectBoxRef = useRef<HTMLDivElement>(null)
+
+  useClickOutside(selectBoxRef, () => {
+    changeOpen(false)
+  })
+
+  return (
+    <SelectBox
+      isOpen={isOpen}
+      error={error}
+      ref={selectBoxRef}
+      placeholder={placeholder}
+      className={className}
+      onClick={() => {
+        const newValue = !isOpen
+        changeOpen(newValue)
+        if (!newValue && onBlur) {
+          onBlur()
+        }
+      }}
+    >
+      {selectedItem ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
+      <Arrow />
+      {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
+    </SelectBox>
+  )
+}
