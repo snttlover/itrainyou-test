@@ -1,15 +1,16 @@
-import { combine, createEffect, createEvent, createStore, guard, sample, Store } from "effector-root"
+import { Combinable, combine, createEffect, createEvent, createStore, guard, sample, Store } from "effector-root"
 import { Pagination } from "@/lib/api/interfaces/utils.interface"
 
 export type PaginationRequest = {
   page: number
   pageSize: number
-}
+} | any
 
 export type PaginationFetchMethod<T> = (params: PaginationRequest) => Promise<Pagination<T>>
 
 export type PaginationModelConfigTypes<T> = {
   fetchMethod: PaginationFetchMethod<T>
+  $query?: Store<any>
 }
 
 export type CreatePaginationType<ItemTypes> = {
@@ -30,7 +31,7 @@ export const createPagination = <ListItemType>(
   config: PaginationModelConfigTypes<ListItemType>
 ): CreatePaginationType<ListItemType> => {
   const loadMoreFx = createEffect({
-    handler: ({ page }: { page: number }) => config.fetchMethod({ page, pageSize: 12 }),
+    handler: ({ page, query }: { page: number, query: any }) => config.fetchMethod({ page, pageSize: 12, ...query }),
   })
 
   const $itemsCount = createStore<number>(100).on(loadMoreFx.doneData, (state, payload) => payload.count)
@@ -57,10 +58,12 @@ export const createPagination = <ListItemType>(
 
   const $listIsEmpty = combine(loadMoreFx.pending, $list, (pending, list) => !pending && !list.length)
 
+  const $query = config.$query || createStore({})
+
   sample({
-    source: $currentPage,
+    source: combine($query, $currentPage, (query: any, page: number) => ({query, page})),
     clock: guardedLoadMore,
-    fn: source => ({ page: source + 1 }),
+    fn: ({ page, query }) => ({ page: page + 1, query }),
     target: loadMoreFx,
   })
 
@@ -74,7 +77,7 @@ export const createPagination = <ListItemType>(
       $listIsEmpty,
     },
     methods: {
-      loadMore
+      loadMore,
     },
   }
 }

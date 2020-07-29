@@ -9,7 +9,7 @@ import { condition } from "patronum"
 import dayjs from "dayjs"
 import { chatSessionIsStarted } from "@/feature/chats-list/modules/chat-session-is-started"
 import { logout } from "@/lib/network/token"
-import {config as globalConfig} from '@/config'
+import { config as globalConfig } from "@/config"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
@@ -24,9 +24,41 @@ const getChatDate = (chat: Chat) => {
   return dayjs(chat.lastMessage?.creationDatetime || chat.creationDatetime).toDate()
 }
 
+export type ChatListTabs = `unread` | `chosen` | `all`
+
 export const createChatListModule = (config: ChatListModuleConfig) => {
+  const reset = createEvent()
+
+  const changeSearch = createEvent<string>()
+  const $search = createStore<string>(``)
+    .on(changeSearch, (_, value) => value)
+    .reset(reset)
+
+  const changeTab = createEvent<ChatListTabs>()
+  const $tab = createStore<ChatListTabs>(`all`)
+    .on(changeTab, (_, tab) => tab)
+    .reset(reset)
+
+  const findChats = createEvent()
+
   const pagination = createPagination<Chat>({
     fetchMethod: config.fetchChatsListMethod,
+    $query: combine($tab, $search, (tab, search) => {
+      const query: any = {}
+      if (tab === `unread`) {
+        query.unread = `True`
+      }
+
+      if (tab === `chosen`) {
+        query.starred = `True`
+      }
+
+      if (search.trim()) {
+        query.search = search
+      }
+
+      return query
+    }),
   })
 
   const loadChatByMessageFx = createEffect({
@@ -36,7 +68,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   const addMessage = createEvent<ChatListMessage>()
   const loadChatByMessage = createEvent<ChatListMessage>()
 
-  const reset = createEvent()
+  const resetPagination = createEvent()
 
   pagination.data.$list
     .on(addMessage, (chats, message) => {
@@ -55,16 +87,28 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
       return chats
     })
     .on(config.socket.events.onChatCreated, (chats, socketMessage) => {
-      socketMessage.data.clients.forEach(client => {client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`})
+      socketMessage.data.clients.forEach(client => {
+        client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
+      })
       if (socketMessage.data.coach)
         socketMessage.data.coach.avatar = `${globalConfig.BACKEND_URL}${socketMessage.data.coach.avatar}`
 
       return [socketMessage.data, ...chats]
     })
     .on(loadChatByMessageFx.doneData, (chats, chat) => [chat, ...chats])
-    .reset(reset)
+    .reset(resetPagination)
 
-  pagination.data.$currentPage.reset(reset)
+  pagination.data.$currentPage.reset(resetPagination)
+
+  forward({
+    from: findChats,
+    to: resetPagination,
+  })
+
+  forward({
+    from: reset,
+    to: resetPagination,
+  })
 
   condition({
     source: sample({
@@ -87,7 +131,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
 
   forward({
     from: logout,
-    to: reset
+    to: reset,
   })
 
   const changeTickTime = createEvent<Date>()
@@ -144,16 +188,26 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     to: [pagination.methods.loadMore],
   })
 
+  forward({
+    from: findChats,
+    to: loadChats,
+  })
+
   return {
     modules: {
       pagination,
     },
     data: {
       $chatsList,
+      $search,
+      $tab
     },
     methods: {
+      findChats,
+      changeSearch,
+      changeTab,
       loadChats,
-      reset
+      reset,
     },
   }
 }

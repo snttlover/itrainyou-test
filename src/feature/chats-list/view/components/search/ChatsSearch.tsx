@@ -4,12 +4,26 @@ import { Input } from "@/components/input/Input"
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 
-export const ChatsSearch = () => (
-  <Container>
-    <StyledInput value='' onChange={() => {}} />
-    <SearchIcon />
-  </Container>
-)
+type ChatsSearchProps = {
+  value: string
+  onChange: (value: string) => void,
+  find: (payload: void) => void
+}
+
+export const ChatsSearch = (props: ChatsSearchProps) => {
+  const keydownHandler = (e: React.KeyboardEvent) => {
+    if (e.keyCode === 13) {
+      props.find()
+    }
+  }
+
+  return (
+    <Container>
+      <StyledInput value={props.value} onChange={props.onChange} onKeyDown={keydownHandler} />
+      <SearchIcon onClick={() => props.find()} />
+    </Container>
+  )
+}
 
 const Container = styled.div`
   position: relative;
