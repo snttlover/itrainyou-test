@@ -2,14 +2,30 @@ import React from "react"
 import styled from "styled-components"
 import { Tabs, Tab } from "@/components/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
+import { ChatListTabs } from "@/feature/chats-list/modules/chat-list"
+import { Simulate } from "react-dom/test-utils"
+import change = Simulate.change
 
-export const ChatsSearchTabs = () => (
-  <StyledTabs value='all' onChange={() => {}}>
-    <StyledTab value='all'>Все</StyledTab>
-    <StyledTab value='unread'>Непрочитанные</StyledTab>
-    <StyledTab value='read'>Прочитанные</StyledTab>
-  </StyledTabs>
-)
+type ChatsListTabsProps = {
+  value: string
+  onChange: (value: string) => void
+  find: (payload: void) => void
+}
+
+export const ChatsSearchTabs = (props: ChatsListTabsProps) => {
+  const changeTab = (payload: ChatListTabs) => {
+    props.onChange(payload)
+    props.find()
+  }
+
+  return (
+    <StyledTabs value={props.value} onChange={changeTab}>
+      <StyledTab value='all'>Все</StyledTab>
+      <StyledTab value='unread'>Непрочитанные</StyledTab>
+      <StyledTab value='chosen'>Избранные</StyledTab>
+    </StyledTabs>
+  )
+}
 
 const StyledTabs = styled(Tabs)`
   display: flex;

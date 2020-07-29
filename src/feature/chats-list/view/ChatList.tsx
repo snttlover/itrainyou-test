@@ -15,6 +15,14 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
     const loadData = useEvent($chatListModule.methods.loadChats)
     const listIsEmpty = useStore($chatListModule.modules.pagination.data.$listIsEmpty)
 
+    const find = useEvent($chatListModule.methods.findChats)
+
+    const search = useStore($chatListModule.data.$search)
+    const changeSearch = useEvent($chatListModule.methods.changeSearch)
+
+    const tab = useStore($chatListModule.data.$tab)
+    const changeTab = useEvent($chatListModule.methods.changeTab)
+
     useEffect(() => {
       loadData()
     })
@@ -22,14 +30,16 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
     return (
       <>
         <Container>
-          <ChatsSearch />
-          <ChatsSearchTabs />
+          <ChatsSearch value={search} onChange={changeSearch} find={find} />
+          <ChatsSearchTabs value={tab} onChange={changeTab} find={find} />
           {listIsEmpty && <ListIsEmpty />}
-          <InfScroll>
-            {useList($chatListModule.data.$chatsList, chat => (
-              <ChatLink {...chat} />
-            ))}
-          </InfScroll>
+          <ChatLinksContainer>
+            <InfScroll>
+              {useList($chatListModule.data.$chatsList, chat => (
+                <ChatLink {...chat} />
+              ))}
+            </InfScroll>
+          </ChatLinksContainer>
         </Container>
       </>
     )
@@ -48,6 +58,15 @@ const Container = styled.div`
 const ListIsEmpty = () => {
   return <Empty>По вашему запросу ничего не найдено</Empty>
 }
+
+const ChatLinksContainer = styled.div`
+  margin-top: 22px;
+  display: block;
+  width: 100%;
+  ${MediaRange.lessThan(`mobile`)`
+    margin-top: 14px;
+  `}
+`
 
 const Empty = styled.div`
   display: flex;
