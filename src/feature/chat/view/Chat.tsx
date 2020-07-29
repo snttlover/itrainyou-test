@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { ChatContainer } from "./content/ChatContainer"
-import { ChatHeader } from "./content/header/ChatHeader"
+import { PersonalChatHeader } from "./content/headers/personal/PersonalChatHeader"
 import { createChatMessages } from "./content/ChatMessages"
 import { ChatMessageBox } from "./content/ChatMessageBox"
 import { createChatModule } from "@/feature/chat"
@@ -10,6 +10,7 @@ import { Loader } from "@/components/spinner/Spinner"
 import { useParams } from "react-router-dom"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { ChatSessionsList } from "@/feature/chat/view/content/chat-sessions/ChatSessionsList"
+import { SystemChatHeader } from "@/feature/chat/view/content/headers/system/SystemChatHeader"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -27,6 +28,9 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
       return () => unmounted()
     }, [])
 
+    const isPersonalChat = chat.chatType === `PERSONAL`
+    const Header = isPersonalChat ? PersonalChatHeader : SystemChatHeader
+
     return (
       <Container>
         {chatIsNotFound && <NotFound />}
@@ -34,9 +38,9 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
         {!chatLoading && !!chat.id && (
           <>
             <ChatContainer>
-              <ChatHeader {...chat} />
+              <Header {...chat} />
               <Messages />
-              <ChatMessageBox onSend={send} />
+              {isPersonalChat && <ChatMessageBox onSend={send} />}
             </ChatContainer>
             <ChatSessionsList />
           </>

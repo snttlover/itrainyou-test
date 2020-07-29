@@ -1,5 +1,5 @@
 import { createSocket } from "@/feature/socket/create-socket"
-import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
 import { combine, createEvent, createStore, forward, guard, sample, merge } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
@@ -40,7 +40,7 @@ export type WriteChatMessageDone = {
 
 export type OnChatCreated = {
   type: `NEW_CHAT_CREATED`
-  data: Chat
+  data: PersonalChat
 }
 
 type SocketMessageReceive = WriteChatMessageDone | InitMessage | MessagesReadDone | OnChatCreated

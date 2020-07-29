@@ -1,5 +1,5 @@
 import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { createChatInfoModule } from "@/feature/chat/modules/chat-info"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { createEvent, createStore, forward, sample } from "effector-root"
@@ -7,7 +7,7 @@ import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
-  fetchChat: (id: number) => Promise<Chat>
+  fetchChat: (id: number) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: number, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
 }

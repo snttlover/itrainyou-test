@@ -20,7 +20,7 @@ const Container = styled.div`
 `
 
 type ChatContainerTypes = {
-  children: React.ReactChild | React.ReactChild[]
+  children: React.ReactChild | React.ReactChild[] | any[]
 }
 
 export const ChatContainer = (props: ChatContainerTypes) => <Container>{props.children}</Container>

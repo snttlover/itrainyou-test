@@ -1,7 +1,7 @@
-import { Chat } from "@/lib/api/chats/clients/get-chats"
+import { PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 
-export const chatSessionIsStarted = (chat: Chat) => {
+export const chatSessionIsStarted = (chat: PersonalChat) => {
   if (!chat.nearestSession) {
     return false
   }
