@@ -65,11 +65,11 @@ const MobileBackButton = styled(Icon).attrs({ name: `left-icon` })`
 `
 
 type ChatHeaderTypes = {
-  avatar: string | null
+  avatar?: string | null
   name: string
   backLink: any
   link?: any
-  chatType: string
+  type: string
 }
 
 export const ChatHeader = (props: ChatHeaderTypes) => {
@@ -85,9 +85,9 @@ export const ChatHeader = (props: ChatHeaderTypes) => {
       <Link to={props.backLink}>
         <MobileBackButton />
       </Link>
-      <StyledAvatar src={props.avatar} onClick={userClick} />
+      <StyledAvatar src={props.avatar || null} onClick={userClick} />
       <Title onClick={userClick}>{props.name}</Title>
-      {props.chatType === `coach` && <BanTooltip />}
+      {props.type === `coach` && <BanTooltip />}
     </Container>
   )
 }
