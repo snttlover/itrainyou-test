@@ -3,7 +3,7 @@ import { DurationType } from "@/lib/api/coach-sessions"
 import { UpdateCoachSchedule, WeekDayName, WeekDaySlot } from "@/lib/api/coaching-sessions/types"
 import { date } from "@/lib/formatting/date"
 import { loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
-import { attach, combine, createEvent, createStore, forward, restore, sample } from "effector-root"
+import { attach, combine, createEvent, createStore, forward, restore, sample, merge } from "effector-root"
 
 export const saveWeekdaySlotsFx = attach({
   effect: updateScheduleFx,
@@ -31,7 +31,10 @@ export const $weekdaySlots = createStore(
     slots: [],
   })) as WeekDaySlot[]
 ).on(
-  loadScheduleFx.doneData.map(data => data.weekdaySlots),
+  merge([
+    loadScheduleFx.doneData.map(data => data.weekdaySlots),
+    saveWeekdaySlotsFx.doneData.map(data => data.weekdaySlots),
+  ]),
   (weekdaySlots, loadedWeekdaySlots: WeekDaySlot[]) =>
     weekdaySlots.map(slots => {
       const loadedWeekdaySlot = loadedWeekdaySlots.find(({ weekday }) => slots.weekday === weekday)
