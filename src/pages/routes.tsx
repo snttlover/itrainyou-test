@@ -9,11 +9,12 @@ import ProfilePage from "@/pages/client/profile/ProfilePage"
 import CoachBlockedPage from "@/pages/coach/blocked/CoachBlockedPage"
 import CoachClientsPage from "@/pages/coach/clients/CoachClientsPage"
 import CoachHome from "@/pages/coach/home/CoachHome"
+import { CoachProfilePage } from "@/pages/coach/profile/CoachProfilePage"
 import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
 import CoachSupportPage from "@/pages/coach/support/CoachSupportPage"
 import CoachWalletPage from "@/pages/coach/wallet/CoachWalletPage"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
-import {ClientChatPage} from "@/pages/client/chats/chat/ClientChatPage"
+import { ClientChatPage } from "@/pages/client/chats/chat/ClientChatPage"
 import ClientChatListPage from "@/pages/client/chats/list/ClientChatListPage"
 import { routeNames } from "@/pages/route-names"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
@@ -97,6 +98,11 @@ export const ROUTES: RouteConfig[] = [
     component: CoachHome,
   },
   {
+    path: routeNames.coachProfile(),
+    exact: true,
+    component: CoachProfilePage,
+  },
+  {
     path: routeNames.coachSettings(),
     exact: true,
     component: () => (
@@ -137,5 +143,5 @@ export const ROUTES: RouteConfig[] = [
   {
     path: "*",
     render: () => <NotFound />,
-  }
+  },
 ]

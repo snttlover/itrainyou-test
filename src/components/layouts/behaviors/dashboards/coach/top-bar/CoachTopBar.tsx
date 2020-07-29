@@ -105,7 +105,9 @@ export const CoachTopBar = () => {
           </Link>
         </CoachLinkWrapper>
         {user.coach?.isApproved && <NotificationButton />}
-        <StyledAvatar src={user.coach?.avatar || null} />
+        <Link to={routeNames.coachProfile()}>
+          <StyledAvatar src={user.coach?.avatar || null} />
+        </Link>
         <CoachTooltip>
           <DropdownButton />
         </CoachTooltip>

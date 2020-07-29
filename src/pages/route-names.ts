@@ -16,6 +16,7 @@ export const routeNames = {
   clientChat: (id: string) => `/client/chats/${id}`,
 
   coach: () => `/coach`,
+  coachProfile: () => `/coach/profile`,
   coachClients: () => `/coach/clients`,
   coachWallet: () => `/coach/wallet`,
   coachSettings: () => `/coach/settings`,
