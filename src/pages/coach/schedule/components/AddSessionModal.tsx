@@ -83,6 +83,8 @@ const StyledDashedButton = styled(DashedButton)`
 
   ${MediaRange.greaterThan(`mobile`)`
     height: 26px;
+    padding-top: 0;
+    padding-bottom: 0;
   `}
 `
 
