@@ -1,6 +1,7 @@
+import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
 import { $feeRatio, loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
-import { combine, createEvent, createStore, forward, sample, merge, split } from "effector-root"
+import { combine, createEvent, createStore, forward, sample, merge, split, attach } from "effector-root"
 import { debounce, spread } from "patronum"
 
 export type Prices = {
@@ -95,6 +96,21 @@ const { d30Changed, d45Changed, d60Changed, d90Changed } = split(changePrice, {
   d90Changed: ({ name }) => name === "d90Price",
 })
 
+const savePricesFx = attach({
+  effect: updateScheduleFx,
+  mapParams: (params: UpdateCoachSchedule) => params,
+})
+
+const successMessage: Toast = {
+  type: "info",
+  text: "Цены сохранены",
+}
+
+forward({
+  from: savePricesFx.doneData.map(_ => successMessage),
+  to: [toasts.remove, toasts.add],
+})
+
 sample({
   clock: merge([
     debounce(d30Changed, 500),
@@ -104,5 +120,5 @@ sample({
   ]),
   source: $prices,
   fn: (_, { name, value }: ChangePriceEvent) => ({ [name]: value }),
-  target: updateScheduleFx,
+  target: savePricesFx,
 })
