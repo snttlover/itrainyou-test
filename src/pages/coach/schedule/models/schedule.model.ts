@@ -45,16 +45,6 @@ export const updateScheduleFx = attach({
   }),
 })
 
-const successMessage: Toast = {
-  type: "info",
-  text: "Цены сохранены",
-}
-
-forward({
-  from: updateScheduleFx.doneData.map(_ => successMessage),
-  to: [toasts.remove, toasts.add],
-})
-
 export const ScheduleGate = createGate()
 
 forward({

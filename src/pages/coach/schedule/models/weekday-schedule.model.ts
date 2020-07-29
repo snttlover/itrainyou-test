@@ -38,7 +38,7 @@ export const $weekdaySlots = createStore(
   (weekdaySlots, loadedWeekdaySlots: WeekDaySlot[]) =>
     weekdaySlots.map(slots => {
       const loadedWeekdaySlot = loadedWeekdaySlots.find(({ weekday }) => slots.weekday === weekday)
-      if (!loadedWeekdaySlot) return slots
+      if (!loadedWeekdaySlot) return { ...slots, slots: [] }
 
       return {
         ...slots,
