@@ -3,10 +3,12 @@ import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { Icon } from "@/components/icon/Icon"
 import { Button } from "@/components/button/normal/Button"
-import { ChatLinkMaterials } from "@/feature/chats-list/view/components/list/ChatLinkMaterials"
+import { ChatLinkMaterials } from "@/feature/chats-list/view/components/list/chat-link/ChatLinkMaterials"
 import { Link } from "react-router-dom"
+import { ChatTypes } from "@/lib/api/chats/clients/get-chats"
 
 export type ChatLinkTypes = {
+  type: ChatTypes
   link: string
   avatar: string | null
   name: string

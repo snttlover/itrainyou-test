@@ -44,6 +44,7 @@ export type IconName =
   | "hand"
   | "help"
   | "home"
+  | "bell"
   | "my-coaches"
   | "my-purse"
   | "settings"

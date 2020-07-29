@@ -2,11 +2,11 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { createChatListModule } from "@/feature/chats-list/modules/chat-list"
 import { useEvent, useList, useStore } from "effector-react/ssr"
-import { ChatLink } from "@/feature/chats-list/view/components/list/ChatLink"
 import { createInfinityScroll } from "@/feature/pagination"
 import { MediaRange } from "@/lib/responsive/media"
 import { ChatsSearch } from "@/feature/chats-list/view/components/search/ChatsSearch"
 import { ChatsSearchTabs } from "@/feature/chats-list/view/components/tabs/ChatsSearchTabs"
+import { ChatLinkSwitcher } from "@/feature/chats-list/view/components/list/ChatLinkSwitcher"
 
 export const createChatList = ($chatListModule: ReturnType<typeof createChatListModule>) => {
   const InfScroll = createInfinityScroll($chatListModule.modules.pagination)
@@ -36,7 +36,7 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
           <ChatLinksContainer>
             <InfScroll>
               {useList($chatListModule.data.$chatsList, chat => (
-                <ChatLink {...chat} />
+                <ChatLinkSwitcher chat={chat} />
               ))}
             </InfScroll>
           </ChatLinksContainer>

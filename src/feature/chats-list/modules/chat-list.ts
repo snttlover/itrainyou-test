@@ -162,6 +162,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
             : ``
 
           return {
+            type: chat.type,
             link: `/${config.type}/chats/${chat.id}`,
             avatar: interlocutor?.avatar || null,
             name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,

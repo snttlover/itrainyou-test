@@ -4,11 +4,10 @@ import { Tabs, Tab } from "@/components/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
 import { ChatListTabs } from "@/feature/chats-list/modules/chat-list"
 import { Simulate } from "react-dom/test-utils"
-import change = Simulate.change
 
 type ChatsListTabsProps = {
   value: string
-  onChange: (value: string) => void
+  onChange: (value: ChatListTabs) => void
   find: (payload: void) => void
 }
 
