@@ -63,7 +63,7 @@ export const $prices = createStore<Price[]>([
     const keys = Object.keys(params)
     return state.map(price => ({
       ...price,
-      isLoading: keys.includes(price.name),
+      isLoading: keys.includes(price.name) ? true : price.isLoading,
     }))
   })
   .on(updateScheduleFx.finally, (state, { params }) => {

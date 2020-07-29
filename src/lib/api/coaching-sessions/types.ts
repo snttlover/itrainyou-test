@@ -6,6 +6,13 @@ export interface ScheduleDaySlot {
   startTime: string
 }
 
+export type WeekDayName = "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY"
+
+export type WeekDaySlot = {
+  weekday: WeekDayName
+  slots: ScheduleDaySlot[]
+}
+
 export interface CoachSchedule {
   id: number
   isAvailable: boolean
@@ -13,10 +20,7 @@ export interface CoachSchedule {
   d45Price: string
   d60Price: string
   d90Price: string
-  weekdaySlots: {
-    weekday: "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY"
-    slots: ScheduleDaySlot[]
-  }[]
+  weekdaySlots: WeekDaySlot[]
 }
 
 export interface CreateCoachSchedule {
