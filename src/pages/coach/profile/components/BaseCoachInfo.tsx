@@ -115,17 +115,6 @@ const StyledBlock = styled(Block)`
   flex-direction: column;
 `
 
-const Like = styled(Icon)`
-  position: absolute;
-  fill: ${({ theme }) => theme.colors.primary};
-  right: 8px;
-  top: 12px;
-  ${MediaRange.greaterThan("mobile")`
-    position: static;
-    margin-left: 8px;
-  `};
-`
-
 const CategoriesAndButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;

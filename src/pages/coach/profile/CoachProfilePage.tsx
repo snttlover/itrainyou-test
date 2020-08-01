@@ -1,14 +1,13 @@
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
-import { Loader } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
-import { $profileData, ProfileGate } from "@/pages/coach/profile/profile.model"
+import { SessionsDatePicker } from "@/pages/coach/profile/components/common/SessionsDatePicker"
+import { $profileData, $sessionsPickerStore, ProfileGate } from "@/pages/coach/profile/profile.model"
 import { AboutCoach } from "./components/AboutCoach"
 import { BaseCoachInfo } from "./components/BaseCoachInfo"
 import { Reviews } from "./components/Reviews"
 import * as React from "react"
 import styled, { css } from "styled-components"
-import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
 import { useGate, useStore } from "effector-react/ssr"
 
 const InfoWithSidebar = styled.div`
@@ -25,6 +24,8 @@ const BuySidebar = styled.div`
   margin-left: 24px;
   position: relative;
   align-self: flex-start;
+  flex-direction: column;
+  align-items: center;
   height: auto;
 
   ${MediaRange.greaterThan("laptop")`
@@ -97,7 +98,8 @@ const TabsContainer = styled.div`
     margin-top: 36px;
   `}
   ${MediaRange.greaterThan("laptop")`    
-    max-width: unset;
+    max-width: 900px;
+    margin-left: 0;
   `}
 `
 
@@ -150,14 +152,24 @@ const Tab = styled.div<{ selected?: boolean }>`
     `}
 `
 
-/*const Datepicker = () => {
-  const coach = useStore($coach)
+const ThinkYouAreTopCoach = styled.p`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: #9aa0a6;
+  margin-top: -8px;
+`
+
+const Datepicker = () => {
+  const coach = useStore($profileData)
 
   if (coach) {
-    return <CoachDatepicker coach={coach} sessionsData={$sessionsPickerStore} />
+    return <SessionsDatePicker coach={coach as any} sessionsData={$sessionsPickerStore} />
   }
   return null
-}*/
+}
 
 export const CoachProfilePage = () => {
   useGate(ProfileGate)
@@ -176,12 +188,17 @@ export const CoachProfilePage = () => {
           <CoachInfoContainer>
             <MainCoachBlock>
               <BaseCoachInfo />
-              <BuyBlock>{/*<Datepicker />*/}</BuyBlock>
+              <BuyBlock>
+                <Datepicker />
+              </BuyBlock>
               <AboutCoach />
             </MainCoachBlock>
             <Reviews />
           </CoachInfoContainer>
-          <BuySidebar>{/*<Datepicker />*/}</BuySidebar>
+          <BuySidebar>
+            <Datepicker />
+            <ThinkYouAreTopCoach>Думаете вы топ-коуч?</ThinkYouAreTopCoach>
+          </BuySidebar>
         </InfoWithSidebar>
       </ContentContainer>
     </CoachDashboardLayout>
