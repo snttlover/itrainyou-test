@@ -12,7 +12,7 @@ type RescheduleSessionCardTypes = {
 
 export const RescheduleSessionCard = (props: RescheduleSessionCardTypes) => (
   <DialogOverlay onClick={() => props.onChangeVisibility(false)}>
-    <Container>
+    <Container onClick={e => e.stopPropagation()}>
       <MobileClose onClick={() => props.onChangeVisibility(false)} />
       <MobileHeader>Перенос сессии</MobileHeader>
       <Coach />

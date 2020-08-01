@@ -9,7 +9,7 @@ type DialogOverlayTypes = {
 export const DialogOverlay = (props: DialogOverlayTypes) => {
   return (
     <StyledDialogOverlay onClick={props.onClick}>
-      <Container onClick={e => e.stopPropagation()}>{props.children}</Container>
+      <Container>{props.children}</Container>
     </StyledDialogOverlay>
   )
 }
