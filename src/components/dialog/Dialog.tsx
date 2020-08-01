@@ -30,7 +30,7 @@ export const Dialog = (props: DialogProps) => {
     <>
       {props.value && (
         <DialogOverlay onClick={close}>
-          <StyledDialog className={props.className} onClick={e => e.stopPropagation()}>
+          <StyledDialog className={props.className}>
             <Close onClick={close} />
             {props.children}
           </StyledDialog>

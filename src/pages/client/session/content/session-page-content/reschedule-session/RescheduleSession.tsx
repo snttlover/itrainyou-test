@@ -1,10 +1,19 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
+import { RescheduleSessionCard } from "@/pages/client/session/content/session-page-content/reschedule-session/dialog/RescheduleSessionCard"
 
-export const RescheduleSession = ({ className }: { className?: string }) => (
-  <Button className={className}>Перенести сессию</Button>
-)
+export const RescheduleSession = ({ className }: { className?: string }) => {
+  const [visibility, onChangeVisibility] = useState(false)
+  return (
+    <>
+      <Button className={className} onClick={() => onChangeVisibility(true)}>
+        Перенести сессию
+      </Button>
+      {visibility && <RescheduleSessionCard onChangeVisibility={onChangeVisibility} />}
+    </>
+  )
+}
 
 const Button = styled.div`
   display: flex;

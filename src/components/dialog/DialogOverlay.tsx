@@ -2,15 +2,17 @@ import React from "react"
 import styled from "styled-components"
 
 type DialogOverlayTypes = {
-  children: React.ReactChild
-  onClick: () => void
+  children: React.ReactChild | React.ReactChild[]
+  onClick?: () => void
 }
 
-export const DialogOverlay = (props: DialogOverlayTypes) => (
-  <StyledDialogOverlay onClick={props.onClick}>
-    <Container>{props.children}</Container>
-  </StyledDialogOverlay>
-)
+export const DialogOverlay = (props: DialogOverlayTypes) => {
+  return (
+    <StyledDialogOverlay onClick={props.onClick}>
+      <Container onClick={e => e.stopPropagation()}>{props.children}</Container>
+    </StyledDialogOverlay>
+  )
+}
 
 const StyledDialogOverlay = styled.div`
   position: fixed;
