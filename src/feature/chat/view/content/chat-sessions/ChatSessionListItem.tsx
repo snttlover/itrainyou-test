@@ -8,14 +8,9 @@ type ChatSessionListItemTypes = {
 
   date: string
   time: string
-  imagesCount: number
-  videosCount: number
-  documentsCount: number
 }
 
 export const ChatSessionListItem = (props: ChatSessionListItemTypes) => {
-  const hasCounters = props.imagesCount || props.videosCount || props.documentsCount
-
   return (
     <Container>
       <Header>
@@ -23,26 +18,6 @@ export const ChatSessionListItem = (props: ChatSessionListItemTypes) => {
         <Time>{props.time}</Time>
         {props.timer && <Timer>{props.timer}</Timer>}
       </Header>
-      {hasCounters ? (
-        <Counters>
-          <Counter>
-            <ImageIcon />
-            <CounterText>{props.imagesCount}</CounterText>
-          </Counter>
-
-          <Counter>
-            <CameraIcon />
-            <CounterText>{props.videosCount}</CounterText>
-          </Counter>
-
-          <Counter>
-            <DocumentIcon />
-            <CounterText>{props.documentsCount}</CounterText>
-          </Counter>
-        </Counters>
-      ) : (
-        <NoMaterials>Нет материалов</NoMaterials>
-      )}
     </Container>
   )
 }

@@ -9,11 +9,13 @@ import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
 import { useParams } from "react-router-dom"
 import { NotFound } from "@/feature/not-found/components/NotFound"
-import { ChatSessionsList } from "@/feature/chat/view/content/chat-sessions/ChatSessionsList"
+import { createChatSessions } from "@/feature/chat/view/content/chat-sessions/ChatSessionsList"
 import { SystemChatHeader } from "@/feature/chat/view/content/headers/system/SystemChatHeader"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
+  const Sessions = createChatSessions($chatModule.chatSessions)
+
   return () => {
     const chat = useStore($chatModule.chat.$chat)
     const chatLoading = useStore($chatModule.chat.$loading)
@@ -42,7 +44,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
               <Messages />
               {isPersonalChat && <ChatMessageBox onSend={send} />}
             </ChatContainer>
-            <ChatSessionsList />
+            <Sessions />
           </>
         )}
       </Container>
