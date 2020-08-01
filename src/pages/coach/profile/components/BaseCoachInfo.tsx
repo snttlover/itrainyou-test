@@ -167,7 +167,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
           </Name>
           <Rating>
             <StarIcon name='star' />
-            {coach?.rating}
+            {coach?.rating || "Мало оценок"}
           </Rating>
           <CategoriesAndButtonContainer>
             <CategoriesContainer>
