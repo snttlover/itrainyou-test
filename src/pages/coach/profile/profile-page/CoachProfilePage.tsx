@@ -1,14 +1,16 @@
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { MediaRange } from "@/lib/responsive/media"
-import { SessionsDatePicker } from "@/pages/coach/profile/components/common/SessionsDatePicker"
-import { $profileData, $sessionsPickerStore, ProfileGate } from "@/pages/coach/profile/profile.model"
+import { TabsContainer } from "@/pages/coach/profile/common/TabsContainer"
+import { useGate, useStore } from "effector-react/ssr"
+import * as React from "react"
+import styled from "styled-components"
+import { ProfileTabs } from "../common/ProfileTabs"
 import { AboutCoach } from "./components/AboutCoach"
 import { BaseCoachInfo } from "./components/BaseCoachInfo"
+import { SessionsDatePicker } from "./components/common/SessionsDatePicker"
 import { Reviews } from "./components/Reviews"
-import * as React from "react"
-import styled, { css } from "styled-components"
-import { useGate, useStore } from "effector-react/ssr"
+import { $profileData, $sessionsPickerStore, ProfileGate } from "./profile.model"
 
 const InfoWithSidebar = styled.div`
   margin: 14px 0;
@@ -85,24 +87,6 @@ const MainCoachBlock = styled.div`
   }
 `
 
-const TabsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  max-width: 608px;
-  margin: 14px auto 0;
-
-  ${MediaRange.greaterThan("mobile")`
-    margin-top: 28px;
-  `}
-  ${MediaRange.greaterThan("tablet")`
-    margin-top: 36px;
-  `}
-  ${MediaRange.greaterThan("laptop")`    
-    max-width: 900px;
-    margin-left: 0;
-  `}
-`
-
 const InfoText = styled.p`
   display: none;
   font-family: Roboto;
@@ -117,39 +101,6 @@ const InfoText = styled.p`
   ${MediaRange.greaterThan("laptop")`
     display: block;
   `}
-`
-
-const Tabs = styled.div`
-  display: flex;
-`
-
-const Tab = styled.div<{ selected?: boolean }>`
-  position: relative;
-  cursor: pointer;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #424242;
-
-  &:not(:first-child) {
-    margin-left: 24px;
-  }
-
-  ${({ selected }) =>
-    selected &&
-    css`
-      &:after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        height: 2px;
-        width: 100%;
-        background-color: ${({ theme }) => theme.colors.primary};
-      }
-    `}
 `
 
 const ThinkYouAreTopCoach = styled.p`
@@ -178,10 +129,7 @@ export const CoachProfilePage = () => {
     <CoachDashboardLayout>
       <ContentContainer>
         <TabsContainer>
-          <Tabs>
-            <Tab selected>Профиль</Tab>
-            <Tab>История сессий</Tab>
-          </Tabs>
+          <ProfileTabs />
           <InfoText>Так вашу страницу видит клиент</InfoText>
         </TabsContainer>
         <InfoWithSidebar>
