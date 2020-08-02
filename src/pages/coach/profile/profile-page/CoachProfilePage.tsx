@@ -125,6 +125,8 @@ const Datepicker = () => {
 export const CoachProfilePage = () => {
   useGate(ProfileGate)
 
+  const coach = useStore($profileData)
+
   return (
     <CoachDashboardLayout>
       <ContentContainer>
@@ -145,7 +147,7 @@ export const CoachProfilePage = () => {
           </CoachInfoContainer>
           <BuySidebar>
             <Datepicker />
-            <ThinkYouAreTopCoach>Думаете вы топ-коуч?</ThinkYouAreTopCoach>
+            {!coach.isTopCoach && <ThinkYouAreTopCoach>Думаете вы топ-коуч?</ThinkYouAreTopCoach>}
           </BuySidebar>
         </InfoWithSidebar>
       </ContentContainer>
