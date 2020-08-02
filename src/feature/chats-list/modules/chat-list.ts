@@ -96,9 +96,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
       return [socketMessage.data, ...chats]
     })
     .on(loadChatByMessageFx.doneData, (chats, chat) => [chat, ...chats])
-    .reset(resetPagination)
 
-  pagination.data.$currentPage.reset(resetPagination)
+  forward({
+    from: resetPagination,
+    to: pagination.methods.reset
+  })
 
   forward({
     from: findChats,
