@@ -2,18 +2,52 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { CancelSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/CancelSessionDialog"
+import { useStore } from "effector-react"
+import { $dashboard, DashboardType } from "@/feature/dashboard/dashboard"
+import { ISODate } from "@/lib/api/interfaces/utils.interface"
+import { date } from "@/lib/formatting/date"
 
-export const CancelSession = ({ className }: { className?: string }) => {
+type CancelSessionProps = {
+  sessionStartDatetime?: ISODate
+  className?: string
+  onCancel: () => void
+}
+
+const getText = (type: DashboardType, sessionStartDatetime?: ISODate) => {
+  if (type === `client` && date().isAfter(date(sessionStartDatetime).subtract(48, `hour`))) {
+    return `Вы хотите отменить сессию позднее, чем за 48 часов. Коучу будет отправлен запрос на отмену сессии.`
+  }
+
+  return `Сессия отменится автоматически`
+}
+
+export const CancelSession = (props: CancelSessionProps) => {
+  const dashboardType = useStore($dashboard)
   const [cancelDialogVisibility, changeCancelDialogVisibility] = useState(false)
+
+  const dialogText = getText(dashboardType, props.sessionStartDatetime)
+
   return (
     <>
-      <Button className={className} onClick={() => changeCancelDialogVisibility(true)}>
+      <Button className={props.className} onClick={() => changeCancelDialogVisibility(true)}>
         Отменить сессию
       </Button>
-      <CancelSessionDialog visibility={cancelDialogVisibility} onChangeVisibility={changeCancelDialogVisibility} />
+      <CancelSessionDialog
+        text={dialogText}
+        visibility={cancelDialogVisibility}
+        onChangeVisibility={changeCancelDialogVisibility}
+        onCancel={props.onCancel}
+      />
     </>
   )
 }
+
+export const TabletCancelSession = styled(CancelSession)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
+  `}
+`
 
 const Button = styled.div`
   display: flex;

@@ -2,20 +2,35 @@ import React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 
-export const SessionInfo = ({ className }: { className?: string }) => (
-  <Container className={className}>
-    <Date>25 октября в 15:00</Date>
+type SessionInfoProps = {
+  duration: string
+  cost: string | number
+  date: string
+  isOver: boolean
+  className?: string
+}
+
+export const SessionInfo = (props: SessionInfoProps) => (
+  <Container className={props.className}>
+    <Date>{props.date}</Date>
     <Row>
       <Label>Стоимость</Label>
-      <Value>1200</Value>
+      <Value>{props.cost}</Value>
     </Row>
     <Row>
       <Label>Длительность</Label>
-      <Value>120 мин.</Value>
+      <Value>{props.duration}</Value>
     </Row>
-    <Status>Сессия прошла</Status>
+    {props.isOver && <Status>Сессия прошла</Status>}
   </Container>
 )
+
+export const TabletSessionInfo = styled(SessionInfo)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
+  `}
+`
 
 const Row = styled.div`
   display: flex;

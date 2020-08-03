@@ -9,6 +9,7 @@ type CreateChatSessionsModuleConfig = {
   socket: ReturnType<typeof createChatsSocket>
   $chatId: Store<number>
   $withAvatars: Store<boolean>
+  chatUserType: "client" | "coach"
   fetch: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 
@@ -52,6 +53,7 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
   const $sessions = combine(pagination.data.$list, $tick, $tab, (sessions, tick, tab) => {
     return sessions.map(s => {
       const session: any = {
+        link: `/${config.chatUserType}/sessions/${s.id}`,
         time: date(s.startDatetime).format(`HH:mm`),
         date: date(s.startDatetime).format(`DD MMM YYYYг`),
       }

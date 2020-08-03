@@ -5,23 +5,32 @@ import { Button } from "@/components/button/normal/Button"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 
 type CancelSessionDialogTypes = {
+  text: string
+  onCancel: () => void
   visibility: boolean
   onChangeVisibility: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const CancelSessionDialog = (props: CancelSessionDialogTypes) => (
-  <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
-    <Container>
-      <Header>Хотите отменить сессию?</Header>
-      <Description>Сессия отменится автоматически</Description>
+export const CancelSessionDialog = (props: CancelSessionDialogTypes) => {
+  const cancelSession = () => {
+    props.onCancel()
+    props.onChangeVisibility(false)
+  }
 
-      <Actions>
-        <No>Нет</No>
-        <Yes>Да</Yes>
-      </Actions>
-    </Container>
-  </StyledDialog>
-)
+  return (
+    <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
+      <Container>
+        <Header>Хотите отменить сессию?</Header>
+        <Description>Сессия отменится автоматически</Description>
+
+        <Actions>
+          <No onClick={() => props.onChangeVisibility(false)}>Нет</No>
+          <Yes onClick={cancelSession}>Да</Yes>
+        </Actions>
+      </Container>
+    </StyledDialog>
+  )
+}
 
 const Container = styled.div``
 

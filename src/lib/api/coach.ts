@@ -23,6 +23,7 @@ export interface CoachUser {
 }
 
 export type Coach = {
+  id: number
   user: {
     id: number
     email: string

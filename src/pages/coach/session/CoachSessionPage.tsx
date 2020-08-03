@@ -1,11 +1,12 @@
 import React, { useEffect } from "react"
-import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 import { SessionPageContainer as Container } from "@/pages/client/session/content/session-page-content/common/SessionPageContainer"
 import { SessionPageContent as Content } from "@/pages/client/session/content/session-page-content/common/SessionPageContent"
 import { SessionPageInfoWrapper as InfoWrapper } from "@/pages/client/session/content/session-page-content/common/SessionPageInfoWrapper"
 import { UserHeader } from "@/pages/client/session/content/session-page-content/UserHeader"
 import { SessionInfo } from "@/pages/client/session/content/session-page-content/session-info/SessionInfo"
+import { coachSessionPage } from "@/pages/coach/session/coach-session-page"
 import { useParams } from "react-router-dom"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
@@ -15,21 +16,20 @@ import {
   CancelSession,
   TabletCancelSession,
 } from "@/pages/client/session/content/session-page-content/cancel-session/CancelSession"
-import { clientSessionPage } from "@/pages/client/session/client-session-page"
 
-export const ClientSessionPage = () => {
+export const CoachSessionPage = () => {
   const params = useParams<{ id: string }>()
 
-  const sessionInfo = useStore(clientSessionPage.modules.sessionInfo.data.$info)
-  const fetching = useStore(clientSessionPage.modules.sessionInfo.data.isFetching)
-  const notFound = useStore(clientSessionPage.modules.sessionInfo.data.$notFound)
-  const sessionsRequests = useStore(clientSessionPage.modules.sessionRequests.data.$sessions)
+  const sessionInfo = useStore(coachSessionPage.modules.sessionInfo.data.$info)
+  const fetching = useStore(coachSessionPage.modules.sessionInfo.data.isFetching)
+  const notFound = useStore(coachSessionPage.modules.sessionInfo.data.$notFound)
+  const sessionsRequests = useStore(coachSessionPage.modules.sessionRequests.data.$sessions)
 
-  const mounted = useEvent(clientSessionPage.methods.mounted)
-  const unmount = useEvent(clientSessionPage.methods.reset)
+  const mounted = useEvent(coachSessionPage.methods.mounted)
+  const unmount = useEvent(coachSessionPage.methods.reset)
 
-  const write = useEvent(clientSessionPage.modules.sessionInfo.methods.write)
-  const cancelSession = useEvent(clientSessionPage.modules.sessionInfo.methods.cancelSession)
+  const write = useEvent(coachSessionPage.modules.sessionInfo.methods.write)
+  const cancelSession = useEvent(coachSessionPage.modules.sessionInfo.methods.cancelSession)
 
   useEffect(() => {
     mounted(parseInt(params.id))
@@ -37,7 +37,7 @@ export const ClientSessionPage = () => {
   }, [])
 
   return (
-    <ClientDashboardLayout>
+    <CoachDashboardLayout>
       {notFound && <NotFound />}
       {fetching && <Loader />}
       {!fetching && !notFound && (
@@ -52,7 +52,7 @@ export const ClientSessionPage = () => {
 
             {!!sessionsRequests.length && (
               <SessionsHistory
-                pagination={clientSessionPage.modules.sessionRequests.modules.pagination}
+                pagination={coachSessionPage.modules.sessionRequests.modules.pagination}
                 list={sessionsRequests}
               />
             )}
@@ -63,6 +63,6 @@ export const ClientSessionPage = () => {
           </InfoWrapper>
         </Container>
       )}
-    </ClientDashboardLayout>
+    </CoachDashboardLayout>
   )
 }

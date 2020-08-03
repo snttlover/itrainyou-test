@@ -15,6 +15,13 @@ export const RescheduleSession = ({ className }: { className?: string }) => {
   )
 }
 
+export const TabletRescheduleSession = styled(RescheduleSession)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
+  `}
+`
+
 const Button = styled.div`
   display: flex;
   width: 100%;

@@ -5,23 +5,33 @@ import { Icon } from "@/components/icon/Icon"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 
-export const UserHeader = () => (
+type UserHeaderProps = {
+  userId: number | null
+  dashboardType: "coach" | "client"
+  userAvatar: string | null
+  userName: string
+  rating: string | null
+  sessionsCount: number
+  onWrite: (id: number | null) => void
+}
+
+export const UserHeader = (props: UserHeaderProps) => (
   <Container>
     <UserInfo>
-      <StyledAvatar src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png' />
+      <StyledAvatar src={props.userAvatar} />
       <Info>
-        <Name>Иван Иванов</Name>
-        <Rating>
-          <RatingIcon />
-          4,5
-        </Rating>
-        <SessionsCounter>У вас было 12 занятий с коучем</SessionsCounter>
+        <Name>{props.userName}</Name>
+        {!!props.rating && (
+          <Rating>
+            <RatingIcon />
+            {props.rating}
+          </Rating>
+        )}
+        <SessionsCounter>У вас было {props.sessionsCount} занятий</SessionsCounter>
       </Info>
     </UserInfo>
-    <MobileSessionsCounter>
-      У вас было 12 занятий с коучем
-    </MobileSessionsCounter>
-    <Write>Написать</Write>
+    <MobileSessionsCounter>У вас было {props.sessionsCount} занятий</MobileSessionsCounter>
+    <Write onClick={() => props.onWrite(props.userId)}>Написать</Write>
   </Container>
 )
 
@@ -72,7 +82,7 @@ const Rating = styled.div`
   line-height: 26px;
   color: ${props => props.theme.colors.primary};
   margin-top: 8px;
-  
+
   ${MediaRange.lessThan(`mobile`)`
     font-weight: 500;
     font-size: 14px;

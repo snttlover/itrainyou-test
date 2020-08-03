@@ -26,6 +26,7 @@ import { SearchPage } from "./search/SearchPage"
 import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { ClientSessionPage } from "@/pages/client/session/ClientSessionPage"
+import { CoachSessionPage } from "@/pages/coach/session/CoachSessionPage"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -51,7 +52,7 @@ export const ROUTES: RouteConfig[] = [
   },
 
   {
-    path: routeNames.clientSession(),
+    path: routeNames.clientSession(`:id`),
     component: ClientSessionPage,
   },
   {
@@ -136,6 +137,11 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.coachSchedule(),
     exact: true,
     component: CoachSchedulePage,
+  },
+
+  {
+    path: routeNames.coachSession(`:id`),
+    component: CoachSessionPage,
   },
   {
     path: routeNames.coachBlocked(),

@@ -3,20 +3,37 @@ import styled from "styled-components"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
+import { createInfinityScroll } from "@/feature/pagination"
+import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+import { CreatePaginationType } from "@/feature/pagination/modules/pagination"
 
-export const SessionsHistory = () => (
-  <Container>
-    <Header>История сессии</Header>
-    <Items>
-      <SessionItem date={date().toISOString()}>Клиент подтвердил, что урок завершен</SessionItem>
-      <SessionItem date={date().toISOString()}>Клиент подтвердил, что урок завершен</SessionItem>
-      <SessionItem date={date().toISOString()}>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. A consequuntur dolor, dolore dolorem dolores doloribus earum eius eligendi est eveniet exercitationem iste magnam nesciunt nihil optio placeat praesentium saepe voluptatem.
-      </SessionItem>
-      <SessionItem date={date().toISOString()}>Клиент подтвердил, что урок завершен</SessionItem>
-    </Items>
-  </Container>
-)
+type SessionsHistoryProps = {
+  pagination: CreatePaginationType<SessionRequest>
+  list: {
+    id: number
+    text: string
+    date: string
+  }[]
+}
+
+export const SessionsHistory = (props: SessionsHistoryProps) => {
+  const InfiniteScroll = createInfinityScroll(props.pagination)
+
+  return (
+    <Container>
+      <Header>История сессии</Header>
+      <Items>
+        <InfiniteScroll>
+          {props.list.map(session => (
+            <SessionItem key={session.id} date={session.date}>
+              {session.text}
+            </SessionItem>
+          ))}
+        </InfiniteScroll>
+      </Items>
+    </Container>
+  )
+}
 
 const Container = styled.div`
   display: flex;

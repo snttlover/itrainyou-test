@@ -25,7 +25,8 @@ export const createChatModule = (config: ChatListModuleConfig) => {
     socket: config.socket,
     $withAvatars: chat.$chat.map(chat => chat.chatType === `SYSTEM`),
     $chatId,
-    fetch: config.fetchSessions
+    fetch: config.fetchSessions,
+    chatUserType: config.type
   })
 
   const chatMessages = createChatMessagesModule(config)

@@ -30,7 +30,7 @@ export const createChatSessions = (sessionsModule: ReturnType<typeof createChatS
           {isEmpty && <Empty>Пока нет сессий</Empty>}
           <Pagination>
             {useList(sessionsModule.data.$sessions, session => (
-              <ChatSessionListItem date={session.date} time={session.time} />
+              <ChatSessionListItem link={session.link} date={session.date} time={session.time} />
             ))}
           </Pagination>
         </Sessions>

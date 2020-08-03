@@ -1,8 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
+import { Link } from "react-router-dom"
 
 type ChatSessionListItemTypes = {
+  link: string
   avatar?: string
   timer?: string
 
@@ -12,7 +14,7 @@ type ChatSessionListItemTypes = {
 
 export const ChatSessionListItem = (props: ChatSessionListItemTypes) => {
   return (
-    <Container>
+    <Container to={props.link}>
       <Header>
         <Date>{props.date}</Date>
         <Time>{props.time}</Time>
@@ -22,7 +24,7 @@ export const ChatSessionListItem = (props: ChatSessionListItemTypes) => {
   )
 }
 
-const Container = styled.div`
+const Container = styled(Link)`
   display: flex;
   flex-direction: column;
   padding: 10px 12px;

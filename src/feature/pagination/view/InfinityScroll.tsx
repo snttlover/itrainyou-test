@@ -2,7 +2,7 @@ import { Loader } from "@/components/spinner/Spinner"
 import { useEvent, useStore } from "effector-react/ssr"
 import InfiniteScroll from "react-infinite-scroll-component"
 import * as React from "react"
-import { Store } from "effector"
+import { Store } from "effector-root"
 
 export type InfinityScrollPropsTypes = {
   children: React.ReactNode | React.ReactNode[]

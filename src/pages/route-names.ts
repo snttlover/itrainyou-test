@@ -9,7 +9,7 @@ export const routeNames = {
   resetPassword: (token: string) => `/reset-password/${token}`,
 
   client: () => `/client`,
-  clientSession: () => `/client/session`,
+  clientSession: (id: string) => `/client/sessions/${id}`,
   clientProfile: () => `/client/profile`,
   clientSettings: () => `/client/settings`,
   clientChatsList: () => `/client/chats`,
@@ -24,5 +24,6 @@ export const routeNames = {
   coachSupport: () => `/coach/support`,
   coachSchedule: () => `/coach/schedule`,
   coachBlocked: () => `/coach/blocked`,
+  coachSession: (id: string) => `/coach/sessions/${id}`,
   coachChat: (id: string) => `/coach/chats/${id}`,
 }
