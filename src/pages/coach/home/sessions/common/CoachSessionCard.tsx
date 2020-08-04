@@ -3,8 +3,9 @@ import { Button } from "@/components/button/normal/Button"
 import { Avatar } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
+import { Link } from "react-router-dom"
 
-const Container = styled.div`
+const Container = styled(Link)`
   margin-bottom: 24px;
   padding: 12px 16px;
   background: #fff;
@@ -105,10 +106,11 @@ type CoachSessionCardTypes = {
   duration: string
   time: string
   isActive?: boolean
+  link: string
 }
 
 export const CoachSessionCard = (props: CoachSessionCardTypes) => (
-  <Container>
+  <Container to={props.link}>
     <StyledAvatar src={props.avatar} />
     <NameContainer>
       <Name>{props.name}</Name>

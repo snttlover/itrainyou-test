@@ -7,8 +7,9 @@ import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
+import { Link } from "react-router-dom"
 
-const SessionCardContainer = styled.div`
+const SessionCardContainer = styled(Link)`
   width: 100%;
   position: relative;
   background: #fff;
@@ -123,7 +124,7 @@ export const SessionCard = ({ session, children, className }: SessionCardProps) 
   const isStartIsNowDay = now.isSame(startDate, "d")
 
   return (
-    <SessionCardContainer className={className}>
+    <SessionCardContainer to={`/client/sessions/${session.id}`} className={className}>
       <CoachInfoContainer>
         <CoachAvatar src={session.coach.avatar} isTopCoach={session.coach.isTopCoach} />
         <CoachInfo>

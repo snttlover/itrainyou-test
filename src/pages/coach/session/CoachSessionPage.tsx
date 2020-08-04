@@ -40,7 +40,7 @@ export const CoachSessionPage = () => {
     <CoachDashboardLayout>
       {notFound && <NotFound />}
       {fetching && <Loader />}
-      {!fetching && !notFound && (
+      {!fetching && !notFound && !!sessionInfo.id && (
         <Container>
           <Content>
             <UserHeader {...sessionInfo} onWrite={write} />

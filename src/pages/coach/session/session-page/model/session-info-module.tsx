@@ -49,6 +49,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     const user = config.type === `client` ? session?.coach : session?.clients[0]
 
     return {
+      id: session?.id,
       dashboardType: config.type,
       userId: user?.id || null,
       userAvatar: user?.avatar || null,
