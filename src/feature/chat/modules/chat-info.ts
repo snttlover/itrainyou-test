@@ -35,7 +35,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
       id: chat?.id,
       avatar: interc?.avatar,
       name: `${interc?.firstName} ${interc?.lastName}`,
-      link: config.type === `client` && { url: routeNames.searchCoachPage((interc?.id || 0) as string) },
+      link: config.type === `client` && { url: routeNames.searchCoachPage((interc?.id || 0).toString()) },
       backLink: config.type === `client` ? routeNames.clientChatsList() : routeNames.coachClients(),
       type: config.type,
       chatType: chat?.type,
