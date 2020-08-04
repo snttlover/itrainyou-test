@@ -22,13 +22,11 @@ export const SessionPage = () => (
     <Content>
 
       <TabletRescheduleSession />
-      <TabletCancelSession />
 
     </Content>
     <InfoWrapper>
 
       <RescheduleSession />
-      <CancelSession />
     </InfoWrapper>
   </Container>
 )
