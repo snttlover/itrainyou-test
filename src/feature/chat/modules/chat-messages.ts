@@ -1,15 +1,35 @@
 import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
 import { createEffect, createEvent, createStore, guard, sample } from "effector-root"
 import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
-import { ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { ChatMessage, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
+import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: number, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
 }
+
+
+export type ChatSystemMessage = {
+  type: 'SYSTEM'
+  id: number
+  chatType: 'coach' | 'client'
+  request: SessionRequest
+  status: MessageSessionRequestStatuses
+}
+
+export type ChatTextMessage = {
+  type: 'TEXT'
+  id: number
+  isMine: boolean
+  text: string
+  time: string
+}
+
+export type ChatMessagesTypes = ChatSystemMessage | ChatTextMessage
 
 export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) => {
   const changeId = createEvent<number>()
@@ -33,11 +53,22 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     return messages
       .slice()
       .reverse()
-      .map(message => {
+      .map((message): ChatMessagesTypes => {
         const isMine =
           (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
 
+        if (message.type === `SYSTEM`) {
+          return  {
+            type: `SYSTEM`,
+            id: message.id,
+            chatType: config.type,
+            request: message.sessionRequest,
+            status: message.sessionRequestStatus
+          }
+        }
+
         return {
+          type: `TEXT`,
           id: message.id,
           isMine,
           text: message.text,

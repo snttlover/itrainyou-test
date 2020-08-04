@@ -21,9 +21,9 @@ export type SessionRequest = {
   type: SessionRequestTypes
   status: SessionRequestStatus
   problem: SessionRequestProblems
-  initiatorClient: Client | null
-  initiatorCoach: CoachUser | null
-  receiverClient: Client | null
+  initiatorClient: Client
+  initiatorCoach: CoachUser
+  receiverClient: Client
   receiverCoach: CoachUser
   session: DashboardSession
   rescheduleSession: null | {
