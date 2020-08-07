@@ -4,12 +4,18 @@ import styled from "styled-components"
 import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
 import { MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
+import { ISODate } from "@/lib/api/interfaces/utils.interface"
+import { MediaRange } from "@/lib/responsive/media"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
 
-const formatSessionDate = (start: string | undefined, end: string | undefined) => {
-  return date(start).format(`DD MMM YYYY HH:mm -`) + date(end).format(`HH:mm`)
+const formatSessionDay = (day?: ISODate) => date(day).format(`DD MMM YYYY`)
+
+const formatSessionTime = (start?: ISODate, end?: ISODate) => date(start).format(`HH:mm -`) + date(end).format(`HH:mm`)
+
+const formatSessionDate = (start?: ISODate, end?: ISODate) => {
+  return formatSessionDay(start) + ` ` + formatSessionTime(start, end)
 }
 
 const getText = (request: SessionRequest, status: MessageSessionRequestStatuses, chatType: "coach" | "client") => {
@@ -82,41 +88,130 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
     }
   }
 
-  return ``
+  if (chatType === `coach`) {
+    if (is("BOOK", "AWAITING", "INITIATED")) {
+      return `${request.receiverClient.firstName} отправила запрос на подтверждение сессии`
+    }
+
+    if (is("BOOK", "DENIED", "COMPLETED")) {
+      return `Вы отклонили запрос на бронирование сессии`
+    }
+
+    if (is("BOOK", "APPROVED", "COMPLETED")) {
+      return `Вы подтвердили бронирование сессии`
+    }
+
+    if (is("RESCHEDULE", "AWAITING", "INITIATED")) {
+      return `${request.receiverClient.firstName} хочет перенести сессию на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("RESCHEDULE", "DENIED", "COMPLETED")) {
+      return `Вы отклонили перонос сессии на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("RESCHEDULE", "APPROVED", "COMPLETED")) {
+      return `Вы подтвердили перонос сессии на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("RESCHEDULE", "CANCELLED", "COMPLETED")) {
+      return `${request.receiverClient.firstName} отменила перенос сессии на  ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("CANCEL", "AUTOMATICALLY_APPROVED", "COMPLETED") && request.receiverClient) {
+      return `${request.receiverClient.firstName} отменила сессию`
+    }
+
+    if (is("CANCEL", "AUTOMATICALLY_APPROVED", "COMPLETED")) {
+      return ` Вы отменили сессию. Сессии не будет.`
+    }
+
+    if (is("CANCEL", "AWAITING", "INITIATED")) {
+      return `${request.receiverClient.firstName} отправила запрос на отмену сессии`
+    }
+
+    if (is("CANCEL", "APPROVED", "COMPLETED")) {
+      return ` Вы подтвердили отмену сессии. Сессии не будет.`
+    }
+
+    if (is("CANCEL", "DENIED", "COMPLETED")) {
+      return `Вы не подтвердили отмену сессии. Сессия будет.`
+    }
+  }
+
+  return (
+    <b>
+      {request.type} - {request.status} - {status}
+    </b>
+  )
 }
 
 export const SystemMessageSwitcher = ({ message }: { message: ChatSystemMessage }) => {
   const text = getText(message.request, message.status, message.chatType)
-  const date = formatSessionDate(
-    message.request.rescheduleSession?.startDatetime,
-    message.request.rescheduleSession?.endDatetime
-  )
 
-  return <SystemMessage text={text} date={date} />
+  return (
+    <SystemMessage
+      text={text}
+      startDate={message.request.rescheduleSession?.startDatetime}
+      endDate={message.request.rescheduleSession?.endDatetime}
+    />
+  )
 }
 
 const Container = styled.div``
 
 type SystemMessageTypes = {
   text: string
-  date: string
+  startDate?: ISODate
+  endDate?: ISODate
   children?: React.ReactChild | React.ReactChild[]
 }
 
 const SystemMessage = (props: SystemMessageTypes) => {
   return (
     <StyledSystemMessage>
-      <SessionDate>{props.date}</SessionDate>
+      <SessionDate>
+        <SessionDay>{formatSessionDay(props.startDate)}</SessionDay>
+        <SessionTime>{formatSessionTime(props.startDate, props.endDate)}</SessionTime>
+      </SessionDate>
       <Message>{props.text}</Message>
       {props.children}
     </StyledSystemMessage>
   )
 }
 
+const SessionDay = styled.div``
+const SessionTime = styled.div`
+  font-weight: 500;
+  margin-left: 3px;
+  ${MediaRange.lessThan(`tablet`)`
+    margin-left: 0;
+  `}
+`
+
 const StyledSystemMessage = styled.div`
   border-radius: 24px;
   border: 2px solid ${props => props.theme.colors.primary};
   display: flex;
+  margin-bottom: 16px;
+  margin-left: -10px;
+  width: calc(100% + 20px);
+  ${MediaRange.lessThan(`mobile`)`
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+  `}
 `
 
 const SessionDate = styled.div`
@@ -129,6 +224,19 @@ const SessionDate = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #9aa0a6;
+
+  ${MediaRange.lessThan(`tablet`)`
+    flex-direction: column;
+    width: 90px;
+  `}
+  ${MediaRange.lessThan(`mobile`)`
+    width: 100%;
+    border-right: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 10px 16px;
+    padding-bottom: 0;
+  `}
 `
 
 const Message = styled.div`
@@ -140,4 +248,8 @@ const Message = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #424242;
+  ${MediaRange.lessThan(`mobile`)`
+    padding: 10px 16px;
+    padding-top: 4px;
+  `}
 `

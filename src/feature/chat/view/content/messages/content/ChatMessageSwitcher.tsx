@@ -1,12 +1,10 @@
 import React from "react"
 
-import {ChatMessage} from "@/feature/chat/view/content/messages/content/ChatMessage"
-import {SystemMessageSwitcher} from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
+import { ChatMessage } from "@/feature/chat/view/content/messages/content/ChatMessage"
+import { SystemMessageSwitcher } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
 import { ChatMessagesTypes } from "@/feature/chat/modules/chat-messages"
 
-
-export const ChatMessageSwitcher = ({message}: {message: ChatMessagesTypes }) => {
-
+export const ChatMessageSwitcher = ({ message }: { message: ChatMessagesTypes }) => {
   if (message.type === `TEXT`) {
     return (
       <ChatMessage id={`message-${message.id}`} time={message.time} data-self={message.isMine}>
