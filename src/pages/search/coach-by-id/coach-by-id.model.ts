@@ -1,6 +1,6 @@
 import { Coach, getCoach } from "@/lib/api/coach"
 import { CoachReviewResponse, getCoachReviews } from "@/lib/api/reviews"
-import { runInScope } from "@/scope"
+import { createGate, runInScope } from "@/scope"
 import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { genCoachSessions } from "@/components/coach-card/select-date/select-date.model"
 import { DurationType } from "@/lib/api/coach-sessions"
@@ -13,11 +13,12 @@ export const loadReviewsFx = createEffect({
   handler: getCoachReviews,
 })
 
+export const coachByIdGate = createGate()
 export const mounted = createEvent<{ id: number }>()
 
 export const $coach = createStore<Coach | null>(null)
-  .on(mounted, () => null)
   .on(loadCoachFx.doneData, (state, payload) => payload)
+  .reset(coachByIdGate.close)
 
 export const $reviews = createStore<CoachReviewResponse[]>([]).on(
   loadReviewsFx.doneData,
