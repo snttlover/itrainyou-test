@@ -12,6 +12,7 @@ import {
   $ProfileSessions,
   $ProfileSessionsCount,
   loadMoreProfileSessions,
+  loadProfileSessionsFx,
   SessionsHistoryGate,
 } from "../sessions-history.model"
 
@@ -77,16 +78,23 @@ const Items = styled.div`
   flex-direction: column;
 `
 
+const SessionsEmpty = styled.p`
+  text-align: center;
+`
+
 export const IndividualSessions = () => {
   useGate(SessionsHistoryGate)
   const hasMore = useStore($isHasMoreProfileSessions)
   const sessions = useStore($ProfileSessions)
   const loadMore = useEvent(loadMoreProfileSessions)
 
+  const pending = useStore(loadProfileSessionsFx.pending)
+
   return (
     <Container>
       <Title>Индивидуальные сессии</Title>
       <ListContainer>
+        {sessions.length === 0 && !pending && <SessionsEmpty>Нет сессий</SessionsEmpty>}
         <InfiniteScroll
           loader={<Loader />}
           next={loadMore as any}

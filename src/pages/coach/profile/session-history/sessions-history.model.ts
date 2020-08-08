@@ -35,7 +35,9 @@ const guardedProfileSessionsLoadMore = guard({
   filter: loadProfileSessionsFx.pending.map(pending => !pending),
 })
 
-const $participantsCurrentPage = createStore(0).on(loadProfileSessionsFx.done, (_, payload) => payload.params.page)
+const $participantsCurrentPage = createStore(0)
+  .on(loadProfileSessionsFx.done, (_, payload) => payload.params.page)
+  .reset(SessionsHistoryGate.open)
 
 sample({
   source: $participantsCurrentPage,
