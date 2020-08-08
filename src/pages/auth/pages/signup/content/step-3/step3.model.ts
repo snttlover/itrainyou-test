@@ -37,7 +37,7 @@ export const $isUploadModelOpen = createStore(false)
 export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorField({
   defaultValue: "",
   validator: value => {
-    if (!value) return "Поле обязательно к заполению"
+    if (!value) return "Поле обязательно к заполнению"
     return null
   },
   eventMapper: event => event.map(trimString),
@@ -46,7 +46,7 @@ export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorFi
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",
   validator: value => {
-    if (!value) return "Поле обязательно к заполению"
+    if (!value) return "Поле обязательно к заполнению"
     return null
   },
   eventMapper: event => event.map(trimString),
@@ -62,7 +62,7 @@ export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = 
     const type = obj.userData.type
     const value = obj.value
 
-    if (type === "coach" && !value) return "Поле обязательно к заполению"
+    if (type === "coach" && !value) return "Поле обязательно к заполнению"
     return null
   },
 })
@@ -77,7 +77,7 @@ export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
     const type = obj.userData.type
     const value = obj.value
 
-    if (type === "coach" && !value) return "Поле обязательно к заполению"
+    if (type === "coach" && !value) return "Поле обязательно к заполнению"
     return null
   },
 })

@@ -5,6 +5,8 @@ import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { IsAuthed } from "@/feature/user/IsAuthed"
 import { getYearsCount } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
+import { routeNames } from "@/pages/route-names"
+import { Link } from "react-router-dom"
 import { $profileData } from "../profile.model"
 import { Block } from "./common/Block"
 import { useStore } from "effector-react/ssr"
@@ -165,11 +167,15 @@ export const BaseCoachInfo = styled(({ ...props }) => {
                 <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
               ))}
             </CategoriesContainer>
-            <EditButton onClick={() => {}}>Редактировать</EditButton>
+            <Link to={routeNames.coachProfileEdit()}>
+              <EditButton>Редактировать</EditButton>
+            </Link>
           </CategoriesAndButtonContainer>
         </UserInfo>
       </UserInfoWrapper>
-      <MobileEditButton onClick={() => {}}>Редактировать</MobileEditButton>
+      <Link to={routeNames.coachProfileEdit()}>
+        <MobileEditButton>Редактировать</MobileEditButton>
+      </Link>
     </StyledBlock>
   )
 })``

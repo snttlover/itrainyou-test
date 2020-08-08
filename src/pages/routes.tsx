@@ -9,6 +9,7 @@ import ProfilePage from "@/pages/client/profile/ProfilePage"
 import CoachBlockedPage from "@/pages/coach/blocked/CoachBlockedPage"
 import CoachClientsPage from "@/pages/coach/clients/CoachClientsPage"
 import CoachHome from "@/pages/coach/home/CoachHome"
+import { CoachProfileEditPage } from "@/pages/coach/profile/edit-page/CoachProfileEditPage"
 import { CoachProfilePage } from "@/pages/coach/profile/profile-page/CoachProfilePage"
 import { CoachSessionsHistory } from "@/pages/coach/profile/session-history/CoachSessionsHistory"
 import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
@@ -103,6 +104,11 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.coachProfile(),
     exact: true,
     component: CoachProfilePage,
+  },
+  {
+    path: routeNames.coachProfileEdit(),
+    exact: true,
+    component: CoachProfileEditPage,
   },
   {
     path: routeNames.coachSessionsHistory(),
