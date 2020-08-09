@@ -364,6 +364,9 @@ const Actions = styled.div`
   width: 100px;
 
   ${MediaRange.lessThan(`mobile`)`
+    border-left: 0;
+    border-top: 2px solid ${props => props.theme.colors.primary};
+    min-height: 36px  ;
     width: 100%;
     flex-direction: row;
   `}
