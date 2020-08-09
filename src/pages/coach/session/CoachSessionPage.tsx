@@ -25,6 +25,8 @@ export const CoachSessionPage = () => {
   const notFound = useStore(coachSessionPage.modules.sessionInfo.data.$notFound)
   const sessionsRequests = useStore(coachSessionPage.modules.sessionRequests.data.$sessions)
 
+  const cancelVisibility = useStore(coachSessionPage.modules.sessionInfo.data.$cancelButtonVisibility)
+
   const mounted = useEvent(coachSessionPage.methods.mounted)
   const unmount = useEvent(coachSessionPage.methods.reset)
 
@@ -45,10 +47,12 @@ export const CoachSessionPage = () => {
           <Content>
             <UserHeader {...sessionInfo} onWrite={write} />
 
-            <TabletCancelSession
-              sessionStartDatetime={sessionInfo.sessionStartDatetime}
-              onCancel={() => cancelSession()}
-            />
+            {cancelVisibility && (
+              <TabletCancelSession
+                sessionStartDatetime={sessionInfo.sessionStartDatetime}
+                onCancel={() => cancelSession()}
+              />
+            )}
 
             {!!sessionsRequests.length && (
               <SessionsHistory
@@ -59,7 +63,9 @@ export const CoachSessionPage = () => {
           </Content>
           <InfoWrapper>
             <SessionInfo {...sessionInfo} />
-            <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} />
+            {cancelVisibility && (
+              <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} />
+            )}
           </InfoWrapper>
         </Container>
       )}

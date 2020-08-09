@@ -25,6 +25,8 @@ export const ClientSessionPage = () => {
   const notFound = useStore(clientSessionPage.modules.sessionInfo.data.$notFound)
   const sessionsRequests = useStore(clientSessionPage.modules.sessionRequests.data.$sessions)
 
+  const cancelVisibility = useStore(clientSessionPage.modules.sessionInfo.data.$cancelButtonVisibility)
+
   const mounted = useEvent(clientSessionPage.methods.mounted)
   const unmount = useEvent(clientSessionPage.methods.reset)
 
@@ -45,10 +47,12 @@ export const ClientSessionPage = () => {
           <Content>
             <UserHeader {...sessionInfo} onWrite={write} />
 
-            <TabletCancelSession
-              sessionStartDatetime={sessionInfo.sessionStartDatetime}
-              onCancel={() => cancelSession()}
-            />
+            {cancelVisibility && (
+              <TabletCancelSession
+                sessionStartDatetime={sessionInfo.sessionStartDatetime}
+                onCancel={() => cancelSession()}
+              />
+            )}
 
             {!!sessionsRequests.length && (
               <SessionsHistory
@@ -59,7 +63,9 @@ export const ClientSessionPage = () => {
           </Content>
           <InfoWrapper>
             <SessionInfo {...sessionInfo} />
-            <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} />
+            {cancelVisibility && (
+              <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} />
+            )}
           </InfoWrapper>
         </Container>
       )}

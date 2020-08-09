@@ -1,9 +1,10 @@
-import { createEffect, createEvent, createStore, forward, Event, sample, combine } from "effector-root"
+import { createEffect, createEvent, createStore, forward, Event, sample, combine, restore } from "effector-root"
 import { SessionInfo } from "@/lib/api/coach/get-session"
 import { date } from "@/lib/formatting/date"
 import { AxiosError } from "axios"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 const durations = {
   D30: `30мин`,
@@ -83,11 +84,32 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     target: cancelSessionFx,
   })
 
+
+  const successCancelFx = createEffect({
+    handler: () => toasts.add({
+      type: `info`,
+      text: `Запрос на отмену сессии успешно отправлен`
+    })
+  })
+
+  const changeCancelVisibility = createEvent<boolean>()
+  const $showCancelButton = restore(changeCancelVisibility, true).reset(reset)
+
+  forward({
+    from: cancelSessionFx.done,
+    to: [successCancelFx, changeCancelVisibility.prepend(() => false)]
+  })
+
+  const $cancelVisibility = combine($showCancelButton, $session, (visibility, session) => {
+    visibility && date(session?.endDatetime).isAfter(date())
+  })
+
   return {
     data: {
       $info,
       isFetching: combine(loadSessionFx.pending, cancelSessionFx.pending, (load, cancel) => load || cancel),
       $notFound,
+      $cancelButtonVisibility: $cancelVisibility
     },
     methods: {
       loadSession,

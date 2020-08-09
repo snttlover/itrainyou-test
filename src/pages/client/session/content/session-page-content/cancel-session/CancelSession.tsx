@@ -42,13 +42,6 @@ export const CancelSession = (props: CancelSessionProps) => {
   )
 }
 
-export const TabletCancelSession = styled(CancelSession)`
-  display: none;
-  ${MediaRange.lessThan(`tablet`)`
-    display: flex;
-  `}
-`
-
 const Button = styled.div`
   display: flex;
   width: 100%;
@@ -74,5 +67,12 @@ const Button = styled.div`
     line-height: 18px;
     margin-top: 12px;
     padding: 10px 0;
+  `}
+`
+
+export const TabletCancelSession = styled(CancelSession)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
   `}
 `
