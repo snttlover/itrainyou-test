@@ -50,6 +50,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
 
   const $messages = pagination.data.$list.map(messages => {
+    const completedStatusesIds = messages.filter(message => message.sessionRequestStatus === `COMPLETED` && message.sessionRequest).map(message => message.sessionRequest.id)
+
     return messages
       .slice()
       .reverse()
@@ -63,7 +65,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             id: message.id,
             chatType: config.type,
             request: message.sessionRequest,
-            status: message.sessionRequestStatus
+            status: completedStatusesIds.includes(message.sessionRequest.id) ? `COMPLETED` : `INITIATED`
           }
         }
 

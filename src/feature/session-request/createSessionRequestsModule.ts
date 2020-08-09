@@ -15,7 +15,7 @@ type createSessionRequestsModuleConfig = {
 
 const isEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b)
 
-const createSessionRequestsModule = (config: createSessionRequestsModuleConfig) => {
+export const createSessionRequestsModule = (config: createSessionRequestsModuleConfig) => {
   const createRequest = createEvent<SessionRequestParams>()
 
   const createSessionRequestFx = createEffect({

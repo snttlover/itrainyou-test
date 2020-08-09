@@ -6,6 +6,12 @@ import { MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats
 import { date } from "@/lib/formatting/date"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { MediaRange } from "@/lib/responsive/media"
+import {
+  clientSessionRequests,
+  coachSessionRequests,
+  createSessionRequestsModule,
+} from "@/feature/session-request/createSessionRequestsModule"
+import { useEvent } from "effector-react/ssr"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -209,13 +215,16 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
 
 export const SystemMessageSwitcher = ({ message }: { message: ChatSystemMessage }) => {
   const text = getText(message.request, message.status, message.chatType)
+  const Buttons = getSystemButtons(message.request, message.status, message.chatType)
 
   return (
     <SystemMessage
       text={text}
       startDate={message.request.rescheduleSession?.startDatetime}
       endDate={message.request.rescheduleSession?.endDatetime}
-    />
+    >
+      {Buttons}
+    </SystemMessage>
   )
 }
 
@@ -255,6 +264,8 @@ const StyledSystemMessage = styled.div`
   margin-bottom: 16px;
   margin-left: -10px;
   width: calc(100% + 20px);
+  position: relative;
+  overflow: hidden;
   ${MediaRange.lessThan(`mobile`)`
     flex-direction: column;
     width: 100%;
@@ -301,3 +312,116 @@ const Message = styled.div`
     padding-top: 4px;
   `}
 `
+
+const getSystemButtons = (
+  request: SessionRequest,
+  status: MessageSessionRequestStatuses,
+  chatType: "coach" | "client"
+) => {
+  const is = (
+    requestType: SessionRequestTypes | SessionRequestTypes[],
+    requestStatus: SessionRequestStatus | SessionRequestStatus[]
+  ) => {
+    const checkStatus = (value: string, statuses: string | string[]) => {
+      return Array.isArray(statuses) ? statuses.includes(value) : value === statuses
+    }
+
+    return (
+      checkStatus(request.status, requestStatus) &&
+      checkStatus(request.type, requestType)
+    )
+  }
+
+  if (status !== `COMPLETED`) {
+    const requestModule = chatType === `client` ? clientSessionRequests : coachSessionRequests
+
+    if (chatType === `client`) {
+      if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"])) {
+        return <ApproveActions request={request} requestsModule={requestModule} yes='Да' no='Нет' />
+      }
+    }
+  }
+
+  return <></>
+}
+
+const Actions = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid ${props => props.theme.colors.primary};
+  width: 100px;
+
+  ${MediaRange.lessThan(`mobile`)`
+    width: 100%;
+    flex-direction: row;
+  `}
+`
+
+const Button = styled.div`
+  cursor: pointer;
+  border-bottom: 2px solid ${props => props.theme.colors.primary};
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: ${props => props.theme.colors.primary};
+  position: relative;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  ${MediaRange.lessThan(`mobile`)`
+    border-bottom: 0;
+    border-right: 2px solid ${props => props.theme.colors.primary};
+  
+    &:last-child {
+      border-right: none;
+    }
+  `}
+  &:after {
+    opacity: 0;
+    transition: 300ms;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    content: "";
+    background: ${props => props.theme.colors.primary};
+  }
+
+  &:hover:after {
+    opacity: 0.1;
+  }
+  &:active:after {
+    opacity: 0.2;
+  }
+`
+
+type SessionRequestActionProps = {
+  request: SessionRequest
+  requestsModule: ReturnType<typeof createSessionRequestsModule>
+}
+
+type ApproveActionsTypes = SessionRequestActionProps & {
+  yes: string
+  no: string
+}
+
+const ApproveActions = ({ request, requestsModule, yes, no }: ApproveActionsTypes) => {
+  const deny = useEvent(requestsModule.methods.deny)
+  const approve = useEvent(requestsModule.methods.approve)
+
+  return (
+    <Actions>
+      <Button onClick={() => approve(request.id)}>{yes}</Button>
+      <Button onClick={() => deny(request.id)}>{no}</Button>
+    </Actions>
+  )
+}
