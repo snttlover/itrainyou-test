@@ -5,6 +5,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { useList, useStore } from "effector-react/ssr"
 import { createReverseInfinityScroll } from "@/feature/pagination/view/ReverseInfinityScroll"
+import { ChatMessageSwitcher } from "@/feature/chat/view/content/messages/content/ChatMessageSwitcher"
 
 const Container = styled.div`
   flex-direction: column;
@@ -66,9 +67,7 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
         <InfScroll scrollableTarget='messages'>
           <MessagesWrapper ref={messageWrapper}>
             {useList($chatMessagesModule.$messages, message => (
-              <ChatMessage id={`message-${message.id}`} time={message.time} data-self={message.isMine}>
-                {message.text}
-              </ChatMessage>
+              <ChatMessageSwitcher message={message} />
             ))}
           </MessagesWrapper>
         </InfScroll>

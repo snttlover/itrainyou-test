@@ -5,13 +5,21 @@ import { ISODate, Pagination } from "@/lib/api/interfaces/utils.interface"
 import { CoachUser } from "../../coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { CoachSession } from "@/lib/api/coach-sessions"
+import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+
+export type MessageSessionRequestStatuses = 'INITIATED' | 'COMPLETED'
+export type MessageTypes = 'USER' | 'SYSTEM'
 
 export type ChatMessage = {
   id: number
+  type: MessageTypes
   text: string
   chat: number
   senderCoach: CoachUser | null
   senderClient: Client | null
+  senderSupport: null
+  sessionRequest: SessionRequest
+  sessionRequestStatus: MessageSessionRequestStatuses
   creationDatetime: ISODate
 }
 
