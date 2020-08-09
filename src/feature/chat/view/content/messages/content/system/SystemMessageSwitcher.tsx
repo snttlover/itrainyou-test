@@ -54,6 +54,10 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       return `${request.receiverCoach?.firstName} подтвердил бронирование сессии`
     }
 
+    if (is("BOOK", "DENIED", "COMPLETED")) {
+      return `${request.receiverCoach?.firstName} не подтвердил запрос на бронирование сессии`
+    }
+
     if (is("BOOK", "CANCELLED", "INITIATED")) {
       return `Вы отправили запрос на отмену сессии`
     }
@@ -80,6 +84,14 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       return `Вы хотите отменить сессию. До сессии меньше 24 часов, поэтому ждем подтверждения коуча.`
     }
 
+    if (is("CANCEL", "CANCELLED", "INITIATED")) {
+      return `Вы хотите отменить сессию. До сессии меньше 24 часов, поэтому ждем подтверждения коуча.`
+    }
+
+    if (is("CANCEL", "CANCELLED", "COMPLETED")) {
+      return `Вы отменили запрос на отмену сессии`
+    }
+
     if (is("CANCEL", "AUTOMATICALLY_APPROVED", "COMPLETED")) {
       return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
     }
@@ -90,7 +102,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       } на перенос сессии, сессия остается в прежнее время `
     }
 
-    if (is("CONFIRMATION_COMPLETION", "AWAITING", "INITIATED")) {
+    if (is("CONFIRMATION_COMPLETION", ["APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
       return `Сессия прошла успешно?`
     }
 
@@ -326,17 +338,17 @@ const getSystemButtons = (
       return Array.isArray(statuses) ? statuses.includes(value) : value === statuses
     }
 
-    return (
-      checkStatus(request.status, requestStatus) &&
-      checkStatus(request.type, requestType)
-    )
+    return checkStatus(request.status, requestStatus) && checkStatus(request.type, requestType)
   }
 
   if (status !== `COMPLETED`) {
     const requestModule = chatType === `client` ? clientSessionRequests : coachSessionRequests
 
     if (chatType === `client`) {
-      if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"])) {
+      if (
+        is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"]) ||
+        is("CONFIRMATION_COMPLETION", ["APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"])
+      ) {
         return <ApproveActions request={request} requestsModule={requestModule} yes='Да' no='Нет' />
       }
     }
