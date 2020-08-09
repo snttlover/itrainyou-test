@@ -12,6 +12,7 @@ import {
   createSessionRequestsModule,
 } from "@/feature/session-request/createSessionRequestsModule"
 import { useEvent } from "effector-react/ssr"
+import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -345,11 +346,22 @@ const getSystemButtons = (
     const requestModule = chatType === `client` ? clientSessionRequests : coachSessionRequests
 
     if (chatType === `client`) {
-      if (
-        is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"]) ||
-        is("CONFIRMATION_COMPLETION", ["APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"])
-      ) {
+      if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
         return <ApproveActions request={request} requestsModule={requestModule} yes='Да' no='Нет' />
+      }
+
+      if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING")) {
+        return <CancelAction request={request} requestsModule={requestModule} />
+      }
+
+      if (is("CONFIRMATION_COMPLETION", "APPROVED")) {
+        return <RevocationButton />
+      }
+    }
+
+    if (chatType === `coach`) {
+      if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING") || is("CANCEL", "AWAITING")) {
+        return <ApproveActions request={request} requestsModule={requestModule} yes='Подтвердить' no='Отклонить' />
       }
     }
   }
@@ -437,6 +449,23 @@ const ApproveActions = ({ request, requestsModule, yes, no }: ApproveActionsType
     <Actions>
       <Button onClick={() => approve(request.id)}>{yes}</Button>
       <Button onClick={() => deny(request.id)}>{no}</Button>
+    </Actions>
+  )
+}
+
+const CancelAction = ({ request, requestsModule }: SessionRequestActionProps) => {
+  const cancel = useEvent(requestsModule.methods.deny)
+  return (
+    <Actions>
+      <Button onClick={() => cancel(request.id)}>Отклонить</Button>
+    </Actions>
+  )
+}
+
+const RevocationButton = () => {
+  return (
+    <Actions>
+      <Button>Отзыв</Button>
     </Actions>
   )
 }
