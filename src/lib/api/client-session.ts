@@ -8,6 +8,7 @@ import { CoachUser } from "@/lib/api/coach"
 export interface GetClientSessionsParams {
   startDate?: string
   active?: boolean
+  excludePast?: boolean
 }
 
 export interface ClientSession {

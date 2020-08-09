@@ -1,6 +1,5 @@
 import { ClientSession, getClientSessions } from "@/lib/api/client-session"
 import { Coach, getRecommendations } from "@/lib/api/coach"
-import { date } from "@/lib/formatting/date"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 
 export const loadRecommendationsFx = createEffect({
@@ -8,11 +7,11 @@ export const loadRecommendationsFx = createEffect({
 })
 
 export const loadActiveSessionsFx = createEffect({
-  handler: () => getClientSessions({ active: true }),
+  handler: () => getClientSessions({ active: true, excludePast: true }),
 })
 
 export const loadTodaySessionsFx = createEffect({
-  handler: () => getClientSessions({}),
+  handler: () => getClientSessions({ excludePast: true }),
 })
 
 export const $recommendationsCount = createStore<number>(100).on(

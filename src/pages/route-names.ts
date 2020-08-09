@@ -20,6 +20,7 @@ export const routeNames = {
   coachSessionsHistory: () => `/coach/profile/sessions-history`,
   coachProfileEdit: () => `/coach/profile/edit`,
   coachClients: () => `/coach/clients`,
+  coachClientProfile: (id: string) => `/coach/client/${id}`,
   coachWallet: () => `/coach/wallet`,
   coachSettings: () => `/coach/settings`,
   coachSupport: () => `/coach/support`,

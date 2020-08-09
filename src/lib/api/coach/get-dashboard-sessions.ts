@@ -22,6 +22,7 @@ export interface DashboardSession {
 type getDashboardSessionsParams = {
   active?: boolean
   date?: Day
+  excludePast?: boolean
 }
 
 export const getDashboardSessions = (params?: getDashboardSessionsParams): Promise<DashboardSession[]> =>
