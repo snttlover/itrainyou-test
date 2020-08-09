@@ -75,7 +75,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
   sample({
     source: $session.map(session => session?.id || 0),
     clock: cancelSessionFx.doneData,
-    target: loadSession
+    target: loadSession,
   })
 
   sample({
@@ -84,12 +84,12 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     target: cancelSessionFx,
   })
 
-
   const successCancelFx = createEffect({
-    handler: () => toasts.add({
-      type: `info`,
-      text: `Запрос на отмену сессии успешно отправлен`
-    })
+    handler: () =>
+      toasts.add({
+        type: `info`,
+        text: `Запрос на отмену сессии успешно отправлен`,
+      }),
   })
 
   const changeCancelVisibility = createEvent<boolean>()
@@ -97,19 +97,21 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
 
   forward({
     from: cancelSessionFx.done,
-    to: [successCancelFx, changeCancelVisibility.prepend(() => false)]
+    to: [successCancelFx, changeCancelVisibility.prepend(() => false)],
   })
 
-  const $cancelVisibility = combine($showCancelButton, $session, (visibility, session) => {
-    visibility && date(session?.endDatetime).isAfter(date())
-  })
+  const $cancelVisibility = combine(
+    $showCancelButton,
+    $session,
+    (visibility, session) => visibility && date(session?.endDatetime).isAfter(date())
+  )
 
   return {
     data: {
       $info,
       isFetching: combine(loadSessionFx.pending, cancelSessionFx.pending, (load, cancel) => load || cancel),
       $notFound,
-      $cancelButtonVisibility: $cancelVisibility
+      $cancelButtonVisibility: $cancelVisibility,
     },
     methods: {
       loadSession,
@@ -118,7 +120,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
       cancelSession,
     },
     events: {
-      sessionCanceled: cancelSessionFx.doneData
-    }
+      sessionCanceled: cancelSessionFx.doneData,
+    },
   }
 }

@@ -12,21 +12,24 @@ type CreateChatMessagesModuleTypes = {
   fetchMessages: (id: number, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
 }
 
-
 export type ChatSystemMessage = {
-  type: 'SYSTEM'
+  type: "SYSTEM"
   id: number
-  chatType: 'coach' | 'client'
+  chatType: "coach" | "client"
   request: SessionRequest
   status: MessageSessionRequestStatuses
 }
 
 export type ChatTextMessage = {
-  type: 'TEXT'
+  type: "TEXT"
   id: number
   isMine: boolean
   text: string
   time: string
+}
+
+const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
+  return self.indexOf(value) === index
 }
 
 export type ChatMessagesTypes = ChatSystemMessage | ChatTextMessage
@@ -50,33 +53,45 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
 
   const $messages = pagination.data.$list.map(messages => {
-    const completedStatusesIds = messages.filter(message => message.sessionRequestStatus === `COMPLETED` && message.sessionRequest).map(message => message.sessionRequest.id)
+    const completedStatusesIds = messages
+      .filter(message => message.sessionRequestStatus === `COMPLETED` && message.sessionRequest)
+      .map(message => message.sessionRequest.id)
+
+    const reqs = messages
+      .filter(message => message.sessionRequest)
+      .map(message => message.sessionRequest.id)
+      .filter(onlyUniqueRequests)
+      .map(id => messages.find(message => message.sessionRequest?.id === id)?.sessionRequest as SessionRequest)
+
+    const getReq = (id: number) => reqs.find(req => req.id === id) as SessionRequest
 
     return messages
       .slice()
       .reverse()
-      .map((message): ChatMessagesTypes => {
-        const isMine =
-          (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
+      .map(
+        (message): ChatMessagesTypes => {
+          const isMine =
+            (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
 
-        if (message.type === `SYSTEM`) {
-          return  {
-            type: `SYSTEM`,
+          if (message.type === `SYSTEM`) {
+            return {
+              type: `SYSTEM`,
+              id: message.id,
+              chatType: config.type,
+              request: getReq(message.sessionRequest.id),
+              status: completedStatusesIds.includes(message.sessionRequest.id) ? `COMPLETED` : `INITIATED`,
+            }
+          }
+
+          return {
+            type: `TEXT`,
             id: message.id,
-            chatType: config.type,
-            request: message.sessionRequest,
-            status: completedStatusesIds.includes(message.sessionRequest.id) ? `COMPLETED` : `INITIATED`
+            isMine,
+            text: message.text,
+            time: date(message.creationDatetime).format(`HH:mm`),
           }
         }
-
-        return {
-          type: `TEXT`,
-          id: message.id,
-          isMine,
-          text: message.text,
-          time: date(message.creationDatetime).format(`HH:mm`),
-        }
-      })
+      )
   })
 
   const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({

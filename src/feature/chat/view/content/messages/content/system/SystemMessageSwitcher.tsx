@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { ChatSystemMessage } from "@/feature/chat/modules/chat-messages"
 import styled from "styled-components"
 import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
@@ -12,7 +12,7 @@ import {
   createSessionRequestsModule,
 } from "@/feature/session-request/createSessionRequestsModule"
 import { useEvent } from "effector-react/ssr"
-import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
+import { Loader, Spinner } from "@/components/spinner/Spinner"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -134,6 +134,10 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
   }
 
   if (chatType === `coach`) {
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED"], ["COMPLETED"]) && request.initiatorClient) {
+      return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
+    }
+
     if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED") && request.initiatorClient) {
       return `${request.initiatorClient?.firstName} отправил${
         request.initiatorClient?.sex === `F` ? `a` : ``
@@ -232,6 +236,7 @@ export const SystemMessageSwitcher = ({ message }: { message: ChatSystemMessage 
 
   return (
     <SystemMessage
+      id={message.id}
       text={text}
       startDate={message.request.rescheduleSession?.startDatetime}
       endDate={message.request.rescheduleSession?.endDatetime}
@@ -242,6 +247,7 @@ export const SystemMessageSwitcher = ({ message }: { message: ChatSystemMessage 
 }
 
 type SystemMessageTypes = {
+  id: number
   text: string | React.ReactChild | React.ReactChild[]
   startDate?: ISODate
   endDate?: ISODate
@@ -250,7 +256,7 @@ type SystemMessageTypes = {
 
 const SystemMessage = (props: SystemMessageTypes) => {
   return (
-    <StyledSystemMessage>
+    <StyledSystemMessage id={props.id}>
       <SessionDate>
         <SessionDay>{formatSessionDay(props.startDate)}</SessionDay>
         <SessionTime>{formatSessionTime(props.startDate, props.endDate)}</SessionTime>
@@ -270,7 +276,7 @@ const SessionTime = styled.div`
   `}
 `
 
-const StyledSystemMessage = styled.div`
+const StyledSystemMessage = styled.div<{ id: number }>`
   border-radius: 24px;
   border: 2px solid ${props => props.theme.colors.primary};
   display: flex;
@@ -369,11 +375,36 @@ const getSystemButtons = (
   return <></>
 }
 
-const Actions = styled.div`
+const Actions = ({ children }: { children: React.ReactChild | React.ReactChild[] }) => {
+  const [loading, change] = useState(false)
+
+  return <StyledActions onClick={() => change(true)}>{!loading ? children : <StyledActionLoader />}</StyledActions>
+}
+
+const StyledActionLoader = styled(Spinner)`
+  background: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  ${Loader} {
+    width: 100px;
+    height: 100px;
+  }
+`
+
+const StyledActions = styled.div`
   display: flex;
   flex-direction: column;
   border-left: 2px solid ${props => props.theme.colors.primary};
   width: 100px;
+  position: relative;
+  overflow: hidden;
 
   ${MediaRange.lessThan(`mobile`)`
     border-left: 0;
