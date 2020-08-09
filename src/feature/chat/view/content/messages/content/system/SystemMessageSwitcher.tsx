@@ -256,7 +256,7 @@ type SystemMessageTypes = {
 
 const SystemMessage = (props: SystemMessageTypes) => {
   return (
-    <StyledSystemMessage id={props.id}>
+    <StyledSystemMessage id={props.id as never}>
       <SessionDate>
         <SessionDay>{formatSessionDay(props.startDate)}</SessionDay>
         <SessionTime>{formatSessionTime(props.startDate, props.endDate)}</SessionTime>
