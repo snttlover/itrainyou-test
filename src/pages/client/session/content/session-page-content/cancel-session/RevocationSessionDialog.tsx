@@ -5,29 +5,73 @@ import { Textarea } from "@/components/textarea/Textarea"
 import { Avatar } from "@/components/avatar/Avatar"
 import { RatingPicker } from "@/components/rating/RatingPicker"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { useEvent, useStore } from "effector-react/ssr"
+import { Loader } from "@/components/spinner/Spinner"
+import {
+  $rating,
+  $resume,
+  $revocationVisibility,
+  changeRation,
+  changeRevocationResume,
+  changeRevocationVisibility,
+  revocationFx,
+  sendReview,
+} from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
+import { clientChat } from "@/pages/client/chats/chat/client-chat.model"
 
-type RevocationDialogTypes = {
-  visibility: boolean
-  onChangeVisibility: React.Dispatch<React.SetStateAction<boolean>>
+export const RevocationSessionDialog = () => {
+  const rating = useStore($rating)
+  const resume = useStore($resume)
+
+  const changeRating = useEvent(changeRation)
+  const changeResume = useEvent(changeRevocationResume)
+
+  const chat = useStore(clientChat.chat.$chat)
+
+  const submit = useEvent(sendReview)
+
+  const changeVisibility = useEvent(changeRevocationVisibility)
+  const visibility = useStore($revocationVisibility)
+
+  const pending = useStore(revocationFx.pending)
+
+  return (
+    <StyledDialog value={visibility} onChange={changeVisibility}>
+      <Container>
+        {pending && (
+          <StyledLoader>
+            <Loader />
+          </StyledLoader>
+        )}
+        <Header>Оцените коуча</Header>
+        <UserInfo>
+          <StyledAvatar src={chat.avatar || null} />
+          <UserName>{chat.name}</UserName>
+        </UserInfo>
+        <RatingPicker value={rating} onChange={changeRating} />
+        <Form>
+          <Description>Напишите отзыв о сессии</Description>
+          <StyledTextarea value={resume} placeholder='' onChange={changeResume} />
+        </Form>
+        <StyledButton disabled={pending} onClick={() => submit()}>
+          Оценить
+        </StyledButton>
+      </Container>
+    </StyledDialog>
+  )
 }
 
-export const RevocationSessionDialog = (props: RevocationDialogTypes) => (
-  <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
-    <Container>
-      <Header>Оцените коуча</Header>
-      <UserInfo>
-        <StyledAvatar src='https://static.mk.ru/upload/entities/2019/05/08/00/articles/detailPicture/c7/b5/08/6e/5dda626cb409b1fa6942c29040609e17.jpg' />
-        <UserName>Gregory Bell</UserName>
-      </UserInfo>
-      <RatingPicker value={3} onChange={value => {}} />
-      <Form>
-        <Description>Напишите отзыв о сессии</Description>
-        <StyledTextarea value='' placeholder='' onChange={() => {}} />
-      </Form>
-      <StyledButton>Оценить</StyledButton>
-    </Container>
-  </StyledDialog>
-)
+const StyledLoader = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+`
 
 const StyledDialog = styled(Dialog)`
   width: 100%;
@@ -38,6 +82,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `
 
 const Header = styled.div`

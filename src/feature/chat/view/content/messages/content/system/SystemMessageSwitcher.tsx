@@ -13,6 +13,11 @@ import {
 } from "@/feature/session-request/createSessionRequestsModule"
 import { useEvent } from "effector-react/ssr"
 import { Loader, Spinner } from "@/components/spinner/Spinner"
+import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
+import {
+  changeRevocationSessionId,
+  changeRevocationVisibility
+} from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -361,7 +366,7 @@ const getSystemButtons = (
       }
 
       if (is("CONFIRMATION_COMPLETION", "APPROVED")) {
-        return <RevocationButton />
+        return <RevocationButton sessionId={request.session.id} />
       }
     }
 
@@ -375,10 +380,22 @@ const getSystemButtons = (
   return <></>
 }
 
-const Actions = ({ children }: { children: React.ReactChild | React.ReactChild[] }) => {
+const Actions = ({
+  children,
+  withoutLoader,
+}: {
+  withoutLoader?: boolean
+  children: React.ReactChild | React.ReactChild[]
+}) => {
   const [loading, change] = useState(false)
 
-  return <StyledActions onClick={() => change(true)}>{!loading ? children : <StyledActionLoader />}</StyledActions>
+  const clickHandler = () => {
+    if (!withoutLoader) {
+      change(true)
+    }
+  }
+
+  return <StyledActions onClick={() => clickHandler()}>{!loading ? children : <StyledActionLoader />}</StyledActions>
 }
 
 const StyledActionLoader = styled(Spinner)`
@@ -493,10 +510,12 @@ const CancelAction = ({ request, requestsModule }: SessionRequestActionProps) =>
   )
 }
 
-const RevocationButton = () => {
+const RevocationButton = ({ sessionId }: { sessionId: number }) => {
+  const changeId = useEvent(changeRevocationSessionId)
+
   return (
-    <Actions>
-      <Button>Отзыв</Button>
+    <Actions withoutLoader={true}>
+      <Button onClick={() => changeId(sessionId)}>Отзыв</Button>
     </Actions>
   )
 }

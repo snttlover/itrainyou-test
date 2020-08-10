@@ -6,7 +6,7 @@ import { Icon } from "@/components/icon/Icon"
 type DialogProps = {
   children: React.ReactChild | React.ReactChild[]
   value: boolean
-  onChange: React.Dispatch<React.SetStateAction<boolean>>
+  onChange: (val: boolean) => any | React.Dispatch<React.SetStateAction<boolean>>
   className?: string
 }
 
