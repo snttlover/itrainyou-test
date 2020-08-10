@@ -16,8 +16,9 @@ import { Loader, Spinner } from "@/components/spinner/Spinner"
 import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import {
   changeRevocationSessionId,
-  changeRevocationVisibility
+  changeRevocationVisibility,
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
+import { Avatar } from "@/components/avatar/Avatar"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -235,21 +236,61 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
   )
 }
 
-export const SystemMessageSwitcher = ({ message }: { message: ChatSystemMessage }) => {
+export const SystemMessageSwitcher = ({
+  message,
+  isSystemChat,
+}: {
+  isSystemChat: boolean
+  message: ChatSystemMessage
+}) => {
   const text = getText(message.request, message.status, message.chatType)
   const Buttons = getSystemButtons(message.request, message.status, message.chatType)
 
   return (
-    <SystemMessage
-      id={message.id}
-      text={text}
-      startDate={message.request.rescheduleSession?.startDatetime}
-      endDate={message.request.rescheduleSession?.endDatetime}
-    >
-      {Buttons}
-    </SystemMessage>
+    <>
+      {isSystemChat && <UserHeader name={message.userName} avatar={message.userAvatar} />}
+      <SystemMessage
+        id={message.id}
+        text={text}
+        startDate={message.request.rescheduleSession?.startDatetime}
+        endDate={message.request.rescheduleSession?.endDatetime}
+      >
+        {Buttons}
+      </SystemMessage>
+    </>
   )
 }
+
+const UserHeader = ({ name, avatar }: { name: string; avatar: string | null }) => {
+  return (
+    <StyledUserHeader>
+      <StyledAvatar src={avatar} />
+      <UserHeaderTitle>{name}</UserHeaderTitle>
+    </StyledUserHeader>
+  )
+}
+
+const StyledUserHeader = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 8px;
+`
+const StyledAvatar = styled(Avatar)`
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+`
+
+const UserHeaderTitle = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #424242;
+  ${MediaRange.lessThan(`mobile`)`
+    font-size: 12px;
+    line-height: 16px;
+  `}
+`
 
 type SystemMessageTypes = {
   id: number

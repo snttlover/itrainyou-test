@@ -46,7 +46,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
           <>
             <ChatContainer>
               <Header {...chat} />
-              <Messages />
+              <Messages isSystem={chat.chatType === `SYSTEM`} />
               {isPersonalChat && <ChatMessageBox onSend={send} />}
             </ChatContainer>
             <Sessions />
