@@ -3,10 +3,32 @@ import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { ClickOutside } from "@/components/click-outside/ClickOutside"
 import { BanDialog } from "@/feature/chat/view/content/headers/personal/ban/BanDialog"
+import { useEvent, useStore } from "effector-react/ssr"
+import { toggleClientBan, toggleClientRestrict } from "@/feature/chat/modules/ban-client"
 
-export const BanTooltip = () => {
+type BanTooltipTypes = {
+  blocked: boolean
+  restricted: boolean
+  userId: number
+}
+
+export const BanTooltip = (props: BanTooltipTypes) => {
   const [tooltipVisibility, changeTooltipVisibility] = useState(false)
   const [banDialogVisibility, changeBanDialogVisibility] = useState(false)
+
+  const restrictedText = props.restricted ? `Включить сообщения до покупки сессии` : `Ограничить сообщения до покупки сессии`
+  const banText = props.blocked ? `Разблокировать клиента` : `Заблокировать клиента`
+
+  const ban = useEvent(toggleClientBan)
+  const restrict = useEvent(toggleClientRestrict)
+
+  const banHandler = () => {
+    if (props.blocked) {
+      ban(props.userId)
+    } else {
+      changeBanDialogVisibility(true)
+    }
+  }
 
   return (
     <ClickOutside onClickOutside={() => changeTooltipVisibility(false)}>
@@ -14,11 +36,12 @@ export const BanTooltip = () => {
         <BanIcon />
         {tooltipVisibility && (
           <Tooltip>
-            <Item>Ограничить сообщения до покупки сессии</Item>
-            <Item onClick={() => changeBanDialogVisibility(true)}>Заблокировать клиента</Item>
+            <Item onClick={() => restrict(props.userId)}>{restrictedText}</Item>
+            <Item onClick={banHandler}>{banText}</Item>
           </Tooltip>
         )}
         <BanDialog
+          onSuccess={() => ban(props.userId)}
           visibility={banDialogVisibility}
           onChangeVisibility={changeBanDialogVisibility}
         />

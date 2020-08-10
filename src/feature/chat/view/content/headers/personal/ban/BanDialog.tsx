@@ -5,6 +5,7 @@ import { Checkbox, CheckboxContent } from "@/components/checkbox/Checkbox"
 import { Button } from "@/components/button/normal/Button"
 
 type BanDialogTypes = {
+  onSuccess: () => void
   visibility: boolean
   onChangeVisibility: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -20,7 +21,9 @@ export const BanDialog = (props: BanDialogTypes) => {
         <StyledCheckbox value={cancelSessions} onChange={changeSessionsCancel}>
           Отменить все сессии
         </StyledCheckbox>
-        <StyledButton disabled={!cancelSessions}>Заблокировать</StyledButton>
+        <StyledButton disabled={!cancelSessions} onClick={() => props.onSuccess()}>
+          Заблокировать
+        </StyledButton>
       </Container>
     </StyledDialog>
   )

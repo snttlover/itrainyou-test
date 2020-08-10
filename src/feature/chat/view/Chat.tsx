@@ -24,6 +24,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const mounted = useEvent($chatModule.mounted)
     const unmounted = useEvent($chatModule.reset)
     const chatIsNotFound = useStore($chatModule.chat.$notFound)
+    const blockedText = useStore($chatModule.chat.data.$blockedText)
 
     useEffect(() => {
       mounted(parseInt(params.id))
@@ -42,7 +43,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
             <ChatContainer>
               <Header {...chat} />
               <Messages />
-              {isPersonalChat && <ChatMessageBox onSend={send} />}
+              {isPersonalChat && <ChatMessageBox onSend={send} blockedText={blockedText} />}
             </ChatContainer>
             <Sessions />
           </>
