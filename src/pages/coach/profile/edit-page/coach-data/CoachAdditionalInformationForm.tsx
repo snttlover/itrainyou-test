@@ -92,7 +92,7 @@ export const CoachAdditionalInformationForm: React.FC = () => {
 
   return (
     <InformationContainer>
-      <InformationTitle>Заполните информацию</InformationTitle>
+      <InformationTitle>Дополнительная информация</InformationTitle>
       <FormItem label='Место обучения' error={errors.education}>
         <Input withoutBorder value={values.education} onChange={_educationChanged} />
       </FormItem>
