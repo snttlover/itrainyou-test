@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { createChatSessions } from "@/feature/chat/view/content/chat-sessions/ChatSessionsList"
 import { SystemChatHeader } from "@/feature/chat/view/content/headers/system/SystemChatHeader"
+import {resetRevocation} from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
+import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -25,9 +27,12 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const unmounted = useEvent($chatModule.reset)
     const chatIsNotFound = useStore($chatModule.chat.$notFound)
     const blockedText = useStore($chatModule.chat.data.$blockedText)
+    const resetRev = useEvent(resetRevocation)
 
     useEffect(() => {
       mounted(parseInt(params.id))
+      resetRev()
+
       return () => unmounted()
     }, [])
 
@@ -42,10 +47,11 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
           <>
             <ChatContainer>
               <Header {...chat} />
-              <Messages />
+              <Messages isSystem={chat.chatType === `SYSTEM`} />
               {isPersonalChat && <ChatMessageBox onSend={send} blockedText={blockedText} />}
             </ChatContainer>
             <Sessions />
+            <RevocationSessionDialog />
           </>
         )}
       </Container>

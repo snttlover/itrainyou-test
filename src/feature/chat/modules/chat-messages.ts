@@ -5,6 +5,8 @@ import { ChatMessage, MessageSessionRequestStatuses } from "@/lib/api/chats/clie
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+import { CoachUser } from "@/lib/api/coach"
+import { Client } from "@/lib/api/client/clientInfo"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
@@ -17,6 +19,8 @@ export type ChatSystemMessage = {
   id: number
   chatType: "coach" | "client"
   request: SessionRequest
+  userName: string
+  userAvatar: string | null
   status: MessageSessionRequestStatuses
 }
 
@@ -74,11 +78,21 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
 
           if (message.type === `SYSTEM`) {
+            let user: CoachUser | Client | null = null
+
+            if (config.type === `coach`) {
+              user = message.sessionRequest.initiatorClient || message.sessionRequest.receiverClient || null
+            } else {
+              user = message.sessionRequest.initiatorClient || message.sessionRequest.receiverClient || null
+            }
+
             return {
               type: `SYSTEM`,
               id: message.id,
               chatType: config.type,
               request: getReq(message.sessionRequest.id),
+              userName: `${user?.firstName} ${user?.lastName}`,
+              userAvatar: user?.avatar || null,
               status: completedStatusesIds.includes(message.sessionRequest.id) ? `COMPLETED` : `INITIATED`,
             }
           }
