@@ -26,6 +26,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const mounted = useEvent($chatModule.mounted)
     const unmounted = useEvent($chatModule.reset)
     const chatIsNotFound = useStore($chatModule.chat.$notFound)
+    const blockedText = useStore($chatModule.chat.data.$blockedText)
     const resetRev = useEvent(resetRevocation)
 
     useEffect(() => {
@@ -47,7 +48,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
             <ChatContainer>
               <Header {...chat} />
               <Messages isSystem={chat.chatType === `SYSTEM`} />
-              {isPersonalChat && <ChatMessageBox onSend={send} />}
+              {isPersonalChat && <ChatMessageBox onSend={send} blockedText={blockedText} />}
             </ChatContainer>
             <Sessions />
             <RevocationSessionDialog />

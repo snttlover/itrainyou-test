@@ -28,18 +28,40 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     reset,
   })
 
-  const $chat = $chatInfo.map(chat => {
+  const $chat = $chatInfo.map((chat) => {
     const interc = config.type === `client` ? chat?.coach : chat?.clients[0]
-
     return {
       id: chat?.id,
       avatar: interc?.avatar,
       name: `${interc?.firstName} ${interc?.lastName}`,
+      userId: interc?.id || 0,
+      userSex: interc?.sex || `M`,
       link: config.type === `client` && { url: routeNames.searchCoachPage((interc?.id || 0).toString()) },
       backLink: config.type === `client` ? routeNames.clientChatsList() : routeNames.coachClients(),
       type: config.type,
       chatType: chat?.type,
+      blocked: !!chat?.isBanned,
+      restricted: !!chat?.isRestricted,
     }
+  })
+
+  const $blockedText = $chat.map(chat => {
+    if (chat.type === `coach`) {
+      if (chat.blocked) {
+        return `Вы заблокировали клиента`
+      }
+
+      if (chat.restricted) {
+        return `Вы заблокировали клиента до покупки сессии`
+      }
+    }
+
+    if (chat.type === `client`) {
+      if (chat.blocked || chat.restricted) {
+        return `${chat.name} заблокировал${chat.userSex === `F` ? `a` : ``} вас`
+      }
+    }
+    return null
   })
 
   sample({
@@ -49,6 +71,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
   })
 
   return {
+    $chatInfo,
     $loading: loadChatFx.pending,
     $chat,
     $chatId,
@@ -56,5 +79,10 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     loadChat,
     changeId,
     reset,
+    data: {
+      $isBlocked: $chat.map(chat => chat.blocked),
+      $isRestricted: $chat.map(chat => chat.restricted),
+      $blockedText,
+    },
   }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import {MediaRange} from "@/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   background: #dbdee0;
@@ -24,13 +24,18 @@ const StyledInput = styled.input`
   &::placeholder {
     color: #9aa0a6;
   }
-  
+
+  &:disabled::placeholder {
+    color: #ff6b00;
+  }
+
   ${MediaRange.lessThan(`mobile`)`
     padding: 7px 15px;
   `}
 `
 
 type ChatMessageBoxTypes = {
+  blockedText: string | null
   onSend: (value: string) => void
 }
 
@@ -56,7 +61,8 @@ export const ChatMessageBox = (props: ChatMessageBoxTypes) => {
       <StyledInput
         ref={input}
         value={value}
-        placeholder='Напишите сообщение...'
+        disabled={!!props.blockedText}
+        placeholder={props.blockedText || "Напишите сообщение..."}
         onChange={e => change(e.target.value)}
         onKeyDown={keydownHandler}
       />

@@ -35,6 +35,9 @@ type ChatHeaderTypes = {
   backLink: any
   link?: any
   type: string
+  blocked: boolean
+  restricted: boolean
+  userId: number
 }
 
 export const PersonalChatHeader = (props: ChatHeaderTypes) => {
@@ -50,7 +53,7 @@ export const PersonalChatHeader = (props: ChatHeaderTypes) => {
       <MobileBackButton to={props.backLink} />
       <StyledAvatar src={props.avatar || null} onClick={userClick} />
       <Title onClick={userClick}>{props.name}</Title>
-      {props.type === `coach` && <BanTooltip />}
+      {props.type === `coach` && <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />}
     </Container>
   )
 }

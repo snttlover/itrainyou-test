@@ -41,6 +41,9 @@ type CommonChatFields = {
   coach?: CoachUser
   clients: [Client]
   support: null
+
+  isBanned: boolean
+  isRestricted: boolean
 }
 
 export type SystemChat = {

@@ -31,8 +31,8 @@ export interface CoachSelfData {
   videoInterview: string
   phone: string
   categories: Category[]
-  bannedClients: []
-  restrictedClients: []
+  bannedClients: number[]
+  restrictedClients: number[]
   rating: number
   reviewsCount: number
   nearestSessionDatetime: ISODate
