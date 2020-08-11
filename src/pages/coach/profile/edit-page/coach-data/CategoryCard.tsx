@@ -49,7 +49,7 @@ const Title = styled.div`
   padding-right: 20px;
 
   ${MediaRange.greaterThan("mobile")`
-    font-size: 24px;
+    font-size: 20px;
     line-height: 26px;
   `}
 `

@@ -43,14 +43,10 @@ const InformationTitle = styled.h2`
   color: #424242;
 
   ${MediaRange.greaterThan("mobile")`    
-    font-size: 24px;
+    font-size: 20px;
     line-height: 26px;
   `}
-  ${MediaRange.greaterThan("tablet")`    
-    font-size: 24px;
-    line-height: 26px;
-  `}
-  
+
   &.photo {
     margin-top: 24px;
     ${MediaRange.greaterThan("mobile")`
