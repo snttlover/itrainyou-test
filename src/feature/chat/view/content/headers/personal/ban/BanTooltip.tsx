@@ -4,7 +4,8 @@ import { Icon } from "@/components/icon/Icon"
 import { ClickOutside } from "@/components/click-outside/ClickOutside"
 import { BanDialog } from "@/feature/chat/view/content/headers/personal/ban/BanDialog"
 import { useEvent, useStore } from "effector-react/ssr"
-import { toggleClientBan, toggleClientRestrict } from "@/feature/chat/modules/ban-client"
+import { $banClientLoading, toggleClientBan, toggleClientRestrict } from "@/feature/chat/modules/ban-client"
+import { Loader, Spinner } from "@/components/spinner/Spinner"
 
 type BanTooltipTypes = {
   blocked: boolean
@@ -13,10 +14,14 @@ type BanTooltipTypes = {
 }
 
 export const BanTooltip = (props: BanTooltipTypes) => {
+  const banning = useStore($banClientLoading)
+
   const [tooltipVisibility, changeTooltipVisibility] = useState(false)
   const [banDialogVisibility, changeBanDialogVisibility] = useState(false)
 
-  const restrictedText = props.restricted ? `Включить сообщения до покупки сессии` : `Ограничить сообщения до покупки сессии`
+  const restrictedText = props.restricted
+    ? `Включить сообщения до покупки сессии`
+    : `Ограничить сообщения до покупки сессии`
   const banText = props.blocked ? `Разблокировать клиента` : `Заблокировать клиента`
 
   const ban = useEvent(toggleClientBan)
@@ -30,18 +35,30 @@ export const BanTooltip = (props: BanTooltipTypes) => {
     }
   }
 
+  const onBanSuccess = () => {
+    changeBanDialogVisibility(false)
+    ban(props.userId)
+  }
+
   return (
     <ClickOutside onClickOutside={() => changeTooltipVisibility(false)}>
       <Container onClick={() => changeTooltipVisibility(true)}>
         <BanIcon />
         {tooltipVisibility && (
           <Tooltip>
-            <Item onClick={() => restrict(props.userId)}>{restrictedText}</Item>
-            <Item onClick={banHandler}>{banText}</Item>
+            <ItemsWrapper>
+              {banning && (
+                <LoaderWrapper>
+                  <StyledLoader />
+                </LoaderWrapper>
+              )}
+              <Item onClick={() => restrict(props.userId)}>{restrictedText}</Item>
+              <Item onClick={banHandler}>{banText}</Item>
+            </ItemsWrapper>
           </Tooltip>
         )}
         <BanDialog
-          onSuccess={() => ban(props.userId)}
+          onSuccess={onBanSuccess}
           visibility={banDialogVisibility}
           onChangeVisibility={changeBanDialogVisibility}
         />
@@ -49,6 +66,25 @@ export const BanTooltip = (props: BanTooltipTypes) => {
     </ClickOutside>
   )
 }
+
+const ItemsWrapper = styled.div`
+  position: relative;
+  overflow: hidden;
+`
+
+const LoaderWrapper = styled.div`
+  position: absolute;
+  background: #fff;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%); 
+`
+
+const StyledLoader = styled(Loader)`
+   width: 100px;
+   height: 80px;
+`
 
 const Container = styled.div`
   cursor: pointer;

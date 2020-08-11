@@ -20,16 +20,6 @@ export const $userData = createStore<UserData>({ client: null, coach: null })
   .on([setUserData, getMyUserFx.doneData.map(data => keysToCamel(data.data))], (state, payload) => payload)
   .reset(logout)
 
-export const $restrictedUsers = createStore<number[]>( []).on(
-  [setUserData, getMyUserFx.doneData.map(data => keysToCamel(data.data))],
-  (_, user: UserData) => user.coach?.restrictedClients || []
-).reset(logout)
-
-export const $bannedUsers = createStore<number[]>([]).on(
-  [setUserData, getMyUserFx.doneData.map(data => keysToCamel(data.data))],
-  (_, user: UserData) => user.coach?.bannedClients || []
-).reset(logout)
-
 export const $isFullRegistered = $userData.map(userData => userData.client || userData.coach)
 
 export const $coachAccess = $userData.map(userData => ({

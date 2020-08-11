@@ -1,8 +1,7 @@
 import { Chat } from "@/lib/api/chats/clients/get-chats"
-import { combine, createEffect, createEvent, createStore, sample } from "effector-root"
+import { createEffect, createEvent, createStore, sample } from "effector-root"
 import { routeNames } from "@/pages/route-names"
 import { createNotFoundModule } from "@/feature/not-found/not-found"
-import { $bannedUsers, $restrictedUsers, $userData } from "@/feature/user/user.model"
 
 type createChatInfoModuleTypes = {
   type: "coach" | "client"
@@ -29,22 +28,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     reset,
   })
 
-  const $interc = $chatInfo.map(chat => (chat?.clients ? chat.clients[0] : null))
-  const $chatType = createStore(config.type)
-  const $isBlocked = combine(
-    $chatType,
-    $bannedUsers,
-    $interc,
-    (type, banned, interc) => !!interc && type === `coach` && !!banned.includes(interc.id)
-  )
-  const $isRestricted = combine(
-    $chatType,
-    $restrictedUsers,
-    $interc,
-    (type, restricted, interc) => !!interc && type === `coach` && !!restricted.includes(interc.id)
-  )
-
-  const $chat = combine($chatInfo, $isBlocked, $isRestricted, (chat, blocked, restricted) => {
+  const $chat = $chatInfo.map((chat) => {
     const interc = config.type === `client` ? chat?.coach : chat?.clients[0]
     return {
       id: chat?.id,
@@ -56,8 +40,8 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
       backLink: config.type === `client` ? routeNames.clientChatsList() : routeNames.coachClients(),
       type: config.type,
       chatType: chat?.type,
-      blocked,
-      restricted,
+      blocked: !!chat?.isBanned,
+      restricted: !!chat?.isRestricted,
     }
   })
 
@@ -87,6 +71,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
   })
 
   return {
+    $chatInfo,
     $loading: loadChatFx.pending,
     $chat,
     $chatId,
@@ -95,8 +80,8 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     changeId,
     reset,
     data: {
-      $isBlocked,
-      $isRestricted,
+      $isBlocked: $chat.map(chat => chat.blocked),
+      $isRestricted: $chat.map(chat => chat.restricted),
       $blockedText,
     },
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Dialog } from "@/components/dialog/Dialog"
 import { Checkbox, CheckboxContent } from "@/components/checkbox/Checkbox"
@@ -12,6 +12,10 @@ type BanDialogTypes = {
 
 export const BanDialog = (props: BanDialogTypes) => {
   const [cancelSessions, changeSessionsCancel] = useState(false)
+
+  useEffect(() => {
+    changeSessionsCancel(false)
+  }, [props.visibility])
 
   return (
     <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
