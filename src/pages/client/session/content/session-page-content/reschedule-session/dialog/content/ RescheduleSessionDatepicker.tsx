@@ -54,11 +54,11 @@ export const RescheduleSessionDatepicker = () => {
                 <SelectedSessionDate>{session.date}</SelectedSessionDate>
                 <SelectedSessionTime>{session.time}</SelectedSessionTime>
               </SelectedSession>
-              <Actions>
-                <RescheduleButton onClick={() => submit()}>Перенести</RescheduleButton>
-              </Actions>
             </>
           )}
+          <Actions>
+            <RescheduleButton disabled={!session} onClick={() => submit()}>Перенести</RescheduleButton>
+          </Actions>
         </SelectSessionContainer>
       </Column>
     </Container>
