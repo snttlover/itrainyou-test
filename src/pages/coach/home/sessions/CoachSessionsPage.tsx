@@ -17,10 +17,13 @@ const Container = styled.div`
   max-width: 672px;
   margin-top: 36px;
   margin-left: 40px;
-  padding: 0 16px;
   ${MediaRange.lessThan(`tablet`)`
     margin: 0 auto;
     margin-top: 40px;
+  `}
+
+  ${MediaRange.greaterThan("tablet")`
+    padding: 0 16px;
   `}
 `
 
