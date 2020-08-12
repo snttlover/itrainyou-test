@@ -51,11 +51,12 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
   const $tick = createStore(new Date()).on(changeTick, (_, date) => date)
 
   const $sessions = combine(pagination.data.$list, $tick, $tab, (sessions, tick, tab) => {
-    return sessions.map(s => {
+    const formatted = sessions.map(s => {
       const session: any = {
         link: `/${config.chatUserType}/sessions/${s.id}`,
         time: date(s.startDatetime).format(`HH:mm`),
         date: date(s.startDatetime).format(`DD MMM YYYYг`),
+        startDatetime: date(s.startDatetime)
       }
 
       if (tab === `future`) {
@@ -70,6 +71,12 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
 
       return session
     })
+
+    if (tab === `future`) {
+      return formatted.filter(session => date().isBefore(session.startDatetime))
+    }
+
+    return formatted
   })
 
   forward({
