@@ -16,8 +16,6 @@ export const clientCoachesPagination = createPagination<ClientCoachesResponse>({
   ),
 })
 
-clientCoachesPagination.data.$list.watch(console.log)
-
 export const $clientData = restore<ClientResponse | null>(loadClientFx.doneData, null).reset(clientPageGate.close)
 
 export const $isLoading = some(true, [loadClientFx.pending])
