@@ -47,7 +47,7 @@ export const CoachSessionPage = () => {
           <Content>
             <UserHeader {...sessionInfo} onWrite={write} />
 
-            {cancelVisibility && (
+            {!sessionInfo.isOver && cancelVisibility && (
               <TabletCancelSession
                 sessionStartDatetime={sessionInfo.sessionStartDatetime}
                 onCancel={() => cancelSession()}
@@ -63,7 +63,7 @@ export const CoachSessionPage = () => {
           </Content>
           <InfoWrapper>
             <SessionInfo {...sessionInfo} />
-            {cancelVisibility && (
+            {!sessionInfo.isOver && cancelVisibility && (
               <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} />
             )}
           </InfoWrapper>

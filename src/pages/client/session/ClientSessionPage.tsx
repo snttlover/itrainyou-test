@@ -58,9 +58,9 @@ export const ClientSessionPage = () => {
           <Content>
             <UserHeader {...sessionInfo} onWrite={write} />
 
-            {!clearSession?.hasAwaitingRescheduleRequests && <TabletRescheduleSession />}
+            {!sessionInfo.isOver && !clearSession?.hasAwaitingRescheduleRequests && <TabletRescheduleSession />}
 
-            {cancelVisibility && (
+            {!sessionInfo.isOver && cancelVisibility && (
               <TabletCancelSession
                 sessionStartDatetime={sessionInfo.sessionStartDatetime}
                 onCancel={() => cancelSession()}
@@ -76,8 +76,8 @@ export const ClientSessionPage = () => {
           </Content>
           <InfoWrapper>
             <SessionInfo {...sessionInfo} />
-            {!clearSession?.hasAwaitingRescheduleRequests && <RescheduleSession />}
-            {cancelVisibility && (
+            {!sessionInfo.isOver && !clearSession?.hasAwaitingRescheduleRequests && <RescheduleSession />}
+            {!sessionInfo.isOver && cancelVisibility && (
               <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} />
             )}
           </InfoWrapper>
