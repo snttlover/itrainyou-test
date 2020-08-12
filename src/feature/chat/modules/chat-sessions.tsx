@@ -58,7 +58,7 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
         date: date(s.startDatetime).format(`DD MMM YYYYг`),
       }
 
-      if (tab === `soon`) {
+      if (tab === `future`) {
         session.tick = date(s.startDatetime)
           .subtract(+tick, `millisecond`)
           .format(`HH.MM.SS`)
