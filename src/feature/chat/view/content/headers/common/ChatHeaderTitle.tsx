@@ -14,4 +14,8 @@ export const ChatHeaderTitle = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
   `}
+
+  & > a {
+    color: #424242;
+  }
 `

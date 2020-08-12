@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/route-names"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import { Icon } from "@/components/icon/Icon"
@@ -39,10 +40,13 @@ const Notification = styled(Icon).attrs({ name: `notification` })`
   ${IconStyles}
 `
 
+const AvatarLink = styled(Link)`
+  margin-left: 36px;
+`
+
 const StyledAvatar = styled(Avatar)`
   width: 40px;
   height: 40px;
-  margin-left: 36px;
   cursor: pointer;
 
   ${MediaRange.lessThan(`tablet`)`
@@ -72,9 +76,9 @@ export const ClientTopBarIconButtons = () => {
   return (
     <Wrapper>
       <Notification />
-      <Link to='/client/profile'>
+      <AvatarLink to={routeNames.clientProfile()}>
         <StyledAvatar src={user.client?.avatar || null} />
-      </Link>
+      </AvatarLink>
       <StyledMobileMenu />
       <Burger />
       <CoachTooltip>

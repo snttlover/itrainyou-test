@@ -28,7 +28,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     reset,
   })
 
-  const $chat = $chatInfo.map((chat) => {
+  const $chat = $chatInfo.map(chat => {
     const interc = config.type === `client` ? chat?.coach : chat?.clients[0]
     return {
       id: chat?.id,
@@ -36,7 +36,10 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
       name: `${interc?.firstName} ${interc?.lastName}`,
       userId: interc?.id || 0,
       userSex: interc?.sex || `M`,
-      link: config.type === `client` && { url: routeNames.searchCoachPage((interc?.id || 0).toString()) },
+      link:
+        config.type === `client`
+          ? routeNames.searchCoachPage((interc?.id || 0).toString())
+          : routeNames.coachClientProfile((interc?.id || 0).toString()),
       backLink: config.type === `client` ? routeNames.clientChatsList() : routeNames.coachClients(),
       type: config.type,
       chatType: chat?.type,

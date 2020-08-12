@@ -52,7 +52,9 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
     return {
       avatar: session.coach.avatar,
       name: `${session.coach.firstName} ${session.coach.lastName}`,
-      price: `${+session.clientPrice > 0 ? `+` : `-`} ${session.clientPrice}`,
+      price: `${+session.clientPrice > 0 && transaction.type !== `SESSION_CANCELLATION` ? `+` : `-`} ${
+        session.clientPrice
+      }`,
       time: date(session.startDatetime).format(`hh:mm`),
       date: date(session.startDatetime).format(`DD.MM.YYYY`),
       isCanceled: transaction.type === `SESSION_CANCELLATION`,
