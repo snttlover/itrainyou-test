@@ -89,6 +89,9 @@ const StyledLoader = styled(Loader)`
 const Container = styled.div`
   cursor: pointer;
   position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
 `
 
 const BanIcon = styled(Icon).attrs({ name: `none` })`

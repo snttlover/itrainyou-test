@@ -24,6 +24,8 @@ export type IconName =
   | "tail-arrow"
   | "vk"
   | "info"
+  | "more"
+  | "video2"
   | "top-coach"
   | "rounded-user"
   | "checkbox-border"

@@ -1,4 +1,4 @@
-import { combine, createEvent, createStore, forward, Store } from "effector-root"
+import { combine, createEvent, createStore, forward, Store, restore } from "effector-root"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { createPagination } from "@/feature/pagination"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
@@ -102,3 +102,6 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
     },
   }
 }
+
+export const changeSessionsMobileVisibility = createEvent<boolean>()
+export const $showSessionsOnMobile = restore(changeSessionsMobileVisibility, false)

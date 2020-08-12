@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
@@ -8,6 +8,9 @@ import { BanTooltip } from "@/feature/chat/view/content/headers/personal/ban/Ban
 import { ChatHeaderMobileBackButton as MobileBackButton } from "@/feature/chat/view/content/headers/common/ChatHeaderMobileBackButton"
 import { ChatHeaderTitle as Title } from "@/feature/chat/view/content/headers/common/ChatHeaderTitle"
 import { ChatHeaderContainer } from "@/feature/chat/view/content/headers/common/ChatHeaderContainer"
+import { Icon } from "@/components/icon/Icon"
+import { useClickOutside } from "@/components/click-outside/use-click-outside"
+import { MobileChatHeaderMenu } from "@/feature/chat/view/content/headers/personal/MobileMenu"
 
 const StyledAvatar = styled(Avatar)`
   width: 40px;
@@ -53,7 +56,10 @@ export const PersonalChatHeader = (props: ChatHeaderTypes) => {
       <MobileBackButton to={props.backLink} />
       <StyledAvatar src={props.avatar || null} onClick={userClick} />
       <Title onClick={userClick}>{props.name}</Title>
-      {props.type === `coach` && <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />}
+      <MobileChatHeaderMenu />
+      {props.type === `coach` && (
+        <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />
+      )}
     </Container>
   )
 }

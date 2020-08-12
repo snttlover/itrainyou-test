@@ -13,6 +13,7 @@ import { createChatSessions } from "@/feature/chat/view/content/chat-sessions/Ch
 import { SystemChatHeader } from "@/feature/chat/view/content/headers/system/SystemChatHeader"
 import {resetRevocation} from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
+import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -29,11 +30,16 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const blockedText = useStore($chatModule.chat.data.$blockedText)
     const resetRev = useEvent(resetRevocation)
 
+    const changeSessionsVisibility = useEvent(changeSessionsMobileVisibility)
+
     useEffect(() => {
       mounted(parseInt(params.id))
       resetRev()
 
-      return () => unmounted()
+      return () => {
+        changeSessionsVisibility(false)
+        unmounted()
+      }
     }, [])
 
     const isPersonalChat = chat.chatType === `PERSONAL`

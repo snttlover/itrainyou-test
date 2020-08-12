@@ -2,11 +2,16 @@ import React from "react"
 import styled from "styled-components"
 import { ChatSessionListItem } from "@/feature/chat/view/content/chat-sessions/ChatSessionListItem"
 import { MediaRange } from "@/lib/responsive/media"
-import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
+import {
+  $showSessionsOnMobile,
+  changeSessionsMobileVisibility,
+  createChatSessionsModule,
+} from "@/feature/chat/modules/chat-sessions"
 import { createInfinityScroll } from "@/feature/pagination"
 import { useList, useStore } from "effector-react/ssr"
 import { Tabs, Tab } from "@/components/tabs/Tabs"
 import { useEvent } from "effector-react/ssr"
+import { Icon } from "@/components/icon/Icon"
 
 export const createChatSessions = (sessionsModule: ReturnType<typeof createChatSessionsModule>) => {
   const Pagination = createInfinityScroll(sessionsModule.modules.pagination)
@@ -17,9 +22,15 @@ export const createChatSessions = (sessionsModule: ReturnType<typeof createChatS
     const changeTab = useEvent(sessionsModule.methods.changeTab)
     const isEmpty = useStore(sessionsModule.modules.pagination.data.$listIsEmpty)
 
+    const changeMobileVisibility = useEvent(changeSessionsMobileVisibility)
+    const showOnMobile = useStore($showSessionsOnMobile)
+
     return (
-      <Container>
-        <Header>Сессии</Header>
+      <Container data-show-on-mobile={showOnMobile}>
+        <Header>
+          <MobileBackButton onClick={() => changeMobileVisibility(false)} />
+          Сессии
+        </Header>
         <StyledTabs value={tab} onChange={changeTab}>
           {loading && <BlockTabs />}
           <StyledTab value='soon'>Скоро</StyledTab>
@@ -39,6 +50,17 @@ export const createChatSessions = (sessionsModule: ReturnType<typeof createChatS
   }
 }
 
+const MobileBackButton = styled(Icon).attrs({ name: `left-icon` })`
+  display: none;
+  width: 24px;
+  height: 24px;
+  ${MediaRange.lessThan(`mobile`)`
+    display: flex;
+    fill:  ${props => props.theme.colors.primary};
+    margin-right: 12px;
+  `}
+`
+
 const Container = styled.div`
   position: relative;
   margin-left: 32px;
@@ -53,7 +75,21 @@ const Container = styled.div`
   `}
   ${MediaRange.lessThan(`mobile`)`
     display: none;
+    
+    &[data-show-on-mobile="true"] {
+      display: block !important;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 100;
+      margin-left: 0 !important;
+      padding: 17px;
+      background: #ECEFF1;
+    }
   `}
+  
 `
 
 const StyledTabs = styled(Tabs)`
@@ -80,11 +116,12 @@ const StyledTab = styled(Tab)`
   justify-content: center;
   text-align: center;
   padding: 2px;
-  background: #fff;
-  border-bottom: 2px solid #fff;
+  background: transparent;
+  border-bottom: 2px solid transparent;
   cursor: pointer;
   &[data-active="true"] {
     border-bottom: 2px solid ${props => props.theme.colors.primary};
+    background: transparent;
   }
 `
 
@@ -94,6 +131,14 @@ const Header = styled.div`
   line-height: 22px;
   color: #424242;
   padding: 17px 12px 14px;
+  display: flex;
+  align-items: center;
+  ${MediaRange.lessThan(`mobile`)`
+    font-family: Roboto Slab;
+    font-size: 20px;
+    line-height: 26px;
+    padding-top: 0;
+  `}
 `
 
 const Sessions = styled.div`
@@ -101,6 +146,9 @@ const Sessions = styled.div`
   position: relative;
   overflow: auto;
   height: calc(100% - 77px);
+  ${MediaRange.lessThan(`mobile`)`
+    margin-top: 12px;
+  `}
 `
 
 const Empty = styled.div`
