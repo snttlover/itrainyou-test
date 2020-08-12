@@ -89,7 +89,7 @@ export const createChatsSocket = (userType: UserType) => {
       const chats = message.data.messages
         .filter(
           message =>
-            (userType === `client` && !!message.senderCoach) || (userType === `coach` && !!message.senderClient)
+            (userType === `client` && !!message.senderCoach) || (userType === `coach` && !!message.senderClient) || message.type === `SYSTEM`
         )
         .map(message => message.chat)
       counters = counters.slice()
@@ -109,7 +109,9 @@ export const createChatsSocket = (userType: UserType) => {
   guard({
     source: onMessage,
     filter: message =>
-      (userType === `client` && !!message.data.senderCoach) || (userType === `coach` && !!message.data.senderClient),
+      (userType === `client` && !!message.data.senderCoach) ||
+      (userType === `coach` && !!message.data.senderClient) ||
+      message.data.type === `SYSTEM`,
     target: onIntercMessage,
   })
 

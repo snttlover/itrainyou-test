@@ -114,10 +114,12 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   guard({
     source: config.socket.events.onMessage,
-    filter: message =>
-      ((config.type === `client` && !!message.data.senderCoach) ||
+    filter: message => {
+      return (message.data.type === `SYSTEM` ||
+        (config.type === `client` && !!message.data.senderCoach) ||
         (config.type === `coach` && !!message.data.senderClient)) &&
-      chatId === message.data.chat,
+        chatId === message.data.chat
+    },
     target: readMessage,
   })
 
