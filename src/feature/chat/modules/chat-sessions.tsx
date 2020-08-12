@@ -13,7 +13,7 @@ type CreateChatSessionsModuleConfig = {
   fetch: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 
-type ChatSessionsTabs = "future" | "past" | "soon"
+type ChatSessionsTabs = "future" | "past"
 
 export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig) => {
   const loadSessions = createEvent()
@@ -21,7 +21,7 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
   const resetPagination = createEvent()
 
   const changeTab = createEvent<ChatSessionsTabs>()
-  const $tab = createStore<ChatSessionsTabs>(`soon`)
+  const $tab = createStore<ChatSessionsTabs>(`future`)
     .on(changeTab, (_, tab) => tab)
     .reset(reset)
 

@@ -33,7 +33,6 @@ export const createChatSessions = (sessionsModule: ReturnType<typeof createChatS
         </Header>
         <StyledTabs value={tab} onChange={changeTab}>
           {loading && <BlockTabs />}
-          <StyledTab value='soon'>Скоро</StyledTab>
           <StyledTab value='future'>Будут</StyledTab>
           <StyledTab value='past'>Прошли</StyledTab>
         </StyledTabs>
