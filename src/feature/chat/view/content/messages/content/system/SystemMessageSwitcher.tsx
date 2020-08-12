@@ -319,10 +319,12 @@ const SystemMessage = (props: SystemMessageTypes) => {
   )
 }
 
-const SessionDay = styled.div``
+const SessionDay = styled.div`
+  margin-right: 2px;
+`
+
 const SessionTime = styled.div`
   font-weight: 500;
-  margin-left: 3px;
   ${MediaRange.lessThan(`tablet`)`
     margin-left: 0;
   `}
