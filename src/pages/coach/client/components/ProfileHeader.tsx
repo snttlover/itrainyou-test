@@ -1,5 +1,6 @@
 import { Avatar } from "@/components/avatar/Avatar"
 import { Button } from "@/components/button/normal/Button"
+import { writeToClient } from "@/feature/chat/modules/write-to-coach"
 import { date, getYearsCount } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { $clientData } from "@/pages/coach/client/client-page.model"
@@ -106,15 +107,11 @@ export const ProfileHeader = styled(({ ...props }) => {
           </Name>
           <Since>На сайте с {date(client?.birthDate!).format("DD.MM.YYYY")}</Since>
           <CategoriesAndButtonContainer>
-            <Link to={routeNames.coachProfileEdit()}>
-              <EditButton>Написать</EditButton>
-            </Link>
+            <EditButton onClick={() => writeToClient(client?.id!)}>Написать</EditButton>
           </CategoriesAndButtonContainer>
         </UserInfo>
       </UserInfoWrapper>
-      <Link to={routeNames.coachProfileEdit()}>
-        <MobileEditButton>Написать</MobileEditButton>
-      </Link>
+      <MobileEditButton onClick={() => writeToClient(client?.id!)}>Написать</MobileEditButton>
     </StyledBlock>
   )
 })``
