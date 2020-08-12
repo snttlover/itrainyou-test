@@ -2,9 +2,16 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { RescheduleSessionCard } from "@/pages/client/session/content/session-page-content/reschedule-session/dialog/RescheduleSessionCard"
+import { useEvent, useStore } from "effector-react/ssr"
+import {
+  $rescheduleVisibility,
+  changeRescheduleVisibility
+} from "@/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
 
 export const RescheduleSession = ({ className }: { className?: string }) => {
-  const [visibility, onChangeVisibility] = useState(false)
+  const visibility = useStore($rescheduleVisibility)
+  const onChangeVisibility = useEvent(changeRescheduleVisibility)
+
   return (
     <>
       <Button className={className} onClick={() => onChangeVisibility(true)}>
@@ -14,13 +21,6 @@ export const RescheduleSession = ({ className }: { className?: string }) => {
     </>
   )
 }
-
-export const TabletRescheduleSession = styled(RescheduleSession)`
-  display: none;
-  ${MediaRange.lessThan(`tablet`)`
-    display: flex;
-  `}
-`
 
 const Button = styled.div`
   display: flex;
@@ -47,5 +47,12 @@ const Button = styled.div`
     line-height: 18px;
     margin-top: 12px;
     padding: 10px 0;
+  `}
+`
+
+export const TabletRescheduleSession = styled(RescheduleSession)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
   `}
 `

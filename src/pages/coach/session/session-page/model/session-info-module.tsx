@@ -67,6 +67,8 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     }
   })
 
+  const $coach = $session.map(session => session?.coach)
+
   forward({
     from: loadSession,
     to: loadSessionFx,
@@ -108,10 +110,12 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
 
   return {
     data: {
+      $session,
       $info,
       isFetching: combine(loadSessionFx.pending, cancelSessionFx.pending, (load, cancel) => load || cancel),
       $notFound,
       $cancelButtonVisibility: $cancelVisibility,
+      $coach
     },
     methods: {
       loadSession,
@@ -120,6 +124,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
       cancelSession,
     },
     events: {
+      sessionLoaded: loadSessionFx.doneData,
       sessionCanceled: cancelSessionFx.doneData,
     },
   }

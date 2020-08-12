@@ -7,32 +7,37 @@ import starIcon from "@/components/coach-card/images/star.svg"
 import { Icon } from "@/components/icon/Icon"
 import { Coach } from "@/lib/api/coach"
 
-const coach: Coach = require("../tmp-coach.json")
+type RescheduleSessionCoach = {
+  coach: Coach
+}
 
-const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
+export const RescheduleSessionCoach = (props: RescheduleSessionCoach) => {
 
-const minimumPrice = Object.entries(coach.prices).reduce(
-  (acc, [key, price]) => {
-    if (price !== null && price < acc.price) {
-      return {
-        price: Math.ceil(price),
-        text: `${key.slice(1, key.length)} мин`,
+  const coach = props.coach
+
+  const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
+
+  const minimumPrice = Object.entries(coach.prices).reduce(
+    (acc, [key, price]) => {
+      if (price !== null && price < acc.price) {
+        return {
+          price: Math.ceil(price),
+          text: `${key.slice(1, key.length)} мин`,
+        }
+      } else {
+        return acc
       }
-    } else {
-      return acc
-    }
-  },
-  { price: Infinity, text: `0 минут` }
-)
+    },
+    { price: Infinity, text: `0 минут` }
+  )
 
 // @ts-ignore
-const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
-const price =
-  filledPrices > 1
-    ? `от ${minimumPrice.price}₽ за ${minimumPrice.text}`
-    : `${minimumPrice.text} / ${minimumPrice.price}₽`
+  const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
+  const price =
+    filledPrices > 1
+      ? `от ${minimumPrice.price}₽ за ${minimumPrice.text}`
+      : `${minimumPrice.text} / ${minimumPrice.price}₽`
 
-export const RescheduleSessionCoach = () => {
   return (
     <MainInfoContainer isTopCoach={coach.isTopCoach}>
       <Avatar image={coach.avatar} />

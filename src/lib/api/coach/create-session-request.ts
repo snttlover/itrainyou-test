@@ -6,6 +6,7 @@ import { SessionRequest, SessionRequestTypes } from "@/lib/api/coach/get-session
 export type SessionRequestParams = {
   session: number,
   type: SessionRequestTypes
+  rescheduleSession?: number
 }
 
 export const createCoachSessionRequest = (params: SessionRequestParams) =>

@@ -3,33 +3,67 @@ import styled from "styled-components"
 import { Calendar } from "@/components/calendar/Calendar"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
+import { useEvent, useList, useStore, useStoreMap } from "effector-react/ssr"
+import {
+  $formattedPickedRescheduleSession,
+  $rescheduleDate,
+  $rescheduleSelectedSessions,
+  $rescheduleSessionsDates,
+  changePickedRescheduleSession,
+  changeRescheduleDate,
+  rescheduleSession,
+} from "@/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
+import dayjs from "dayjs"
 
-const date = new Date()
+export const RescheduleSessionDatepicker = () => {
+  const date = useStore($rescheduleDate)
+  const changeDate = useEvent(changeRescheduleDate)
+  const enabledDates = useStore($rescheduleSessionsDates)
+  const pickSession = useEvent(changePickedRescheduleSession)
+  const session = useStore($formattedPickedRescheduleSession)
+  const submit = useEvent(rescheduleSession)
+  const tags = useStore($rescheduleSelectedSessions)
 
-export const RescheduleSessionDatepicker = () => (
-  <Container>
-    <Column>
-      <StyledCalendar value={date} isBig={true} onChange={() => {}} />
-    </Column>
-    <Column>
-      <SelectSessionContainer>
-        <PickedDate>22 апреля</PickedDate>
-        <Tags>
-          <Tag data-selected={true}>12:00</Tag>
-          <Tag data-disabled={true}>12:00</Tag>
-          <Tag>12:00</Tag>
-        </Tags>
-        <SelectedSession>
-          <SelectedSessionDate>22.04.19</SelectedSessionDate>
-          <SelectedSessionTime>12:00</SelectedSessionTime>
-        </SelectedSession>
-        <Actions>
-          <RescheduleButton>Перенести</RescheduleButton>
-        </Actions>
-      </SelectSessionContainer>
-    </Column>
-  </Container>
-)
+  return (
+    <Container>
+      <Column>
+        <StyledCalendar
+          enabledDates={enabledDates}
+          value={date ? new Date(date) : null}
+          isBig={true}
+          onChange={date => {
+            changeDate(date as Date)
+          }}
+        />
+      </Column>
+      <Column>
+        <SelectSessionContainer>
+          <PickedDate>{date ? dayjs(date).format(`DD MMMM`) : `Выберите дату`}</PickedDate>
+          {!!date && (
+            <Tags>
+              {tags.map(session => (
+                <Tag key={session.id} data-selected={session.active} onClick={() => pickSession(session.id)}>
+                  {session.time}
+                </Tag>
+              ))}
+            </Tags>
+          )}
+          {!!session && (
+            <>
+              <SelectedSession>
+                <SelectedSessionDate>{session.date}</SelectedSessionDate>
+                <SelectedSessionTime>{session.time}</SelectedSessionTime>
+              </SelectedSession>
+              <Actions>
+                <RescheduleButton onClick={() => submit()}>Перенести</RescheduleButton>
+              </Actions>
+            </>
+          )}
+        </SelectSessionContainer>
+      </Column>
+    </Container>
+  )
+}
 
 const Container = styled.div`
   display: flex;
@@ -98,6 +132,7 @@ const Tags = styled.div`
 `
 
 const Tag = styled.div`
+  cursor: pointer;
   padding: 2px 8px;
 
   border-radius: 24px;

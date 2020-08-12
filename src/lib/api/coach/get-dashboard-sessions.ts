@@ -16,6 +16,7 @@ export interface DashboardSession {
   durationType: DurationType
   translationUrl: string
   recordingUrl: string
+  hasAwaitingRescheduleRequests: boolean
   materials: []
 }
 

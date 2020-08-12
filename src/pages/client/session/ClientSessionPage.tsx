@@ -16,10 +16,16 @@ import {
   TabletCancelSession,
 } from "@/pages/client/session/content/session-page-content/cancel-session/CancelSession"
 import { clientSessionPage } from "@/pages/client/session/client-session-page"
+import {
+  RescheduleSession,
+  TabletRescheduleSession
+} from "@/pages/client/session/content/session-page-content/reschedule-session/RescheduleSession"
+import { resetRescheduleDialog } from "@/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
 
 export const ClientSessionPage = () => {
   const params = useParams<{ id: string }>()
 
+  const clearSession = useStore(clientSessionPage.modules.sessionInfo.data.$session)
   const sessionInfo = useStore(clientSessionPage.modules.sessionInfo.data.$info)
   const fetching = useStore(clientSessionPage.modules.sessionInfo.data.isFetching)
   const notFound = useStore(clientSessionPage.modules.sessionInfo.data.$notFound)
@@ -33,9 +39,14 @@ export const ClientSessionPage = () => {
   const write = useEvent(clientSessionPage.modules.sessionInfo.methods.write)
   const cancelSession = useEvent(clientSessionPage.modules.sessionInfo.methods.cancelSession)
 
+  const resetReschedule = useEvent(resetRescheduleDialog)
+
   useEffect(() => {
     mounted(parseInt(params.id))
-    return () => unmount()
+    return () => {
+      unmount()
+      resetReschedule()
+    }
   }, [])
 
   return (
@@ -46,6 +57,8 @@ export const ClientSessionPage = () => {
         <Container>
           <Content>
             <UserHeader {...sessionInfo} onWrite={write} />
+
+            {!clearSession?.hasAwaitingRescheduleRequests && <TabletRescheduleSession />}
 
             {cancelVisibility && (
               <TabletCancelSession
@@ -63,6 +76,7 @@ export const ClientSessionPage = () => {
           </Content>
           <InfoWrapper>
             <SessionInfo {...sessionInfo} />
+            {!clearSession?.hasAwaitingRescheduleRequests && <RescheduleSession />}
             {cancelVisibility && (
               <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} />
             )}
