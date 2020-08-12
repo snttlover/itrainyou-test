@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/route-names"
 import React from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
@@ -9,6 +10,7 @@ import { ChatTypes } from "@/lib/api/chats/clients/get-chats"
 
 export type ChatLinkTypes = {
   type: ChatTypes
+  userLink: string
   link: string
   avatar: string | null
   name: string
@@ -25,7 +27,9 @@ export type ChatLinkTypes = {
 export const ChatLink = (props: ChatLinkTypes) => (
   <Container to={props.link}>
     <MessageColumn data-message-is-not-mine={props.highlightMessages}>
-      <StyledAvatar src={props.avatar} />
+      <Link to={props.userLink}>
+        <StyledAvatar src={props.avatar} />
+      </Link>
       <MessageContent>
         <UserName>{props.name}</UserName>
         <LastMessage data-is-mine={props.lastMessage}>

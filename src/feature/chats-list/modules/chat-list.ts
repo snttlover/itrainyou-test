@@ -2,6 +2,7 @@ import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { createPagination } from "@/feature/pagination"
 import { PaginationFetchMethod } from "@/feature/pagination/modules/pagination"
 import { date } from "@/lib/formatting/date"
+import { routeNames } from "@/pages/route-names"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample, split } from "effector-root"
 import { getSessionStatusByDates } from "@/feature/chats-list/modules/get-session-status-by-dates"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
@@ -99,7 +100,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
 
   forward({
     from: resetPagination,
-    to: pagination.methods.reset
+    to: pagination.methods.reset,
   })
 
   forward({
@@ -155,6 +156,11 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
           const newMessagesCounter = counters.find(counter => counter.id === chat.id)
 
           const interlocutor = config.type === "client" ? chat.coach : chat.clients[0]
+          const userLink = interlocutor
+            ? config.type === "client"
+              ? routeNames.searchCoachPage(interlocutor.id.toString())
+              : routeNames.coachClientProfile(interlocutor.id.toString())
+            : ""
           const lastMessageIsMine = !!(config.type === "client"
             ? chat.lastMessage?.senderClient
             : chat.lastMessage?.senderCoach)
@@ -167,6 +173,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
             type: chat.type,
             link: `/${config.type}/chats/${chat.id}`,
             avatar: interlocutor?.avatar || null,
+            userLink,
             name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,
             startTime,
             newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
@@ -203,7 +210,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     data: {
       $chatsList,
       $search,
-      $tab
+      $tab,
     },
     methods: {
       findChats,

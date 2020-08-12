@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
@@ -33,7 +34,7 @@ type ChatHeaderTypes = {
   avatar?: string | null
   name: string
   backLink: any
-  link?: any
+  link: string
   type: string
   blocked: boolean
   restricted: boolean
@@ -41,19 +42,18 @@ type ChatHeaderTypes = {
 }
 
 export const PersonalChatHeader = (props: ChatHeaderTypes) => {
-  const navigate = useEvent(navigatePush)
-  const userClick = () => {
-    if (props.link) {
-      navigate(props.link)
-    }
-  }
-
   return (
     <Container data-has-link={!!props.link}>
       <MobileBackButton to={props.backLink} />
-      <StyledAvatar src={props.avatar || null} onClick={userClick} />
-      <Title onClick={userClick}>{props.name}</Title>
-      {props.type === `coach` && <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />}
+      <Link to={props.link!}>
+        <StyledAvatar src={props.avatar || null} />
+      </Link>
+      <Title>
+        <Link to={props.link!}>{props.name}</Link>
+      </Title>
+      {props.type === `coach` && (
+        <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />
+      )}
     </Container>
   )
 }
