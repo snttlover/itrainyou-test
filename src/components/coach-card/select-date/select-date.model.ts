@@ -74,7 +74,7 @@ export const genCoachSessions = (id = 0) => {
     to: buySessionsFx,
   })
 
-  const sessionBookSuccessToast: Toast = { type: "info", text: "Сессии успешно забронированы" }
+  const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
   buySessionsFx.done.watch(() => {
     runInScope(toasts.remove, sessionBookSuccessToast)
     runInScope(toasts.add, sessionBookSuccessToast)
