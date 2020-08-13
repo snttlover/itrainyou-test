@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Dialog } from "@/components/dialog/Dialog"
 import { Button } from "@/components/button/normal/Button"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { MediaRange } from "@/lib/responsive/media"
 
 type CancelSessionDialogTypes = {
   text: string
@@ -45,6 +46,9 @@ const Header = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 12px;
+  ${MediaRange.lessThan(`mobile`)`
+    margin-top: 30px;
+  `}
 `
 
 const Description = styled.div`
