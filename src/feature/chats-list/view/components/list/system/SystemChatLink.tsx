@@ -3,8 +3,8 @@ import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { Icon } from "@/components/icon/Icon"
 
-export const SystemChatLink = ({ link }: { link: string }) => (
-  <Container to={link}>
+export const SystemChatLink = ({ link, newMessagesCount }: { link: string, newMessagesCount: number }) => (
+  <Container to={link} data-has-messages={!!newMessagesCount}>
     <BellIcon />
     <Header>Системный чат</Header>
   </Container>
@@ -16,8 +16,11 @@ const Container = styled(Link)`
   padding: 12px 8px;
   border-radius: 2px;
   align-items: center;
-  background: ${props => props.theme.colors.primaryBackground};
+  background: #fff;
   margin-bottom: 12px;
+  &[data-has-messages="true"] {
+    background: ${props => props.theme.colors.primaryBackground};
+  }
 `
 
 const BellIcon = styled(Icon).attrs({ name: `bell` })`
