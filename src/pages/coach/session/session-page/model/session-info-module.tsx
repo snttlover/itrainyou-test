@@ -64,6 +64,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
       isOver: date().isAfter(date(session?.startDatetime)),
 
       sessionStartDatetime: session?.startDatetime,
+      hasUser: !!user
     }
   })
 

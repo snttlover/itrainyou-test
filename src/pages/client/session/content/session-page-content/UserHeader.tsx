@@ -13,6 +13,7 @@ type UserHeaderProps = {
   rating: string | null
   sessionsCount: number
   onWrite: (id: number | null) => void
+  hasUser: boolean
 }
 
 export const UserHeader = (props: UserHeaderProps) => (
@@ -20,18 +21,22 @@ export const UserHeader = (props: UserHeaderProps) => (
     <UserInfo>
       <StyledAvatar src={props.userAvatar} />
       <Info>
-        <Name>{props.userName}</Name>
+        <Name>{props.hasUser ? props.userName : `Клиентов нет`}</Name>
         {!!props.rating && (
           <Rating>
             <RatingIcon />
             {props.rating}
           </Rating>
         )}
-        <SessionsCounter>У вас было {props.sessionsCount} занятий</SessionsCounter>
+        {props.hasUser && <SessionsCounter>У вас было {props.sessionsCount} занятий</SessionsCounter>}
       </Info>
     </UserInfo>
-    <MobileSessionsCounter>У вас было {props.sessionsCount} занятий</MobileSessionsCounter>
-    <Write onClick={() => props.onWrite(props.userId)}>Написать</Write>
+    {props.hasUser && (
+      <>
+        <MobileSessionsCounter>У вас было {props.sessionsCount} занятий</MobileSessionsCounter>
+        <Write onClick={() => props.onWrite(props.userId)}>Написать</Write>
+      </>
+    )}
   </Container>
 )
 
