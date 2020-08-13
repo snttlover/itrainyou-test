@@ -151,6 +151,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     config.socket.data.$chatsCounters,
     (chats, time, counters) => {
       return chats
+        .filter((chat, index) => chats.findIndex(c => c.id === chat.id) === index)
         .sort((chatA, chatB) => (getChatDate(chatA) > getChatDate(chatB) ? -1 : 1))
         .map(chat => {
           const newMessagesCounter = counters.find(counter => counter.id === chat.id)
