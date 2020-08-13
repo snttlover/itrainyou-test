@@ -1,10 +1,12 @@
-import { createEffect, createEvent, createStore, forward, Event, sample, combine, restore } from "effector-root"
+import { createEffect, createEvent, createStore, forward, Event, sample, combine, restore, guard } from "effector-root"
 import { SessionInfo } from "@/lib/api/coach/get-session"
 import { date } from "@/lib/formatting/date"
 import { AxiosError } from "axios"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
 
 const durations = {
   D30: `30мин`,
@@ -36,6 +38,12 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     handler: config.fetchSession,
   })
 
+  guard({
+    source: loadSessionFx.failData.map((error: any) => error?.response.data.corresponding_coach_chat),
+    filter: (id) => !!id,
+    target: navigatePush.prepend((id: number) => ({ url: routeNames.clientChat(id.toString()) }))
+  })
+
   const $notFound = createStore<boolean>(false)
     .on(loadSessionFx.failData, (_, error) => (error as AxiosError)?.response?.status === 404)
     .reset(reset)
@@ -64,7 +72,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
       isOver: date().isAfter(date(session?.startDatetime)),
 
       sessionStartDatetime: session?.startDatetime,
-      hasUser: !!user
+      hasUser: !!user,
     }
   })
 
@@ -116,7 +124,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
       isFetching: combine(loadSessionFx.pending, cancelSessionFx.pending, (load, cancel) => load || cancel),
       $notFound,
       $cancelButtonVisibility: $cancelVisibility,
-      $coach
+      $coach,
     },
     methods: {
       loadSession,
