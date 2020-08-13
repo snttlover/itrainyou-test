@@ -31,7 +31,12 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
       <>
         <Container>
           <ChatsSearch value={search} onChange={changeSearch} find={find} />
-          <ChatsSearchTabs value={tab} onChange={changeTab} find={find} />
+          <ChatsSearchTabs
+            value={tab}
+            onChange={changeTab}
+            find={find}
+            showChosen={$chatListModule.data.type === `client`}
+          />
           {listIsEmpty && <ListIsEmpty />}
           <ChatLinksContainer>
             <InfScroll>

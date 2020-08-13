@@ -208,6 +208,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
       pagination,
     },
     data: {
+      type: config.type,
       $chatsList,
       $search,
       $tab,

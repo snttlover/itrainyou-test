@@ -9,6 +9,7 @@ type ChatsListTabsProps = {
   value: string
   onChange: (value: ChatListTabs) => void
   find: (payload: void) => void
+  showChosen: boolean
 }
 
 export const ChatsSearchTabs = (props: ChatsListTabsProps) => {
@@ -21,7 +22,7 @@ export const ChatsSearchTabs = (props: ChatsListTabsProps) => {
     <StyledTabs value={props.value} onChange={changeTab}>
       <StyledTab value='all'>Все</StyledTab>
       <StyledTab value='unread'>Непрочитанные</StyledTab>
-      <StyledTab value='chosen'>Избранные</StyledTab>
+      {props.showChosen && <StyledTab value='chosen'>Избранные</StyledTab>}
     </StyledTabs>
   )
 }
