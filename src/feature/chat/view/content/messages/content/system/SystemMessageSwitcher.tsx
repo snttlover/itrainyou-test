@@ -147,7 +147,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
 
   if (chatType === `coach`) {
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED"], ["COMPLETED"]) && request.initiatorClient) {
-      return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
+      return `${request.initiatorClient?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
     }
 
     if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED") && request.initiatorClient) {
@@ -212,18 +212,18 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       )}`
     }
 
-    if (is("CANCEL", "AUTOMATICALLY_APPROVED", ["COMPLETED", "INITIATED"]) && request.receiverClient) {
-      return `${request.receiverClient?.firstName} отменил${request.receiverClient?.sex === `F` ? `a` : ``} сессию`
+    if (is("CANCEL", "AUTOMATICALLY_APPROVED", ["COMPLETED", "INITIATED"]) && request.initiatorClient) {
+      return `${request.initiatorClient?.firstName} отменил${request.initiatorClient?.sex === `F` ? `a` : ``} сессию`
+    }
+
+    if (is("CANCEL", "AWAITING", "INITIATED") && request.initiatorClient) {
+      return `${request.initiatorClient?.firstName} отправил${
+        request.initiatorClient?.sex === `F` ? `a` : ``
+      } запрос на отмену сессии`
     }
 
     if (is("CANCEL", "AUTOMATICALLY_APPROVED", ["COMPLETED", "INITIATED"])) {
       return ` Вы отменили сессию. Сессии не будет.`
-    }
-
-    if (is("CANCEL", "AWAITING", "INITIATED")) {
-      return `${request.initiatorClient?.firstName} отправил${
-        request.initiatorClient?.sex === `F` ? `a` : ``
-      } запрос на отмену сессии`
     }
 
     if (is("CANCEL", "APPROVED", "COMPLETED")) {
