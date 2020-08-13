@@ -5,7 +5,10 @@ import { SessionPageContainer as Container } from "@/pages/client/session/conten
 import { SessionPageContent as Content } from "@/pages/client/session/content/session-page-content/common/SessionPageContent"
 import { SessionPageInfoWrapper as InfoWrapper } from "@/pages/client/session/content/session-page-content/common/SessionPageInfoWrapper"
 import { UserHeader } from "@/pages/client/session/content/session-page-content/UserHeader"
-import { SessionInfo } from "@/pages/client/session/content/session-page-content/session-info/SessionInfo"
+import {
+  SessionInfo,
+  TabletSessionInfo
+} from "@/pages/client/session/content/session-page-content/session-info/SessionInfo"
 import { useParams } from "react-router-dom"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
@@ -57,6 +60,8 @@ export const ClientSessionPage = () => {
         <Container>
           <Content>
             <UserHeader {...sessionInfo} onWrite={write} />
+
+            <TabletSessionInfo {...sessionInfo} />
 
             {!sessionInfo.isOver && !clearSession?.hasAwaitingRescheduleRequests && <TabletRescheduleSession />}
 

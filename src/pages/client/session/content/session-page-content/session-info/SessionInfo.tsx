@@ -25,13 +25,6 @@ export const SessionInfo = (props: SessionInfoProps) => (
   </Container>
 )
 
-export const TabletSessionInfo = styled(SessionInfo)`
-  display: none;
-  ${MediaRange.lessThan(`tablet`)`
-    display: flex;
-  `}
-`
-
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
@@ -114,3 +107,11 @@ const Status = styled.div`
     margin-bottom: 0;
   `}
 `
+
+export const TabletSessionInfo = styled(SessionInfo)`
+  display: none;
+  ${MediaRange.lessThan(`tablet`)`
+    display: flex;
+  `}
+`
+
