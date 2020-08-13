@@ -115,7 +115,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       } на перенос сессии, сессия остается в прежнее время `
     }
 
-    if (is("CONFIRMATION_COMPLETION", ["APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
+    if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
       return `Сессия прошла успешно?`
     }
 
