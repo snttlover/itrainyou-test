@@ -22,6 +22,7 @@ export type ChatSystemMessage = {
   userName: string
   userAvatar: string | null
   status: MessageSessionRequestStatuses
+  showButtons: boolean
 }
 
 export type ChatTextMessage = {
@@ -93,7 +94,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               request: getReq(message.sessionRequest.id),
               userName: `${user?.firstName} ${user?.lastName}`,
               userAvatar: user?.avatar || null,
-              status: completedStatusesIds.includes(message.sessionRequest.id) ? `COMPLETED` : `INITIATED`,
+              showButtons: !completedStatusesIds.includes(message.sessionRequest.id),
+              status: message.sessionRequestStatus
             }
           }
 

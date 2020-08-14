@@ -250,7 +250,7 @@ export const SystemMessageSwitcher = ({
   message: ChatSystemMessage
 }) => {
   const text = getText(message.request, message.status, message.chatType)
-  const Buttons = getSystemButtons(message.request, message.status, message.chatType)
+  const Buttons = getSystemButtons(message.request, message.chatType, message.showButtons)
 
   return (
     <>
@@ -388,8 +388,8 @@ const Message = styled.div`
 
 const getSystemButtons = (
   request: SessionRequest,
-  status: MessageSessionRequestStatuses,
-  chatType: "coach" | "client"
+  chatType: "coach" | "client",
+  showButtons: boolean
 ) => {
   const is = (
     requestType: SessionRequestTypes | SessionRequestTypes[],
@@ -402,7 +402,7 @@ const getSystemButtons = (
     return checkStatus(request.status, requestStatus) && checkStatus(request.type, requestType)
   }
 
-  if (status !== `COMPLETED`) {
+  if (showButtons) {
     const requestModule = chatType === `client` ? clientSessionRequests : coachSessionRequests
 
     if (chatType === `client`) {
