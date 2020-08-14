@@ -10,6 +10,7 @@ const Container = styled.div`
   padding: 12px 13px;
   background: #000;
   border-radius: 4px;
+  min-width: 188px;
 `
 
 const Label = styled.div`
