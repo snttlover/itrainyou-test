@@ -28,7 +28,7 @@ const Container = styled.div`
 
 const Tab = styled.div`
   width: 140px;
-  height: 140px;
+  height: 98px;
   align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.colors.primary};
@@ -43,7 +43,7 @@ const Tab = styled.div`
   ${MediaRange.lessThan(`mobile`)`
     margin-bottom: unset;
     margin-right: 16px;
-    width: 100px;
+    width: 96px;
     height: 100px;
     
     &:last-child {
@@ -59,7 +59,6 @@ const Title = styled.div`
   font-size: 16px;
   line-height: 22px;
   text-align: center;
-  margin-bottom: 16px;
   color: #ffffff;
   width: 91px;
 
@@ -89,11 +88,11 @@ export const SessionsStats = () => {
     <Container>
       <Tab>
         <Title>Сессий пройдено</Title>
-        <Counter>{profile?.completedSessionsCount}</Counter>
+        <Counter>{profile?.completedSessionsCount || 0}</Counter>
       </Tab>
       <Tab>
         <Title>Отменил сессий</Title>
-        <Counter>{profile?.cancelledSessionsCount}</Counter>
+        <Counter>{profile?.cancelledSessionsCount || 0}</Counter>
       </Tab>
     </Container>
   )
