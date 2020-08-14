@@ -14,7 +14,8 @@ export const changeRation = createEvent<number>()
 export const $rating = restore(changeRation, 0).reset(resetRevocation)
 
 type User = {
-  name: string
+  firstName: string
+  lastName: string
   avatar: string
 } | null
 
