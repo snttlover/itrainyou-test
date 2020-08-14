@@ -93,7 +93,6 @@ export const CoachesList = () => {
     return (
       <CoachContainer>
         <CoachAvatar src={coach.avatar} />
-        <TopCoachArrow />
         {coach.isTopCoach && <TopCoachArrow />}
         <Name>
           {coach.firstName} {coach.lastName}
