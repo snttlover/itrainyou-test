@@ -76,7 +76,7 @@ const SessionItem = (props: SessionItemTypes) => {
   return (
     <StyledSessionItem>
       <Text>{props.children}</Text>
-      <Date>{date(props.date).format(`DD.MM.YY HH:mm`)}</Date>
+      <Date>{props.date}</Date>
     </StyledSessionItem>
   )
 }
