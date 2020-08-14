@@ -258,8 +258,8 @@ export const SystemMessageSwitcher = ({
       <SystemMessage
         id={message.id}
         text={text}
-        startDate={message.request.rescheduleSession?.startDatetime}
-        endDate={message.request.rescheduleSession?.endDatetime}
+        startDate={message.request.rescheduleSession?.startDatetime || message.request.session?.startDatetime}
+        endDate={message.request.rescheduleSession?.endDatetime || message.request.session?.endDatetime}
       >
         {Buttons}
       </SystemMessage>
