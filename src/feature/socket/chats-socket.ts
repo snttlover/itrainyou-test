@@ -1,13 +1,14 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
-import { combine, createEvent, createStore, forward, guard, sample, merge } from "effector-root"
+import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
-import { $isLoggedIn } from "@/feature/user/user.model"
+import { $isLoggedIn, $userData } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { combineEvents } from "patronum"
 import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
+import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 type SendSocketChatMessage = {
   chat: number
@@ -51,6 +52,11 @@ const getChatSocketLink = (type: UserType, token: string) => {
   return `${config.WS_HOST}/ws/chat/${type}/?token=${token}`
 }
 
+const toast: Toast = {
+  text: `Соединение потеряно, подключение...`,
+  type: `error`,
+}
+
 export const createChatsSocket = (userType: UserType) => {
   const socket = createSocket()
 
@@ -61,7 +67,13 @@ export const createChatsSocket = (userType: UserType) => {
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: `WRITE_MESSAGE`, data }))
   const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: `READ_MESSAGES`, data }))
 
-  const $needConnect = combine($isLoggedIn, $isClient, (l, c) => l && c)
+  const $needConnect = combine(
+    $isLoggedIn,
+    $isClient,
+    $userData,
+    (l, c, user) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved)
+  )
+
   const connect = guard({
     source: $token,
     filter: $needConnect,
@@ -89,7 +101,9 @@ export const createChatsSocket = (userType: UserType) => {
       const chats = message.data.messages
         .filter(
           message =>
-            (userType === `client` && !!message.senderCoach) || (userType === `coach` && !!message.senderClient) || message.type === `SYSTEM`
+            (userType === `client` && !!message.senderCoach) ||
+            (userType === `coach` && !!message.senderClient) ||
+            message.type === `SYSTEM`
         )
         .map(message => message.chat)
       counters = counters.slice()
@@ -159,6 +173,36 @@ export const createChatsSocket = (userType: UserType) => {
   forward({
     from: logout,
     to: socket.methods.disconnect,
+  })
+
+  // reconnect logic
+  const reconnectFx = createEffect({
+    async handler(token: string) {
+      return await new Promise<string>(resolve => {
+        toasts.remove(toast)
+        toasts.add(toast)
+
+        setTimeout(() => {
+          resolve(token)
+        }, 3000)
+      })
+    },
+  })
+
+  forward({
+    from: changePasswordFx.doneData.map(({ token }) => getChatSocketLink(userType, token)),
+    to: connect,
+  })
+
+  sample({
+    source: $token,
+    clock: socket.events.onNotProgrammaticallyClose,
+    target: reconnectFx,
+  })
+
+  forward({
+    from: reconnectFx.doneData,
+    to: connect,
   })
 
   return {
