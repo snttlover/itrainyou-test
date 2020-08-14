@@ -105,7 +105,7 @@ export const ProfileHeader = styled(({ ...props }) => {
             {`${client?.firstName} ${client?.lastName}`},&nbsp;
             <Year>{getYearsCount(client?.birthDate!)} лет</Year>
           </Name>
-          <Since>На сайте с {date(client?.birthDate!).format("DD.MM.YYYY")}</Since>
+          <Since>На сайте с {date(client?.creationDatetime!).format("DD.MM.YYYY")}</Since>
           <CategoriesAndButtonContainer>
             <EditButton onClick={() => writeToClient(client?.id!)}>Написать</EditButton>
           </CategoriesAndButtonContainer>
