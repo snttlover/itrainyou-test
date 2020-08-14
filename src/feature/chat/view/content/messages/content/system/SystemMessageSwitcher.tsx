@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { ChatSystemMessage } from "@/feature/chat/modules/chat-messages"
 import styled from "styled-components"
 import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
-import { MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
+import { ChatMessage, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { MediaRange } from "@/lib/responsive/media"
@@ -11,14 +11,17 @@ import {
   coachSessionRequests,
   createSessionRequestsModule,
 } from "@/feature/session-request/createSessionRequestsModule"
-import { useEvent } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import { Loader, Spinner } from "@/components/spinner/Spinner"
 import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import {
+  $revocated,
   changeRevocationSessionId,
+  changeRevocationUser,
   changeRevocationVisibility,
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { Avatar } from "@/components/avatar/Avatar"
+import { Coach, CoachUser } from "@/lib/api/coach"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -84,9 +87,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
     }
 
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED", "INITIATED"]) && request.receiverCoach) {
-      return `${request.receiverCoach?.firstName} отменил${
-        request.receiverCoach?.sex === `F` ? `a` : ``
-      }  сессию`
+      return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``}  сессию`
     }
 
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED", "INITIATED"])) {
@@ -115,12 +116,19 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       } на перенос сессии, сессия остается в прежнее время `
     }
 
-    if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
-      return `Сессия прошла успешно?`
+    if (
+      is("CONFIRMATION_COMPLETION", "APPROVED", "COMPLETED") &&
+      (request.session.isReviewed || $revocated.getState().indexOf(request.session.id) !== -1)
+    ) {
+      return `Сессия прошла успешно.`
     }
 
     if (is("CONFIRMATION_COMPLETION", "APPROVED", "COMPLETED")) {
       return `Сессия прошла успешно. Оставьте отзыв!`
+    }
+
+    if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
+      return `Сессия прошла успешно?`
     }
 
     if (is("CANCEL", "DENIED", "COMPLETED")) {
@@ -146,6 +154,18 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
   }
 
   if (chatType === `coach`) {
+    if (is("CONFIRMATION_COMPLETION", "AWAITING", "INITIATED")) {
+      return `Ожидаем, пока клиент подтвердит завершение сессии`
+    }
+
+    if (is("CONFIRMATION_COMPLETION", "APPROVED", "COMPLETED")) {
+      return `Клиент подтвердил, что сессия прошла успешно! Вам будут переведена оплата`
+    }
+
+    if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {
+      return `Клиент указал, что с сессией возникли проблемы. С вами свяжется администратор для уточнения деталей.`
+    }
+
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED"], ["COMPLETED"]) && request.initiatorClient) {
       return `${request.initiatorClient?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
     }
@@ -250,7 +270,10 @@ export const SystemMessageSwitcher = ({
   message: ChatSystemMessage
 }) => {
   const text = getText(message.request, message.status, message.chatType)
-  const Buttons = getSystemButtons(message.request, message.chatType, message.showButtons)
+  const Buttons = getSystemButtons(message.request, message.chatType, message.showButtons, message.status, {
+    name: message.userName,
+    avatar: message.userAvatar || ``,
+  })
 
   return (
     <>
@@ -386,10 +409,14 @@ const Message = styled.div`
   `}
 `
 
+type User = { name: string; avatar: string }
+
 const getSystemButtons = (
   request: SessionRequest,
   chatType: "coach" | "client",
-  showButtons: boolean
+  showButtons: boolean,
+  status: MessageSessionRequestStatuses,
+  user: User
 ) => {
   const is = (
     requestType: SessionRequestTypes | SessionRequestTypes[],
@@ -413,10 +440,6 @@ const getSystemButtons = (
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING")) {
         return <CancelAction request={request} requestsModule={requestModule} />
       }
-
-      if (is("CONFIRMATION_COMPLETION", "APPROVED")) {
-        return <RevocationButton sessionId={request.session.id} />
-      }
     }
 
     if (chatType === `coach`) {
@@ -424,6 +447,15 @@ const getSystemButtons = (
         return <ApproveActions request={request} requestsModule={requestModule} yes='Подтвердить' no='Отклонить' />
       }
     }
+  }
+
+  if (
+    chatType === `client` &&
+    is("CONFIRMATION_COMPLETION", "APPROVED") &&
+    request.session.isReviewed === false &&
+    status === `COMPLETED`
+  ) {
+    return <RevocationButton coach={user} sessionId={request.session.id} />
   }
 
   return <></>
@@ -559,12 +591,23 @@ const CancelAction = ({ request, requestsModule }: SessionRequestActionProps) =>
   )
 }
 
-const RevocationButton = ({ sessionId }: { sessionId: number }) => {
+const RevocationButton = ({ sessionId, coach }: { sessionId: number; coach: null | User }) => {
   const changeId = useEvent(changeRevocationSessionId)
+  const changeUser = useEvent(changeRevocationUser)
+  const revocated = useStore($revocated)
+
+  const openDialog = () => {
+    changeUser(coach)
+    changeId(sessionId)
+  }
+
+  if (revocated.indexOf(sessionId) !== -1) {
+    return null
+  }
 
   return (
     <Actions withoutLoader={true}>
-      <Button onClick={() => changeId(sessionId)}>Отзыв</Button>
+      <Button onClick={openDialog}>Отзыв</Button>
     </Actions>
   )
 }

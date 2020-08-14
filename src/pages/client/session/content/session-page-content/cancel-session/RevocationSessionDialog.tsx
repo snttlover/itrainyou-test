@@ -9,13 +9,13 @@ import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
 import {
   $rating,
-  $resume,
+  $resume, $revocationUser,
   $revocationVisibility,
   changeRation,
   changeRevocationResume,
   changeRevocationVisibility,
   revocationFx,
-  sendReview,
+  sendReview
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { clientChat } from "@/pages/client/chats/chat/client-chat.model"
 
@@ -35,6 +35,8 @@ export const RevocationSessionDialog = () => {
 
   const pending = useStore(revocationFx.pending)
 
+  const user = useStore($revocationUser)
+
   return (
     <StyledDialog value={visibility} onChange={changeVisibility}>
       <Container>
@@ -45,8 +47,8 @@ export const RevocationSessionDialog = () => {
         )}
         <Header>Оцените коуча</Header>
         <UserInfo>
-          <StyledAvatar src={chat.avatar || null} />
-          <UserName>{chat.name}</UserName>
+          <StyledAvatar src={user?.avatar || null} />
+          <UserName>{user?.firstName} {user?.lastName}</UserName>
         </UserInfo>
         <RatingPicker value={rating} onChange={changeRating} />
         <Form>

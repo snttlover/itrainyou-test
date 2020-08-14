@@ -25,7 +25,9 @@ export type SessionRequest = {
   initiatorCoach?: CoachUser
   receiverClient?: Client
   receiverCoach?: CoachUser
-  session: DashboardSession
+  session: DashboardSession & {
+    isReviewed: boolean
+  }
   rescheduleSession: null | {
     id: number
     coach: number
