@@ -25,13 +25,21 @@ export const $isUploadModelOpen = createStore(false)
 
 export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorField({
   defaultValue: "",
-  validator: value => (!value ? "Поле обязательно к заполнению" : null),
+  validator: value => {
+    if (!value) return "Поле обязательно к заполнению"
+    if (/[^a-zA-Zа-яА-Я ]+/.test(value)) return "Можно использовать только буквы"
+    return null
+  },
   eventMapper: event => event.map(trimString),
 })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",
-  validator: value => (!value ? "Поле обязательно к заполнению" : null),
+  validator: value => {
+    if (!value) return "Поле обязательно к заполнению"
+    if (/[^a-zA-Zа-яА-Я ]+/.test(value)) return "Можно использовать только буквы"
+    return null
+  },
   eventMapper: event => event.map(trimString),
 })
 
