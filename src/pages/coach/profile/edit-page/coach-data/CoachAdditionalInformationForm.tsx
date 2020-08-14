@@ -64,6 +64,14 @@ const PhoneHint = styled.p`
   line-height: 16px;
 `
 
+const PhotoError = styled.p`
+  font-family: Roboto;
+  color: #ff6b00;
+  font-size: 12px;
+  line-height: 16px;
+  margin-top: 4px;
+`
+
 export const CoachAdditionalInformationForm: React.FC = () => {
   const values = useStore($form)
   const errors = useStore($formErrors)
@@ -110,6 +118,7 @@ export const CoachAdditionalInformationForm: React.FC = () => {
       </FormItem>
       <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
       <InformationTitle className='photo'>Фотографии</InformationTitle>
+      {errors.photos && <PhotoError>{errors.photos}</PhotoError>}
       <Photos open={open} />
       <input {...getInputProps()} />
     </InformationContainer>
