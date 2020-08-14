@@ -69,19 +69,19 @@ const getRequestText = (req: SessionRequest) => {
   }
 
   if (req.type === `RESCHEDULE` && req.status === `AWAITING`) {
-    return `Клиент запросил перенос сессии на  ${date(req.session.startDatetime).format(`DD MMMM HH:mm YYYYг`)}`
+    return `Клиент запросил перенос сессии на  ${date(req.rescheduleSession?.startDatetime).format(`DD MMMM HH:mm YYYYг`)}`
   }
 
   if (req.type === `RESCHEDULE` && req.status === `CANCELLED`) {
-    return `Клиент отменил перенос на ${date(req.session.startDatetime).format(`DD MMMM HH:mm YYYYг`)}`
+    return `Клиент отменил перенос на ${date(req.rescheduleSession?.startDatetime).format(`DD MMMM HH:mm YYYYг`)}`
   }
 
   if (req.type === `RESCHEDULE` && req.status === `DENIED`) {
-    return `Коуч не подтвердил перенос на ${date(req.session.startDatetime).format(`DD MMMM HH:mm YYYYг`)}`
+    return `Коуч не подтвердил перенос на ${date(req.rescheduleSession?.startDatetime).format(`DD MMMM HH:mm YYYYг`)}`
   }
 
   if (req.type === `RESCHEDULE` && req.status === `APPROVED`) {
-    return `Коуч подтвердил перенос на ${date(req.session.startDatetime).format(`DD MMMM HH:mm YYYYг`)}`
+    return `Коуч подтвердил перенос на ${date(req.rescheduleSession?.startDatetime).format(`DD MMMM HH:mm YYYYг`)}`
   }
 
   if (req.type === `CANCEL` && req.status === `AWAITING`) {
