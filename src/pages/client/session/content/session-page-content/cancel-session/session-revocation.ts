@@ -14,8 +14,7 @@ export const changeRation = createEvent<number>()
 export const $rating = restore(changeRation, 0).reset(resetRevocation)
 
 type User = {
-  firstName: string
-  lastName: string
+  name: string
   avatar: string
 } | null
 
@@ -61,7 +60,7 @@ export const $revocated = createStore<number[]>([]).on(addRevocated, (reqs, id) 
 sample({
   source: $revocationSessionId,
   clock: revocationFx.doneData,
-  target: addRevocated
+  target: addRevocated,
 })
 
 const $form = combine($rating, $resume, $revocationSessionId, (grade, text, session) => ({ text, grade, session }))
