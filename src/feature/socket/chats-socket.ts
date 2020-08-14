@@ -179,8 +179,8 @@ export const createChatsSocket = (userType: UserType) => {
   const reconnectFx = createEffect({
     async handler(token: string) {
       return await new Promise<string>(resolve => {
-        toasts.remove(toast)
-        toasts.add(toast)
+        // toasts.remove(toast)
+        // toasts.add(toast)
 
         setTimeout(() => {
           resolve(token)
