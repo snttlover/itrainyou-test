@@ -84,7 +84,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
     }
 
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED", "INITIATED"]) && request.receiverCoach) {
-      return `${request.receiverCoach?.firstName} отсенил${
+      return `${request.receiverCoach?.firstName} отменил${
         request.receiverCoach?.sex === `F` ? `a` : ``
       }  сессию`
     }
