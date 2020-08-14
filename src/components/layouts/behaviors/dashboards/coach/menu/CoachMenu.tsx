@@ -43,7 +43,6 @@ export const CoachMenu = () => {
       <StyledProfileHeader
         firstName={user.coach?.firstName}
         lastName={user.coach?.lastName}
-        showCoachDropdown={true}
         avatar={user.coach?.avatar}
         profileLink={routeNames.coachProfile()}
       />

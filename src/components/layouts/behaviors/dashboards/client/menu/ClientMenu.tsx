@@ -29,7 +29,6 @@ export const ClientMenu = () => {
       <ProfileHeader
         firstName={user.client?.firstName}
         lastName={user.client?.lastName}
-        showCoachDropdown={!!user.coach}
         avatar={user.client?.avatar}
         profileLink={routeNames.clientProfile()}
       />

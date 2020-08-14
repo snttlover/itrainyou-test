@@ -82,7 +82,6 @@ const StyledCoachTooltip = styled(CoachTooltip)`
 type ProfileHeaderTypes = {
   firstName?: string
   lastName?: string
-  showCoachDropdown?: boolean
   avatar?: string
   profileLink: string
 }
@@ -96,10 +95,8 @@ export const ProfileHeader = (props: ProfileHeaderTypes) => (
     <Link to={props.profileLink}>
       <StyledAvatar src={props.avatar || null} />
     </Link>
-    {props.showCoachDropdown && (
-      <StyledCoachTooltip withBack={true}>
-        <DropdownButton />
-      </StyledCoachTooltip>
-    )}
+    <StyledCoachTooltip withBack={true}>
+      <DropdownButton />
+    </StyledCoachTooltip>
   </StyledHeader>
 )
