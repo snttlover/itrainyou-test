@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { Avatar, AvatarPlaceholder } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
@@ -83,6 +84,7 @@ type ProfileHeaderTypes = {
   lastName?: string
   showCoachDropdown?: boolean
   avatar?: string
+  profileLink: string
 }
 
 export const ProfileHeader = (props: ProfileHeaderTypes) => (
@@ -91,7 +93,9 @@ export const ProfileHeader = (props: ProfileHeaderTypes) => (
       {props.firstName}
       <br /> {props.lastName}
     </Name>
-    <StyledAvatar src={props.avatar || null} />
+    <Link to={props.profileLink}>
+      <StyledAvatar src={props.avatar || null} />
+    </Link>
     {props.showCoachDropdown && (
       <StyledCoachTooltip withBack={true}>
         <DropdownButton />

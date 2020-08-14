@@ -45,6 +45,7 @@ export const CoachMenu = () => {
         lastName={user.coach?.lastName}
         showCoachDropdown={true}
         avatar={user.coach?.avatar}
+        profileLink={routeNames.coachProfile()}
       />
       <CoachMenuItems />
       <CoachLink>Думаете вы топ-коуч?</CoachLink>
