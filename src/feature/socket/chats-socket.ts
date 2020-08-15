@@ -52,11 +52,6 @@ const getChatSocketLink = (type: UserType, token: string) => {
   return `${config.WS_HOST}/ws/chat/${type}/?token=${token}`
 }
 
-const toast: Toast = {
-  text: `Соединение потеряно, подключение...`,
-  type: `error`,
-}
-
 export const createChatsSocket = (userType: UserType) => {
   const socket = createSocket()
 
@@ -175,33 +170,8 @@ export const createChatsSocket = (userType: UserType) => {
     to: socket.methods.disconnect,
   })
 
-  // reconnect logic
-  const reconnectFx = createEffect({
-    async handler(token: string) {
-      return await new Promise<string>(resolve => {
-        // toasts.remove(toast)
-        // toasts.add(toast)
-
-        setTimeout(() => {
-          resolve(token)
-        }, 3000)
-      })
-    },
-  })
-
   forward({
     from: changePasswordFx.doneData.map(({ token }) => getChatSocketLink(userType, token)),
-    to: connect,
-  })
-
-  sample({
-    source: $token,
-    clock: socket.events.onNotProgrammaticallyClose,
-    target: reconnectFx,
-  })
-
-  forward({
-    from: reconnectFx.doneData,
     to: connect,
   })
 
