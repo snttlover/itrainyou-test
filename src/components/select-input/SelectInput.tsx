@@ -88,6 +88,7 @@ export type SelectInputProps<T extends Value> = {
   onBlur?: () => void
   className?: string
   withoutBorder?: boolean
+  onClick?: () => void
 }
 
 export const SelectInput = <T extends Value = Value>({
@@ -99,6 +100,7 @@ export const SelectInput = <T extends Value = Value>({
   onBlur,
   className,
   withoutBorder,
+  onClick
 }: SelectInputProps<T>) => {
   const [isOpen, changeOpen] = useState(false)
 
@@ -126,6 +128,7 @@ export const SelectInput = <T extends Value = Value>({
       placeholder={placeholder}
       className={className}
       onClick={() => {
+        onClick && onClick()
         const newValue = !isOpen
         changeOpen(newValue)
         if (!newValue && onBlur) {

@@ -12,6 +12,7 @@ import {
 import { useEvent, useStore, useStoreMap } from "effector-react/ssr"
 import styled from "styled-components"
 import React, { useState } from "react"
+import { PricesDialog } from "@/pages/coach/schedule/components/PricesDialog"
 
 const Container = styled.div`
   background: #ffffff;
@@ -118,6 +119,14 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
   const deleteSlot = useEvent(removeSlot)
   const addedSlot = useEvent(addSlot)
 
+  const [pricesDialogVisibility, changePricesDialogVisibility] = useState(false)
+
+  const checkPrices = () => {
+    if (!durationOptions.length) {
+      changePricesDialogVisibility(true)
+    }
+  }
+
   return (
     <Container className={className}>
       <Title>
@@ -153,10 +162,12 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
             onChange={value => setDuration((value as unknown) as DurationType)}
             options={durationOptions}
             placeholder='Тип'
+            onClick={checkPrices}
           />
           <MarkIcon onClick={() => addedSlot({ weekday, startTime, sessionDurationType: duration })} />
         </SettingsContainer>
       )}
+      <PricesDialog visibility={pricesDialogVisibility} onChangeVisibility={changePricesDialogVisibility} />
     </Container>
   )
 })``
