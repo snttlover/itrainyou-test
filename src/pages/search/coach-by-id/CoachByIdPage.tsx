@@ -2,7 +2,7 @@ import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { Loader } from "@/components/spinner/Spinner"
 import { ServerParams, START } from "@/lib/effector"
 import { MediaRange } from "@/lib/responsive/media"
-import { $coach, loadCoachFx, mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { $coach, loadCoachFx, coachByIdGate, mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { AboutCoach } from "@/pages/search/coach-by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/pages/search/coach-by-id/components/BaseCoachInfo"
 import { Reviews } from "@/pages/search/coach-by-id/components/Reviews"
@@ -10,7 +10,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
-import { useStore } from "effector-react/ssr"
+import { useGate, useStore } from "effector-react/ssr"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 
@@ -104,6 +104,7 @@ const Datepicker = () => {
 }
 
 export const CoachByIdPage = () => {
+  useGate(coachByIdGate)
   const coach = useStore($coach)
   const pending = useStore(loadCoachFx.pending)
 

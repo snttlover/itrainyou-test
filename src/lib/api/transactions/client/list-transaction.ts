@@ -42,3 +42,14 @@ export const getMyTransactions = (params: PaginationParams) =>
   )
     .then(response => response.data)
     .then(keysToCamel)
+
+export const getMyTransactionsCoach = (params: PaginationParams) =>
+  get<Pagination<SessionTransaction>, {}>(
+    `${config.BACKEND_URL}/api/v1/web/coach/transactions/`,
+    keysToSnake({
+      sessionOnly: true,
+      ...params,
+    })
+  )
+    .then(response => response.data)
+    .then(keysToCamel)

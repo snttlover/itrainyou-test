@@ -2,7 +2,6 @@ import * as React from "react"
 import styled from "styled-components"
 import { GeneralSettingsForm } from "./content/general-settings-form/GeneralSettingsForm"
 import { PasswordForm } from "./content/PasswordForm"
-import { LogoutButton } from "@/pages/common/settings/content/LogoutButton"
 import { MediaRange } from "@/lib/responsive/media"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { useStore } from "effector-react/ssr"
@@ -52,7 +51,6 @@ export const SettingsPage = () => {
       <Title>Настройки</Title>
       <GeneralSettingsForm />
       <PasswordForm />
-      <LogoutButton />
     </Container>
   )
 }

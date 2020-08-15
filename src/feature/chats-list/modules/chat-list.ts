@@ -1,7 +1,8 @@
-import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { createPagination } from "@/feature/pagination"
 import { PaginationFetchMethod } from "@/feature/pagination/modules/pagination"
 import { date } from "@/lib/formatting/date"
+import { routeNames } from "@/pages/route-names"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample, split } from "effector-root"
 import { getSessionStatusByDates } from "@/feature/chats-list/modules/get-session-status-by-dates"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
@@ -9,24 +10,56 @@ import { condition } from "patronum"
 import dayjs from "dayjs"
 import { chatSessionIsStarted } from "@/feature/chats-list/modules/chat-session-is-started"
 import { logout } from "@/lib/network/token"
-import {config as globalConfig} from '@/config'
+import { config as globalConfig } from "@/config"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
-  fetchChatsListMethod: PaginationFetchMethod<Chat>
+  fetchChatsListMethod: PaginationFetchMethod<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
-  getChat: (id: number) => Promise<Chat>
+  getChat: (id: number) => Promise<PersonalChat>
 }
 
 type ChatListMessage = ChatMessage & { messageInChatList: boolean }
 
-const getChatDate = (chat: Chat) => {
+const getChatDate = (chat: PersonalChat) => {
   return dayjs(chat.lastMessage?.creationDatetime || chat.creationDatetime).toDate()
 }
 
+export type ChatListTabs = `unread` | `chosen` | `all`
+
 export const createChatListModule = (config: ChatListModuleConfig) => {
-  const pagination = createPagination<Chat>({
+  const reset = createEvent()
+
+  const changeSearch = createEvent<string>()
+  const $search = createStore<string>(``)
+    .on(changeSearch, (_, value) => value)
+    .reset(reset)
+
+  const changeTab = createEvent<ChatListTabs>()
+  const $tab = createStore<ChatListTabs>(`all`)
+    .on(changeTab, (_, tab) => tab)
+    .reset(reset)
+
+  const findChats = createEvent()
+
+  const pagination = createPagination<PersonalChat>({
     fetchMethod: config.fetchChatsListMethod,
+    $query: combine($tab, $search, (tab, search) => {
+      const query: any = {}
+      if (tab === `unread`) {
+        query.unread = `True`
+      }
+
+      if (tab === `chosen`) {
+        query.starred = `True`
+      }
+
+      if (search.trim()) {
+        query.search = search
+      }
+
+      return query
+    }),
   })
 
   const loadChatByMessageFx = createEffect({
@@ -36,7 +69,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
   const addMessage = createEvent<ChatListMessage>()
   const loadChatByMessage = createEvent<ChatListMessage>()
 
-  const reset = createEvent()
+  const resetPagination = createEvent()
 
   pagination.data.$list
     .on(addMessage, (chats, message) => {
@@ -55,16 +88,30 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
       return chats
     })
     .on(config.socket.events.onChatCreated, (chats, socketMessage) => {
-      socketMessage.data.clients.forEach(client => {client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`})
+      socketMessage.data.clients.forEach(client => {
+        client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
+      })
       if (socketMessage.data.coach)
         socketMessage.data.coach.avatar = `${globalConfig.BACKEND_URL}${socketMessage.data.coach.avatar}`
 
       return [socketMessage.data, ...chats]
     })
     .on(loadChatByMessageFx.doneData, (chats, chat) => [chat, ...chats])
-    .reset(reset)
 
-  pagination.data.$currentPage.reset(reset)
+  forward({
+    from: resetPagination,
+    to: pagination.methods.reset,
+  })
+
+  forward({
+    from: findChats,
+    to: resetPagination,
+  })
+
+  forward({
+    from: reset,
+    to: resetPagination,
+  })
 
   condition({
     source: sample({
@@ -87,7 +134,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
 
   forward({
     from: logout,
-    to: reset
+    to: reset,
   })
 
   const changeTickTime = createEvent<Date>()
@@ -104,11 +151,17 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     config.socket.data.$chatsCounters,
     (chats, time, counters) => {
       return chats
+        .filter((chat, index) => chats.findIndex(c => c.id === chat.id) === index)
         .sort((chatA, chatB) => (getChatDate(chatA) > getChatDate(chatB) ? -1 : 1))
         .map(chat => {
           const newMessagesCounter = counters.find(counter => counter.id === chat.id)
 
           const interlocutor = config.type === "client" ? chat.coach : chat.clients[0]
+          const userLink = interlocutor
+            ? config.type === "client"
+              ? routeNames.searchCoachPage(interlocutor.id.toString())
+              : routeNames.coachClientProfile(interlocutor.id.toString())
+            : ""
           const lastMessageIsMine = !!(config.type === "client"
             ? chat.lastMessage?.senderClient
             : chat.lastMessage?.senderCoach)
@@ -118,8 +171,10 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
             : ``
 
           return {
+            type: chat.type,
             link: `/${config.type}/chats/${chat.id}`,
             avatar: interlocutor?.avatar || null,
+            userLink,
             name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,
             startTime,
             newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
@@ -144,16 +199,27 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     to: [pagination.methods.loadMore],
   })
 
+  forward({
+    from: findChats,
+    to: loadChats,
+  })
+
   return {
     modules: {
       pagination,
     },
     data: {
+      type: config.type,
       $chatsList,
+      $search,
+      $tab,
     },
     methods: {
+      findChats,
+      changeSearch,
+      changeTab,
       loadChats,
-      reset
+      reset,
     },
   }
 }

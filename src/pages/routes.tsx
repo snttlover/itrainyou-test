@@ -7,13 +7,17 @@ import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import HomePage from "@/pages/client/home/HomePage"
 import ProfilePage from "@/pages/client/profile/ProfilePage"
 import CoachBlockedPage from "@/pages/coach/blocked/CoachBlockedPage"
+import { ClientPage } from "@/pages/coach/client/ClientPage"
 import CoachClientsPage from "@/pages/coach/clients/CoachClientsPage"
 import CoachHome from "@/pages/coach/home/CoachHome"
+import { CoachProfileEditPage } from "@/pages/coach/profile/edit-page/CoachProfileEditPage"
+import { CoachProfilePage } from "@/pages/coach/profile/profile-page/CoachProfilePage"
+import { CoachSessionsHistory } from "@/pages/coach/profile/session-history/CoachSessionsHistory"
 import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
 import CoachSupportPage from "@/pages/coach/support/CoachSupportPage"
 import CoachWalletPage from "@/pages/coach/wallet/CoachWalletPage"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
-import {ClientChatPage} from "@/pages/client/chats/chat/ClientChatPage"
+import { ClientChatPage } from "@/pages/client/chats/chat/ClientChatPage"
 import ClientChatListPage from "@/pages/client/chats/list/ClientChatListPage"
 import { routeNames } from "@/pages/route-names"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
@@ -23,6 +27,8 @@ import { LandingPage } from "./landing/LandingPage"
 import { SearchPage } from "./search/SearchPage"
 import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
 import { NotFound } from "@/feature/not-found/components/NotFound"
+import { ClientSessionPage } from "@/pages/client/session/ClientSessionPage"
+import { CoachSessionPage } from "@/pages/coach/session/CoachSessionPage"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -45,6 +51,11 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.login(),
     component: LoginPage,
+  },
+
+  {
+    path: routeNames.clientSession(`:id`),
+    component: ClientSessionPage,
   },
   {
     path: routeNames.signup(":step"),
@@ -91,6 +102,26 @@ export const ROUTES: RouteConfig[] = [
     component: CoachHome,
   },
   {
+    path: routeNames.coachProfile(),
+    exact: true,
+    component: CoachProfilePage,
+  },
+  {
+    path: routeNames.coachClientProfile(":id"),
+    exact: true,
+    component: ClientPage,
+  },
+  {
+    path: routeNames.coachProfileEdit(),
+    exact: true,
+    component: CoachProfileEditPage,
+  },
+  {
+    path: routeNames.coachSessionsHistory(),
+    exact: true,
+    component: CoachSessionsHistory,
+  },
+  {
     path: routeNames.coachSettings(),
     exact: true,
     component: () => (
@@ -119,6 +150,11 @@ export const ROUTES: RouteConfig[] = [
     exact: true,
     component: CoachSchedulePage,
   },
+
+  {
+    path: routeNames.coachSession(`:id`),
+    component: CoachSessionPage,
+  },
   {
     path: routeNames.coachBlocked(),
     exact: true,
@@ -131,5 +167,5 @@ export const ROUTES: RouteConfig[] = [
   {
     path: "*",
     render: () => <NotFound />,
-  }
+  },
 ]

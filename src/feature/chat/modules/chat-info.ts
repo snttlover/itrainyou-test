@@ -1,8 +1,6 @@
 import { Chat } from "@/lib/api/chats/clients/get-chats"
-import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
+import { createEffect, createEvent, createStore, sample } from "effector-root"
 import { routeNames } from "@/pages/route-names"
-import { AxiosError } from "axios"
-import { logout } from "@/lib/network/token"
 import { createNotFoundModule } from "@/feature/not-found/not-found"
 
 type createChatInfoModuleTypes = {
@@ -25,21 +23,48 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     .on(loadChatFx.doneData, (_, chat) => chat)
     .reset(reset)
 
-  const notFound =  createNotFoundModule({
+  const notFound = createNotFoundModule({
     effect: loadChatFx,
-    reset
+    reset,
   })
 
   const $chat = $chatInfo.map(chat => {
     const interc = config.type === `client` ? chat?.coach : chat?.clients[0]
-
     return {
       id: chat?.id,
       avatar: interc?.avatar,
-      userName: `${interc?.firstName} ${interc?.lastName}`,
-      link: config.type === `client` && { url: routeNames.searchCoachPage(interc?.id as string) },
+      name: `${interc?.firstName} ${interc?.lastName}`,
+      userId: interc?.id || 0,
+      userSex: interc?.sex || `M`,
+      link:
+        config.type === `client`
+          ? routeNames.searchCoachPage((interc?.id || 0).toString())
+          : routeNames.coachClientProfile((interc?.id || 0).toString()),
       backLink: config.type === `client` ? routeNames.clientChatsList() : routeNames.coachClients(),
+      type: config.type,
+      chatType: chat?.type,
+      blocked: !!chat?.isBanned,
+      restricted: !!chat?.isRestricted,
     }
+  })
+
+  const $blockedText = $chat.map(chat => {
+    if (chat.type === `coach`) {
+      if (chat.blocked) {
+        return `Вы заблокировали клиента`
+      }
+
+      if (chat.restricted) {
+        return `Вы заблокировали клиента до покупки сессии`
+      }
+    }
+
+    if (chat.type === `client`) {
+      if (chat.blocked || chat.restricted) {
+        return `${chat.name} заблокировал${chat.userSex === `F` ? `a` : ``} вас`
+      }
+    }
+    return null
   })
 
   sample({
@@ -49,6 +74,7 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
   })
 
   return {
+    $chatInfo,
     $loading: loadChatFx.pending,
     $chat,
     $chatId,
@@ -56,5 +82,10 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     loadChat,
     changeId,
     reset,
+    data: {
+      $isBlocked: $chat.map(chat => chat.blocked),
+      $isRestricted: $chat.map(chat => chat.restricted),
+      $blockedText,
+    },
   }
 }

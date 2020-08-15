@@ -8,17 +8,24 @@ import {
 } from "@/lib/api/coach/get-dashboard-newest-participants"
 import { createPagination } from "@/feature/pagination"
 
+const resetCoachSessionList =  createEvent()
+
 export const newestParticipants = createPagination<DashboardNewestParticipant>({
   fetchMethod: getDashboardNewestParticipants,
 })
 
+forward({
+  from: resetCoachSessionList,
+  to: newestParticipants.methods.reset
+})
+
 export const loadTodaySessionsFx = createEffect({
-  handler: () => getDashboardSessions({}),
+  handler: () => getDashboardSessions({ excludePast: true }),
 })
 
 export const $coachSessionsPageLoading = loadTodaySessionsFx.pending.map(status => status)
 
-const $coachSessions = restore(loadTodaySessionsFx.doneData, [])
+const $coachSessions = restore(loadTodaySessionsFx.doneData, []).reset(resetCoachSessionList)
 
 const changeTickTime = createEvent<Date>()
 const $tickTime = createStore(new Date()).on(changeTickTime, (_, newDate) => newDate)

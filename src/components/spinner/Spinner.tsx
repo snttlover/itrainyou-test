@@ -27,8 +27,6 @@ const rotate = keyframes`
 const LoaderSvg = ({ className }: { className?: string }) => (
   <svg
     style={{ margin: "auto", background: "rgb(255, 255, 255, 0)", display: "block", shapeRendering: "auto" }}
-    width='200px'
-    height='200px'
     className={className}
     viewBox='0 0 100 100'
     preserveAspectRatio='xMidYMid'
@@ -46,8 +44,8 @@ const LoaderSvg = ({ className }: { className?: string }) => (
 )
 
 export const Loader = styled(LoaderSvg)`
-  width: auto;
-  height: auto;
+  width: 200px;
+  height: 200px;
   stroke: ${props => props.theme.colors.primary};
   animation: ${rotate} 1s linear infinite;
 `

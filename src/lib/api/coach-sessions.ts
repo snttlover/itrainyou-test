@@ -1,13 +1,14 @@
 import { config } from "@/config"
 import { keysToCamel } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
+import { ISODate } from "@/lib/api/interfaces/utils.interface"
 
 export interface CoachSession {
   id: number
   coach: number
   clientPrice: string // example: 12.00
   coachPrice: string // example: 10.00
-  startDatetime: string // example: "2020-03-31T15:17:37Z"
+  startDatetime: ISODate // example: "2020-03-31T15:17:37Z"
   endDatetime: string
   durationType: DurationType //example: 01:00:00
 }

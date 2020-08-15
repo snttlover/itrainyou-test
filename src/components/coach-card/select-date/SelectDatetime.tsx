@@ -186,7 +186,11 @@ const StyledCalendar = styled(Calendar)`
 
 export const genSessionTabs = (coach: Coach) => {
   return Object.keys(coach.prices)
-    .filter(key => coach.prices[key as DurationType] !== null)
+    .filter(
+      key =>
+        coach.prices[key as DurationType] !== null &&
+        ((coach.prices[key as DurationType] as unknown) as string) !== "None"
+    )
     .map(key => ({
       timeInMinutes: parseInt(key.replace(/^\D+/g, "")) as number,
       key: key as DurationType,

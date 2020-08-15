@@ -16,12 +16,14 @@ export interface DashboardSession {
   durationType: DurationType
   translationUrl: string
   recordingUrl: string
+  hasAwaitingRescheduleRequests: boolean
   materials: []
 }
 
 type getDashboardSessionsParams = {
   active?: boolean
   date?: Day
+  excludePast?: boolean
 }
 
 export const getDashboardSessions = (params?: getDashboardSessionsParams): Promise<DashboardSession[]> =>

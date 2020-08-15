@@ -36,6 +36,7 @@ export const genCoachSessions = (id = 0) => {
 
   const toggleSession = createEvent<CoachSessionWithSelect>()
   const deleteSession = createEvent<number>()
+  const resetSelectedSessions = createEvent()
 
   const selectedSessionIds = createStore<number[]>([])
     .on(toggleSession, (state, selectedSession) => {
@@ -46,6 +47,7 @@ export const genCoachSessions = (id = 0) => {
       }
     })
     .on(deleteSession, (state, sessionId) => state.filter(id => sessionId !== id))
+    .reset(resetSelectedSessions)
 
   const $coachSessions = restore(fetchCoachSessionsListFx.doneData, [])
 
@@ -74,10 +76,11 @@ export const genCoachSessions = (id = 0) => {
     to: buySessionsFx,
   })
 
-  const sessionBookSuccessToast: Toast = { type: "info", text: "Сессии успешно забронированы" }
+  const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
   buySessionsFx.done.watch(() => {
     runInScope(toasts.remove, sessionBookSuccessToast)
     runInScope(toasts.add, sessionBookSuccessToast)
+    resetSelectedSessions()
     // runInScope(clientChatsList.methods.reset)
   })
 

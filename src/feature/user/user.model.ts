@@ -3,7 +3,7 @@ import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { keysToCamel } from "@/lib/network/casing"
 import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
-import { createEvent, createStore, forward, guard } from "effector-root"
+import { createEvent, createStore, forward, guard, merge, restore } from "effector-root"
 import Cookies from "js-cookie"
 
 export type UserData = {
@@ -14,6 +14,7 @@ export type UserData = {
 export const loggedIn = createEvent<{ token: string }>()
 export const loadUserData = createEvent()
 export const setUserData = createEvent<UserData>()
+
 
 export const $userData = createStore<UserData>({ client: null, coach: null })
   .on([setUserData, getMyUserFx.doneData.map(data => keysToCamel(data.data))], (state, payload) => payload)

@@ -15,7 +15,7 @@ export type UpdateMyCoachRequest = {
   description: string
   photos: string[]
   phone: string
-  videoInterview: string
+  videoInterview?: string
 }
 
 export const updateMyCoach = (data: UpdateMyCoachRequest) =>

@@ -12,10 +12,10 @@ export interface CoachSelfData {
   lastName: string
   birthDate: Day
   prices: {
-    D30: string
-    D45: string
-    D60: string
-    D90: string
+    D30: null | number
+    D45: null | number
+    D60: null | number
+    D90: null | number
   }
   sex: Sex
   avatar: string
@@ -31,8 +31,8 @@ export interface CoachSelfData {
   videoInterview: string
   phone: string
   categories: Category[]
-  bannedClients: []
-  restrictedClients: []
+  bannedClients: number[]
+  restrictedClients: number[]
   rating: number
   reviewsCount: number
   nearestSessionDatetime: ISODate

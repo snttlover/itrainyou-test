@@ -5,6 +5,7 @@ export const $todaySessionsList = $todayCoachSessions.map(sessions =>
   sessions.map(session => {
     const client = session.clients[0]
     return {
+      link: `/coach/sessions/${session.id}`,
       avatar: client.avatar,
       name: `${client.firstName} ${client.lastName}`,
       duration: `${session.durationType.slice(1, session.durationType.length)} мин`,

@@ -46,18 +46,19 @@ const Dropdown = styled.div`
   overflow-x: hidden;
 `
 
-const SelectBox = styled.div<{ isOpen: boolean; error?: boolean }>`
+const SelectBox = styled.div<{ isOpen: boolean; error?: boolean; withoutBorder?: boolean }>`
   position: relative;
   width: 100%;
   height: 32px;
   background: #fff;
-  border: 1px solid ${({ error, isOpen }) => (error ? "#D5584D" : isOpen ? "#919BE0" : "#D3D7F3")};
+  border: 1px solid
+    ${({ error, isOpen, withoutBorder }) =>
+      withoutBorder ? "transparent" : error ? "#D5584D" : isOpen ? "#919BE0" : "#D3D7F3"};
   box-sizing: border-box;
   border-radius: ${({ isOpen }) => (isOpen ? "2px 2px 0px 0px" : "2px")};
   display: flex;
   align-items: center;
   padding: 0 12px 0 8px;
-  
 
   ${Arrow} {
     margin-left: auto;
@@ -86,6 +87,7 @@ export type SelectInputProps<T extends Value> = {
   error?: boolean
   onBlur?: () => void
   className?: string
+  withoutBorder?: boolean
 }
 
 export const SelectInput = <T extends Value = Value>({
@@ -95,7 +97,8 @@ export const SelectInput = <T extends Value = Value>({
   options,
   error,
   onBlur,
-  className
+  className,
+  withoutBorder,
 }: SelectInputProps<T>) => {
   const [isOpen, changeOpen] = useState(false)
 
@@ -129,6 +132,7 @@ export const SelectInput = <T extends Value = Value>({
           onBlur()
         }
       }}
+      withoutBorder={withoutBorder}
     >
       {selectedItem ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
       <Arrow />

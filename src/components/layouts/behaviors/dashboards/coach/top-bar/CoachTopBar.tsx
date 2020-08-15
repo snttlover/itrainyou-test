@@ -49,10 +49,13 @@ const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
   `}
 `
 
+const AvatarLink = styled(Link)`
+  margin-left: 36px;
+`
+
 const StyledAvatar = styled(Avatar)`
   width: 40px;
   height: 40px;
-  margin-left: 36px;
   cursor: pointer;
 
   ${MediaRange.lessThan(`tablet`)`
@@ -105,7 +108,9 @@ export const CoachTopBar = () => {
           </Link>
         </CoachLinkWrapper>
         {user.coach?.isApproved && <NotificationButton />}
-        <StyledAvatar src={user.coach?.avatar || null} />
+        <AvatarLink to={routeNames.coachProfile()}>
+          <StyledAvatar src={user.coach?.avatar || null} />
+        </AvatarLink>
         <CoachTooltip>
           <DropdownButton />
         </CoachTooltip>

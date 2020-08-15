@@ -29,13 +29,14 @@ export type User = {
 }
 
 export type Client = {
-  id: string
+  id: number
   firstName: string
   lastName: string
   birthDate: Day
   sex: Sex
   avatar: string | null
   creationDatetime: ISODate
+  rating?: number
 }
 
 export type ClientInfo = Client & {

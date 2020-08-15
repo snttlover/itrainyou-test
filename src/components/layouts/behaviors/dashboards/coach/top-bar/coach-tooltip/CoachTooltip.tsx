@@ -2,11 +2,12 @@ import styled from "styled-components"
 import { useState } from "react"
 import { ClickOutside } from "@/components/click-outside/ClickOutside"
 import { CoachTooltipRow } from "@/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltipRow"
-import { useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import { $userData } from "@/feature/user/user.model"
 import { changeBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import * as React from "react"
 import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-socket"
+import { logout } from "@/lib/network/token"
 
 const Tooltip = styled.div`
   position: absolute;
@@ -55,8 +56,26 @@ const Back = styled.div`
   opacity: 0.6;
 `
 
+const Logout = styled.div`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #424242;
+  background: #fff;
+  cursor: pointer;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 12px 13px;
+  border-radius: 4px;
+  margin-top: 2px;
+  min-width: 120px;
+  width: 100%;
+`
+
 export const CoachTooltip = (props: CoachTooltipTypes) => {
   const user = useStore($userData)
+  const exit = useEvent(logout)
 
   const clientChatsCount = useStore(clientChatsSocket.data.$chatsCount)
   const coachChatsCount = useStore(coachChatsSocket.data.$chatsCount)
@@ -72,10 +91,6 @@ export const CoachTooltip = (props: CoachTooltipTypes) => {
     changeBlueLayoutMobileMenuVisibility(false)
   }
 
-  if (!user.coach) {
-    return null
-  }
-
   return (
     <ClickOutside onClickOutside={() => changeVisibility(false)}>
       <Container className={props.className} onClick={() => changeVisibility(true)}>
@@ -83,8 +98,13 @@ export const CoachTooltip = (props: CoachTooltipTypes) => {
         {visibility && (
           <>
             <Tooltip onClick={hideSideBar}>
-              <CoachRow label='Коуч' notificationsCount={0} messagesCount={coachChatsCount} to='/coach' />
-              <ClientRow label='Клиент' notificationsCount={0} messagesCount={clientChatsCount} to='/client' />
+              {!!user.coach && (
+                <>
+                  <CoachRow label='Коуч' notificationsCount={0} messagesCount={coachChatsCount} to='/coach' />
+                  <ClientRow label='Клиент' notificationsCount={0} messagesCount={clientChatsCount} to='/client' />
+                </>
+              )}
+              <Logout onClick={() => exit()}>Выйти</Logout>
             </Tooltip>
             {props.withBack && <Back onClick={backClick} />}
           </>

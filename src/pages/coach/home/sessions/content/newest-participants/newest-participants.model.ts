@@ -5,6 +5,7 @@ export const $newestParticipantsList = newestParticipants.data.$list.map(partici
   participants.map(participant => {
     const { client, session } = participant
     return {
+      link: `/coach/sessions/${session.id}`,
       avatar: client.avatar,
       name: `${client.firstName} ${client.lastName}`,
       duration: `${session.durationType.slice(1, session.durationType.length)} мин`,

@@ -3,36 +3,62 @@ import { getChatWithCoach } from "@/lib/api/chats/clients/get-chat-with-coach"
 import { createChatWithCoach } from "@/lib/api/chats/clients/create-chat-with-coach"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
+import { PersonalChat } from "@/lib/api/chats/clients/get-chats"
+import { getChatWithClient } from "@/lib/api/chats/coach/get-chat-with-client"
+import { createChatWithClient } from "@/lib/api/chats/coach/create-chat-with-client"
 
-const checkCoachChatFx = createEffect({
-  handler: (id: number) => getChatWithCoach(id)
-    .catch(e => Promise.reject(id))
+
+type CreateWriteToUserModule = {
+  navigateTo: (id: string) => string
+  checkChat: (id: number) => Promise<PersonalChat>
+  createChat: (id: number) => Promise<PersonalChat>
+}
+
+const createWriteToUserModule = (config: CreateWriteToUserModule) => {
+  const write = createEvent<number | null>()
+
+  const checkChatFx = createEffect({
+    handler: (id: number) => config.checkChat(id)
+      .catch(e => Promise.reject(id))
+  })
+
+  const createChatFx = createEffect({
+    handler: config.createChat
+  })
+
+  guard({
+    source: write,
+    filter: (id) => id !== null,
+    target: checkChatFx
+  })
+
+  forward({
+    // @ts-ignore
+    from: checkChatFx.failData,
+    to: createChatFx
+  })
+
+  forward({
+    from: checkChatFx.doneData.map((chat) => ({ url: config.navigateTo(chat.id.toString()) })),
+    to: navigatePush
+  })
+
+  forward({
+    from: createChatFx.doneData.map((chat) => ({ url: config.navigateTo(chat.id.toString()) })),
+    to: navigatePush
+  })
+
+  return write
+}
+
+export const writeToCoach = createWriteToUserModule({
+  navigateTo: routeNames.clientChat,
+  checkChat: getChatWithCoach,
+  createChat: createChatWithCoach
 })
 
-const createChatFx = createEffect({
-  handler: createChatWithCoach
-})
-
-export const writeToCoach = createEvent<number | null>()
-
-guard({
-  source: writeToCoach,
-  filter: (id) => id !== null,
-  target: checkCoachChatFx
-})
-
-forward({
-  // @ts-ignore
-  from: checkCoachChatFx.failData,
-  to: createChatFx
-})
-
-forward({
-  from: checkCoachChatFx.doneData.map((chat) => ({ url: routeNames.clientChat(chat.id) })),
-  to: navigatePush
-})
-
-forward({
-  from: createChatFx.doneData.map((chat) => ({ url: routeNames.clientChat(chat.id) })),
-  to: navigatePush
+export const writeToClient = createWriteToUserModule({
+  navigateTo: routeNames.coachChat,
+  checkChat: getChatWithClient,
+  createChat: createChatWithClient
 })

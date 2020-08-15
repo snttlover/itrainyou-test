@@ -1,73 +1,124 @@
+import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
 import { $feeRatio, loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
-import { combine, createEvent, createStore, forward, sample, merge } from "effector-root"
+import { combine, createEvent, createStore, forward, sample, merge, split, attach } from "effector-root"
 import { debounce, spread } from "patronum"
 
-type Prices = {
+export type Prices = {
   promo?: number
-  price30?: number
-  price45?: number
-  price60?: number
-  price90?: number
+  d30Price?: number
+  d45Price?: number
+  d60Price?: number
+  d90Price?: number
 }
 
-export const changePrices = createEvent<Prices>()
+type Price = {
+  name: keyof Prices
+  key: string
+  isLoading: boolean
+  value: number
+}
+
+type ChangePriceEvent = { name: keyof Prices; value: number }
+
+export const changePrice = createEvent<ChangePriceEvent>()
 const setPrices = createEvent<Prices>()
 
-const $promoPrice = createStore<number>(0)
-const $30Price = createStore<number>(0)
-const $45Price = createStore<number>(0)
-const $60Price = createStore<number>(0)
-const $90Price = createStore<number>(0)
-
-const calculatePriceWithRatio = (price: number | null, ratio: number) => (price ? price + price * ratio : 0)
-
-export const $prices = combine({
-  promo: $promoPrice,
-  D30: $30Price,
-  D45: $45Price,
-  D60: $60Price,
-  D90: $90Price,
-})
-
-export const $pricesWithFeeForm = combine(
+export const $prices = createStore<Price[]>([
   {
-    form: $prices,
-    ratio: $feeRatio,
+    name: "promo",
+    key: "promo",
+    isLoading: false,
+    value: 0,
   },
-  ({ form, ratio }) => ({
-    promo: [form.promo, calculatePriceWithRatio(form.promo, ratio)],
-    price30: [form.D30, calculatePriceWithRatio(form.D30, ratio)],
-    price45: [form.D45, calculatePriceWithRatio(form.D45, ratio)],
-    price60: [form.D60, calculatePriceWithRatio(form.D60, ratio)],
-    price90: [form.D90, calculatePriceWithRatio(form.D90, ratio)],
+  {
+    name: "d30Price",
+    key: "D30",
+    isLoading: false,
+    value: 0,
+  },
+  {
+    name: "d45Price",
+    key: "D45",
+    isLoading: false,
+    value: 0,
+  },
+  {
+    name: "d60Price",
+    key: "D60",
+    isLoading: false,
+    value: 0,
+  },
+  {
+    name: "d90Price",
+    key: "D90",
+    isLoading: false,
+    value: 0,
+  },
+])
+  .on(setPrices, (prices, newPrices) => prices.map(price => ({ ...price, value: newPrices[price.name] || 0 })))
+  .on(changePrice, (state, { name, value }) =>
+    state.map(price => ({ ...price, value: price.name === name ? value : price.value }))
+  )
+  .on(updateScheduleFx, (state, params) => {
+    const keys = Object.keys(params)
+    return state.map(price => ({
+      ...price,
+      isLoading: keys.includes(price.name) ? true : price.isLoading,
+    }))
   })
-)
+  .on(updateScheduleFx.finally, (state, { params }) => {
+    const keys = Object.keys(params)
+    return state.map(price => ({
+      ...price,
+      isLoading: keys.includes(price.name) ? false : price.isLoading,
+    }))
+  })
 
-spread(merge([changePrices, setPrices]), {
-  promo: $promoPrice,
-  price30: $30Price,
-  price45: $45Price,
-  price60: $60Price,
-  price90: $90Price,
-})
+export const $pricesWithFee = combine($prices, $feeRatio, (prices, feeRatio) =>
+  prices.map(price => ({ ...price, valueWithFee: price ? price.value + price.value * feeRatio : 0 }))
+)
 
 forward({
   from: loadScheduleFx.doneData.map(data => ({
-    price30: parseFloat(data.d30Price),
-    price45: parseFloat(data.d45Price),
-    price60: parseFloat(data.d60Price),
-    price90: parseFloat(data.d90Price),
+    d30Price: parseFloat(data.d30Price),
+    d45Price: parseFloat(data.d45Price),
+    d60Price: parseFloat(data.d60Price),
+    d90Price: parseFloat(data.d90Price),
   })),
   to: setPrices,
 })
 
+const { d30Changed, d45Changed, d60Changed, d90Changed } = split(changePrice, {
+  d30Changed: ({ name }) => name === "d30Price",
+  d45Changed: ({ name }) => name === "d45Price",
+  d60Changed: ({ name }) => name === "d60Price",
+  d90Changed: ({ name }) => name === "d90Price",
+})
+
+const savePricesFx = attach({
+  effect: updateScheduleFx,
+  mapParams: (params: UpdateCoachSchedule) => params,
+})
+
+const successMessage: Toast = {
+  type: "info",
+  text: "Цены сохранены",
+}
+
+forward({
+  from: savePricesFx.doneData.map(_ => successMessage),
+  to: [toasts.remove, toasts.add],
+})
+
 sample({
-  clock: debounce(changePrices, 500),
-  source: $prices.map(form => ({
-    d30Price: form.D30,
-    d45Price: form.D45,
-    d60Price: form.D60,
-    d90Price: form.D90,
-  })),
-  target: updateScheduleFx,
+  clock: merge([
+    debounce(d30Changed, 500),
+    debounce(d45Changed, 500),
+    debounce(d60Changed, 500),
+    debounce(d90Changed, 500),
+  ]),
+  source: $prices,
+  fn: (_, { name, value }: ChangePriceEvent) => ({ [name]: value }),
+  target: savePricesFx,
 })

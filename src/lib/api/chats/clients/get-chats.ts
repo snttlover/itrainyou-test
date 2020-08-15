@@ -5,22 +5,31 @@ import { ISODate, Pagination } from "@/lib/api/interfaces/utils.interface"
 import { CoachUser } from "../../coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { CoachSession } from "@/lib/api/coach-sessions"
+import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+
+export type MessageSessionRequestStatuses = 'INITIATED' | 'COMPLETED'
+export type MessageTypes = 'USER' | 'SYSTEM'
 
 export type ChatMessage = {
   id: number
-  text: string,
+  type: MessageTypes
+  text: string
   chat: number
   senderCoach: CoachUser | null
   senderClient: Client | null
+  senderSupport: null
+  sessionRequest: SessionRequest
+  sessionRequestStatus: MessageSessionRequestStatuses
   creationDatetime: ISODate
 }
 
-export type Chat = {
+
+export type SystemChatType = 'SYSTEM'
+export type PersonalChatType = 'PERSONAL'
+export type ChatTypes = SystemChatType | PersonalChatType
+
+type CommonChatFields = {
   id: number
-  type: "PERSONAL" | "SYSTEM"
-  support: null
-  coach?: CoachUser
-  clients: [Client]
   lastMessage: null | ChatMessage
   nearestSession: null | CoachSession
   materialsCount: 0
@@ -28,7 +37,24 @@ export type Chat = {
   hadSessions: false
   newMessagesCount: 0
   creationDatetime: ISODate
+
+  coach?: CoachUser
+  clients: [Client]
+  support: null
+
+  isBanned: boolean
+  isRestricted: boolean
 }
+
+export type SystemChat = {
+  type: SystemChatType
+} & CommonChatFields
+
+export type PersonalChat = {
+  type: PersonalChatType
+} & CommonChatFields
+
+export type Chat = PersonalChat | SystemChat
 
 type PaginationParams = {
   page: number
@@ -36,9 +62,6 @@ type PaginationParams = {
 }
 
 export const getClientChats = (params: PaginationParams) =>
-  get<Pagination<Chat>, {}>(
-    `${config.BACKEND_URL}/api/v1/web/client/chats/`,
-    keysToSnake(params)
-  )
+  get<Pagination<Chat>, {}>(`${config.BACKEND_URL}/api/v1/web/client/chats/`, keysToSnake(params))
     .then(response => response.data)
     .then(keysToCamel)
