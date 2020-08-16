@@ -45,6 +45,8 @@ export const updateScheduleFx = attach({
   }),
 })
 
+$isEdit.on(updateScheduleFx.done, () => true)
+
 export const ScheduleGate = createGate()
 
 forward({
