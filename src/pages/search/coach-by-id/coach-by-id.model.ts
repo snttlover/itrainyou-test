@@ -18,7 +18,11 @@ export const mounted = createEvent<{ id: number }>()
 
 export const $coach = createStore<Coach | null>(null)
   .on(loadCoachFx.doneData, (state, payload) => payload)
-  .reset(coachByIdGate.close)
+  .reset([mounted, coachByIdGate.close])
+
+export const $isNotFound = createStore(false)
+  .on(loadCoachFx.failData, () => true)
+  .reset([mounted, coachByIdGate.close])
 
 export const $reviews = createStore<CoachReviewResponse[]>([]).on(
   loadReviewsFx.doneData,
