@@ -33,6 +33,7 @@ const MainInfoContainer = styled.div`
 const Avatar = styled.div<{ image: string | null }>`
   width: 60px;
   height: 60px;
+  min-width: 60px;
   background-image: url("${props => props.image}");
   background-position: center;
   background-size: cover;
@@ -168,7 +169,16 @@ const Duration = styled.span`
   position: relative;
 `
 
-const Price = styled.span``
+const Price = styled.span`
+  font-family: Roboto;
+  font-size: 8px;
+  line-height: 16px;
+
+  ${MediaRange.greaterThan("mobile")`
+    font-size: unset;
+    line-height: unset;
+  `}
+`
 
 const RatingContainer = styled.div`
   margin-left: auto;
