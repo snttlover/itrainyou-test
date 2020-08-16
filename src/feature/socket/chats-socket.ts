@@ -170,11 +170,6 @@ export const createChatsSocket = (userType: UserType) => {
     to: socket.methods.disconnect,
   })
 
-  forward({
-    from: changePasswordFx.doneData.map(({ token }) => getChatSocketLink(userType, token)),
-    to: connect,
-  })
-
   return {
     data: {
       $chatsCount,
