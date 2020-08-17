@@ -1,3 +1,4 @@
+import { PasswordInput } from "@/components/input/PasswordInput"
 import React, { FormEvent } from "react"
 import styled from "styled-components"
 import { FormItem } from "@/components/form-item/FormItem"
@@ -71,13 +72,13 @@ export const PasswordForm = () => {
     <StyledForm onSubmit={submitHandler}>
       <Title>Новый пароль</Title>
       <StyledFormItem label='Старый пароль' error={errors.oldPassword}>
-        <Input type='password' value={form.oldPassword} onChange={oldPasswordChange} />
+        <PasswordInput type='password' value={form.oldPassword} onChange={oldPasswordChange} />
       </StyledFormItem>
       <StyledFormItem label='Новый пароль' error={errors.password}>
-        <Input type='password' value={form.password} onChange={passwordChange} />
+        <PasswordInput type='password' value={form.password} onChange={passwordChange} />
       </StyledFormItem>
       <StyledFormItem label='Повторите новый пароль' error={errors.passwordRepeat}>
-        <Input type='password' value={form.passwordRepeat} onChange={passwordRepeatChange} />
+        <PasswordInput type='password' value={form.passwordRepeat} onChange={passwordRepeatChange} />
       </StyledFormItem>
       <Actions>
         <DashedButton disabled={!isFormValid || isFetching}>Изменить пароль</DashedButton>
