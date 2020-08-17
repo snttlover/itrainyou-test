@@ -24,7 +24,7 @@ export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?
 
   const now = new Date()
 
-  const timeZone = -tzOffset(userData?.client?.user?.timeZone, now) //|| -now.getTimezoneOffset()
+  const timeZone = -tzOffset(userData?.client?.user?.timeZone, now) || -now.getTimezoneOffset()
 
   return dayjs(date, options, locale).add(timeZone, "minute")
 }
