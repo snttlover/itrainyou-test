@@ -20,7 +20,7 @@ export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?
   else options = { ...option, utc: true }
 
   const userData =
-    process.env.BUILD_TARGET === "client" ? getStoreFromScope($userData) : { client: { user: { timeZone: 0 } } }
+    process.env.BUILD_TARGET === "client" ? getStoreFromScope($userData) : { client: { user: { timeZone: "GMT" } } }
 
   const now = new Date()
 
