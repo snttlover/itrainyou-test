@@ -4,6 +4,7 @@ import { Icon, IconName } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { changeBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import { Link, useLocation } from "react-router-dom"
+import { useEvent } from "effector-react/ssr"
 
 const MenuItemIcon = styled(Icon).attrs(props => ({
   name: props.name,
@@ -80,12 +81,13 @@ type MenuItemTypes = {
 
 export const DashboardMenuItem = (props: MenuItemTypes) => {
   const location = useLocation()
+  const changeLayoutVisibility = useEvent(changeBlueLayoutMobileMenuVisibility)
 
   const clickHandler = (e: SyntheticEvent) => {
     if (props.disabled) {
       e.preventDefault()
     } else {
-      changeBlueLayoutMobileMenuVisibility(false)
+      changeLayoutVisibility(false)
     }
   }
 
