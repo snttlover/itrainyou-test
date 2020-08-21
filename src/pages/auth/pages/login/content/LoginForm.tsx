@@ -16,6 +16,7 @@ import {
   loginFormSent,
 } from "@/pages/auth/pages/login/login.model"
 import { FormEvent } from "react"
+import { MediaRange } from "@/lib/responsive/media"
 
 const StyledForm = styled.form`
   width: 100%;
@@ -31,6 +32,9 @@ const StyledButton = styled(DashedButton)`
   @media screen and (max-width: 768px) {
     margin-top: 35px;
   }
+  ${MediaRange.lessThan(`mobile`)`
+    background: #fff !important;
+  `}
 `
 
 export const LoginForm = () => {
