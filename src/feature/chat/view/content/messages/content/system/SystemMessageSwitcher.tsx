@@ -586,7 +586,7 @@ const CancelAction = ({ request, requestsModule }: SessionRequestActionProps) =>
   const cancel = useEvent(requestsModule.methods.deny)
   return (
     <Actions>
-      <Button onClick={() => cancel(request.id)}>Отклонить</Button>
+      <Button onClick={() => cancel(request.id)}>Отменить</Button>
     </Actions>
   )
 }

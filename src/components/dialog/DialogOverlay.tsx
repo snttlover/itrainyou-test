@@ -31,4 +31,5 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   overflow: auto;
+  padding: 20px;
 `

@@ -84,7 +84,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             if (config.type === `coach`) {
               user = message.sessionRequest.initiatorClient || message.sessionRequest.receiverClient || null
             } else {
-              user = message.sessionRequest.initiatorClient || message.sessionRequest.receiverClient || null
+              user =  message.sessionRequest.session.coach || message.sessionRequest.initiatorCoach || message.sessionRequest.receiverCoach || null
             }
 
             return {
