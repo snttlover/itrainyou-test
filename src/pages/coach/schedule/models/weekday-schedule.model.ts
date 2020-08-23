@@ -28,6 +28,16 @@ forward({
   to: [toasts.remove, toasts.add],
 })
 
+const weekDayToNumberMap: { [key in WeekDayName]: 0 | 1 | 2 | 3 | 4 | 5 | 6 } = {
+  MONDAY: 1,
+  TUESDAY: 2,
+  WEDNESDAY: 3,
+  THURSDAY: 4,
+  FRIDAY: 5,
+  SATURDAY: 6,
+  SUNDAY: 0,
+}
+
 export const removeSlot = createEvent<{ slotId: number; weekday: WeekDayName }>()
 export const addSlot = createEvent<{ weekday: WeekDayName; startTime: string; sessionDurationType: DurationType }>()
 
@@ -48,7 +58,15 @@ export const $weekdaySlots = createStore(
 
       return {
         ...slots,
-        slots: loadedWeekdaySlot.slots,
+        slots: loadedWeekdaySlot.slots.map(slot => {
+          const times = slot.startTime.split(":").map(parseFloat)
+          return {
+            ...slot,
+            startTime: date(
+              date.utc().day(weekDayToNumberMap[slots.weekday]).set("h", times[0]).set("m", times[1])
+            ).format("HH:mm"),
+          }
+        }),
       }
     })
 )
@@ -56,11 +74,14 @@ export const $weekdaySlots = createStore(
 export const $weekdaySlotsForView = $weekdaySlots.map(weekdaySlots =>
   weekdaySlots.map(weekdaySlot => ({
     ...weekdaySlot,
-    slots: weekdaySlot.slots.map(item => ({
-      id: item.id,
-      duration: item.sessionDurationType.slice(1),
-      startTime: item.startTime.split(":").slice(0, 2).join(":"),
-    })),
+    slots: weekdaySlot.slots.map(item => {
+      const times = item.startTime.split(":").map(parseFloat)
+      return {
+        id: item.id,
+        duration: item.sessionDurationType.slice(1),
+        startTime: date().set("h", times[0]).set("m", times[1]).format("HH:mm"),
+      }
+    }),
   }))
 )
 
@@ -84,13 +105,17 @@ export const $freeWeekdayTimes = combine(
           if (isCollide) return isCollide
 
           const [hour, minute] = slot.startTime.split(":").map(Number)
-          const slotStartTime = date().set("h", hour).set("m", minute)
-          const slotEndTime = slotStartTime.add(durationMinutes, "minute")
+          const slotDurationMinutes = parseInt(slot.sessionDurationType.slice(1), 10)
+          const slotStartTime = date().set("h", hour).set("m", minute).set("s", 0).set("ms", 0)
+          const slotEndTime = slotStartTime.add(slotDurationMinutes, "minute")
 
-          return (
-            optionTime.isBetween(slotStartTime.subtract(1, "ms"), slotEndTime) ||
-            endTime.isBetween(slotStartTime.subtract(1, "ms"), slotEndTime)
+          const isOptionTimeBetweenSlot = optionTime.isBetween(
+            slotStartTime.subtract(1, "ms"),
+            slotEndTime.add(1, "ms")
           )
+          const isEndTimeBetweenSlot = endTime.isBetween(slotStartTime.subtract(1, "ms"), slotEndTime.add(1, "ms"))
+
+          return isOptionTimeBetweenSlot || isEndTimeBetweenSlot
         }, false)
 
         return !isCollideWithExistSessions
@@ -107,6 +132,11 @@ export const $freeWeekdayTimes = combine(
   }
 )
 
+const timeToUTC = (time: string) => {
+  const [hour, minute] = time.split(":").map(Number)
+  return date().set("h", hour).set("m", minute).set("s", 0).set("ms", 0).utc().format("HH:mm")
+}
+
 sample({
   clock: removeSlot,
   source: $weekdaySlots,
@@ -114,7 +144,9 @@ sample({
     return {
       weekdaySlots: weekdaySlots.map(weekdaySlot => ({
         ...weekdaySlot,
-        slots: weekdaySlot.slots.filter(slot => slot.id !== slotId),
+        slots: weekdaySlot.slots
+          .filter(slot => slot.id !== slotId)
+          .map(slot => ({ ...slot, startTime: timeToUTC(slot.startTime) })),
       })),
     }
   },
@@ -131,7 +163,10 @@ sample({
 
         return {
           ...weekdaySlot,
-          slots: [...weekdaySlot.slots, { sessionDurationType, startTime }],
+          slots: [...weekdaySlot.slots, { sessionDurationType, startTime }].map(slot => ({
+            ...slot,
+            startTime: timeToUTC(slot.startTime),
+          })),
         }
       }),
     }

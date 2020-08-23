@@ -5,28 +5,26 @@ import "dayjs/locale/ru"
 import utc from "dayjs/plugin/utc"
 import isBetween from "dayjs/plugin/isBetween"
 import weekday from "dayjs/plugin/weekday"
-// @ts-ignore
-import tzOffset from "get-timezone-offset"
+import timezone from "dayjs/plugin/timezone"
 
 dayjs.extend(weekday)
 dayjs.extend(isBetween)
 dayjs.extend(utc)
+dayjs.extend(timezone)
 dayjs.locale("ru")
 
 export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string): Dayjs => {
   let options: Exclude<dayjs.OptionType, string> = {}
 
   if (typeof option === "string") options.format = option
-  else options = { ...option, utc: true }
+  else options = { ...option }
 
   const userData =
     process.env.BUILD_TARGET === "client" ? getStoreFromScope($userData) : { client: { user: { timeZone: "GMT" } } }
 
-  const now = new Date()
+  const timeZone = userData?.client?.user?.timeZone || dayjs.tz.guess()
 
-  const timeZone = -tzOffset(userData?.client?.user?.timeZone, now) || -now.getTimezoneOffset()
-
-  return dayjs(date, options, locale).add(timeZone, "minute")
+  return dayjs(date, options, locale).tz(timeZone)
 }
 date.utc = dayjs.utc
 
