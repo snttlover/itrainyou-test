@@ -24,7 +24,11 @@ export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?
 
   const timeZone = userData?.client?.user?.timeZone || dayjs.tz.guess()
 
-  return dayjs(date, options, locale).tz(timeZone)
+  const dt = dayjs(date, options, locale)
+
+  if (timeZone === "Atlantic/Azores" || timeZone === "GMT") return dt
+
+  return dt.tz(timeZone)
 }
 date.utc = dayjs.utc
 
