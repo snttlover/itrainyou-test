@@ -1,3 +1,4 @@
+import { setUserData } from "@/feature/user/user.model"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { UpdateMyUserRequest, updateMyUser } from "@/lib/api/users/update-my-user"
 import { createEffectorField } from "@/lib/generators/efffector"
@@ -15,8 +16,8 @@ type ResetRType = {
   timeZone: string
 }
 
-export const changeGeneralSettingsFx = createEffect<ResetRType, UpdateMyUserRequest, AxiosError>({
-  handler: ({ email, timeZone }) => updateMyUser({ email, timeZone }),
+export const changeGeneralSettingsFx = createEffect({
+  handler: ({ email, timeZone }: ResetRType) => updateMyUser({ email, timeZone }),
 })
 
 export const mounted = createEvent()
@@ -29,6 +30,11 @@ const successToast: Toast = {
 forward({
   from: changeGeneralSettingsFx.done.map(_ => successToast),
   to: [toasts.remove, toasts.add],
+})
+
+forward({
+  from: changeGeneralSettingsFx.doneData,
+  to: setUserData,
 })
 
 const errorToast: Toast = {
