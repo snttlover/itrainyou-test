@@ -4,6 +4,9 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
 import { useStore } from "effector-react/ssr"
 import { $pageProfile } from "@/pages/client/profile/profile-page.model"
+import { Icon } from "@/components/icon/Icon"
+import { Link } from "react-router-dom"
+import { routeNames } from "@/pages/route-names"
 
 const Container = styled.div`
   margin-top: 46px;
@@ -55,6 +58,14 @@ const Name = styled.div`
   `}
 `
 
+const Edit = styled(Icon).attrs({ name: 'edit' })`
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  margin-left: 20px;
+  fill: ${({ theme }) => theme.colors.primary};
+`
+
 export const ProfileHeader = () => {
   const profile = useStore($pageProfile)
   return (
@@ -66,6 +77,9 @@ export const ProfileHeader = () => {
         {profile?.lastName}
       </Name>
       <Age>{profile.age} года</Age>
+      <Link to={routeNames.clientProfileEdit()}>
+        <Edit />
+      </Link>
     </Container>
   )
 }

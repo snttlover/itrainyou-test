@@ -29,6 +29,7 @@ import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { ClientSessionPage } from "@/pages/client/session/ClientSessionPage"
 import { CoachSessionPage } from "@/pages/coach/session/CoachSessionPage"
+import { EditClientProfilePage } from "@/pages/client/edit-profile/EditClientProfile"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -86,6 +87,7 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: routeNames.clientProfile(),
+    exact: true,
     component: ProfilePage,
   },
   {
@@ -110,6 +112,11 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.coachClientProfile(":id"),
     exact: true,
     component: ClientPage,
+  },
+
+  {
+    path: routeNames.clientProfileEdit(),
+    component: EditClientProfilePage,
   },
   {
     path: routeNames.coachProfileEdit(),

@@ -11,6 +11,7 @@ export const routeNames = {
   client: () => `/client`,
   clientSession: (id: string) => `/client/sessions/${id}`,
   clientProfile: () => `/client/profile`,
+  clientProfileEdit: () => `/client/profile/edit`,
   clientSettings: () => `/client/settings`,
   clientChatsList: () => `/client/chats`,
   clientChat: (id: string) => `/client/chats/${id}`,
