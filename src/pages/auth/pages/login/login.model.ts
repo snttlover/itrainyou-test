@@ -16,41 +16,6 @@ export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, 
 
 export const resetLoginForm = createEvent()
 
-sample({
-  source: $dashboard,
-  clock: loginFx.doneData,
-  fn: (dashboard, data) => {
-    let url
-    if (!data.user.client && !data.user.coach) {
-      url = routeNames.signup("2")
-    } else if (data.user.coach?.isForeverRejected) {
-      url = routeNames.client()
-    } else if (dashboard === "client") {
-      url = routeNames.client()
-    } else if (dashboard === "coach") {
-      url = routeNames.coach()
-    } else if (data.user.coach) {
-      url = routeNames.coach()
-    } else {
-      url = routeNames.client()
-    }
-    return {
-      url,
-    }
-  },
-  target: navigateReplace,
-})
-
-forward({
-  from: loginFx.doneData,
-  to: loggedIn,
-})
-
-forward({
-  from: loginFx.doneData.map(response => ({ client: response.user.client, coach: response.user.coach })),
-  to: setUserData,
-})
-
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
   defaultValue: "",
   validator: emailValidator,
@@ -87,4 +52,37 @@ sample({
   source: $loginForm,
   clock: loginFormSent,
   target: loginFx,
+})
+
+sample({
+  source: $dashboard,
+  clock: loginFx.doneData,
+  fn: (dashboard, data) => {
+    let url
+    if (!data.user.client && !data.user.coach) {
+      url = routeNames.signup("2")
+    } else if (data.user.coach?.isForeverRejected) {
+      url = routeNames.client()
+    } else if (dashboard === "client") {
+      url = routeNames.client()
+    } else if (dashboard === "coach") {
+      url = routeNames.coach()
+    } else if (data.user.coach) {
+      url = routeNames.coach()
+    } else {
+      url = routeNames.client()
+    }
+    return {
+      url,
+    }
+  },
+  target: navigateReplace,
+})
+
+forward({
+  from: loginFx.doneData,
+  to: [
+    loggedIn,
+    setUserData.prepend((response: LoginResponse) => ({ client: response.user.client, coach: response.user.coach })),
+  ],
 })

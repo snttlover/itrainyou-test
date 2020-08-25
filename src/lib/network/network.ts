@@ -56,14 +56,11 @@ export const get = <R, Params = {}>(url: string, params?: Params): Promise<Axios
 export const post = <R, Data>(url: string, data?: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> =>
   axios.post(url, data, config)
 
-export const patch = <R, Data>(
-  url: string,
-  data: Data,
-  config?: AxiosRequestConfig
-): Promise<AxiosResponse<Response>> => axios.patch(url, data, config)
+export const patch = <R, Data>(url: string, data: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> =>
+  axios.patch(url, data, config)
 
-export const put = <R, Data>(url: string, data: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<Response>> =>
+export const put = <R, Data>(url: string, data: Data, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> =>
   axios.put(url, data, config)
 
-export const Delete = <R, Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<Response>> =>
+export const Delete = <R, Data>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> =>
   axios.delete(url, config)

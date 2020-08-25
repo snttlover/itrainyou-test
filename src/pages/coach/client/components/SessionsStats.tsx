@@ -8,12 +8,16 @@ const Container = styled.div`
   z-index: 1;
   position: absolute;
   right: 0;
-  transform: translate(50%, 0);
+  transform: translate(100%, 0);
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  ${MediaRange.greaterThan("mobile")`
+    transform: translate(50%, 0);
+  `}
 
   ${MediaRange.lessThan(`mobile`)`
     right: unset;

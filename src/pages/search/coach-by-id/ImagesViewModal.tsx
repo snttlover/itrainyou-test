@@ -35,6 +35,9 @@ const Header = styled.div`
   ${MediaRange.greaterThan("mobile")`
     justify-content: flex-start;
   `}
+  ${MediaRange.greaterThan(`tablet`)`
+    flex: 24px;
+  `}
 `
 
 const Cross = styled(Icon).attrs({ name: "cross" })`

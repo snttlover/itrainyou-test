@@ -1,6 +1,7 @@
 import { changeDashboardType } from "@/feature/dashboard/dashboard"
 import { withFullRegister } from "@/feature/user/with-full-register"
 import { routeNames } from "@/pages/route-names"
+import { useEvent } from "effector-react/ssr"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { withProtect } from "@/feature/user/with-protect"
@@ -17,11 +18,10 @@ type DashboardTypes = {
   children: React.ReactChild
 }
 
-
-
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
+  const _changeDashboardType = useEvent(changeDashboardType)
   useEffect(() => {
-    changeDashboardType("coach")
+    _changeDashboardType("coach")
   }, [])
   return (
     <CoachTheme>

@@ -15,7 +15,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "cookie-parser": "^1.4.5",
-    "dayjs": "^1.8.28",
+    "dayjs": "^1.8.34",
     "effector": "^20.17.2",
     "effector-react": "^20.9.0",
     "effector-root": "^0.2.0",
