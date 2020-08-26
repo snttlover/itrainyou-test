@@ -13,7 +13,7 @@ import { CoachMenu } from "@/components/layouts/behaviors/dashboards/coach/menu/
 import { CoachTopBar } from "@/components/layouts/behaviors/dashboards/coach/top-bar/CoachTopBar"
 import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 import { StartSessionDialog } from "@/feature/session/start-session-dialog/StartSessionDialog"
-import { StartedSessionToolbar } from "@/feature/session/started-sessions-toolbar/StartedSessionToolbar"
+import { CoachStartedSessionsToolbar } from "@/feature/session/started-sessions-toolbar"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -32,7 +32,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
         <ToastsContainer />
         <DashboardContent>
           <CoachTopBar />
-          <StartedSessionToolbar />
+          <CoachStartedSessionsToolbar />
           <DashboardPageWrapper>{children}</DashboardPageWrapper>
         </DashboardContent>
       </DashboardContainer>

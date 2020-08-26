@@ -1,22 +1,41 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
+import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
+import { useList, useStore } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 
-export const StartedSessionToolbar = () => (
-  <Container>
-    <Toolbar>
-      <StartedText>Сессия началась</StartedText>
-      <User>
-        <StyledAvatar src='https://www.vokrug.tv/pic/product/6/f/e/2/6fe2523ab4de68e3981b29c9f9f00f17.jpeg' />
-        <Name>Annette Black</Name>
-      </User>
-      <Info>
-        <Time>11:30-12:30</Time>
-        <StartButton>Зайти в сессию</StartButton>
-      </Info>
-    </Toolbar>
-  </Container>
-)
+export const createStartedSessionsToolbar = ($model: ReturnType<typeof createStartSessionToolbarModel>) => {
+  return () => {
+    const load = useEvent($model.methods.load)
+    const reset = useEvent($model.methods.reset)
+
+    useEffect(() => {
+      load()
+      return () => reset()
+    }, [])
+
+    return (
+      <div>
+        {useList($model.data.$sessions, session => (
+          <Container>
+            <Toolbar>
+              <StartedText>Сессия началась</StartedText>
+              <User>
+                <StyledAvatar src={session.avatar} />
+                <Name>{session.name}</Name>
+              </User>
+              <Info>
+                <Time>{session.time}</Time>
+                <StartButton>Зайти в сессию</StartButton>
+              </Info>
+            </Toolbar>
+          </Container>
+        ))}
+      </div>
+    )
+  }
+}
 
 const Toolbar = styled.div`
   display: flex;
