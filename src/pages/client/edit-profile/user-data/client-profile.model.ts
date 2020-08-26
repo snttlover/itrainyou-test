@@ -119,7 +119,8 @@ sample({
     lastName: form.lastName,
     birthDate: dayjs(form.birthday).format('YYYY-MM-DD'),
     avatar: lastImage.file || form.image,
-    categories: (userData.client?.categories || []).map(category => category.id)
+    categories: (userData.client?.categories || []).map(category => category.id),
+    sex: userData.client?.sex || form.sex
   })),
   clock: saveClientUserData,
   target: saveClientUserDataFx
