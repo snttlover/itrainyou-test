@@ -12,7 +12,7 @@ import { DashboardContent } from "@/components/layouts/behaviors/dashboards/comm
 import { CoachMenu } from "@/components/layouts/behaviors/dashboards/coach/menu/CoachMenu"
 import { CoachTopBar } from "@/components/layouts/behaviors/dashboards/coach/top-bar/CoachTopBar"
 import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
-import { createChatsSocket } from "@/feature/socket/chats-socket"
+import { StartSessionDialog } from "@/feature/session/start-session-dialog/StartSessionDialog"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -32,6 +32,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
           <CoachTopBar />
           <DashboardPageWrapper>{children}</DashboardPageWrapper>
         </DashboardContent>
+        <StartSessionDialog />
       </DashboardContainer>
     </CoachTheme>
   )
