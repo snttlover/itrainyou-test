@@ -331,11 +331,13 @@ const CoachCardLayout = ({ coach, className }: Props) => {
     history.push(`/search/coach/${coach.id}`)
   }
 
-  const minimalTimeWithPrice = Object.entries(coach.prices).sort(([key1], [key2]) => {
-    const time1 = parseInt(key1.slice(1), 10)
-    const time2 = parseInt(key2.slice(1), 10)
-    return time1 - time2
-  })[0]
+  const minimalTimeWithPrice = Object.entries(coach.prices)
+    .sort(([key1], [key2]) => {
+      const time1 = parseInt(key1.slice(1), 10)
+      const time2 = parseInt(key2.slice(1), 10)
+      return time1 - time2
+    })
+    .filter(([, value]) => value !== null)[0]
 
   const minimumPrice = { price: minimalTimeWithPrice[1], text: `${minimalTimeWithPrice[0].slice(1)} мин` }
 
