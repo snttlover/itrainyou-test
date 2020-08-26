@@ -27,6 +27,7 @@ export type IconName =
   | "more"
   | "video2"
   | "top-coach"
+  | "edit"
   | "rounded-user"
   | "checkbox-border"
   | "checkbox-active"
