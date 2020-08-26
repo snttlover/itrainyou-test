@@ -1,4 +1,4 @@
-import { $userData } from "@/feature/user/user.model"
+import { $userData, loadUserData } from "@/feature/user/user.model"
 import { Sex } from "@/lib/api/interfaces/utils.interface"
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
@@ -6,7 +6,7 @@ import { createEffectorField } from "@/lib/generators/efffector"
 import { trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, createStore, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 import { every, spread } from "patronum"
 import { UpdateClientRequest, updateMyClient } from "@/lib/api/client/update"
 
@@ -107,6 +107,11 @@ const saveClientUserDataFx = createEffect({
   handler: updateMyClient
 })
 
+forward({
+  from: saveClientUserDataFx,
+  to: loadUserData
+})
+
 sample({
   // @ts-ignore
   source: combine($userData, $clientProfileForm, $image, (userData, form, lastImage) => ({
@@ -118,4 +123,13 @@ sample({
   })),
   clock: saveClientUserData,
   target: saveClientUserDataFx
+})
+
+export const showClientProfileCoachDialog = createEvent()
+export const changeClientProfileCoachWarningDilalogVisibility = createEvent<boolean>()
+export const $clientProfileCoachWarningDilalogVisibility = restore(changeClientProfileCoachWarningDilalogVisibility, false).reset(userProfileGate.close)
+
+forward({
+  from: showClientProfileCoachDialog,
+  to: changeClientProfileCoachWarningDilalogVisibility.prepend(() => true)
 })

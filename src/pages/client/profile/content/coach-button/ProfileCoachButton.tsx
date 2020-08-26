@@ -1,19 +1,23 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Dialog } from "@/components/dialog/Dialog"
 import { Button } from "@/components/button/normal/Button"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { useEvent, useStore } from "effector-react/ssr"
 import {
-  $profileCoachButtonVisibility, $userHasCoach,
-  changeProfileCoachButtonVisibility
+  $profileCoachButtonVisibility, $userHasCoach, becomeCoach,
+  changeProfileCoachButtonVisibility, reset
 } from "@/pages/client/profile/content/coach-button/profile-coach-button"
 
 export const ProfileCoachButton = () => {
-
   const userIsCoach = useStore($userHasCoach)
   const visibility = useStore($profileCoachButtonVisibility)
   const changeVisibility = useEvent(changeProfileCoachButtonVisibility)
+  const _becomeCoach = useEvent(becomeCoach)
+
+  useEffect(() => {
+    return () => reset()
+  }, [])
 
   return (
     <>
@@ -26,7 +30,7 @@ export const ProfileCoachButton = () => {
           </Description>
           <Actions>
             <No onClick={() => changeVisibility(false)}>Нет</No>
-            <Yes>Да</Yes>
+            <Yes onClick={() => _becomeCoach()}>Да</Yes>
           </Actions>
         </Content>
       </StyledDialog>

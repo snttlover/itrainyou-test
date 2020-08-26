@@ -3,11 +3,13 @@ import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards
 import { UserProfile } from "@/pages/client/edit-profile/user-data/UserProfile"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import styled from "styled-components"
+import { BecomeCoachWarningDialog } from "@/pages/client/edit-profile/user-data/BecomeCoachWarningDialog"
 
 export const EditClientProfilePage = () => (
   <ClientDashboardLayout>
     <ContentContainer>
       <Container>
+        <BecomeCoachWarningDialog />
         <UserProfile />
       </Container>
     </ContentContainer>
