@@ -14,6 +14,7 @@ import { CoachTopBar } from "@/components/layouts/behaviors/dashboards/coach/top
 import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 import { StartSessionDialog } from "@/feature/session/start-session-dialog/StartSessionDialog"
 import { CoachStartedSessionsToolbar } from "@/feature/session/started-sessions-toolbar"
+import { SessionCall } from "@/components/layouts/behaviors/dashboards/call/SessionCall"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -27,6 +28,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   return (
     <CoachTheme>
       <DashboardContainer {...props}>
+        <SessionCall />
         <StartSessionDialog />
         <CoachMenu />
         <ToastsContainer />
