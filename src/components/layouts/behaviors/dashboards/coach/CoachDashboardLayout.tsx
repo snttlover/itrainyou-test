@@ -14,11 +14,18 @@ import { CoachTopBar } from "@/components/layouts/behaviors/dashboards/coach/top
 import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 import { StartSessionDialog } from "@/feature/session/start-session-dialog/StartSessionDialog"
 import { CoachStartedSessionsToolbar } from "@/feature/session/started-sessions-toolbar"
-import { SessionCall } from "@/components/layouts/behaviors/dashboards/call/SessionCall"
+import { createSessionCall } from "@/components/layouts/behaviors/dashboards/call/SessionCall"
+import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 type DashboardTypes = {
   children: React.ReactChild
 }
+
+const call = createSessionCallModule({
+  dashboard: 'coach'
+})
+
+const SessionCall = createSessionCall(call)
 
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   const _changeDashboardType = useEvent(changeDashboardType)
@@ -27,8 +34,8 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   }, [])
   return (
     <CoachTheme>
+      <SessionCall />
       <DashboardContainer {...props}>
-        <SessionCall />
         <StartSessionDialog />
         <CoachMenu />
         <ToastsContainer />

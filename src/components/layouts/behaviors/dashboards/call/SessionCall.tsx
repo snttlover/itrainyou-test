@@ -1,30 +1,55 @@
 import React from "react"
 import styled from "styled-components"
 
-import enabledVideo from './images/enabled-video.svg'
-import disabledVideo from './images/disabled-video.svg'
-import enabledMicro from './images/enabled-micro.svg'
-import disabledMicro from './images/disabled-micro.svg'
-import enabledFullscreen from './images/enabled-fullscreen.svg'
-import disabledFullscreen from './images/disabled-fullscreen.svg'
+import { Icon } from "@/components/icon/Icon"
+import { Avatar } from "@/components/avatar/Avatar"
+import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { useStore, useEvent } from "effector-react/ssr"
 
-export const SessionCall = () => (
-  <Container>
-    <Call>
-      <Header>
-        <Time>Осталось: 25 минут</Time>
-      </Header>
-      <InterlocutorVideo id='InterlocutorVideo' />
-      <MyUserVideo id='MyUserVideo' />
+export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => () => {
 
-      <Actions>
-        <ToggleVideo />
-        <ToggleMicro />
-        <ToggleFullScreen />
-      </Actions>
-    </Call>
-  </Container>
-)
+  const visibility = useStore($module.data.$callsVisibility)
+
+  if (!visibility) {
+    return null
+  }
+
+  const interlocutor = useStore($module.data.$interlocutor)
+  const self = useStore($module.data.$self)
+
+  const close = useEvent($module.methods.close)
+
+  const changeMicro = useEvent($module.methods.changeMicro)
+  const changeVideo = useEvent($module.methods.changeVideo)
+  const changeFullScreen = useEvent($module.methods.changeFullScreen)
+
+  return (
+    <Container data-fullscreen={self.fullscreen}>
+      <Call>
+        <Header>
+          {
+            interlocutor.info && (
+              <User>
+                <StyledAvatar src={interlocutor.info.avatar} />
+                <Name>{interlocutor.info.name}</Name>
+              </User>
+            )
+          }
+          <Time>Осталось: 25 минут</Time>
+          <Close onClick={() => close()} />
+        </Header>
+        <InterlocutorVideo id='InterlocutorVideo' />
+        <MyUserVideo id='MyUserVideo' />
+
+        <Actions>
+          <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
+          <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
+          <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
+        </Actions>
+      </Call>
+    </Container>
+  )
+}
 
 const Header = styled.div`
   display: flex;
@@ -60,6 +85,63 @@ const InterlocutorVideo = styled.div`
 const MyUserVideo = styled.div`
   position: absolute;
   display: none;
+  background: #7d8185;
+`
+
+const Actions = styled.div`
+  position: absolute;
+  bottom: 4px;
+  width: 208px;
+  display: flex;
+  justify-content: space-between;
+  left: 50%;
+  transform: translateX(-50%);
+`
+
+type ActionIconTypes = {
+  active: boolean
+}
+
+const ActionIcon = styled(Icon)`
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+`
+
+const ToggleVideo = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
+  name: active ? "enabled-video" : "disabled-video",
+}))<ActionIconTypes>``
+const ToggleMicro = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
+  name: active ? "enabled-micro" : "disabled-micro",
+}))<ActionIconTypes>``
+const ToggleFullscreen = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
+  name: active ? "disabled-fullscreen" : "enabled-fullscreen",
+}))<ActionIconTypes>``
+
+const User = styled.div`
+  display: none;
+  align-items: center;
+`
+const StyledAvatar = styled(Avatar)`
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+`
+
+const Name = styled.div`
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffff;
+  margin-left: 4px;
+`
+
+const Close = styled(Icon).attrs({ name: `close` })`
+  width: 36px;
+  height: 36px;
+  display: none;
+  cursor: pointer;
+  fill: #fff;
 `
 
 const Container = styled.div`
@@ -69,25 +151,47 @@ const Container = styled.div`
   width: 240px;
   height: 160px;
   display: flex;
-`
+  background: #9aa0a6;
+  z-index: 200;
+  border-radius: 2px;
+  overflow: hidden;
 
-const Actions = styled.div`
+  &[data-fullscreen="true"] {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2000;
 
-`
-
-const ActionIcon = (inactiveImage: string, activatedImage: string) => {
-  return styled.div`
-    background: url("${inactiveImage}") no-repeat;
-    background-size: cover;
-    background-position: center center;
-    &[data-activated="true"] {
-      background: url("${activatedImage}") no-repeat;
+    ${Header} {
+      padding: 4px 20px;
+      justify-content: space-between;
     }
-  `
-}
+    ${User} {
+      display: flex;
+    }
+    ${Close} {
+      display: flex;
+    }
+    ${MyUserVideo} {
+      display: flex;
 
-const ToggleVideo = ActionIcon(enabledVideo, disabledVideo)
-
-const ToggleMicro = ActionIcon(enabledMicro, disabledMicro)
-
-const ToggleFullScreen = ActionIcon(enabledFullscreen, disabledFullscreen)
+      width: 240px;
+      height: 160px;
+      box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+      border-radius: 2px;
+      position: absolute;
+      right: 20px;
+      bottom: 16px;
+    }
+    ${Actions} {
+      bottom: 16px;
+    }
+    ${ActionIcon} {
+      width: 52px;
+      height: 52px;
+    }
+  }
+`
