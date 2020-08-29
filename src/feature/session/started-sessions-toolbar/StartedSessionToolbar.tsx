@@ -2,13 +2,13 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
-import { useList, useStore } from "effector-react/ssr"
-import { useEvent } from "effector-react"
+import { useEvent, useList } from "effector-react"
 
 export const createStartedSessionsToolbar = ($model: ReturnType<typeof createStartSessionToolbarModel>) => {
   return () => {
     const load = useEvent($model.methods.load)
     const reset = useEvent($model.methods.reset)
+    const connectToSession = useEvent($model.methods.connectToSession)
 
     useEffect(() => {
       load()
@@ -27,7 +27,7 @@ export const createStartedSessionsToolbar = ($model: ReturnType<typeof createSta
               </User>
               <Info>
                 <Time>{session.time}</Time>
-                <StartButton>Зайти в сессию</StartButton>
+                <StartButton onClick={() => connectToSession(session.id)}>Зайти в сессию</StartButton>
               </Info>
             </Toolbar>
           </Container>

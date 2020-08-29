@@ -1,55 +1,86 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 
 import { Icon } from "@/components/icon/Icon"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react"
 
-export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => () => {
+export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
+  return () => {
+    const play = useEvent($module.methods.play)
 
-  const visibility = useStore($module.data.$callsVisibility)
+    useEffect(() => {
+      play()
+      return () => {}
+    }, [])
 
-  if (!visibility) {
-    return null
-  }
+    const interlocutor = useStore($module.data.$interlocutor)
+    const self = useStore($module.data.$self)
 
-  const interlocutor = useStore($module.data.$interlocutor)
-  const self = useStore($module.data.$self)
+    const close = useEvent($module.methods.close)
 
-  const close = useEvent($module.methods.close)
+    const changeMicro = useEvent($module.methods.changeMicro)
+    const changeVideo = useEvent($module.methods.changeVideo)
+    const changeFullScreen = useEvent($module.methods.changeFullScreen)
 
-  const changeMicro = useEvent($module.methods.changeMicro)
-  const changeVideo = useEvent($module.methods.changeVideo)
-  const changeFullScreen = useEvent($module.methods.changeFullScreen)
+    const visibility = useStore($module.data.$callsVisibility)
 
-  return (
-    <Container data-fullscreen={self.fullscreen}>
-      <Call>
-        <Header>
-          {
-            interlocutor.info && (
+    return (
+      <Container
+        data-interlocutor-is-connected={interlocutor.connected}
+        data-interlocutor-was-connected={interlocutor.wasConnected}
+        data-visibility={visibility}
+        data-fullscreen={self.fullscreen}
+      >
+        <Call>
+          <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
+          <NotConnected>Собеседник еще не присоединился</NotConnected>
+          <Header>
+            {interlocutor.info && (
               <User>
                 <StyledAvatar src={interlocutor.info.avatar} />
                 <Name>{interlocutor.info.name}</Name>
               </User>
-            )
-          }
-          <Time>Осталось: 25 минут</Time>
-          <Close onClick={() => close()} />
-        </Header>
-        <InterlocutorVideo id='InterlocutorVideo' />
-        <MyUserVideo id='MyUserVideo' />
+            )}
+            <Time>Осталось: 25 минут</Time>
+            <Close onClick={() => close()} />
+          </Header>
+          <InterlocutorVideo id='InterlocutorVideo' />
+          <MyUserVideo id='MyUserVideo' />
 
-        <Actions>
-          <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
-          <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
-          <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
-        </Actions>
-      </Call>
-    </Container>
-  )
+          <Actions>
+            <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
+            <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
+            <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
+          </Actions>
+        </Call>
+      </Container>
+    )
+  }
 }
+
+const Tooltip = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50px;
+
+  background: rgba(66, 66, 66, 0.8);
+  border-radius: 2px;
+  padding: 8px 12px;
+
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+  display: none;
+  z-index: 3;
+  text-align: center;
+  width: 100%;
+`
+
+const WasNotConnected = styled(Tooltip)``
+const NotConnected = styled(Tooltip)``
 
 const Header = styled.div`
   display: flex;
@@ -60,6 +91,7 @@ const Header = styled.div`
   left: 0;
   top: 0;
   width: 100%;
+  z-index: 1;
 `
 
 const Time = styled.div`
@@ -156,6 +188,10 @@ const Container = styled.div`
   border-radius: 2px;
   overflow: hidden;
 
+  &[data-visibility="false"] {
+    display: none !important;
+  }
+
   &[data-fullscreen="true"] {
     width: 100%;
     height: 100%;
@@ -164,6 +200,9 @@ const Container = styled.div`
     bottom: 0;
     right: 0;
     z-index: 2000;
+    ${Tooltip} {
+      max-width: 259px;
+    }
 
     ${Header} {
       padding: 4px 20px;
@@ -192,6 +231,33 @@ const Container = styled.div`
     ${ActionIcon} {
       width: 52px;
       height: 52px;
+    }
+  }
+
+  &[data-interlocutor-was-connected="false"],
+  &[data-interlocutor-is-connected="false"] {
+    ${MyUserVideo} {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: unset;
+      bottom: unset;
+      display: flex;
+    }
+  }
+  &[data-interlocutor-is-connected="false"] {
+    ${NotConnected} {
+      display: flex;
+    }
+  }
+  &[data-interlocutor-was-connected="false"] {
+    ${WasNotConnected} {
+      display: flex;
+    }
+    ${NotConnected} {
+      display: none !important;
     }
   }
 `

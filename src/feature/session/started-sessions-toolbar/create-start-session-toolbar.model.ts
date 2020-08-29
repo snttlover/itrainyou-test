@@ -1,11 +1,12 @@
-import { ISODate, Pagination } from "@/lib/api/interfaces/utils.interface"
+import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
-import { createEffect, createEvent, forward, restore } from "effector-root"
+import { createEffect, createEvent, forward, restore, Event } from "effector"
 import { date } from "@/lib/formatting/date"
 
 type CreateStartSessionToolbarModelConfig = {
   type: "coach" | "client"
   fetchSessions: () => Promise<DashboardSession[]>
+  connect: Event<number>
 }
 
 const formatDates = (start: ISODate, end: ISODate) => {
@@ -29,6 +30,7 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
       const user = config.type === `coach` ? session.clients[0] : session.coach
 
       return {
+        id: session.id,
         name: `${user.firstName} ${user.lastName}`,
         avatar: user.avatar,
         time: formatDates(session.startDatetime, session.endDatetime),
@@ -52,7 +54,8 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
     },
     methods: {
       load,
-      reset
+      reset,
+      connectToSession: config.connect
     }
   }
 }

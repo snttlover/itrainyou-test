@@ -11,7 +11,7 @@ export interface VideoTokenData {
   extraTimeMinutes: number
 }
 
-export const getCoachSessionVideoToken = (id: number): Promise<VideoTokenData> =>
-  get(`${config.BACKEND_URL}/api/v1/web/coach/sessions/${id}/video-chat-token/`)
+export const getClientSessionVideoToken = (id: number): Promise<VideoTokenData> =>
+  get(`${config.BACKEND_URL}/api/v1/web/client/sessions/${id}/video-chat-token/`)
     .then(response => response.data)
     .then(keysToCamel)
