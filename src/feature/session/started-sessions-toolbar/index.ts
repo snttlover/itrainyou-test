@@ -7,7 +7,7 @@ import { clientCall, coachCall } from "@/components/layouts/behaviors/dashboards
 const coachSessionsToolbarModel = createStartSessionToolbarModel({
   type: "coach",
   fetchSessions: () => getDashboardSessions({ excludePast: true }),
-  connect: coachCall.methods.connectToSession
+  sessionCallModule: coachCall
 })
 
 export const CoachStartedSessionsToolbar = createStartedSessionsToolbar(coachSessionsToolbarModel)
@@ -15,7 +15,7 @@ export const CoachStartedSessionsToolbar = createStartedSessionsToolbar(coachSes
 const clientSessionsToolbarModel = createStartSessionToolbarModel({
   type: "client",
   fetchSessions: () => getClientSessions({ excludePast: true }).then(pagnation => pagnation.results),
-  connect: clientCall.methods.connectToSession
+  sessionCallModule: clientCall
 })
 
 export const ClientStartedSessionsToolbar = createStartedSessionsToolbar(clientSessionsToolbarModel)

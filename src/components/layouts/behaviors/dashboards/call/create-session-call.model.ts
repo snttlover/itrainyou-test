@@ -26,9 +26,9 @@ const agoraHandleFail = (e: any, payload?: any) => {
 }
 
 let agoraLib: any = null
-try {
+if (process.env.BUILD_TARGET === 'client') {
   agoraLib = require("agora-rtc-sdk")
-} catch (e) {}
+}
 
 export const createSessionCallModule = (config: CreateSessionCallModuleConfig) => {
   const reset = createEvent()
@@ -38,10 +38,10 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const $interculatorWasConnected = restore(changeInterculatorWasConnected, false).reset(reset)
 
   const changeInterlocutorVideoStatus = createEvent<boolean>()
-  const $interlocutorVideoStatus = restore(changeInterlocutorVideoStatus, false).reset(reset)
+  const $interlocutorVideoStatus = restore(changeInterlocutorVideoStatus, true).reset(reset)
 
   const changeInterlocutorMicrophoneStatus = createEvent<boolean>()
-  const $interlocutorMicrophoneStatus = restore(changeInterlocutorMicrophoneStatus, false).reset(reset)
+  const $interlocutorMicrophoneStatus = restore(changeInterlocutorMicrophoneStatus, true).reset(reset)
 
   const changeInterculatorIsConnected = createEvent<boolean>()
   const $interculatorIsConnected = restore(changeInterculatorIsConnected, false).reset(reset)
@@ -56,7 +56,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         if (player) {
           player.innerHTML = ""
         }
-        agoraData.remoteStream.play(`InterlocutorVideo`, { fit: "contain" })
+        agoraData.remoteStream.play(`InterlocutorVideo`, { fit: "cover" })
       }
       if (agoraData.localStream) {
         if (agoraData.localStream.isPlaying()) {
@@ -80,6 +80,10 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(reset)
 
+  changeSessionId.watch((data) => {
+    console.log(data)
+  })
+
   const initAgoraFx = createEffect({
     handler: () => {
       if (agoraLib) {
@@ -94,9 +98,21 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           agoraData.client && agoraData.client.subscribe(e.stream)
         })
 
-        agoraData.client.on('stream-removed', (e) => {
-          changeInterculatorIsConnected(false)
+        agoraData.client.on(`peer-leave`, (e) => {
+          if (e.uid === agoraData.remoteStream?.getId()) {
+            changeInterculatorIsConnected(false)
+            agoraData.remoteStream = null
+            const player = document.getElementById(`InterlocutorVideo`)
+            if (player) {
+              player.innerHTML = ""
+            }
+          }
         })
+
+        agoraData.client.on('mute-audio', () => changeInterlocutorMicrophoneStatus(false))
+        agoraData.client.on('unmute-audio', () => changeInterlocutorMicrophoneStatus(true))
+        agoraData.client.on('mute-video', () => changeInterlocutorVideoStatus(false))
+        agoraData.client.on('unmute-video', () => changeInterlocutorVideoStatus(true))
 
         agoraData.client.on(`stream-subscribed`, e => {
           agoraData.remoteStream = e.stream
@@ -291,6 +307,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   return {
     data: {
+      $sessionId,
       $callsVisibility,
       $self,
       $interlocutor,

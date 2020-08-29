@@ -40,6 +40,7 @@ export type IconName =
   | "disabled-micro"
   | "enabled-fullscreen"
   | "disabled-fullscreen"
+  | "disabled-interlocutor-micro"
   | "calendar"
   | "contacts"
   | "star"
