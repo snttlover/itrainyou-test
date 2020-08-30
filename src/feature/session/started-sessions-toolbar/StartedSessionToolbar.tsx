@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
 import { useEvent, useList } from "effector-react/ssr"
+import { MediaRange } from "@/lib/responsive/media"
 
 export const createStartedSessionsToolbar = ($model: ReturnType<typeof createStartSessionToolbarModel>) => {
   return () => {
@@ -43,6 +44,9 @@ const Toolbar = styled.div`
   max-width: 1060px;
   width: 100%;
   padding: 0 40px;
+  ${MediaRange.lessThan(`tablet`)`
+      padding: 0;
+  `}
 `
 
 const Container = styled.div`
@@ -51,12 +55,19 @@ const Container = styled.div`
   color: #ffffff;
   display: flex;
   justify-content: center;
+  ${MediaRange.lessThan(`mobile`)`
+      padding: 10px;
+  `}
 `
 
 const StartedText = styled.div`
   font-size: 16px;
   line-height: 22px;
+  ${MediaRange.lessThan(`mobile`)`
+      display: none;
+  `}
 `
+
 const User = styled.div`
   display: flex;
   align-items: center;
@@ -70,6 +81,9 @@ const Name = styled.div`
 
   font-size: 16px;
   line-height: 22px;
+  ${MediaRange.lessThan(`mobile`)`
+      display: none;
+  `}
 `
 const Info = styled.div`
   display: flex;
@@ -80,6 +94,12 @@ const Time = styled.div`
   font-size: 20px;
   line-height: 26px;
   margin-right: 20px;
+  ${MediaRange.lessThan(`mobile`)`
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    margin-right: 7px;
+  `}
 `
 const StartButton = styled.div`
   background: #fff;
