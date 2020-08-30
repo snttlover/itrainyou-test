@@ -11,6 +11,8 @@ import { ToastsContainer } from "@/components/layouts/behaviors/dashboards/commo
 import { DashboardContainer } from "@/components/layouts/behaviors/dashboards/common/DashboardContainer"
 import { DashboardContent } from "@/components/layouts/behaviors/dashboards/common/DashboardPageContent"
 import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
+import { ClientStartedSessionsToolbar } from "@/feature/session/started-sessions-toolbar"
+import { ClientSessionCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -24,10 +26,12 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
 
   return (
     <DashboardContainer {...props}>
+      <ClientSessionCall />
       <ClientMenu />
       <ToastsContainer />
       <DashboardContent>
         <ClientTopBar />
+        <ClientStartedSessionsToolbar />
         <DashboardPageWrapper>{children}</DashboardPageWrapper>
       </DashboardContent>
     </DashboardContainer>

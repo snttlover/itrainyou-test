@@ -6,9 +6,7 @@ import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn, $userData } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
-import { combineEvents } from "patronum"
 import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 type SendSocketChatMessage = {
   chat: number

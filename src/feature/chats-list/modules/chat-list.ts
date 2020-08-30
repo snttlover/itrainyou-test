@@ -11,12 +11,14 @@ import dayjs from "dayjs"
 import { chatSessionIsStarted } from "@/feature/chats-list/modules/chat-session-is-started"
 import { logout } from "@/lib/network/token"
 import { config as globalConfig } from "@/config"
+import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
   fetchChatsListMethod: PaginationFetchMethod<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   getChat: (id: number) => Promise<PersonalChat>
+  sessionCallModule: ReturnType<typeof createSessionCallModule>
 }
 
 type ChatListMessage = ChatMessage & { messageInChatList: boolean }
@@ -149,7 +151,8 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     pagination.data.$list,
     $tickTime,
     config.socket.data.$chatsCounters,
-    (chats, time, counters) => {
+    config.sessionCallModule.data.$sessionId,
+    (chats, time, counters, currentSessionCallId) => {
       return chats
         .filter((chat, index) => chats.findIndex(c => c.id === chat.id) === index)
         .sort((chatA, chatB) => (getChatDate(chatA) > getChatDate(chatB) ? -1 : 1))
@@ -171,6 +174,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
             : ``
 
           return {
+            id: chat.id,
             type: chat.type,
             link: `/${config.type}/chats/${chat.id}`,
             avatar: interlocutor?.avatar || null,
@@ -180,6 +184,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
             newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
             materialCount: chat.materialsCount,
             isStarted: chatSessionIsStarted(chat),
+            startSession: config.sessionCallModule.methods.connectToSession,
             lastMessage: chat.lastMessage?.text || ``,
             lastMessageIsMine,
             highlightMessages: !!newMessagesCounter,

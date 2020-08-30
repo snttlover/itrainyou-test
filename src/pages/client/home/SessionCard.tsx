@@ -2,7 +2,7 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { GrayTooltip } from "@/components/gray-tooltip/GrayTooltip"
 import { Icon } from "@/components/icon/Icon"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
-import { ClientSession } from "@/lib/api/client-session"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
@@ -114,7 +114,7 @@ const SessionTime = styled.p`
   `}
 `
 
-type SessionCardProps = { session: ClientSession; children?: React.ReactNode; className?: string }
+type SessionCardProps = { session: DashboardSession; children?: React.ReactNode; className?: string }
 
 export const SessionCard = ({ session, children, className }: SessionCardProps) => {
   const now = date()

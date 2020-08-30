@@ -4,6 +4,7 @@ import { Pagination } from "@/lib/api/interfaces/utils.interface"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
 import { CoachUser } from "@/lib/api/coach"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 
 export interface GetClientSessionsParams {
   startDate?: string
@@ -11,21 +12,8 @@ export interface GetClientSessionsParams {
   excludePast?: boolean
 }
 
-export interface ClientSession {
-  id: number
-  coach: CoachUser
-  clientPrice: string
-  coachPrice: string
-  startDatetime: string
-  endDatetime: string
-  durationType: string
-  translationUrl: string
-  recordingUrl: string
-  materials: string[]
-}
-
 export const getClientSessions = (params: GetClientSessionsParams) =>
-  get<Pagination<ClientSession>, GetClientSessionsParams>(
+  get<Pagination<DashboardSession>, GetClientSessionsParams>(
     `${config.BACKEND_URL}/api/v1/web/clients/me/sessions/`,
     keysToSnake(params)
   )
