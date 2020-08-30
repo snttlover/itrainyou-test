@@ -1,4 +1,3 @@
-import { routeNames } from "@/pages/route-names"
 import React from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
@@ -7,8 +6,11 @@ import { Button } from "@/components/button/normal/Button"
 import { ChatLinkMaterials } from "@/feature/chats-list/view/components/list/chat-link/ChatLinkMaterials"
 import { Link } from "react-router-dom"
 import { ChatTypes } from "@/lib/api/chats/clients/get-chats"
+import {Event} from "effector"
+import { useEvent } from "effector-react"
 
 export type ChatLinkTypes = {
+  id: number,
   type: ChatTypes
   userLink: string
   link: string
@@ -22,44 +24,54 @@ export type ChatLinkTypes = {
   lastMessageIsMine: boolean
   highlightMessages: boolean
   sessionTextStatus: string
+  startSession: Event<number>
 }
 
-export const ChatLink = (props: ChatLinkTypes) => (
-  <Container to={props.link}>
-    <MessageColumn data-message-is-not-mine={props.highlightMessages}>
-      <Link to={props.userLink}>
-        <StyledAvatar src={props.avatar} />
-      </Link>
-      <MessageContent>
-        <UserName>{props.name}</UserName>
-        <LastMessage data-is-mine={props.lastMessage}>
-          {props.lastMessageIsMine && `Вы: `}
-          {props.lastMessage}
-        </LastMessage>
-      </MessageContent>
-      <MessageInfo>
-        <Time>{props.startTime}</Time>
-        <Counter data-hide={!props.newMessagesCount}>{props.newMessagesCount}</Counter>
-      </MessageInfo>
-    </MessageColumn>
-    <ActionsColumn>
-      <ActionsHeader>
-        <VideoIcon />
-        <SessionStatus>{props.sessionTextStatus}</SessionStatus>
-        {!!props.materialCount && <MobileMaterials>{props.materialCount}</MobileMaterials>}
-      </ActionsHeader>
-      <ActionsFooter>
-        {!!props.newMessagesCount && <Materials>{props.materialCount}</Materials>}
-        {props.isStarted && (
-          <ActionsButtons>
-            <SessionButton data-slim>Зайти в сессию</SessionButton>
-            <MobileSessionButton>Зайти в сессию</MobileSessionButton>
-          </ActionsButtons>
-        )}
-      </ActionsFooter>
-    </ActionsColumn>
-  </Container>
-)
+export const ChatLink = (props: ChatLinkTypes) => {
+  const startSession = useEvent(props.startSession)
+
+  const startSessionHandler = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    startSession(props.id)
+  }
+
+  return (
+    <Container to={props.link}>
+      <MessageColumn data-message-is-not-mine={props.highlightMessages}>
+        <Link to={props.userLink}>
+          <StyledAvatar src={props.avatar} />
+        </Link>
+        <MessageContent>
+          <UserName>{props.name}</UserName>
+          <LastMessage data-is-mine={props.lastMessage}>
+            {props.lastMessageIsMine && `Вы: `}
+            {props.lastMessage}
+          </LastMessage>
+        </MessageContent>
+        <MessageInfo>
+          <Time>{props.startTime}</Time>
+          <Counter data-hide={!props.newMessagesCount}>{props.newMessagesCount}</Counter>
+        </MessageInfo>
+      </MessageColumn>
+      <ActionsColumn>
+        <ActionsHeader>
+          <VideoIcon />
+          <SessionStatus>{props.sessionTextStatus}</SessionStatus>
+          {!!props.materialCount && <MobileMaterials>{props.materialCount}</MobileMaterials>}
+        </ActionsHeader>
+        <ActionsFooter>
+          {!!props.newMessagesCount && <Materials>{props.materialCount}</Materials>}
+          {props.isStarted && (
+            <ActionsButtons onClick={startSessionHandler}>
+              <SessionButton data-slim>Зайти в сессию</SessionButton>
+              <MobileSessionButton>Зайти в сессию</MobileSessionButton>
+            </ActionsButtons>
+          )}
+        </ActionsFooter>
+      </ActionsColumn>
+    </Container>
+  )
+}
 
 const ActionsButtons = styled.div`
   display: flex;

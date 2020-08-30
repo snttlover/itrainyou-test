@@ -4,7 +4,7 @@ import styled, { css } from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { useStore, useEvent } from "effector-react"
+import { useStore, useEvent } from "effector-react/ssr"
 import { MediaRange } from "@/lib/responsive/media"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
@@ -26,6 +26,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const changeFullScreen = useEvent($module.methods.changeFullScreen)
 
     const visibility = useStore($module.data.$callsVisibility)
+    const time = useStore($module.data.$time)
 
     return (
       <Container
@@ -45,7 +46,14 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                 <Name>{interlocutor.info.name}</Name>
               </User>
             )}
-            <Time>Осталось: 25 минут</Time>
+            <Time>
+              {time.minutesLeft && (
+                <>
+                  <TimeLeftLabel>Осталось:</TimeLeftLabel>
+                  <TimeLeft data-terminate={time.isCloseToTerminate}>{time.minutesLeft} минут</TimeLeft>
+                </>
+              )}
+            </Time>
             <Close onClick={() => close()} />
           </Header>
           <InterlocutorVideo id='InterlocutorVideo' />
@@ -112,6 +120,8 @@ const Time = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #ffffff;
+  display: flex;
+  align-items: center;
 `
 
 const Call = styled.div`
@@ -234,6 +244,13 @@ const Close = styled(Icon).attrs({ name: `close` })`
   display: none;
   cursor: pointer;
   fill: #fff;
+`
+
+const TimeLeftLabel = styled.div``
+const TimeLeft = styled.div`
+  &[data-terminate="true"] {
+    color: #ffa666;
+  }
 `
 
 const fullscreenCSS = css`

@@ -1,4 +1,4 @@
-import { combine, createEffect, createEvent, forward, guard, restore } from "effector"
+import { combine, createEffect, createEvent, forward, guard, restore } from "effector-root"
 import { getCoachSessionVideoToken, VideoTokenData } from "@/lib/api/coach/get-session-video-token"
 import { getCoachSession, SessionInfo } from "@/lib/api/coach/get-session"
 import { Client } from "@/lib/api/client/clientInfo"
@@ -8,6 +8,7 @@ import { config as appConfig } from "@/config"
 import { $isClient } from "@/lib/effector"
 import { getClientSessionVideoToken } from "@/lib/api/client/get-session-video-token"
 import { getClientSession } from "@/lib/api/client/get-client-session"
+import { date } from "@/lib/formatting/date"
 
 type CreateSessionCallModuleConfig = {
   dashboard: "client" | "coach"
@@ -196,6 +197,20 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: [changeSessionId, getTokenDataFx, getSessionDataFx],
   })
 
+  const $sessionTokenData = restore<VideoTokenData>(getTokenDataFx.doneData, null).reset(reset)
+  const $minutesLeft = $sessionTokenData.map(data => {
+    if (!data) {
+      return false
+    }
+    return date(data.sessionTerminationDatetime).diff(date(), "minute") + 1
+  })
+  const $isCloseToTerminate = combine($sessionTokenData, $minutesLeft, (tokenData, minutes) => {
+    if (!tokenData || !minutes) {
+      return false
+    }
+    return minutes < tokenData.extraTimeMinutes
+  })
+
   forward({
     from: getTokenDataFx.doneData,
     to: agoraConnectFx,
@@ -280,6 +295,12 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: changeInterlocutor,
   })
 
+  guard({
+    source: $minutesLeft,
+    filter: minutes => minutes !== false && minutes <= 0,
+    target: close
+  })
+
   const $transformedInterlocutor = $interlocutorData.map(user =>
     user ? { avatar: user.avatar, name: `${user.firstName} ${user.lastName}` } : null
   )
@@ -305,12 +326,18 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     })
   )
 
+  const $time = combine($minutesLeft, $isCloseToTerminate, (minutesLeft, isCloseToTerminate) => ({
+    minutesLeft,
+    isCloseToTerminate
+  }))
+
   return {
     data: {
       $sessionId,
       $callsVisibility,
       $self,
       $interlocutor,
+      $time
     },
     methods: {
       play,

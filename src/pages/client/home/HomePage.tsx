@@ -20,6 +20,7 @@ import {
 } from "./home.model"
 import React, { useEffect } from "react"
 import styled from "styled-components"
+import { clientCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 const Block = styled.div`
   position: relative;
@@ -94,6 +95,13 @@ export const HomePage = () => {
     _mounted()
   }, [])
 
+  const startSession = useEvent(clientCall.methods.connectToSession)
+
+  const startSessionClickHandler = (e: React.SyntheticEvent, sessionId: number) => {
+    startSession(sessionId)
+    e.preventDefault()
+  }
+
   return (
     <ClientDashboardLayout>
       <ContentContainer>
@@ -102,8 +110,10 @@ export const HomePage = () => {
             <Title>Сессия уже началась!</Title>
             {activeSessions.map(session => (
               <ActiveSessionCard session={session} key={session.id}>
-                <SessionEnterButton data-slim>Зайти в сессию</SessionEnterButton>
-                <SessionEnterText>Зайти в сессию</SessionEnterText>
+                <div onClick={(e) => startSessionClickHandler(e, session.id)}>
+                  <SessionEnterButton data-slim>Зайти в сессию</SessionEnterButton>
+                  <SessionEnterText>Зайти в сессию</SessionEnterText>
+                </div>
               </ActiveSessionCard>
             ))}
             {activeSessionsPending && <Loader />}

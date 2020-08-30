@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
-import { useEvent, useList } from "effector-react"
+import { useEvent, useList } from "effector-react/ssr"
 
 export const createStartedSessionsToolbar = ($model: ReturnType<typeof createStartSessionToolbarModel>) => {
   return () => {

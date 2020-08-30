@@ -9,6 +9,7 @@ export const $startedSessionsList = $activeCoachSessions.map(sessions => {
     const endDate = date(session.endDatetime)
     const isStartIsNowDay = now.isSame(startDate, "d")
     return {
+      id: session.id,
       link: `/coach/sessions/${session.id}`,
       avatar: client.avatar,
       name: `${client.firstName} ${client.lastName}`,
