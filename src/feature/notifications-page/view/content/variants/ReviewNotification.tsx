@@ -39,5 +39,6 @@ const GradeWrapper = styled.div`
 `
 
 const Review = styled(Title)`
-  margin-top: 12px;
+  margin-top: 12px !important;
+  margin-left: 0 !important;
 `
