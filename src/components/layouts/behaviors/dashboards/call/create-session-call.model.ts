@@ -81,10 +81,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(reset)
 
-  changeSessionId.watch((data) => {
-    console.log(data)
-  })
-
   const initAgoraFx = createEffect({
     handler: () => {
       if (agoraLib) {

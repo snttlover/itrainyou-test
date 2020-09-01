@@ -19,12 +19,12 @@ type NotificationCommon = {
   creationDatetime: ISODate
 }
 
-type SessionsRemindNotification = {
-  type: 'TOMORROW_SESSIONS_REMINDER'
+export type SessionsRemindNotificationType = {
+  type: 'SESSION_REMINDER'
   sessions: DashboardSession[]
 }
 
-type ReviewNotification = {
+export type ReviewNotificationType = {
   type: 'NEW_REVIEW'
   review: {
     id: number
@@ -36,12 +36,12 @@ type ReviewNotification = {
   }
 }
 
-type NewCoachNotification = {
+export type NewCoachNotificationType = {
   type: 'NEW_COACH'
   newCoach: CoachUser
 }
 
-export type Notifications = (SessionsRemindNotification | ReviewNotification | NewCoachNotification) & NotificationCommon
+export type Notifications = (SessionsRemindNotificationType | ReviewNotificationType | NewCoachNotificationType) & NotificationCommon
 
 export const getClientNotifications = (pagination: GetNotificationsQuery) =>
   get<Pagination<Notifications>>(`${config.BACKEND_URL}/api/v1/web/client/notifications/`, keysToSnake(pagination))

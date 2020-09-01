@@ -2,14 +2,17 @@ import { createPagination } from "@/feature/pagination"
 import { GetNotificationsQuery, Notifications } from "@/lib/api/client/get-notifications"
 import { Pagination } from "@/lib/api/interfaces/utils.interface"
 import { date } from "@/lib/formatting/date"
+import { createEvent, forward } from "effector-root"
 
 
 type CreateNotificationsPageModelConfig = {
-  type: "coach" | "client"
   fetchNotifications: (params: GetNotificationsQuery) => Promise<Pagination<Notifications>>
 }
 
 export const createNotificationsPageModel = (config: CreateNotificationsPageModelConfig) => {
+  const mounted = createEvent()
+  const reset = createEvent()
+
   const pagination = createPagination({
     fetchMethod: config.fetchNotifications,
   })
@@ -33,6 +36,16 @@ export const createNotificationsPageModel = (config: CreateNotificationsPageMode
     }
   }))
 
+  forward({
+    from: reset,
+    to: pagination.methods.reset
+  })
+
+  forward({
+    from: mounted,
+    to: pagination.methods.loadMore
+  })
+
   return {
     data: {
       $notifications
@@ -40,5 +53,9 @@ export const createNotificationsPageModel = (config: CreateNotificationsPageMode
     modules: {
       pagination,
     },
+    methods: {
+      mounted,
+      reset
+    }
   }
 }

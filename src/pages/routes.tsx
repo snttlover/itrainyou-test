@@ -31,6 +31,7 @@ import { ClientSessionPage } from "@/pages/client/session/ClientSessionPage"
 import { CoachSessionPage } from "@/pages/coach/session/CoachSessionPage"
 import { EditClientProfilePage } from "@/pages/client/edit-profile/EditClientProfile"
 import { ClientNotificationsPage } from "@/pages/client/notifications/ClientNotificationsPage"
+import { CoachNotificationsPage } from "@/pages/coach/notifications/CoachNotificationsPage"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -56,7 +57,12 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: routeNames.clientNotifications(),
-    component: ClientNotificationsPage
+    component: ClientNotificationsPage,
+  },
+
+  {
+    path: routeNames.coachNotifications(),
+    component: CoachNotificationsPage,
   },
 
   {

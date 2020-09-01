@@ -9,7 +9,7 @@ export const routeNames = {
   resetPassword: (token: string) => `/reset-password/${token}`,
 
   client: () => `/client`,
-  clientNotifications: () => '/client/notifications',
+  clientNotifications: () => '/client/notifications-page',
   clientSession: (id: string) => `/client/sessions/${id}`,
   clientProfile: () => `/client/profile`,
   clientProfileEdit: () => `/client/profile/edit`,
