@@ -30,6 +30,7 @@ import { NotFound } from "@/feature/not-found/components/NotFound"
 import { ClientSessionPage } from "@/pages/client/session/ClientSessionPage"
 import { CoachSessionPage } from "@/pages/coach/session/CoachSessionPage"
 import { EditClientProfilePage } from "@/pages/client/edit-profile/EditClientProfile"
+import { ClientNotificationsPage } from "@/pages/client/notifications/ClientNotificationsPage"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -52,6 +53,10 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.login(),
     component: LoginPage,
+  },
+  {
+    path: routeNames.clientNotifications(),
+    component: ClientNotificationsPage
   },
 
   {
