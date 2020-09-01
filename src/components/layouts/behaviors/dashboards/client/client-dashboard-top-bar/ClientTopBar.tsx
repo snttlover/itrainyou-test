@@ -6,6 +6,8 @@ import { CategoriesPicker } from "@/pages/landing/content/top-bar/categories-pic
 import { Search } from "@/pages/landing/content/top-bar/search/Search"
 import { ClientTopBarIconButtons } from "@/components/layouts/behaviors/dashboards/client/client-dashboard-top-bar/ClientTopBarIconButtons"
 import { Logo } from "@/pages/landing/content/top-bar/logo/Logo"
+import { useStore } from "effector-react/ssr"
+import { coachChatsSocket } from "@/feature/socket/chats-socket"
 
 const StyledLogo = styled(Logo)`
   margin-right: 40px;
@@ -63,17 +65,19 @@ const StyledSearch = styled(Search)`
   }
 `
 
-export const ClientTopBar = () => (
-  <Container>
-    <StyledContainer>
-      <Link to='/client'>
-        <StyledLogo />
-      </Link>
-      <SearchWrapper>
-        <StyledCategoriesPicker />
-        <StyledSearch />
-      </SearchWrapper>
-      <ClientTopBarIconButtons />
-    </StyledContainer>
-  </Container>
-)
+export const ClientTopBar = () => {
+  return (
+    <Container>
+      <StyledContainer>
+        <Link to='/client'>
+          <StyledLogo />
+        </Link>
+        <SearchWrapper>
+          <StyledCategoriesPicker />
+          <StyledSearch />
+        </SearchWrapper>
+        <ClientTopBarIconButtons />
+      </StyledContainer>
+    </Container>
+  )
+}

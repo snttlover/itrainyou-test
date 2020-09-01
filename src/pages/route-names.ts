@@ -9,6 +9,7 @@ export const routeNames = {
   resetPassword: (token: string) => `/reset-password/${token}`,
 
   client: () => `/client`,
+  clientNotifications: () => '/client/notifications-page',
   clientSession: (id: string) => `/client/sessions/${id}`,
   clientProfile: () => `/client/profile`,
   clientProfileEdit: () => `/client/profile/edit`,
@@ -17,6 +18,7 @@ export const routeNames = {
   clientChat: (id: string) => `/client/chats/${id}`,
 
   coach: () => `/coach`,
+  coachNotifications: () => '/coach/notifications',
   coachProfile: () => `/coach/profile`,
   coachSessionsHistory: () => `/coach/profile/sessions-history`,
   coachProfileEdit: () => `/coach/profile/edit`,

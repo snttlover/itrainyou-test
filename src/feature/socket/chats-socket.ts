@@ -1,12 +1,13 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
-import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect } from "effector-root"
+import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect, restore } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn, $userData } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
+import { create } from "domain"
 
 type SendSocketChatMessage = {
   chat: number
@@ -24,7 +25,7 @@ type ChatCounter = {
 
 type InitMessage = {
   type: `INIT`
-  data: { unreadChats: ChatCounter[] }
+  data: { unreadChats: ChatCounter[]; newNotificationsCount: number }
 }
 
 type MessagesReadDone = {
@@ -78,6 +79,14 @@ export const createChatsSocket = (userType: UserType) => {
     changeCountersFromInit,
     (_, message) => message.data.unreadChats
   )
+
+  const changeNotificationsCounter = createEvent<number>()
+  const $notificationsCounter = restore(changeNotificationsCounter, 0)
+
+  forward({
+    from: changeCountersFromInit.map(res => res.data.newNotificationsCount),
+    to: changeNotificationsCounter,
+  })
 
   const onIntercMessage = createEvent<WriteChatMessageDone>()
 
@@ -172,6 +181,7 @@ export const createChatsSocket = (userType: UserType) => {
     data: {
       $chatsCount,
       $chatsCounters,
+      $notificationsCounter
     },
     events: {
       ...socket.events,

@@ -32,7 +32,6 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
   )
 
   const $sessions = combine($sessionsList, $lastCallId, (sessions, currentSessionCall) => {
-    console.log(currentSessionCall)
     return sessions
       .filter(session => session.id !== currentSessionCall)
       .filter(isStartedSession)
