@@ -11,6 +11,8 @@ import { $userData } from "@/feature/user/user.model"
 import { Logo } from "@/pages/landing/content/top-bar/logo/Logo"
 import * as React from "react"
 import { Link } from "react-router-dom"
+import { NotificationIcon } from "@/components/layouts/behaviors/dashboards/common/top-bar/NotificationIcon"
+import { coachChatsSocket } from "@/feature/socket/chats-socket"
 
 const Container = styled.div`
   width: 100%;
@@ -51,6 +53,9 @@ const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
 
 const AvatarLink = styled(Link)`
   margin-left: 36px;
+  ${MediaRange.lessThan(`tablet`)`
+      display: none;
+  `}
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -60,20 +65,6 @@ const StyledAvatar = styled(Avatar)`
 
   ${MediaRange.lessThan(`tablet`)`
     display: none;
-  `}
-`
-
-const NotificationButton = styled(Icon).attrs({ name: `notification` })`
-  width: 27px;
-  height: auto;
-  fill: ${props => props.theme.colors.primary};
-  cursor: pointer;
-  ${MediaRange.lessThan(`tablet`)`
-    width: 31px;
-    fill: #fff;
-  `}
-  ${MediaRange.lessThan(`mobile`)`
-    width: 25px;
   `}
 `
 
@@ -98,6 +89,7 @@ const CoachLinkWrapper = styled.div`
 
 export const CoachTopBar = () => {
   const user = useStore($userData)
+  const notificationCount = useStore(coachChatsSocket.data.$chatsCount)
 
   return (
     <Container>
@@ -107,7 +99,9 @@ export const CoachTopBar = () => {
             <StyledLogo />
           </Link>
         </CoachLinkWrapper>
-        {user.coach?.isApproved && <NotificationButton />}
+        {user.coach?.isApproved && (
+          <NotificationIcon count={notificationCount} link={routeNames.coachNotifications()} />
+        )}
         <AvatarLink to={routeNames.coachProfile()}>
           <StyledAvatar src={user.coach?.avatar || null} />
         </AvatarLink>

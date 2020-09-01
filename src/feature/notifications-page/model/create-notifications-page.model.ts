@@ -4,7 +4,6 @@ import { Pagination } from "@/lib/api/interfaces/utils.interface"
 import { date } from "@/lib/formatting/date"
 import { createEvent, forward } from "effector-root"
 
-
 type CreateNotificationsPageModelConfig = {
   fetchNotifications: (params: GetNotificationsQuery) => Promise<Pagination<Notifications>>
 }
