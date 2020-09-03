@@ -8,6 +8,7 @@ import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
 import { create } from "domain"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 
 type SendSocketChatMessage = {
   chat: number
@@ -48,6 +49,11 @@ export type WriteChatMessageDone = {
   data: ChatMessage
 }
 
+export type SessionStarted = {
+  type: `SESSION_STARTED`
+  data: DashboardSession
+}
+
 export type OnChatCreated = {
   type: `NEW_CHAT_CREATED`
   data: PersonalChat
@@ -60,6 +66,7 @@ type SocketMessageReceive =
   | OnChatCreated
   | NewNotification
   | ReadNotificationsDone
+  | SessionStarted
 
 type UserType = "client" | "coach"
 
@@ -75,6 +82,7 @@ export const createChatsSocket = (userType: UserType) => {
   const onReadNotification = createEvent<ReadNotificationsDone>()
   const onChatCreated = createEvent<OnChatCreated>()
   const onMessagesReadDone = createEvent<MessagesReadDone>()
+  const onSessionStarted = createEvent<SessionStarted>()
 
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: `WRITE_MESSAGE`, data }))
   const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: `READ_MESSAGES`, data }))
@@ -187,6 +195,12 @@ export const createChatsSocket = (userType: UserType) => {
     target: changeCountersFromInit,
   })
 
+  guard({
+    source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
+    target: onSessionStarted,
+  })
+
   sample({
     source: $token,
     clock: merge([$needConnect, registerUserFx.done]),
@@ -219,7 +233,7 @@ export const createChatsSocket = (userType: UserType) => {
       ...socket.events,
       onMessage,
       onChatCreated,
-      onNotification,
+      onSessionStarted
     },
     methods: {
       send,

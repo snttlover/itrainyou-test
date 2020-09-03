@@ -3,10 +3,12 @@ import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { createEffect, createEvent, forward, restore, combine } from "effector-root"
 import { date } from "@/lib/formatting/date"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { createChatsSocket } from "@/feature/socket/chats-socket"
 
 type CreateStartSessionToolbarModelConfig = {
   type: "coach" | "client"
   fetchSessions: () => Promise<DashboardSession[]>
+  socket: ReturnType<typeof createChatsSocket>
   sessionCallModule: ReturnType<typeof createSessionCallModule>
 }
 
@@ -25,7 +27,9 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
   const load = createEvent()
 
   const changeSessionsList = createEvent<DashboardSession[]>()
-  const $sessionsList = restore(changeSessionsList, []).reset(reset)
+  const $sessionsList = restore(changeSessionsList, [])
+    .on(config.socket.events.onSessionStarted, (sessions, message) => [...sessions, message.data])
+    .reset(reset)
 
   const $lastCallId = restore(config.sessionCallModule.methods.connectToSession, 0).reset(
     config.sessionCallModule.methods.close
