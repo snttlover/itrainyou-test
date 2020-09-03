@@ -33,6 +33,16 @@ type MessagesReadDone = {
   data: { messages: ChatMessage[] }
 }
 
+export type NewNotification = {
+  type: "NEW_NOTIFICATION"
+  data: Notification
+}
+
+export type ReadNotificationsDone = {
+  type: "READ_NOTIFICATIONS_TYPE"
+  data: number[]
+}
+
 export type WriteChatMessageDone = {
   type: `WRITE_MESSAGE_DONE`
   data: ChatMessage
@@ -43,7 +53,13 @@ export type OnChatCreated = {
   data: PersonalChat
 }
 
-type SocketMessageReceive = WriteChatMessageDone | InitMessage | MessagesReadDone | OnChatCreated
+type SocketMessageReceive =
+  | WriteChatMessageDone
+  | InitMessage
+  | MessagesReadDone
+  | OnChatCreated
+  | NewNotification
+  | ReadNotificationsDone
 
 type UserType = "client" | "coach"
 
@@ -55,6 +71,8 @@ export const createChatsSocket = (userType: UserType) => {
   const socket = createSocket()
 
   const onMessage = createEvent<WriteChatMessageDone>()
+  const onNotification = createEvent<NewNotification>()
+  const onReadNotification = createEvent<ReadNotificationsDone>()
   const onChatCreated = createEvent<OnChatCreated>()
   const onMessagesReadDone = createEvent<MessagesReadDone>()
 
@@ -82,6 +100,8 @@ export const createChatsSocket = (userType: UserType) => {
 
   const changeNotificationsCounter = createEvent<number>()
   const $notificationsCounter = restore(changeNotificationsCounter, 0)
+    .on(onNotification, count => count + 1)
+    .on(onReadNotification, (count, message) => count - message.data.length)
 
   forward({
     from: changeCountersFromInit.map(res => res.data.newNotificationsCount),
@@ -139,6 +159,18 @@ export const createChatsSocket = (userType: UserType) => {
 
   guard({
     source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === "NEW_NOTIFICATION",
+    target: onNotification,
+  })
+
+  guard({
+    source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === "READ_NOTIFICATIONS_TYPE",
+    target: onReadNotification,
+  })
+
+  guard({
+    source: socket.events.onMessage,
     filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
     target: onMessage,
   })
@@ -181,12 +213,13 @@ export const createChatsSocket = (userType: UserType) => {
     data: {
       $chatsCount,
       $chatsCounters,
-      $notificationsCounter
+      $notificationsCounter,
     },
     events: {
       ...socket.events,
       onMessage,
       onChatCreated,
+      onNotification,
     },
     methods: {
       send,

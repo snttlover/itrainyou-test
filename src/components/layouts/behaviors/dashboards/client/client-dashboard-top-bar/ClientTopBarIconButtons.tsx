@@ -59,7 +59,7 @@ const NotificationWrapper = styled.div`
 `
 
 export const ClientTopBarIconButtons = () => {
-  const notificationCount = useStore(clientChatsSocket.data.$chatsCount)
+  const notificationCount = useStore(clientChatsSocket.data.$notificationsCounter)
   const user = useStore($userData)
   return (
     <Wrapper>

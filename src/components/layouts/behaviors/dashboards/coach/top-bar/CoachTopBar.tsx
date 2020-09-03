@@ -89,7 +89,7 @@ const CoachLinkWrapper = styled.div`
 
 export const CoachTopBar = () => {
   const user = useStore($userData)
-  const notificationCount = useStore(coachChatsSocket.data.$chatsCount)
+  const notificationCount = useStore(coachChatsSocket.data.$notificationsCounter)
 
   return (
     <Container>
