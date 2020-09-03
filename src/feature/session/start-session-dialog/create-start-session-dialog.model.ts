@@ -27,7 +27,7 @@ export const createStartSessionDialogModel = (config: createStartSessionDialogMo
       time: formatSessionTime(session?.startDatetime, session?.endDatetime),
       name: `${user?.firstName} ${user?.lastName}`,
       avatar: user?.avatar || null,
-      id: user?.id || 0
+      id: session?.id || 0
     }
   })
 

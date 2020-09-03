@@ -56,6 +56,7 @@ const StyledAvatar = styled(Avatar)`
   width: 80px;
   height: 80px;
   margin-top: 8px;
+  background: #f6f6f6;
 `
 
 const Name = styled.div`
