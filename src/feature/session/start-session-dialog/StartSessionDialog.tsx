@@ -3,17 +3,28 @@ import styled from "styled-components"
 import { Dialog } from "@/components/dialog/Dialog"
 import { Avatar } from "@/components/avatar/Avatar"
 import { Button } from "@/components/button/normal/Button"
+import { createStartSessionDialogModel } from "@/feature/session/start-session-dialog/create-start-session-dialog.model"
+import { useEvent, useStore } from "effector-react/ssr"
 
-export const StartSessionDialog = () => {
-  const [visibility, changeVisibility] = useState(false)
+export const createStartSessionDialog = ($module: ReturnType<typeof createStartSessionDialogModel>) => () => {
+  const visibility = useStore($module.data.$dialogVisibility)
+  const session = useStore($module.data.$session)
+  const hide = useEvent($module.methods.hideDialog)
+  const connectToSession = useEvent($module.methods.connectToSession)
+
+  const start = () => {
+    connectToSession(session.id)
+    hide()
+  }
+
   return (
-    <StyledDialog value={visibility} onChange={changeVisibility}>
+    <StyledDialog value={visibility} onChange={() => hide()}>
       <Container>
         <Title>У вас началась сессия</Title>
-        <Time>11:30-12:30</Time>
-        <StyledAvatar src='https://www.vokrug.tv/pic/product/6/f/e/2/6fe2523ab4de68e3981b29c9f9f00f17.jpeg' />
-        <Name>Jane Cooper</Name>
-        <StartButton>Начать сессию</StartButton>
+        <Time>{session.time}</Time>
+        <StyledAvatar src={session.avatar} />
+        <Name>{session.name}</Name>
+        <StartButton onClick={start}>Начать сессию</StartButton>
       </Container>
     </StyledDialog>
   )
