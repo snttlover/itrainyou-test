@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { createChatSessions } from "@/feature/chat/view/content/chat-sessions/ChatSessionsList"
 import { SystemChatHeader } from "@/feature/chat/view/content/headers/system/SystemChatHeader"
-import {resetRevocation} from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
+import { resetRevocation } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"
 
@@ -42,8 +42,8 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
       }
     }, [])
 
-    const isPersonalChat = chat.chatType === `PERSONAL`
-    const Header = isPersonalChat ? PersonalChatHeader : SystemChatHeader
+    const isSystemChat = chat.chatType === `SYSTEM`
+    const Header = isSystemChat ? SystemChatHeader : PersonalChatHeader
 
     return (
       <Container>
@@ -54,7 +54,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
             <ChatContainer>
               <Header {...chat} />
               <Messages isSystem={chat.chatType === `SYSTEM`} />
-              {isPersonalChat && <ChatMessageBox onSend={send} blockedText={blockedText} />}
+              {!isSystemChat && <ChatMessageBox onSend={send} blockedText={blockedText} />}
             </ChatContainer>
             <Sessions />
             <RevocationSessionDialog />

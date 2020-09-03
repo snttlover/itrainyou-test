@@ -35,7 +35,7 @@ const StyledInput = styled.input`
 `
 
 type ChatMessageBoxTypes = {
-  blockedText: string | null
+  blockedText?: string | null
   onSend: (value: string) => void
 }
 

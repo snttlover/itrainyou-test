@@ -17,7 +17,7 @@ export type ChatMessage = {
   chat: number
   senderCoach: CoachUser | null
   senderClient: Client | null
-  senderSupport: null
+  senderSupport: Client | null
   sessionRequest: SessionRequest
   sessionRequestStatus: MessageSessionRequestStatuses
   creationDatetime: ISODate
@@ -26,6 +26,7 @@ export type ChatMessage = {
 
 export type SystemChatType = 'SYSTEM'
 export type PersonalChatType = 'PERSONAL'
+export type SupportChatType = 'SUPPORT'
 export type ChatTypes = SystemChatType | PersonalChatType
 
 type CommonChatFields = {
@@ -54,7 +55,11 @@ export type PersonalChat = {
   type: PersonalChatType
 } & CommonChatFields
 
-export type Chat = PersonalChat | SystemChat
+export type SupportChat = {
+  type: SupportChatType
+} & CommonChatFields
+
+export type Chat = PersonalChat | SystemChat | SupportChat
 
 type PaginationParams = {
   page: number

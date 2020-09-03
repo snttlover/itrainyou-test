@@ -70,7 +70,7 @@ export const CoachMenuItems = () => {
       <DashboardMenuItem link={routeNames.coachSettings()} icon='settings'>
         Настройки
       </DashboardMenuItem>
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachSupport()} icon='help'>
+      <DashboardMenuItem link={routeNames.coachSupport()} icon='help'>
         Поддержка
       </DashboardMenuItem>
       <Delimiter />
