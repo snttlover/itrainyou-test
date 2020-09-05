@@ -40,7 +40,7 @@ export type NewNotification = {
 }
 
 export type ReadNotificationsDone = {
-  type: "READ_NOTIFICATIONS_TYPE"
+  type: "READ_NOTIFICATIONS_DONE"
   data: number[]
 }
 
@@ -173,7 +173,7 @@ export const createChatsSocket = (userType: UserType) => {
 
   guard({
     source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "READ_NOTIFICATIONS_TYPE",
+    filter: (payload: SocketMessageReceive) => payload.type === "READ_NOTIFICATIONS_DONE",
     target: onReadNotification,
   })
 
