@@ -31,16 +31,16 @@ export const createSessionRequestsModule = (config: createSessionRequestsModuleC
     to: createSessionRequestFx,
   })
 
-  const denyRequest = createEvent<number>()
+  const denyRequest = createEvent<DenySessionRequestParams>()
   const denyRequestFx = createEffect({
     handler: config.denyRequest,
   })
   const denyRequestsIds = createStore<number[]>([])
-    .on(denyRequest, (ids, id) => [...ids, id])
+    .on(denyRequest, (ids, req) => [...ids, req.id])
     .on(denyRequestFx.finally, (ids, req) => ids.filter(id => req.params.id !== id))
 
   forward({
-    from: denyRequest.map(id => ({ id })),
+    from: denyRequest.map(req => req),
     to: denyRequestFx,
   })
 

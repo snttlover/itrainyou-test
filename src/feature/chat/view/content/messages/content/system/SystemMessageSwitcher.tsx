@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { ChatSystemMessage } from "@/feature/chat/modules/chat-messages"
 import styled from "styled-components"
 import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
-import { ChatMessage, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
+import { MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { MediaRange } from "@/lib/responsive/media"
@@ -13,22 +13,21 @@ import {
 } from "@/feature/session-request/createSessionRequestsModule"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Loader, Spinner } from "@/components/spinner/Spinner"
-import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import {
   $revocated,
   changeRevocationSessionId,
   changeRevocationUser,
-  changeRevocationVisibility,
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { Avatar } from "@/components/avatar/Avatar"
-import { Coach, CoachUser } from "@/lib/api/coach"
+import { changeCurrentDenyCompletationRequest } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
 
 const formatSessionDay = (day?: ISODate) => date(day).format(`DD MMM YYYY`)
 
-export const formatSessionTime = (start?: ISODate, end?: ISODate) => date(start).format(`HH:mm -`) + date(end).format(`HH:mm`)
+export const formatSessionTime = (start?: ISODate, end?: ISODate) =>
+  date(start).format(`HH:mm -`) + date(end).format(`HH:mm`)
 
 const formatSessionDate = (start?: ISODate, end?: ISODate) => {
   return formatSessionDay(start) + ` ` + formatSessionTime(start, end)
@@ -431,11 +430,13 @@ const getSystemButtons = (
 
   if (showButtons) {
     const requestModule = chatType === `client` ? clientSessionRequests : coachSessionRequests
+    const deny = useEvent(requestModule.methods.deny)
+    const approve = useEvent(requestModule.methods.approve)
 
     if (chatType === `client`) {
-      if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
-        return <ApproveActions request={request} requestsModule={requestModule} yes='Да' no='Нет' />
-      }
+      // if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
+      //
+      // }
 
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING")) {
         return <CancelAction request={request} requestsModule={requestModule} />
@@ -444,7 +445,14 @@ const getSystemButtons = (
 
     if (chatType === `coach`) {
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING") || is("CANCEL", "AWAITING")) {
-        return <ApproveActions request={request} requestsModule={requestModule} yes='Подтвердить' no='Отклонить' />
+        return (
+          <ApproveActions
+            approve={() => approve(request.id)}
+            deny={() => deny({ id: request.id })}
+            yes='Подтвердить'
+            no='Отклонить'
+          />
+        )
       }
     }
   }
@@ -458,7 +466,33 @@ const getSystemButtons = (
     return <RevocationButton coach={user} sessionId={request.session.id} />
   }
 
-  return <></>
+  return <ConfirmationCompletation approve={() => {}} request={request} />
+  // return <></>
+}
+
+type ConfirmationCompletationTypes = {
+  approve: () => void
+  request: SessionRequest
+}
+
+const ConfirmationCompletation = ({ approve, request }: ConfirmationCompletationTypes) => {
+  const setDenyCompletetaionRequest = useEvent(changeCurrentDenyCompletationRequest)
+  const [loading, change] = useState(false)
+
+  return (
+    <StyledActions>
+      {loading && <StyledActionLoader />}
+      <Button
+        onClick={() => {
+          change(true)
+          approve()
+        }}
+      >
+        Да
+      </Button>
+      <Button onClick={() => setDenyCompletetaionRequest(request)}>Нет</Button>
+    </StyledActions>
+  )
 }
 
 const Actions = ({
@@ -565,19 +599,18 @@ type SessionRequestActionProps = {
   requestsModule: ReturnType<typeof createSessionRequestsModule>
 }
 
-type ApproveActionsTypes = SessionRequestActionProps & {
+type ApproveActionsTypes = {
   yes: string
   no: string
+  approve: () => any
+  deny: () => any
 }
 
-const ApproveActions = ({ request, requestsModule, yes, no }: ApproveActionsTypes) => {
-  const deny = useEvent(requestsModule.methods.deny)
-  const approve = useEvent(requestsModule.methods.approve)
-
+const ApproveActions = ({ yes, no, approve, deny }: ApproveActionsTypes) => {
   return (
     <Actions>
-      <Button onClick={() => approve(request.id)}>{yes}</Button>
-      <Button onClick={() => deny(request.id)}>{no}</Button>
+      <Button onClick={approve}>{yes}</Button>
+      <Button onClick={deny}>{no}</Button>
     </Actions>
   )
 }
@@ -586,7 +619,7 @@ const CancelAction = ({ request, requestsModule }: SessionRequestActionProps) =>
   const cancel = useEvent(requestsModule.methods.deny)
   return (
     <Actions>
-      <Button onClick={() => cancel(request.id)}>Отменить</Button>
+      <Button onClick={() => cancel({ id: request.id })}>Отменить</Button>
     </Actions>
   )
 }

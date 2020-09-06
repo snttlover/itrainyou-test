@@ -4,7 +4,7 @@ import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { excludeKeys } from "@/lib/helpers/exclude"
 
-type DenySessionRequestProblems = "COACH_ABSENT" | "COACH_INADEQUATE" | "OTHER"
+export type DenySessionRequestProblems = "COACH_ABSENT" | "COACH_INADEQUATE" | "OTHER" | string
 
 export type DenySessionRequestParams = {
   id: number

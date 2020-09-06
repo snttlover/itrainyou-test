@@ -14,6 +14,7 @@ import { SystemChatHeader } from "@/feature/chat/view/content/headers/system/Sys
 import { resetRevocation } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"
+import { DenyCompletetionDialog } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/DenyCompletetionDialog"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -58,6 +59,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
             </ChatContainer>
             <Sessions />
             <RevocationSessionDialog />
+            <DenyCompletetionDialog />
           </>
         )}
       </Container>
