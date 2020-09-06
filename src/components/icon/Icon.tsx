@@ -45,6 +45,7 @@ export type IconName =
   | "contacts"
   | "star"
   | "full-star"
+  | "support"
   | "half-star"
   | "plus"
   | "eye-open"

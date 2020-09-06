@@ -127,7 +127,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     source: config.socket.events.onMessage,
     filter: message => {
       return (
-        ([`SYSTEM`, `SUPPORT`].includes(message.data.type) ||
+        (`SYSTEM` === message.data.type ||
           (config.type === `client` && !!message.data.senderCoach) ||
           (config.type === `coach` && !!message.data.senderClient)) &&
         chatId === message.data.chat
