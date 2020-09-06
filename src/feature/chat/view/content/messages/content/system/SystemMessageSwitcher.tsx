@@ -434,9 +434,9 @@ const getSystemButtons = (
     const approve = useEvent(requestModule.methods.approve)
 
     if (chatType === `client`) {
-      // if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
-      //
-      // }
+      if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
+        return <ConfirmationCompletation approve={() => {}} request={request} />
+      }
 
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING")) {
         return <CancelAction request={request} requestsModule={requestModule} />
@@ -466,8 +466,7 @@ const getSystemButtons = (
     return <RevocationButton coach={user} sessionId={request.session.id} />
   }
 
-  return <ConfirmationCompletation approve={() => {}} request={request} />
-  // return <></>
+  return <></>
 }
 
 type ConfirmationCompletationTypes = {
