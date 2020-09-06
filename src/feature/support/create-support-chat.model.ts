@@ -17,7 +17,7 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
   const changeId = createEvent<ChatId>()
 
   const fetchSupportChatFx = createEffect({
-    handler: config.fetchChat
+    handler: config.fetchChat,
   })
 
   const $chatId = restore<ChatId>(changeId, 0).reset(reset)
@@ -25,7 +25,7 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
   const chatMessages = createChatMessagesModule({
     ...config,
     // @ts-ignore
-    fetchMessages: (id: number, params: CursorPaginationRequest) => config.fetchMessages('support', params)
+    fetchMessages: (id: number, params: CursorPaginationRequest) => config.fetchMessages("support", params),
   })
 
   const load = createEvent()
@@ -38,6 +38,11 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
   forward({
     from: load,
     to: [chatMessages.pagination.methods.reset, chatMessages.pagination.methods.loadMore],
+  })
+
+  forward({
+    from: changeId,
+    to: chatMessages.changeId,
   })
 
   const send = createEvent<string>()
@@ -65,7 +70,23 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
 
   const $loading = fetchSupportChatFx.pending
 
+  const $support = chatMessages.pagination.data.$list.map(messages => {
+    // @ts-ignore
+    return messages.reduce((userInfo, message) => {
+      if (message.systemTicketType) {
+        if (message.systemTicketType === "SUPPORT_AGENT_FOUND") {
+          return {
+            name: `${message.senderSupport?.firstName} ${message.senderSupport?.lastName}`,
+          }
+        } else {
+          return null
+        }
+      }
+    }, null) as { name: string } | null
+  })
+
   return {
+    $support,
     chatMessages,
     socket: config.socket,
     send,

@@ -15,6 +15,7 @@ import { CoachProfilePage } from "@/pages/coach/profile/profile-page/CoachProfil
 import { CoachSessionsHistory } from "@/pages/coach/profile/session-history/CoachSessionsHistory"
 import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
 import CoachSupportPage from "@/pages/coach/support/CoachSupportPage"
+import ClientSupportPage from "@/pages/client/support/ClientSupportPage"
 import CoachWalletPage from "@/pages/coach/wallet/CoachWalletPage"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
 import { ClientChatPage } from "@/pages/client/chats/chat/ClientChatPage"
@@ -162,6 +163,11 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.coachSupport(),
     exact: true,
     component: CoachSupportPage,
+  },
+  {
+    path: routeNames.clientSupport(),
+    exact: true,
+    component: ClientSupportPage,
   },
   {
     path: routeNames.coachSchedule(),
