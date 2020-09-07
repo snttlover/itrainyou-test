@@ -14,9 +14,10 @@ export const ProfileCoachButton = () => {
   const visibility = useStore($profileCoachButtonVisibility)
   const changeVisibility = useEvent(changeProfileCoachButtonVisibility)
   const _becomeCoach = useEvent(becomeCoach)
+  const destroyed = useEvent(reset)
 
   useEffect(() => {
-    return () => reset()
+    return () => destroyed()
   }, [])
 
   return (
