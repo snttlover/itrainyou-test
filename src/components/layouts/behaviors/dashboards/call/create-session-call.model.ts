@@ -87,7 +87,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         agoraData.client = agoraLib.createClient({
           mode: `live`,
           codec: `h264`,
-          areaCode: agoraLib.AREAS.EUROPE
         }) as AgoraClient
         const appId = appConfig.AGORA_ID as string
         agoraData.client.init(appId, () => {}, agoraHandleFail)
