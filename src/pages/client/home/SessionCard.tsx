@@ -58,6 +58,7 @@ const Name = styled.p`
   ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
+    margin-top: 18px;
   `}
 `
 
@@ -95,6 +96,11 @@ const SessionInfo = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
+  ${MediaRange.lessThan(`mobile`)`
+    position: absolute;
+    right: 10px;
+    top: 5px;
+  `}
 `
 
 const SessionTime = styled.p`
