@@ -47,6 +47,7 @@ const Close = styled(Icon).attrs({ name: `close` })`
   top: 24px;
   right: 21px;
   fill: ${props => props.theme.colors.primary};
+  z-index: 1;
 `
 
 const StyledDialog = styled.div`
