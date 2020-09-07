@@ -76,7 +76,7 @@ export const ProfileHeader = () => {
         <br />
         {profile?.lastName}
       </Name>
-      <Age>{profile.age} года</Age>
+      {!isNaN(profile.age) && <Age>{profile.age} года</Age>}
       <Link to={routeNames.clientProfileEdit()}>
         <Edit />
       </Link>
