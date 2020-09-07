@@ -50,7 +50,7 @@ const Name = styled.div`
   ${MediaRange.lessThan(`mobile`)`
     font-size: 16px;
     line-height: 22px;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-bottom: 12px;
   `}
 `
