@@ -93,6 +93,8 @@ const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
 const SessionInfo = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
 `
 
 const SessionTime = styled.p`
