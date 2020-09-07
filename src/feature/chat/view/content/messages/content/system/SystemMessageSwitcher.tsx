@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { ChatSystemMessage } from "@/feature/chat/modules/chat-messages"
 import styled from "styled-components"
 import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
-import { MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
+import { ConflictStatus, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { MediaRange } from "@/lib/responsive/media"
@@ -33,7 +33,7 @@ const formatSessionDate = (start?: ISODate, end?: ISODate) => {
   return formatSessionDay(start) + ` ` + formatSessionTime(start, end)
 }
 
-const getText = (request: SessionRequest, status: MessageSessionRequestStatuses, chatType: "coach" | "client") => {
+const getText = (request: SessionRequest, status: MessageSessionRequestStatuses | ConflictStatus, chatType: "coach" | "client") => {
   const is = (
     requestType: SessionRequestTypes | SessionRequestTypes[],
     requestStatus: SessionRequestStatus | SessionRequestStatus[],
@@ -51,6 +51,15 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
   }
 
   if (chatType === `client`) {
+
+    if (status === 'SOLVED_IN_COACH_FAVOUR') {
+      return 'Администратор решил спорную ситуацию в пользу коуча'
+    }
+
+    if (status === 'SOLVED_IN_CLIENT_FAVOUR') {
+      return 'Администратор решил спорную ситуацию в вашу пользу. Вам возвращены деньги за сессию'
+    }
+
     if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
       return `Вы отправили запрос на бронирование сессии`
     }
@@ -153,6 +162,14 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
   }
 
   if (chatType === `coach`) {
+    if (status === 'SOLVED_IN_COACH_FAVOUR') {
+      return 'Администратор решил спорную ситуацию в вашу пользу. Вам были переведены деньги за сессию'
+    }
+
+    if (status === 'SOLVED_IN_CLIENT_FAVOUR') {
+      return 'Администратор решил спорную ситуацию в пользу клиента. Клиенту были возвращены деньги за сессию'
+    }
+
     if (is("CONFIRMATION_COMPLETION", "AWAITING", "INITIATED")) {
       return `Ожидаем, пока клиент подтвердит завершение сессии`
     }
@@ -414,7 +431,7 @@ const getSystemButtons = (
   request: SessionRequest,
   chatType: "coach" | "client",
   showButtons: boolean,
-  status: MessageSessionRequestStatuses,
+  status: MessageSessionRequestStatuses | ConflictStatus,
   user: User
 ) => {
   const is = (

@@ -1,7 +1,7 @@
 import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
 import { createEffect, createEvent, createStore, guard, sample } from "effector-root"
 import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
-import { Chat, ChatMessage, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
+import { Chat, ChatMessage, ConflictStatus, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
@@ -22,7 +22,7 @@ export type ChatSystemMessage = {
   request: SessionRequest
   userName: string
   userAvatar: string | null
-  status: MessageSessionRequestStatuses
+  status: ConflictStatus | MessageSessionRequestStatuses
   showButtons: boolean
 }
 
@@ -104,7 +104,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               userName: `${user?.firstName} ${user?.lastName}`,
               userAvatar: user?.avatar || null,
               showButtons: !completedStatusesIds.includes(message.sessionRequest.id),
-              status: message.sessionRequestStatus,
+              status: message?.conflict?.status || message.sessionRequestStatus,
             }
           }
 

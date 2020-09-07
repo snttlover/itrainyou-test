@@ -11,6 +11,8 @@ export type MessageSessionRequestStatuses = 'INITIATED' | 'COMPLETED'
 export type MessageTypes = 'USER' | 'SYSTEM' | 'SUPPORT'
 type SystemTicketType = 'SUPPORT_AGENT_FOUND' | 'PROBLEM_SOLVED'
 
+export type ConflictStatus = 'SOLVED_IN_COACH_FAVOUR' | 'SOLVED_IN_CLIENT_FAVOUR'
+
 export type ChatMessage = {
   id: number
   type: MessageTypes
@@ -20,6 +22,9 @@ export type ChatMessage = {
   senderClient: Client | null
   senderSupport: Client | null
   sessionRequest: SessionRequest
+  conflict: null | {
+    status: ConflictStatus
+  }
   sessionRequestStatus: MessageSessionRequestStatuses
   creationDatetime: ISODate
   systemTicketType: null | SystemTicketType
