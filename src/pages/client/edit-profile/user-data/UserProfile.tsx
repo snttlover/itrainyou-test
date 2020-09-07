@@ -3,7 +3,6 @@ import { Button } from "@/components/button/normal/Button"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
 import { MediaRange } from "@/lib/responsive/media"
-import { $canSendForm, saveCoachData } from "@/pages/coach/profile/edit-page/edit-page.model"
 import { UploadModal } from "./UploadModal"
 import { BirthdayFormGroup } from "./BirthdayFormGroup"
 import {
@@ -14,12 +13,64 @@ import {
   lastNameChanged,
   nameChanged,
   userProfileGate,
-  toggleUploadModal, saveClientUserData
+  toggleUploadModal,
+  saveClientUserData,
+  $clientProfileSaving,
 } from "./client-profile.model"
 import { useEvent, useGate, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Spinner } from "@/components/spinner/Spinner"
+
+export const UserProfile = () => {
+  useGate(userProfileGate)
+
+  const values = useStore($clientProfileForm)
+  const errors = useStore($clientProfileFormErrors)
+  const isUploadModalShowed = useStore($isUploadModelOpen)
+  const _toggleUploadModal = useEvent(toggleUploadModal)
+  const _nameChanged = useEvent(nameChanged)
+  const _lastNameChanged = useEvent(lastNameChanged)
+  const canSendForm = useStore($isClientProfileFormValid)
+  const save = useEvent(saveClientUserData)
+  const loading = useStore($clientProfileSaving)
+
+  return (
+    <Form>
+      {loading && <StyledSpinner />}
+      <Title>Редактирование профиля</Title>
+      <AvatarWrapper>
+        <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required />
+        <AvatarHint>
+          <h4>Добавить фото</h4>
+          <p>Формат: jpg, png. Максимальный размер файла: 2Mb. Рекомендованный размер: 200х200 px.</p>
+        </AvatarHint>
+      </AvatarWrapper>
+      <FormItem label='Имя' error={errors.name} required>
+        <Input withoutBorder value={values.name} onChange={_nameChanged} />
+      </FormItem>
+      <FormItem label='Фамилия' error={errors.lastName} required>
+        <Input withoutBorder value={values.lastName} onChange={_lastNameChanged} />
+      </FormItem>
+      <BirthdayFormGroup />
+      {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
+      <StyledFormItem>
+        <StyledSubmit onClick={() => save()} disabled={!canSendForm}>
+          Сохранить изменения
+        </StyledSubmit>
+      </StyledFormItem>
+    </Form>
+  )
+}
+
+const StyledSpinner = styled(Spinner)`
+  background: #eceff1;
+`
+
+const Form = styled.div`
+  position: relative;
+`
 
 const Title = styled.h1`
   margin-top: 36px;
@@ -108,46 +159,4 @@ const StyledFormItem = styled(FormItem)`
 
 const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault()
-}
-
-export const UserProfile = () => {
-  useGate(userProfileGate)
-
-  const values = useStore($clientProfileForm)
-  const errors = useStore($clientProfileFormErrors)
-  const isFormValid = useStore($isClientProfileFormValid)
-  const isUploadModalShowed = useStore($isUploadModelOpen)
-  const _toggleUploadModal = useEvent(toggleUploadModal)
-  const _nameChanged = useEvent(nameChanged)
-  const _lastNameChanged = useEvent(lastNameChanged)
-  const canSendForm = useStore($isClientProfileFormValid)
-  const save = useEvent(saveClientUserData)
-
-  return (
-    <>
-      <Title>
-        Редактирование профиля
-      </Title>
-      <AvatarWrapper>
-        <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required />
-        <AvatarHint>
-          <h4>Добавить фото</h4>
-          <p>Формат: jpg, png. Максимальный размер файла: 2Mb. Рекомендованный размер: 200х200 px.</p>
-        </AvatarHint>
-      </AvatarWrapper>
-      <FormItem label='Имя' error={errors.name} required>
-        <Input withoutBorder value={values.name} onChange={_nameChanged} />
-      </FormItem>
-      <FormItem label='Фамилия' error={errors.lastName} required>
-        <Input withoutBorder value={values.lastName} onChange={_lastNameChanged} />
-      </FormItem>
-      <BirthdayFormGroup />
-      {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
-      <StyledFormItem>
-        <StyledSubmit onClick={() => save()} disabled={!canSendForm}>
-          Сохранить изменения
-        </StyledSubmit>
-      </StyledFormItem>
-    </>
-  )
 }

@@ -8,7 +8,8 @@ import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 import { every, spread } from "patronum"
-import { UpdateClientRequest, updateMyClient } from "@/lib/api/client/update"
+import { updateMyClient } from "@/lib/api/client/update"
+import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -104,33 +105,43 @@ export const $isClientProfileFormValid = every(true, [
 
 export const saveClientUserData = createEvent()
 const saveClientUserDataFx = createEffect({
-  handler: updateMyClient
+  handler: updateMyClient,
 })
 
 forward({
   from: saveClientUserDataFx,
-  to: loadUserData
+  to: loadUserData,
 })
+
+forward({
+  from: saveClientUserDataFx.doneData.map((): Toast => ({ text: `Сохранено`, type: `info` })),
+  to: toasts.add,
+})
+
+export const $clientProfileSaving = saveClientUserDataFx.pending
 
 sample({
   // @ts-ignore
   source: combine($userData, $clientProfileForm, $image, (userData, form, lastImage) => ({
     firstName: form.name,
     lastName: form.lastName,
-    birthDate: dayjs(form.birthday).format('YYYY-MM-DD'),
+    birthDate: dayjs(form.birthday).format("YYYY-MM-DD"),
     avatar: lastImage.file || form.image,
     categories: (userData.client?.categories || []).map(category => category.id),
-    sex: userData.client?.sex || form.sex
+    sex: userData.client?.sex || form.sex,
   })),
   clock: saveClientUserData,
-  target: saveClientUserDataFx
+  target: saveClientUserDataFx,
 })
 
 export const showClientProfileCoachDialog = createEvent()
 export const changeClientProfileCoachWarningDilalogVisibility = createEvent<boolean>()
-export const $clientProfileCoachWarningDilalogVisibility = restore(changeClientProfileCoachWarningDilalogVisibility, false).reset(userProfileGate.close)
+export const $clientProfileCoachWarningDilalogVisibility = restore(
+  changeClientProfileCoachWarningDilalogVisibility,
+  false
+).reset(userProfileGate.close)
 
 forward({
   from: showClientProfileCoachDialog,
-  to: changeClientProfileCoachWarningDilalogVisibility.prepend(() => true)
+  to: changeClientProfileCoachWarningDilalogVisibility.prepend(() => true),
 })
