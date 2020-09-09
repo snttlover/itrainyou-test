@@ -17,10 +17,6 @@ export const passwordValidator = (value: string) => {
 
 export const trimString = (value: string) => value.trim()
 
-/**
- *
- * @param value - like +7 999 999-99-99
- */
 export const phoneValidator = (value: string) => {
   const clearValue = value.replace(/[^0-9]/g, "")
   if (clearValue.length !== 11) return "Неверный формат номера телефона"

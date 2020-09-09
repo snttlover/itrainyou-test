@@ -1,3 +1,4 @@
+import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
 import { createContext } from "react"
@@ -38,8 +39,10 @@ type StyledTabPropsTypes = {
 
 const StyledTab = styled.div<StyledTabPropsTypes>`
   border-radius: 2px 2px 0px 0px;
-  padding: 11px 0;
+  padding: 11px 4px;
   flex: 1;
+  font-family: Roboto;
+  font-weight: 500;
   margin-right: 1px;
   font-size: 16px;
   line-height: 22px;
@@ -48,6 +51,7 @@ const StyledTab = styled.div<StyledTabPropsTypes>`
   justify-content: center;
   cursor: pointer;
   background: #dbdee0;
+  color: #5b6670;
 
   &[data-active="true"] {
     background: #fff;
@@ -56,6 +60,12 @@ const StyledTab = styled.div<StyledTabPropsTypes>`
   &:last-child {
     margin-right: 0;
   }
+
+  ${MediaRange.lessThan("mobile")`
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+  `}
 `
 
 type TabTypes = {

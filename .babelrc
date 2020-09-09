@@ -1,6 +1,14 @@
 {
   "plugins": [
     ["effector/babel-plugin"],
+    [
+      "effector/babel-plugin",
+      {
+        "storeCreators": ["createEffectorField"],
+        "noDefaults": true
+      },
+      "createEffectorField"
+    ],
     ["styled-components", {"displayName": true, "ssr": true}]
   ]
 }
