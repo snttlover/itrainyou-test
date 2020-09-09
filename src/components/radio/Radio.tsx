@@ -19,7 +19,7 @@ export const RadioGroup = (props: RadioGroupTypes) => {
   const context = {
     value: props.value,
     name: props.name,
-    onChange: props.onChange
+    onChange: props.onChange,
   }
 
   return <RadioContext.Provider value={context}>{props.children}</RadioContext.Provider>

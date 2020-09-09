@@ -4,6 +4,7 @@ import { UpdateMyUserRequest, updateMyUser } from "@/lib/api/users/update-my-use
 import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
 import { emailValidator, trimString } from "@/lib/validators"
+import { $card } from "@/pages/client/wallet/funds-up-dialog/fund-up.model"
 import { createGate } from "@/scope"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
@@ -61,7 +62,7 @@ $email.on(userDoneData, (state, user) => user.email)
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
   defaultValue: "",
   validator: v => {
-    if (!v.trim()) {
+    if (!v || !v.trim()) {
       return `Это поле обязательно для заполнения`
     }
     return null

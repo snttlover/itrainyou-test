@@ -7,6 +7,10 @@ const PriceContainer = styled.div`
   position: relative;
 `
 
+const StyledInput = styled(Input)`
+  width: 100%;
+`
+
 const RubbleSign = styled.div`
   position: absolute;
   top: 50%;
@@ -28,7 +32,7 @@ const StyledLoader = styled(Loader)`
 
 export const PriceInput: React.FC<InputTypes & { loading?: boolean }> = ({ loading, ...props }) => (
   <PriceContainer>
-    <Input {...props} />
+    <StyledInput {...props} />
     <RubbleSign>{loading ? <StyledLoader /> : "₽"}</RubbleSign>
   </PriceContainer>
 )

@@ -3,7 +3,7 @@ import { Pagination, Sex } from "./interfaces/utils.interface"
 import { keysToCamel } from "../network/casing"
 import { get } from "../network/network"
 
-type CoachCategoryListItemType =  {
+type CoachCategoryListItemType = {
   id: number
   name: string
   icon: string

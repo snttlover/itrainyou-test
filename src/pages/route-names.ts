@@ -12,6 +12,7 @@ export const routeNames = {
   clientNotifications: () => '/client/notifications-page',
   clientSession: (id: string) => `/client/sessions/${id}`,
   clientProfile: () => `/client/profile`,
+  clientWallet: () => `/client/wallet`,
   clientProfileEdit: () => `/client/profile/edit`,
   clientSettings: () => `/client/settings`,
   clientChatsList: () => `/client/chats`,
