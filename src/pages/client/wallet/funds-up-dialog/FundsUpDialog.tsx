@@ -92,8 +92,8 @@ export const FundsUpDialog = () => {
         <SubmitButton type='submit' disabled={!canSubmit}>
           Пополнить
         </SubmitButton>
+        {isLoading && <Spinner />}
       </Form>
-      {isLoading && <Spinner />}
     </StyledDialog>
   )
 }

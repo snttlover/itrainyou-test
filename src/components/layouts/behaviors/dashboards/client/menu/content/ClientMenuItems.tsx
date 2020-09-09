@@ -5,7 +5,6 @@ import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/com
 import { MediaRange } from "@/lib/responsive/media"
 import { useStore } from "effector-react/ssr"
 import { clientChatsSocket } from "@/feature/socket/chats-socket"
-import { routeNames } from "@/pages/route-names"
 
 const ItemsWrapper = styled.div`
   display: flex;
