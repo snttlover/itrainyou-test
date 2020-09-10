@@ -1,4 +1,4 @@
-import { getClientTransactionsList, Transaction } from "@/lib/api/wallet/client/get-list-transactions"
+import { getCoachTransactionsList, Transaction } from "@/lib/api/wallet/coach/get-list-transactions"
 import { date } from "@/lib/formatting/date"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
@@ -6,7 +6,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, sample
 export const WalletHistoryPageGate = createGate()
 
 export const loadTransactionsFx = createEffect({
-  handler: ({ page }: { page: number }) => getClientTransactionsList({ page, pageSize: 10 }),
+  handler: ({ page }: { page: number }) => getCoachTransactionsList({ page, pageSize: 10 }),
 })
 
 export const $transactionsCount = createStore<number>(100)
@@ -51,7 +51,6 @@ export const $transactionsList = $transactions.map(transactions =>
     const session = transaction.session
 
     let price = transaction.amount
-
     if (session)
       price = `${+session.clientPrice > 0 && transaction.type !== `SESSION_CANCELLATION` ? `+` : `-`} ${
         session.clientPrice
