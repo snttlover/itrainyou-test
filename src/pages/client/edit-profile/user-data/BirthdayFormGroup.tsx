@@ -49,7 +49,7 @@ const sexItems: { label: string; value: "M" | "F" }[] = [
 ]
 
 export const BirthdayFormGroup = () => {
-  let birthday = useStore($clientProfileForm).birthday
+  let birthday = date(useStore($clientProfileForm).birthday)
   const values = useStore($clientProfileForm)
   const errors = useStore($clientProfileFormErrors)
 
