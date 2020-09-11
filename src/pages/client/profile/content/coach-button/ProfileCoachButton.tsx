@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { Dialog } from "@/components/dialog/Dialog"
+import { Close, Dialog } from "@/components/dialog/Dialog"
 import { Button } from "@/components/button/normal/Button"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { useEvent, useStore } from "effector-react/ssr"
@@ -45,6 +45,9 @@ const Content = styled.div`
 
 const StyledDialog = styled(Dialog)`
   max-width: 400px;
+  ${Close} {
+    display: none;
+  }
 `
 
 const CoachButton = styled.div`

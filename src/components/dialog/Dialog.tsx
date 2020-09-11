@@ -38,7 +38,7 @@ export const Dialog = (props: DialogProps) => {
   )
 }
 
-const Close = styled(Icon).attrs({ name: `close` })`
+export const Close = styled(Icon).attrs({ name: `close` })`
   width: 20px;
   cursor: pointer;
   position: absolute;
