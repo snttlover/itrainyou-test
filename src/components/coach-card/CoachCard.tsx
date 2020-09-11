@@ -339,6 +339,10 @@ const CoachCardLayout = ({ coach, className }: Props) => {
     })
     .filter(([, value]) => value !== null)[0]
 
+  if (!minimalTimeWithPrice) {
+    return null
+  }
+
   const minimumPrice = { price: minimalTimeWithPrice[1], text: `${minimalTimeWithPrice[0].slice(1)} мин` }
 
   const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
