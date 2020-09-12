@@ -3,12 +3,13 @@ import { startTopUp } from "@/lib/api/wallet/client/start-top-up"
 import { startTopUpWithCard } from "@/lib/api/wallet/client/start-top-up-with-saved-card"
 import { transferToClientWallet } from "@/lib/api/wallet/coach/transfer-to-client-wallet"
 import { createEffectorField } from "@/lib/generators/efffector"
+import { isAxiosError } from "@/lib/network/network"
 import { InferStoreType } from "@/lib/types/effector"
 import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
 import { loadCardsFx } from "@/pages/client/wallet/cards/cards.model"
 import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
 import { createGate } from "@/scope"
-import { combine, createEffect, createEvent, forward, guard, restore, sample } from "effector-root"
+import { combine, createEffect, createEvent, forward, guard, restore, sample, split } from "effector-root"
 import { every } from "patronum"
 
 export const FundUpModalGate = createGate()
@@ -94,9 +95,28 @@ const startTopUpFx = createEffect({
 
 export const $isTopUpLoading = startTopUpFx.pending
 
-const failMessage: Toast = { text: "Не удалось пополнить кошелек", type: "error" }
+const { failedTopUpFromCoach, failedTopUpWithCard, __: failedTopUpUnknown } = split(startTopUpFx.fail, {
+  failedTopUpFromCoach: ({ params, error }) =>
+    params.type === "coach" && isAxiosError(error) && error.response?.status === 400,
+  failedTopUpWithCard: ({ params, error }) =>
+    params.type === "card" && isAxiosError(error) && error.response?.status === 400,
+})
+
+const coachFailMessage: Toast = { text: "Недостаточно средств на кошельке коуча", type: "error" }
 forward({
-  from: startTopUpFx.failData.map(_ => failMessage),
+  from: failedTopUpFromCoach.map(_ => coachFailMessage),
+  to: [toasts.remove, toasts.add],
+})
+
+const failCardMessage: Toast = { text: "Не удалось запустить процесс пополнения", type: "error" }
+forward({
+  from: failedTopUpWithCard.map(_ => failCardMessage),
+  to: [toasts.remove, toasts.add],
+})
+
+const failMessageUnknown: Toast = { text: "Неизвестная ошибка, попробуйте еще раз позже", type: "error" }
+forward({
+  from: failedTopUpUnknown.map(_ => failMessageUnknown),
   to: [toasts.remove, toasts.add],
 })
 

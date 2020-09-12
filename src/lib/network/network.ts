@@ -51,6 +51,8 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
   return Promise.reject(error)
 })
 
+export const isAxiosError = (error: Error): error is AxiosError => (error as any).isAxiosError
+
 export const get = <R, Params = {}>(url: string, params?: Params): Promise<AxiosResponse<R>> =>
   axios.get(url, { params })
 
