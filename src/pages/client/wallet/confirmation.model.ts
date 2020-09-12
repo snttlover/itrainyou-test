@@ -17,14 +17,14 @@ const confirmFx = createEffect({
 
     const paymentId = paymentIdFromQuery || paymentIdInLS
 
-    let rtn = CANCEL_CONFIRM_CODE
-
     if (paymentId) {
-      await finishTopUp({ paymentId })
+      const response = await finishTopUp({ paymentId })
       localStorage.removeItem("saved_payment_id")
+
+      return response
     }
 
-    return rtn
+    return CANCEL_CONFIRM_CODE
   },
 })
 

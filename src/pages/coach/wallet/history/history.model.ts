@@ -52,9 +52,13 @@ export const $transactionsList = $transactions.map(transactions =>
 
     let price = transaction.amount
     if (session)
-      price = `${+session.clientPrice > 0 && transaction.type !== `SESSION_CANCELLATION` ? `+` : `-`} ${
-        session.clientPrice
-      }`
+      price = `${
+        +session.clientPrice > 0 &&
+        transaction.type !== `SESSION_CANCELLATION` &&
+        transaction.type !== "TRANSFER_TO_CLIENT_WALLET"
+          ? `+`
+          : `-`
+      } ${session.clientPrice}`
     return {
       avatar: session?.coach.avatar || null,
       name: session ? `${session.coach.firstName} ${session.coach.lastName}` : `Пополнение кошелька`,
