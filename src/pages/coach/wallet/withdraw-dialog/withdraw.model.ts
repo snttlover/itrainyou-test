@@ -1,12 +1,9 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { startTopUp } from "@/lib/api/wallet/client/start-top-up"
-import { startTopUpWithCard } from "@/lib/api/wallet/client/start-top-up-with-saved-card"
-import { transferToClientWallet } from "@/lib/api/wallet/coach/transfer-to-client-wallet"
+import { withdrawMoney } from "@/lib/api/wallet/coach/withdraw-money"
 import { createEffectorField } from "@/lib/generators/efffector"
 import { InferStoreType } from "@/lib/types/effector"
-import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
-import { loadCardsFx } from "@/pages/client/wallet/cards/cards.model"
-import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
+import { loadCardsFx } from "../cards/cards.model"
+import { loadInfoFx } from "../info/info.model"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, forward, guard, restore, sample } from "effector-root"
 import { every } from "patronum"
@@ -15,19 +12,16 @@ export const FundUpModalGate = createGate()
 export const resetFundUpModal = createEvent()
 export const submitFundUp = createEvent()
 
-export const changeShowFundUpDialog = createEvent<boolean>()
-export const $isFundUpDialogShowed = restore(changeShowFundUpDialog, false)
-
-export const changeType = createEvent<"card" | "coach">()
-export const $currentType = restore(changeType, "card")
-
-sample({
-  clock: FundUpModalGate.open,
-  source: $userHasCoach,
-})
+export const changeShowWithdrawDialog = createEvent<boolean>()
+export const $isWithdrawDialogShowed = restore(changeShowWithdrawDialog, false)
 
 export const [$card, cardChanged, $cardError] = createEffectorField({
   defaultValue: -1,
+  validator: card => {
+    if (card === -1) return "Необходимо выбрать карту"
+
+    return null
+  },
   reset: resetFundUpModal,
 })
 
@@ -49,7 +43,6 @@ export const [$amount, amountChanged, $amountError, $isAmountCorrect] = createEf
 })
 
 export const $fundUpForm = combine({
-  type: $currentType,
   selectedCard: $card,
   amount: $amount,
   saveCard: $saveCard,
@@ -64,41 +57,25 @@ export const $canSubmit = every(true, [$isAmountCorrect])
 
 const startTopUpFx = createEffect({
   handler: async (form: InferStoreType<typeof $fundUpForm>) => {
-    if (form.type === "coach") {
-      return transferToClientWallet({ amount: Number(form.amount) })
-    } else if (form.selectedCard === -1) {
-      const response = await startTopUp({
-        amount: Number(form.amount),
-        saveCard: form.saveCard,
-      })
-      localStorage.setItem("saved_payment_id", response.paymentId)
-      window.location.href = response.confirmationUrl
-
-      return response
-    } else {
-      return startTopUpWithCard({
-        id: form.selectedCard,
-        amount: Number(form.amount),
-      })
-    }
+    return withdrawMoney({ amount: Number(form.amount), card: form.selectedCard })
   },
 })
 
 export const $isTopUpLoading = startTopUpFx.pending
 
-const failMessage: Toast = { text: "Не удалось пополнить кошелек", type: "error" }
+const failMessage: Toast = { text: "Не удалось вывести деньги", type: "error" }
 forward({
   from: startTopUpFx.failData.map(_ => failMessage),
   to: [toasts.remove, toasts.add],
 })
 
-const successMessage: Toast = { text: "Кошелек пополнен", type: "info" }
+const successMessage: Toast = { text: "Вывод произведен", type: "info" }
 forward({
   from: startTopUpFx.doneData.map(_ => successMessage),
   to: [
     toasts.remove,
     toasts.add,
-    changeShowFundUpDialog.prepend(_ => false),
+    changeShowWithdrawDialog.prepend(_ => false),
     resetFundUpModal.prepend(_ => {}),
     loadInfoFx.prepend(() => {}),
     loadCardsFx.prepend(() => {}),

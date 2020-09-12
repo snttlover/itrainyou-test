@@ -10,8 +10,8 @@ import React from "react"
 import styled from "styled-components"
 import {
   $fundUpForm,
-  $isFundUpDialogShowed,
-  changeShowFundUpDialog,
+  $isWithdrawDialogShowed,
+  changeShowWithdrawDialog,
   cardChanged,
   amountChanged,
   $fundUpErrors,
@@ -22,8 +22,8 @@ import {
 import { useEvent, useStore } from "effector-react/ssr"
 
 export const WithdrawDialog = () => {
-  const _changeShowFundUpDialog = useEvent(changeShowFundUpDialog)
-  const isShowed = useStore($isFundUpDialogShowed)
+  const _changeShowFundUpDialog = useEvent(changeShowWithdrawDialog)
+  const isShowed = useStore($isWithdrawDialogShowed)
   const cards = useStore($cardsListForView)
   const errors = useStore($fundUpErrors)
   const canSubmit = useStore($canSubmit)
@@ -34,12 +34,10 @@ export const WithdrawDialog = () => {
   const _amountChanged = useEvent(amountChanged)
   const _submitFundUp = useEvent(submitFundUp)
 
-  const cardsOptions = cards
-    .map(card => ({
-      label: `XXXX XXXX XXXX ${card.cardEnd} (${card.expireDate})`,
-      value: card.id,
-    }))
-    .concat({ label: "Другая", value: -1 })
+  const cardsOptions = cards.map(card => ({
+    label: `XXXX XXXX XXXX ${card.cardEnd} (${card.expireDate})`,
+    value: card.id,
+  }))
 
   return (
     <StyledDialog value={isShowed} onChange={_changeShowFundUpDialog}>
@@ -59,7 +57,7 @@ export const WithdrawDialog = () => {
           </FormItem>
         </AmountMargin>
         <SubmitButton type='submit' disabled={!canSubmit}>
-          Пополнить
+          Вывести
         </SubmitButton>
         {isLoading && <Spinner />}
       </Form>
@@ -99,7 +97,7 @@ const Title = styled.h2`
   font-weight: normal;
   font-size: 20px;
   line-height: 26px;
-  color: #4858cc;
+  color: ${({ theme }) => theme.colors.primary};
 
   ${MediaRange.lessThan("mobile")`
     font-size: 18px;
