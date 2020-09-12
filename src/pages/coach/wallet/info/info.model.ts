@@ -17,4 +17,3 @@ export const $isLoading = loadInfoFx.pending
 
 export const $amount = createStore(0).on(loadInfoFx.doneData, (_, { amount }) => Number(amount))
 export const $frozenAmount = createStore(0).on(loadInfoFx.doneData, (_, { frozenAmount }) => Number(frozenAmount))
-export const $totalAmount = createStore(0).on(loadInfoFx.doneData, (_, { totalAmount }) => Number(totalAmount))

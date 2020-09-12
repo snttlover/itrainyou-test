@@ -59,9 +59,15 @@ export const $transactionsList = $transactions.map(transactions =>
           ? `+`
           : `-`
       } ${session.clientPrice}`
+
+    let name = `Пополнение кошелька`
+
+    if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") name = "Перевод в кошелек клиента"
+    if (session) name = `${session.coach.firstName} ${session.coach.lastName}`
+
     return {
       avatar: session?.coach.avatar || null,
-      name: session ? `${session.coach.firstName} ${session.coach.lastName}` : `Пополнение кошелька`,
+      name,
       price: price,
       time: date(transaction.creationDatetime).format(`HH:mm`),
       date: date(transaction.creationDatetime).format(`DD.MM.YYYY`),
