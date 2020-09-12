@@ -76,10 +76,18 @@ const startTopUpFx = createEffect({
 
       return response
     } else {
-      return startTopUpWithCard({
+      const response = await startTopUpWithCard({
         id: form.selectedCard,
         amount: Number(form.amount),
       })
+
+      if (response.confirmationUrl) {
+        localStorage.setItem("saved_payment_id", response.paymentId)
+        window.location.href = response.confirmationUrl
+
+        return response
+      }
+      return response
     }
   },
 })
