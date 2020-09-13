@@ -45,7 +45,6 @@ const Delimiter = styled.div`
 `
 
 export const CoachMenuItems = () => {
-  const isApproved = useStore($coachAccess).isApproved
   const chatsCount = useStore(coachChatsSocket.data.$chatsCount)
   return (
     <ItemsWrapper>
@@ -80,7 +79,7 @@ export const CoachMenuItems = () => {
       {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachBlocked()} icon='none'>
+      <DashboardMenuItem link={routeNames.coachBlocked()} icon='none'>
         Заблокированные
       </DashboardMenuItem>
     </ItemsWrapper>
