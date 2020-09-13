@@ -3,6 +3,7 @@ import { createEvent, forward, restore } from "effector-root"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { formatSessionTime } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
+import { config as globalConfig } from "@/config"
 
 type createStartSessionDialogModelConfig = {
   type: "coach" | "client"
@@ -20,19 +21,25 @@ export const createStartSessionDialogModel = (config: createStartSessionDialogMo
   const $dialogVisibility = $sessionData.map(session => !!session)
 
   const $session = $sessionData.map(session => {
-
     const user = config.type === "coach" ? session?.clients[0] : session?.coach
 
     return {
       time: formatSessionTime(session?.startDatetime, session?.endDatetime),
       name: `${user?.firstName} ${user?.lastName}`,
       avatar: user?.avatar || null,
-      id: session?.id || 0
+      id: session?.id || 0,
     }
   })
 
   forward({
-    from: config.socket.events.onSessionStarted.map(message => message.data),
+    from: config.socket.events.onSessionStarted.map(message => {
+      message.data.clients.forEach(client => {
+        client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
+      })
+      if (message.data.coach) message.data.coach.avatar = `${globalConfig.BACKEND_URL}${message.data.coach.avatar}`
+
+      return message.data
+    }),
     to: changeSession,
   })
 
