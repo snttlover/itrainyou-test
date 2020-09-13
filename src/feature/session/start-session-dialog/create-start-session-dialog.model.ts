@@ -33,6 +33,7 @@ export const createStartSessionDialogModel = (config: createStartSessionDialogMo
 
   forward({
     from: config.socket.events.onSessionStarted.map(message => {
+      message = JSON.parse(JSON.stringify(message))
       message.data.clients.forEach(client => {
         client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
       })

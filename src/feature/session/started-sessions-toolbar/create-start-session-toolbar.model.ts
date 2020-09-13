@@ -31,6 +31,7 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
   const changeSessionsList = createEvent<DashboardSession[]>()
   const $sessionsList = restore(changeSessionsList, [])
     .on(config.socket.events.onSessionStarted, (sessions, message) => {
+      message = JSON.parse(JSON.stringify(message))
       message.data.clients.forEach(client => {
         client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
       })
