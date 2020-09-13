@@ -124,6 +124,10 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
       } на перенос сессии, сессия остается в прежнее время `
     }
 
+    if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {
+      return `Вы указали, что с сессий возникли проблемы. С Вами свяжется администратор в поддержке для уточнения уточнения`
+    }
+
     if (
       is("CONFIRMATION_COMPLETION", "APPROVED", "COMPLETED") &&
       (request.session.isReviewed || $revocated.getState().indexOf(request.session.id) !== -1)
@@ -162,6 +166,10 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
   }
 
   if (chatType === `coach`) {
+    if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {
+      return `Клиент указал, что с сессий возникли проблемы. С Вами свяжется администратор в поддержке для уточнения`
+    }
+
     if (status === 'SOLVED_IN_COACH_FAVOUR') {
       return 'Администратор решил спорную ситуацию в вашу пользу. Вам были переведены деньги за сессию'
     }
@@ -452,7 +460,7 @@ const getSystemButtons = (
 
     if (chatType === `client`) {
       if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
-        return <ConfirmationCompletation approve={() => {}} request={request} />
+        return <ConfirmationCompletation approve={() => approve(request.id)} request={request} />
       }
 
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING")) {
