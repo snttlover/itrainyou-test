@@ -91,7 +91,7 @@ forward({
   to: sessionAdded,
 })
 
-const successToastMessage: Toast = { type: "info", text: "Сессиия создана" }
+const successToastMessage: Toast = { type: "info", text: "Сессия создана" }
 forward({
   from: createSessionsFx.done.map(_ => successToastMessage),
   to: [toasts.remove, toasts.add, setModalShow.prepend(_ => false)],
