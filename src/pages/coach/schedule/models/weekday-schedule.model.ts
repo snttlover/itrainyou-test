@@ -62,9 +62,12 @@ export const $weekdaySlots = createStore(
           const times = slot.startTime.split(":").map(parseFloat)
           return {
             ...slot,
-            startTime: date(
-              date.utc().day(weekDayToNumberMap[slots.weekday]).set("h", times[0]).set("m", times[1])
-            ).format("HH:mm"),
+            startTime: date
+              .utc()
+              .day(weekDayToNumberMap[slots.weekday])
+              .set("h", times[0])
+              .set("m", times[1])
+              .format("HH:mm"),
           }
         }),
       }
@@ -98,7 +101,7 @@ export const $freeWeekdayTimes = combine(
     return weekdaySlots.map(({ weekday, slots }) => {
       const freeTimes = times.filter(({ min, hour }) => {
         const durationMinutes = parseInt(duration.slice(1), 10)
-        const optionTime = date().set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+        const optionTime = date.utc().set("h", hour).set("m", min).set("s", 0).set("ms", 0)
         const endTime = optionTime.add(durationMinutes, "minute")
 
         const isCollideWithExistSessions = slots.reduce((isCollide, slot) => {
@@ -106,7 +109,7 @@ export const $freeWeekdayTimes = combine(
 
           const [hour, minute] = slot.startTime.split(":").map(Number)
           const slotDurationMinutes = parseInt(slot.sessionDurationType.slice(1), 10)
-          const slotStartTime = date().set("h", hour).set("m", minute).set("s", 0).set("ms", 0)
+          const slotStartTime = date.utc().set("h", hour).set("m", minute).set("s", 0).set("ms", 0)
           const slotEndTime = slotStartTime.add(slotDurationMinutes, "minute")
 
           const isOptionTimeBetweenSlot = optionTime.isBetween(
@@ -134,7 +137,7 @@ export const $freeWeekdayTimes = combine(
 
 const timeToUTC = (time: string) => {
   const [hour, minute] = time.split(":").map(Number)
-  return date().set("h", hour).set("m", minute).set("s", 0).set("ms", 0).utc().format("HH:mm")
+  return date.utc().set("h", hour).set("m", minute).set("s", 0).set("ms", 0).format("HH:mm")
 }
 
 sample({

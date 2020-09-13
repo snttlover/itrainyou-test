@@ -51,7 +51,7 @@ export const $startDatetimeOptions = combine(
 
     return opts
       .filter(({ hour, min }) => {
-        const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+        const optionTime = date.utc(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
         const endTime = optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute")
 
         const isAfterThanNow = optionTime.isAfter(now)
