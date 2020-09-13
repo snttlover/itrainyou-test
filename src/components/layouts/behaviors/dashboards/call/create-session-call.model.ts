@@ -9,6 +9,7 @@ import { $isClient } from "@/lib/effector"
 import { getClientSessionVideoToken } from "@/lib/api/client/get-session-video-token"
 import { getClientSession } from "@/lib/api/client/get-client-session"
 import { date } from "@/lib/formatting/date"
+import { runInScope } from "@/scope"
 
 type CreateSessionCallModuleConfig = {
   dashboard: "client" | "coach"
@@ -97,7 +98,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
         agoraData.client.on(`peer-leave`, (e) => {
           if (e.uid === agoraData.remoteStream?.getId()) {
-            changeInterculatorIsConnected(false)
+            runInScope(changeInterculatorIsConnected, false)
             agoraData.remoteStream = null
             const player = document.getElementById(`InterlocutorVideo`)
             if (player) {
@@ -106,20 +107,20 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           }
         })
 
-        agoraData.client.on('mute-audio', () => changeInterlocutorMicrophoneStatus(false))
-        agoraData.client.on('unmute-audio', () => changeInterlocutorMicrophoneStatus(true))
-        agoraData.client.on('mute-video', () => changeInterlocutorVideoStatus(false))
-        agoraData.client.on('unmute-video', () => changeInterlocutorVideoStatus(true))
+        agoraData.client.on('mute-audio', () => runInScope(changeInterlocutorMicrophoneStatus, false))
+        agoraData.client.on('unmute-audio', () => runInScope(changeInterlocutorMicrophoneStatus,true))
+        agoraData.client.on('mute-video', () => runInScope(changeInterlocutorVideoStatus,false))
+        agoraData.client.on('unmute-video', () => runInScope(changeInterlocutorVideoStatus, true))
 
         agoraData.client.on(`stream-subscribed`, e => {
           agoraData.remoteStream = e.stream
           play()
           agoraData.remoteStream?.on("player-status-change", (event) => {
-            changeInterlocutorVideoStatus(agoraData.remoteStream?.hasVideo() || false)
-            changeInterlocutorMicrophoneStatus(agoraData.remoteStream?.hasAudio() || false)
+            runInScope(changeInterlocutorVideoStatus, agoraData.remoteStream?.hasVideo() || false)
+            runInScope(changeInterlocutorMicrophoneStatus, agoraData.remoteStream?.hasAudio() || false)
           })
-          changeInterculatorWasConnected(true)
-          changeInterculatorIsConnected(true)
+          runInScope(changeInterculatorWasConnected, true)
+          runInScope(changeInterculatorIsConnected, true)
         })
       }
     },
