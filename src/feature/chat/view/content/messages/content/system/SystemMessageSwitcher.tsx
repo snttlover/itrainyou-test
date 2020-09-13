@@ -460,7 +460,7 @@ const getSystemButtons = (
 
     if (chatType === `client`) {
       if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
-        return <ConfirmationCompletation approve={() => {}} request={request} />
+        return <ConfirmationCompletation approve={() => approve(request.id)} request={request} />
       }
 
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING")) {
