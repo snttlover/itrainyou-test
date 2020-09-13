@@ -11,6 +11,10 @@ export const ChatMessageSwitcher = ({
   message: ChatMessagesTypes
   isSystemChat: boolean
 }) => {
+  if (message.type === `SUPPORT`) {
+    return <div>hello</div>
+  }
+
   if (message.type === `TEXT`) {
     return (
       <ChatMessage id={`message-${message.id}`} time={message.time} data-self={message.isMine}>

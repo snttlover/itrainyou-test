@@ -1,9 +1,11 @@
+import { config as globalConfig, config as appConfig } from "@/config"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { createEffect, createEvent, forward, restore, combine } from "effector-root"
 import { date } from "@/lib/formatting/date"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
+import { Client } from "@/lib/api/client/clientInfo"
 
 type CreateStartSessionToolbarModelConfig = {
   type: "coach" | "client"
@@ -28,7 +30,15 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
 
   const changeSessionsList = createEvent<DashboardSession[]>()
   const $sessionsList = restore(changeSessionsList, [])
-    .on(config.socket.events.onSessionStarted, (sessions, message) => [...sessions, message.data])
+    .on(config.socket.events.onSessionStarted, (sessions, message) => {
+      message.data.clients.forEach(client => {
+        client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
+      })
+      if (message.data.coach)
+        message.data.coach.avatar = `${globalConfig.BACKEND_URL}${message.data.coach.avatar}`
+
+      return [...sessions, message.data]
+    })
     .reset(reset)
 
   const $lastCallId = restore(config.sessionCallModule.methods.connectToSession, 0).reset(

@@ -16,7 +16,7 @@ type CreateChatMessagesModuleTypes = {
 }
 
 export type ChatSystemMessage = {
-  type: "SYSTEM"
+  type: "SYSTEM" | "SUPPORT"
   id: number
   chatType: "coach" | "client"
   request: SessionRequest
@@ -79,7 +79,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
           const isMine =
             (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
 
-          if (message.type === `SYSTEM`) {
+          if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
             let user: CoachUser | Client | null = null
 
             if (config.type === `coach`) {
@@ -97,7 +97,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             }
 
             return {
-              type: `SYSTEM`,
+              type: message.type as  "SYSTEM" | "SUPPORT",
               id: message.id,
               chatType: config.type,
               request: getReq(message.sessionRequest.id),
