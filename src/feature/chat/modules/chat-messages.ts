@@ -1,7 +1,13 @@
 import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
 import { createEffect, createEvent, createStore, guard, sample } from "effector-root"
 import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
-import { Chat, ChatMessage, ConflictStatus, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
+import {
+  Chat,
+  ChatMessage,
+  ConflictStatus,
+  MessageSessionRequestStatuses,
+  SupportTicketType
+} from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
@@ -15,8 +21,16 @@ type CreateChatMessagesModuleTypes = {
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
 }
 
+export type ChatSupportMessage = {
+  type: "SUPPORT"
+  id: number
+  userName: string
+  userAvatar: string | null
+  ticketStatus: SupportTicketType
+}
+
 export type ChatSystemMessage = {
-  type: "SYSTEM" | "SUPPORT"
+  type: "SYSTEM"
   id: number
   chatType: "coach" | "client"
   request: SessionRequest
@@ -38,7 +52,7 @@ const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
   return self.indexOf(value) === index
 }
 
-export type ChatMessagesTypes = ChatSystemMessage | ChatTextMessage
+export type ChatMessagesTypes = ChatSystemMessage | ChatTextMessage | ChatSupportMessage
 
 export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) => {
   const changeId = createEvent<ChatId>()
@@ -92,12 +106,21 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 null
             }
 
-            if (!user) {
-              user = message.senderSupport
+            if (message.type === 'SUPPORT') {
+              if (!user) {
+                user = message.senderSupport
+              }
+              return {
+                type: "SUPPORT",
+                id: message.id,
+                userName: `${user?.firstName} ${user?.lastName}`,
+                userAvatar: user?.avatar || null,
+                ticketStatus: message.systemTicketType
+              }
             }
 
             return {
-              type: message.type as  "SYSTEM" | "SUPPORT",
+              type: message.type as "SYSTEM",
               id: message.id,
               chatType: config.type,
               request: getReq(message.sessionRequest.id),

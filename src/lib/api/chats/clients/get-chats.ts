@@ -9,7 +9,7 @@ import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 
 export type MessageSessionRequestStatuses = 'INITIATED' | 'COMPLETED'
 export type MessageTypes = 'USER' | 'SYSTEM' | 'SUPPORT'
-type SystemTicketType = 'SUPPORT_AGENT_FOUND' | 'PROBLEM_SOLVED'
+export type SupportTicketType = 'SUPPORT_AGENT_FOUND' | 'PROBLEM_SOLVED' | 'LOOKING_FOR_SUPPORT_AGENT'
 
 export type ConflictStatus = 'SOLVED_IN_COACH_FAVOUR' | 'SOLVED_IN_CLIENT_FAVOUR'
 
@@ -27,7 +27,7 @@ export type ChatMessage = {
   }
   sessionRequestStatus: MessageSessionRequestStatuses
   creationDatetime: ISODate
-  systemTicketType: null | SystemTicketType
+  systemTicketType: SupportTicketType
 }
 
 
