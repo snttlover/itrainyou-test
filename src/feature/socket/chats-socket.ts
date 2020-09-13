@@ -1,6 +1,6 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
-import { config } from "@/config"
+import { config as globalConfig, config } from "@/config"
 import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect, restore } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn, $userData } from "@/feature/user/user.model"
@@ -82,7 +82,15 @@ export const createChatsSocket = (userType: UserType) => {
   const onReadNotification = createEvent<ReadNotificationsDone>()
   const onChatCreated = createEvent<OnChatCreated>()
   const onMessagesReadDone = createEvent<MessagesReadDone>()
-  const onSessionStarted = createEvent<SessionStarted>()
+  const onSessionStarted = createEvent<SessionStarted>().map(message => {
+    message.data.clients.forEach(client => {
+      client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
+    })
+    if (message.data.coach)
+      message.data.coach.avatar = `${globalConfig.BACKEND_URL}${message.data.coach.avatar}`
+
+    return message.data
+  })
 
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: `WRITE_MESSAGE`, data }))
   const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: `READ_MESSAGES`, data }))

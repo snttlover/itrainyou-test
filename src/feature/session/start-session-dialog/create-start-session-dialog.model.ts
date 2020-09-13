@@ -32,14 +32,7 @@ export const createStartSessionDialogModel = (config: createStartSessionDialogMo
   })
 
   forward({
-    from: config.socket.events.onSessionStarted.map(message => {
-      message.data.clients.forEach(client => {
-        client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
-      })
-      if (message.data.coach) message.data.coach.avatar = `${globalConfig.BACKEND_URL}${message.data.coach.avatar}`
-
-      return message.data
-    }),
+    from: config.socket.events.onSessionStarted,
     to: changeSession,
   })
 

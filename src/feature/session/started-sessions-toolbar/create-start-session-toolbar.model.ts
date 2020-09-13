@@ -30,15 +30,7 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
 
   const changeSessionsList = createEvent<DashboardSession[]>()
   const $sessionsList = restore(changeSessionsList, [])
-    .on(config.socket.events.onSessionStarted, (sessions, message) => {
-      message.data.clients.forEach(client => {
-        client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
-      })
-      if (message.data.coach)
-        message.data.coach.avatar = `${globalConfig.BACKEND_URL}${message.data.coach.avatar}`
-
-      return [...sessions, message.data]
-    })
+    .on(config.socket.events.onSessionStarted, (sessions, session) => [...sessions, session])
     .reset(reset)
 
   const $lastCallId = restore(config.sessionCallModule.methods.connectToSession, 0).reset(
