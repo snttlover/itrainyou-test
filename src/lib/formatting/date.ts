@@ -26,7 +26,7 @@ export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?
 
   const dt = dayjs(date, options, locale)
 
-  if (timeZone === "Atlantic/Azores" || timeZone === "GMT") return dt
+  if (timeZone === "Atlantic/Azores" || timeZone === "GMT") return dt.utc()
 
   return dt.tz(timeZone)
 }
