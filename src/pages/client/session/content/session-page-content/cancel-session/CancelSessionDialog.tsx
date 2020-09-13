@@ -22,7 +22,7 @@ export const CancelSessionDialog = (props: CancelSessionDialogTypes) => {
     <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
       <Container>
         <Header>Хотите отменить сессию?</Header>
-        <Description>Сессия отменится автоматически</Description>
+        <Description>{props.text}</Description>
 
         <Actions>
           <No onClick={() => props.onChangeVisibility(false)}>Нет</No>
