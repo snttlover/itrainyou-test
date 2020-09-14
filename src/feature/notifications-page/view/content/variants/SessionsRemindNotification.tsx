@@ -62,7 +62,6 @@ export const SessionsRemindNotification = (props: SessionsRemindNotificationProp
               </Bold>{" "}
               в <SessionTime>{formatSessionTime(session.startDatetime, session.endDatetime)}</SessionTime>
             </SmallTitle>
-            <Time>{props.time}</Time>
           </Row>
         )
       })}
