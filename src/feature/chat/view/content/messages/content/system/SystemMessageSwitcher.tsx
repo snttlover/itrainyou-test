@@ -94,10 +94,6 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
       return `Вы отменили перенос сессии на ${formatDate(request.resultDatetime)}`
     }
 
-    if (is("CANCEL", "AUTOMATICALLY_APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
-    }
-
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED"]) && request.initiatorCoach) {
       return `${request.initiatorCoach?.firstName} отменил${request.initiatorCoach?.sex === `F` ? `a` : ``}  сессию`
     }
