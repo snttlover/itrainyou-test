@@ -125,7 +125,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
     }
 
     if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {
-      return `Вы указали, что с сессий возникли проблемы. С Вами свяжется администратор в поддержке для уточнения уточнения`
+      return `Вы указали, что с сессий возникли проблемы. С Вами свяжется администратор в поддержке для уточнения`
     }
 
     if (
