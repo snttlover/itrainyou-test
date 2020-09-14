@@ -15,13 +15,18 @@ const Dropdown = styled.div`
   position: absolute;
   top: 100%;
   z-index: 2;
-  left: 50%;
   padding: 10px;
   background-color: #fff;
   border-radius: 2px;
-  transform: translate(-50%, 0);
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12), 2px 4px 8px rgba(0, 0, 0, 0.16);
   width: 220px;
+`
+
+const LeftDropdown = styled(Dropdown)`
+  left: 0;
+`
+const RightDropdown = styled(Dropdown)`
+  right: 0;
 `
 
 const StyledDatePicker = styled(DatePicker)`
@@ -44,24 +49,40 @@ export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePick
   range,
   rangeChanged,
 }) => {
-  const [isOpen, setOpen] = useState(false)
+  const [leftIsOpen, setLeftIsOpenOpen] = useState(false)
+  const [rightIsOpen, setRightIsOpenOpen] = useState(false)
 
   const dropdownRef = useRef(null)
-  useClickOutside(dropdownRef, () => setOpen(false))
+  useClickOutside(dropdownRef, () => {
+    setLeftIsOpenOpen(false)
+    setRightIsOpenOpen(false)
+  })
+
+  const [from, to] = range.map(date => date.toDate())
 
   return (
     <Container className={className}>
-      <StyledDatePicker placeholder='От' value={range[0].toDate()} onClick={() => setOpen(true)} />
-      <StyledDatePicker placeholder='До' value={range[1].toDate()} onClick={() => setOpen(true)} />
-      {isOpen && (
-        <Dropdown ref={dropdownRef}>
-          <Calendar
-            value={range.map(dat => dat.toDate())}
-            onChange={dates => rangeChanged([date(dates[0]), date(dates[1])])}
-            selectRange
-          />
-        </Dropdown>
-      )}
+      <StyledDatePicker placeholder='От' value={from} onClick={() => setLeftIsOpenOpen(true)} />
+      <StyledDatePicker placeholder='До' value={to} onClick={() => setRightIsOpenOpen(true)} />
+      <div ref={dropdownRef}>
+        {leftIsOpen && (
+          <LeftDropdown>
+            <Calendar
+              value={from}
+              disabledFrom={to}
+              onChange={picked => rangeChanged([date(picked), date(to)])}
+            />
+          </LeftDropdown>
+        )}
+        {rightIsOpen && (
+          <RightDropdown>
+            <Calendar
+              value={to}
+              onChange={picked => rangeChanged([date(from), date(picked)])}
+            />
+          </RightDropdown>
+        )}
+      </div>
     </Container>
   )
 }

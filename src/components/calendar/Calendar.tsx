@@ -22,6 +22,7 @@ type CalendarTypes = {
   selectRange?: boolean
   isBig?: boolean
   className?: string
+  disabledFrom?: Date
   pinTo?: Date | null
   onPrevMonth?: (prevMonth: Date) => void
   onNextMonth?: (nextMonth: Date) => void
@@ -201,6 +202,12 @@ export const Calendar = (props: CalendarTypes) => {
     if (pinnedDefined) {
       if (pinnedDates.includes(date(dat).format(equalFormat))) {
         classes.push(`pinned`)
+      }
+    }
+
+    if (props.disabledFrom) {
+      if (date(props.disabledFrom).isBefore(date(dat))) {
+        classes.push(`disabled`)
       }
     }
 
