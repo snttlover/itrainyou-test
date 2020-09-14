@@ -165,7 +165,7 @@ export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
 
   useEffect(() => {
-    if (props.startFrom) {
+    if (props.startFrom && +props.startFrom !== +startDate) {
       changeActiveStartDate(props.startFrom)
     }
   }, [props.startFrom])
