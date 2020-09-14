@@ -293,6 +293,11 @@ export const SessionsDatePicker = (props: SelectDatetimeTypes) => {
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
+  const tabsKeys = tabs.map(tab => tab.key)
+  if (!tabsKeys.includes(activeTab) && tabsKeys[0]) {
+    changeActiveTab(tabsKeys[0])
+  }
+
   const [currentDate, changeCurrentDate] = useState<Date | null>()
   const enabledDates = sessions.map(session => session.startDatetime)
 
