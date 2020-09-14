@@ -35,8 +35,7 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
       message.data.clients.forEach(client => {
         client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
       })
-      if (message.data.coach)
-        message.data.coach.avatar = `${globalConfig.BACKEND_URL}${message.data.coach.avatar}`
+      if (message.data.coach) message.data.coach.avatar = `${globalConfig.BACKEND_URL}${message.data.coach.avatar}`
 
       return [...sessions, message.data]
     })
@@ -60,6 +59,7 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
           time: formatDates(session.startDatetime, session.endDatetime),
         }
       })
+      .slice(0, 1)
   })
 
   forward({
