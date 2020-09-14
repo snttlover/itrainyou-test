@@ -162,10 +162,11 @@ const isEqualDates = (first: Date, second: Date, format: string = `DDMMYYYY`) =>
   date(first).format(format) === date(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
+  const equalFormat = `DDMMYYYY`
   const [startDate, changeActiveStartDate] = useState(new Date())
 
   useEffect(() => {
-    if (props.startFrom && +props.startFrom !== +startDate) {
+    if (props.startFrom && date().format(equalFormat) === date(startDate).format(equalFormat)) {
       changeActiveStartDate(props.startFrom)
     }
   }, [props.startFrom])
@@ -173,7 +174,6 @@ export const Calendar = (props: CalendarTypes) => {
   const pinnedDefined = !!props.pinnedDates
   const enabledDefined = !!props.enabledDates
 
-  const equalFormat = `DDMMYYYY`
   const pinnedDates = (props.pinnedDates || []).map(pinnedDate => date(pinnedDate).format(equalFormat))
   const enabledDates = (props.enabledDates || []).map(enabledDate => date(enabledDate).format(equalFormat))
 
