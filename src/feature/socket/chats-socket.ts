@@ -223,6 +223,25 @@ export const createChatsSocket = (userType: UserType) => {
     to: socket.methods.disconnect,
   })
 
+  const ping = socket.methods.send.prepend(() => ({ type: `PING` }))
+
+  let pingPongInterval: any = null
+
+  const pingPongFx = createEffect({
+    handler: () => {
+      if (pingPongInterval) {
+        clearInterval(pingPongInterval)
+        pingPongInterval = null
+      }
+      pingPongInterval = setInterval(ping, 5000)
+    },
+  })
+
+  forward({
+    from: socket.events.onConnect.map(() => {}),
+    to: pingPongFx,
+  })
+
   return {
     data: {
       $chatsCount,
@@ -233,7 +252,7 @@ export const createChatsSocket = (userType: UserType) => {
       ...socket.events,
       onMessage,
       onChatCreated,
-      onSessionStarted
+      onSessionStarted,
     },
     methods: {
       send,
