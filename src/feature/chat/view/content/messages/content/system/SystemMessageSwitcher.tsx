@@ -27,7 +27,7 @@ const formatDate = (day: string) => date(day).format(dateFormat)
 const formatSessionDay = (day?: ISODate) => date(day).format(`DD MMM YYYY`)
 
 export const formatSessionTime = (start?: ISODate, end?: ISODate) =>
-  date(start).format(`HH:mm -`) + date(end).format(`HH:mm`)
+  date(start).format(`HH:mm-`) + date(end).format(`HH:mm`)
 
 const formatSessionDate = (start?: ISODate, end?: ISODate) => {
   return formatSessionDay(start) + ` ` + formatSessionTime(start, end)
