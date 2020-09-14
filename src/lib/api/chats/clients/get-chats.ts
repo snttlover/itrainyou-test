@@ -22,6 +22,9 @@ export type ChatMessage = {
   senderClient: Client | null
   senderSupport: Client | null
   sessionRequest: SessionRequest
+  supportTicket: {
+    support: Client
+  } | null
   conflict: null | {
     status: ConflictStatus
   }

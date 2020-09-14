@@ -96,6 +96,17 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
           if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
             let user: CoachUser | Client | null = null
 
+            if (message.type === 'SUPPORT') {
+              const user = message?.supportTicket?.support
+              return {
+                type: "SUPPORT",
+                id: message.id,
+                userName: `${user?.firstName} ${user?.lastName}`,
+                userAvatar: user?.avatar || null,
+                ticketStatus: message.systemTicketType
+              }
+            }
+
             if (config.type === `coach`) {
               user = message.sessionRequest?.initiatorClient || message.sessionRequest?.receiverClient || null
             } else {
@@ -104,19 +115,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 message.sessionRequest.initiatorCoach ||
                 message.sessionRequest.receiverCoach ||
                 null
-            }
-
-            if (message.type === 'SUPPORT') {
-              if (!user) {
-                user = message.senderSupport
-              }
-              return {
-                type: "SUPPORT",
-                id: message.id,
-                userName: `${user?.firstName} ${user?.lastName}`,
-                userAvatar: user?.avatar || null,
-                ticketStatus: message.systemTicketType
-              }
             }
 
             return {

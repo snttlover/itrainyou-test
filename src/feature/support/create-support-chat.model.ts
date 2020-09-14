@@ -72,17 +72,18 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
 
   const $support = chatMessages.pagination.data.$list.map(messages => {
     // @ts-ignore
-    return messages.reduce((userInfo, message) => {
+    return [...messages].reverse().reduce((userInfo, message) => {
       if (message.systemTicketType) {
         if (message.systemTicketType === "SUPPORT_AGENT_FOUND") {
           return {
-            name: `${message.senderSupport?.firstName} ${message.senderSupport?.lastName}`,
+            avatar: message.supportTicket?.support?.avatar,
+            name: `${message.supportTicket?.support?.firstName} ${message.supportTicket?.support?.lastName}`,
           }
         } else {
           return null
         }
       }
-    }, null) as { name: string } | null
+    }, null) as { name: string, avatar: string | null } | null
   })
 
   return {

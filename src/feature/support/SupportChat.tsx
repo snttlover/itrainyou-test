@@ -33,7 +33,7 @@ export const createSupportChat = ($chatModule: ReturnType<typeof createSupportCh
           {!messagesFirstLoading && (
             <>
               <ChatContainer>
-                <SupportChatHeader hasUser={!!support} backLink={"/coach"} supportName={support?.name} />
+                <SupportChatHeader avatar={support?.avatar} hasUser={!!support} backLink={"/coach"} supportName={support?.name} />
                 <Messages />
                 <ChatMessageBox onSend={send} />
               </ChatContainer>
