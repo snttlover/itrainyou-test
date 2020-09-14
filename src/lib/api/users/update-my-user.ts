@@ -4,8 +4,8 @@ import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { patch } from "@/lib/network/network"
 
 export type UpdateMyUserRequest = {
-  email: string
-  timeZone: string
+  email?: string
+  timeZone?: string
 }
 
 export const updateMyUser = (data: UpdateMyUserRequest): Promise<GetMyUserResponse> =>
