@@ -94,6 +94,10 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
       return `Вы отменили перенос сессии на ${formatDate(request.resultDatetime)}`
     }
 
+    if (is("CANCEL", "AUTOMATICALLY_APPROVED", "COMPLETED")) {
+      return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
+    }
+
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED"]) && request.receiverCoach) {
       return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``}  сессию`
     }
@@ -112,10 +116,6 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
 
     if (is("CANCEL", "CANCELLED", "COMPLETED")) {
       return `Вы отменили запрос на отмену сессии`
-    }
-
-    if (is("CANCEL", "AUTOMATICALLY_APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
     }
 
     if (is("RESCHEDULE", "DENIED", "COMPLETED")) {
