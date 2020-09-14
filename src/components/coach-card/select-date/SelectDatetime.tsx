@@ -273,7 +273,13 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
       <Block onlyOneCard={tabs.length === 1}>
         {loading && <Spinner />}
         <Datepicker>
-          <StyledCalendar value={currentDate} enabledDates={enabledDates} onChange={changeCurrentDate} isBig={true} />
+          <StyledCalendar
+            value={currentDate}
+            startFrom={date(enabledDates[0]).toDate()}
+            enabledDates={enabledDates}
+            onChange={changeCurrentDate}
+            isBig={true}
+          />
         </Datepicker>
         <SelectTimeContainer>
           <SelectDateHeader>{formattedDate}</SelectDateHeader>
