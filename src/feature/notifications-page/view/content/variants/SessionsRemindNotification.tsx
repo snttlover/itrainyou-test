@@ -1,18 +1,24 @@
 import React from "react"
 import { SessionsRemindNotificationType } from "@/lib/api/client/get-notifications"
 
-import { Card, NotificationAvatar,SessionTime, Title, Bold, Time, Row } from "../common/NotificationsCommon"
+import { Card, NotificationAvatar, SessionTime, Title, Bold, Time, Row } from "../common/NotificationsCommon"
 import { useStore } from "effector-react/ssr"
 import { $dashboard } from "@/feature/dashboard/dashboard"
 import { Avatar } from "@/components/avatar/Avatar"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { formatSessionTime } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
+import { Link } from "react-router-dom"
+import { routeNames } from "@/pages/route-names"
 
 export type SessionsRemindNotificationProps = {
   notification: SessionsRemindNotificationType
   time: string
 }
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`
 
 export const SessionsRemindNotification = (props: SessionsRemindNotificationProps) => {
   const { sessions } = props.notification
@@ -21,16 +27,33 @@ export const SessionsRemindNotification = (props: SessionsRemindNotificationProp
   if (sessions.length === 1) {
     const session = sessions[0]
     const user = dashboardType === "coach" ? session.clients[0] : session.coach
+    const userLink =
+      dashboardType === "coach"
+        ? routeNames.coachClientProfile(user.id.toString())
+        : routeNames.searchCoachPage(user.id.toString())
+
+    const sessionLink =
+      dashboardType === "coach"
+        ? routeNames.coachSession(session.id.toString())
+        : routeNames.clientSession(session.id.toString())
     return (
       <Card>
         <Row>
-          <NotificationAvatar src={user.avatar} />
+          <StyledLink to={userLink}>
+            <NotificationAvatar src={user.avatar} />
+          </StyledLink>
           <Title>
             У вас завтра сессия с{" "}
-            <Bold>
-              {user.firstName} {user.lastName}
-            </Bold>{" "}
-            в <SessionTime>{formatSessionTime(session.startDatetime, session.endDatetime)}</SessionTime>
+            <StyledLink to={userLink}>
+              <Bold>
+                {user.firstName} {user.lastName}
+              </Bold>
+            </StyledLink>{" "}
+            в
+            <StyledLink to={sessionLink}>
+              {" "}
+              <SessionTime>{formatSessionTime(session.startDatetime, session.endDatetime)}</SessionTime>
+            </StyledLink>
           </Title>
           <Time>{props.time}</Time>
         </Row>
@@ -50,17 +73,34 @@ export const SessionsRemindNotification = (props: SessionsRemindNotificationProp
       {sessions.map(session => {
         const user = dashboardType === "coach" ? session.clients[0] : session.coach
 
+        const userLink =
+          dashboardType === "coach"
+            ? routeNames.coachClientProfile(user.id.toString())
+            : routeNames.searchCoachPage(user.id.toString())
+
+        const sessionLink =
+          dashboardType === "coach"
+            ? routeNames.coachSession(session.id.toString())
+            : routeNames.clientSession(session.id.toString())
+
         return (
           <Row>
-            <SmallAvatarWrapper>
-              <SmallAvatar src={user.avatar} />
-            </SmallAvatarWrapper>
+            <StyledLink to={userLink}>
+              <SmallAvatarWrapper>
+                <SmallAvatar src={user.avatar} />
+              </SmallAvatarWrapper>
+            </StyledLink>
             <SmallTitle>
               C{" "}
-              <Bold>
-                {user.firstName} {user.lastName}{" "}
-              </Bold>{" "}
-              в <SessionTime>{formatSessionTime(session.startDatetime, session.endDatetime)}</SessionTime>
+              <StyledLink to={userLink}>
+                <Bold>
+                  {user.firstName} {user.lastName}{" "}
+                </Bold>
+              </StyledLink>{" "}
+              в{" "}
+              <StyledLink to={sessionLink}>
+                <SessionTime>{formatSessionTime(session.startDatetime, session.endDatetime)}</SessionTime>
+              </StyledLink>
             </SmallTitle>
           </Row>
         )
