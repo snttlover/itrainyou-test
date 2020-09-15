@@ -87,7 +87,10 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
     }
 
     if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
-      return `Вы хотите перенести сессию на ${formatDate(request.resultDatetime)}`
+      return `Вы хотите перенести сессию на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
     }
 
     if (is("RESCHEDULE", "CANCELLED", "COMPLETED")) {
