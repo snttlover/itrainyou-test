@@ -68,8 +68,6 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
     to: [changeId],
   })
 
-  const $loading = fetchSupportChatFx.pending
-
   const $support = chatMessages.pagination.data.$list.map(messages => {
     // @ts-ignore
     return [...messages].reverse().reduce((userInfo, message) => {
@@ -83,8 +81,17 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
           return null
         }
       }
-    }, null) as { name: string, avatar: string | null } | null
+    }, null) as { name: string; avatar: string | null } | null
   })
+
+  const $loading = combine(
+    fetchSupportChatFx.pending,
+    chatMessages.pagination.data.$loading,
+    chatMessages.pagination.data.$list,
+    (chatLoading, messagesLoading, messages) => {
+      return chatLoading || (messagesLoading && !messages.length)
+    }
+  )
 
   return {
     $support,
