@@ -103,7 +103,7 @@ export const TransactionsList = () => {
   return (
     <Container>
       <ListContainer>
-        {sessions.length === 0 && !pending && <SessionsEmpty>Пока ни один коуч не ответил на заявку</SessionsEmpty>}
+        {sessions.length === 0 && !pending && <SessionsEmpty>Пока ничего нет</SessionsEmpty>}
         <InfiniteScroll
           loader={<Loader />}
           next={loadMore as any}
