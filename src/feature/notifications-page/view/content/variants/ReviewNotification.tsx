@@ -42,10 +42,13 @@ export const ReviewNotification = (props: ReviewNotificationProps) => {
   )
 }
 
+// ToDO: костыль от менеджера (pointer-events: none;) для карточки https://app.clickup.com/t/86pu9t
+// пофиксить в будущем
 const GradeWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 6px;
+  pointer-events: none;
 `
 
 const Review = styled(Title)`
