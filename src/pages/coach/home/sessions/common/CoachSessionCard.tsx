@@ -4,6 +4,8 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import { Link } from "react-router-dom"
+import { useEvent } from "effector-react/ssr"
+import { coachCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 const Container = styled(Link)`
   margin-bottom: 24px;
@@ -48,7 +50,7 @@ const Name = styled.div`
   ${MediaRange.lessThan(`mobile`)`
     font-size: 16px;
     line-height: 22px;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-bottom: 12px;
   `}
 `
@@ -101,6 +103,7 @@ const StyledButton = styled(Button)`
 `
 
 type CoachSessionCardTypes = {
+  id: number
   avatar: null | string
   name: string
   duration: string
@@ -109,16 +112,25 @@ type CoachSessionCardTypes = {
   link: string
 }
 
-export const CoachSessionCard = (props: CoachSessionCardTypes) => (
-  <Container to={props.link}>
-    <StyledAvatar src={props.avatar} />
-    <NameContainer>
-      <Name>{props.name}</Name>
-      <Duration>{props.duration}</Duration>
-    </NameContainer>
-    <ActionsContainer>
-      <Time>{props.time}</Time>
-      {props.isActive && <StyledButton data-slim>Зайти в сессию</StyledButton>}
-    </ActionsContainer>
-  </Container>
-)
+export const CoachSessionCard = (props: CoachSessionCardTypes) => {
+  const start = useEvent(coachCall.methods.connectToSession)
+
+  const startHandler = (e: React.SyntheticEvent) => {
+    start(props.id)
+    e.preventDefault()
+  }
+
+  return (
+    <Container to={props.link}>
+      <StyledAvatar src={props.avatar} />
+      <NameContainer>
+        <Name>{props.name}</Name>
+        <Duration>{props.duration}</Duration>
+      </NameContainer>
+      <ActionsContainer>
+        <Time>{props.time}</Time>
+        {props.isActive && <StyledButton data-slim onClick={startHandler}>Зайти в сессию</StyledButton>}
+      </ActionsContainer>
+    </Container>
+  )
+}

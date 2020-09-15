@@ -1,7 +1,6 @@
-import { createEffect, createEvent, forward, guard, restore } from "effector-root"
+import { createEffect, createEvent, forward } from "effector-root"
 import { runInScope } from "@/scope"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { $isClient } from "@/lib/effector"
 
 export const createSocket = () => {
   let socket: WebSocket | null = null

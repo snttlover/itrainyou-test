@@ -54,7 +54,7 @@ export const [$oldPassword, oldPasswordChanged, $oldPasswordError, $isOldPasswor
   {
     defaultValue: "",
     validator: v => {
-      if (!v.trim()) {
+      if (!v) {
         return `Это поле обязательно для заполнения`
       }
       return null

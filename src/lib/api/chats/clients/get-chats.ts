@@ -8,7 +8,10 @@ import { CoachSession } from "@/lib/api/coach-sessions"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 
 export type MessageSessionRequestStatuses = 'INITIATED' | 'COMPLETED'
-export type MessageTypes = 'USER' | 'SYSTEM'
+export type MessageTypes = 'USER' | 'SYSTEM' | 'SUPPORT'
+export type SupportTicketType = 'SUPPORT_AGENT_FOUND' | 'PROBLEM_SOLVED' | 'LOOKING_FOR_SUPPORT_AGENT'
+
+export type ConflictStatus = 'SOLVED_IN_COACH_FAVOUR' | 'SOLVED_IN_CLIENT_FAVOUR'
 
 export type ChatMessage = {
   id: number
@@ -17,15 +20,23 @@ export type ChatMessage = {
   chat: number
   senderCoach: CoachUser | null
   senderClient: Client | null
-  senderSupport: null
+  senderSupport: Client | null
   sessionRequest: SessionRequest
+  supportTicket: {
+    support: Client
+  } | null
+  conflict: null | {
+    status: ConflictStatus
+  }
   sessionRequestStatus: MessageSessionRequestStatuses
   creationDatetime: ISODate
+  systemTicketType: SupportTicketType
 }
 
 
 export type SystemChatType = 'SYSTEM'
 export type PersonalChatType = 'PERSONAL'
+export type SupportChatType = 'SUPPORT'
 export type ChatTypes = SystemChatType | PersonalChatType
 
 type CommonChatFields = {
@@ -54,7 +65,11 @@ export type PersonalChat = {
   type: PersonalChatType
 } & CommonChatFields
 
-export type Chat = PersonalChat | SystemChat
+export type SupportChat = {
+  type: SupportChatType
+} & CommonChatFields
+
+export type Chat = PersonalChat | SystemChat | SupportChat
 
 type PaginationParams = {
   page: number

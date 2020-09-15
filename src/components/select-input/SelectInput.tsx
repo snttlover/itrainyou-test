@@ -77,7 +77,7 @@ const Label = styled.div`
 type Value = string | number
 
 export type SelectInputProps<T extends Value> = {
-  value: T
+  value: T | null
   placeholder?: string
   onChange: (value: T) => void
   options: {

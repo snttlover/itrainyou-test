@@ -1,4 +1,5 @@
-import { ClientSession, getClientSessions } from "@/lib/api/client-session"
+import { getClientSessions } from "@/lib/api/client-session"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 
@@ -33,11 +34,11 @@ export const $isHasMoreRecommendations = combine(
   }
 )
 
-export const $activeSessions = createStore<ClientSession[]>([]).on(
+export const $activeSessions = createStore<DashboardSession[]>([]).on(
   loadActiveSessionsFx.doneData,
   (state, payload) => payload.results
 )
-export const $todaySessions = createStore<ClientSession[]>([]).on(
+export const $todaySessions = createStore<DashboardSession[]>([]).on(
   loadTodaySessionsFx.doneData,
   (state, payload) => payload.results
 )

@@ -1,3 +1,4 @@
+import { routeNames } from "@/pages/route-names"
 import styled from "styled-components"
 import * as React from "react"
 import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
@@ -30,10 +31,10 @@ export const ClientMenuItems = () => {
   const chatsCount = useStore(clientChatsSocket.data.$chatsCount)
   return (
     <ItemsWrapper>
-      <DashboardMenuItem link='/client/' icon='home'>
+      <DashboardMenuItem link={routeNames.client()} icon='home'>
         Главная страница
       </DashboardMenuItem>
-      <DashboardMenuItem link='/client/chats/' icon='my-coaches'>
+      <DashboardMenuItem link={routeNames.clientChatsList()} icon='my-coaches'>
         Мои коучи {chatsCount ? `+${chatsCount}` : ``}
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/client/' icon='hand'>
@@ -42,16 +43,16 @@ export const ClientMenuItems = () => {
     <DashboardMenuItem link='/client/' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled link='/client/wallet/' icon='my-purse'>
+      <DashboardMenuItem link={routeNames.clientWallet()} icon='my-purse'>
         Кошелек
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/client/' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}
-      <DashboardMenuItem link='/client/settings/' icon='settings'>
+      <DashboardMenuItem link={routeNames.clientSettings()} icon='settings'>
         Настройки
       </DashboardMenuItem>
-      <DashboardMenuItem disabled link='/client/support/' icon='help'>
+      <DashboardMenuItem link={routeNames.clientSupport()} icon='help'>
         Поддержка
       </DashboardMenuItem>
     </ItemsWrapper>

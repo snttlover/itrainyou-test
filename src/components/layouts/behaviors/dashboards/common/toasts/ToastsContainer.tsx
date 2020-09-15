@@ -11,7 +11,7 @@ const Container = styled.div`
   width: 264px;
   top: 84px;
   right: 24px;
-  z-index: 10;
+  z-index: 9999;
 `
 
 const Toast = styled.div<{ type: ToastType }>`

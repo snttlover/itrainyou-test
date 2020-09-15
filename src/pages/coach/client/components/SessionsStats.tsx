@@ -15,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${MediaRange.greaterThan("mobile")`
+  ${MediaRange.between("mobile", "tablet")`
     transform: translate(50%, 0);
   `}
 

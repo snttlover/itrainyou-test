@@ -2,7 +2,7 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { GrayTooltip } from "@/components/gray-tooltip/GrayTooltip"
 import { Icon } from "@/components/icon/Icon"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
-import { ClientSession } from "@/lib/api/client-session"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
@@ -58,6 +58,7 @@ const Name = styled.p`
   ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
+    margin-top: 18px;
   `}
 `
 
@@ -93,6 +94,13 @@ const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
 const SessionInfo = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  ${MediaRange.lessThan(`mobile`)`
+    position: absolute;
+    right: 10px;
+    top: 5px;
+  `}
 `
 
 const SessionTime = styled.p`
@@ -114,7 +122,7 @@ const SessionTime = styled.p`
   `}
 `
 
-type SessionCardProps = { session: ClientSession; children?: React.ReactNode; className?: string }
+type SessionCardProps = { session: DashboardSession; children?: React.ReactNode; className?: string }
 
 export const SessionCard = ({ session, children, className }: SessionCardProps) => {
   const now = date()

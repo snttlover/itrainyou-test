@@ -3,13 +3,7 @@ import { config } from "@/config"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { excludeKeys } from "@/lib/helpers/exclude"
-
-type DenySessionRequestProblems = "COACH_ABSENT" | "COACH_INADEQUATE" | "OTHER"
-
-export type DenySessionRequestParams = {
-  id: number
-  problem?: DenySessionRequestProblems
-}
+import { DenySessionRequestParams } from "@/lib/api/coach/deny-session-request"
 
 export const denyClientSessionRequest = (params: DenySessionRequestParams) =>
   post<SessionRequest, void>(

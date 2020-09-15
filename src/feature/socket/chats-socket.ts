@@ -1,14 +1,14 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
-import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect } from "effector-root"
+import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect, restore } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn, $userData } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
-import { combineEvents } from "patronum"
 import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { create } from "domain"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 
 type SendSocketChatMessage = {
   chat: number
@@ -26,7 +26,7 @@ type ChatCounter = {
 
 type InitMessage = {
   type: `INIT`
-  data: { unreadChats: ChatCounter[] }
+  data: { unreadChats: ChatCounter[]; newNotificationsCount: number }
 }
 
 type MessagesReadDone = {
@@ -34,9 +34,24 @@ type MessagesReadDone = {
   data: { messages: ChatMessage[] }
 }
 
+export type NewNotification = {
+  type: "NEW_NOTIFICATION"
+  data: Notification
+}
+
+export type ReadNotificationsDone = {
+  type: "READ_NOTIFICATIONS_DONE"
+  data: number[]
+}
+
 export type WriteChatMessageDone = {
   type: `WRITE_MESSAGE_DONE`
   data: ChatMessage
+}
+
+export type SessionStarted = {
+  type: `SESSION_STARTED`
+  data: DashboardSession
 }
 
 export type OnChatCreated = {
@@ -44,7 +59,14 @@ export type OnChatCreated = {
   data: PersonalChat
 }
 
-type SocketMessageReceive = WriteChatMessageDone | InitMessage | MessagesReadDone | OnChatCreated
+type SocketMessageReceive =
+  | WriteChatMessageDone
+  | InitMessage
+  | MessagesReadDone
+  | OnChatCreated
+  | NewNotification
+  | ReadNotificationsDone
+  | SessionStarted
 
 type UserType = "client" | "coach"
 
@@ -56,8 +78,11 @@ export const createChatsSocket = (userType: UserType) => {
   const socket = createSocket()
 
   const onMessage = createEvent<WriteChatMessageDone>()
+  const onNotification = createEvent<NewNotification>()
+  const onReadNotification = createEvent<ReadNotificationsDone>()
   const onChatCreated = createEvent<OnChatCreated>()
   const onMessagesReadDone = createEvent<MessagesReadDone>()
+  const onSessionStarted = createEvent<SessionStarted>()
 
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: `WRITE_MESSAGE`, data }))
   const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: `READ_MESSAGES`, data }))
@@ -80,6 +105,16 @@ export const createChatsSocket = (userType: UserType) => {
     changeCountersFromInit,
     (_, message) => message.data.unreadChats
   )
+
+  const changeNotificationsCounter = createEvent<number>()
+  const $notificationsCounter = restore(changeNotificationsCounter, 0)
+    .on(onNotification, count => count + 1)
+    .on(onReadNotification, (count, message) => count - message.data.length)
+
+  forward({
+    from: changeCountersFromInit.map(res => res.data.newNotificationsCount),
+    to: changeNotificationsCounter,
+  })
 
   const onIntercMessage = createEvent<WriteChatMessageDone>()
 
@@ -132,6 +167,18 @@ export const createChatsSocket = (userType: UserType) => {
 
   guard({
     source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === "NEW_NOTIFICATION",
+    target: onNotification,
+  })
+
+  guard({
+    source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === "READ_NOTIFICATIONS_DONE",
+    target: onReadNotification,
+  })
+
+  guard({
+    source: socket.events.onMessage,
     filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
     target: onMessage,
   })
@@ -146,6 +193,12 @@ export const createChatsSocket = (userType: UserType) => {
     source: socket.events.onMessage,
     filter: (payload: SocketMessageReceive) => payload.type === `INIT`,
     target: changeCountersFromInit,
+  })
+
+  guard({
+    source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
+    target: onSessionStarted,
   })
 
   sample({
@@ -170,15 +223,36 @@ export const createChatsSocket = (userType: UserType) => {
     to: socket.methods.disconnect,
   })
 
+  const ping = socket.methods.send.prepend(() => ({ type: `PING` }))
+
+  let pingPongInterval: any = null
+
+  const pingPongFx = createEffect({
+    handler: () => {
+      if (pingPongInterval) {
+        clearInterval(pingPongInterval)
+        pingPongInterval = null
+      }
+      pingPongInterval = setInterval(ping, 5000)
+    },
+  })
+
+  forward({
+    from: socket.events.onConnect.map(() => {}),
+    to: pingPongFx,
+  })
+
   return {
     data: {
       $chatsCount,
       $chatsCounters,
+      $notificationsCounter,
     },
     events: {
       ...socket.events,
       onMessage,
       onChatCreated,
+      onSessionStarted,
     },
     methods: {
       send,

@@ -9,17 +9,17 @@ export const loadProfileSessionsFx = createEffect({
   handler: ({ page }: { page: number }) => getMyTransactionsCoach({ page, pageSize: 5 }),
 })
 
-export const $ProfileSessionsCount = createStore<number>(100).on(
-  loadProfileSessionsFx.doneData,
-  (state, payload) => payload.count
-)
+export const $ProfileSessionsCount = createStore<number>(100)
+  .on(loadProfileSessionsFx.doneData, (state, payload) => payload.count)
+  .reset(SessionsHistoryGate.open)
 
-export const $ProfileSessions = createStore<SessionTransaction[]>([]).on(
-  loadProfileSessionsFx.doneData,
-  (state, payload) => [...state, ...payload.results]
-)
+export const $ProfileSessions = createStore<SessionTransaction[]>([])
+  .on(loadProfileSessionsFx.doneData, (state, payload) => [...state, ...payload.results])
+  .reset(SessionsHistoryGate.open)
 
-const $ProfileSessionsLoadFailed = createStore(false).on(loadProfileSessionsFx.fail, () => true)
+const $ProfileSessionsLoadFailed = createStore(false)
+  .on(loadProfileSessionsFx.fail, () => true)
+  .reset(SessionsHistoryGate.open)
 
 export const $isHasMoreProfileSessions = combine(
   { count: $ProfileSessionsCount, ProfileSessions: $ProfileSessions, isFailed: $ProfileSessionsLoadFailed },
@@ -55,7 +55,7 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
       price: `${+session.clientPrice > 0 && transaction.type !== `SESSION_CANCELLATION` ? `+` : `-`} ${
         session.clientPrice
       }`,
-      time: date(session.startDatetime).format(`hh:mm`),
+      time: date(session.startDatetime).format(`HH:mm`),
       date: date(session.startDatetime).format(`DD.MM.YYYY`),
       isCanceled: transaction.type === `SESSION_CANCELLATION`,
     }

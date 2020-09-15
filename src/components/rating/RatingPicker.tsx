@@ -20,21 +20,25 @@ const Star = styled(Icon)`
 
 type RatingProps = {
   value: number
-  onChange: (value: number) => void
+  onChange?: (value: number) => void
 }
 
 export const RatingPicker = styled(({ value, ...props }: RatingProps) => {
   const [hovered, changeHovered] = useState(0)
   const current = hovered || value
 
+  const change = (num: number) => {
+    props.onChange && props.onChange(num)
+  }
+
   const stars = Array.from({ length: 5 })
     .map((_, index) => index + 1)
     .map(num => {
       if (num <= current) {
-        return <Star key={num} name='full-star' onMouseEnter={() => changeHovered(num)} onClick={() => props.onChange(num)} />
+        return <Star key={num} name='full-star' onMouseEnter={() => changeHovered(num)} onClick={() => change(num)} />
       }
 
-      return <Star key={num} name='star' onMouseEnter={() => changeHovered(num)} onClick={() => props.onChange(num)} />
+      return <Star key={num} name='star' onMouseEnter={() => changeHovered(num)} onClick={() => change(num)} />
     })
 
   return (

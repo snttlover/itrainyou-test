@@ -16,6 +16,7 @@ export type CreateCursorPaginationType<ItemTypes> = {
     $list: Store<ItemTypes[]>
     $hasMore: Store<boolean>
     $listIsEmpty: Store<boolean>
+    $loading: Store<boolean>
   }
   methods: {
     loadMore: any
@@ -38,14 +39,13 @@ export const createCursorPagination = <ListItemType>(
 
   const reset = createEvent()
 
-  const $list = createStore<ListItemType[]>([]).on(loadMoreFx.doneData, (state, payload) => [
-    ...state,
-    ...payload.results,
-  ]).reset(reset)
+  const $list = createStore<ListItemType[]>([])
+    .on(loadMoreFx.doneData, (state, payload) => [...state, ...payload.results])
+    .reset(reset)
 
-  const $next = createStore<Next>(true).on(loadMoreFx.doneData, (_, list) =>
-    getUrlParamByName( 'cursor', list.next) || false
-  ).reset(reset)
+  const $next = createStore<Next>(true)
+    .on(loadMoreFx.doneData, (_, list) => getUrlParamByName("cursor", list.next) || false)
+    .reset(reset)
 
   const $loadFailed = createStore(false).on(loadMoreFx.fail, () => true)
 
@@ -62,6 +62,8 @@ export const createCursorPagination = <ListItemType>(
 
   const $listIsEmpty = combine(loadMoreFx.pending, $list, (pending, list) => !pending && !list.length)
 
+  const $loading = loadMoreFx.pending
+
   sample({
     source: $next,
     clock: guardedLoadMore,
@@ -73,10 +75,11 @@ export const createCursorPagination = <ListItemType>(
       $list,
       $hasMore,
       $listIsEmpty,
+      $loading,
     },
     methods: {
       loadMore,
-      reset
+      reset,
     },
   }
 }

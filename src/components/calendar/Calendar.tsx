@@ -9,7 +9,7 @@ import {
 } from "@/components/calendar/CalendarHeader"
 import { date } from "@/lib/formatting/date"
 import * as React from "react"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import styled, { css } from "styled-components"
 
 export type CalendarDateType = Date | Date[] | undefined | null
@@ -22,6 +22,8 @@ type CalendarTypes = {
   selectRange?: boolean
   isBig?: boolean
   className?: string
+  disabledFrom?: Date
+  startFrom?: Date
   pinTo?: Date | null
   onPrevMonth?: (prevMonth: Date) => void
   onNextMonth?: (nextMonth: Date) => void
@@ -160,12 +162,18 @@ const isEqualDates = (first: Date, second: Date, format: string = `DDMMYYYY`) =>
   date(first).format(format) === date(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
+  const equalFormat = `DDMMYYYY`
   const [startDate, changeActiveStartDate] = useState(new Date())
+
+  useEffect(() => {
+    if (props.startFrom && date().format(equalFormat) === date(startDate).format(equalFormat)) {
+      changeActiveStartDate(props.startFrom)
+    }
+  }, [props.startFrom])
 
   const pinnedDefined = !!props.pinnedDates
   const enabledDefined = !!props.enabledDates
 
-  const equalFormat = `DDMMYYYY`
   const pinnedDates = (props.pinnedDates || []).map(pinnedDate => date(pinnedDate).format(equalFormat))
   const enabledDates = (props.enabledDates || []).map(enabledDate => date(enabledDate).format(equalFormat))
 
@@ -201,6 +209,12 @@ export const Calendar = (props: CalendarTypes) => {
     if (pinnedDefined) {
       if (pinnedDates.includes(date(dat).format(equalFormat))) {
         classes.push(`pinned`)
+      }
+    }
+
+    if (props.disabledFrom) {
+      if (date(props.disabledFrom).isBefore(date(dat))) {
+        classes.push(`disabled`)
       }
     }
 

@@ -9,6 +9,7 @@ import { $profilePageLoading, $profilePageSessionsCount, mounted } from "./profi
 import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
+import { ProfileCoachButton } from "@/pages/client/profile/content/coach-button/ProfileCoachButton"
 
 const Container = styled(ContentContainer)`
   display: flex;
@@ -37,6 +38,7 @@ const ProfilePage = () => {
           <ProfileHeader />
           <ProfileInterests />
           {sessionsCount && <IndividualSessions />}
+          <ProfileCoachButton />
         </Container>
       ) : (
         <Loader />

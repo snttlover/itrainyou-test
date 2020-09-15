@@ -51,7 +51,7 @@ export const $startDatetimeOptions = combine(
 
     return opts
       .filter(({ hour, min }) => {
-        const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+        const optionTime = date.utc(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
         const endTime = optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute")
 
         const isAfterThanNow = optionTime.isAfter(now)
@@ -91,7 +91,7 @@ forward({
   to: sessionAdded,
 })
 
-const successToastMessage: Toast = { type: "info", text: "Сессиия создана" }
+const successToastMessage: Toast = { type: "info", text: "Сессия создана" }
 forward({
   from: createSessionsFx.done.map(_ => successToastMessage),
   to: [toasts.remove, toasts.add, setModalShow.prepend(_ => false)],

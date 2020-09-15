@@ -11,9 +11,7 @@ type DialogProps = {
 }
 
 export const Dialog = (props: DialogProps) => {
-  const close = () => {
-    props.onChange(false)
-  }
+  const close = () => props.onChange(false)
 
   const documentKeypressHandler = (e: KeyboardEvent) => {
     if (e.keyCode === 27) {
@@ -40,13 +38,14 @@ export const Dialog = (props: DialogProps) => {
   )
 }
 
-const Close = styled(Icon).attrs({ name: `close` })`
+export const Close = styled(Icon).attrs({ name: `close` })`
   width: 20px;
   cursor: pointer;
   position: absolute;
   top: 24px;
   right: 21px;
   fill: ${props => props.theme.colors.primary};
+  z-index: 1;
 `
 
 const StyledDialog = styled.div`

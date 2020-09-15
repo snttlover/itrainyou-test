@@ -6,6 +6,7 @@ import { ResetPasswordPage } from "@/pages/auth/pages/reset-password/ResetPasswo
 import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import HomePage from "@/pages/client/home/HomePage"
 import ProfilePage from "@/pages/client/profile/ProfilePage"
+import { ClientWalletPage } from "@/pages/client/wallet/ClientWalletPage"
 import CoachBlockedPage from "@/pages/coach/blocked/CoachBlockedPage"
 import { ClientPage } from "@/pages/coach/client/ClientPage"
 import CoachClientsPage from "@/pages/coach/clients/CoachClientsPage"
@@ -15,6 +16,7 @@ import { CoachProfilePage } from "@/pages/coach/profile/profile-page/CoachProfil
 import { CoachSessionsHistory } from "@/pages/coach/profile/session-history/CoachSessionsHistory"
 import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
 import CoachSupportPage from "@/pages/coach/support/CoachSupportPage"
+import ClientSupportPage from "@/pages/client/support/ClientSupportPage"
 import CoachWalletPage from "@/pages/coach/wallet/CoachWalletPage"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
 import { ClientChatPage } from "@/pages/client/chats/chat/ClientChatPage"
@@ -29,6 +31,9 @@ import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { ClientSessionPage } from "@/pages/client/session/ClientSessionPage"
 import { CoachSessionPage } from "@/pages/coach/session/CoachSessionPage"
+import { EditClientProfilePage } from "@/pages/client/edit-profile/EditClientProfile"
+import { ClientNotificationsPage } from "@/pages/client/notifications/ClientNotificationsPage"
+import { CoachNotificationsPage } from "@/pages/coach/notifications/CoachNotificationsPage"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -51,6 +56,15 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.login(),
     component: LoginPage,
+  },
+  {
+    path: routeNames.clientNotifications(),
+    component: ClientNotificationsPage,
+  },
+
+  {
+    path: routeNames.coachNotifications(),
+    component: CoachNotificationsPage,
   },
 
   {
@@ -86,7 +100,12 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: routeNames.clientProfile(),
+    exact: true,
     component: ProfilePage,
+  },
+  {
+    path: routeNames.clientWallet(),
+    component: ClientWalletPage,
   },
   {
     path: routeNames.clientSettings(),
@@ -110,6 +129,11 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.coachClientProfile(":id"),
     exact: true,
     component: ClientPage,
+  },
+
+  {
+    path: routeNames.clientProfileEdit(),
+    component: EditClientProfilePage,
   },
   {
     path: routeNames.coachProfileEdit(),
@@ -144,6 +168,11 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.coachSupport(),
     exact: true,
     component: CoachSupportPage,
+  },
+  {
+    path: routeNames.clientSupport(),
+    exact: true,
+    component: ClientSupportPage,
   },
   {
     path: routeNames.coachSchedule(),

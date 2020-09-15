@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { ChatSystemMessage } from "@/feature/chat/modules/chat-messages"
 import styled from "styled-components"
 import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
-import { ChatMessage, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
+import { ConflictStatus, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { MediaRange } from "@/lib/responsive/media"
@@ -13,28 +13,27 @@ import {
 } from "@/feature/session-request/createSessionRequestsModule"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Loader, Spinner } from "@/components/spinner/Spinner"
-import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import {
   $revocated,
   changeRevocationSessionId,
   changeRevocationUser,
-  changeRevocationVisibility,
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { Avatar } from "@/components/avatar/Avatar"
-import { Coach, CoachUser } from "@/lib/api/coach"
+import { changeCurrentDenyCompletationRequest } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
 
 const formatSessionDay = (day?: ISODate) => date(day).format(`DD MMM YYYY`)
 
-const formatSessionTime = (start?: ISODate, end?: ISODate) => date(start).format(`HH:mm -`) + date(end).format(`HH:mm`)
+export const formatSessionTime = (start?: ISODate, end?: ISODate) =>
+  date(start).format(`HH:mm-`) + date(end).format(`HH:mm`)
 
 const formatSessionDate = (start?: ISODate, end?: ISODate) => {
   return formatSessionDay(start) + ` ` + formatSessionTime(start, end)
 }
 
-const getText = (request: SessionRequest, status: MessageSessionRequestStatuses, chatType: "coach" | "client") => {
+const getText = (request: SessionRequest, status: MessageSessionRequestStatuses | ConflictStatus, chatType: "coach" | "client") => {
   const is = (
     requestType: SessionRequestTypes | SessionRequestTypes[],
     requestStatus: SessionRequestStatus | SessionRequestStatus[],
@@ -52,6 +51,15 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
   }
 
   if (chatType === `client`) {
+
+    if (status === 'SOLVED_IN_COACH_FAVOUR') {
+      return 'Администратор решил спорную ситуацию в пользу коуча'
+    }
+
+    if (status === 'SOLVED_IN_CLIENT_FAVOUR') {
+      return 'Администратор решил спорную ситуацию в вашу пользу. Вам возвращены деньги за сессию'
+    }
+
     if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
       return `Вы отправили запрос на бронирование сессии`
     }
@@ -68,7 +76,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       return `${request.receiverCoach?.firstName} не подтвердил запрос на бронирование сессии`
     }
 
-    if (is("BOOK", "CANCELLED", "INITIATED")) {
+    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
       return `Вы отправили запрос на отмену сессии`
     }
 
@@ -78,27 +86,26 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       } запрос на бронирование сессии`
     }
 
-    if (is("RESCHEDULE", "AWAITING", "INITIATED")) {
-      return `Вы хотите перенести сессию на ${formatDate(request.resultDatetime)}`
+    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+      return `Вы хотите перенести сессию на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
     }
 
     if (is("RESCHEDULE", "CANCELLED", "COMPLETED")) {
       return `Вы отменили перенос сессии на ${formatDate(request.resultDatetime)}`
     }
 
-    if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED"]) && request.receiverCoach) {
-      return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``}  сессию`
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED"]) && request.initiatorCoach) {
+      return `${request.initiatorCoach?.firstName} отменил${request.initiatorCoach?.sex === `F` ? `a` : ``}  сессию`
     }
 
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED", "INITIATED"])) {
       return `Вы отменили сессию`
     }
 
-    if (is("CANCEL", "AWAITING", "INITIATED")) {
-      return `Вы хотите отменить сессию. До сессии меньше 24 часов, поэтому ждем подтверждения коуча.`
-    }
-
-    if (is("CANCEL", "CANCELLED", "INITIATED")) {
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
       return `Вы хотите отменить сессию. До сессии меньше 24 часов, поэтому ждем подтверждения коуча.`
     }
 
@@ -106,14 +113,14 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       return `Вы отменили запрос на отмену сессии`
     }
 
-    if (is("CANCEL", "AUTOMATICALLY_APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
-    }
-
     if (is("RESCHEDULE", "DENIED", "COMPLETED")) {
       return `${request.receiverCoach?.firstName} не согласил${
         request.receiverCoach?.sex === `F` ? `aсь` : `ся`
       } на перенос сессии, сессия остается в прежнее время `
+    }
+
+    if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {
+      return `Вы указали, что с сессий возникли проблемы. С Вами свяжется администратор в поддержке для уточнения`
     }
 
     if (
@@ -135,10 +142,6 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       return `${request.receiverCoach?.firstName} не согласился на отмену сессии`
     }
 
-    if (is("CANCEL", "DENIED", "INITIATED")) {
-      return `Вы отправили запрос на отмену сессии`
-    }
-
     if (is("CANCEL", "APPROVED", "COMPLETED")) {
       return `${request.receiverCoach?.firstName} согласил${
         request.receiverCoach?.sex === `F` ? `aсь` : `ся`
@@ -154,7 +157,19 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
   }
 
   if (chatType === `coach`) {
-    if (is("CONFIRMATION_COMPLETION", "AWAITING", "INITIATED")) {
+    if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {
+      return `Клиент указал, что с сессий возникли проблемы. С Вами свяжется администратор в поддержке для уточнения`
+    }
+
+    if (status === 'SOLVED_IN_COACH_FAVOUR') {
+      return 'Администратор решил спорную ситуацию в вашу пользу. Вам были переведены деньги за сессию'
+    }
+
+    if (status === 'SOLVED_IN_CLIENT_FAVOUR') {
+      return 'Администратор решил спорную ситуацию в пользу клиента. Клиенту были возвращены деньги за сессию'
+    }
+
+    if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
       return `Ожидаем, пока клиент подтвердит завершение сессии`
     }
 
@@ -186,7 +201,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       } запрос на подтверждение сессии`
     }
 
-    if (is("CANCEL", ["APPROVED", "CANCELLED", "DENIED"], "INITIATED")) {
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
       return `${request.initiatorClient?.firstName} отправил${
         request.initiatorClient?.sex === `F` ? `a` : ``
       } запрос на отмену сессии`
@@ -202,7 +217,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       return `Вы подтвердили бронирование сессии`
     }
 
-    if (is("RESCHEDULE", "AWAITING", "INITIATED")) {
+    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
       return `${request.initiatorClient?.firstName} хочет перенести сессию на ${formatSessionDate(
         request.rescheduleSession?.startDatetime,
         request.rescheduleSession?.endDatetime
@@ -236,7 +251,7 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses,
       return `${request.initiatorClient?.firstName} отменил${request.initiatorClient?.sex === `F` ? `a` : ``} сессию`
     }
 
-    if (is("CANCEL", "AWAITING", "INITIATED") && request.initiatorClient) {
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED") && request.initiatorClient) {
       return `${request.initiatorClient?.firstName} отправил${
         request.initiatorClient?.sex === `F` ? `a` : ``
       } запрос на отмену сессии`
@@ -415,7 +430,7 @@ const getSystemButtons = (
   request: SessionRequest,
   chatType: "coach" | "client",
   showButtons: boolean,
-  status: MessageSessionRequestStatuses,
+  status: MessageSessionRequestStatuses | ConflictStatus,
   user: User
 ) => {
   const is = (
@@ -431,10 +446,12 @@ const getSystemButtons = (
 
   if (showButtons) {
     const requestModule = chatType === `client` ? clientSessionRequests : coachSessionRequests
+    const deny = useEvent(requestModule.methods.deny)
+    const approve = useEvent(requestModule.methods.approve)
 
     if (chatType === `client`) {
       if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
-        return <ApproveActions request={request} requestsModule={requestModule} yes='Да' no='Нет' />
+        return <ConfirmationCompletation approve={() => approve(request.id)} request={request} />
       }
 
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING")) {
@@ -444,7 +461,14 @@ const getSystemButtons = (
 
     if (chatType === `coach`) {
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING") || is("CANCEL", "AWAITING")) {
-        return <ApproveActions request={request} requestsModule={requestModule} yes='Подтвердить' no='Отклонить' />
+        return (
+          <ApproveActions
+            approve={() => approve(request.id)}
+            deny={() => deny({ id: request.id })}
+            yes='Подтвердить'
+            no='Отклонить'
+          />
+        )
       }
     }
   }
@@ -459,6 +483,31 @@ const getSystemButtons = (
   }
 
   return <></>
+}
+
+type ConfirmationCompletationTypes = {
+  approve: () => void
+  request: SessionRequest
+}
+
+const ConfirmationCompletation = ({ approve, request }: ConfirmationCompletationTypes) => {
+  const setDenyCompletetaionRequest = useEvent(changeCurrentDenyCompletationRequest)
+  const [loading, change] = useState(false)
+
+  return (
+    <StyledActions>
+      {loading && <StyledActionLoader />}
+      <Button
+        onClick={() => {
+          change(true)
+          approve()
+        }}
+      >
+        Да
+      </Button>
+      <Button onClick={() => setDenyCompletetaionRequest(request)}>Нет</Button>
+    </StyledActions>
+  )
 }
 
 const Actions = ({
@@ -565,19 +614,18 @@ type SessionRequestActionProps = {
   requestsModule: ReturnType<typeof createSessionRequestsModule>
 }
 
-type ApproveActionsTypes = SessionRequestActionProps & {
+type ApproveActionsTypes = {
   yes: string
   no: string
+  approve: () => any
+  deny: () => any
 }
 
-const ApproveActions = ({ request, requestsModule, yes, no }: ApproveActionsTypes) => {
-  const deny = useEvent(requestsModule.methods.deny)
-  const approve = useEvent(requestsModule.methods.approve)
-
+const ApproveActions = ({ yes, no, approve, deny }: ApproveActionsTypes) => {
   return (
     <Actions>
-      <Button onClick={() => approve(request.id)}>{yes}</Button>
-      <Button onClick={() => deny(request.id)}>{no}</Button>
+      <Button onClick={approve}>{yes}</Button>
+      <Button onClick={deny}>{no}</Button>
     </Actions>
   )
 }
@@ -586,7 +634,7 @@ const CancelAction = ({ request, requestsModule }: SessionRequestActionProps) =>
   const cancel = useEvent(requestsModule.methods.deny)
   return (
     <Actions>
-      <Button onClick={() => cancel(request.id)}>Отменить</Button>
+      <Button onClick={() => cancel({ id: request.id })}>Отменить</Button>
     </Actions>
   )
 }

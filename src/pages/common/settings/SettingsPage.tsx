@@ -6,17 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 736px;
-  margin-top: 36px;
-  padding: 0 24px 20px;
-  position: relative;
-  ${MediaRange.lessThan(`tablet`)`
-    margin: 40px auto 0;
-  `}
-`
+import { LeftPageContainer } from "@/pages/common/settings/content/LeftPageContainer"
 
 const Title = styled.div`
   font-family: Roboto Slab;
@@ -42,7 +32,7 @@ const StyledLoaderWrapper = styled.div`
 export const SettingsPage = () => {
   const pending = useStore(getMyUserFx.pending)
   return (
-    <Container>
+    <LeftPageContainer>
       {pending && (
         <StyledLoaderWrapper>
           <Loader />
@@ -51,7 +41,7 @@ export const SettingsPage = () => {
       <Title>Настройки</Title>
       <GeneralSettingsForm />
       <PasswordForm />
-    </Container>
+    </LeftPageContainer>
   )
 }
 

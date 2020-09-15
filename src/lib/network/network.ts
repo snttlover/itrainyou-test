@@ -2,6 +2,7 @@ import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
 import { attach, createEffect, forward } from "effector-root"
 import Cookies from "js-cookie"
+import { runInScope } from "@/scope"
 
 export type NetworkError = AxiosError
 
@@ -45,10 +46,12 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(undefined, (error: AxiosError) => {
   if (error.response?.status === 401) {
-    logout()
+    runInScope(logout)
   }
   return Promise.reject(error)
 })
+
+export const isAxiosError = (error: Error): error is AxiosError => (error as any).isAxiosError
 
 export const get = <R, Params = {}>(url: string, params?: Params): Promise<AxiosResponse<R>> =>
   axios.get(url, { params })

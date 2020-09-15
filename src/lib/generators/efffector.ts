@@ -8,8 +8,11 @@ type Options<T, R> = {
   reset?: Event<any>
 }
 
+type EffectorFabricOptions = { sid: string; name: string }
+
 export const createEffectorField = <T, R = T>(
-  options: Options<T, R>
+  options: Options<T, R>,
+  effectorFabricOptions?: EffectorFabricOptions
 ): [Store<T>, Event<T>, Store<string | null>, Store<boolean>] => {
   if (!options.eventMapper) {
     options.eventMapper = event => event
@@ -22,7 +25,10 @@ export const createEffectorField = <T, R = T>(
     options.validator = () => null
   }
   const changeEvent = createEvent<T>()
-  const $store = createStore(options.defaultValue).on(options.eventMapper(changeEvent), (_, payload) => payload)
+  const $store = createStore(options.defaultValue, effectorFabricOptions).on(
+    options.eventMapper(changeEvent),
+    (_, payload) => payload
+  )
   const $isDirty = createStore(false).on($store, () => true)
   const $error = options.validatorEnhancer($store).map(options.validator)
   const $isCorrect = $error.map(value => !value)

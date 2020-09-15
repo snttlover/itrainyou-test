@@ -36,7 +36,7 @@ const Header = styled.div`
     justify-content: flex-start;
   `}
   ${MediaRange.greaterThan(`tablet`)`
-    flex: 24px;
+    font-size: 20px;
   `}
 `
 

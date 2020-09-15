@@ -10,6 +10,8 @@ import { useStore } from "effector-react/ssr"
 import { $userData } from "@/feature/user/user.model"
 import { MobileMenu, MobileSearchButton } from "@/pages/landing/content/top-bar/mobile-menu/MobileMenu"
 import * as React from "react"
+import { NotificationIcon } from "@/components/layouts/behaviors/dashboards/common/top-bar/NotificationIcon"
+import { clientChatsSocket } from "@/feature/socket/chats-socket"
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,30 +20,11 @@ const Wrapper = styled.div`
   justify-content: center;
 `
 
-const IconStyles = css`
-  cursor: pointer;
-  fill: #4858cc;
-  width: 28px;
-  height: 28px;
-  @media screen and (max-width: 768px) {
-    fill: #fff;
-    width: 36px;
-    height: 36px;
-  }
-  @media screen and (max-width: 480px) {
-    margin-left: 16px;
-    width: 24px;
-    height: 24px;
-  }
-`
-
-const Notification = styled(Icon).attrs({ name: `notification` })`
-  margin-left: 36px;
-  ${IconStyles}
-`
-
 const AvatarLink = styled(Link)`
   margin-left: 36px;
+  ${MediaRange.lessThan(`tablet`)`  
+    display: none;
+  `}
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -71,11 +54,18 @@ const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
   `}
 `
 
+const NotificationWrapper = styled.div`
+  margin-left: 30px;
+`
+
 export const ClientTopBarIconButtons = () => {
+  const notificationCount = useStore(clientChatsSocket.data.$notificationsCounter)
   const user = useStore($userData)
   return (
     <Wrapper>
-      <Notification />
+      <NotificationWrapper>
+        <NotificationIcon count={notificationCount} link={routeNames.clientNotifications()} />
+      </NotificationWrapper>
       <AvatarLink to={routeNames.clientProfile()}>
         <StyledAvatar src={user.client?.avatar || null} />
       </AvatarLink>

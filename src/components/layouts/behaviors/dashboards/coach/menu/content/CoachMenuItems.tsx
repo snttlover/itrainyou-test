@@ -45,7 +45,6 @@ const Delimiter = styled.div`
 `
 
 export const CoachMenuItems = () => {
-  const isApproved = useStore($coachAccess).isApproved
   const chatsCount = useStore(coachChatsSocket.data.$chatsCount)
   return (
     <ItemsWrapper>
@@ -61,7 +60,7 @@ export const CoachMenuItems = () => {
     <DashboardMenuItem link='/coach/group-sessions' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachWallet()} icon='my-purse'>
+      <DashboardMenuItem link={routeNames.coachWallet()} icon='my-purse'>
         Кошелек
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
@@ -70,7 +69,7 @@ export const CoachMenuItems = () => {
       <DashboardMenuItem link={routeNames.coachSettings()} icon='settings'>
         Настройки
       </DashboardMenuItem>
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachSupport()} icon='help'>
+      <DashboardMenuItem link={routeNames.coachSupport()} icon='help'>
         Поддержка
       </DashboardMenuItem>
       <Delimiter />
@@ -80,7 +79,7 @@ export const CoachMenuItems = () => {
       {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
       Супервизор
     </DashboardMenuItem>*/}
-      <DashboardMenuItem disabled={isApproved} link={routeNames.coachBlocked()} icon='none'>
+      <DashboardMenuItem link={routeNames.coachBlocked()} icon='none'>
         Заблокированные
       </DashboardMenuItem>
     </ItemsWrapper>

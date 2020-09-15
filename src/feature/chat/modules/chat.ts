@@ -6,12 +6,13 @@ import { createEvent, createStore, forward, sample } from "effector-root"
 import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api/interfaces/utils.interface"
 import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
+import { ChatId } from "@/lib/api/chats/coach/get-messages"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
-  fetchChat: (id: number) => Promise<PersonalChat>
+  fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
-  fetchMessages: (id: number, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
+  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
   fetchSessions: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 

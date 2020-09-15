@@ -463,6 +463,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
           <StyledCalendar
             value={currentDate as Date}
             enabledDates={enabledDates}
+            startFrom={date(enabledDates[0]).toDate()}
             onChange={changeCurrentDate}
             isBig={true}
           />
