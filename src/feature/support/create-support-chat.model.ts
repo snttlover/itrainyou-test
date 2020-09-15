@@ -65,7 +65,7 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
 
   forward({
     from: fetchSupportChatFx.doneData.map(chat => chat.id),
-    to: [changeId],
+    to: changeId,
   })
 
   const $support = chatMessages.pagination.data.$list.map(messages => {

@@ -184,9 +184,7 @@ export const createChatsSocket = (userType: UserType) => {
   })
 
   guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
-    target: onMessage.map(message => {
+    source: socket.events.onMessage.map(message => {
       if (message.data.senderCoach) {
         message.data.senderCoach.avatar = `${globalConfig.BACKEND_URL}${message.data.senderCoach.avatar}`
       }
@@ -195,6 +193,8 @@ export const createChatsSocket = (userType: UserType) => {
       }
       return message
     }),
+    filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
+    target: onMessage,
   })
 
   guard({
