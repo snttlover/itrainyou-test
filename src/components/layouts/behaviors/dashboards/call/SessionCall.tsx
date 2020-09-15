@@ -144,7 +144,7 @@ const InterlocutorVideo = styled.div`
 const InterlocutorIcon = styled(Icon).attrs({ name: `user` })`
   width: 34px;
   height: 34px;
-  fill: ${props => props.theme.colors.primary};
+  fill: ${props => props.theme.colors.invert.primary};
 `
 
 const InterlocutorVideoPlaceholder = styled(InterlocutorVideo)`
@@ -152,7 +152,7 @@ const InterlocutorVideoPlaceholder = styled(InterlocutorVideo)`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.invert.primary};
   z-index: 1;
   background: #dbdee0;
 `
@@ -172,7 +172,7 @@ const MyUserVideo = styled.div`
 const MyUserVideoPlaceholderIcon = styled(Icon).attrs({ name: `user` })`
   width: 50px;
   height: 50px;
-  fill: ${props => props.theme.colors.primary};
+  fill: ${props => props.theme.colors.invert.primary};
 `
 
 const MyUserVideoPlaceholder = styled.div`

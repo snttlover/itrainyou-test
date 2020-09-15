@@ -334,7 +334,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       $callsVisibility,
       $self,
       $interlocutor,
-      $time
+      $time,
+      dashboardType: config.dashboard
     },
     methods: {
       play,
