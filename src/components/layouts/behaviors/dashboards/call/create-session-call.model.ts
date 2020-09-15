@@ -205,7 +205,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     if (!tokenData || !minutes) {
       return false
     }
-    return minutes < tokenData.extraTimeMinutes
+    return minutes <= tokenData.extraTimeMinutes
   })
 
   forward({
