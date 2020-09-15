@@ -58,13 +58,10 @@ sample({
     $currentDenyCompletationProblem,
     $denyCompletationProblem,
     (req, problemType, problem) => {
-      if (problemType !== "OTHER" && problemType !== null) {
-        problem = problemType
-      }
-
       return {
         id: req?.id || 0,
-        problem,
+        problem: problemType,
+        problemText: problem
       }
     }
   ),
