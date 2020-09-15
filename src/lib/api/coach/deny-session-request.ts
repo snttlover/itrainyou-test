@@ -8,7 +8,7 @@ export type DenySessionRequestProblems = "COACH_ABSENT" | "COACH_INADEQUATE" | "
 
 export type DenySessionRequestParams = {
   id: number
-  problem: DenySessionRequestProblems
+  problem?: DenySessionRequestProblems
   problemText?: string
 }
 

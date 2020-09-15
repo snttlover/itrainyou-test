@@ -31,10 +31,10 @@ type Problems = {
   label: string
 }[]
 
-export const changeCurrentDenyCompletationProblem = createEvent<DenySessionRequestProblems | null>()
-export const $currentDenyCompletationProblem = restore<DenySessionRequestProblems | null>(
+export const changeCurrentDenyCompletationProblem = createEvent<DenySessionRequestProblems>()
+export const $currentDenyCompletationProblem = restore<DenySessionRequestProblems>(
   changeCurrentDenyCompletationProblem,
-  null
+  ""
 ).reset(reset)
 
 export const denyCompletationProblems: Problems = [
