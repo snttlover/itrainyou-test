@@ -357,6 +357,7 @@ const Container = styled.div`
 
   &[data-interlocutor-was-connected="false"],
   &[data-interlocutor-is-connected="false"] {
+    ${MyUserVideoPlaceholder},
     ${MyUserVideo} {
       width: 100%;
       height: 100%;
