@@ -9,6 +9,8 @@ import { changePasswordFx } from "@/pages/common/settings/content/password-form.
 import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
 import { create } from "domain"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
+import { condition } from "patronum"
+import { runInScope } from "@/scope"
 
 type SendSocketChatMessage = {
   chat: number
@@ -47,6 +49,10 @@ export type ReadNotificationsDone = {
 export type WriteChatMessageDone = {
   type: `WRITE_MESSAGE_DONE`
   data: ChatMessage
+}
+
+type PongMessage = {
+  type: "PONG"
 }
 
 export type SessionStarted = {
@@ -241,13 +247,39 @@ export const createChatsSocket = (userType: UserType) => {
         clearInterval(pingPongInterval)
         pingPongInterval = null
       }
-      pingPongInterval = setInterval(ping, 5000)
+      pingPongInterval = setInterval(() => runInScope(ping), 5000)
     },
   })
 
   forward({
     from: socket.events.onConnect.map(() => {}),
     to: pingPongFx,
+  })
+
+  const changePonged = createEvent<boolean>()
+  const $wasPonged = restore(changePonged, true)
+
+  guard({
+    source: socket.events.onMessage,
+    filter: (payload: PongMessage) => payload.type === "PONG",
+    target: changePonged.prepend(() => true),
+  })
+
+  condition({
+    source: ping,
+    if: $wasPonged.map(ponged => !ponged),
+    then: socket.methods.reconnect,
+    else: changePonged.prepend(() => false),
+  })
+
+  forward({
+    from: socket.methods.reconnect,
+    to: changePonged.prepend(() => true),
+  })
+
+  forward({
+    from: socket.events.onConnect,
+    to: changePonged.prepend(() => true)
   })
 
   return {

@@ -1,4 +1,4 @@
-import { createEffect, createEvent, forward } from "effector-root"
+import { createEffect, createEvent, forward, restore, sample } from "effector-root"
 import { runInScope } from "@/scope"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 
@@ -7,6 +7,7 @@ export const createSocket = () => {
 
   const openSocketFx = createEffect({
     handler: (url: string) => {
+      runInScope(disconnect)
       socket = new WebSocket(url)
 
       socket.onopen = () => runInScope(onConnect)
@@ -40,6 +41,16 @@ export const createSocket = () => {
   const disconnect = createEvent()
   const send = createEvent<any>()
 
+  const $connectUrl = restore(connect, '')
+
+  const reconnect = createEvent()
+
+  sample({
+    source: $connectUrl,
+    clock: reconnect,
+    target: connect
+  })
+
   forward({
     from: disconnect,
     to: closeSocketFx
@@ -61,6 +72,7 @@ export const createSocket = () => {
       connect,
       disconnect,
       send,
+      reconnect
     },
     events: {
       onMessage,
