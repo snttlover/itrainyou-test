@@ -103,16 +103,6 @@ const InfoText = styled.p`
   `}
 `
 
-const ThinkYouAreTopCoach = styled.p`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 22px;
-  color: #9aa0a6;
-  margin-top: -8px;
-`
-
 const Datepicker = () => {
   const coach = useStore($profileData)
 
@@ -147,7 +137,6 @@ export const CoachProfilePage = () => {
           </CoachInfoContainer>
           <BuySidebar>
             <Datepicker />
-            {!coach.isTopCoach && <ThinkYouAreTopCoach>Думаете вы топ-коуч?</ThinkYouAreTopCoach>}
           </BuySidebar>
         </InfoWithSidebar>
       </ContentContainer>

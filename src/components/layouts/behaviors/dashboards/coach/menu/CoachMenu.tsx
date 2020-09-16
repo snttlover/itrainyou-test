@@ -8,7 +8,6 @@ import * as React from "react"
 import { ProfileHeader } from "@/components/layouts/behaviors/dashboards/client/menu/content/ProfileHeader"
 import { useStore } from "effector-react/ssr"
 import { blueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
-import { CoachLink } from "@/components/layouts/behaviors/dashboards/client/menu/content/CoachLink"
 import { CoachMenuItems } from "@/components/layouts/behaviors/dashboards/coach/menu/content/CoachMenuItems"
 import { MediaRange } from "@/lib/responsive/media"
 import { $userData } from "@/feature/user/user.model"
@@ -47,7 +46,6 @@ export const CoachMenu = () => {
         profileLink={routeNames.coachProfile()}
       />
       <CoachMenuItems />
-      <CoachLink>Думаете вы топ-коуч?</CoachLink>
     </DashboardMenuContainer>
   )
 }
