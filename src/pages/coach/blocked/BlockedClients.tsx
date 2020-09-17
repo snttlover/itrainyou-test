@@ -60,7 +60,7 @@ type BlockedClientsListProps = {
 
 const BlockedClientsList = ({ clients, ban, unban }: BlockedClientsListProps) => (
   <>
-    {clients.length === 0 && <Placeholder>Вы никого не банили</Placeholder>}
+    {clients.length === 0 && <Placeholder>У вас нет заблокированных клиентов</Placeholder>}
     {clients.map(client => (
       <BlockedClient
         key={client.id}
