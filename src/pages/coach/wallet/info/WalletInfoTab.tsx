@@ -34,7 +34,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `
 
-const AddFundsButton = styled(Button)`
+const WithdrawButton = styled(Button)`
   position: absolute;
   right: 40px;
   top: 44px;
@@ -56,9 +56,9 @@ export const WalletInfoTab = () => {
       <StyledWalletAmount title='Доступно' amount={amount} description='qweqwe asd asd Lorem ipsum trali vali' />
       <StyledWalletAmount title='Ваши тренинги забронировали на' amount={frozenAmount} description={"asdasdasd"} />
       <ButtonContainer>
-        <AddFundsButton data-slim onClick={() => _changeShowWithdrawDialog(true)}>
+        <WithdrawButton data-slim onClick={() => _changeShowWithdrawDialog(true)}>
           Вывести
-        </AddFundsButton>
+        </WithdrawButton>
       </ButtonContainer>
       {isLoading && <Spinner />}
     </WalletInfoContainer>
