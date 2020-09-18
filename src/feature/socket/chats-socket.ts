@@ -1,6 +1,6 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
-import { config as globalConfig, config } from "@/config"
+import { config } from "@/config"
 import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect, restore } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn, $userData } from "@/feature/user/user.model"
@@ -184,17 +184,17 @@ export const createChatsSocket = (userType: UserType) => {
   })
 
   guard({
-    source: socket.events.onMessage.map(message => {
+    source: socket.events.onMessage,
+    filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
+    target: onMessage.prepend((message: WriteChatMessageDone) => {
       if (message.data.senderCoach) {
-        message.data.senderCoach.avatar = `${globalConfig.BACKEND_URL}${message.data.senderCoach.avatar}`
+        message.data.senderCoach.avatar = `${config.BACKEND_URL}${message.data.senderCoach.avatar}`
       }
       if (message.data.senderClient) {
-        message.data.senderClient.avatar = `${globalConfig.BACKEND_URL}${message.data.senderClient.avatar}`
+        message.data.senderClient.avatar = `${config.BACKEND_URL}${message.data.senderClient.avatar}`
       }
       return message
     }),
-    filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
-    target: onMessage,
   })
 
   guard({
@@ -279,7 +279,7 @@ export const createChatsSocket = (userType: UserType) => {
 
   forward({
     from: socket.events.onConnect,
-    to: changePonged.prepend(() => true)
+    to: changePonged.prepend(() => true),
   })
 
   return {

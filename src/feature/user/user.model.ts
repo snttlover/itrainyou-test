@@ -5,7 +5,7 @@ import { updateMyUser } from "@/lib/api/users/update-my-user"
 import { keysToCamel } from "@/lib/network/casing"
 import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import dayjs from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, guard, restore, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard } from "effector-root"
 import Cookies from "js-cookie"
 
 export type UserData = {
