@@ -56,7 +56,9 @@ export const WalletInfoTab = () => {
       <StyledWalletAmount title='Доступно' amount={amount} description='qweqwe asd asd Lorem ipsum trali vali' />
       <StyledWalletAmount title='Ваши тренинги забронировали на' amount={frozenAmount} description={"asdasdasd"} />
       <ButtonContainer>
-        <AddFundsButton onClick={() => _changeShowWithdrawDialog(true)}>Вывести</AddFundsButton>
+        <AddFundsButton data-slim onClick={() => _changeShowWithdrawDialog(true)}>
+          Вывести
+        </AddFundsButton>
       </ButtonContainer>
       {isLoading && <Spinner />}
     </WalletInfoContainer>
