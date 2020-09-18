@@ -26,6 +26,7 @@ const Container = styled.div`
 
   ${MediaRange.lessThan(`mobile`)`
     margin-top: 16px;
+    padding: unset;
   `}
 `
 
