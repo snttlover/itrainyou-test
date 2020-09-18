@@ -1,5 +1,6 @@
 import { Tab, Tabs } from "@/components/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
+import { ConfirmationGate } from "@/pages/coach/wallet/confirmation.model"
 import { WithdrawDialog } from "@/pages/coach/wallet/withdraw-dialog/WithdrawDialog"
 import { WalletHistoryTab } from "./history/WalletHistoryTab"
 import { CardsTabGate } from "./cards/cards.model"
@@ -30,6 +31,7 @@ const WalletTabContentContainer = styled.div``
 export const Wallet = () => {
   useGate(InfoTabGate)
   useGate(CardsTabGate)
+  useGate(ConfirmationGate)
   const [tab, changeTab] = useState("wallet")
 
   return (
