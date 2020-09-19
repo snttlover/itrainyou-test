@@ -4,12 +4,13 @@ import styled from "styled-components"
 type DialogOverlayTypes = {
   children: React.ReactChild | React.ReactChild[]
   onClick?: () => void
+  className?: string
 }
 
 export const DialogOverlay = (props: DialogOverlayTypes) => {
   return (
-    <StyledDialogOverlay onClick={props.onClick}>
-      <Container>{props.children}</Container>
+    <StyledDialogOverlay className={props.className} onClick={props.onClick}>
+      <DialogOverlayContainer>{props.children}</DialogOverlayContainer>
     </StyledDialogOverlay>
   )
 }
@@ -24,7 +25,7 @@ const StyledDialogOverlay = styled.div`
   background: rgba(66, 66, 66, 0.8);
 `
 
-const Container = styled.div`
+export const DialogOverlayContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
