@@ -65,7 +65,7 @@ sample({
       url = routeNames.client()
     } else if (dashboard === "client") {
       url = routeNames.client()
-    } else if (dashboard === "coach") {
+    } else if (dashboard === "coach" && data.user.coach) {
       url = routeNames.coach()
     } else if (data.user.coach) {
       url = routeNames.coach()
