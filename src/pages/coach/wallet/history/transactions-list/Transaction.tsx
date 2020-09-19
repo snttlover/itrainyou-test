@@ -2,7 +2,6 @@ import styled, { css } from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import WalletTransactionImage from "../images/wallet.svg"
 import React from "react"
 
 const Price = styled.div`
@@ -126,14 +125,13 @@ type IndividualSessionItemType = {
     price: string
     time: string
     isCanceled: boolean
-    date: string // iso
-    isWalletTransaction: boolean
+    date: string
   }
 }
 
 export const Transaction = ({ data }: IndividualSessionItemType) => (
   <Item>
-    <StyledAvatar src={data.isWalletTransaction ? WalletTransactionImage : data.avatar} />
+    <StyledAvatar src={data.avatar} />
     <Name>{data.name}</Name>
     <Cancel>{data.isCanceled && `сессия отменена`}</Cancel>
     <RightMobileGroup canceled={data.isCanceled}>
