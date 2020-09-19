@@ -1,4 +1,5 @@
 import { Avatar } from "@/components/avatar/Avatar"
+import { MediaRange } from "@/lib/responsive/media"
 import React from "react"
 import styled from "styled-components"
 
@@ -25,12 +26,15 @@ export const BlockedClient: React.FC<BlockedClientProps> = ({ avatar, name, isBl
 }
 
 const Container = styled.div`
-  padding: 12px 16px;
+  padding: 12px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   border-bottom: solid 1px #eceff1;
+  ${MediaRange.lessThan("mobile")`
+    padding: 12px 16px;
+  `}
 `
 
 const UserContainer = styled.div`
@@ -51,6 +55,11 @@ const Name = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #5b6670;
+
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+    line-height: 18px;
+  `}
 `
 
 const Action = styled.div<{ isBlocked?: boolean }>`
@@ -59,6 +68,6 @@ const Action = styled.div<{ isBlocked?: boolean }>`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: ${({ isBlocked, theme }) => (isBlocked ? "#FF6B00" : theme.colors.primary)};
+  color: ${({ isBlocked, theme }) => (isBlocked ? theme.colors.primary : "#FF6B00")};
   cursor: pointer;
 `
