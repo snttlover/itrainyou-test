@@ -2,7 +2,7 @@ import { createSupportChatModel } from "@/feature/support/create-support-chat.mo
 import { createChatMessages } from "@/feature/chat/view/content/messages/ChatMessages"
 import { Loader } from "@/components/spinner/Spinner"
 import { ChatContainer } from "@/feature/chat/view/content/ChatContainer"
-import { ChatMessageBox } from "@/feature/chat/view/content/ChatMessageBox"
+import { ChatMessageBox } from "@/feature/chat/view/content/message-box/ChatMessageBox"
 import React, { useEffect } from "react"
 import { useEvent, useStore } from "effector-react/ssr"
 import styled from "styled-components"
