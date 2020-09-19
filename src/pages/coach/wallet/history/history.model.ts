@@ -57,6 +57,8 @@ export const $transactionsList = $transactions.map(transactions =>
     let name = `Пополнение кошелька`
     if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") {
       name = "Перевод на кошелек клиента"
+    } else if (transaction.type === "WITHDRAW") {
+      name = "Вывод"
     } else if (transaction.enrolledClient) {
       name = `${transaction.enrolledClient.firstName} ${transaction.enrolledClient.lastName}`
     } else if (transaction.session?.client) {
