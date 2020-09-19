@@ -13,12 +13,31 @@ export type SessionTransaction = {
   amount: string // decimal
   wallet: number // wallet id
   creationDatetime: ISODate // iso
+  enrolledClient: {
+    avatar: string
+    birthDate: Day
+    creationDatetime: ISODate
+    firstName: string
+    id: number
+    lastName: string
+    sex: Sex
+  } | null
   session: CoachSession & {
     coach: {
       id: number
       firstName: string
       lastName: string
       birthDate: Day
+      sex: Sex
+      avatar: string
+      isTopCoach: boolean
+      creationDatetime: ISODate
+    }
+    client: {
+      id: string
+      firstName: string
+      lastName: string
+      birthDate: string
       sex: Sex
       avatar: string
       isTopCoach: boolean

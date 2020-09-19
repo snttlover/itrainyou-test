@@ -55,15 +55,21 @@ export const $transactionsList = $transactions.map(transactions =>
     else price = `+${price}`
 
     let name = `Пополнение кошелька`
-    if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") name = "Перевод на кошелек клиента"
-    else if (transaction.enrolledClient)
+    if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") {
+      name = "Перевод на кошелек клиента"
+    } else if (transaction.enrolledClient) {
       name = `${transaction.enrolledClient.firstName} ${transaction.enrolledClient.lastName}`
+    } else if (transaction.session?.client) {
+      name = `${transaction.session.client.firstName} ${transaction.session.client.lastName}`
+    }
 
     let avatar = null
     if (transaction.type === "TOP_UP" || transaction.type === "TRANSFER_TO_CLIENT_WALLET") {
       avatar = WalletTransactionImage
     } else if (transaction.enrolledClient?.avatar) {
       avatar = transaction.enrolledClient?.avatar
+    } else if (transaction.session?.client?.avatar) {
+      avatar = transaction.session?.client.avatar
     }
 
     return {

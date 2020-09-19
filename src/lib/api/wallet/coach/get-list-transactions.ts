@@ -32,6 +32,16 @@ export type Transaction = {
       isTopCoach: boolean
       creationDatetime: ISODate
     }
+    client: {
+      id: string
+      firstName: string
+      lastName: string
+      birthDate: string
+      sex: Sex
+      avatar: string
+      isTopCoach: boolean
+      creationDatetime: ISODate
+    }
     clientPrice: string
     coachPrice: string
     startDatetime: ISODate
