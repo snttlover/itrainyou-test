@@ -120,7 +120,7 @@ const RightMobileGroup = styled.div<{ canceled: boolean }>`
 
 type IndividualSessionItemType = {
   data: {
-    avatar: string
+    avatar: string | null
     name: string
     price: string
     time: string
