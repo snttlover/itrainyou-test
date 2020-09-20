@@ -156,7 +156,6 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: routeNames.coachWallet(),
-    exact: true,
     component: CoachWalletPage,
   },
   {
