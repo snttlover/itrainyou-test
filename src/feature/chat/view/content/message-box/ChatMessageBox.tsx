@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { ImagesLimitDialog } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
+import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
 
 const Container = styled.div`
   background: #dbdee0;
@@ -9,6 +10,7 @@ const Container = styled.div`
   padding: 12px;
   display: flex;
   align-items: center;
+  position: relative;
 `
 
 const StyledInput = styled.input`
@@ -60,6 +62,7 @@ export const ChatMessageBox = (props: ChatMessageBoxTypes) => {
   return (
     <Container>
       <ImagesLimitDialog visibility={false} onChangeVisibility={() => {}} />
+      <MessageBoxUpload />
       <StyledInput
         ref={input}
         value={value}
