@@ -7,8 +7,9 @@ import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api
 import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 
-export type ChatListModuleConfig = {
+export type ChatModuleConfig = {
   type: "client" | "coach"
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
@@ -16,10 +17,10 @@ export type ChatListModuleConfig = {
   fetchSessions: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 
-export const createChatModule = (config: ChatListModuleConfig) => {
+export const createChatModule = (config: ChatModuleConfig) => {
   const reset = createEvent()
-  const changeId = createEvent<number>()
-  const $chatId = createStore<number>(0).on(changeId, (_, id) => id)
+  const changeId = createEvent<ChatId>()
+  const $chatId = createStore<ChatId>(0).on(changeId, (_, id) => id)
   const chat = createChatInfoModule(config)
 
   const chatSessions = createChatSessionsModule({
@@ -56,13 +57,9 @@ export const createChatModule = (config: ChatListModuleConfig) => {
     ],
   })
 
-  const send = createEvent<string>()
-
-  sample({
-    source: $chatId,
-    clock: send,
-    fn: (chatId, message) => ({ chat: chatId, text: message }),
-    target: config.socket.methods.send,
+  const messageBox = createChatMessageBoxModule({
+    ...config,
+    $chatId
   })
 
   const mounted = createEvent<number>()
@@ -82,8 +79,8 @@ export const createChatModule = (config: ChatListModuleConfig) => {
     chatMessages,
     chatSessions,
     socket: config.socket,
-    send,
     mounted,
     reset,
+    messageBox
   }
 }

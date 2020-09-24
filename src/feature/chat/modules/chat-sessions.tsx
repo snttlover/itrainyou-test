@@ -4,10 +4,11 @@ import { createPagination } from "@/feature/pagination"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
 import { date } from "@/lib/formatting/date"
 import { Pagination } from "@/lib/api/interfaces/utils.interface"
+import { ChatId } from "@/lib/api/chats/coach/get-messages"
 
 type CreateChatSessionsModuleConfig = {
   socket: ReturnType<typeof createChatsSocket>
-  $chatId: Store<number>
+  $chatId: Store<ChatId>
   $withAvatars: Store<boolean>
   chatUserType: "client" | "coach"
   fetch: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
@@ -28,7 +29,7 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
   const pagination = createPagination<ChatSession>({
     fetchMethod: config.fetch,
     $query: combine(config.$chatId, $tab, (id, tab) => {
-      const query: any = { id }
+      const query: any = { id: +id }
 
       if (tab === `past`) {
         query.past = `True`

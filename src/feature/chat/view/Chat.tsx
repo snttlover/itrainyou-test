@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { ChatContainer } from "./content/ChatContainer"
 import { PersonalChatHeader } from "./content/headers/personal/PersonalChatHeader"
 import { createChatMessages } from "./content/messages/ChatMessages"
-import { ChatMessageBox } from "./content/message-box/ChatMessageBox"
+import { createChatMessageBox } from "./content/message-box/ChatMessageBox"
 import { createChatModule } from "@/feature/chat"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
@@ -19,11 +19,11 @@ import { DenyCompletetionDialog } from "@/pages/client/session/content/session-p
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
   const Sessions = createChatSessions($chatModule.chatSessions)
+  const MessageBox = createChatMessageBox($chatModule.messageBox)
 
   return () => {
     const chat = useStore($chatModule.chat.$chat)
     const chatLoading = useStore($chatModule.chat.$loading)
-    const send = useEvent($chatModule.send)
     const params = useParams<{ id: string }>()
     const mounted = useEvent($chatModule.mounted)
     const unmounted = useEvent($chatModule.reset)
@@ -55,7 +55,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
             <ChatContainer>
               <Header {...chat} />
               <Messages isSystem={chat.chatType === `SYSTEM`} />
-              {!isSystemChat && <ChatMessageBox onSend={send} blockedText={blockedText} />}
+              {!isSystemChat && <MessageBox /> }
             </ChatContainer>
             <Sessions />
             <RevocationSessionDialog />

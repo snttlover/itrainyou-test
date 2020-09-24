@@ -1,14 +1,15 @@
-import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
-import { combine, createEffect, createEvent, forward, restore, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 
 export type SupportChatModelConfig = {
   type: "client" | "coach"
+  fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
-  fetchChat: () => Promise<Chat>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
 }
 
@@ -43,17 +44,6 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
   forward({
     from: changeId,
     to: chatMessages.changeId,
-  })
-
-  const send = createEvent<string>()
-
-  sample({
-    // @ts-ignore
-    source: $chatId,
-    clock: send,
-    // @ts-ignore
-    fn: (chatId, message) => ({ chat: chatId, text: message }),
-    target: config.socket.methods.send,
   })
 
   const mounted = createEvent<ChatId>()
@@ -93,11 +83,16 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
     }
   )
 
+  const messageBox = createChatMessageBoxModule({
+    ...config,
+    $chatId
+  })
+
   return {
     $support,
     chatMessages,
     socket: config.socket,
-    send,
+    messageBox,
     mounted,
     reset,
     $firstLoading: $loading,

@@ -24,6 +24,7 @@ export type IconName =
   | "tail-arrow"
   | "vk"
   | "info"
+  | "send"
   | "more"
   | "video2"
   | "top-coach"

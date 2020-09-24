@@ -1,22 +1,21 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
+import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { createEvent } from "effector"
 
-export const MessageBoxUpload = () => {
-  const [files, setFiles] = useState<string[]>([])
+type MessageBoxUploadProps = {
+  images: ChatImage[]
+  add: (file: File) => void
+  delete: (id: number) => void
+  upload: (p: void) => void
+}
 
-  const addFile = (file: string) => {
-    setFiles([...files, file])
-  }
-
+export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
   const onDropAccepted = useCallback(acceptedFiles => {
     acceptedFiles.forEach((file: File) => {
-      const reader = new FileReader()
-      reader.addEventListener("load", () => {
-        addFile(reader.result as string)
-      })
-      reader.readAsDataURL(file)
+      props.add(file)
     })
   }, [])
 
@@ -38,25 +37,63 @@ export const MessageBoxUpload = () => {
     accept: acceptMimeTypes,
   })
 
+  const imagesRef = useRef<HTMLDivElement>(null)
+
+  const scroll = (to: number) => {
+    if (imagesRef.current) {
+      imagesRef.current.scrollLeft = to
+    }
+  }
+
+  const scrollHandler = (e: MouseWheelEvent) => {
+    if (imagesRef.current) {
+      scroll(imagesRef.current.scrollLeft + e.deltaY)
+      e.preventDefault()
+    }
+  }
+
+  const scrollRight = () => {
+    if (imagesRef.current) {
+      scroll(imagesRef.current.clientWidth + imagesRef.current.scrollLeft)
+    }
+  }
+
+  useEffect(() => {
+    if (imagesRef.current) {
+      // @ts-ignore
+      imagesRef.current.addEventListener("mousewheel", scrollHandler)
+    }
+    return () => {
+      if (imagesRef.current) {
+        // @ts-ignore
+        imagesRef.current.removeEventListener("mousewheel", scrollHandler)
+      }
+    }
+  }, [props.images])
+
   return (
     <Container>
       <UploadIcon onClick={open} />
       <FileInput {...getInputProps()} />
 
-      <Uploader>
-        <Images>
-          {files.map((image, index) => (
-            <Image key={index} image={image}>
-              <RemoveImage>
-                <RemoveImageIcon />
-              </RemoveImage>
-              <Progress value={20} />
-            </Image>
-          ))}
-        </Images>
-        <Arrow />
-        <Send />
-      </Uploader>
+      {!!props.images.length && (
+        <Uploader>
+          <Images ref={imagesRef}>
+            <ImagesWrapper>
+              {props.images.map(image => (
+                <Image key={image.id} image={image.preview}>
+                  <RemoveImage onClick={() => props.delete(image.id)}>
+                    <RemoveImageIcon />
+                  </RemoveImage>
+                  {!!image.percent && <Progress value={image.percent} />}
+                </Image>
+              ))}
+            </ImagesWrapper>
+          </Images>
+          <ImagesArrow onClick={scrollRight} />
+          <Send onClick={() => props.upload()} />
+        </Uploader>
+      )}
     </Container>
   )
 }
@@ -89,26 +126,32 @@ const Uploader = styled.div`
 `
 
 const Images = styled.div`
-  height: 44px;
+  height: 100%;
   flex: 1;
   display: flex;
   position: relative;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  align-items: center;
+  overflow-x: auto;
 `
 
 type ImageProps = {
-  image: string
+  image: string | null
 }
 
 const Image = styled.div<ImageProps>`
   position: relative;
+  display: inline-table;
+  height: 44px;
   width: 44px;
-  height: 100%;
-  background: url("${props => props.image}");
+  background: #eee;
+  background-image: url("${props => props.image}");
   background-size: cover;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
+  margin-right: 3px;
 `
 
 const RemoveImage = styled.div`
@@ -122,6 +165,13 @@ const RemoveImage = styled.div`
   cursor: pointer;
   fill: ${props => props.theme.colors.primary};
   position: relative;
+  z-index: 2;
+`
+
+const ImagesWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const RemoveImageIcon = styled(Icon).attrs({ name: `cross` })`
@@ -153,5 +203,17 @@ const Progress = styled.div<ProgressProps>`
   }
 `
 
-const Arrow = styled.div``
-const Send = styled.div``
+const ImagesArrow = styled(Icon).attrs({ name: `right-icon` })`
+  fill: ${props => props.theme.colors.primary};
+  cursor: pointer;
+  margin-left: 10px;
+  margin-right: 13px;
+  height: 14px;
+`
+
+const Send = styled(Icon).attrs({ name: `send` })`
+  fill: ${props => props.theme.colors.primary};
+  cursor: pointer;
+  height: 17px;
+  margin-right: 25px;
+`

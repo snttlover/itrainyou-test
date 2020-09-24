@@ -3,6 +3,56 @@ import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { ImagesLimitDialog } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { useStore, useEvent } from "effector-react/ssr"
+
+
+type ChatMessageBoxTypes = {
+  blockedText?: string | null
+}
+
+export const createChatMessageBox = ($module: ReturnType<typeof createChatMessageBoxModule>) => (props: ChatMessageBoxTypes) => {
+
+  const value = useStore($module.data.$message)
+  const change = useEvent($module.methods.changeMessage)
+  const send = useEvent($module.methods.sendTextMessage)
+
+  const input = useRef<HTMLInputElement>(null)
+
+  const addImage = useEvent($module.methods.addFile)
+  const images = useStore($module.data.$images)
+  const deleteImage = useEvent($module.methods.deleteImage)
+  const upload = useEvent($module.methods.upload)
+
+  const keydownHandler = (e: React.KeyboardEvent) => {
+    if (e.keyCode === 13) {
+      send(value)
+      change(``)
+    }
+  }
+
+  useEffect(() => {
+    if (input.current && window.innerWidth > 768) {
+      input.current.focus()
+    }
+  }, [])
+
+  return (
+    <Container>
+      <ImagesLimitDialog visibility={false} onChangeVisibility={() => {}} />
+      <MessageBoxUpload images={images} add={addImage} delete={deleteImage} upload={upload} />
+
+      <StyledInput
+        ref={input}
+        value={value}
+        disabled={!!props.blockedText}
+        placeholder={props.blockedText || "Напишите сообщение..."}
+        onChange={e => change(e.target.value)}
+        onKeyDown={keydownHandler}
+      />
+    </Container>
+  )
+}
 
 const Container = styled.div`
   background: #dbdee0;
@@ -37,40 +87,3 @@ const StyledInput = styled.input`
   `}
 `
 
-type ChatMessageBoxTypes = {
-  blockedText?: string | null
-  onSend: (value: string) => void
-}
-
-export const ChatMessageBox = (props: ChatMessageBoxTypes) => {
-  const [value, change] = useState(``)
-  const input = useRef<HTMLInputElement>(null)
-
-  const keydownHandler = (e: React.KeyboardEvent) => {
-    if (e.keyCode === 13) {
-      props.onSend(value)
-      change(``)
-    }
-  }
-
-  useEffect(() => {
-    if (input.current && window.innerWidth > 768) {
-      input.current.focus()
-    }
-  }, [])
-
-  return (
-    <Container>
-      <ImagesLimitDialog visibility={false} onChangeVisibility={() => {}} />
-      <MessageBoxUpload />
-      <StyledInput
-        ref={input}
-        value={value}
-        disabled={!!props.blockedText}
-        placeholder={props.blockedText || "Напишите сообщение..."}
-        onChange={e => change(e.target.value)}
-        onKeyDown={keydownHandler}
-      />
-    </Container>
-  )
-}
