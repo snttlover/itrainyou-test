@@ -72,12 +72,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   const addMessage = createEvent<WriteChatMessageDone>()
 
-  pagination.data.$list.on(addMessage, (messages, message) => {
-    if (message.data.image) {
-      message.data.image = `${globalConfig.BACKEND_URL}${message.data.image}`
-    }
-    return [message.data, ...messages]
-  })
+  pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
 
   const $messages = pagination.data.$list.map(messages => {
     const completedStatusesIds = messages
