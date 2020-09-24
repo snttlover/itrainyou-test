@@ -9,7 +9,7 @@ export const fixAvatarAndImageUrl = (o: any): any => {
       acc[key] = o[key]
 
       if (typeof o[key] === "string" && imageAttrs.includes(key)) {
-        o[key] = `${config.BACKEND_URL}${o[key]}`
+        acc[key] = `${config.BACKEND_URL}${o[key]}`
       }
 
       if (isObject(o[key])) {

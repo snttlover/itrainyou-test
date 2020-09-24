@@ -14,7 +14,10 @@ export const createSocket = () => {
       socket.onopen = () => runInScope(onConnect)
       socket.onclose = () => runInScope(onClose)
       socket.onerror = () => runInScope(onError)
-      socket.onmessage = e => runInScope(onMessage, fixAvatarAndImageUrl(keysToCamel(JSON.parse(e.data))))
+      socket.onmessage = e => {
+        const message = fixAvatarAndImageUrl(keysToCamel(JSON.parse(e.data)))
+        runInScope(onMessage, message)
+      }
     },
   })
 
