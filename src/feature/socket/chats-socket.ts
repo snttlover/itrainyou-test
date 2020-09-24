@@ -15,7 +15,7 @@ import { runInScope } from "@/scope"
 type SendSocketChatMessage = {
   chat: number
   text?: string
-  image?: number
+  image?: string
 }
 
 type ReadChatMessages = {

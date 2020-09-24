@@ -17,6 +17,7 @@ export type ChatMessage = {
   id: number
   type: MessageTypes
   text: string
+  image: string
   chat: number
   senderCoach: CoachUser | null
   senderClient: Client | null

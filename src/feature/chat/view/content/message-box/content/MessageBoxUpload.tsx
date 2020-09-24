@@ -164,7 +164,7 @@ const RemoveImage = styled.div`
   top: -5px;
   cursor: pointer;
   fill: ${props => props.theme.colors.primary};
-  position: relative;
+  position: absolute;
   z-index: 2;
 `
 
@@ -190,8 +190,9 @@ type ProgressProps = {
 const Progress = styled.div<ProgressProps>`
   width: 100%;
   height: 2px;
-  position: relative;
   background: #fff;
+  position: absolute;
+  bottom: 0;
   &:after {
     content: "";
     display: ${props => (props.value === 0 ? `none` : `block`)};

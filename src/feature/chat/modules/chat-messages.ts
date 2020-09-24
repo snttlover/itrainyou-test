@@ -6,7 +6,7 @@ import {
   ChatMessage,
   ConflictStatus,
   MessageSessionRequestStatuses,
-  SupportTicketType
+  SupportTicketType,
 } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
@@ -14,6 +14,7 @@ import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { CoachUser } from "@/lib/api/coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { config as globalConfig } from "@/config"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
@@ -40,11 +41,12 @@ export type ChatSystemMessage = {
   showButtons: boolean
 }
 
-export type ChatTextMessage = {
+export type PersonalChatMessage = {
   type: "TEXT"
   id: number
   isMine: boolean
   text: string
+  image: string
   time: string
 }
 
@@ -52,7 +54,7 @@ const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
   return self.indexOf(value) === index
 }
 
-export type ChatMessagesTypes = ChatSystemMessage | ChatTextMessage | ChatSupportMessage
+export type ChatMessagesTypes = ChatSystemMessage | PersonalChatMessage | ChatSupportMessage
 
 export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) => {
   const changeId = createEvent<ChatId>()
@@ -70,7 +72,12 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   const addMessage = createEvent<WriteChatMessageDone>()
 
-  pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
+  pagination.data.$list.on(addMessage, (messages, message) => {
+    if (message.data.image) {
+      message.data.image = `${globalConfig.BACKEND_URL}${message.data.image}`
+    }
+    return [message.data, ...messages]
+  })
 
   const $messages = pagination.data.$list.map(messages => {
     const completedStatusesIds = messages
@@ -96,14 +103,14 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
           if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
             let user: CoachUser | Client | null = null
 
-            if (message.type === 'SUPPORT') {
+            if (message.type === "SUPPORT") {
               const user = message?.supportTicket?.support
               return {
                 type: "SUPPORT",
                 id: message.id,
                 userName: `${user?.firstName} ${user?.lastName}`,
                 userAvatar: user?.avatar || null,
-                ticketStatus: message.systemTicketType
+                ticketStatus: message.systemTicketType,
               }
             }
 
@@ -134,6 +141,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             id: message.id,
             isMine,
             text: message.text,
+            image: message.image,
             time: date(message.creationDatetime).format(`HH:mm`),
           }
         }

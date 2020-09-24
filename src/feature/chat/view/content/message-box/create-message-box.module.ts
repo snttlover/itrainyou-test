@@ -12,7 +12,7 @@ export type ChatImage = {
   id: number
   percent: number
   file: File
-  serverId: null | number
+  serverUrl: string
   preview: string | null // src
 }
 
@@ -46,7 +46,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
         preview: null,
         id: FileId(),
         percent: 0,
-        serverId: null,
+        serverUrl: '',
       },
     ])
     .on(changeImage, (images, payload) => {
@@ -103,7 +103,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
           ).then(res => {
             runInScope(changeImage, {
               file: image.file,
-              serverId: res.id,
+              serverUrl: res.file,
             })
           })
         )
@@ -123,16 +123,18 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
 
   const sendImagesToChatFx = createEffect({
     handler({ images, chat }: { images: ChatImage[]; chat: number }) {
-      debugger
-      images
-        .forEach(image => {
-          if (image.serverId !== null) {
-            runInScope(config.socket.methods.send, {
-              chat: chat,
-              image: image.serverId,
-            })
-          }
-        })
+      return new Promise((res) => {
+        images
+          .forEach(image => {
+            if (!!image.serverUrl) {
+              runInScope(config.socket.methods.send, {
+                chat: chat,
+                image: image.serverUrl,
+              })
+            }
+          })
+        res()
+      })
     },
   })
 
@@ -141,7 +143,12 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     source: combine($images, config.$chatId, (images, chat) => ({ images, chat })),
     clock: uploadImagesFx.doneData,
     // @ts-ignore
-    target: [sendImagesToChatFx],
+    target: sendImagesToChatFx,
+  })
+
+  forward({
+    from: sendImagesToChatFx.doneData,
+    to: changeImages.prepend(() => [])
   })
 
   return {
