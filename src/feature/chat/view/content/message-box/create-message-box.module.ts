@@ -111,10 +111,6 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     },
   })
 
-  uploadImagesFx.doneData.watch((data) => {
-    debugger
-  })
-
   sample({
     source: $images,
     clock: upload,
