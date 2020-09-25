@@ -8,12 +8,15 @@ import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
+import { ChatImage } from "@/lib/api/chats/clients/get-images"
 
 export type ChatModuleConfig = {
   type: "client" | "coach"
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
+  fetchMaterials: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatImage>>,
   fetchSessions: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 
@@ -22,6 +25,11 @@ export const createChatModule = (config: ChatModuleConfig) => {
   const changeId = createEvent<ChatId>()
   const $chatId = createStore<ChatId>(0).on(changeId, (_, id) => id)
   const chat = createChatInfoModule(config)
+
+  const materials = createChatMaterialsModule({
+    $chatId,
+    fetchMaterials: config.fetchMaterials
+  })
 
   const chatSessions = createChatSessionsModule({
     socket: config.socket,
@@ -75,6 +83,7 @@ export const createChatModule = (config: ChatModuleConfig) => {
   })
 
   return {
+    materials,
     chat,
     chatMessages,
     chatSessions,

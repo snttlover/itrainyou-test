@@ -5,7 +5,11 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useEvent } from "effector-react/ssr"
 import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"
 
-export const MobileChatHeaderMenu = () => {
+type MobileChatHeaderMenuProps = {
+  openMaterials: () => void
+}
+
+export const MobileChatHeaderMenu = (props: MobileChatHeaderMenuProps) => {
   const [opened, changeOpened] = useState(false)
   const changeSessionsVisibility = useEvent(changeSessionsMobileVisibility)
 
@@ -23,6 +27,9 @@ export const MobileChatHeaderMenu = () => {
           <Menu>
             <MenuItem onClick={() => openSessions()}>
               <SessionIcon /> Сессии
+            </MenuItem>
+            <MenuItem onClick={() => props.openMaterials()}>
+              <MaterialsIcon /> Материалы диалога
             </MenuItem>
           </Menu>
         </>
@@ -60,6 +67,11 @@ const MenuItem = styled.div`
   color: #424242;
 `
 const SessionIcon = styled(Icon).attrs({ name: `video2` })`
+  fill: ${props => props.theme.colors.primary};
+  margin-right: 10px;
+`
+
+const MaterialsIcon = styled(Icon).attrs({ name: `chat-files` })`
   fill: ${props => props.theme.colors.primary};
   margin-right: 10px;
 `

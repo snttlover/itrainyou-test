@@ -33,6 +33,7 @@ export type IconName =
   | "checkbox-border"
   | "checkbox-active"
   | "user"
+  | "chat-files"
   | "search"
   | "close"
   | "enabled-video"
