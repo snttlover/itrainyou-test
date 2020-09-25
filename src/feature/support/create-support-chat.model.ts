@@ -1,4 +1,4 @@
-import { ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
+import { Chat, ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
@@ -22,6 +22,8 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
   })
 
   const $chatId = restore<ChatId>(changeId, 0).reset(reset)
+  const changeChatInfo = createEvent<null | PersonalChat>()
+  const $chatInfo = restore<PersonalChat | null>(changeChatInfo, null).reset(reset)
 
   const chatMessages = createChatMessagesModule({
     ...config,
@@ -58,20 +60,46 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
     to: changeId,
   })
 
-  const $support = chatMessages.pagination.data.$list.map(messages => {
+  forward({
+    from: fetchSupportChatFx.doneData,
+    to: changeChatInfo,
+  })
+
+  const $support = combine($chatInfo, chatMessages.pagination.data.$list, (chat, messages) => {
+    let resolved = false
+
     // @ts-ignore
-    return [...messages].reverse().reduce((userInfo, message) => {
-      if (message.systemTicketType) {
-        if (message.systemTicketType === "SUPPORT_AGENT_FOUND") {
-          return {
-            avatar: message.supportTicket?.support?.avatar,
-            name: `${message.supportTicket?.support?.firstName} ${message.supportTicket?.support?.lastName}`,
+    const info = [...messages]
+      .filter(message => !!message.systemTicketType)
+      .reverse()
+      // @ts-ignore
+      .reduce((userInfo, message) => {
+        if (message.systemTicketType) {
+          if (message.systemTicketType === "SUPPORT_AGENT_FOUND") {
+            resolved = false
+            return {
+              avatar: message.supportTicket?.support?.avatar,
+              name: `${message.supportTicket?.support?.firstName} ${message.supportTicket?.support?.lastName}`,
+            }
+          } else {
+            resolved = true
+            return null
           }
-        } else {
-          return null
         }
+      }, null) as { name: string; avatar: string | null } | null
+
+    if (resolved) {
+      return null
+    }
+
+    if (chat?.support) {
+      return {
+        name: `${chat.support.firstName} ${chat.support.lastName}`,
+        avatar: chat.support.avatar,
       }
-    }, null) as { name: string; avatar: string | null } | null
+    }
+
+    return info
   })
 
   const $loading = combine(
@@ -85,7 +113,7 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
 
   const messageBox = createChatMessageBoxModule({
     ...config,
-    $chatId
+    $chatId,
   })
 
   return {

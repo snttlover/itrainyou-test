@@ -52,7 +52,7 @@ type CommonChatFields = {
 
   coach?: CoachUser
   clients: [Client]
-  support: null
+  support: Client
 
   isBanned: boolean
   isRestricted: boolean
