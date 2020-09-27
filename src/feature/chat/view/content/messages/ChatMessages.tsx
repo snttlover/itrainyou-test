@@ -61,6 +61,18 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
       return () => {}
     }, [messages])
 
+    useEffect(() => {
+      const el = container.current
+      if (el) {
+        const images = el.querySelectorAll('.message-image')
+        images.forEach(image => {
+          image.addEventListener('load', () => {
+            el.scrollTop += image.clientHeight
+          })
+        })
+      }
+    }, [])
+
     return (
       <Container ref={container} id='messages'>
         <InfScroll scrollableTarget='messages'>

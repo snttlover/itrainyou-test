@@ -63,7 +63,7 @@ type ChatMessageTypes = {
 
 export const ChatMessage = (props: ChatMessageTypes) => (
   <Container id={props.id} data-self={props["data-self"]}>
-    {!!props.image && <Image src={props.image} />}
+    {!!props.image && <Image src={props.image} className='message-image' />}
     {props.text}
     <Time>{props.time}</Time>
   </Container>
