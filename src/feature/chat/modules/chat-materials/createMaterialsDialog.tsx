@@ -21,7 +21,7 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
           <Images>
             <InfinityScroll>
               {useList($module.data.$materials, file => (
-                <Image image={file.image} />
+                <Image image={file.file} />
               ))}
             </InfinityScroll>
           </Images>

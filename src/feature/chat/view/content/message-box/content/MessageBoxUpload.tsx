@@ -4,6 +4,8 @@ import { Icon } from "@/components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
 import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import SimpleBar from "simplebar-react"
+import { useEvent } from "effector-react/ssr"
+import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 type MessageBoxUploadProps = {
   images: ChatImage[]
@@ -13,17 +15,28 @@ type MessageBoxUploadProps = {
 }
 
 export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
+  const addToast = useEvent(toasts.add)
+
   const onDropAccepted = useCallback(acceptedFiles => {
     acceptedFiles.forEach((file: File) => {
       props.add(file)
     })
   }, [])
 
-  const [error, setError] = useState<"large-file" | "mime-type" | null>(null)
-
   const onDropRejected = useCallback((files: FileRejection[]) => {
-    if (files[0].file.size > maxSize) setError("large-file")
-    else setError("mime-type")
+    files.forEach(error => {
+      if (error.file.size > maxSize) {
+        addToast({
+          type: "error",
+          text: `Размер файла ${error.file.name} превышает 2mb, он не будет загружен.`
+        })
+        return
+      }
+      addToast({
+        type: "error",
+        text: `Файл ${error.file.name} имеет неверное расширение`
+      })
+    })
   }, [])
 
   const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"]
