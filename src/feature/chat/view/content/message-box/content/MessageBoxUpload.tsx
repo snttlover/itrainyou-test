@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
 import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
-import { createEvent } from "effector"
+import SimpleBar from "simplebar-react"
 
 type MessageBoxUploadProps = {
   images: ChatImage[]
@@ -37,36 +37,46 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
     accept: acceptMimeTypes,
   })
 
-  const imagesRef = useRef<HTMLDivElement>(null)
+  const imagesRef = useRef<any>(null)
+
+  const getScrollLeft = () => {
+    return imagesRef.current.getScrollElement('x').scrollLeft
+  }
 
   const scroll = (to: number) => {
-    if (imagesRef.current) {
-      imagesRef.current.scrollLeft = to
+    if (imagesRef.current?.el) {
+      imagesRef.current.getScrollElement('x').scrollLeft = to
     }
   }
 
   const scrollHandler = (e: MouseWheelEvent) => {
-    if (imagesRef.current) {
-      scroll(imagesRef.current.scrollLeft + e.deltaY)
+    if (imagesRef.current?.el) {
+      scroll(getScrollLeft() + e.deltaY)
       e.preventDefault()
     }
   }
 
   const scrollRight = () => {
-    if (imagesRef.current) {
-      scroll(imagesRef.current.clientWidth + imagesRef.current.scrollLeft)
+    if (imagesRef.current?.el) {
+      scroll(imagesRef.current?.el.clientWidth + getScrollLeft())
+    }
+  }
+
+  const scrollLeft = () => {
+    if (imagesRef.current?.el) {
+      scroll(getScrollLeft() - imagesRef.current?.el.clientWidth)
     }
   }
 
   useEffect(() => {
-    if (imagesRef.current) {
+    if (imagesRef.current?.el) {
       // @ts-ignore
-      imagesRef.current.addEventListener("mousewheel", scrollHandler)
+      imagesRef.current?.el.addEventListener("mousewheel", scrollHandler)
     }
     return () => {
-      if (imagesRef.current) {
+      if (imagesRef.current?.el) {
         // @ts-ignore
-        imagesRef.current.removeEventListener("mousewheel", scrollHandler)
+        imagesRef.current?.el.removeEventListener("mousewheel", scrollHandler)
       }
     }
   }, [props.images])
@@ -78,25 +88,36 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
 
       {!!props.images.length && (
         <Uploader>
-          <Images ref={imagesRef}>
-            <ImagesWrapper>
-              {props.images.map(image => (
-                <Image key={image.id} image={image.preview}>
-                  <RemoveImage onClick={() => props.delete(image.id)}>
-                    <RemoveImageIcon />
-                  </RemoveImage>
-                  {!!image.percent && <Progress value={image.percent} />}
-                </Image>
-              ))}
-            </ImagesWrapper>
+          <LeftArrow onClick={scrollLeft} />
+          <Images>
+            <StyledSimpleBar ref={imagesRef}>
+              <ImagesWrapper>
+                {props.images.map(image => (
+                  <Image key={image.id} image={image.preview}>
+                    <RemoveImage onClick={() => props.delete(image.id)}>
+                      <RemoveImageIcon />
+                    </RemoveImage>
+                    {!!image.percent && <Progress value={image.percent} />}
+                  </Image>
+                ))}
+              </ImagesWrapper>
+            </StyledSimpleBar>
           </Images>
-          <ImagesArrow onClick={scrollRight} />
+          <RightArrow onClick={scrollRight} />
           <Send onClick={() => props.upload()} />
         </Uploader>
       )}
     </Container>
   )
 }
+
+const StyledSimpleBar = styled(SimpleBar)`
+  width: 100%;
+  & .simplebar-content {
+    display: flex;
+    align-items: center;
+  }
+`
 
 const Container = styled.div``
 
@@ -169,7 +190,8 @@ const RemoveImage = styled.div`
 `
 
 const ImagesWrapper = styled.div`
-  display: flex;
+  height: 60px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 `
@@ -204,7 +226,15 @@ const Progress = styled.div<ProgressProps>`
   }
 `
 
-const ImagesArrow = styled(Icon).attrs({ name: `right-icon` })`
+
+const LeftArrow = styled(Icon).attrs({ name: `left-icon` })`
+  fill: ${props => props.theme.colors.primary};
+  cursor: pointer;
+  margin-right: 13px;
+  height: 14px;
+`
+
+const RightArrow = styled(Icon).attrs({ name: `right-icon` })`
   fill: ${props => props.theme.colors.primary};
   cursor: pointer;
   margin-left: 10px;

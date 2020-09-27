@@ -15,6 +15,7 @@ import { resetRevocation } from "@/pages/client/session/content/session-page-con
 import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"
 import { DenyCompletetionDialog } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/DenyCompletetionDialog"
+// @ts-ignore
 import { createMaterialsDialog } from "@/feature/chat/modules/chat-materials/createMaterialsDialog"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {

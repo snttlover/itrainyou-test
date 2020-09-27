@@ -5,8 +5,9 @@ import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 
 export type ChatImage = {
+  file: string,
   id: number
-  image: string
+  type: "IMAGE"
 }
 
 export const getClientChatImages = (id: ChatId, params: CursorPaginationRequest) =>
