@@ -4,6 +4,7 @@ import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials
 import styled from "styled-components"
 import { Dialog } from "@/components/dialog/Dialog"
 import { createInfinityScroll } from "@/feature/pagination"
+import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
 
 export const createMaterialsDialog = ($module: ReturnType<typeof createChatMaterialsModule>) => {
   const InfinityScroll = createInfinityScroll($module.modules.pagination)
@@ -13,20 +14,36 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
     const changeVisibility = useEvent($module.methods.changeDialogVisibility)
     const isEmpty = useStore($module.data.$isEmpty)
 
+    const previewDialogVisibility = useStore($module.modules.imagesDialog.$visibility)
+    const changePreviewDialogVisibility = useEvent($module.modules.imagesDialog.changeVisibility)
+    const openImage = useEvent($module.modules.imagesDialog.openImage)
+    const initialSlide = useStore($module.modules.imagesDialog.$initialSlide)
+    const previewDialogImages = useStore($module.modules.imagesDialog.$images)
+
     return (
-      <StyledDialog value={visibility} onChange={changeVisibility}>
-        <Container>
-          <Header>Материалы диалога</Header>
-          {isEmpty && <Empty>Нет файлов</Empty>}
-          <Images>
-            <InfinityScroll>
-              {useList($module.data.$materials, file => (
-                <Image image={file.file} />
-              ))}
-            </InfinityScroll>
-          </Images>
-        </Container>
-      </StyledDialog>
+      <>
+        <StyledDialog value={visibility} onChange={changeVisibility}>
+          <Container>
+            <Header>Материалы диалога</Header>
+            {isEmpty && <Empty>Нет файлов</Empty>}
+            <Images>
+              <InfinityScroll>
+                {useList($module.data.$materials, image => (
+                  <Image image={image.file} onClick={() => openImage(image.file)} />
+                ))}
+              </InfinityScroll>
+            </Images>
+          </Container>
+        </StyledDialog>
+
+        {previewDialogVisibility && (
+          <ImagesViewModal
+            close={() => changePreviewDialogVisibility(false)}
+            initialSlide={initialSlide}
+            photos={previewDialogImages}
+          />
+        )}
+      </>
     )
   }
 }

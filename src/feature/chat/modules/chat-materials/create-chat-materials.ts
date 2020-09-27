@@ -1,8 +1,9 @@
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
-import { createEvent, forward, restore, Store } from "effector-root"
+import { createEvent, forward, restore, sample, Store } from "effector-root"
 import { createCursorPagination } from "@/feature/pagination/modules/cursor-pagination"
 import { ChatImage } from "@/lib/api/chats/clients/get-images"
+import { PersonalChatMessage } from "@/feature/chat/modules/chat-messages"
 
 type createChatMaterialsModuleConfig = {
   $chatId: Store<ChatId>
@@ -52,6 +53,29 @@ export const createChatMaterialsModule = (config: createChatMaterialsModuleConfi
     to: pagination.methods.loadMore,
   })
 
+  const openImage = createEvent<string>()
+  const $images = $materials.map<string[]>(materials =>
+    materials
+      .map(material => material.file)
+  )
+
+  const changeImageModalVisibility = createEvent<boolean>()
+  const $imagesModal = restore(changeImageModalVisibility, false).reset(reset)
+  const changeInitialSlide = createEvent<number>()
+  const $initialSlide = restore(changeInitialSlide, 0)
+
+  sample({
+    source: $images,
+    clock: openImage,
+    fn: (images, image) => images.indexOf(image),
+    target: changeInitialSlide
+  })
+
+  forward({
+    from: changeInitialSlide,
+    to: changeImageModalVisibility.prepend(() => true)
+  })
+
   return {
     data: {
       $dialogVisibility,
@@ -66,6 +90,13 @@ export const createChatMaterialsModule = (config: createChatMaterialsModuleConfi
     },
     modules: {
       pagination,
+      imagesDialog: {
+        $images,
+        $visibility: $imagesModal,
+        changeVisibility: changeImageModalVisibility,
+        openImage,
+        $initialSlide
+      }
     },
   }
 }

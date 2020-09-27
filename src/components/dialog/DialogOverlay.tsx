@@ -21,7 +21,7 @@ const StyledDialogOverlay = styled.div`
   height: 100%;
   left: 0;
   top: 0;
-  z-index: 1000;
+  z-index: 998;
   background: rgba(66, 66, 66, 0.8);
 `
 
