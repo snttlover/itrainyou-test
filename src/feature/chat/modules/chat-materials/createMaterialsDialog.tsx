@@ -22,15 +22,17 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
 
     return (
       <>
-        <StyledDialog value={visibility} onChange={changeVisibility}>
+        <StyledDialog id='materials-dialog' value={visibility} onChange={changeVisibility}>
           <Container>
             <Header>Материалы диалога</Header>
             {isEmpty && <Empty>Нет файлов</Empty>}
             <Images>
-              <InfinityScroll>
-                {useList($module.data.$materials, image => (
-                  <Image image={image.file} onClick={() => openImage(image.file)} />
-                ))}
+              <InfinityScroll scrollableTarget='materials-dialog'>
+                <ImagesWrapper>
+                  {useList($module.data.$materials, image => (
+                    <Image image={image.file} onClick={() => openImage(image.file)} />
+                  ))}
+                </ImagesWrapper>
               </InfinityScroll>
             </Images>
           </Container>
@@ -48,6 +50,11 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
   }
 }
 
+const ImagesWrapper = styled.div`
+  display:flex;
+  flex-wrap: wrap;
+`
+
 const Empty = styled.div`
   width: 100%;
   display: flex;
@@ -62,7 +69,6 @@ const Empty = styled.div`
 
 const StyledDialog = styled(Dialog)`
   max-width: 800px;
-  max-height: 540px;
   width: 100%;
 `
 
@@ -92,10 +98,10 @@ type ImageType = {
 
 const Image = styled.div<ImageType>`
   width: calc(25% - 8px);
+  height: 144px;
   margin-right: 8px;
   margin-bottom: 8px;
   background: url("${props => props.image}");
   background-size: cover;
   position: relative;
-  padding-top: 100%;
 `

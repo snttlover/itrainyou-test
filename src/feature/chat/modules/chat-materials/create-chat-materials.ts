@@ -1,13 +1,13 @@
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
-import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
+import { Pagination } from "@/lib/api/interfaces/utils.interface"
 import { createEvent, forward, restore, sample, Store } from "effector-root"
-import { createCursorPagination } from "@/feature/pagination/modules/cursor-pagination"
 import { ChatImage } from "@/lib/api/chats/clients/get-images"
-import { PersonalChatMessage } from "@/feature/chat/modules/chat-messages"
+import { createPagination } from "@/feature/pagination"
+import { PaginationRequest } from "@/feature/pagination/modules/pagination"
 
 type createChatMaterialsModuleConfig = {
   $chatId: Store<ChatId>
-  fetchMaterials: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatImage>>
+  fetchMaterials: (id: ChatId, params: PaginationRequest) => Promise<Pagination<ChatImage>>
 }
 
 export const createChatMaterialsModule = (config: createChatMaterialsModuleConfig) => {
@@ -16,7 +16,7 @@ export const createChatMaterialsModule = (config: createChatMaterialsModuleConfi
   let chatId: ChatId = 0
   config.$chatId.watch(payload => (chatId = payload))
 
-  const pagination = createCursorPagination<ChatImage>({
+  const pagination = createPagination<ChatImage>({
     fetchMethod: params => config.fetchMaterials(chatId, params),
   })
 
