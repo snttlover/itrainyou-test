@@ -1,8 +1,9 @@
-import { combine, createEffect, createEvent, forward, restore, sample, Store } from "effector-root"
+import { combine, createEffect, createEvent, forward, guard, restore, sample, Store } from "effector-root"
 import { SupportChatModelConfig } from "@/feature/support/create-support-chat.model"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { uploadMedia } from "@/lib/api/media"
 import { runInScope } from "@/scope"
+import { condition } from "patronum"
 
 type CreateChatMessageBoxModuleConfig = SupportChatModelConfig & {
   $chatId: Store<ChatId>
@@ -35,10 +36,12 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
 
   const addFile = createEvent<File>()
   const changeImages = createEvent<ChatImage[]>()
+  const changeTenImages = createEvent()
   const changeImage = createEvent<ChangeImage>()
   const deleteImage = createEvent<number>()
   const $images = restore(changeImages, [])
     .on(deleteImage, (images, id) => images.filter(image => image.id !== id))
+    .on(changeTenImages, (images) => images.slice(0, 10))
     .on(addFile, (images, file) => [
       ...images,
       {
@@ -83,7 +86,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     to: changeImage,
   })
 
-  const upload = createEvent()
+  const uploadImages = createEvent()
 
   const uploadImagesFx = createEffect({
     handler: (images: ChatImage[]) => {
@@ -113,7 +116,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
 
   sample({
     source: $images,
-    clock: upload,
+    clock: uploadImages,
     target: uploadImagesFx,
   })
 
@@ -134,6 +137,35 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     },
   })
 
+  const send = createEvent()
+
+  const changeLimitDialogVisibility = createEvent<boolean>()
+  const $limitDialogVisibility = restore(changeLimitDialogVisibility, false)
+
+  condition({
+    source: send,
+    if: $images.map(images => images.length < 11),
+    then: uploadImages,
+    else: changeLimitDialogVisibility.prepend(() => true)
+  })
+
+  const sendTenImages = createEvent()
+
+  forward({
+    from: sendTenImages,
+    to: changeLimitDialogVisibility.prepend(() => false)
+  })
+
+  forward({
+    from: sendTenImages,
+    to: changeTenImages
+  })
+
+  forward({
+    from: changeTenImages,
+    to: uploadImages
+  })
+
   sample({
     // @ts-ignore
     source: combine($images, config.$chatId, (images, chat) => ({ images, chat })),
@@ -151,13 +183,16 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     data: {
       $message,
       $images,
+      $limitDialogVisibility
     },
     methods: {
       changeMessage,
       sendTextMessage,
       addFile,
       deleteImage,
-      upload,
+      send,
+      changeLimitDialogVisibility,
+      sendTenImages
     },
   }
 }

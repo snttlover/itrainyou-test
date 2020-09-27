@@ -5,10 +5,13 @@ import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
+import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
 
 type ImagesLimitDialogProps = {
   visibility: boolean
-  onChangeVisibility: () => void
+  onChangeVisibility: (val: boolean) => any
+  images: ChatImage[]
+  send: () => void
 }
 
 export const ImagesLimitDialog = (props: ImagesLimitDialogProps) => (
@@ -18,31 +21,14 @@ export const ImagesLimitDialog = (props: ImagesLimitDialogProps) => (
         <Header>Превышен лимит отправки фотографий</Header>
         <Description>За один раз возможно отправлять только 10 фотографий. Отправить эти фотографии?</Description>
         <Images>
-          <Image
-            style={{ backgroundImage: 'url("https://cdn.jpegmini.com/user/images/slider_puffin_jpegmini_mobile.jpg")' }}
-          />
-          <Image
-            style={{ backgroundImage: 'url("https://cdn.jpegmini.com/user/images/slider_puffin_jpegmini_mobile.jpg")' }}
-          />
-          <Image
-            style={{ backgroundImage: 'url("https://cdn.jpegmini.com/user/images/slider_puffin_jpegmini_mobile.jpg")' }}
-          />
-          <Image
-            style={{ backgroundImage: 'url("https://cdn.jpegmini.com/user/images/slider_puffin_jpegmini_mobile.jpg")' }}
-          />
-          <Image
-            style={{ backgroundImage: 'url("https://cdn.jpegmini.com/user/images/slider_puffin_jpegmini_mobile.jpg")' }}
-          />
-          <Image
-            style={{ backgroundImage: 'url("https://cdn.jpegmini.com/user/images/slider_puffin_jpegmini_mobile.jpg")' }}
-          />
-          <Image
-            style={{ backgroundImage: 'url("https://cdn.jpegmini.com/user/images/slider_puffin_jpegmini_mobile.jpg")' }}
-          />
+          {props.images.map(image => <Image
+            key={image.id}
+            style={{ backgroundImage: `url("${image.preview}")` }}
+          />)}
         </Images>
         <Actions>
-          <Cancel>Отмена</Cancel>
-          <Confirm>Отправить </Confirm>
+          <Cancel onClick={() => props.onChangeVisibility(false)}>Отмена</Cancel>
+          <Confirm onClick={() => props.send()}>Отправить </Confirm>
         </Actions>
       </Container>
     </StyledDialog>

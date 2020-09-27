@@ -6,13 +6,13 @@ import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/conten
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { useStore, useEvent } from "effector-react/ssr"
 
-
 type ChatMessageBoxTypes = {
   blockedText?: string | null
 }
 
-export const createChatMessageBox = ($module: ReturnType<typeof createChatMessageBoxModule>) => (props: ChatMessageBoxTypes) => {
-
+export const createChatMessageBox = ($module: ReturnType<typeof createChatMessageBoxModule>) => (
+  props: ChatMessageBoxTypes
+) => {
   const value = useStore($module.data.$message)
   const change = useEvent($module.methods.changeMessage)
   const send = useEvent($module.methods.sendTextMessage)
@@ -22,7 +22,11 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const addImage = useEvent($module.methods.addFile)
   const images = useStore($module.data.$images)
   const deleteImage = useEvent($module.methods.deleteImage)
-  const upload = useEvent($module.methods.upload)
+  const upload = useEvent($module.methods.send)
+
+  const showLimitDialog = useStore($module.data.$limitDialogVisibility)
+  const changeLimitDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility)
+  const sendTenImages = useEvent($module.methods.sendTenImages)
 
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
@@ -39,7 +43,6 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
 
   return (
     <Container>
-      <ImagesLimitDialog visibility={false} onChangeVisibility={() => {}} />
       <MessageBoxUpload images={images} add={addImage} delete={deleteImage} upload={upload} />
 
       <StyledInput
@@ -49,6 +52,13 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
         placeholder={props.blockedText || "Напишите сообщение..."}
         onChange={e => change(e.target.value)}
         onKeyDown={keydownHandler}
+      />
+
+      <ImagesLimitDialog
+        images={images}
+        visibility={showLimitDialog}
+        onChangeVisibility={changeLimitDialogVisibility}
+        send={() => sendTenImages()}
       />
     </Container>
   )
@@ -86,4 +96,3 @@ const StyledInput = styled.input`
     padding: 7px 15px;
   `}
 `
-
