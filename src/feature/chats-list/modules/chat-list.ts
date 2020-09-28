@@ -89,15 +89,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
 
       return chats
     })
-    .on(config.socket.events.onChatCreated, (chats, socketMessage) => {
-      socketMessage.data.clients.forEach(client => {
-        client.avatar = `${globalConfig.BACKEND_URL}${client.avatar}`
-      })
-      if (socketMessage.data.coach)
-        socketMessage.data.coach.avatar = `${globalConfig.BACKEND_URL}${socketMessage.data.coach.avatar}`
-
-      return [socketMessage.data, ...chats]
-    })
+    .on(config.socket.events.onChatCreated, (chats, socketMessage) => [socketMessage.data, ...chats])
     .on(loadChatByMessageFx.doneData, (chats, chat) => [chat, ...chats])
 
   forward({

@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { ChatContainer } from "./content/ChatContainer"
 import { PersonalChatHeader } from "./content/headers/personal/PersonalChatHeader"
 import { createChatMessages } from "./content/messages/ChatMessages"
-import { ChatMessageBox } from "./content/ChatMessageBox"
+import { createChatMessageBox } from "./content/message-box/ChatMessageBox"
 import { createChatModule } from "@/feature/chat"
 import { useEvent, useStore } from "effector-react/ssr"
 import { Loader } from "@/components/spinner/Spinner"
@@ -15,15 +15,18 @@ import { resetRevocation } from "@/pages/client/session/content/session-page-con
 import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"
 import { DenyCompletetionDialog } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/DenyCompletetionDialog"
+// @ts-ignore
+import { createMaterialsDialog } from "@/feature/chat/modules/chat-materials/createMaterialsDialog"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
   const Sessions = createChatSessions($chatModule.chatSessions)
+  const MessageBox = createChatMessageBox($chatModule.messageBox)
+  const MaterialsDialog = createMaterialsDialog($chatModule.materials)
 
   return () => {
     const chat = useStore($chatModule.chat.$chat)
     const chatLoading = useStore($chatModule.chat.$loading)
-    const send = useEvent($chatModule.send)
     const params = useParams<{ id: string }>()
     const mounted = useEvent($chatModule.mounted)
     const unmounted = useEvent($chatModule.reset)
@@ -32,6 +35,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const resetRev = useEvent(resetRevocation)
 
     const changeSessionsVisibility = useEvent(changeSessionsMobileVisibility)
+    const openMaterials = useEvent($chatModule.materials.methods.openDialog)
 
     useEffect(() => {
       mounted(parseInt(params.id))
@@ -44,7 +48,11 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     }, [])
 
     const isSystemChat = chat.chatType === `SYSTEM`
-    const Header = isSystemChat ? SystemChatHeader : PersonalChatHeader
+    const Header = isSystemChat ? (
+      <SystemChatHeader {...chat} />
+    ) : (
+      <PersonalChatHeader {...chat} openMaterials={() => openMaterials()} />
+    )
 
     return (
       <Container>
@@ -52,10 +60,11 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
         {chatLoading && <Loader />}
         {!chatLoading && !!chat.id && (
           <>
+            <MaterialsDialog />
             <ChatContainer>
-              <Header {...chat} />
+              {Header}
               <Messages isSystem={chat.chatType === `SYSTEM`} />
-              {!isSystemChat && <ChatMessageBox onSend={send} blockedText={blockedText} />}
+              {!isSystemChat && <MessageBox />}
             </ChatContainer>
             <Sessions />
             <RevocationSessionDialog />

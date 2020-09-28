@@ -27,6 +27,7 @@ const Container = styled.div<ContainerTypes>`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  position: relative;
 
   &[data-self="true"] {
     background: ${props => props.theme.colors.primary};
@@ -47,15 +48,23 @@ const Container = styled.div<ContainerTypes>`
   `}
 `
 
+const Image = styled.img`
+  width: auto;
+  max-width: 100%;
+  display: inline-block;
+`
+
 type ChatMessageTypes = {
   id: string
-  children: React.ReactChild
   time: string
+  text: string
+  image: string
 } & ContainerTypes
 
 export const ChatMessage = (props: ChatMessageTypes) => (
   <Container id={props.id} data-self={props["data-self"]}>
-    {props.children}
+    {!!props.image && <Image src={props.image} className='message-image' />}
+    {props.text}
     <Time>{props.time}</Time>
   </Container>
 )

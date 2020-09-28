@@ -8,6 +8,7 @@ type DialogProps = {
   value: boolean
   onChange: (val: boolean) => any | React.Dispatch<React.SetStateAction<boolean>>
   className?: string
+  id?: string
 }
 
 export const Dialog = (props: DialogProps) => {
@@ -27,7 +28,7 @@ export const Dialog = (props: DialogProps) => {
   return (
     <>
       {props.value && (
-        <DialogOverlay onClick={close}>
+        <DialogOverlay id={props.id} onClick={close}>
           <StyledDialog className={props.className} onClick={e => e.stopPropagation()}>
             <Close onClick={close} />
             {props.children}
@@ -50,6 +51,7 @@ export const Close = styled(Icon).attrs({ name: `close` })`
 
 const StyledDialog = styled.div`
   padding: 24px;
+  margin: 0 auto;
 
   background: #ffffff;
   border-radius: 2px;
