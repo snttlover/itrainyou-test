@@ -14,7 +14,8 @@ import { runInScope } from "@/scope"
 
 type SendSocketChatMessage = {
   chat: number
-  text: string
+  text?: string
+  image?: string
 }
 
 type ReadChatMessages = {
@@ -186,15 +187,7 @@ export const createChatsSocket = (userType: UserType) => {
   guard({
     source: socket.events.onMessage,
     filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
-    target: onMessage.prepend((message: WriteChatMessageDone) => {
-      if (message.data.senderCoach) {
-        message.data.senderCoach.avatar = `${config.BACKEND_URL}${message.data.senderCoach.avatar}`
-      }
-      if (message.data.senderClient) {
-        message.data.senderClient.avatar = `${config.BACKEND_URL}${message.data.senderClient.avatar}`
-      }
-      return message
-    }),
+    target: onMessage,
   })
 
   guard({

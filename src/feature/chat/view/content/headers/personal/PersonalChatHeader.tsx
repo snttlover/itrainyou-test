@@ -1,4 +1,4 @@
-import React, {useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
@@ -8,6 +8,7 @@ import { ChatHeaderMobileBackButton as MobileBackButton } from "@/feature/chat/v
 import { ChatHeaderTitle as Title } from "@/feature/chat/view/content/headers/common/ChatHeaderTitle"
 import { ChatHeaderContainer } from "@/feature/chat/view/content/headers/common/ChatHeaderContainer"
 import { MobileChatHeaderMenu } from "@/feature/chat/view/content/headers/personal/MobileMenu"
+import { Icon } from "@/components/icon/Icon"
 
 const StyledAvatar = styled(Avatar)`
   width: 40px;
@@ -29,6 +30,17 @@ const Container = styled(ChatHeaderContainer)`
   }
 `
 
+const MaterialsIcon = styled(Icon).attrs({ name: "chat-files" })`
+  width: 20px;
+  height: 20px;
+  fill: #9aa0a6;
+  margin-right: 21px;
+  cursor: pointer;
+  ${MediaRange.lessThan(`mobile`)`
+      display: none;
+  `}
+`
+
 type ChatHeaderTypes = {
   avatar?: string | null
   name: string
@@ -38,6 +50,7 @@ type ChatHeaderTypes = {
   blocked: boolean
   restricted: boolean
   userId: number
+  openMaterials: () => void
 }
 
 export const PersonalChatHeader = (props: ChatHeaderTypes) => {
@@ -51,7 +64,8 @@ export const PersonalChatHeader = (props: ChatHeaderTypes) => {
       <Title>
         <Link to={props.link!}>{props.name}</Link>
       </Title>
-      <MobileChatHeaderMenu />
+      <MobileChatHeaderMenu openMaterials={props.openMaterials} />
+      <MaterialsIcon onClick={props.openMaterials} />
       {props.type === `coach` && (
         <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />
       )}

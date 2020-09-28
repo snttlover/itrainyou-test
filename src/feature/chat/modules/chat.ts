@@ -7,20 +7,30 @@ import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api
 import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
+import { ChatImage } from "@/lib/api/chats/clients/get-images"
+import { PaginationRequest } from "@/feature/pagination/modules/pagination"
 
-export type ChatListModuleConfig = {
+export type ChatModuleConfig = {
   type: "client" | "coach"
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
+  fetchMaterials: (id: ChatId, params: PaginationRequest) => Promise<Pagination<ChatImage>>,
   fetchSessions: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 
-export const createChatModule = (config: ChatListModuleConfig) => {
+export const createChatModule = (config: ChatModuleConfig) => {
   const reset = createEvent()
-  const changeId = createEvent<number>()
-  const $chatId = createStore<number>(0).on(changeId, (_, id) => id)
+  const changeId = createEvent<ChatId>()
+  const $chatId = createStore<ChatId>(0).on(changeId, (_, id) => id)
   const chat = createChatInfoModule(config)
+
+  const materials = createChatMaterialsModule({
+    $chatId,
+    fetchMaterials: config.fetchMaterials
+  })
 
   const chatSessions = createChatSessionsModule({
     socket: config.socket,
@@ -56,13 +66,9 @@ export const createChatModule = (config: ChatListModuleConfig) => {
     ],
   })
 
-  const send = createEvent<string>()
-
-  sample({
-    source: $chatId,
-    clock: send,
-    fn: (chatId, message) => ({ chat: chatId, text: message }),
-    target: config.socket.methods.send,
+  const messageBox = createChatMessageBoxModule({
+    ...config,
+    $chatId
   })
 
   const mounted = createEvent<number>()
@@ -78,12 +84,13 @@ export const createChatModule = (config: ChatListModuleConfig) => {
   })
 
   return {
+    materials,
     chat,
     chatMessages,
     chatSessions,
     socket: config.socket,
-    send,
     mounted,
     reset,
+    messageBox
   }
 }
