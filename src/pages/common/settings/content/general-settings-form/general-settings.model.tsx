@@ -1,12 +1,10 @@
 import { setUserData } from "@/feature/user/user.model"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
-import { UpdateMyUserRequest, updateMyUser } from "@/lib/api/users/update-my-user"
+import { updateMyUser } from "@/lib/api/users/update-my-user"
 import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
 import { emailValidator, trimString } from "@/lib/validators"
-import { $card } from "@/pages/client/wallet/funds-up-dialog/fund-up.model"
 import { createGate } from "@/scope"
-import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 

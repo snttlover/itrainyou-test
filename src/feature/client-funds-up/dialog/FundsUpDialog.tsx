@@ -6,7 +6,7 @@ import { SelectInput } from "@/components/select-input/SelectInput"
 import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
-import { $cardsListForView } from "../cards/cards.model"
+import { $cardsListForView, CardsTabGate } from "@/pages/client/wallet/cards/cards.model"
 import { PriceInput } from "@/pages/coach/schedule/components/PriceInput"
 import React from "react"
 import styled from "styled-components"
@@ -23,10 +23,11 @@ import {
   saveCardChanged,
   $isTopUpLoading,
 } from "./fund-up.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react/ssr"
 import { Checkbox } from "@/components/checkbox/Checkbox"
 
 export const FundsUpDialog = () => {
+  useGate(CardsTabGate)
   const _changeShowFundUpDialog = useEvent(changeShowFundUpDialog)
   const isShowed = useStore($isFundUpDialogShowed)
   const cards = useStore($cardsListForView)

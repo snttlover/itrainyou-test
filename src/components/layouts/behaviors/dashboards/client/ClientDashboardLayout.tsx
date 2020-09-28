@@ -1,7 +1,9 @@
+import { FundsUpDialog } from "@/feature/client-funds-up/dialog/FundsUpDialog"
+import { ConfirmationGate } from "@/feature/client-funds-up/confirmation.model"
 import { changeDashboardType } from "@/feature/dashboard/dashboard"
 import { withFullRegister } from "@/feature/user/with-full-register"
 import { routeNames } from "@/pages/route-names"
-import { useEvent } from "effector-react/ssr"
+import { useEvent, useGate } from "effector-react/ssr"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { ClientMenu } from "@/components/layouts/behaviors/dashboards/client/menu/ClientMenu"
@@ -20,6 +22,7 @@ type DashboardTypes = {
 }
 
 const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
+  useGate(ConfirmationGate)
   const changeDashboard = useEvent(changeDashboardType)
   useEffect(() => {
     changeDashboard("client")
@@ -32,6 +35,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
       <ToastsContainer />
       <DashboardContent>
         <ClientStartedSessionDialog />
+        <FundsUpDialog />
         <ClientTopBar />
         <ClientStartedSessionsToolbar />
         <DashboardPageWrapper>{children}</DashboardPageWrapper>
