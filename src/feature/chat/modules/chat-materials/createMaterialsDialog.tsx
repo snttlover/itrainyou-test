@@ -2,9 +2,11 @@ import React from "react"
 import { useEvent, useList, useStore } from "effector-react/ssr"
 import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
 import styled from "styled-components"
-import { Dialog } from "@/components/dialog/Dialog"
+import { Close, Dialog } from "@/components/dialog/Dialog"
 import { createInfinityScroll } from "@/feature/pagination"
 import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
+import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
+import { MediaRange } from "@/lib/responsive/media"
 
 export const createMaterialsDialog = ($module: ReturnType<typeof createChatMaterialsModule>) => {
   const InfinityScroll = createInfinityScroll($module.modules.pagination)
@@ -22,21 +24,23 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
 
     return (
       <>
-        <StyledDialog id='materials-dialog' value={visibility} onChange={changeVisibility}>
-          <Container>
-            <Header>Материалы диалога</Header>
-            {isEmpty && <Empty>Нет файлов</Empty>}
-            <Images>
-              <InfinityScroll scrollableTarget='materials-dialog'>
-                <ImagesWrapper>
-                  {useList($module.data.$materials, image => (
-                    <Image image={image.file} onClick={() => openImage(image.file)} />
-                  ))}
-                </ImagesWrapper>
-              </InfinityScroll>
-            </Images>
-          </Container>
-        </StyledDialog>
+        <Wrapper>
+          <StyledDialog id='materials-dialog' value={visibility} onChange={changeVisibility}>
+            <Container>
+              <Header>Материалы диалога</Header>
+              {isEmpty && <Empty>Нет файлов</Empty>}
+              <Images>
+                <InfinityScroll scrollableTarget='materials-dialog'>
+                  <ImagesWrapper>
+                    {useList($module.data.$materials, image => (
+                      <Image image={image.file} onClick={() => openImage(image.file)} />
+                    ))}
+                  </ImagesWrapper>
+                </InfinityScroll>
+              </Images>
+            </Container>
+          </StyledDialog>
+        </Wrapper>
 
         {previewDialogVisibility && (
           <ImagesViewModal
@@ -50,8 +54,17 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
   }
 }
 
+const Wrapper = styled.div`
+  ${DialogOverlayContainer} {
+    ${MediaRange.lessThan(`mobile`)`
+        padding: 0;
+        flex-direction: column;
+    `}
+  }
+`
+
 const ImagesWrapper = styled.div`
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
 `
 
@@ -70,6 +83,16 @@ const Empty = styled.div`
 const StyledDialog = styled(Dialog)`
   max-width: 800px;
   width: 100%;
+  ${MediaRange.lessThan(`mobile`)`
+      width: 100%;
+      height: 100vh;
+      padding: 12px;
+      ${Close} {
+        width: 30px;
+        height: 30px;
+        top: 20px;
+      }
+  `}
 `
 
 const Container = styled.div`
@@ -83,6 +106,10 @@ const Header = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #424242;
+  ${MediaRange.lessThan(`mobile`)`
+      margin-bottom: 34px;
+      margin-top: 10px;
+  `}
 `
 
 const Images = styled.div`
@@ -104,4 +131,8 @@ const Image = styled.div<ImageType>`
   background: url("${props => props.image}");
   background-size: cover;
   position: relative;
+  ${MediaRange.lessThan(`mobile`)`  
+    width: calc(33% - 8px);
+    height: 72px;
+  `}
 `

@@ -65,7 +65,9 @@ const MenuItem = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
+  white-space: nowrap;
 `
+
 const SessionIcon = styled(Icon).attrs({ name: `video2` })`
   fill: ${props => props.theme.colors.primary};
   margin-right: 10px;

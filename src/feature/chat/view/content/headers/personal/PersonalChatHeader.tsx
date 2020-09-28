@@ -36,6 +36,9 @@ const MaterialsIcon = styled(Icon).attrs({ name: "chat-files" })`
   fill: #9aa0a6;
   margin-right: 21px;
   cursor: pointer;
+  ${MediaRange.lessThan(`mobile`)`
+      display: none;
+  `}
 `
 
 type ChatHeaderTypes = {
