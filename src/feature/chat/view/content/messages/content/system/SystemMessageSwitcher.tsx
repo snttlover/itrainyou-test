@@ -33,7 +33,11 @@ const formatSessionDate = (start?: ISODate, end?: ISODate) => {
   return formatSessionDay(start) + ` ` + formatSessionTime(start, end)
 }
 
-const getText = (request: SessionRequest, status: MessageSessionRequestStatuses | ConflictStatus, chatType: "coach" | "client") => {
+const getText = (
+  request: SessionRequest,
+  status: MessageSessionRequestStatuses | ConflictStatus,
+  chatType: "coach" | "client"
+) => {
   const is = (
     requestType: SessionRequestTypes | SessionRequestTypes[],
     requestStatus: SessionRequestStatus | SessionRequestStatus[],
@@ -51,13 +55,12 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
   }
 
   if (chatType === `client`) {
-
-    if (status === 'SOLVED_IN_COACH_FAVOUR') {
-      return 'Администратор решил спорную ситуацию в пользу коуча'
+    if (status === "SOLVED_IN_COACH_FAVOUR") {
+      return "Администратор решил спорную ситуацию в пользу коуча"
     }
 
-    if (status === 'SOLVED_IN_CLIENT_FAVOUR') {
-      return 'Администратор решил спорную ситуацию в вашу пользу. Вам возвращены деньги за сессию'
+    if (status === "SOLVED_IN_CLIENT_FAVOUR") {
+      return "Администратор решил спорную ситуацию в вашу пользу. Вам возвращены деньги за сессию"
     }
 
     if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
@@ -161,12 +164,12 @@ const getText = (request: SessionRequest, status: MessageSessionRequestStatuses 
       return `Клиент указал, что с сессий возникли проблемы. С Вами свяжется администратор в поддержке для уточнения`
     }
 
-    if (status === 'SOLVED_IN_COACH_FAVOUR') {
-      return 'Администратор решил спорную ситуацию в вашу пользу. Вам были переведены деньги за сессию'
+    if (status === "SOLVED_IN_COACH_FAVOUR") {
+      return "Администратор решил спорную ситуацию в вашу пользу. Вам были переведены деньги за сессию"
     }
 
-    if (status === 'SOLVED_IN_CLIENT_FAVOUR') {
-      return 'Администратор решил спорную ситуацию в пользу клиента. Клиенту были возвращены деньги за сессию'
+    if (status === "SOLVED_IN_CLIENT_FAVOUR") {
+      return "Администратор решил спорную ситуацию в пользу клиента. Клиенту были возвращены деньги за сессию"
     }
 
     if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
@@ -292,7 +295,7 @@ export const SystemMessageSwitcher = ({
 
   return (
     <>
-      {isSystemChat && <UserHeader name={message.userName} avatar={message.userAvatar} />}
+      {isSystemChat && <UserHeader name={message.userName} avatar={message.userAvatar} date={message.date} />}
       <SystemMessage
         id={message.id}
         text={text}
@@ -305,20 +308,40 @@ export const SystemMessageSwitcher = ({
   )
 }
 
-const UserHeader = ({ name, avatar }: { name: string; avatar: string | null }) => {
+const UserHeader = ({ name, avatar, date: day }: { name: string; avatar: string | null; date: string }) => {
   return (
     <StyledUserHeader>
-      <StyledAvatar src={avatar} />
-      <UserHeaderTitle>{name}</UserHeaderTitle>
+      <UserData>
+        <StyledAvatar src={avatar} />
+        <UserHeaderTitle>{name}</UserHeaderTitle>
+      </UserData>
+      <Time>{date(day).format('HH:mm')}</Time>
     </StyledUserHeader>
   )
 }
+
+const Time = styled.div`
+  font-size: 12px;
+  line-height: 16px;
+  color: #9aa0a6;
+  ${MediaRange.lessThan(`mobile`)`  
+    font-size: 12px;
+    line-height: 16px;
+  `}
+`
+
+const UserData = styled.div`
+  display: flex;
+  align-items: flex-end;
+`
 
 const StyledUserHeader = styled.div`
   display: flex;
   align-items: flex-end;
   margin-bottom: 8px;
+  justify-content: space-between;
 `
+
 const StyledAvatar = styled(Avatar)`
   width: 24px;
   height: 24px;

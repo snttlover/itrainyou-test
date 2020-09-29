@@ -38,6 +38,7 @@ export type ChatSystemMessage = {
   userAvatar: string | null
   status: ConflictStatus | MessageSessionRequestStatuses
   showButtons: boolean
+  date: string
 }
 
 export type ChatTextMessage = {
@@ -126,6 +127,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               userAvatar: user?.avatar || null,
               showButtons: !completedStatusesIds.includes(message.sessionRequest.id),
               status: message?.conflict?.status || message.sessionRequestStatus,
+              date: message.creationDatetime
             }
           }
 
