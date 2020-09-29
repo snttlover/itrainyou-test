@@ -295,7 +295,7 @@ export const SystemMessageSwitcher = ({
 
   return (
     <>
-      {isSystemChat && <UserHeader name={message.userName} avatar={message.userAvatar} date={message.date} />}
+      <UserHeader showUser={isSystemChat} name={message.userName} avatar={message.userAvatar} date={message.date} />
       <SystemMessage
         id={message.id}
         text={text}
@@ -308,14 +308,25 @@ export const SystemMessageSwitcher = ({
   )
 }
 
-const UserHeader = ({ name, avatar, date: day }: { name: string; avatar: string | null; date: string }) => {
+type UserHeaderProps = {
+  showUser: boolean
+  name: string
+  avatar: string | null
+  date: string
+}
+
+const UserHeader = (props: UserHeaderProps) => {
   return (
     <StyledUserHeader>
-      <UserData>
-        <StyledAvatar src={avatar} />
-        <UserHeaderTitle>{name}</UserHeaderTitle>
-      </UserData>
-      <Time>{date(day).format('HH:mm')}</Time>
+      {
+        props.showUser && (
+          <UserData>
+            <StyledAvatar src={props.avatar} />
+            <UserHeaderTitle>{props.name}</UserHeaderTitle>
+          </UserData>
+        )
+      }
+      <Time>{date(props.date).format('HH:mm')}</Time>
     </StyledUserHeader>
   )
 }
@@ -324,6 +335,9 @@ const Time = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #9aa0a6;
+  
+  flex: 1;
+  text-align: right;
   ${MediaRange.lessThan(`mobile`)`  
     font-size: 12px;
     line-height: 16px;
