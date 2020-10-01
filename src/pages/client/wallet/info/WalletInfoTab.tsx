@@ -54,9 +54,15 @@ export const WalletInfoTab = () => {
 
   return (
     <WalletInfoContainer>
-      <StyledWalletAmount title='Доступно' amount={amount} description='qweqwe asd asd Lorem ipsum trali vali' />
-      <StyledWalletAmount title='Заморожено' amount={frozenAmount} description={"asdasdasd"} />
-      <StyledWalletAmount title='Всего средств' amount={totalAmount} description={"asdasdasd"} />
+      <StyledWalletAmount title='Доступно' amount={amount} description='Доступно для покупки сессий' />
+      <StyledWalletAmount
+          title='Заморожено'
+          amount={frozenAmount}
+          description={"Данная сумма заморожена, пока коуч не подвердит или не отклонит Ваши запросы на бронирование"} />
+      <StyledWalletAmount
+          title='Всего средств'
+          amount={totalAmount}
+          description={"Общая сумма средств"} />
       <ButtonContainer>
         <AddFundsButton onClick={() => _changeShowFundUpDialog(true)}>Пополнить кошелек</AddFundsButton>
       </ButtonContainer>
