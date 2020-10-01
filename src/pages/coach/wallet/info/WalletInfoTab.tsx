@@ -57,7 +57,8 @@ export const WalletInfoTab = () => {
       <StyledWalletAmount
           title='Ваши тренинги забронировали на'
           amount={frozenAmount}
-          description={"Данные средства будут вам перечислены при успешном завершении запланированных сессий"} />
+          description={"Данные средства будут вам перечислены при успешном завершении запланированных сессий"}
+      />
       <ButtonContainer>
         <WithdrawButton data-slim onClick={() => _changeShowWithdrawDialog(true)}>
           Вывести

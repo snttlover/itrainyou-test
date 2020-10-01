@@ -58,11 +58,13 @@ export const WalletInfoTab = () => {
       <StyledWalletAmount
           title='Заморожено'
           amount={frozenAmount}
-          description={"Данная сумма заморожена, пока коуч не подвердит или не отклонит Ваши запросы на бронирование"} />
+          description={"Данная сумма заморожена, пока коуч не подвердит или не отклонит Ваши запросы на бронирование"}
+      />
       <StyledWalletAmount
           title='Всего средств'
           amount={totalAmount}
-          description={"Общая сумма средств"} />
+          description={"Общая сумма средств"}
+      />
       <ButtonContainer>
         <AddFundsButton onClick={() => _changeShowFundUpDialog(true)}>Пополнить кошелек</AddFundsButton>
       </ButtonContainer>
