@@ -1,7 +1,7 @@
-import { config } from "#/config"
-import { ISODate, Sex } from "#/lib/api/interfaces/utils.interface"
-import { keysToCamel } from "#/lib/network/casing"
-import { get } from "#/lib/network/network"
+import { config } from "@/config"
+import { ISODate, Sex } from "@/lib/api/interfaces/utils.interface"
+import { keysToCamel } from "@/lib/network/casing"
+import { get } from "@/lib/network/network"
 
 type GetRestrictedClientsResponse = {
   id: number

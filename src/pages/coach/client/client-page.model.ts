@@ -1,7 +1,7 @@
-import { createPagination } from "#/feature/pagination"
-import { ClientResponse, getClient } from "#/lib/api/client/get-client"
-import { ClientCoachesResponse, getClientCoaches } from "#/lib/api/client/get-client-coaches"
-import { createGate } from "#/scope"
+import { createPagination } from "@/feature/pagination"
+import { ClientResponse, getClient } from "@/lib/api/client/get-client"
+import { ClientCoachesResponse, getClientCoaches } from "@/lib/api/client/get-client-coaches"
+import { createGate } from "@/scope"
 import { createEffect, forward, restore } from "effector-root"
 import { some } from "patronum"
 

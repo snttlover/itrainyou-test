@@ -1,11 +1,11 @@
-import { Toast, toasts } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { createCoachSchedule } from "#/lib/api/coaching-sessions/create-coach-schedule"
-import { getCoachSchedule } from "#/lib/api/coaching-sessions/get-coach-schedule"
-import { CreateCoachSchedule, UpdateCoachSchedule } from "#/lib/api/coaching-sessions/types"
-import { updateCoachSchedule } from "#/lib/api/coaching-sessions/update-coach-schedule"
-import { getSystemInfo } from "#/lib/api/system-info"
+import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { createCoachSchedule } from "@/lib/api/coaching-sessions/create-coach-schedule"
+import { getCoachSchedule } from "@/lib/api/coaching-sessions/get-coach-schedule"
+import { CreateCoachSchedule, UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
+import { updateCoachSchedule } from "@/lib/api/coaching-sessions/update-coach-schedule"
+import { getSystemInfo } from "@/lib/api/system-info"
 import { attach, createEffect, createStore, forward } from "effector-root"
-import { createGate } from "#/scope"
+import { createGate } from "@/scope"
 
 export const loadScheduleFx = createEffect({
   handler: getCoachSchedule,

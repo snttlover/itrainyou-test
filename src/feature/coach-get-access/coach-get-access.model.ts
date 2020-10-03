@@ -1,6 +1,6 @@
-import { uploadMedia } from "#/lib/api/media"
-import { createEffectorField } from "#/lib/generators/efffector"
-import { phoneValidator, trimString } from "#/lib/validators"
+import { uploadMedia } from "@/lib/api/media"
+import { createEffectorField } from "@/lib/generators/efffector"
+import { phoneValidator, trimString } from "@/lib/validators"
 import { combine, createEffect, createEvent, createStore, createStoreObject, forward, restore } from "effector-root"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({

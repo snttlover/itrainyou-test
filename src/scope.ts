@@ -1,5 +1,5 @@
-import { changeDashboardType, DashboardType } from "#/feature/dashboard/dashboard"
-import { changeToken, TOKEN_COOKIE_KEY } from "#/lib/network/token"
+import { changeDashboardType, DashboardType } from "@/feature/dashboard/dashboard"
+import { changeToken, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import { Effect, Event, root, Store } from "effector-root"
 import { createGate as createEffectorGate } from "effector-react"
 import { allSettled, fork, hydrate, Scope } from "effector/fork"

@@ -8,8 +8,8 @@
     "test": "razzle test --env=jsdom",
     "start": "NODE_ENV=production node build/server.js",
     "release:heroku": "heroku container:push -a itrainnew-frontend web && heroku container:release -a itrainnew-frontend web",
-    "admin-chats-dev": "parcel ./admin-chats/index.html --out-dir ./admin-chats/build --cache-dir ./admin-chats/cache",
-    "admin-chats-build": "parcel build ./admin-chats/index.html --out-dir ./admin-chats/build --cache-dir ./admin-chats/cache"
+    "admin-chats-dev": "webpack-dev-server --config ./admin-chats/webpack.config.js --mode development --open --hot",
+    "admin-chats-build": "webpack  --config ./admin-chats/webpack.config.js  --mode production "
   },
   "alias": {
     "#": "./src/"
@@ -66,6 +66,7 @@
     "@types/swiper": "^5.4.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-plugin-styled-components": "^1.10.7",
+    "html-webpack-plugin": "^4.5.0",
     "prettier": "^2.0.5",
     "razzle": "^3.1.4",
     "razzle-plugin-typescript": "^3.1.4",

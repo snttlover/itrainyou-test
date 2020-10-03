@@ -1,10 +1,10 @@
-import { get } from "#/lib/network/network"
-import { Day, ISODate, Pagination, Sex } from "#/lib/api/interfaces/utils.interface"
-import { config } from "#/config"
-import { keysToCamel, keysToSnake } from "#/lib/network/casing"
-import { CoachSession } from "#/lib/api/coach-sessions"
-import { Client } from "#/lib/api/client/clientInfo"
-import { excludeKeys } from "#/lib/helpers/exclude"
+import { get } from "@/lib/network/network"
+import { Day, ISODate, Pagination, Sex } from "@/lib/api/interfaces/utils.interface"
+import { config } from "@/config"
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
+import { CoachSession } from "@/lib/api/coach-sessions"
+import { Client } from "@/lib/api/client/clientInfo"
+import { excludeKeys } from "@/lib/helpers/exclude"
 
 export type ChatSession = CoachSession & {
   coach: {

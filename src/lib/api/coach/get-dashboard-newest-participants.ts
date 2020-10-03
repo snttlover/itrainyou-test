@@ -1,9 +1,9 @@
-import { config } from "#/config"
-import { keysToCamel, keysToSnake } from "#/lib/network/casing"
-import { get } from "#/lib/network/network"
-import { ISODate, Pagination } from "#/lib/api/interfaces/utils.interface"
-import { Client } from "#/lib/api/client/clientInfo"
-import { DurationType } from "#/lib/api/coach-sessions"
+import { config } from "@/config"
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
+import { get } from "@/lib/network/network"
+import { ISODate, Pagination } from "@/lib/api/interfaces/utils.interface"
+import { Client } from "@/lib/api/client/clientInfo"
+import { DurationType } from "@/lib/api/coach-sessions"
 
 export interface DashboardNewestParticipant {
   client: Client

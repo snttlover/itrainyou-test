@@ -1,25 +1,25 @@
 import React, { useState } from "react"
-import { ChatSystemMessage } from "#/feature/chat/modules/chat-messages"
+import { ChatSystemMessage } from "@/feature/chat/modules/chat-messages"
 import styled from "styled-components"
-import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "#/lib/api/coach/get-sessions-requests"
-import { ConflictStatus, MessageSessionRequestStatuses } from "#/lib/api/chats/clients/get-chats"
-import { date } from "#/lib/formatting/date"
-import { ISODate } from "#/lib/api/interfaces/utils.interface"
-import { MediaRange } from "#/lib/responsive/media"
+import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
+import { ConflictStatus, MessageSessionRequestStatuses } from "@/lib/api/chats/clients/get-chats"
+import { date } from "@/lib/formatting/date"
+import { ISODate } from "@/lib/api/interfaces/utils.interface"
+import { MediaRange } from "@/lib/responsive/media"
 import {
   clientSessionRequests,
   coachSessionRequests,
   createSessionRequestsModule,
-} from "#/feature/session-request/createSessionRequestsModule"
+} from "@/feature/session-request/createSessionRequestsModule"
 import { useEvent, useStore } from "effector-react/ssr"
-import { Loader, Spinner } from "#/components/spinner/Spinner"
+import { Loader, Spinner } from "@/components/spinner/Spinner"
 import {
   $revocated,
   changeRevocationSessionId,
   changeRevocationUser,
-} from "#/pages/client/session/content/session-page-content/cancel-session/session-revocation"
-import { Avatar } from "#/components/avatar/Avatar"
-import { changeCurrentDenyCompletationRequest } from "#/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
+} from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
+import { Avatar } from "@/components/avatar/Avatar"
+import { changeCurrentDenyCompletationRequest } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)

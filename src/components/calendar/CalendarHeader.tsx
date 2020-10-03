@@ -1,5 +1,5 @@
-import { Icon } from "#/components/icon/Icon"
-import { date } from "#/lib/formatting/date"
+import { Icon } from "@/components/icon/Icon"
+import { date } from "@/lib/formatting/date"
 import * as React from "react"
 import styled from "styled-components"
 

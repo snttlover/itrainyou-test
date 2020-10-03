@@ -1,13 +1,13 @@
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { LandingPageContainer } from "#/pages/landing/common/LandingPageContainer"
-import { CategoriesPicker } from "#/pages/landing/content/top-bar/categories-picker/CategoriesPicker"
-import { Search } from "#/pages/landing/content/top-bar/search/Search"
-import { ClientTopBarIconButtons } from "#/components/layouts/behaviors/dashboards/client/client-dashboard-top-bar/ClientTopBarIconButtons"
-import { Logo } from "#/pages/landing/content/top-bar/logo/Logo"
+import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
+import { CategoriesPicker } from "@/pages/landing/content/top-bar/categories-picker/CategoriesPicker"
+import { Search } from "@/pages/landing/content/top-bar/search/Search"
+import { ClientTopBarIconButtons } from "@/components/layouts/behaviors/dashboards/client/client-dashboard-top-bar/ClientTopBarIconButtons"
+import { Logo } from "@/pages/landing/content/top-bar/logo/Logo"
 import { useStore } from "effector-react/ssr"
-import { coachChatsSocket } from "#/feature/socket/chats-socket"
+import { coachChatsSocket } from "@/feature/socket/chats-socket"
 
 const StyledLogo = styled(Logo)`
   margin-right: 40px;

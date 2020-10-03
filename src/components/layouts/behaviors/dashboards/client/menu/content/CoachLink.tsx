@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { MediaRange } from "#/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   width: 100%;

@@ -2,16 +2,16 @@ import { useEvent, useList } from "effector-react/ssr"
 import {
   $categoriesList,
   toggleCategorySelection,
-} from "#/pages/landing/content/top-bar/categories-picker/categories-picker.model"
+} from "@/pages/landing/content/top-bar/categories-picker/categories-picker.model"
 import * as React from "react"
 import styled from "styled-components"
-import { Checkbox } from "#/components/checkbox/Checkbox"
+import { Checkbox } from "@/components/checkbox/Checkbox"
 import { useState } from "react"
-import { Icon } from "#/components/icon/Icon"
-import { getCategoryColorById } from "#/feature/categories/categories.store"
-import { MediaRange } from "#/lib/responsive/media"
+import { Icon } from "@/components/icon/Icon"
+import { getCategoryColorById } from "@/feature/categories/categories.store"
+import { MediaRange } from "@/lib/responsive/media"
 
-import { CategoryDescription } from "#/pages/landing/content/top-bar/categories-picker/CategoryDescription"
+import { CategoryDescription } from "@/pages/landing/content/top-bar/categories-picker/CategoryDescription"
 
 export const StyledCategoryCheckbox = styled(Checkbox)`
   padding: 7px 10px;

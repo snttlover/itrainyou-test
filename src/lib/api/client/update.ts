@@ -1,8 +1,8 @@
-import { config } from "#/config"
-import { put } from "#/lib/network/network"
-import { ClientInfo } from "#/lib/api/client/clientInfo"
-import { keysToCamel, keysToSnake } from "#/lib/network/casing"
-import { Day, Sex } from "#/lib/api/interfaces/utils.interface"
+import { config } from "@/config"
+import { put } from "@/lib/network/network"
+import { ClientInfo } from "@/lib/api/client/clientInfo"
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
+import { Day, Sex } from "@/lib/api/interfaces/utils.interface"
 
 export type UpdateClientRequest = {
   firstName: string

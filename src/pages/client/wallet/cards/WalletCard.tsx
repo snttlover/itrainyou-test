@@ -1,4 +1,4 @@
-import { deletedCard } from "#/pages/client/wallet/cards/cards.model"
+import { deletedCard } from "@/pages/client/wallet/cards/cards.model"
 import { useEvent } from "effector-react/ssr"
 import styled from "styled-components"
 import React from "react"

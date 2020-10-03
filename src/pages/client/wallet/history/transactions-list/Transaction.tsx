@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
-import { Avatar } from "#/components/avatar/Avatar"
-import { Icon } from "#/components/icon/Icon"
-import { MediaRange } from "#/lib/responsive/media"
+import { Avatar } from "@/components/avatar/Avatar"
+import { Icon } from "@/components/icon/Icon"
+import { MediaRange } from "@/lib/responsive/media"
 import React from "react"
 
 const Price = styled.div`

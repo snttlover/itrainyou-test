@@ -1,12 +1,12 @@
 import React from "react"
 import { useEvent, useList, useStore } from "effector-react/ssr"
-import { createChatMaterialsModule } from "#/feature/chat/modules/chat-materials/create-chat-materials"
+import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
 import styled from "styled-components"
-import { Close, Dialog } from "#/components/dialog/Dialog"
-import { createInfinityScroll } from "#/feature/pagination"
-import { ImagesViewModal } from "#/pages/search/coach-by-id/ImagesViewModal"
-import { DialogOverlayContainer } from "#/components/dialog/DialogOverlay"
-import { MediaRange } from "#/lib/responsive/media"
+import { Close, Dialog } from "@/components/dialog/Dialog"
+import { createInfinityScroll } from "@/feature/pagination"
+import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
+import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
+import { MediaRange } from "@/lib/responsive/media"
 
 export const createMaterialsDialog = ($module: ReturnType<typeof createChatMaterialsModule>) => {
   const InfinityScroll = createInfinityScroll($module.modules.pagination)

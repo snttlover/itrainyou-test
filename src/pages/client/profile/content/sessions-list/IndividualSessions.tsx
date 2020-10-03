@@ -1,14 +1,14 @@
 import styled from "styled-components"
-import { IndividualSessionItem } from "#/pages/client/profile/content/sessions-list/IndividualSessionItem"
-import { MediaRange } from "#/lib/responsive/media"
+import { IndividualSessionItem } from "@/pages/client/profile/content/sessions-list/IndividualSessionItem"
+import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useList, useStore } from "effector-react/ssr"
 import {
   $isHasMoreProfileSessions,
   $profilePageSessions,
   $ProfileSessions,
   loadMoreProfileSessions,
-} from "#/pages/client/profile/profile-page.model"
-import { Loader } from "#/components/spinner/Spinner"
+} from "@/pages/client/profile/profile-page.model"
+import { Loader } from "@/components/spinner/Spinner"
 import SimpleBar from "simplebar-react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import React from "react"

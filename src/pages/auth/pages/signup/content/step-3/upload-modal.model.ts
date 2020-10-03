@@ -1,5 +1,5 @@
-import { uploadMedia } from "#/lib/api/media"
-import { imageUploaded } from "#/pages/auth/pages/signup/content/step-3/step3.model"
+import { uploadMedia } from "@/lib/api/media"
+import { imageUploaded } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { createEffect, createEvent, createStore, forward } from "effector-root"
 
 export const uploadImage = createEvent<File | Blob>()

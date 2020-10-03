@@ -1,12 +1,12 @@
 import { createEffect, createEvent, createStore, forward, Event, sample, combine, restore, guard } from "effector-root"
-import { SessionInfo } from "#/lib/api/coach/get-session"
-import { date } from "#/lib/formatting/date"
+import { SessionInfo } from "@/lib/api/coach/get-session"
+import { date } from "@/lib/formatting/date"
 import { AxiosError } from "axios"
-import { SessionRequestParams } from "#/lib/api/coach/create-session-request"
-import { SessionRequest } from "#/lib/api/coach/get-sessions-requests"
-import { toasts } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { navigatePush } from "#/feature/navigation"
-import { routeNames } from "#/pages/route-names"
+import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
+import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
 
 const durations = {
   D30: `30мин`,

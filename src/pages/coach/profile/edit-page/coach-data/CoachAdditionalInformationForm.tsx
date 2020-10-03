@@ -1,6 +1,6 @@
-import { FormItem } from "#/components/form-item/FormItem"
-import { Input } from "#/components/input/Input"
-import { Textarea } from "#/components/textarea/Textarea"
+import { FormItem } from "@/components/form-item/FormItem"
+import { Input } from "@/components/input/Input"
+import { Textarea } from "@/components/textarea/Textarea"
 import {
   $form,
   $formErrors,
@@ -12,13 +12,13 @@ import {
   $photos,
   photoRemoved,
 } from "./coach-data.model"
-import { MediaRange } from "#/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 import { useStore, useEvent } from "effector-react/ssr"
 import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components"
-import { Icon } from "#/components/icon/Icon"
+import { Icon } from "@/components/icon/Icon"
 
 const InformationContainer = styled.div`
   margin: 32px 0 0;

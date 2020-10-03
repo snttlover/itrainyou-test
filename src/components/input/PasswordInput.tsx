@@ -1,5 +1,5 @@
-import { Icon } from "#/components/icon/Icon"
-import { Input, InputTypes } from "#/components/input/Input"
+import { Icon } from "@/components/icon/Icon"
+import { Input, InputTypes } from "@/components/input/Input"
 import React, { useState } from "react"
 import styled from "styled-components"
 

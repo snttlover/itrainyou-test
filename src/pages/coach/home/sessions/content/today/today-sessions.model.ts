@@ -1,4 +1,4 @@
-import { date } from "#/lib/formatting/date"
+import { date } from "@/lib/formatting/date"
 import * as React from "react"
 import { $todayCoachSessions } from "../../coach-sessions-page.model"
 

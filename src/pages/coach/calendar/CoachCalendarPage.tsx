@@ -1,8 +1,8 @@
-import { ContentContainer } from "#/components/layouts/ContentContainer"
-import { CoachSectionPlaceholder } from "#/feature/coach-placeholder/CoachSectionPlaceholder"
-import { PhoneWithGirl } from "#/feature/coach-placeholder/right-images/PhoneWithGirl"
+import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectionPlaceholder"
+import { PhoneWithGirl } from "@/feature/coach-placeholder/right-images/PhoneWithGirl"
 import * as React from "react"
-import { CoachDashboardLayout } from "#/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 const features = ["Просматривать свои сессии и групповые сессии на календаре"]
 

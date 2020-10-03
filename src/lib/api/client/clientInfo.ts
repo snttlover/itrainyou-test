@@ -1,10 +1,10 @@
-import { config } from "#/config"
-import { UserSelfData } from "#/lib/api/login"
-import { keysToCamel } from "#/lib/network/casing"
-import { get } from "#/lib/network/network"
-import { Coach } from "#/lib/api/coach"
-import { SessionCategory } from "#/lib/api/categories"
-import { Day, ISODate, Sex } from "#/lib/api/interfaces/utils.interface"
+import { config } from "@/config"
+import { UserSelfData } from "@/lib/api/login"
+import { keysToCamel } from "@/lib/network/casing"
+import { get } from "@/lib/network/network"
+import { Coach } from "@/lib/api/coach"
+import { SessionCategory } from "@/lib/api/categories"
+import { Day, ISODate, Sex } from "@/lib/api/interfaces/utils.interface"
 
 export interface ClientSelfData {
   id: number

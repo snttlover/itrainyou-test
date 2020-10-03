@@ -1,9 +1,9 @@
-import { ChatId } from "#/lib/api/chats/coach/get-messages"
-import { Pagination } from "#/lib/api/interfaces/utils.interface"
+import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { Pagination } from "@/lib/api/interfaces/utils.interface"
 import { createEvent, forward, restore, sample, Store } from "effector-root"
-import { ChatImage } from "#/lib/api/chats/clients/get-images"
-import { createPagination } from "#/feature/pagination"
-import { PaginationRequest } from "#/feature/pagination/modules/pagination"
+import { ChatImage } from "@/lib/api/chats/clients/get-images"
+import { createPagination } from "@/feature/pagination"
+import { PaginationRequest } from "@/feature/pagination/modules/pagination"
 
 type createChatMaterialsModuleConfig = {
   $chatId: Store<ChatId>

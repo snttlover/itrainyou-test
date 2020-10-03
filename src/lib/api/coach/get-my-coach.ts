@@ -1,9 +1,9 @@
-import { config } from "#/config"
-import { Category } from "#/feature/categories/categories.store"
-import { Day, ISODate, Sex } from "#/lib/api/interfaces/utils.interface"
-import { UserSelfData } from "#/lib/api/login"
-import { keysToCamel } from "#/lib/network/casing"
-import { get } from "#/lib/network/network"
+import { config } from "@/config"
+import { Category } from "@/feature/categories/categories.store"
+import { Day, ISODate, Sex } from "@/lib/api/interfaces/utils.interface"
+import { UserSelfData } from "@/lib/api/login"
+import { keysToCamel } from "@/lib/network/casing"
+import { get } from "@/lib/network/network"
 
 export interface CoachSelfData {
   id: number

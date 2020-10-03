@@ -1,9 +1,9 @@
-import { Toast, toasts } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { changeShowFundUpDialog } from "#/feature/client-funds-up/dialog/fund-up.model"
-import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "#/lib/api/coach-sessions"
-import { bulkBookSessions } from "#/lib/api/sessions-requests/client/bulk-book-sessions"
-import { isAxiosError } from "#/lib/network/network"
-import { runInScope } from "#/scope"
+import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { changeShowFundUpDialog } from "@/feature/client-funds-up/dialog/fund-up.model"
+import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
+import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
+import { isAxiosError } from "@/lib/network/network"
+import { runInScope } from "@/scope"
 import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample, split } from "effector-root"
 
 export interface CoachSessionWithSelect extends CoachSession {

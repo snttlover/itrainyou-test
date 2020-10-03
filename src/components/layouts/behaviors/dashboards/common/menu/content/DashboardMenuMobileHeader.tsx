@@ -1,10 +1,10 @@
 import * as React from "react"
 import styled from "styled-components"
 import logoImage from "../../../client/menu/images/logo.svg"
-import { Icon } from "#/components/icon/Icon"
-import { MediaRange } from "#/lib/responsive/media"
+import { Icon } from "@/components/icon/Icon"
+import { MediaRange } from "@/lib/responsive/media"
 import { useEvent } from "effector-react/ssr"
-import { toggleBlueLayoutMobileMenuVisibility } from "#/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
+import { toggleBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 
 const Logo = styled.img.attrs({ src: logoImage })`
   width: 36px;

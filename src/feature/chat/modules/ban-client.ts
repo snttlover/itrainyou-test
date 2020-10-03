@@ -1,10 +1,10 @@
 // блокировка клиентов коучем
 import { createEffect, createEvent, guard } from "effector-root"
-import { coachChat } from "#/pages/coach/chats/chat/coach-chat.model"
-import { banClient } from "#/lib/api/coach/ban/ban-client"
-import { unBanClient } from "#/lib/api/coach/ban/unban-client"
-import { restrictClient } from "#/lib/api/coach/ban/restrict-client"
-import { unRestrictClient } from "#/lib/api/coach/ban/unrestrict-client"
+import { coachChat } from "@/pages/coach/chats/chat/coach-chat.model"
+import { banClient } from "@/lib/api/coach/ban/ban-client"
+import { unBanClient } from "@/lib/api/coach/ban/unban-client"
+import { restrictClient } from "@/lib/api/coach/ban/restrict-client"
+import { unRestrictClient } from "@/lib/api/coach/ban/unrestrict-client"
 import { some } from "patronum"
 
 const banFx = createEffect({

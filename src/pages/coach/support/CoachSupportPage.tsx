@@ -1,13 +1,13 @@
-import { ContentContainer } from "#/components/layouts/ContentContainer"
-import { CoachSectionPlaceholder } from "#/feature/coach-placeholder/CoachSectionPlaceholder"
-import { PhoneWithGirl } from "#/feature/coach-placeholder/right-images/PhoneWithGirl"
+import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectionPlaceholder"
+import { PhoneWithGirl } from "@/feature/coach-placeholder/right-images/PhoneWithGirl"
 import * as React from "react"
-import { CoachDashboardLayout } from "#/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { useStore } from "effector-react/ssr"
-import { getMyUserFx } from "#/lib/api/users/get-my-user"
-import { $coachHomeState } from "#/pages/coach/home/coach-home.model"
-import { Loader } from "#/components/spinner/Spinner"
-import { CoachSupportChat } from "#/feature/support"
+import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { $coachHomeState } from "@/pages/coach/home/coach-home.model"
+import { Loader } from "@/components/spinner/Spinner"
+import { CoachSupportChat } from "@/feature/support"
 
 const features = ["Начать онлайн чат с агентом поддержки", "Решить возникшую проблему или уточнить интересующий вопрос"]
 

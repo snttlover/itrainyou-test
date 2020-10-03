@@ -1,18 +1,18 @@
-import { createChatsSocket, WriteChatMessageDone } from "#/feature/socket/chats-socket"
+import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
 import { createEvent, createStore, guard  } from "effector-root"
-import { createCursorPagination } from "#/feature/pagination/modules/cursor-pagination"
+import { createCursorPagination } from "@/feature/pagination/modules/cursor-pagination"
 import {
   ChatMessage,
   ConflictStatus,
   MessageSessionRequestStatuses,
   SupportTicketType,
-} from "#/lib/api/chats/clients/get-chats"
-import { date } from "#/lib/formatting/date"
-import { CursorPagination, CursorPaginationRequest } from "#/lib/api/interfaces/utils.interface"
-import { SessionRequest } from "#/lib/api/coach/get-sessions-requests"
-import { CoachUser } from "#/lib/api/coach"
-import { Client } from "#/lib/api/client/clientInfo"
-import { ChatId } from "#/lib/api/chats/coach/get-messages"
+} from "@/lib/api/chats/clients/get-chats"
+import { date } from "@/lib/formatting/date"
+import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
+import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+import { CoachUser } from "@/lib/api/coach"
+import { Client } from "@/lib/api/client/clientInfo"
+import { ChatId } from "@/lib/api/chats/coach/get-messages"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"

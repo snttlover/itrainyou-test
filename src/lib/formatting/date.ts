@@ -1,5 +1,5 @@
-import { $userData, UserData } from "#/feature/user/user.model"
-import { getStoreFromScope } from "#/scope"
+import { $userData, UserData } from "@/feature/user/user.model"
+import { getStoreFromScope } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
 import "dayjs/locale/ru"
 import utc from "dayjs/plugin/utc"

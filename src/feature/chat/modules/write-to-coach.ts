@@ -1,11 +1,11 @@
 import { createEffect, createEvent, forward, guard, sample } from "effector-root"
-import { getChatWithCoach } from "#/lib/api/chats/clients/get-chat-with-coach"
-import { createChatWithCoach } from "#/lib/api/chats/clients/create-chat-with-coach"
-import { navigatePush } from "#/feature/navigation"
-import { routeNames } from "#/pages/route-names"
-import { PersonalChat } from "#/lib/api/chats/clients/get-chats"
-import { getChatWithClient } from "#/lib/api/chats/coach/get-chat-with-client"
-import { createChatWithClient } from "#/lib/api/chats/coach/create-chat-with-client"
+import { getChatWithCoach } from "@/lib/api/chats/clients/get-chat-with-coach"
+import { createChatWithCoach } from "@/lib/api/chats/clients/create-chat-with-coach"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
+import { PersonalChat } from "@/lib/api/chats/clients/get-chats"
+import { getChatWithClient } from "@/lib/api/chats/coach/get-chat-with-client"
+import { createChatWithClient } from "@/lib/api/chats/coach/create-chat-with-client"
 
 
 type CreateWriteToUserModule = {

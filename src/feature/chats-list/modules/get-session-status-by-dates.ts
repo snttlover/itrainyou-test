@@ -1,5 +1,5 @@
-import { ISODate } from "#/lib/api/interfaces/utils.interface"
-import { date } from "#/lib/formatting/date"
+import { ISODate } from "@/lib/api/interfaces/utils.interface"
+import { date } from "@/lib/formatting/date"
 
 const sessionStatuses = {
   started: `Сессия началась`,

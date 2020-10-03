@@ -1,10 +1,10 @@
-import { ChatMessage, PersonalChat } from "#/lib/api/chats/clients/get-chats"
-import { createChatsSocket } from "#/feature/socket/chats-socket"
-import { CursorPagination, CursorPaginationRequest } from "#/lib/api/interfaces/utils.interface"
-import { createChatMessagesModule } from "#/feature/chat/modules/chat-messages"
-import { combine, createEffect, createEvent, forward, restore } from "effector-root"
-import { ChatId } from "#/lib/api/chats/coach/get-messages"
-import { createChatMessageBoxModule } from "#/feature/chat/view/content/message-box/create-message-box.module"
+import { ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
+import { createChatsSocket } from "@/feature/socket/chats-socket"
+import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
+import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
+import { combine, createEffect, createEvent, forward, restore } from "effector"
+import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 
 export type SupervisorChatModelConfig = {
   type: "client" | "coach"
@@ -52,12 +52,17 @@ export const createSupervisorChatModel = (config: SupervisorChatModelConfig) => 
 
   forward({
     from: mounted,
-    to: [fetchSupervisorChatFx, chatMessages.pagination.methods.loadMore],
+    to: [fetchSupervisorChatFx],
   })
 
   forward({
     from: fetchSupervisorChatFx.doneData.map(chat => chat.id),
     to: changeId,
+  })
+
+  forward({
+    from: changeId,
+    to: chatMessages.pagination.methods.loadMore
   })
 
   forward({

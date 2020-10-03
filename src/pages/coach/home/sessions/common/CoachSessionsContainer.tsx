@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { MediaRange } from "#/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 
 export const CoachSessionsContainer = styled.div`
   margin-bottom: 64px;

@@ -1,4 +1,4 @@
-import { SessionCategory, getCategories } from "#/lib/api/categories"
+import { SessionCategory, getCategories } from "@/lib/api/categories"
 import { createEffect, createEvent, forward } from "effector-root"
 import { createStore } from "effector-root"
 

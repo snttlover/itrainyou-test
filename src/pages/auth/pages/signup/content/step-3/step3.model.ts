@@ -1,13 +1,13 @@
-import { UploadMediaResponse } from "#/lib/api/media"
-import { date } from "#/lib/formatting/date"
-import { createEffectorField, UnpackedStoreObjectType } from "#/lib/generators/efffector"
-import { trimString } from "#/lib/validators"
+import { UploadMediaResponse } from "@/lib/api/media"
+import { date } from "@/lib/formatting/date"
+import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
+import { trimString } from "@/lib/validators"
 import {
   $userData,
   clientDataChanged,
   REGISTER_SAVE_KEY,
   signUpPageMounted,
-} from "#/pages/auth/pages/signup/signup.model"
+} from "@/pages/auth/pages/signup/signup.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"

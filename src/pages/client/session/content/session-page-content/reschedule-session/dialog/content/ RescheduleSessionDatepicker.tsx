@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { Calendar } from "#/components/calendar/Calendar"
-import { Button } from "#/components/button/normal/Button"
-import { MediaRange } from "#/lib/responsive/media"
+import { Calendar } from "@/components/calendar/Calendar"
+import { Button } from "@/components/button/normal/Button"
+import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useList, useStore, useStoreMap } from "effector-react/ssr"
 import {
   $formattedPickedRescheduleSession,
@@ -12,7 +12,7 @@ import {
   changePickedRescheduleSession,
   changeRescheduleDate,
   rescheduleSession,
-} from "#/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
+} from "@/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
 import dayjs from "dayjs"
 
 export const RescheduleSessionDatepicker = () => {

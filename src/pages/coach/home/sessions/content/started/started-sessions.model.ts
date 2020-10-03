@@ -1,5 +1,5 @@
-import { date } from "#/lib/formatting/date"
-import { $activeCoachSessions } from "#/pages/coach/home/sessions/coach-sessions-page.model"
+import { date } from "@/lib/formatting/date"
+import { $activeCoachSessions } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 
 export const $startedSessionsList = $activeCoachSessions.map(sessions => {
   const now = date()

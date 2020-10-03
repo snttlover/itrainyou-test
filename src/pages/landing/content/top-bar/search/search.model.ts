@@ -1,11 +1,11 @@
-import { Hint, getHints, GetHintsParamsTypes } from "#/lib/api/hint"
+import { Hint, getHints, GetHintsParamsTypes } from "@/lib/api/hint"
 import { createDomain, forward, split } from "effector-root"
 import {
   addSearchPageQuery,
   removeSearchPageQuery,
   resetSearchQuery,
   setSearchPageQuery,
-} from "#/pages/search/coaches-search.model"
+} from "@/pages/search/coaches-search.model"
 
 // coaches
 const searchDomain = createDomain()

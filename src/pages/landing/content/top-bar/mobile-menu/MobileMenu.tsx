@@ -1,12 +1,12 @@
 import * as React from "react"
 import styled from "styled-components"
-import {Icon} from "#/components/icon/Icon"
+import {Icon} from "@/components/icon/Icon"
 import { useState } from "react"
-import { Search } from "#/pages/landing/content/top-bar/search/Search"
-import {Input} from "#/components/input/Input"
-import { Categories, StyledCategoryCheckbox } from "#/pages/landing/content/top-bar/categories-picker/Categories"
-import {Button} from "#/components/button/normal/Button"
-import { MediaRange } from "#/lib/responsive/media"
+import { Search } from "@/pages/landing/content/top-bar/search/Search"
+import {Input} from "@/components/input/Input"
+import { Categories, StyledCategoryCheckbox } from "@/pages/landing/content/top-bar/categories-picker/Categories"
+import {Button} from "@/components/button/normal/Button"
+import { MediaRange } from "@/lib/responsive/media"
 
 export const MobileSearchButton = styled(Icon).attrs({ name: `search` })`
   width: 36px;

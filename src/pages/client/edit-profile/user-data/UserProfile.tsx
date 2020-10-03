@@ -1,8 +1,8 @@
-import { Avatar } from "#/components/avatar/Avatar"
-import { Button } from "#/components/button/normal/Button"
-import { FormItem } from "#/components/form-item/FormItem"
-import { Input } from "#/components/input/Input"
-import { MediaRange } from "#/lib/responsive/media"
+import { Avatar } from "@/components/avatar/Avatar"
+import { Button } from "@/components/button/normal/Button"
+import { FormItem } from "@/components/form-item/FormItem"
+import { Input } from "@/components/input/Input"
+import { MediaRange } from "@/lib/responsive/media"
 import { UploadModal } from "./UploadModal"
 import { BirthdayFormGroup } from "./BirthdayFormGroup"
 import {
@@ -20,8 +20,8 @@ import {
 import { useEvent, useGate, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
-import { DashedButton } from "#/components/button/dashed/DashedButton"
-import { Spinner } from "#/components/spinner/Spinner"
+import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Spinner } from "@/components/spinner/Spinner"
 
 export const UserProfile = () => {
   useGate(userProfileGate)

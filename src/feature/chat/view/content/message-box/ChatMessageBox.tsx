@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { MediaRange } from "#/lib/responsive/media"
-import { ImagesLimitDialog } from "#/feature/chat/view/content/message-box/content/ImagesLimitDialog"
-import { MessageBoxUpload } from "#/feature/chat/view/content/message-box/content/MessageBoxUpload"
-import { createChatMessageBoxModule } from "#/feature/chat/view/content/message-box/create-message-box.module"
-import { useStore, useEvent } from "effector-react/ssr"
+import { MediaRange } from "@/lib/responsive/media"
+import { ImagesLimitDialog } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
+import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { useStore, useEvent } from "effector-react"
 
 type ChatMessageBoxTypes = {
   blockedText?: string | null

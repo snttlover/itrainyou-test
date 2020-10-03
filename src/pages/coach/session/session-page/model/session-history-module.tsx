@@ -1,8 +1,8 @@
-import { createPagination } from "#/feature/pagination"
-import { GetCoachSessionRequestsQuery, SessionRequest } from "#/lib/api/coach/get-sessions-requests"
+import { createPagination } from "@/feature/pagination"
+import { GetCoachSessionRequestsQuery, SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { combine, createEvent, forward, Store } from "effector-root"
-import { date } from "#/lib/formatting/date"
-import { Pagination } from "#/lib/api/interfaces/utils.interface"
+import { date } from "@/lib/formatting/date"
+import { Pagination } from "@/lib/api/interfaces/utils.interface"
 
 type CreateSessionHistoryModuleConfig = {
   type: "client" | "coach"

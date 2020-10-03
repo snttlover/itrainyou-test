@@ -1,6 +1,6 @@
 import upArrow from "./images/up-arrow.svg"
 import downArrow from "./images/down-arrow.svg"
-import { CoachSortingType } from "#/lib/api/coach"
+import { CoachSortingType } from "@/lib/api/coach"
 
 export type SortingItemType = {
   text: string

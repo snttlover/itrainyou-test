@@ -1,5 +1,5 @@
-import { navigatePush } from "#/feature/navigation"
-import { $isLoggedIn } from "#/feature/user/user.model"
+import { navigatePush } from "@/feature/navigation"
+import { $isLoggedIn } from "@/feature/user/user.model"
 import { useStore, useEvent } from "effector-react/ssr"
 import * as React from "react"
 

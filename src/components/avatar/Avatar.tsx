@@ -1,4 +1,4 @@
-import { Icon } from "#/components/icon/Icon"
+import { Icon } from "@/components/icon/Icon"
 import * as React from "react"
 import styled from "styled-components"
 

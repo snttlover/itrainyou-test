@@ -8,12 +8,12 @@ import { ResetFiltersButton } from "./content/ResetFiltersButton"
 import {
   $mobileFiltersVisibility,
   changeMobileFiltersVisibility,
-} from "#/pages/search/content/mobile-tabs/mobile-tabs.model"
+} from "@/pages/search/content/mobile-tabs/mobile-tabs.model"
 import { useEvent, useStore } from "effector-react/ssr"
 import close from "./images/close.svg"
 import SimpleBar from "simplebar-react"
 import { SessionTimeFilter } from "./content/session-time-filter/SessionTimeFilter"
-import { MediaRange } from "#/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 import { useEffect, useRef, useState } from "react"
 
 type ModalTypes = {

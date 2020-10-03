@@ -1,8 +1,8 @@
-import { config } from "#/config"
-import { Pagination } from "#/lib/api/interfaces/utils.interface"
-import { keysToCamel } from "#/lib/network/casing"
-import { get } from "#/lib/network/network"
-import { Client } from "#/lib/api/client/clientInfo"
+import { config } from "@/config"
+import { Pagination } from "@/lib/api/interfaces/utils.interface"
+import { keysToCamel } from "@/lib/network/casing"
+import { get } from "@/lib/network/network"
+import { Client } from "@/lib/api/client/clientInfo"
 
 export type ReviewClient = Client
 

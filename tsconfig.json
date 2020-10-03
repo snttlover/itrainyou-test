@@ -4,7 +4,7 @@
     "allowUnreachableCode": false,
     "baseUrl": "src",
     "paths": {
-      "#/*": ["./*"]
+      "@/*": ["./*"]
     },
     "downlevelIteration": true,
     "esModuleInterop": true,
@@ -34,6 +34,7 @@
     "webpack",
     "jest",
     "razzle.config.js",
-    "svg"
+    "svg",
+    "./admin-chats/webpack.config.js"
   ]
 }

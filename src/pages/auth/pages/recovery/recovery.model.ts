@@ -1,6 +1,6 @@
-import { RecoveryRequest, recovery } from "#/lib/api/recovery"
-import { createEffectorField, UnpackedStoreObjectType } from "#/lib/generators/efffector"
-import { emailValidator, trimString } from "#/lib/validators"
+import { RecoveryRequest, recovery } from "@/lib/api/recovery"
+import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
+import { emailValidator, trimString } from "@/lib/validators"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStore, createStoreObject, sample } from "effector-root"
 

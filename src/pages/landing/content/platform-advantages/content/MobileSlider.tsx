@@ -4,7 +4,7 @@ import Carousel from "react-multi-carousel"
 import {
   AdvantageSlideTypes,
   AdvantageSlide
-} from "#/pages/landing/content/platform-advantages/content/AdvantageSlide"
+} from "@/pages/landing/content/platform-advantages/content/AdvantageSlide"
 
 import { StyledCarousel } from "./CarouselStyled"
 import { useEffect } from "react"

@@ -1,8 +1,8 @@
-import { combine, createEffect, createEvent, forward, guard, restore, sample, Store } from "effector-root"
-import { SupportChatModelConfig } from "#/feature/support/create-support-chat.model"
-import { ChatId } from "#/lib/api/chats/coach/get-messages"
-import { uploadMedia } from "#/lib/api/media"
-import { runInScope } from "#/scope"
+import { combine, createEffect, createEvent, forward, guard, restore, sample, Store } from "effector"
+import { SupportChatModelConfig } from "@/feature/support/create-support-chat.model"
+import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { uploadMedia } from "@/lib/api/media"
+import { runInScope } from "@/scope"
 import { condition } from "patronum"
 
 type CreateChatMessageBoxModuleConfig = SupportChatModelConfig & {

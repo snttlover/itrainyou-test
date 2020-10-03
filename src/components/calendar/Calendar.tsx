@@ -6,8 +6,8 @@ import {
   MonthName,
   RightIcon,
   Year,
-} from "#/components/calendar/CalendarHeader"
-import { date } from "#/lib/formatting/date"
+} from "@/components/calendar/CalendarHeader"
+import { date } from "@/lib/formatting/date"
 import * as React from "react"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import styled, { css } from "styled-components"

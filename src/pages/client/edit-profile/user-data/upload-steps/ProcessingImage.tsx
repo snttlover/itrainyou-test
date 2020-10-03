@@ -1,5 +1,5 @@
-import { DashedButton } from "#/components/button/dashed/DashedButton"
-import { MediaRange } from "#/lib/responsive/media"
+import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { MediaRange } from "@/lib/responsive/media"
 import { uploadImage } from "../upload-modal.model"
 import { useEvent } from "effector-react/ssr"
 import { useState } from "react"

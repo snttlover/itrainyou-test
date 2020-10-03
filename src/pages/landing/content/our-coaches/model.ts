@@ -1,4 +1,4 @@
-import { Coach, getCoaches } from "#/lib/api/coach"
+import { Coach, getCoaches } from "@/lib/api/coach"
 import { createEffect, createEvent, forward } from "effector-root"
 import { createStore } from "effector-root"
 

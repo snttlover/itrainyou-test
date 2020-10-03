@@ -1,10 +1,10 @@
-import { navigatePush } from "#/feature/navigation"
-import { routeNames } from "#/pages/route-names"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
 import { useEvent } from "effector-react/ssr"
 import styled from "styled-components"
-import { Button } from "#/components/button/normal/Button"
-import { FeatureItem } from "#/feature/coach-placeholder/FeatureItem"
-import { MediaRange } from "#/lib/responsive/media"
+import { Button } from "@/components/button/normal/Button"
+import { FeatureItem } from "@/feature/coach-placeholder/FeatureItem"
+import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 
 const Container = styled.div`

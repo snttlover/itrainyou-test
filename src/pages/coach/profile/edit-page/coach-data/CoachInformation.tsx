@@ -1,8 +1,8 @@
-import { CoachDataGate } from "#/pages/coach/profile/edit-page/coach-data/coach-data.model"
+import { CoachDataGate } from "@/pages/coach/profile/edit-page/coach-data/coach-data.model"
 import { useGate } from "effector-react/ssr"
 import { CategoriesList } from "./CategoriesList"
 import { CoachAdditionalInformationForm } from "./CoachAdditionalInformationForm"
-import { MediaRange } from "#/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
 

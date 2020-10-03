@@ -1,10 +1,10 @@
-import { Chat, ChatMessage, PersonalChat } from "#/lib/api/chats/clients/get-chats"
-import { createChatsSocket } from "#/feature/socket/chats-socket"
-import { CursorPagination, CursorPaginationRequest } from "#/lib/api/interfaces/utils.interface"
-import { createChatMessagesModule } from "#/feature/chat/modules/chat-messages"
+import { Chat, ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
+import { createChatsSocket } from "@/feature/socket/chats-socket"
+import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
+import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
-import { ChatId } from "#/lib/api/chats/coach/get-messages"
-import { createChatMessageBoxModule } from "#/feature/chat/view/content/message-box/create-message-box.module"
+import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 
 export type SupportChatModelConfig = {
   type: "client" | "coach"

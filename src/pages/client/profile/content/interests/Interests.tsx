@@ -1,8 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import { InterestsStats } from "#/pages/client/profile/content/interests/InterestsStats"
-import { InterestsCategories } from "#/pages/client/profile/content/interests/InterestsCategories"
-import { MediaRange } from "#/lib/responsive/media"
+import { InterestsStats } from "@/pages/client/profile/content/interests/InterestsStats"
+import { InterestsCategories } from "@/pages/client/profile/content/interests/InterestsCategories"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   padding-right: 140px;

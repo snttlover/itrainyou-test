@@ -1,9 +1,9 @@
 import React from "react"
 
-import { ChatMessage } from "#/feature/chat/view/content/messages/content/ChatMessage"
-import { SystemMessageSwitcher } from "#/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
-import { ChatMessagesTypes } from "#/feature/chat/modules/chat-messages"
-import { SupportMessageSwitcher } from "#/feature/chat/view/content/messages/content/support/SupportMessageSwitcher"
+import { ChatMessage } from "@/feature/chat/view/content/messages/content/ChatMessage"
+import { SystemMessageSwitcher } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
+import { ChatMessagesTypes } from "@/feature/chat/modules/chat-messages"
+import { SupportMessageSwitcher } from "@/feature/chat/view/content/messages/content/support/SupportMessageSwitcher"
 import styled from "styled-components"
 
 export const ChatMessageSwitcher = ({

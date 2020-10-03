@@ -1,8 +1,8 @@
 import { useEvent, useStore } from "effector-react"
-import { Loader } from "#/components/spinner/Spinner"
+import { Loader } from "@/components/spinner/Spinner"
 import * as React from "react"
 import styled from "styled-components"
-import { CreateInfinityScrollType, InfinityScrollPropsTypes } from "#/feature/pagination/view/InfinityScroll"
+import { CreateInfinityScrollType, InfinityScrollPropsTypes } from "@/feature/pagination/view/InfinityScroll"
 import { useEffect } from "react"
 
 const Container = styled.div`

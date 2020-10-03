@@ -1,11 +1,11 @@
 import styled from "styled-components"
-import { Button } from "#/components/button/normal/Button"
-import { Avatar } from "#/components/avatar/Avatar"
-import { MediaRange } from "#/lib/responsive/media"
+import { Button } from "@/components/button/normal/Button"
+import { Avatar } from "@/components/avatar/Avatar"
+import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import { useEvent } from "effector-react/ssr"
-import { coachCall } from "#/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { coachCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 const Container = styled(Link)`
   margin-bottom: 24px;

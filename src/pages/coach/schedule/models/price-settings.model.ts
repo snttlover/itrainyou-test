@@ -1,6 +1,6 @@
-import { Toast, toasts } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { UpdateCoachSchedule } from "#/lib/api/coaching-sessions/types"
-import { $feeRatio, loadScheduleFx, updateScheduleFx } from "#/pages/coach/schedule/models/schedule.model"
+import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
+import { $feeRatio, loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { combine, createEvent, createStore, forward, sample, merge, split, attach } from "effector-root"
 import { debounce, spread } from "patronum"
 

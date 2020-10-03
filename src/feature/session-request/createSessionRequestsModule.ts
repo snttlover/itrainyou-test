@@ -1,11 +1,11 @@
 import { createCoachSessionRequest, SessionRequestParams } from "../../lib/api/coach/create-session-request"
-import { denyCoachSessionRequest, DenySessionRequestParams } from "#/lib/api/coach/deny-session-request"
-import { SessionRequest } from "#/lib/api/coach/get-sessions-requests"
-import { approveCoachSessionRequest, ApproveSessionRequestParams } from "#/lib/api/coach/approve-session-request"
+import { denyCoachSessionRequest, DenySessionRequestParams } from "@/lib/api/coach/deny-session-request"
+import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+import { approveCoachSessionRequest, ApproveSessionRequestParams } from "@/lib/api/coach/approve-session-request"
 import { combine, createEffect, createEvent, createStore, forward } from "effector-root"
-import { createClientSessionRequest } from "#/lib/api/client/create-client-session-request"
-import { denyClientSessionRequest } from "#/lib/api/client/deny-session-request"
-import { approveClientSessionRequest } from "#/lib/api/client/approve-session-request"
+import { createClientSessionRequest } from "@/lib/api/client/create-client-session-request"
+import { denyClientSessionRequest } from "@/lib/api/client/deny-session-request"
+import { approveClientSessionRequest } from "@/lib/api/client/approve-session-request"
 
 type createSessionRequestsModuleConfig = {
   createRequest: (params: SessionRequestParams) => Promise<SessionRequest>

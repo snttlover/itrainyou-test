@@ -1,9 +1,9 @@
-import { Coach, getCoach } from "#/lib/api/coach"
-import { CoachReviewResponse, getCoachReviews } from "#/lib/api/reviews"
-import { createGate, runInScope } from "#/scope"
+import { Coach, getCoach } from "@/lib/api/coach"
+import { CoachReviewResponse, getCoachReviews } from "@/lib/api/reviews"
+import { createGate, runInScope } from "@/scope"
 import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
-import { genCoachSessions } from "#/components/coach-card/select-date/select-date.model"
-import { DurationType } from "#/lib/api/coach-sessions"
+import { genCoachSessions } from "@/components/coach-card/select-date/select-date.model"
+import { DurationType } from "@/lib/api/coach-sessions"
 
 export const loadCoachFx = createEffect({
   handler: getCoach,

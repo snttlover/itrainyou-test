@@ -1,8 +1,8 @@
-import { get } from "#/lib/network/network"
-import { config } from "#/config"
-import { keysToCamel } from "#/lib/network/casing"
-import { DashboardSession } from "#/lib/api/coach/get-dashboard-sessions"
-import { Coach } from "#/lib/api/coach"
+import { get } from "@/lib/network/network"
+import { config } from "@/config"
+import { keysToCamel } from "@/lib/network/casing"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
+import { Coach } from "@/lib/api/coach"
 
 export type SessionInfo = DashboardSession & {
   coach: Coach

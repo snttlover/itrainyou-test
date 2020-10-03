@@ -1,5 +1,5 @@
-import { parseQueryString } from "#/lib/helpers/query"
-import { ROUTES } from "#/pages/routes"
+import { parseQueryString } from "@/lib/helpers/query"
+import { ROUTES } from "@/pages/routes"
 import { useEvent, useStore } from "effector-react/ssr"
 import { allSettled, Scope } from "effector/fork"
 import React, { useEffect } from "react"

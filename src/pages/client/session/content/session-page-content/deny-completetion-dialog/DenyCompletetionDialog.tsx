@@ -11,15 +11,15 @@ import {
   denyCompletationProblems,
   hideDenyCompletetionDialogVisibility,
   sendDenyCompletationDialog,
-} from "#/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
-import { Dialog } from "#/components/dialog/Dialog"
+} from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
+import { Dialog } from "@/components/dialog/Dialog"
 import styled from "styled-components"
 import { useEvent } from "effector-react/ssr"
-import { Textarea } from "#/components/textarea/Textarea"
-import { DashedButton } from "#/components/button/dashed/DashedButton"
-import { Avatar } from "#/components/avatar/Avatar"
-import { SelectInput } from "#/components/select-input/SelectInput"
-import { DenySessionRequestProblems } from "#/lib/api/coach/deny-session-request"
+import { Textarea } from "@/components/textarea/Textarea"
+import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Avatar } from "@/components/avatar/Avatar"
+import { SelectInput } from "@/components/select-input/SelectInput"
+import { DenySessionRequestProblems } from "@/lib/api/coach/deny-session-request"
 
 export const DenyCompletetionDialog = () => {
   const visibility = useStore($denyCompletationDialogVisibility)

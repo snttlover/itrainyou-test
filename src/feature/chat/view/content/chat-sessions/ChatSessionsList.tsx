@@ -1,17 +1,17 @@
 import React from "react"
 import styled from "styled-components"
-import { ChatSessionListItem } from "#/feature/chat/view/content/chat-sessions/ChatSessionListItem"
-import { MediaRange } from "#/lib/responsive/media"
+import { ChatSessionListItem } from "@/feature/chat/view/content/chat-sessions/ChatSessionListItem"
+import { MediaRange } from "@/lib/responsive/media"
 import {
   $showSessionsOnMobile,
   changeSessionsMobileVisibility,
   createChatSessionsModule,
-} from "#/feature/chat/modules/chat-sessions"
-import { createInfinityScroll } from "#/feature/pagination"
+} from "@/feature/chat/modules/chat-sessions"
+import { createInfinityScroll } from "@/feature/pagination"
 import { useList, useStore } from "effector-react/ssr"
-import { Tabs, Tab } from "#/components/tabs/Tabs"
+import { Tabs, Tab } from "@/components/tabs/Tabs"
 import { useEvent } from "effector-react/ssr"
-import { Icon } from "#/components/icon/Icon"
+import { Icon } from "@/components/icon/Icon"
 
 export const createChatSessions = (sessionsModule: ReturnType<typeof createChatSessionsModule>) => {
   const Pagination = createInfinityScroll(sessionsModule.modules.pagination)

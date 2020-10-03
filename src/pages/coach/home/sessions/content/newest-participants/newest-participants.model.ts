@@ -1,5 +1,5 @@
-import { date } from "#/lib/formatting/date"
-import { newestParticipants } from "#/pages/coach/home/sessions/coach-sessions-page.model"
+import { date } from "@/lib/formatting/date"
+import { newestParticipants } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 
 export const $newestParticipantsList = newestParticipants.data.$list.map(participants =>
   participants.map(participant => {

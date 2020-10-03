@@ -1,10 +1,10 @@
-import { Button } from "#/components/button/normal/Button"
-import { CoachCard } from "#/components/coach-card/CoachCard"
-import { ClientDashboardLayout } from "#/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
-import { ContentContainer } from "#/components/layouts/ContentContainer"
-import { Loader, Spinner } from "#/components/spinner/Spinner"
-import { MediaRange } from "#/lib/responsive/media"
-import { SessionCard } from "#/pages/client/home/SessionCard"
+import { Button } from "@/components/button/normal/Button"
+import { CoachCard } from "@/components/coach-card/CoachCard"
+import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { Loader, Spinner } from "@/components/spinner/Spinner"
+import { MediaRange } from "@/lib/responsive/media"
+import { SessionCard } from "@/pages/client/home/SessionCard"
 import { useEvent, useStore } from "effector-react/ssr"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
@@ -20,7 +20,7 @@ import {
 } from "./home.model"
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { clientCall } from "#/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { clientCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 const Block = styled.div`
   position: relative;

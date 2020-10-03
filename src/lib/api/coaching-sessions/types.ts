@@ -1,4 +1,4 @@
-import { DurationType } from "#/lib/api/coach-sessions"
+import { DurationType } from "@/lib/api/coach-sessions"
 
 export interface ScheduleDaySlot {
   id: number

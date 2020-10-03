@@ -1,5 +1,5 @@
-import { isArray, isObject } from "#/lib/network/casing"
-import { config } from "#/config"
+import { isArray, isObject } from "@/lib/network/casing"
+import { config } from "@/config"
 
 // рекурсивно добавляет урл к картинкам сообщений из сокетов
 export const fixAvatarAndImageUrl = (o: any): any => {

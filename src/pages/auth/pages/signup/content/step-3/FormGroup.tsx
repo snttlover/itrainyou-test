@@ -1,5 +1,5 @@
-import { FormItem } from "#/components/form-item/FormItem"
-import { MediaRange } from "#/lib/responsive/media"
+import { FormItem } from "@/components/form-item/FormItem"
+import { MediaRange } from "@/lib/responsive/media"
 import styled from "styled-components"
 
 export const FormGroup = styled.div`

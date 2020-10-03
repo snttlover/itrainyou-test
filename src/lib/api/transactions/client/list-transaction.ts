@@ -1,8 +1,8 @@
-import { config } from "#/config"
-import { keysToCamel, keysToSnake } from "#/lib/network/casing"
-import { get } from "#/lib/network/network"
-import { ISODate, Pagination, Sex, Day } from "#/lib/api/interfaces/utils.interface"
-import { CoachSession } from "#/lib/api/coach-sessions"
+import { config } from "@/config"
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
+import { get } from "@/lib/network/network"
+import { ISODate, Pagination, Sex, Day } from "@/lib/api/interfaces/utils.interface"
+import { CoachSession } from "@/lib/api/coach-sessions"
 
 type TransactionType = "SESSION_ENROLLMENT" | "SESSION_CANCELLATION" | "TOP_UP" | "WITHDRAW" | "CLIENT_ENROLLED_SESSION"
 

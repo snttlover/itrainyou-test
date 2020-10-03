@@ -1,11 +1,11 @@
-import { Coach, getCoaches, GetCoachesParamsTypes } from "#/lib/api/coach"
-import { ServerParams } from "#/lib/effector"
-import { navigatePush } from "#/feature/navigation"
-import { routeNames } from "#/pages/route-names"
-import { fetchMaxPriceFx } from "#/pages/search/content/filters/content/price-filter/price-filter.model"
+import { Coach, getCoaches, GetCoachesParamsTypes } from "@/lib/api/coach"
+import { ServerParams } from "@/lib/effector"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
+import { fetchMaxPriceFx } from "@/pages/search/content/filters/content/price-filter/price-filter.model"
 import { createEffect, createEvent, forward, merge, sample } from "effector-root"
 import { createStore } from "effector-root"
-import { DurationType } from "#/lib/api/coach-sessions"
+import { DurationType } from "@/lib/api/coach-sessions"
 import { debounce, throttle } from "patronum"
 
 export const setSearchPageQuery = createEvent<GetCoachesParamsTypes>()

@@ -1,10 +1,10 @@
 import { combine, createEvent, createStore, forward, Store, restore } from "effector-root"
-import { createChatsSocket } from "#/feature/socket/chats-socket"
-import { createPagination } from "#/feature/pagination"
-import { ChatSession, GetChatSessionsQuery } from "#/lib/api/chats/clients/get-chat-sessions"
-import { date } from "#/lib/formatting/date"
-import { Pagination } from "#/lib/api/interfaces/utils.interface"
-import { ChatId } from "#/lib/api/chats/coach/get-messages"
+import { createChatsSocket } from "@/feature/socket/chats-socket"
+import { createPagination } from "@/feature/pagination"
+import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
+import { date } from "@/lib/formatting/date"
+import { Pagination } from "@/lib/api/interfaces/utils.interface"
+import { ChatId } from "@/lib/api/chats/coach/get-messages"
 
 type CreateChatSessionsModuleConfig = {
   socket: ReturnType<typeof createChatsSocket>

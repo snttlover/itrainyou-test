@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { Avatar, AvatarPlaceholder } from "#/components/avatar/Avatar"
-import { MediaRange } from "#/lib/responsive/media"
-import { Icon } from "#/components/icon/Icon"
-import { CoachTooltip } from "#/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
+import { Avatar, AvatarPlaceholder } from "@/components/avatar/Avatar"
+import { MediaRange } from "@/lib/responsive/media"
+import { Icon } from "@/components/icon/Icon"
+import { CoachTooltip } from "@/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
 import * as React from "react"
 
 const StyledHeader = styled.div`

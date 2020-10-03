@@ -1,5 +1,5 @@
-import { getWallet } from "#/lib/api/wallet/client/get-wallet"
-import { createGate } from "#/scope"
+import { getWallet } from "@/lib/api/wallet/client/get-wallet"
+import { createGate } from "@/scope"
 import { createEffect, createStore, forward } from "effector-root"
 
 export const InfoTabGate = createGate()

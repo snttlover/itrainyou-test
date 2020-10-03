@@ -1,7 +1,7 @@
-import { config } from "#/config"
-import { Day, Sex } from "#/lib/api/interfaces/utils.interface"
-import { keysToCamel, keysToSnake } from "#/lib/network/casing"
-import { patch } from "#/lib/network/network"
+import { config } from "@/config"
+import { Day, Sex } from "@/lib/api/interfaces/utils.interface"
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
+import { patch } from "@/lib/network/network"
 
 export type UpdateMyCoachRequest = {
   firstName?: string

@@ -1,4 +1,4 @@
-import { MediaRange } from "#/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 import styled from "styled-components"
 
 export const ContentContainer = styled.div`

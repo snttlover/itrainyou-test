@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { $recoveryForm, updateRecoverySuccessMessageVisibility } from "#/pages/auth/pages/recovery/recovery.model"
+import { $recoveryForm, updateRecoverySuccessMessageVisibility } from "@/pages/auth/pages/recovery/recovery.model"
 import { useEvent, useStore } from "effector-react/ssr"
 
 const Title = styled.h3`

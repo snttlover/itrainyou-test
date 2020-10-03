@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
-import mobileActiveButton from "#/pages/landing/content/platform-advantages/images/mobile-advantage-slider-button-active.svg"
-import mobileButton from "#/pages/landing/content/platform-advantages/images/mobile-advantage-slider-button.svg"
+import mobileActiveButton from "@/pages/landing/content/platform-advantages/images/mobile-advantage-slider-button-active.svg"
+import mobileButton from "@/pages/landing/content/platform-advantages/images/mobile-advantage-slider-button.svg"
 import { Dispatch, SetStateAction } from "react"
 
 const AdvantagesContainer = styled.div`

@@ -3,7 +3,7 @@ import {
   coachDataChanged,
   REGISTER_SAVE_KEY,
   signUpPageMounted,
-} from "#/pages/auth/pages/signup/signup.model"
+} from "@/pages/auth/pages/signup/signup.model"
 import {
   descriptionChanged,
   educationChanged,
@@ -14,7 +14,7 @@ import {
   $form,
   $selectedCategories,
   setCategories,
-} from "#/feature/coach-get-access/coach-get-access.model"
+} from "@/feature/coach-get-access/coach-get-access.model"
 import { createEffect, createEvent, forward } from "effector-root"
 import { combineEvents, spread } from "patronum"
 

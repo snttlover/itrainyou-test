@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { MediaRange } from "#/lib/responsive/media"
-import { CancelSessionDialog } from "#/pages/client/session/content/session-page-content/cancel-session/CancelSessionDialog"
+import { MediaRange } from "@/lib/responsive/media"
+import { CancelSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/CancelSessionDialog"
 import { useStore } from "effector-react"
-import { $dashboard, DashboardType } from "#/feature/dashboard/dashboard"
-import { ISODate } from "#/lib/api/interfaces/utils.interface"
-import { date } from "#/lib/formatting/date"
+import { $dashboard, DashboardType } from "@/feature/dashboard/dashboard"
+import { ISODate } from "@/lib/api/interfaces/utils.interface"
+import { date } from "@/lib/formatting/date"
 
 type CancelSessionProps = {
   sessionStartDatetime?: ISODate

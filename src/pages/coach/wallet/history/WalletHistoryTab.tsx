@@ -1,4 +1,4 @@
-import { MediaRange } from "#/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 import { TransactionsList } from "./transactions-list/TransactionsList"
 import React from "react"
 import styled from "styled-components"

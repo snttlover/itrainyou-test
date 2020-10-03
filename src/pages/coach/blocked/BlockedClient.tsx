@@ -1,5 +1,5 @@
-import { Avatar } from "#/components/avatar/Avatar"
-import { MediaRange } from "#/lib/responsive/media"
+import { Avatar } from "@/components/avatar/Avatar"
+import { MediaRange } from "@/lib/responsive/media"
 import React from "react"
 import styled from "styled-components"
 

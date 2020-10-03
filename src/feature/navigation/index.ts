@@ -1,4 +1,4 @@
-import { createQueryString } from "#/lib/helpers/query"
+import { createQueryString } from "@/lib/helpers/query"
 import { createEvent, createStore } from "effector-root"
 import { createBrowserHistory } from "history"
 

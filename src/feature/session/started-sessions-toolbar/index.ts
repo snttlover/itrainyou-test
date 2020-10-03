@@ -1,9 +1,9 @@
-import { createStartSessionToolbarModel } from "#/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
-import { getDashboardSessions } from "#/lib/api/coach/get-dashboard-sessions"
-import { createStartedSessionsToolbar } from "#/feature/session/started-sessions-toolbar/StartedSessionToolbar"
-import { getClientSessions } from "#/lib/api/client-session"
-import { clientCall, coachCall } from "#/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { clientChatsSocket, coachChatsSocket } from "#/feature/socket/chats-socket"
+import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
+import { getDashboardSessions } from "@/lib/api/coach/get-dashboard-sessions"
+import { createStartedSessionsToolbar } from "@/feature/session/started-sessions-toolbar/StartedSessionToolbar"
+import { getClientSessions } from "@/lib/api/client-session"
+import { clientCall, coachCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-socket"
 
 const coachSessionsToolbarModel = createStartSessionToolbarModel({
   type: "coach",
