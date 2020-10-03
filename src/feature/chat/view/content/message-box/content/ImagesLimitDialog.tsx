@@ -1,11 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import { Dialog } from "@/components/dialog/Dialog"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { Button } from "@/components/button/normal/Button"
-import { MediaRange } from "@/lib/responsive/media"
-import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
-import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { Dialog } from "#/components/dialog/Dialog"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
+import { Button } from "#/components/button/normal/Button"
+import { MediaRange } from "#/lib/responsive/media"
+import { DialogOverlayContainer } from "#/components/dialog/DialogOverlay"
+import { ChatImage } from "#/feature/chat/view/content/message-box/create-message-box.module"
 
 type ImagesLimitDialogProps = {
   visibility: boolean

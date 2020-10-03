@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
+import { LandingPageContainer } from "#/pages/landing/common/LandingPageContainer"
 
 const Title = styled.h3`
   font-weight: 600;

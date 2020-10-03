@@ -1,4 +1,4 @@
-import { routeNames } from "@/pages/route-names"
+import { routeNames } from "#/pages/route-names"
 import * as React from "react"
 import { NavLink } from "react-router-dom"
 import styled, { css } from "styled-components"

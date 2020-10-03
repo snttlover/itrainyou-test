@@ -1,4 +1,4 @@
-import { $isLoggedIn } from "@/feature/user/user.model"
+import { $isLoggedIn } from "#/feature/user/user.model"
 import { useStore } from "effector-react/ssr"
 import * as React from "react"
 

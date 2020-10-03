@@ -1,12 +1,12 @@
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { ProgressBar } from "@/components/progress-bar/ProgressBar"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
+import { ProgressBar } from "#/components/progress-bar/ProgressBar"
 import {
   $form,
   $videoUploadProgress,
   videoUploaded,
   videoUploadFx,
-} from "@/feature/coach-get-access/coach-get-access.model"
-import { MediaRange } from "@/lib/responsive/media"
+} from "#/feature/coach-get-access/coach-get-access.model"
+import { MediaRange } from "#/lib/responsive/media"
 import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import { useCallback, useState } from "react"

@@ -1,11 +1,11 @@
-import { CoachInformation } from "@/feature/coach-get-access/components/CoachInformation"
-import { MediaRange } from "@/lib/responsive/media"
+import { CoachInformation } from "#/feature/coach-get-access/components/CoachInformation"
+import { MediaRange } from "#/lib/responsive/media"
 import {
   $progress,
   coachGetAccessMounted,
   patchCoachDataFx,
   updateCoachData,
-} from "@/pages/coach/home/get-access/coach-get-access.model"
+} from "#/pages/coach/home/get-access/coach-get-access.model"
 import { useEvent, useStore } from "effector-react/ssr"
 import React, { useEffect } from "react"
 import styled from "styled-components"

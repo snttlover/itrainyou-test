@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import { MediaRange } from "@/lib/responsive/media"
-import { $pageProfile } from "@/pages/client/profile/profile-page.model"
+import { MediaRange } from "#/lib/responsive/media"
+import { $pageProfile } from "#/pages/client/profile/profile-page.model"
 import { useStore } from "effector-react/ssr"
 import * as React from "react"
 

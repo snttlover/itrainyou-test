@@ -1,12 +1,12 @@
 import React from "react"
 import styled from "styled-components"
-import { Dialog } from "@/components/dialog/Dialog"
-import { Textarea } from "@/components/textarea/Textarea"
-import { Avatar } from "@/components/avatar/Avatar"
-import { RatingPicker } from "@/components/rating/RatingPicker"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Dialog } from "#/components/dialog/Dialog"
+import { Textarea } from "#/components/textarea/Textarea"
+import { Avatar } from "#/components/avatar/Avatar"
+import { RatingPicker } from "#/components/rating/RatingPicker"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
 import { useEvent, useStore } from "effector-react/ssr"
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "#/components/spinner/Spinner"
 import {
   $rating,
   $resume,
@@ -17,8 +17,8 @@ import {
   changeRevocationVisibility,
   revocationFx,
   sendReview,
-} from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
-import { clientChat } from "@/pages/client/chats/chat/client-chat.model"
+} from "#/pages/client/session/content/session-page-content/cancel-session/session-revocation"
+import { clientChat } from "#/pages/client/chats/chat/client-chat.model"
 
 export const RevocationSessionDialog = () => {
   const rating = useStore($rating)

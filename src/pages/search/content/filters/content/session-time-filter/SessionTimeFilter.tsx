@@ -1,11 +1,11 @@
 import * as React from "react"
 import styled from "styled-components"
 import { useEvent, useList } from "effector-react/ssr"
-import { Checkbox } from "@/components/checkbox/Checkbox"
+import { Checkbox } from "#/components/checkbox/Checkbox"
 import {
   $priceFilters,
   toggleFilter,
-} from "@/pages/search/content/filters/content/session-time-filter/session-price-filter.model"
+} from "#/pages/search/content/filters/content/session-time-filter/session-price-filter.model"
 
 const Container = styled.div`
   padding-top: 16px;

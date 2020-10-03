@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import phoneWithGirl from "./images/phone-with-girl.svg"
-import { MediaRange } from "@/lib/responsive/media"
+import { MediaRange } from "#/lib/responsive/media"
 
 export const PhoneWithGirl = styled.img.attrs({ src: phoneWithGirl })`
   width: 240px;

@@ -1,9 +1,9 @@
-import { createChatModule } from "@/feature/chat"
-import { getClientChat } from "@/lib/api/chats/clients/get-chat"
-import { clientChatsSocket } from "@/feature/socket/chats-socket"
-import { getClientChatMessages } from "@/lib/api/chats/clients/get-messages"
-import { getClientChatSessions } from "@/lib/api/chats/clients/get-chat-sessions"
-import { getClientChatImages } from "@/lib/api/chats/clients/get-images"
+import { createChatModule } from "#/feature/chat"
+import { getClientChat } from "#/lib/api/chats/clients/get-chat"
+import { clientChatsSocket } from "#/feature/socket/chats-socket"
+import { getClientChatMessages } from "#/lib/api/chats/clients/get-messages"
+import { getClientChatSessions } from "#/lib/api/chats/clients/get-chat-sessions"
+import { getClientChatImages } from "#/lib/api/chats/clients/get-images"
 
 export const clientChat = createChatModule({
   type: `client`,

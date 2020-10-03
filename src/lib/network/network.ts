@@ -1,8 +1,8 @@
-import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { $token, logout, TOKEN_COOKIE_KEY } from "#/lib/network/token"
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
 import { attach, createEffect, forward } from "effector-root"
 import Cookies from "js-cookie"
-import { runInScope } from "@/scope"
+import { runInScope } from "#/scope"
 
 export type NetworkError = AxiosError
 

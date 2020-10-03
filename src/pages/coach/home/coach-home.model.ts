@@ -1,7 +1,7 @@
-import { $coachAccess, loadUserData } from "@/feature/user/user.model"
-import { updateRegistrationApplication } from "@/lib/api/coach/update-registration-application"
-import { date } from "@/lib/formatting/date"
-import { InferStoreType } from "@/lib/types/effector"
+import { $coachAccess, loadUserData } from "#/feature/user/user.model"
+import { updateRegistrationApplication } from "#/lib/api/coach/update-registration-application"
+import { date } from "#/lib/formatting/date"
+import { InferStoreType } from "#/lib/types/effector"
 import { combine, createEffect, createEvent, createStore, forward } from "effector-root"
 
 type CoachState =

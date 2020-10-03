@@ -1,7 +1,7 @@
 import { createEffect, createEvent, forward, restore, sample } from "effector-root"
-import { runInScope } from "@/scope"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
+import { runInScope } from "#/scope"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { fixAvatarAndImageUrl } from "#/lib/helpers/fix-avatar-and-image-url"
 
 export const createSocket = () => {
   let socket: WebSocket | null = null

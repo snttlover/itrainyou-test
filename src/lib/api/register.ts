@@ -1,7 +1,7 @@
-import { config } from "@/config"
-import { SessionCategory } from "@/lib/api/categories"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { post } from "@/lib/network/network"
+import { config } from "#/config"
+import { SessionCategory } from "#/lib/api/categories"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { post } from "#/lib/network/network"
 
 export interface RegisterAsUserRequest {
   email: string

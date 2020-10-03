@@ -1,7 +1,7 @@
-import { Spinner } from "@/components/spinner/Spinner"
-import { Tab, Tabs } from "@/components/tabs/Tabs"
-import { GetBannedClientsResponse } from "@/lib/api/restriction/get-banned-clients"
-import { MediaRange } from "@/lib/responsive/media"
+import { Spinner } from "#/components/spinner/Spinner"
+import { Tab, Tabs } from "#/components/tabs/Tabs"
+import { GetBannedClientsResponse } from "#/lib/api/restriction/get-banned-clients"
+import { MediaRange } from "#/lib/responsive/media"
 import {
   $bannedClients,
   $isLoading,
@@ -11,8 +11,8 @@ import {
   restrictClientFx,
   unbanClientFx,
   unrestrictClientFx,
-} from "@/pages/coach/blocked/blocked.model"
-import { BlockedClient } from "@/pages/coach/blocked/BlockedClient"
+} from "#/pages/coach/blocked/blocked.model"
+import { BlockedClient } from "#/pages/coach/blocked/BlockedClient"
 import { useEvent, useGate, useStore } from "effector-react/ssr"
 import React, { useState } from "react"
 import styled from "styled-components"

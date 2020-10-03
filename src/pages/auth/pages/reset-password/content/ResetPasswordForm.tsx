@@ -1,9 +1,9 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Input } from "@/components/input/Input"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { FormItem } from "@/components/form-item/FormItem"
-import { Spinner } from "@/components/spinner/Spinner"
+import { Input } from "#/components/input/Input"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
+import { FormItem } from "#/components/form-item/FormItem"
+import { Spinner } from "#/components/spinner/Spinner"
 import { useStore, useEvent } from "effector-react/ssr"
 import { FormEvent } from "react"
 import {
@@ -14,7 +14,7 @@ import {
   passwordChanged,
   passwordRepeatChanged,
   resetFx,
-} from "@/pages/auth/pages/reset-password/reset-password.model"
+} from "#/pages/auth/pages/reset-password/reset-password.model"
 
 const StyledForm = styled.form`
   position: relative;

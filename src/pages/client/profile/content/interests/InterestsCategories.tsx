@@ -1,10 +1,10 @@
 import styled from "styled-components"
-import { Checkbox } from "@/components/checkbox/Checkbox"
-import { CategoryDescription } from "@/pages/landing/content/top-bar/categories-picker/CategoryDescription"
+import { Checkbox } from "#/components/checkbox/Checkbox"
+import { CategoryDescription } from "#/pages/landing/content/top-bar/categories-picker/CategoryDescription"
 import { useEvent, useList } from "effector-react/ssr"
-import { getCategoryColorById } from "@/feature/categories/categories.store"
-import { MediaRange } from "@/lib/responsive/media"
-import { $profileCategories, toggleInterestCategory } from "@/pages/client/profile/profile-page.model"
+import { getCategoryColorById } from "#/feature/categories/categories.store"
+import { MediaRange } from "#/lib/responsive/media"
+import { $profileCategories, toggleInterestCategory } from "#/pages/client/profile/profile-page.model"
 import * as React from "react"
 
 const Container = styled.div`

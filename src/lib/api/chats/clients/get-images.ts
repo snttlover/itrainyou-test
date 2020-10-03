@@ -1,9 +1,9 @@
-import { config } from "@/config"
-import { keysToCamel } from "@/lib/network/casing"
-import { get } from "@/lib/network/network"
-import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api/interfaces/utils.interface"
-import { ChatId } from "@/lib/api/chats/coach/get-messages"
-import { PaginationRequest } from "@/feature/pagination/modules/pagination"
+import { config } from "#/config"
+import { keysToCamel } from "#/lib/network/casing"
+import { get } from "#/lib/network/network"
+import { CursorPagination, CursorPaginationRequest, Pagination } from "#/lib/api/interfaces/utils.interface"
+import { ChatId } from "#/lib/api/chats/coach/get-messages"
+import { PaginationRequest } from "#/feature/pagination/modules/pagination"
 
 export type ChatImage = {
   file: string,

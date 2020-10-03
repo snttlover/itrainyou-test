@@ -1,11 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import { ISODate } from "@/lib/api/interfaces/utils.interface"
-import { date } from "@/lib/formatting/date"
-import { MediaRange } from "@/lib/responsive/media"
-import { createInfinityScroll } from "@/feature/pagination"
-import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
-import { CreatePaginationType } from "@/feature/pagination/modules/pagination"
+import { ISODate } from "#/lib/api/interfaces/utils.interface"
+import { date } from "#/lib/formatting/date"
+import { MediaRange } from "#/lib/responsive/media"
+import { createInfinityScroll } from "#/feature/pagination"
+import { SessionRequest } from "#/lib/api/coach/get-sessions-requests"
+import { CreatePaginationType } from "#/feature/pagination/modules/pagination"
 
 type SessionsHistoryProps = {
   pagination: CreatePaginationType<SessionRequest>

@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Icon } from "@/components/icon/Icon"
-import { MediaRange } from "@/lib/responsive/media"
+import { Icon } from "#/components/icon/Icon"
+import { MediaRange } from "#/lib/responsive/media"
 import { useEvent } from "effector-react/ssr"
-import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"
+import { changeSessionsMobileVisibility } from "#/feature/chat/modules/chat-sessions"
 
 type MobileChatHeaderMenuProps = {
   openMaterials: () => void

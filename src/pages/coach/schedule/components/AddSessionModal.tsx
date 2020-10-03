@@ -1,11 +1,11 @@
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useClickOutside } from "@/components/click-outside/use-click-outside"
-import { Icon } from "@/components/icon/Icon"
-import { Modal } from "@/components/modal/Modal"
-import { SelectInput } from "@/components/select-input/SelectInput"
-import { Spinner } from "@/components/spinner/Spinner"
-import { DurationType } from "@/lib/api/coach-sessions"
-import { MediaRange } from "@/lib/responsive/media"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
+import { useClickOutside } from "#/components/click-outside/use-click-outside"
+import { Icon } from "#/components/icon/Icon"
+import { Modal } from "#/components/modal/Modal"
+import { SelectInput } from "#/components/select-input/SelectInput"
+import { Spinner } from "#/components/spinner/Spinner"
+import { DurationType } from "#/lib/api/coach-sessions"
+import { MediaRange } from "#/lib/responsive/media"
 import {
   $durationOptions,
   $form,
@@ -15,7 +15,7 @@ import {
   createSessionsFx,
   durationChanged,
   startDatetimeChanged,
-} from "@/pages/coach/schedule/models/add-session.model"
+} from "#/pages/coach/schedule/models/add-session.model"
 import { useStore, useEvent } from "effector-react/ssr"
 import React, { useRef } from "react"
 import styled from "styled-components"

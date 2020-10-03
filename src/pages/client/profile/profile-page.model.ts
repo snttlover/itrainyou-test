@@ -1,10 +1,10 @@
-import { getMyClient, ClientSelfData } from "@/lib/api/client/clientInfo"
-import { date } from "@/lib/formatting/date"
+import { getMyClient, ClientSelfData } from "#/lib/api/client/clientInfo"
+import { date } from "#/lib/formatting/date"
 import { combine, createEffect, createEvent, createStore, forward, sample, guard } from "effector-root"
-import { $categoriesList, fetchCategoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
-import { getMyTransactions, SessionTransaction } from "@/lib/api/transactions/client/list-transaction"
-import { UpdateClientRequest, updateMyClient } from "@/lib/api/client/update"
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { $categoriesList, fetchCategoriesList, fetchCategoriesListFx } from "#/feature/categories/categories.store"
+import { getMyTransactions, SessionTransaction } from "#/lib/api/transactions/client/list-transaction"
+import { UpdateClientRequest, updateMyClient } from "#/lib/api/client/update"
+import { Toast, toasts } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export const loadProfileFx = createEffect({
   handler: getMyClient,

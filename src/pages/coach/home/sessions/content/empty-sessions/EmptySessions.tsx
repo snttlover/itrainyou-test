@@ -1,7 +1,7 @@
 import styled from "styled-components"
-import { CoachSessionsBlockTitle as Title } from "@/pages/coach/home/sessions/common/CoachSessionsBlockTitle"
+import { CoachSessionsBlockTitle as Title } from "#/pages/coach/home/sessions/common/CoachSessionsBlockTitle"
 import emptyImage from "./images/empty.svg"
-import { MediaRange } from "@/lib/responsive/media"
+import { MediaRange } from "#/lib/responsive/media"
 import * as React from "react"
 
 const Container = styled.div`

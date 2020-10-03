@@ -1,8 +1,8 @@
-import { config } from "@/config"
-import { SessionCategory } from "@/lib/api/categories"
-import { ISODate, Pagination, Sex } from "@/lib/api/interfaces/utils.interface"
-import { keysToCamel } from "@/lib/network/casing"
-import { get } from "@/lib/network/network"
+import { config } from "#/config"
+import { SessionCategory } from "#/lib/api/categories"
+import { ISODate, Pagination, Sex } from "#/lib/api/interfaces/utils.interface"
+import { keysToCamel } from "#/lib/network/casing"
+import { get } from "#/lib/network/network"
 
 export interface ClientCoachesRequest {
   page?: number

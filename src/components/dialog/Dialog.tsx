@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { DialogOverlay } from "@/components/dialog/DialogOverlay"
-import { Icon } from "@/components/icon/Icon"
+import { DialogOverlay } from "#/components/dialog/DialogOverlay"
+import { Icon } from "#/components/icon/Icon"
 
 type DialogProps = {
   children: React.ReactChild | React.ReactChild[]

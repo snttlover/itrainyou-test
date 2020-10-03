@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 // @ts-ignore
-import profilePlaceholder from "@/pages/landing/content/top-bar/mobile-menu/images/profile-placeholder.png"
+import profilePlaceholder from "#/pages/landing/content/top-bar/mobile-menu/images/profile-placeholder.png"
 
 const ProfileContainer = styled.div`
   padding-top: 20px;

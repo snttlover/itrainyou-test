@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useEvent, useList } from "effector-react/ssr"
-import { $toasts, toasts, ToastType } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { Icon } from "@/components/icon/Icon"
+import { $toasts, toasts, ToastType } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Icon } from "#/components/icon/Icon"
 import React, { useEffect } from "react"
 
 const Container = styled.div`

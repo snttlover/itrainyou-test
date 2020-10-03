@@ -1,15 +1,15 @@
-import { FormItem, Label } from "@/components/form-item/FormItem"
-import { SelectInput } from "@/components/select-input/SelectInput"
-import { date } from "@/lib/formatting/date"
-import { MediaRange } from "@/lib/responsive/media"
-import { FormGroup } from "@/pages/auth/pages/signup/content/step-3/FormGroup"
+import { FormItem, Label } from "#/components/form-item/FormItem"
+import { SelectInput } from "#/components/select-input/SelectInput"
+import { date } from "#/lib/formatting/date"
+import { MediaRange } from "#/lib/responsive/media"
+import { FormGroup } from "#/pages/auth/pages/signup/content/step-3/FormGroup"
 import {
   $step3Form,
   $step3FormErrors,
   birthdayChanged,
   sexChanged,
-} from "@/pages/auth/pages/signup/content/step-3/step3.model"
-import { $userData } from "@/pages/auth/pages/signup/signup.model"
+} from "#/pages/auth/pages/signup/content/step-3/step3.model"
+import { $userData } from "#/pages/auth/pages/signup/signup.model"
 import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import { useState } from "react"

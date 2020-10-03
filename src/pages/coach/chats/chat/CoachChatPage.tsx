@@ -1,9 +1,9 @@
 import React from "react"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ContentContainer } from "#/components/layouts/ContentContainer"
 import styled from "styled-components"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
-import { createChat } from "@/feature/chat"
-import { coachChat } from "@/pages/coach/chats/chat/coach-chat.model"
+import { CoachDashboardLayout } from "#/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { createChat } from "#/feature/chat"
+import { coachChat } from "#/pages/coach/chats/chat/coach-chat.model"
 
 const StyledContentContainer = styled(ContentContainer)`
   height: 100%;

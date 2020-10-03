@@ -1,8 +1,8 @@
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { Button } from "@/components/button/normal/Button"
-import { Icon } from "@/components/icon/Icon"
-import { Category } from "@/feature/categories/categories.store"
-import { MediaRange } from "@/lib/responsive/media"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
+import { Button } from "#/components/button/normal/Button"
+import { Icon } from "#/components/icon/Icon"
+import { Category } from "#/feature/categories/categories.store"
+import { MediaRange } from "#/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
 

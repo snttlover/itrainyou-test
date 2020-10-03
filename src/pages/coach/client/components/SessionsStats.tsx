@@ -1,6 +1,6 @@
-import { $clientData } from "@/pages/coach/client/client-page.model"
+import { $clientData } from "#/pages/coach/client/client-page.model"
 import styled from "styled-components"
-import { MediaRange } from "@/lib/responsive/media"
+import { MediaRange } from "#/lib/responsive/media"
 import { useStore } from "effector-react/ssr"
 import * as React from "react"
 

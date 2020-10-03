@@ -1,5 +1,5 @@
-import { Input, InputTypes } from "@/components/input/Input"
-import { Loader } from "@/components/spinner/Spinner"
+import { Input, InputTypes } from "#/components/input/Input"
+import { Loader } from "#/components/spinner/Spinner"
 import React from "react"
 import styled from "styled-components"
 

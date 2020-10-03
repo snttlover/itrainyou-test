@@ -1,19 +1,19 @@
-import { Button } from "@/components/button/normal/Button"
-import { Icon } from "@/components/icon/Icon"
-import { RegisterSteps } from "@/components/register-steps/RegisterSteps"
-import { Loader } from "@/components/spinner/Spinner"
-import { $categoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
+import { Button } from "#/components/button/normal/Button"
+import { Icon } from "#/components/icon/Icon"
+import { RegisterSteps } from "#/components/register-steps/RegisterSteps"
+import { Loader } from "#/components/spinner/Spinner"
+import { $categoriesList, fetchCategoriesListFx } from "#/feature/categories/categories.store"
 import {
   $formValid,
   $selectedCategories,
   toggleCategory,
   videoUploadFx,
-} from "@/feature/coach-get-access/coach-get-access.model"
-import { MediaRange } from "@/lib/responsive/media"
-import { CategoryCard } from "@/feature/coach-get-access/components/CategoryCard"
-import { CheckStep } from "@/feature/coach-get-access/components/check-step/CheckStep"
-import { Form } from "@/feature/coach-get-access/components/Form"
-import { UploadVideo } from "@/feature/coach-get-access/components/UploadVideo"
+} from "#/feature/coach-get-access/coach-get-access.model"
+import { MediaRange } from "#/lib/responsive/media"
+import { CategoryCard } from "#/feature/coach-get-access/components/CategoryCard"
+import { CheckStep } from "#/feature/coach-get-access/components/check-step/CheckStep"
+import { Form } from "#/feature/coach-get-access/components/Form"
+import { UploadVideo } from "#/feature/coach-get-access/components/UploadVideo"
 import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"

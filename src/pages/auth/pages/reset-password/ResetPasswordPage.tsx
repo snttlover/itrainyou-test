@@ -1,8 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import { ResetPasswordForm } from "@/pages/auth/pages/reset-password/content/ResetPasswordForm"
-import { CenterFormContainer } from "@/pages/auth/components/CenterFormContainer"
-import {WhiteMobileAuthContainer, WhiteMobileAuthLayout} from "@/pages/auth/pages/reset-password/common/StyledWhiteMobileAuthLayout"
+import { ResetPasswordForm } from "#/pages/auth/pages/reset-password/content/ResetPasswordForm"
+import { CenterFormContainer } from "#/pages/auth/components/CenterFormContainer"
+import {WhiteMobileAuthContainer, WhiteMobileAuthLayout} from "#/pages/auth/pages/reset-password/common/StyledWhiteMobileAuthLayout"
 
 const Header = styled.h3`
   font-weight: 600;

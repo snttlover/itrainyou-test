@@ -1,8 +1,8 @@
 import React, { SyntheticEvent } from "react"
 import styled from "styled-components"
-import { Icon, IconName } from "@/components/icon/Icon"
-import { MediaRange } from "@/lib/responsive/media"
-import { changeBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
+import { Icon, IconName } from "#/components/icon/Icon"
+import { MediaRange } from "#/lib/responsive/media"
+import { changeBlueLayoutMobileMenuVisibility } from "#/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import { Link, useLocation } from "react-router-dom"
 import { useEvent } from "effector-react/ssr"
 

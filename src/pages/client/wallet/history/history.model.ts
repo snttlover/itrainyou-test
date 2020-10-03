@@ -1,7 +1,7 @@
-import { getClientTransactionsList, Transaction } from "@/lib/api/wallet/client/get-list-transactions"
-import { date } from "@/lib/formatting/date"
-import WalletTransactionImage from "@/pages/client/wallet/history/images/wallet.svg"
-import { createGate } from "@/scope"
+import { getClientTransactionsList, Transaction } from "#/lib/api/wallet/client/get-list-transactions"
+import { date } from "#/lib/formatting/date"
+import WalletTransactionImage from "#/pages/client/wallet/history/images/wallet.svg"
+import { createGate } from "#/scope"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 
 export const WalletHistoryPageGate = createGate()

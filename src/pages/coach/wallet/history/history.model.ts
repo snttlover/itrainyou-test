@@ -1,6 +1,6 @@
-import { getCoachTransactionsList, Transaction } from "@/lib/api/wallet/coach/get-list-transactions"
-import { date } from "@/lib/formatting/date"
-import { createGate } from "@/scope"
+import { getCoachTransactionsList, Transaction } from "#/lib/api/wallet/coach/get-list-transactions"
+import { date } from "#/lib/formatting/date"
+import { createGate } from "#/scope"
 import WalletTransactionImage from "./images/wallet.svg"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 

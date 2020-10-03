@@ -1,12 +1,12 @@
-import { routeNames } from "@/pages/route-names"
+import { routeNames } from "#/pages/route-names"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
-import { ExpansionPanel } from "@/components/expansion-panel/ExpansionPanel"
+import { LandingPageContainer } from "#/pages/landing/common/LandingPageContainer"
+import { ExpansionPanel } from "#/components/expansion-panel/ExpansionPanel"
 import peopleImage from "./images/people.svg"
 import questions from "./questions"
-import { Button } from "@/components/button/normal/Button"
+import { Button } from "#/components/button/normal/Button"
 
 const Title = styled.h3`
   font-style: normal;

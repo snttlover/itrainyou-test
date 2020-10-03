@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Dialog } from "@/components/dialog/Dialog"
-import { Avatar } from "@/components/avatar/Avatar"
-import { Button } from "@/components/button/normal/Button"
-import { createStartSessionDialogModel } from "@/feature/session/start-session-dialog/create-start-session-dialog.model"
+import { Dialog } from "#/components/dialog/Dialog"
+import { Avatar } from "#/components/avatar/Avatar"
+import { Button } from "#/components/button/normal/Button"
+import { createStartSessionDialogModel } from "#/feature/session/start-session-dialog/create-start-session-dialog.model"
 import { useEvent, useStore } from "effector-react/ssr"
 
 export const createStartSessionDialog = ($module: ReturnType<typeof createStartSessionDialogModel>) => () => {

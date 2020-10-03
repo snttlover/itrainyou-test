@@ -1,7 +1,7 @@
-import { createStartSessionDialogModel } from "@/feature/session/start-session-dialog/create-start-session-dialog.model"
-import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-socket"
-import { clientCall, coachCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { createStartSessionDialog } from "@/feature/session/start-session-dialog/StartSessionDialog"
+import { createStartSessionDialogModel } from "#/feature/session/start-session-dialog/create-start-session-dialog.model"
+import { clientChatsSocket, coachChatsSocket } from "#/feature/socket/chats-socket"
+import { clientCall, coachCall } from "#/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { createStartSessionDialog } from "#/feature/session/start-session-dialog/StartSessionDialog"
 
 export const coachSessionStartedDialog = createStartSessionDialogModel({
   socket: coachChatsSocket,

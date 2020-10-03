@@ -1,7 +1,7 @@
 import {
   AdvantageSlide,
   AdvantageSlideTypes
-} from "@/pages/landing/content/platform-advantages/content/AdvantageSlide"
+} from "#/pages/landing/content/platform-advantages/content/AdvantageSlide"
 import * as React from "react"
 import styled from "styled-components"
 

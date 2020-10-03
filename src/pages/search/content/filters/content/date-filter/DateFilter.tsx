@@ -1,16 +1,16 @@
-import { date as formatedDate } from "@/lib/formatting/date"
+import { date as formatedDate } from "#/lib/formatting/date"
 import * as React from "react"
 import styled from "styled-components"
-import { RadioGroup, RadioOption } from "@/components/radio/Radio"
+import { RadioGroup, RadioOption } from "#/components/radio/Radio"
 import { useEffect, useState } from "react"
-import { Calendar, CalendarDateType } from "@/components/calendar/Calendar"
+import { Calendar, CalendarDateType } from "#/components/calendar/Calendar"
 import { useEvent, useStore } from "effector-react/ssr"
 import arrowImage from "./images/arrow.svg"
-import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
+import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "#/pages/search/coaches-search.model"
 import {
   $calendarVisibility,
   changeVisibility,
-} from "@/pages/search/content/filters/content/date-filter/calendar.model"
+} from "#/pages/search/content/filters/content/date-filter/calendar.model"
 
 const Container = styled.div`
   padding-top: 16px;

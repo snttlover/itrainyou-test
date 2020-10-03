@@ -1,6 +1,6 @@
-import { config } from "@/config"
-import { keysToCamel } from "@/lib/network/casing"
-import { get } from "@/lib/network/network"
+import { config } from "#/config"
+import { keysToCamel } from "#/lib/network/casing"
+import { get } from "#/lib/network/network"
 
 export interface Price {
   maxCost: number

@@ -1,5 +1,5 @@
 import { Combinable, combine, createEffect, createEvent, createStore, guard, sample, Store } from "effector-root"
-import { Pagination } from "@/lib/api/interfaces/utils.interface"
+import { Pagination } from "#/lib/api/interfaces/utils.interface"
 
 export type PaginationRequest =
   | {

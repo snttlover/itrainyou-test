@@ -1,8 +1,8 @@
-import { navigatePush } from "@/feature/navigation"
-import { ResetPasswordRequest, resetPassword } from "@/lib/api/reset-password"
-import { createEffectorField } from "@/lib/generators/efffector"
-import { passwordValidator, trimString } from "@/lib/validators"
-import { routeNames } from "@/pages/route-names"
+import { navigatePush } from "#/feature/navigation"
+import { ResetPasswordRequest, resetPassword } from "#/lib/api/reset-password"
+import { createEffectorField } from "#/lib/generators/efffector"
+import { passwordValidator, trimString } from "#/lib/validators"
+import { routeNames } from "#/pages/route-names"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStore, createStoreObject, forward } from "effector-root"
 

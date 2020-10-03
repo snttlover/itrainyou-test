@@ -1,4 +1,4 @@
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "#/components/spinner/Spinner"
 import { useEvent, useStore } from "effector-react/ssr"
 import InfiniteScroll from "react-infinite-scroll-component"
 import * as React from "react"

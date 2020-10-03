@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { ChatMessage } from "@/pages/client/chats/chat/content/client-chat/content/ChatMessage"
-import { MediaRange } from "@/lib/responsive/media"
-import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
+import { ChatMessage } from "#/pages/client/chats/chat/content/client-chat/content/ChatMessage"
+import { MediaRange } from "#/lib/responsive/media"
+import { createChatMessagesModule } from "#/feature/chat/modules/chat-messages"
 import { useList, useStore } from "effector-react/ssr"
-import { createReverseInfinityScroll } from "@/feature/pagination/view/ReverseInfinityScroll"
-import { ChatMessageSwitcher } from "@/feature/chat/view/content/messages/content/ChatMessageSwitcher"
+import { createReverseInfinityScroll } from "#/feature/pagination/view/ReverseInfinityScroll"
+import { ChatMessageSwitcher } from "#/feature/chat/view/content/messages/content/ChatMessageSwitcher"
 
 const Container = styled.div`
   flex-direction: column;

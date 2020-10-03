@@ -1,14 +1,14 @@
-import { navigatePush } from "@/feature/navigation"
-import { updateTime } from "@/pages/coach/home/coach-home.model"
-import { routeNames } from "@/pages/route-names"
+import { navigatePush } from "#/feature/navigation"
+import { updateTime } from "#/pages/coach/home/coach-home.model"
+import { routeNames } from "#/pages/route-names"
 import { useEvent } from "effector-react/ssr"
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { Title } from "@/pages/coach/home/awaiting-approval/common/Title"
-import { SubTitle } from "@/pages/coach/home/awaiting-approval/common/SubTitle"
-import { Button } from "@/components/button/normal/Button"
-import { MediaRange } from "@/lib/responsive/media"
-import { Timer } from "@/pages/coach/home/approval-timer/content/Timer"
+import { Title } from "#/pages/coach/home/awaiting-approval/common/Title"
+import { SubTitle } from "#/pages/coach/home/awaiting-approval/common/SubTitle"
+import { Button } from "#/components/button/normal/Button"
+import { MediaRange } from "#/lib/responsive/media"
+import { Timer } from "#/pages/coach/home/approval-timer/content/Timer"
 
 const Container = styled.div`
   margin: 0 auto;

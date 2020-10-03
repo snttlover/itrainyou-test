@@ -1,4 +1,4 @@
-import { config } from "@/config"
+import { config } from "#/config"
 import { Pagination, Sex } from "./interfaces/utils.interface"
 import { keysToCamel } from "../network/casing"
 import { get } from "../network/network"

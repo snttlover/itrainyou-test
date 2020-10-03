@@ -1,7 +1,7 @@
-import { Chat } from "@/lib/api/chats/clients/get-chats"
+import { Chat } from "#/lib/api/chats/clients/get-chats"
 import { createEffect, createEvent, createStore, sample } from "effector-root"
-import { routeNames } from "@/pages/route-names"
-import { createNotFoundModule } from "@/feature/not-found/not-found"
+import { routeNames } from "#/pages/route-names"
+import { createNotFoundModule } from "#/feature/not-found/not-found"
 
 type createChatInfoModuleTypes = {
   type: "coach" | "client"

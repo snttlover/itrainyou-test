@@ -1,12 +1,12 @@
-import { Avatar } from "@/components/avatar/Avatar"
-import { Icon } from "@/components/icon/Icon"
-import { createInfinityScroll } from "@/feature/pagination"
-import { clientCoachesPagination } from "@/pages/coach/client/client-page.model"
-import { SessionsStats } from "@/pages/coach/client/components/SessionsStats"
+import { Avatar } from "#/components/avatar/Avatar"
+import { Icon } from "#/components/icon/Icon"
+import { createInfinityScroll } from "#/feature/pagination"
+import { clientCoachesPagination } from "#/pages/coach/client/client-page.model"
+import { SessionsStats } from "#/pages/coach/client/components/SessionsStats"
 import { useList, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
-import { MediaRange } from "@/lib/responsive/media"
+import { MediaRange } from "#/lib/responsive/media"
 
 const Container = styled.div`
   width: 100%;

@@ -1,20 +1,20 @@
-import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
+import { createChatsSocket, WriteChatMessageDone } from "#/feature/socket/chats-socket"
 import { createEffect, createEvent, createStore, forward, guard, restore, sample } from "effector-root"
-import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
+import { createCursorPagination, CursorPaginationFetchMethod } from "#/feature/pagination/modules/cursor-pagination"
 import {
   Chat,
   ChatMessage,
   ConflictStatus,
   MessageSessionRequestStatuses,
   SupportTicketType,
-} from "@/lib/api/chats/clients/get-chats"
-import { date } from "@/lib/formatting/date"
-import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
-import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
-import { CoachUser } from "@/lib/api/coach"
-import { Client } from "@/lib/api/client/clientInfo"
-import { ChatId } from "@/lib/api/chats/coach/get-messages"
-import { config as globalConfig } from "@/config"
+} from "#/lib/api/chats/clients/get-chats"
+import { date } from "#/lib/formatting/date"
+import { CursorPagination, CursorPaginationRequest } from "#/lib/api/interfaces/utils.interface"
+import { SessionRequest } from "#/lib/api/coach/get-sessions-requests"
+import { CoachUser } from "#/lib/api/coach"
+import { Client } from "#/lib/api/client/clientInfo"
+import { ChatId } from "#/lib/api/chats/coach/get-messages"
+import { config as globalConfig } from "#/config"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"

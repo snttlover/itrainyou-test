@@ -1,7 +1,7 @@
-import { createPagination } from "@/feature/pagination"
-import { GetNotificationsQuery, Notifications } from "@/lib/api/client/get-notifications"
-import { Pagination } from "@/lib/api/interfaces/utils.interface"
-import { date } from "@/lib/formatting/date"
+import { createPagination } from "#/feature/pagination"
+import { GetNotificationsQuery, Notifications } from "#/lib/api/client/get-notifications"
+import { Pagination } from "#/lib/api/interfaces/utils.interface"
+import { date } from "#/lib/formatting/date"
 import { createEvent, forward } from "effector-root"
 
 type CreateNotificationsPageModelConfig = {

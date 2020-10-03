@@ -1,4 +1,4 @@
-import { date } from "@/lib/formatting/date"
+import { date } from "#/lib/formatting/date"
 import { Dayjs } from "dayjs"
 import { createEvent, restore } from "effector-root"
 

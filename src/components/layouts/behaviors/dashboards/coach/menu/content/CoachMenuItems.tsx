@@ -1,11 +1,11 @@
-import { $coachAccess } from "@/feature/user/user.model"
-import { routeNames } from "@/pages/route-names"
+import { $coachAccess } from "#/feature/user/user.model"
+import { routeNames } from "#/pages/route-names"
 import { useStore } from "effector-react/ssr"
 import styled from "styled-components"
 import * as React from "react"
-import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
-import { MediaRange } from "@/lib/responsive/media"
-import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-socket"
+import { DashboardMenuItem } from "#/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
+import { MediaRange } from "#/lib/responsive/media"
+import { clientChatsSocket, coachChatsSocket } from "#/feature/socket/chats-socket"
 
 const ItemsWrapper = styled.div`
   display: flex;

@@ -1,10 +1,10 @@
-import { PasswordInput } from "@/components/input/PasswordInput"
+import { PasswordInput } from "#/components/input/PasswordInput"
 import * as React from "react"
 import styled from "styled-components"
-import { Input } from "@/components/input/Input"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { FormItem } from "@/components/form-item/FormItem"
-import { Spinner } from "@/components/spinner/Spinner"
+import { Input } from "#/components/input/Input"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
+import { FormItem } from "#/components/form-item/FormItem"
+import { Spinner } from "#/components/spinner/Spinner"
 import { useStore, useEvent } from "effector-react/ssr"
 import {
   $isFormValid,
@@ -14,9 +14,9 @@ import {
   passwordChanged,
   loginFx,
   loginFormSent,
-} from "@/pages/auth/pages/login/login.model"
+} from "#/pages/auth/pages/login/login.model"
 import { FormEvent } from "react"
-import { MediaRange } from "@/lib/responsive/media"
+import { MediaRange } from "#/lib/responsive/media"
 
 const StyledForm = styled.form`
   width: 100%;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Dialog } from "@/components/dialog/Dialog"
-import { Checkbox, CheckboxContent } from "@/components/checkbox/Checkbox"
-import { Button } from "@/components/button/normal/Button"
+import { Dialog } from "#/components/dialog/Dialog"
+import { Checkbox, CheckboxContent } from "#/components/checkbox/Checkbox"
+import { Button } from "#/components/button/normal/Button"
 
 type BanDialogTypes = {
   onSuccess: () => void

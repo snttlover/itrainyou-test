@@ -1,7 +1,7 @@
-import { Icon } from "@/components/icon/Icon"
-import { Input } from "@/components/input/Input"
-import { date } from "@/lib/formatting/date"
-import { MediaRange } from "@/lib/responsive/media"
+import { Icon } from "#/components/icon/Icon"
+import { Input } from "#/components/input/Input"
+import { date } from "#/lib/formatting/date"
+import { MediaRange } from "#/lib/responsive/media"
 import React from "react"
 import styled from "styled-components"
 

@@ -1,6 +1,6 @@
 import { createDomain, forward, sample, split } from "effector-root"
-import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
-import { DurationType } from "@/lib/api/coach-sessions"
+import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "#/pages/search/coaches-search.model"
+import { DurationType } from "#/lib/api/coach-sessions"
 
 const priceFilterDomain = createDomain(`price-filter`)
 

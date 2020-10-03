@@ -1,8 +1,8 @@
-import { routeNames } from "@/pages/route-names"
+import { routeNames } from "#/pages/route-names"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
+import { LandingPageContainer } from "#/pages/landing/common/LandingPageContainer"
 import desktopBackground from "./images/desktop-background.svg"
 import mobileBackground from "./images/mobile-background.svg"
 

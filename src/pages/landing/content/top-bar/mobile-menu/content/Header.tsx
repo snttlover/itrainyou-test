@@ -1,8 +1,8 @@
-import { CategoriesPicker } from "@/pages/landing/content/top-bar/categories-picker/CategoriesPicker"
+import { CategoriesPicker } from "#/pages/landing/content/top-bar/categories-picker/CategoriesPicker"
 import * as React from "react"
 import styled from "styled-components"
-import { Search } from "@/pages/landing/content/top-bar/search/Search"
-import closeImage from "@/pages/landing/content/top-bar/mobile-menu/images/close.svg"
+import { Search } from "#/pages/landing/content/top-bar/search/Search"
+import closeImage from "#/pages/landing/content/top-bar/mobile-menu/images/close.svg"
 
 const StyledHeader = styled.div`
   display: flex;

@@ -1,9 +1,9 @@
-import { createChatsSocket } from "@/feature/socket/chats-socket"
+import { createChatsSocket } from "#/feature/socket/chats-socket"
 import { createEvent, forward, restore } from "effector-root"
-import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
-import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { formatSessionTime } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
-import { config as globalConfig } from "@/config"
+import { DashboardSession } from "#/lib/api/coach/get-dashboard-sessions"
+import { createSessionCallModule } from "#/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { formatSessionTime } from "#/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
+import { config as globalConfig } from "#/config"
 
 type createStartSessionDialogModelConfig = {
   type: "coach" | "client"

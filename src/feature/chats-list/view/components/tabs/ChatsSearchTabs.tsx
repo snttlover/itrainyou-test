@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { Tabs, Tab } from "@/components/tabs/Tabs"
-import { MediaRange } from "@/lib/responsive/media"
-import { ChatListTabs } from "@/feature/chats-list/modules/chat-list"
+import { Tabs, Tab } from "#/components/tabs/Tabs"
+import { MediaRange } from "#/lib/responsive/media"
+import { ChatListTabs } from "#/feature/chats-list/modules/chat-list"
 import { Simulate } from "react-dom/test-utils"
 
 type ChatsListTabsProps = {

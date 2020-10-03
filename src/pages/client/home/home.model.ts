@@ -1,6 +1,6 @@
-import { getClientSessions } from "@/lib/api/client-session"
-import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
-import { Coach, getRecommendations } from "@/lib/api/coach"
+import { getClientSessions } from "#/lib/api/client-session"
+import { DashboardSession } from "#/lib/api/coach/get-dashboard-sessions"
+import { Coach, getRecommendations } from "#/lib/api/coach"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 
 export const loadRecommendationsFx = createEffect({

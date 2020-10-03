@@ -1,7 +1,7 @@
-import { config } from "@/config"
-import { CoachSchedule, CreateCoachSchedule } from "@/lib/api/coaching-sessions/types"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { post } from "@/lib/network/network"
+import { config } from "#/config"
+import { CoachSchedule, CreateCoachSchedule } from "#/lib/api/coaching-sessions/types"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { post } from "#/lib/network/network"
 
 export const createCoachSchedule = (data: CreateCoachSchedule) =>
   post<CoachSchedule, CreateCoachSchedule>(`${config.BACKEND_URL}/api/v1/web/coach/coach-schedules/`, keysToSnake(data))

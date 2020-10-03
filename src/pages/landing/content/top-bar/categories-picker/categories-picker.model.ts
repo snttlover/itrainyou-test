@@ -1,6 +1,6 @@
 import { combine, createEvent, forward, restore, sample } from "effector-root"
-import { $categoriesList as $categories } from "@/feature/categories/categories.store"
-import { addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
+import { $categoriesList as $categories } from "#/feature/categories/categories.store"
+import { addSearchPageQuery, removeSearchPageQuery } from "#/pages/search/coaches-search.model"
 import { splitMap } from "patronum"
 
 export const toggleCategorySelection = createEvent<number>()

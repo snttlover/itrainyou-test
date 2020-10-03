@@ -1,24 +1,24 @@
 import React, { useEffect } from "react"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { CoachDashboardLayout } from "#/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
-import { SessionPageContainer as Container } from "@/pages/client/session/content/session-page-content/common/SessionPageContainer"
-import { SessionPageContent as Content } from "@/pages/client/session/content/session-page-content/common/SessionPageContent"
-import { SessionPageInfoWrapper as InfoWrapper } from "@/pages/client/session/content/session-page-content/common/SessionPageInfoWrapper"
-import { UserHeader } from "@/pages/client/session/content/session-page-content/UserHeader"
+import { SessionPageContainer as Container } from "#/pages/client/session/content/session-page-content/common/SessionPageContainer"
+import { SessionPageContent as Content } from "#/pages/client/session/content/session-page-content/common/SessionPageContent"
+import { SessionPageInfoWrapper as InfoWrapper } from "#/pages/client/session/content/session-page-content/common/SessionPageInfoWrapper"
+import { UserHeader } from "#/pages/client/session/content/session-page-content/UserHeader"
 import {
   SessionInfo,
   TabletSessionInfo
-} from "@/pages/client/session/content/session-page-content/session-info/SessionInfo"
-import { coachSessionPage } from "@/pages/coach/session/coach-session-page"
+} from "#/pages/client/session/content/session-page-content/session-info/SessionInfo"
+import { coachSessionPage } from "#/pages/coach/session/coach-session-page"
 import { useParams } from "react-router-dom"
 import { useEvent, useStore } from "effector-react/ssr"
-import { Loader } from "@/components/spinner/Spinner"
-import { NotFound } from "@/feature/not-found/components/NotFound"
-import { SessionsHistory } from "@/pages/client/session/content/session-page-content/session-history/SessionsHistory"
+import { Loader } from "#/components/spinner/Spinner"
+import { NotFound } from "#/feature/not-found/components/NotFound"
+import { SessionsHistory } from "#/pages/client/session/content/session-page-content/session-history/SessionsHistory"
 import {
   CancelSession,
   TabletCancelSession,
-} from "@/pages/client/session/content/session-page-content/cancel-session/CancelSession"
+} from "#/pages/client/session/content/session-page-content/cancel-session/CancelSession"
 
 export const CoachSessionPage = () => {
   const params = useParams<{ id: string }>()

@@ -1,11 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import { ChatHeaderContainer } from "@/feature/chat/view/content/headers/common/ChatHeaderContainer"
-import { Icon } from "@/components/icon/Icon"
+import { ChatHeaderContainer } from "#/feature/chat/view/content/headers/common/ChatHeaderContainer"
+import { Icon } from "#/components/icon/Icon"
 
-import { ChatHeaderMobileBackButton as MobileBackButton } from "@/feature/chat/view/content/headers/common/ChatHeaderMobileBackButton"
-import { ChatHeaderTitle as Title } from "@/feature/chat/view/content/headers/common/ChatHeaderTitle"
-import { MediaRange } from "@/lib/responsive/media"
+import { ChatHeaderMobileBackButton as MobileBackButton } from "#/feature/chat/view/content/headers/common/ChatHeaderMobileBackButton"
+import { ChatHeaderTitle as Title } from "#/feature/chat/view/content/headers/common/ChatHeaderTitle"
+import { MediaRange } from "#/lib/responsive/media"
 
 export const SystemChatHeader = ({ backLink }: { backLink: string }) => (
   <ChatHeaderContainer>

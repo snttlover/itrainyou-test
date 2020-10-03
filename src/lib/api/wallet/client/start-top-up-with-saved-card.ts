@@ -1,6 +1,6 @@
-import { config } from "@/config"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { post } from "@/lib/network/network"
+import { config } from "#/config"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { post } from "#/lib/network/network"
 
 type StartTopUpWithSavedCardRequest = {
   id: number

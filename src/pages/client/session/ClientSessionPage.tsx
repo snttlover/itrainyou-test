@@ -1,29 +1,29 @@
 import React, { useEffect } from "react"
-import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { ClientDashboardLayout } from "#/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 
-import { SessionPageContainer as Container } from "@/pages/client/session/content/session-page-content/common/SessionPageContainer"
-import { SessionPageContent as Content } from "@/pages/client/session/content/session-page-content/common/SessionPageContent"
-import { SessionPageInfoWrapper as InfoWrapper } from "@/pages/client/session/content/session-page-content/common/SessionPageInfoWrapper"
-import { UserHeader } from "@/pages/client/session/content/session-page-content/UserHeader"
+import { SessionPageContainer as Container } from "#/pages/client/session/content/session-page-content/common/SessionPageContainer"
+import { SessionPageContent as Content } from "#/pages/client/session/content/session-page-content/common/SessionPageContent"
+import { SessionPageInfoWrapper as InfoWrapper } from "#/pages/client/session/content/session-page-content/common/SessionPageInfoWrapper"
+import { UserHeader } from "#/pages/client/session/content/session-page-content/UserHeader"
 import {
   SessionInfo,
   TabletSessionInfo
-} from "@/pages/client/session/content/session-page-content/session-info/SessionInfo"
+} from "#/pages/client/session/content/session-page-content/session-info/SessionInfo"
 import { useParams } from "react-router-dom"
 import { useEvent, useStore } from "effector-react/ssr"
-import { Loader } from "@/components/spinner/Spinner"
-import { NotFound } from "@/feature/not-found/components/NotFound"
-import { SessionsHistory } from "@/pages/client/session/content/session-page-content/session-history/SessionsHistory"
+import { Loader } from "#/components/spinner/Spinner"
+import { NotFound } from "#/feature/not-found/components/NotFound"
+import { SessionsHistory } from "#/pages/client/session/content/session-page-content/session-history/SessionsHistory"
 import {
   CancelSession,
   TabletCancelSession,
-} from "@/pages/client/session/content/session-page-content/cancel-session/CancelSession"
-import { clientSessionPage } from "@/pages/client/session/client-session-page"
+} from "#/pages/client/session/content/session-page-content/cancel-session/CancelSession"
+import { clientSessionPage } from "#/pages/client/session/client-session-page"
 import {
   RescheduleSession,
   TabletRescheduleSession
-} from "@/pages/client/session/content/session-page-content/reschedule-session/RescheduleSession"
-import { resetRescheduleDialog } from "@/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
+} from "#/pages/client/session/content/session-page-content/reschedule-session/RescheduleSession"
+import { resetRescheduleDialog } from "#/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
 
 export const ClientSessionPage = () => {
   const params = useParams<{ id: string }>()

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "#/components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
-import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { ChatImage } from "#/feature/chat/view/content/message-box/create-message-box.module"
 import SimpleBar from "simplebar-react"
 import { useEvent } from "effector-react/ssr"
-import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { toasts } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 type MessageBoxUploadProps = {
   images: ChatImage[]

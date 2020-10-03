@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
+import { LandingPageContainer } from "#/pages/landing/common/LandingPageContainer"
 import { LeftColumn } from "./LeftColumn"
 import { RightColumn } from "./RightColumn"
 import manImage from "./images/man.svg"

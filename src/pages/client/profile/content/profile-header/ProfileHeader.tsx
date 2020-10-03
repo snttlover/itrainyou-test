@@ -1,12 +1,12 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Avatar } from "@/components/avatar/Avatar"
-import { MediaRange } from "@/lib/responsive/media"
+import { Avatar } from "#/components/avatar/Avatar"
+import { MediaRange } from "#/lib/responsive/media"
 import { useStore } from "effector-react/ssr"
-import { $pageProfile } from "@/pages/client/profile/profile-page.model"
-import { Icon } from "@/components/icon/Icon"
+import { $pageProfile } from "#/pages/client/profile/profile-page.model"
+import { Icon } from "#/components/icon/Icon"
 import { Link } from "react-router-dom"
-import { routeNames } from "@/pages/route-names"
+import { routeNames } from "#/pages/route-names"
 
 const Container = styled.div`
   margin-top: 46px;

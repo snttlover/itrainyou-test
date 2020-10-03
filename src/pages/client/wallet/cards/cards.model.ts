@@ -1,8 +1,8 @@
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { CardResponse, getCardsList } from "@/lib/api/wallet/client/get-cards-list"
-import { createGate } from "@/scope"
+import { Toast, toasts } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { CardResponse, getCardsList } from "#/lib/api/wallet/client/get-cards-list"
+import { createGate } from "#/scope"
 import { createEffect, createEvent, forward, restore, split } from "effector-root"
-import { deleteCard } from "@/lib/api/wallet/client/delete-card"
+import { deleteCard } from "#/lib/api/wallet/client/delete-card"
 import { some } from "patronum"
 
 class DeleteCardCancelError extends Error {}

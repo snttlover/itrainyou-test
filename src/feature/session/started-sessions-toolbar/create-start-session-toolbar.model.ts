@@ -1,11 +1,11 @@
-import { config as globalConfig, config as appConfig } from "@/config"
-import { ISODate } from "@/lib/api/interfaces/utils.interface"
-import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
+import { config as globalConfig, config as appConfig } from "#/config"
+import { ISODate } from "#/lib/api/interfaces/utils.interface"
+import { DashboardSession } from "#/lib/api/coach/get-dashboard-sessions"
 import { createEffect, createEvent, forward, restore, combine } from "effector-root"
-import { date } from "@/lib/formatting/date"
-import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { Client } from "@/lib/api/client/clientInfo"
+import { date } from "#/lib/formatting/date"
+import { createSessionCallModule } from "#/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { createChatsSocket } from "#/feature/socket/chats-socket"
+import { Client } from "#/lib/api/client/clientInfo"
 
 type CreateStartSessionToolbarModelConfig = {
   type: "coach" | "client"

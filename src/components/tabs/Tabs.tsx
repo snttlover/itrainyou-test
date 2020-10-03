@@ -1,4 +1,4 @@
-import { MediaRange } from "@/lib/responsive/media"
+import { MediaRange } from "#/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
 import { createContext } from "react"

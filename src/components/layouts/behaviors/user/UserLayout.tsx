@@ -1,9 +1,9 @@
 import * as React from "react"
 import { useStore } from "effector-react/ssr"
-import { $isFullRegistered, $isLoggedIn } from "@/feature/user/user.model"
+import { $isFullRegistered, $isLoggedIn } from "#/feature/user/user.model"
 
-import { GuestLayout } from "@/components/layouts/behaviors/default/GuestLayout"
-import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { GuestLayout } from "#/components/layouts/behaviors/default/GuestLayout"
+import { ClientDashboardLayout } from "#/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 
 type UserLayoutTypes = {
   children: React.ReactChild

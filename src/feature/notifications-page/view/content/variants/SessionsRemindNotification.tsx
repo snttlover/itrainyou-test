@@ -1,15 +1,15 @@
 import React from "react"
-import { SessionsRemindNotificationType } from "@/lib/api/client/get-notifications"
+import { SessionsRemindNotificationType } from "#/lib/api/client/get-notifications"
 
 import { Card, NotificationAvatar, SessionTime, Title, Bold, Time, Row } from "../common/NotificationsCommon"
 import { useStore } from "effector-react/ssr"
-import { $dashboard } from "@/feature/dashboard/dashboard"
-import { Avatar } from "@/components/avatar/Avatar"
+import { $dashboard } from "#/feature/dashboard/dashboard"
+import { Avatar } from "#/components/avatar/Avatar"
 import styled from "styled-components"
-import { Icon } from "@/components/icon/Icon"
-import { formatSessionTime } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
+import { Icon } from "#/components/icon/Icon"
+import { formatSessionTime } from "#/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
 import { Link } from "react-router-dom"
-import { routeNames } from "@/pages/route-names"
+import { routeNames } from "#/pages/route-names"
 
 export type SessionsRemindNotificationProps = {
   notification: SessionsRemindNotificationType

@@ -1,4 +1,4 @@
-import { useClickOutside } from "@/components/click-outside/use-click-outside"
+import { useClickOutside } from "#/components/click-outside/use-click-outside"
 import * as React from "react"
 import { useRef } from "react"
 

@@ -1,12 +1,12 @@
-import { date } from "@/lib/formatting/date"
+import { date } from "#/lib/formatting/date"
 import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
-import { getDashboardSessions } from "@/lib/api/coach/get-dashboard-sessions"
+import { getDashboardSessions } from "#/lib/api/coach/get-dashboard-sessions"
 
 import {
   DashboardNewestParticipant,
   getDashboardNewestParticipants,
-} from "@/lib/api/coach/get-dashboard-newest-participants"
-import { createPagination } from "@/feature/pagination"
+} from "#/lib/api/coach/get-dashboard-newest-participants"
+import { createPagination } from "#/feature/pagination"
 
 const resetCoachSessionList =  createEvent()
 

@@ -1,5 +1,5 @@
 import { createEvent, createStore } from "effector-root"
-import { setSearchPageQuery } from "@/pages/search/coaches-search.model"
+import { setSearchPageQuery } from "#/pages/search/coaches-search.model"
 
 export const changeVisibility = createEvent<boolean>()
 

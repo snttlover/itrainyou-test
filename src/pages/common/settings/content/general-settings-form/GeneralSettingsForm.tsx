@@ -1,8 +1,8 @@
 import React, { FormEvent, useEffect } from "react"
 import styled from "styled-components"
-import { FormItem } from "@/components/form-item/FormItem"
-import { Input } from "@/components/input/Input"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { FormItem } from "#/components/form-item/FormItem"
+import { Input } from "#/components/input/Input"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
 import { useEvent, useGate, useStore } from "effector-react/ssr"
 import {
   $changeGeneralSettingsForm,
@@ -12,12 +12,12 @@ import {
   emailChanged,
   SettingsGate,
   timeZoneChanged,
-} from "@/pages/common/settings/content/general-settings-form/general-settings.model"
-import { Spinner } from "@/components/spinner/Spinner"
-import { MediaRange } from "@/lib/responsive/media"
-import { DropdownItem, SelectInput, SelectInputProps } from "@/components/select-input/SelectInput"
-import { timeZones } from "@/pages/common/settings/content/general-settings-form/time-zones"
-import { mounted } from "@/pages/common/settings/content/general-settings-form/general-settings.model"
+} from "#/pages/common/settings/content/general-settings-form/general-settings.model"
+import { Spinner } from "#/components/spinner/Spinner"
+import { MediaRange } from "#/lib/responsive/media"
+import { DropdownItem, SelectInput, SelectInputProps } from "#/components/select-input/SelectInput"
+import { timeZones } from "#/pages/common/settings/content/general-settings-form/time-zones"
+import { mounted } from "#/pages/common/settings/content/general-settings-form/general-settings.model"
 
 const StyledForm = styled.form`
   width: 100%;

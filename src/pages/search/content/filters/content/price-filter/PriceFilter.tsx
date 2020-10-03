@@ -1,9 +1,9 @@
-import { RangeSlider } from "@/components/slider/RangeSlider"
-import { formatCurrency } from "@/lib/formatting/currency"
+import { RangeSlider } from "#/components/slider/RangeSlider"
+import { formatCurrency } from "#/lib/formatting/currency"
 import * as React from "react"
 import styled from "styled-components"
 import { useEvent, useStore } from "effector-react/ssr"
-import { $searchPageQuery, addSearchPageQuery } from "@/pages/search/coaches-search.model"
+import { $searchPageQuery, addSearchPageQuery } from "#/pages/search/coaches-search.model"
 import { $maxPrice } from "./price-filter.model"
 
 const Container = styled.div`

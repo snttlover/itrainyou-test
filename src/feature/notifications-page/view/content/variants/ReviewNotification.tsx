@@ -1,11 +1,11 @@
 import React from "react"
-import { ReviewNotificationType } from "@/lib/api/client/get-notifications"
-import { RatingPicker } from "@/components/rating/RatingPicker"
+import { ReviewNotificationType } from "#/lib/api/client/get-notifications"
+import { RatingPicker } from "#/components/rating/RatingPicker"
 
 import { Card, NotificationAvatar, Title, Bold, Time, Row } from "../common/NotificationsCommon"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { routeNames } from "@/pages/route-names"
+import { routeNames } from "#/pages/route-names"
 
 export type ReviewNotificationProps = {
   notification: ReviewNotificationType

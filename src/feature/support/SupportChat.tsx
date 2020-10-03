@@ -1,13 +1,13 @@
-import { createSupportChatModel } from "@/feature/support/create-support-chat.model"
-import { createChatMessages } from "@/feature/chat/view/content/messages/ChatMessages"
-import { Loader } from "@/components/spinner/Spinner"
-import { ChatContainer } from "@/feature/chat/view/content/ChatContainer"
-import { createChatMessageBox } from "@/feature/chat/view/content/message-box/ChatMessageBox"
+import { createSupportChatModel } from "#/feature/support/create-support-chat.model"
+import { createChatMessages } from "#/feature/chat/view/content/messages/ChatMessages"
+import { Loader } from "#/components/spinner/Spinner"
+import { ChatContainer } from "#/feature/chat/view/content/ChatContainer"
+import { createChatMessageBox } from "#/feature/chat/view/content/message-box/ChatMessageBox"
 import React, { useEffect } from "react"
 import { useEvent, useStore } from "effector-react/ssr"
 import styled from "styled-components"
-import { SupportChatHeader } from "@/feature/support/SupportChatHeader"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { SupportChatHeader } from "#/feature/support/SupportChatHeader"
+import { ContentContainer } from "#/components/layouts/ContentContainer"
 
 export const createSupportChat = ($chatModule: ReturnType<typeof createSupportChatModel>) => {
   const Messages = createChatMessages($chatModule.chatMessages)

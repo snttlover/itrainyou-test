@@ -1,8 +1,8 @@
 import { combine, createEvent, forward, guard, restore, sample } from "effector-root"
-import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
-import { Coach } from "@/lib/api/coach"
-import { clientSessionRequests } from "@/feature/session-request/createSessionRequestsModule"
-import { DenySessionRequestProblems } from "@/lib/api/coach/deny-session-request"
+import { SessionRequest } from "#/lib/api/coach/get-sessions-requests"
+import { Coach } from "#/lib/api/coach"
+import { clientSessionRequests } from "#/feature/session-request/createSessionRequestsModule"
+import { DenySessionRequestProblems } from "#/lib/api/coach/deny-session-request"
 
 const reset = createEvent()
 

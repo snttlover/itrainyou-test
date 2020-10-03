@@ -1,12 +1,12 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { MediaRange } from "@/lib/responsive/media"
-import { RescheduleSessionCard } from "@/pages/client/session/content/session-page-content/reschedule-session/dialog/RescheduleSessionCard"
+import { MediaRange } from "#/lib/responsive/media"
+import { RescheduleSessionCard } from "#/pages/client/session/content/session-page-content/reschedule-session/dialog/RescheduleSessionCard"
 import { useEvent, useStore } from "effector-react/ssr"
 import {
   $rescheduleVisibility,
   changeRescheduleVisibility
-} from "@/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
+} from "#/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
 
 export const RescheduleSession = ({ className }: { className?: string }) => {
   const visibility = useStore($rescheduleVisibility)

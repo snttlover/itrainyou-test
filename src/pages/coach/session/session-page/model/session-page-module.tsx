@@ -1,10 +1,10 @@
-import { SessionInfo } from "@/lib/api/coach/get-session"
-import { createSessionInfoModule } from "@/pages/coach/session/session-page/model/session-info-module"
+import { SessionInfo } from "#/lib/api/coach/get-session"
+import { createSessionInfoModule } from "#/pages/coach/session/session-page/model/session-info-module"
 import { createEvent, createStore, forward, Event, sample } from "effector-root"
-import { createSessionHistoryModule } from "@/pages/coach/session/session-page/model/session-history-module"
-import { Pagination } from "@/lib/api/interfaces/utils.interface"
-import { GetCoachSessionRequestsQuery, SessionRequest } from "@/lib/api/coach/get-sessions-requests"
-import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
+import { createSessionHistoryModule } from "#/pages/coach/session/session-page/model/session-history-module"
+import { Pagination } from "#/lib/api/interfaces/utils.interface"
+import { GetCoachSessionRequestsQuery, SessionRequest } from "#/lib/api/coach/get-sessions-requests"
+import { SessionRequestParams } from "#/lib/api/coach/create-session-request"
 
 type CreateSessionPageConfig = {
   type: "client" | "coach"

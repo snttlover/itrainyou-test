@@ -1,13 +1,13 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { Close, Dialog } from "@/components/dialog/Dialog"
-import { Button } from "@/components/button/normal/Button"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Close, Dialog } from "#/components/dialog/Dialog"
+import { Button } from "#/components/button/normal/Button"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
 import { useEvent, useStore } from "effector-react/ssr"
 import {
   $profileCoachButtonVisibility, $userHasCoach, becomeCoach,
   changeProfileCoachButtonVisibility, reset
-} from "@/pages/client/profile/content/coach-button/profile-coach-button"
+} from "#/pages/client/profile/content/coach-button/profile-coach-button"
 
 export const ProfileCoachButton = () => {
   const userIsCoach = useStore($userHasCoach)

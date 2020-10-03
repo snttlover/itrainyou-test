@@ -1,10 +1,10 @@
-import { get } from "@/lib/network/network"
-import { config } from "@/config"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { ISODate, Pagination } from "@/lib/api/interfaces/utils.interface"
-import { Client } from "@/lib/api/client/clientInfo"
-import { CoachUser } from "@/lib/api/coach"
-import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
+import { get } from "#/lib/network/network"
+import { config } from "#/config"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { ISODate, Pagination } from "#/lib/api/interfaces/utils.interface"
+import { Client } from "#/lib/api/client/clientInfo"
+import { CoachUser } from "#/lib/api/coach"
+import { DashboardSession } from "#/lib/api/coach/get-dashboard-sessions"
 
 export type GetCoachSessionRequestsQuery = {
   session: number

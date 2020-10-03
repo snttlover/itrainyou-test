@@ -1,9 +1,9 @@
 import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
-import { Slider } from "@/components/slider/Slider"
-import { declOfNum, DeclOfNumListType } from "@/lib/formatting/numerals"
-import { $searchPageQuery, addSearchPageQuery } from "@/pages/search/coaches-search.model"
+import { Slider } from "#/components/slider/Slider"
+import { declOfNum, DeclOfNumListType } from "#/lib/formatting/numerals"
+import { $searchPageQuery, addSearchPageQuery } from "#/pages/search/coaches-search.model"
 
 const Container = styled.div`
   padding-top: 16px;

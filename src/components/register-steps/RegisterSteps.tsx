@@ -4,7 +4,7 @@ import star from "./images/star.svg"
 import smile from "./images/smile.svg"
 import checkbox from "./images/checkbox.svg"
 import grayArrow from "./images/gray-arrow.svg"
-import { MediaRange } from "@/lib/responsive/media"
+import { MediaRange } from "#/lib/responsive/media"
 
 const Container = styled.div`
   width: 100%;

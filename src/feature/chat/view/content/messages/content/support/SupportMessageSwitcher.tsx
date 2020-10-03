@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { ChatSupportMessage } from "@/feature/chat/modules/chat-messages"
-import { Avatar } from "@/components/avatar/Avatar"
+import { ChatSupportMessage } from "#/feature/chat/modules/chat-messages"
+import { Avatar } from "#/components/avatar/Avatar"
 
 export const SupportMessageSwitcher = (props: ChatSupportMessage) => {
   return (

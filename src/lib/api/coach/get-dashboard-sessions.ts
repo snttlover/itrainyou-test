@@ -1,10 +1,10 @@
-import { config } from "@/config"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { get } from "@/lib/network/network"
-import { ISODate, Day } from "@/lib/api/interfaces/utils.interface"
-import { DurationType } from "@/lib/api/coach-sessions"
-import { Client } from "@/lib/api/client/clientInfo"
-import { CoachUser } from "@/lib/api/coach"
+import { config } from "#/config"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { get } from "#/lib/network/network"
+import { ISODate, Day } from "#/lib/api/interfaces/utils.interface"
+import { DurationType } from "#/lib/api/coach-sessions"
+import { Client } from "#/lib/api/client/clientInfo"
+import { CoachUser } from "#/lib/api/coach"
 
 export interface DashboardSession {
   id: number

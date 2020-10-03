@@ -1,10 +1,10 @@
-import { fetchCategoriesList } from "@/feature/categories/categories.store"
-import { videoInterviewChanged } from "@/feature/coach-get-access/coach-get-access.model"
-import { $userData } from "@/feature/user/user.model"
-import { uploadMedia } from "@/lib/api/media"
-import { createEffectorField } from "@/lib/generators/efffector"
-import { phoneValidator, trimString } from "@/lib/validators"
-import { createGate } from "@/scope"
+import { fetchCategoriesList } from "#/feature/categories/categories.store"
+import { videoInterviewChanged } from "#/feature/coach-get-access/coach-get-access.model"
+import { $userData } from "#/feature/user/user.model"
+import { uploadMedia } from "#/lib/api/media"
+import { createEffectorField } from "#/lib/generators/efffector"
+import { phoneValidator, trimString } from "#/lib/validators"
+import { createGate } from "#/scope"
 import {
   combine,
   createEffect,

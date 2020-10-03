@@ -1,5 +1,5 @@
-import { MediaRange } from "@/lib/responsive/media"
-import { Step, StepId, StepProps } from "@/pages/auth/pages/signup/components/Step"
+import { MediaRange } from "#/lib/responsive/media"
+import { Step, StepId, StepProps } from "#/pages/auth/pages/signup/components/Step"
 import * as React from "react"
 import styled from "styled-components"
 

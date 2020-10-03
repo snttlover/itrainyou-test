@@ -4,7 +4,7 @@
     "allowUnreachableCode": false,
     "baseUrl": "src",
     "paths": {
-      "@/*": ["./*"]
+      "#/*": ["./*"]
     },
     "downlevelIteration": true,
     "esModuleInterop": true,

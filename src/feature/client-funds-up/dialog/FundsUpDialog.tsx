@@ -1,13 +1,13 @@
-import { Button } from "@/components/button/normal/Button"
-import { Dialog } from "@/components/dialog/Dialog"
-import { FormItem } from "@/components/form-item/FormItem"
-import { RadioGroup, RadioOption } from "@/components/radio/Radio"
-import { SelectInput } from "@/components/select-input/SelectInput"
-import { Spinner } from "@/components/spinner/Spinner"
-import { MediaRange } from "@/lib/responsive/media"
-import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
-import { $cardsListForView, CardsTabGate } from "@/pages/client/wallet/cards/cards.model"
-import { PriceInput } from "@/pages/coach/schedule/components/PriceInput"
+import { Button } from "#/components/button/normal/Button"
+import { Dialog } from "#/components/dialog/Dialog"
+import { FormItem } from "#/components/form-item/FormItem"
+import { RadioGroup, RadioOption } from "#/components/radio/Radio"
+import { SelectInput } from "#/components/select-input/SelectInput"
+import { Spinner } from "#/components/spinner/Spinner"
+import { MediaRange } from "#/lib/responsive/media"
+import { $userHasCoach } from "#/pages/client/profile/content/coach-button/profile-coach-button"
+import { $cardsListForView, CardsTabGate } from "#/pages/client/wallet/cards/cards.model"
+import { PriceInput } from "#/pages/coach/schedule/components/PriceInput"
 import React from "react"
 import styled from "styled-components"
 import {
@@ -24,7 +24,7 @@ import {
   $isTopUpLoading,
 } from "./fund-up.model"
 import { useEvent, useGate, useStore } from "effector-react/ssr"
-import { Checkbox } from "@/components/checkbox/Checkbox"
+import { Checkbox } from "#/components/checkbox/Checkbox"
 
 export const FundsUpDialog = () => {
   useGate(CardsTabGate)

@@ -1,7 +1,7 @@
-import { post } from "@/lib/network/network"
-import { config } from "@/config"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
+import { post } from "#/lib/network/network"
+import { config } from "#/config"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { SessionRequest } from "#/lib/api/coach/get-sessions-requests"
 
 export type ApproveSessionRequestParams = {
   id: number

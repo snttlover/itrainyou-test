@@ -1,13 +1,13 @@
-import { navigatePush } from "@/feature/navigation"
-import { routeNames } from "@/pages/route-names"
+import { navigatePush } from "#/feature/navigation"
+import { routeNames } from "#/pages/route-names"
 import { useEvent } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
-import { Title } from "@/pages/coach/home/awaiting-approval/common/Title"
-import { SubTitle } from "@/pages/coach/home/awaiting-approval/common/SubTitle"
-import { RegisterSteps } from "@/components/register-steps/RegisterSteps"
-import { Button } from "@/components/button/normal/Button"
-import { MediaRange } from "@/lib/responsive/media"
+import { Title } from "#/pages/coach/home/awaiting-approval/common/Title"
+import { SubTitle } from "#/pages/coach/home/awaiting-approval/common/SubTitle"
+import { RegisterSteps } from "#/components/register-steps/RegisterSteps"
+import { Button } from "#/components/button/normal/Button"
+import { MediaRange } from "#/lib/responsive/media"
 
 const Container = styled.div`
   margin: 0 auto;

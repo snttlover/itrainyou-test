@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
 import { useHistory } from "react-router-dom"
 
 const Container = styled.div`

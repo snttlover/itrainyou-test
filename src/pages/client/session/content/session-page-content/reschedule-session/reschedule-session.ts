@@ -1,10 +1,10 @@
 import { combine, createEffect, createEvent, forward, restore, sample } from "effector-root"
-import { Coach, getCoach } from "@/lib/api/coach"
-import { clientSessionPage } from "@/pages/client/session/client-session-page"
-import { CoachSession, DurationType, getCoachSessions } from "@/lib/api/coach-sessions"
-import { date } from "@/lib/formatting/date"
-import { createClientSessionRequest } from "@/lib/api/client/create-client-session-request"
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Coach, getCoach } from "#/lib/api/coach"
+import { clientSessionPage } from "#/pages/client/session/client-session-page"
+import { CoachSession, DurationType, getCoachSessions } from "#/lib/api/coach-sessions"
+import { date } from "#/lib/formatting/date"
+import { createClientSessionRequest } from "#/lib/api/client/create-client-session-request"
+import { Toast, toasts } from "#/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export const resetRescheduleDialog = createEvent()
 

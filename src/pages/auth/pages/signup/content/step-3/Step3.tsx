@@ -1,12 +1,12 @@
-import { Avatar } from "@/components/avatar/Avatar"
-import { FormItem } from "@/components/form-item/FormItem"
-import { Input } from "@/components/input/Input"
-import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
-import { history } from "@/feature/navigation"
-import { MediaRange } from "@/lib/responsive/media"
-import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
-import { Steps } from "@/pages/auth/pages/signup/components/Steps"
-import { BirthdayFormGroup } from "@/pages/auth/pages/signup/content/step-3/BirthdayFormGroup"
+import { Avatar } from "#/components/avatar/Avatar"
+import { FormItem } from "#/components/form-item/FormItem"
+import { Input } from "#/components/input/Input"
+import { AuthLayout } from "#/components/layouts/sections/auth/AuthLayout"
+import { history } from "#/feature/navigation"
+import { MediaRange } from "#/lib/responsive/media"
+import { NextButton } from "#/pages/auth/pages/signup/components/NextButton"
+import { Steps } from "#/pages/auth/pages/signup/components/Steps"
+import { BirthdayFormGroup } from "#/pages/auth/pages/signup/content/step-3/BirthdayFormGroup"
 import {
   $isStep3FormValid,
   $isUploadModelOpen,
@@ -16,9 +16,9 @@ import {
   nameChanged,
   step3Mounted,
   toggleUploadModal,
-} from "@/pages/auth/pages/signup/content/step-3/step3.model"
-import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
-import { $userData } from "@/pages/auth/pages/signup/signup.model"
+} from "#/pages/auth/pages/signup/content/step-3/step3.model"
+import { UploadModal } from "#/pages/auth/pages/signup/content/step-3/UploadModal"
+import { $userData } from "#/pages/auth/pages/signup/signup.model"
 import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import { useEffect } from "react"

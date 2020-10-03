@@ -1,7 +1,7 @@
-import { config } from "@/config"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { get } from "@/lib/network/network"
-import { Day, ISODate, Pagination, Sex } from "@/lib/api/interfaces/utils.interface"
+import { config } from "#/config"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { get } from "#/lib/network/network"
+import { Day, ISODate, Pagination, Sex } from "#/lib/api/interfaces/utils.interface"
 
 type TransactionType = "SESSION_ENROLLMENT" | "SESSION_CANCELLATION" | "TOP_UP" | "WITHDRAW" | "CLIENT_ENROLLED_SESSION"
 

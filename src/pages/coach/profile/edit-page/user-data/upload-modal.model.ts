@@ -1,4 +1,4 @@
-import { uploadMedia } from "@/lib/api/media"
+import { uploadMedia } from "#/lib/api/media"
 import { imageUploaded } from "./step3.model"
 import { createEffect, createEvent, createStore, forward } from "effector-root"
 

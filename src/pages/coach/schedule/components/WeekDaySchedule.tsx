@@ -1,18 +1,18 @@
-import { Icon } from "@/components/icon/Icon"
-import { SelectInput } from "@/components/select-input/SelectInput"
-import { DurationType } from "@/lib/api/coach-sessions"
-import { WeekDayName } from "@/lib/api/coaching-sessions/types"
-import { $durationOptions } from "@/pages/coach/schedule/models/add-session.model"
+import { Icon } from "#/components/icon/Icon"
+import { SelectInput } from "#/components/select-input/SelectInput"
+import { DurationType } from "#/lib/api/coach-sessions"
+import { WeekDayName } from "#/lib/api/coaching-sessions/types"
+import { $durationOptions } from "#/pages/coach/schedule/models/add-session.model"
 import {
   $freeWeekdayTimes,
   $weekdaySlotsForView,
   addSlot,
   removeSlot,
-} from "@/pages/coach/schedule/models/weekday-schedule.model"
+} from "#/pages/coach/schedule/models/weekday-schedule.model"
 import { useEvent, useStore, useStoreMap } from "effector-react/ssr"
 import styled from "styled-components"
 import React, { useState } from "react"
-import { PricesDialog } from "@/pages/coach/schedule/components/PricesDialog"
+import { PricesDialog } from "#/pages/coach/schedule/components/PricesDialog"
 
 const Container = styled.div`
   background: #ffffff;

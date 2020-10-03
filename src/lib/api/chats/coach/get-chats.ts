@@ -1,8 +1,8 @@
-import { config } from "@/config"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { get } from "@/lib/network/network"
-import { Pagination } from "@/lib/api/interfaces/utils.interface"
-import { PersonalChat } from "@/lib/api/chats/clients/get-chats"
+import { config } from "#/config"
+import { keysToCamel, keysToSnake } from "#/lib/network/casing"
+import { get } from "#/lib/network/network"
+import { Pagination } from "#/lib/api/interfaces/utils.interface"
+import { PersonalChat } from "#/lib/api/chats/clients/get-chats"
 
 type PaginationParams = {
   page: number

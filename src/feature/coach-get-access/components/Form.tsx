@@ -1,7 +1,7 @@
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { FormItem } from "@/components/form-item/FormItem"
-import { Input } from "@/components/input/Input"
-import { Textarea } from "@/components/textarea/Textarea"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
+import { FormItem } from "#/components/form-item/FormItem"
+import { Input } from "#/components/input/Input"
+import { Textarea } from "#/components/textarea/Textarea"
 import {
   $form,
   $formErrors,
@@ -12,8 +12,8 @@ import {
   phoneChanged,
   $photos,
   photoRemoved,
-} from "@/feature/coach-get-access/coach-get-access.model"
-import { MediaRange } from "@/lib/responsive/media"
+} from "#/feature/coach-get-access/coach-get-access.model"
+import { MediaRange } from "#/lib/responsive/media"
 import { useStore, useEvent } from "effector-react/ssr"
 import { useCallback } from "react"
 import * as React from "react"

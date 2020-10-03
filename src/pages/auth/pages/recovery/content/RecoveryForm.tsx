@@ -1,9 +1,9 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Input } from "@/components/input/Input"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { FormItem } from "@/components/form-item/FormItem"
-import { Spinner } from "@/components/spinner/Spinner"
+import { Input } from "#/components/input/Input"
+import { DashedButton } from "#/components/button/dashed/DashedButton"
+import { FormItem } from "#/components/form-item/FormItem"
+import { Spinner } from "#/components/spinner/Spinner"
 import { useEvent, useStore } from "effector-react/ssr"
 import {
   $commonError,
@@ -13,7 +13,7 @@ import {
   $recoveryFormErrors,
   recoveryFx,
   recoveryFormSended,
-} from "@/pages/auth/pages/recovery/recovery.model"
+} from "#/pages/auth/pages/recovery/recovery.model"
 import { FormEvent } from "react"
 
 const Title = styled.h3`

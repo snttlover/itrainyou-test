@@ -1,13 +1,13 @@
 import styled from "styled-components"
 import { useState } from "react"
-import { ClickOutside } from "@/components/click-outside/ClickOutside"
-import { CoachTooltipRow } from "@/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltipRow"
+import { ClickOutside } from "#/components/click-outside/ClickOutside"
+import { CoachTooltipRow } from "#/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltipRow"
 import { useEvent, useStore } from "effector-react/ssr"
-import { $userData } from "@/feature/user/user.model"
-import { changeBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
+import { $userData } from "#/feature/user/user.model"
+import { changeBlueLayoutMobileMenuVisibility } from "#/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import * as React from "react"
-import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-socket"
-import { logout } from "@/lib/network/token"
+import { clientChatsSocket, coachChatsSocket } from "#/feature/socket/chats-socket"
+import { logout } from "#/lib/network/token"
 
 const Tooltip = styled.div`
   position: absolute;

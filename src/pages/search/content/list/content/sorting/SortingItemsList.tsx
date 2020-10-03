@@ -1,8 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import { SearchInputItem } from "@/components/search-input/SearchInputItem"
-import { sortingItems, SortingItemType } from "@/pages/search/content/list/content/sorting/items"
-import {PickerTypes} from "@/pages/search/content/list/content/sorting/SortingPicker"
+import { SearchInputItem } from "#/components/search-input/SearchInputItem"
+import { sortingItems, SortingItemType } from "#/pages/search/content/list/content/sorting/items"
+import {PickerTypes} from "#/pages/search/content/list/content/sorting/SortingPicker"
 
 export const StyledSortingItem = styled(SearchInputItem)`
   display: flex;
