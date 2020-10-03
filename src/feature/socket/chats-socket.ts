@@ -7,7 +7,6 @@ import { $isLoggedIn, $userData } from "#/feature/user/user.model"
 import { $isClient } from "#/lib/effector"
 import { changePasswordFx } from "#/pages/common/settings/content/password-form.model"
 import { registerUserFx } from "#/pages/auth/pages/signup/signup.model"
-import { create } from "domain"
 import { DashboardSession } from "#/lib/api/coach/get-dashboard-sessions"
 import { condition } from "patronum"
 import { runInScope } from "#/scope"
@@ -75,7 +74,7 @@ type SocketMessageReceive =
   | ReadNotificationsDone
   | SessionStarted
 
-type UserType = "client" | "coach"
+type UserType = "client" | "coach" | "admin"
 
 const getChatSocketLink = (type: UserType, token: string) => {
   return `${config.WS_HOST}/ws/chat/${type}/?token=${token}`

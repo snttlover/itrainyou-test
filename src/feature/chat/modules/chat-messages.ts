@@ -1,8 +1,7 @@
 import { createChatsSocket, WriteChatMessageDone } from "#/feature/socket/chats-socket"
-import { createEffect, createEvent, createStore, forward, guard, restore, sample } from "effector-root"
-import { createCursorPagination, CursorPaginationFetchMethod } from "#/feature/pagination/modules/cursor-pagination"
+import { createEvent, createStore, guard  } from "effector-root"
+import { createCursorPagination } from "#/feature/pagination/modules/cursor-pagination"
 import {
-  Chat,
   ChatMessage,
   ConflictStatus,
   MessageSessionRequestStatuses,
@@ -14,12 +13,12 @@ import { SessionRequest } from "#/lib/api/coach/get-sessions-requests"
 import { CoachUser } from "#/lib/api/coach"
 import { Client } from "#/lib/api/client/clientInfo"
 import { ChatId } from "#/lib/api/chats/coach/get-messages"
-import { config as globalConfig } from "#/config"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
   socket: ReturnType<typeof createChatsSocket>
-  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
+  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
+  dontRead?: boolean
 }
 
 export type ChatSupportMessage = {
@@ -149,18 +148,20 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     messages: [message.data.id],
   }))
 
-  guard({
-    source: config.socket.events.onMessage,
-    filter: message => {
-      return (
-        (`SYSTEM` === message.data.type ||
-          (config.type === `client` && !!message.data.senderCoach) ||
-          (config.type === `coach` && !!message.data.senderClient)) &&
-        chatId === message.data.chat
-      )
-    },
-    target: readMessage,
-  })
+  if (!config.dontRead) {
+    guard({
+      source: config.socket.events.onMessage,
+      filter: message => {
+        return (
+          (`SYSTEM` === message.data.type ||
+            (config.type === `client` && !!message.data.senderCoach) ||
+            (config.type === `coach` && !!message.data.senderClient)) &&
+          chatId === message.data.chat
+        )
+      },
+      target: readMessage,
+    })
+  }
 
   guard({
     source: config.socket.events.onMessage,
