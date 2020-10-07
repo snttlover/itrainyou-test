@@ -8,10 +8,11 @@ import styled from "styled-components"
 
 export const ChatMessageSwitcher = ({
   message,
-  isSystemChat,
+  isSystemChat, showUser
 }: {
   message: ChatMessagesTypes
   isSystemChat: boolean
+  showUser?: boolean
 }) => {
   if (message.type === `SUPPORT`) {
     return <SupportMessageSwitcher {...message} />
@@ -20,6 +21,8 @@ export const ChatMessageSwitcher = ({
   if (message.type === `TEXT`) {
     return (
       <ChatMessage
+        user={message.user}
+        showUser={showUser}
         text={message.text}
         image={message.image}
         id={`message-${message.id}`}

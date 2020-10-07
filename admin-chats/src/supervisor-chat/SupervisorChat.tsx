@@ -5,11 +5,11 @@ import { ChatContainer } from "@/feature/chat/view/content/ChatContainer"
 import React, { useEffect } from "react"
 import { useEvent, useStore } from "effector-react"
 import styled from "styled-components"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { ClientTheme } from "@/components/layouts/themes"
 import { Dialog } from "@/components/dialog/Dialog"
-import { createChatMessageBox } from "@/feature/chat/view/content/message-box/ChatMessageBox"
+import { SupervisorChatHeader } from "./SupervisorChatHeader"
+import { Close } from "@/components/dialog/Dialog"
 
 export const createSupervisorChat = (chatId: ChatId, $chatModule: ReturnType<typeof createSupervisorChatModel>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -34,7 +34,8 @@ export const createSupervisorChat = (chatId: ChatId, $chatModule: ReturnType<typ
             {!messagesFirstLoading && (
               <>
                 <StyledChatContainer>
-                  <Messages />
+                  <SupervisorChatHeader />
+                  <Messages showUser={true} />
                   {/*<MessageBox />*/}
                 </StyledChatContainer>
               </>
@@ -45,7 +46,6 @@ export const createSupervisorChat = (chatId: ChatId, $chatModule: ReturnType<typ
     )
   }
 }
-
 const StyledChatContainer = styled(ChatContainer)`
   max-width: unset;
   width: 100%;
@@ -56,6 +56,10 @@ const StyledDialog = styled(Dialog)`
   height: 90vh;
   padding: 0;
   border-radius: 10px;
+  
+  ${Close} {
+    top: 17px;
+  }
 `
 
 

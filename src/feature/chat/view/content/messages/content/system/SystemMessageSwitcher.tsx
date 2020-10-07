@@ -20,6 +20,7 @@ import {
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { Avatar } from "@/components/avatar/Avatar"
 import { changeCurrentDenyCompletationRequest } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
+import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -295,7 +296,7 @@ export const SystemMessageSwitcher = ({
 
   return (
     <>
-      <UserHeader showUser={isSystemChat} name={message.userName} avatar={message.userAvatar} date={message.date} />
+      <MessageUserHeader showUser={isSystemChat} name={message.userName} avatar={message.userAvatar} date={message.date} />
       <SystemMessage
         id={message.id}
         text={text}
@@ -307,71 +308,6 @@ export const SystemMessageSwitcher = ({
     </>
   )
 }
-
-type UserHeaderProps = {
-  showUser: boolean
-  name: string
-  avatar: string | null
-  date: string
-}
-
-const UserHeader = (props: UserHeaderProps) => {
-  return (
-    <StyledUserHeader>
-      {
-        props.showUser && (
-          <UserData>
-            <StyledAvatar src={props.avatar} />
-            <UserHeaderTitle>{props.name}</UserHeaderTitle>
-          </UserData>
-        )
-      }
-      <Time>{date(props.date).format('HH:mm')}</Time>
-    </StyledUserHeader>
-  )
-}
-
-const Time = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #9aa0a6;
-  
-  flex: 1;
-  text-align: right;
-  ${MediaRange.lessThan(`mobile`)`  
-    font-size: 12px;
-    line-height: 16px;
-  `}
-`
-
-const UserData = styled.div`
-  display: flex;
-  align-items: flex-end;
-`
-
-const StyledUserHeader = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 8px;
-  justify-content: space-between;
-`
-
-const StyledAvatar = styled(Avatar)`
-  width: 24px;
-  height: 24px;
-  margin-right: 4px;
-`
-
-const UserHeaderTitle = styled.div`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: #424242;
-  ${MediaRange.lessThan(`mobile`)`
-    font-size: 12px;
-    line-height: 16px;
-  `}
-`
 
 type SystemMessageTypes = {
   id: number

@@ -48,6 +48,7 @@ export type PersonalChatMessage = {
   text: string
   image: string
   time: string
+  user: CoachUser | Client | null
 }
 
 const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
@@ -95,20 +96,20 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
           const isMine =
             (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
 
-          if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
-            let user: CoachUser | Client | null = null
+          let user: CoachUser | Client | null = null
 
-            if (message.type === "SUPPORT") {
-              const user = message?.supportTicket?.support
-              return {
-                type: "SUPPORT",
-                id: message.id,
-                userName: `${user?.firstName} ${user?.lastName}`,
-                userAvatar: user?.avatar || null,
-                ticketStatus: message.systemTicketType,
-              }
+          if (message.type === "SUPPORT") {
+            const user = message?.supportTicket?.support
+            return {
+              type: "SUPPORT",
+              id: message.id,
+              userName: `${user?.firstName} ${user?.lastName}`,
+              userAvatar: user?.avatar || null,
+              ticketStatus: message.systemTicketType,
             }
+          }
 
+          if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
             if (config.type === `coach`) {
               user = message.sessionRequest?.initiatorClient || message.sessionRequest?.receiverClient || null
             } else {
@@ -118,7 +119,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 message.sessionRequest.receiverCoach ||
                 null
             }
-
             return {
               type: message.type as "SYSTEM",
               id: message.id,
@@ -132,6 +132,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             }
           }
 
+          user = message.senderCoach || message.senderClient
+
           return {
             type: `TEXT`,
             id: message.id,
@@ -139,6 +141,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             text: message.text,
             image: message.image,
             time: date(message.creationDatetime).format(`HH:mm`),
+            user
           }
         }
       )
