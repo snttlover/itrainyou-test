@@ -19,6 +19,9 @@ type CreateChatMessagesModuleTypes = {
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
   dontRead?: boolean
+
+  isSupport?: true,
+  supportIsMe?: true
 }
 
 export type ChatSupportMessage = {
@@ -93,8 +96,12 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       .reverse()
       .map(
         (message): ChatMessagesTypes => {
-          const isMine =
+          let isMine =
             (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
+
+          if (config.supportIsMe) {
+            isMine = !!message.senderSupport
+          }
 
           let user: CoachUser | Client | null = null
 
@@ -105,7 +112,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               id: message.id,
               userName: `${user?.firstName} ${user?.lastName}`,
               userAvatar: user?.avatar || null,
-              ticketStatus: message.systemTicketType,
+              ticketStatus: message.systemTicketType
             }
           }
 
@@ -132,7 +139,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             }
           }
 
-          user = message.senderCoach || message.senderClient
+          user = message.senderCoach || message.senderClient || message.senderSupport
 
           return {
             type: `TEXT`,

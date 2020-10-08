@@ -29,6 +29,8 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
     ...config,
     // @ts-ignore
     fetchMessages: (id: number, params: CursorPaginationRequest) => config.fetchMessages("support", params),
+    isSupport: true,
+    supportIsMe: true
   })
 
   const load = createEvent()

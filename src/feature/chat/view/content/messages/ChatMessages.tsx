@@ -29,7 +29,7 @@ const MessagesWrapper = styled.div`
 export const createChatMessages = ($chatMessagesModule: ReturnType<typeof createChatMessagesModule>) => {
   const InfScroll = createReverseInfinityScroll($chatMessagesModule.pagination)
 
-  return ({ isSystem, showUser }: { isSystem?: boolean, showUser?: boolean }) => {
+  return ({ isSystem, showUser, commonSystemMessages }: { isSystem?: boolean, showUser?: boolean, commonSystemMessages?: boolean }) => {
     const container = useRef<HTMLDivElement>(null)
     const messageWrapper = useRef<HTMLDivElement>(null)
     const [lastMessageId, changeLastMessage] = useState<null | number>(null)
@@ -77,7 +77,7 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
         <InfScroll scrollableTarget='messages'>
           <MessagesWrapper ref={messageWrapper}>
             {useList($chatMessagesModule.$messages, message => (
-              <ChatMessageSwitcher message={message} isSystemChat={!!isSystem} showUser={showUser} />
+              <ChatMessageSwitcher message={message} isSystemChat={!!isSystem} showUser={showUser} commonSystemMessages={commonSystemMessages} />
             ))}
           </MessagesWrapper>
         </InfScroll>

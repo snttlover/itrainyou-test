@@ -8,11 +8,12 @@ import styled from "styled-components"
 
 export const ChatMessageSwitcher = ({
   message,
-  isSystemChat, showUser
+  isSystemChat, showUser, commonSystemMessages
 }: {
   message: ChatMessagesTypes
   isSystemChat: boolean
-  showUser?: boolean
+  showUser?: boolean,
+  commonSystemMessages?: boolean
 }) => {
   if (message.type === `SUPPORT`) {
     return <SupportMessageSwitcher {...message} />
@@ -32,5 +33,5 @@ export const ChatMessageSwitcher = ({
     )
   }
 
-  return <SystemMessageSwitcher message={message} isSystemChat={isSystemChat} />
+  return <SystemMessageSwitcher message={message} isSystemChat={isSystemChat} commonSystemMessages={commonSystemMessages} />
 }

@@ -74,13 +74,13 @@ type SocketMessageReceive =
   | ReadNotificationsDone
   | SessionStarted
 
-type UserType = "client" | "coach" | "admin"
+type UserType = "client" | "coach" | "admin" | "support"
 
-const getChatSocketLink = (type: UserType, token: string) => {
-  return `${config.WS_HOST}/ws/chat/${type}/?token=${token}`
+const getChatSocketLink = (type: UserType, token: string, query?: any) => {
+  return `${config.WS_HOST}/ws/chat/${type}/?${new URLSearchParams({ token, ...query }).toString()}`
 }
 
-export const createChatsSocket = (userType: UserType) => {
+export const createChatsSocket = (userType: UserType, query?: any) => {
   const socket = createSocket()
 
   const onMessage = createEvent<WriteChatMessageDone>()
@@ -210,7 +210,7 @@ export const createChatsSocket = (userType: UserType) => {
   sample({
     source: $token,
     clock: merge([$needConnect, registerUserFx.done]),
-    fn: token => getChatSocketLink(userType, token),
+    fn: token => getChatSocketLink(userType, token, query),
     target: connect,
   })
 

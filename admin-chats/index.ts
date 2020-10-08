@@ -8,3 +8,7 @@ const scope = fork(root)
 import { createSupervisorChatApp } from "./src/supervisor-chat/createSupervisorChatApp";
 
 (window as any).createSupervisorChat = createSupervisorChatApp
+
+import {createSupportChatApp} from "./src/support-chat/createSupportChatApp"
+
+(window as any).createSupportChat = createSupportChatApp

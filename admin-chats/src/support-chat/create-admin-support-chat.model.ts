@@ -1,19 +1,23 @@
 import { ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
+import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api/interfaces/utils.interface"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { combine, createEffect, createEvent, forward, restore } from "effector-root"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { PaginationRequest } from "@/feature/pagination/modules/pagination"
+import { ChatImage } from "@/lib/api/chats/clients/get-images"
+import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
 
-export type SupervisorChatModelConfig = {
+export type SupportChatModelConfig = {
   type: "client" | "coach"
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
+  fetchMaterials: (id: ChatId, params: PaginationRequest) => Promise<Pagination<ChatImage>>,
 }
 
-export const createSupervisorChatModel = (config: SupervisorChatModelConfig) => {
+export const createAdminSupportChatModel = (config: SupportChatModelConfig) => {
   const reset = createEvent()
   const changeId = createEvent<ChatId>()
 
@@ -31,10 +35,17 @@ export const createSupervisorChatModel = (config: SupervisorChatModelConfig) => 
   const chatMessages = createChatMessagesModule({
     ...config,
     fetchMessages: config.fetchMessages,
-    dontRead: true
+    dontRead: true,
+    isSupport: true,
+    supportIsMe: true
   })
 
   const load = createEvent()
+
+  const materials = createChatMaterialsModule({
+    $chatId,
+    fetchMaterials: config.fetchMaterials
+  })
 
   forward({
     from: [reset],
@@ -82,12 +93,21 @@ export const createSupervisorChatModel = (config: SupervisorChatModelConfig) => 
     }
   )
 
+  const $chatHeader = $chatInfo.map((chat) => {
+    const user = chat?.coach || chat?.clients?.[0]
+    return {
+      name: `${user?.firstName} ${user?.lastName}`,
+      avatar: user?.avatar || null
+    }
+  })
+
   const messageBox = createChatMessageBoxModule({
     ...config,
     $chatId,
   })
 
   return {
+    materials,
     $showDialog,
     chatMessages,
     socket: config.socket,
@@ -95,6 +115,7 @@ export const createSupervisorChatModel = (config: SupervisorChatModelConfig) => 
     mounted,
     reset,
     $firstLoading,
-    changeDialogVisibility
+    changeDialogVisibility,
+    $chatHeader
   }
 }

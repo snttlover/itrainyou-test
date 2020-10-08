@@ -18,8 +18,31 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        loader: 'ts-loader'
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              "plugins": [
+                ["effector/babel-plugin"],
+                [
+                  "effector/babel-plugin",
+                  {
+                    "storeCreators": ["createEffectorField"],
+                    "noDefaults": true
+                  },
+                  "createEffectorField"
+                ],
+                ["styled-components", {"displayName": true, "ssr": true}]
+              ]
+            }
+
+          },
+          {
+            loader: 'ts-loader'
+          }
+        ]
       },
       {
         test: /\.svg$/,
