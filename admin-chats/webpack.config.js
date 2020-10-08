@@ -12,14 +12,14 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js']
   },
   output: {
-    path: path.join(__dirname, './admin-chats/dist'),
+    path: path.join(__dirname, './dist'),
     filename: 'bundle.min.js'
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader'
+        loader: 'ts-loader'
       },
       {
         test: /\.svg$/,
