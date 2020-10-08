@@ -17,6 +17,9 @@ export const createSupervisorChatModel = (config: SupervisorChatModelConfig) => 
   const reset = createEvent()
   const changeId = createEvent<ChatId>()
 
+  const changeDialogVisibility = createEvent<boolean>()
+  const $showDialog = restore(changeDialogVisibility, true)
+
   const fetchSupervisorChatFx = createEffect({
     handler: config.fetchChat,
   })
@@ -85,11 +88,13 @@ export const createSupervisorChatModel = (config: SupervisorChatModelConfig) => 
   })
 
   return {
+    $showDialog,
     chatMessages,
     socket: config.socket,
     messageBox,
     mounted,
     reset,
-    $firstLoading
+    $firstLoading,
+    changeDialogVisibility
   }
 }

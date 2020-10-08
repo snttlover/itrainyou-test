@@ -21,6 +21,9 @@ export const createSupervisorChat = (chatId: ChatId, $chatModule: ReturnType<typ
     const mounted = useEvent($chatModule.mounted)
     const unmounted = useEvent($chatModule.reset)
 
+    const showDialog = useStore($chatModule.$showDialog)
+    const changeDialogVisibility = useEvent($chatModule.changeDialogVisibility)
+
     useEffect(() => {
       mounted(chatId)
       return () => unmounted()
@@ -28,7 +31,7 @@ export const createSupervisorChat = (chatId: ChatId, $chatModule: ReturnType<typ
 
     return (
       <ClientTheme>
-        <StyledDialog value={true} onChange={() => {}}>
+        <StyledDialog value={showDialog} onChange={changeDialogVisibility}>
           <Container>
             {messagesFirstLoading && <Loader />}
             {!messagesFirstLoading && (
