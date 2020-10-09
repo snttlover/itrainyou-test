@@ -1,27 +1,17 @@
+import { RegisterButton } from "@/pages/landing/common/RegisterButton"
 import { routeNames } from "@/pages/route-names"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { LandingPageContainer } from "../../common/LandingPageContainer"
-import { Button } from "../../../../components/button/normal/Button"
-
-const GradientContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  position: relative;
-
-  background: linear-gradient(199.33deg, #a3cff3 14.5%, rgba(255, 255, 255, 0) 85.5%), #9f8dc1;
-  @media screen and (max-width: 480px) {
-    background: linear-gradient(232.7deg, #a3cff3 14.5%, rgba(255, 255, 255, 0) 85.5%), #9f8dc1;
-  }
-`
 
 const Title = styled.h3`
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 32px;
+  line-height: 40px;
+  color: #fff;
 
   @media screen and (max-width: 768px) {
     font-size: 28px;
@@ -33,60 +23,40 @@ const Title = styled.h3`
   }
 `
 const Description = styled.p`
-  font-size: 20px;
-  line-height: 26px;
-  margin-top: 20px;
-  @media screen and (max-width: 768px) {
-    font-size: 16px;
-    line-height: 22px;
-  }
-  @media screen and (max-width: 480px) {
-    font-size: 14px;
-    line-height: 20px;
-  }
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: #ffffff;
+
+  margin-top: 16px;
 `
 
 const StyledLandingPageContainer = styled(LandingPageContainer)`
-  margin: 95px 0;
   display: flex;
-  max-width: 892px;
   flex-direction: column;
 
-  @media screen and (max-width: 768px) {
-    margin: 44px 19px 24px 44px;
-  }
-  @media screen and (max-width: 480px) {
-    margin: 64px 12px 40px;
-  }
+  margin-top: 51px;
+  position: relative;
 `
 
-const RegistrationButton = styled(Button)`
-  padding: 4px 16px;
-  margin-top: 24px;
-  align-self: flex-end;
-
-  color: #544274;
-  background: #fff;
-  &:active {
-    box-shadow: none;
-    background: #f6f6f6;
-  }
-  @media screen and (max-width: 480px) {
-    align-self: center;
-    margin-top: 122px;
-  }
+const StyledRegLink = styled(Link)`
+  width: fit-content;
+  margin-top: 28px;
 `
 
 export const Hero = () => (
-  <GradientContainer>
-    <StyledLandingPageContainer>
-      <Title>Площадка по работе с проверенными коучами из любой точки мира</Title>
-      <Description>
-        Подберите специалиста на сайте, чтобы грамотно поставить и гарантированно достичь своей цели
-      </Description>
-      <Link to={routeNames.signup("1")}>
-        <RegistrationButton>Зарегистрироваться</RegistrationButton>
-      </Link>
-    </StyledLandingPageContainer>
-  </GradientContainer>
+  <StyledLandingPageContainer>
+    <Title>
+      Онлайн пространство для
+      <br />
+      подбора и работы с<br />
+      проверенными коучами
+    </Title>
+    <Description>Выберите специалиста, чтобы решить любую жизненную проблему</Description>
+    <StyledRegLink to={routeNames.signup("1")}>
+      <RegisterButton>Зарегистрироваться</RegisterButton>
+    </StyledRegLink>
+  </StyledLandingPageContainer>
 )

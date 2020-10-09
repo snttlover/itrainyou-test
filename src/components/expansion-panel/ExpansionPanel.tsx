@@ -1,16 +1,20 @@
+import { Icon } from "@/components/icon/Icon"
 import * as React from "react"
 import { useState } from "react"
 import styled, { css } from "styled-components"
-import arrowImage from "./arrow.svg"
 
 const Title = styled.div`
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 22px;
-  color: #544274;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #424242;
+
   position: relative;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
 
   @media screen and (max-width: 768px) {
@@ -23,18 +27,16 @@ const Title = styled.div`
   }
 `
 
-const Arrow = styled.img.attrs({ src: arrowImage })`
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 22px;
-  color: #544274;
+const Arrow = styled(Icon).attrs({ name: "arrow" })`
+  fill: #4858cc;
 `
 
 const Container = styled.div`
   margin-top: 13px;
   font-size: 16px;
   line-height: 22px;
-  display: none;  @media screen and (max-width: 768px) {
+  display: none;
+  @media screen and (max-width: 768px) {
     font-size: 14px;
     line-height: 18px;
   }
@@ -59,10 +61,10 @@ const expandedStyles = css`
 `
 
 const Panel = styled.div<PanelTypes>`
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
   padding: 13px 20px;
   width: 100%;
   position: relative;
+  background: #ffffff;
   border-radius: 8px;
   -ms-user-select: none;
   user-select: none;

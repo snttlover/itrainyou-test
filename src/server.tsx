@@ -1,7 +1,6 @@
 import { $lastUrlServerNavigation } from "@/feature/navigation"
 import { loadUserData } from "@/feature/user/user.model"
 import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
-import { performance } from "perf_hooks"
 import express from "express"
 import serialize from "serialize-javascript"
 
@@ -98,9 +97,6 @@ export const server = express()
   .use(cookieParser())
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get("/*", async (req: express.Request, res: express.Response) => {
-    console.info("[REQUEST] %s %s", req.method, req.url)
-    const timeStart = performance.now()
-
     const currentRoutes = matchRoutes(ROUTES, req.url.split("?")[0])
     const isSSR = currentRoutes.reduce((_, route) => route.route.ssr, false)
     const scope = fork(root)
@@ -116,12 +112,6 @@ export const server = express()
 
     if (isSSR) {
       if (res.statusCode >= 300 && res.statusCode < 400) {
-        console.info(
-          "[REDIRECT] from %s to %s at %sms",
-          req.url,
-          res.get("Location"),
-          (performance.now() - timeStart).toFixed(2)
-        )
         return
       }
 
@@ -142,13 +132,11 @@ export const server = express()
       stream.on("end", () => {
         res.end(htmlEnd(storesValues))
         sheet.seal()
-        console.info("[PERF] sent page at %sms", (performance.now() - timeStart).toFixed(2))
       })
     } else {
       const storesValues = effectorSerialize(scope, { ignore: [$token] })
       res.write(htmlStart(assets.client.css, assets.client.js))
       res.end(htmlEnd(storesValues))
-      console.info("[PERF] sent page at %sms", (performance.now() - timeStart).toFixed(2))
     }
   })
 

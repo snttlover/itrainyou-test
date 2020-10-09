@@ -5,7 +5,7 @@ import { restrictClient } from "@/lib/api/restriction/restrict-client"
 import { unbanClient } from "@/lib/api/restriction/unban-client"
 import { unrestrictClient } from "@/lib/api/restriction/unrestrict-client"
 import { createGate } from "@/scope"
-import { createEffect, forward, restore } from "effector"
+import { createEffect, forward, restore } from "effector-root"
 import { some } from "patronum"
 
 export const BlockedPageGate = createGate()

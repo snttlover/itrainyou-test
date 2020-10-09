@@ -5,7 +5,9 @@ import { createStore } from "effector-root"
 const fetchCoachesListFx = createEffect<void, Coach[]>().use(() => getCoaches({}))
 export const loadCoaches = createEvent()
 
-export const $coachesList = createStore<Coach[]>([]).on(fetchCoachesListFx.done, (state, payload) => payload.result)
+export const $coachesList = createStore<Coach[]>([]).on(fetchCoachesListFx.done, (state, payload) =>
+  payload.result.slice(0, 3)
+)
 
 forward({
   from: loadCoaches,

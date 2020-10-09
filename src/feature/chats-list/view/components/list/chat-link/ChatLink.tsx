@@ -6,11 +6,11 @@ import { Button } from "@/components/button/normal/Button"
 import { ChatLinkMaterials } from "@/feature/chats-list/view/components/list/chat-link/ChatLinkMaterials"
 import { Link } from "react-router-dom"
 import { ChatTypes } from "@/lib/api/chats/clients/get-chats"
-import {Event} from "effector"
+import { Event } from "effector-root"
 import { useEvent } from "effector-react"
 
 export type ChatLinkTypes = {
-  id: number,
+  id: number
   type: ChatTypes
   userLink: string
   link: string

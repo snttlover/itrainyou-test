@@ -13,6 +13,10 @@ const StyledInput = styled(Input)`
   border-radius: 30px;
   padding: 8px 12px;
   font-size: 16px;
+
+  &::placeholder {
+    color: #424242;
+  }
 `
 
 const expandedStyles = css`

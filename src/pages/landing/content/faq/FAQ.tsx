@@ -9,12 +9,13 @@ import questions from "./questions"
 import { Button } from "@/components/button/normal/Button"
 
 const Title = styled.h3`
+  font-family: Roboto Slab;
   font-style: normal;
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
-  margin-bottom: 12px;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 26px;
   text-align: center;
+  color: #424242;
   @media screen and (max-width: 768px) {
     font-size: 28px;
     margin-left: 20px;
@@ -27,11 +28,15 @@ const Title = styled.h3`
 `
 
 const SubTitle = styled.h3`
-  font-weight: 600;
+  margin-top: 12px;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
   font-size: 20px;
   line-height: 26px;
-  margin-bottom: 36px;
   text-align: center;
+  color: #4858cc;
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
@@ -46,6 +51,7 @@ const SubTitle = styled.h3`
 `
 
 const Content = styled.div`
+  margin-top: 44px;
   display: flex;
   align-items: flex-start;
   @media screen and (max-width: 768px) {
@@ -61,9 +67,8 @@ const QuestionsList = styled.div`
 `
 
 const PeopleImage = styled.img.attrs({ src: peopleImage })`
-  width: 360px;
+  width: 296px;
   margin-left: 40px;
-  margin-top: 140px;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -77,6 +82,7 @@ const StyledExpansionPanel = styled(ExpansionPanel)`
 `
 
 const StyledContainer = styled(LandingPageContainer)`
+  margin-top: 85px;
   padding-bottom: 40px;
   @media screen and (max-width: 768px) {
     padding: 0 7px;
@@ -101,8 +107,8 @@ const StyledRegistrationButton = styled(Button)`
 
 export const FAQ = () => (
   <StyledContainer>
-    <Title>У вас уже возникло много вопросов</Title>
-    <SubTitle>Даем ответы на 7 самых популярных</SubTitle>
+    <Title>Новая сфера требует развернутых ответов</Title>
+    <SubTitle>Даем ответы на самые популярные</SubTitle>
     <Content>
       <QuestionsList>
         {questions.map((faq, i) => (

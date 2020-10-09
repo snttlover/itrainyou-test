@@ -1,61 +1,48 @@
+import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
-import gradientImage from "./images/gradient.svg"
-import mobileGradientImage from "./images/mobile-gradient.svg"
 import { LandingPageContainer } from "../../common/LandingPageContainer"
 import { StepCard } from "./StepCard"
 import steps from "./steps-list"
+import stepsBg from "../../assets/steps-bg.svg"
 
 const StyledSteps = styled.div`
   position: relative;
-  padding-top: 55px;
-  padding-bottom: 90px;
+  padding-top: 155px;
+  padding-bottom: 100px;
+
   @media screen and (max-width: 768px) {
     padding-top: 0;
     padding-bottom: 38px;
   }
 `
 
-const Gradient = styled.img.attrs({ src: gradientImage })`
+const BgImage = styled.div`
+  background-image: url(${stepsBg});
+  background-repeat: repeat-x;
+  background-size: contain;
+  background-position: center;
   position: absolute;
-  z-index: -1;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  min-width: 1140px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  @media screen and (max-width: 743px) {
-    top: calc(50% + 20px);
-  }
-  @media screen and (max-width: 768px) {
-    height: 225px;
-  }
-  @media screen and (max-width: 565px) {
-    display: none;
-  }
 `
 
-const MobileGradient = styled(Gradient).attrs({ src: mobileGradientImage })`
-  @media screen and (max-width: 565px) {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  @media screen and (max-width: 743px) {
-    top: 50%;
-  }
-  @media screen and (min-width: 566px) {
-    display: none;
-  }
+const StyledContainer = styled(LandingPageContainer)`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const Title = styled.h3`
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
-  text-align: center;
-  margin-bottom: 60px;
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 26px;
+  color: #424242;
   @media screen and (max-width: 768px) {
     font-size: 28px;
     margin-bottom: 13px;
@@ -66,7 +53,19 @@ const Title = styled.h3`
   }
 `
 
+const Description = styled.p`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 26px;
+  color: #4858cc;
+
+  margin-top: 12px;
+`
+
 const StepsList = styled.div`
+  margin-top: 64px;
   display: flex;
   justify-content: center;
   @media screen and (max-width: 565px) {
@@ -74,17 +73,27 @@ const StepsList = styled.div`
   }
 `
 
-export const Steps = () => (
-  <StyledSteps>
-    <MobileGradient />
-    <Gradient />
-    <LandingPageContainer>
-      <Title> В 10 раз проще, чем подобрать специалиста офлайн</Title>
-      <StepsList>
-        {steps.map(step => (
-          <StepCard key={step.index} {...step} />
-        ))}
-      </StepsList>
-    </LandingPageContainer>
-  </StyledSteps>
-)
+const StepImage = styled.img`
+  margin-top: 40px;
+  width: 723.16px;
+  height: 400.73px;
+`
+
+export const Steps = () => {
+  const [stepIndex, setStepIndex] = useState(1)
+  return (
+    <StyledSteps>
+      <BgImage />
+      <StyledContainer>
+        <Title>Персональный коуч помогает получить результат</Title>
+        <Description>В 10 раз проще, чем подобрать специалиста офлайн</Description>
+        <StepsList>
+          {steps.map(step => (
+            <StepCard key={step.index} {...step} onClick={setStepIndex} selected={step.index === stepIndex} />
+          ))}
+        </StepsList>
+        <StepImage src={steps[stepIndex - 1].image} />
+      </StyledContainer>
+    </StyledSteps>
+  )
+}

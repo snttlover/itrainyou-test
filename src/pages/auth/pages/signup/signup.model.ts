@@ -1,5 +1,4 @@
 import { navigatePush } from "@/feature/navigation"
-import { loadUserData } from "@/feature/user/user.model"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { routeNames } from "@/pages/route-names"
@@ -106,7 +105,7 @@ registerUserFx.done.watch(_ => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
 })
 
-const event = sample({clock: getMyUserDataFx.done, source: registerUserFx.done.map(({params}) => params)})
+const event = sample({ clock: getMyUserDataFx.done, source: registerUserFx.done.map(({ params }) => params) })
 
 const userType = split(event, {
   client: ({ type }) => type === "client",

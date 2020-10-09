@@ -4,7 +4,7 @@ import { parseQueryString } from "@/lib/helpers/query"
 import { loadCardsFx } from "@/pages/coach/wallet/cards/cards.model"
 import { loadInfoFx } from "@/pages/coach/wallet/info/info.model"
 import { createGate } from "@/scope"
-import { createEffect, forward, split } from "effector"
+import { createEffect, forward, split } from "effector-root"
 
 export const ConfirmationGate = createGate()
 
