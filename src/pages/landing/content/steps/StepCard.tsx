@@ -6,10 +6,13 @@ import arrowBottomImage from "./images/card-arrow-bottom.svg"
 type StepCardTypes = {
   index: number
   text: string
+  onClick: (index: number) => void
+  selected?: boolean
 }
 
 const StyledCard = styled.div`
   position: relative;
+  cursor:pointer;
 
   &:not(:last-child) {
     margin-right: 68px;
@@ -19,7 +22,7 @@ const StyledCard = styled.div`
       right: -56px;
       width: 44px;
       height: 44px;
-      top: 50%;
+      top: 20%;
       background-image: url("${arrowImage}");
       transform: translateY(-50%);
       background-size: 100%;
@@ -56,13 +59,15 @@ const StyledCard = styled.div`
   }
 `
 
-const Index = styled.div`
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
+const Index = styled.div<{ selected?: boolean }>`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 26px;
+  color: ${({ selected }) => (selected ? "#4858cc" : "#5B6670")};
+  margin-bottom: 24px;
   text-align: center;
-  color: #544274;
-  margin-bottom: 12px;
   @media screen and (max-width: 768px) {
     font-size: 28px;
     margin-bottom: 4px;
@@ -73,10 +78,13 @@ const Index = styled.div`
   }
 `
 
-const Text = styled.div`
+const Text = styled.div<{ selected?: boolean }>`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
   font-size: 20px;
   line-height: 26px;
-  text-align: center;
+  color: ${({ selected }) => (selected ? "#4858cc" : "#5B6670")};
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
@@ -87,8 +95,8 @@ const Text = styled.div`
 `
 
 export const StepCard = (props: StepCardTypes) => (
-  <StyledCard>
-    <Index>0{props.index}</Index>
-    <Text>{props.text}</Text>
+  <StyledCard onClick={() => props.onClick(props.index)}>
+    <Index selected={props.selected}>0{props.index}</Index>
+    <Text selected={props.selected}>{props.text}</Text>
   </StyledCard>
 )

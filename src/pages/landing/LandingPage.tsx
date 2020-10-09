@@ -1,8 +1,8 @@
 import { START } from "@/lib/effector"
 import * as ourCoachesModel from "@/pages/landing/content/our-coaches/model"
-import { useEvent } from "effector-react/ssr"
-import { useEffect } from "react"
 import { withGuest } from "@/feature/user/with-guest"
+import { LandingTopBar } from "@/pages/landing/LandingTopBar"
+import styled from "styled-components"
 import { OurCoaches } from "./content/our-coaches/OurCoaches"
 import * as React from "react"
 import { Layout } from "@/components/layouts/behaviors/default/Layout"
@@ -18,22 +18,82 @@ import { CoachAdvantages } from "./content/coach-advantages/CoachAdvantages"
 import { FAQ } from "./content/faq/FAQ"
 import { Footer } from "./content/footer/Footer"
 
+import heroBg from "./assets/hero-bg.svg"
+import heroImg from "./assets/hero-img.svg"
+import bottomBg from "./assets/bottom-bg.svg"
+
+const HeroBackground = styled.div`
+  background-image: url(${heroBg});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(581px + 4vw);
+`
+
+const HeroImage = styled.div`
+  background-image: url(${heroImg});
+  background-repeat: no-repeat;
+  height: 407px;
+  width: 942px;
+  position: absolute;
+  top: calc(150px - 1.5vw);
+  left: 160px;
+`
+
+const StyledLayout = styled(Layout)`
+  background-color: #fff;
+`
+
+const Container = styled.div`
+  height: 581px;
+`
+
+const RelativeContainer = styled.div`
+  position: absolute;
+  max-width: 1080px;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0);
+`
+
+const BottomBackgroundContainer = styled.div`
+  background-image: url(${bottomBg});
+  background-repeat: repeat-x;
+  background-position: 400px 0;
+
+  padding-top: 200px;
+`
+
 const LandingPageMarkup = () => {
   return (
-    <Layout>
-      <TopBar />
-      <Hero />
+    <StyledLayout>
+      <Container>
+        <HeroBackground />
+        <RelativeContainer>
+          <HeroImage />
+        </RelativeContainer>
+        <LandingTopBar />
+        <Hero />
+      </Container>
       <AboutCoach />
-      <Benefits />
       <Steps />
+      {/*<Benefits />*/}
       <CoachParams />
       <OurCoaches />
       <PlatformAdvantages />
-      <AllNeedsCoach />
-      <CoachAdvantages />
-      <FAQ />
+      <BottomBackgroundContainer>
+        <AllNeedsCoach />
+        <CoachAdvantages />
+        <FAQ />
+      </BottomBackgroundContainer>
       <Footer />
-    </Layout>
+    </StyledLayout>
   )
 }
 

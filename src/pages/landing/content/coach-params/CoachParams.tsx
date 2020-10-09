@@ -5,11 +5,13 @@ import { CoachParamsCard } from "./CoachParamsCard"
 import cards from "./cards"
 
 const Title = styled.h3`
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 26px;
   text-align: center;
-  margin-bottom: 24px;
+  color: #424242;
 
   @media screen and (max-width: 768px) {
     font-size: 28px;
@@ -21,10 +23,17 @@ const Title = styled.h3`
   }
 `
 const SubTitle = styled.h3`
-  font-weight: 600;
+  font-family: Roboto;
+  width: 650px;
+  font-style: normal;
+  font-weight: normal;
   font-size: 20px;
   line-height: 26px;
   text-align: center;
+  color: #4858cc;
+
+  margin-top: 12px;
+
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
@@ -32,6 +41,9 @@ const SubTitle = styled.h3`
 `
 
 const StyledContainer = styled(LandingPageContainer)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding-top: 60px;
   padding-bottom: 60px;
   @media screen and (max-width: 768px) {
@@ -61,25 +73,15 @@ const CoachParamsCardsList = styled.div`
 const CoachParamsCardWrapper = styled.div`
   width: 33.3%;
   display: flex;
-  &:nth-child(2),
-  &:nth-child(5) {
-    justify-content: center;
-  }
-  &:nth-child(3),
-  &:nth-child(6) {
-    justify-content: flex-end;
-  }
-  @media screen and (max-width: 768px) {
-    width: auto;
-    max-width: 240px;
-    justify-content: flex-start !important;
-  }
+  justify-content: center;
 `
 
 export const CoachParams = () => (
   <StyledContainer>
-    <Title>Подберите своего коуча по 8+ параметрам</Title>
-    <SubTitle>Измените направление своей жизни за 2 мин.</SubTitle>
+    <Title>Измените направление своей жизни за 2 мин.</Title>
+    <SubTitle>
+      Выберите наставника из базы проверенных коучей и получите четкое руководство по постановке и достижению цели
+    </SubTitle>
     <CoachParamsCardsList>
       {cards.map((card, i) => (
         <CoachParamsCardWrapper key={i}>

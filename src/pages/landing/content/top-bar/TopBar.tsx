@@ -25,7 +25,7 @@ const StyledContainer = styled(LandingPageContainer)`
 
 const Container = styled.div`
   width: 100%;
-  background: #dbdee0;
+  // background: #dbdee0;
   display: flex;
   justify-content: center;
 `

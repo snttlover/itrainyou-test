@@ -1,55 +1,18 @@
 import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
-import { AdvantagesList } from "./content/AdvatagesList"
-import advantages from "./advantages"
-import { useState } from "react"
-import { DesktopSlider } from "./content/DesktopSlider"
-import { MobileSlider } from "./content/MobileSlider"
 
-const SlidesContainer = styled.div`
-  flex: 1;
-  position: relative;
-  @media screen and (max-width: 1000px) {
-    width: 100%;
-  }
-`
-
-const Title = styled.h3`
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
-  text-align: center;
-  margin-bottom: 32px;
-  @media screen and (max-width: 768px) {
-    font-size: 28px;
-    line-height: 44px;
-  }
-`
-
-const SliderContainer = styled.div`
-  display: flex;
-  height: 400px;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 120px;
-  position: relative;
-
-  @media screen and (max-width: 1000px) {
-    flex-direction: column;
-    align-items: flex-start;
-    height: unset;
-    width: 100%;
-    margin: 0 24px;
-  }
-
-  @media screen and (max-width: 638px) {
-    margin: 0;
-  }
-`
+import phone1 from "./images/phone1.png"
+import phone2 from "./images/phone2.png"
+import bg from "./images/bg.svg"
 
 const StyledContainer = styled(LandingPageContainer)`
-  padding-top: 30px;
+  position: relative;
+  height: 500px;
+  background-image: url(${bg});
+  background-repeat: no-repeat;
+  background-position: 129px 84px;
+
   @media screen and (max-width: 1000px) {
     margin-bottom: 121px;
   }
@@ -58,21 +21,89 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
-export const PlatformAdvantages = () => {
-  const [currentSlideIndex, changeCurrentSlideIndex] = useState(0)
+const AdvantageFirst = styled.div`
+  position: absolute;
+  top: 109px;
+  left: 86px;
 
-  const slide = advantages[currentSlideIndex]
+  width: 182px;
+  height: 122px;
+`
 
-  return (
-    <StyledContainer>
-      <Title>Сориентированы на комплекс ваших преимуществ</Title>
-      <SliderContainer>
-        <SlidesContainer>
-          <DesktopSlider {...slide} />
-          <MobileSlider current={currentSlideIndex} items={advantages} slideChanged={changeCurrentSlideIndex} />
-        </SlidesContainer>
-        <AdvantagesList current={currentSlideIndex} list={advantages} changeIndex={changeCurrentSlideIndex} />
-      </SliderContainer>
-    </StyledContainer>
-  )
-}
+const AdvantageSecond = styled.div`
+  position: absolute;
+  top: 19px;
+  left: 582px;
+
+  width: 187px;
+  height: 122px;
+`
+
+const AdvantageThird = styled.div`
+  position: absolute;
+
+  top: 225px;
+  left: 802px;
+  width: 256px;
+  height: 148px;
+`
+
+const AdvantageTitle = styled.h4`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: #4858cc;
+`
+
+const AdvantageText = styled.p`
+  margin-top: 8px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: #5b6670;
+`
+
+const Phone1 = styled.div`
+  position: absolute;
+  width: 240px;
+  height: 483px;
+
+  left: 300px;
+
+  background-image: url(${phone1});
+`
+
+const Phone2 = styled.div`
+  position: absolute;
+  top: 150px;
+  left: 550px;
+  width: 240px;
+  height: 483px;
+
+  background-image: url(${phone2});
+`
+
+export const PlatformAdvantages = () => (
+  <StyledContainer>
+    <Phone1 />
+    <Phone2 />
+    <AdvantageFirst>
+      <AdvantageTitle>Личный кабинет</AdvantageTitle>
+      <AdvantageText>Переписывайтесь, планируйте календарь, получайте материалы от коучей в одном окне.</AdvantageText>
+    </AdvantageFirst>
+    <AdvantageSecond>
+      <AdvantageTitle>Удобный поиск</AdvantageTitle>
+      <AdvantageText>Выбирайте коучей по направлению, цене и времени за несколько кликов.</AdvantageText>
+    </AdvantageSecond>
+    <AdvantageThird>
+      <AdvantageTitle>Под контролем администрации</AdvantageTitle>
+      <AdvantageText>
+        Спорные ситуации разбирает куратор, при некорректном поведении коуча клиент получает деньги назад.
+      </AdvantageText>
+    </AdvantageThird>
+  </StyledContainer>
+)

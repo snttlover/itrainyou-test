@@ -1,30 +1,18 @@
 import * as React from "react"
 import styled from "styled-components"
 
-type StyledCardTypes = {
-  color: string
-}
+const StyledCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-const StyledCard = styled.div<StyledCardTypes>`
   height: auto;
   max-height: 252px;
   position: relative;
   padding-bottom: 30px;
-  margin-top: 50px;
+  margin-top: 36px;
   width: auto;
-  max-width: 240px;
-  &:after {
-    position: absolute;
-    z-index: 1;
-    content: "";
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: ${props => props.color};
-    opacity: 0.24;
-    border-radius: 10px;
-    height: 8px;
-  }
+  max-width: 350px;
   @media screen and (max-width: 768px) {
     margin-top: 24px;
   }
@@ -41,10 +29,14 @@ const Icon = styled.img`
 `
 
 const Title = styled.div`
-  font-weight: 600;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
   font-size: 20px;
   line-height: 26px;
-  margin-bottom: 8px;
+  text-align: center;
+  color: #4858cc;
+
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
@@ -55,6 +47,9 @@ const Title = styled.div`
 const Description = styled.div`
   font-size: 16px;
   line-height: 22px;
+  text-align: center;
+
+  margin-top: 16px;
   @media screen and (max-width: 768px) {
     font-size: 14px;
     line-height: 18px;
@@ -69,14 +64,13 @@ type CoachParamsCardProps = {
   image: string
   title: string
   description: string
-  color: string
   className?: string
 }
 
 export const CoachParamsCard = (props: CoachParamsCardProps) => (
-  <StyledCard className={props.className} color={props.color}>
+  <StyledCard className={props.className}>
     <Icon src={props.image} />
     <Title>{props.title}</Title>
-    <Description>{props.description}</Description>
+    <Description dangerouslySetInnerHTML={{ __html: props.description }} />
   </StyledCard>
 )
