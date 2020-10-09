@@ -105,22 +105,28 @@ const StyledRegistrationButton = styled(Button)`
   }
 `
 
+const BackgroundColor = styled.div`
+  background-color: #dbdee0;
+`
+
 export const FAQ = () => (
-  <StyledContainer>
-    <Title>Новая сфера требует развернутых ответов</Title>
-    <SubTitle>Даем ответы на самые популярные</SubTitle>
-    <Content>
-      <QuestionsList>
-        {questions.map((faq, i) => (
-          <StyledExpansionPanel key={i} title={faq.question}>
-            {faq.answer}
-          </StyledExpansionPanel>
-        ))}
-      </QuestionsList>
-      <PeopleImage />
-      <Link to={routeNames.signup("1")}>
-        <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
-      </Link>
-    </Content>
-  </StyledContainer>
+  <BackgroundColor>
+    <StyledContainer>
+      <Title>Новая сфера требует развернутых ответов</Title>
+      <SubTitle>Даем ответы на самые популярные</SubTitle>
+      <Content>
+        <QuestionsList>
+          {questions.map((faq, i) => (
+            <StyledExpansionPanel key={i} title={faq.question}>
+              {faq.answer}
+            </StyledExpansionPanel>
+          ))}
+        </QuestionsList>
+        <PeopleImage />
+        <Link to={routeNames.signup("1")}>
+          <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
+        </Link>
+      </Content>
+    </StyledContainer>
+  </BackgroundColor>
 )
