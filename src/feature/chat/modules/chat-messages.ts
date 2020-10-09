@@ -1,8 +1,7 @@
 import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
-import { createEffect, createEvent, createStore, forward, guard, restore, sample } from "effector-root"
-import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
+import { createEvent, createStore, guard  } from "effector-root"
+import { createCursorPagination } from "@/feature/pagination/modules/cursor-pagination"
 import {
-  Chat,
   ChatMessage,
   ConflictStatus,
   MessageSessionRequestStatuses,
@@ -14,12 +13,15 @@ import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { CoachUser } from "@/lib/api/coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
-import { config as globalConfig } from "@/config"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
   socket: ReturnType<typeof createChatsSocket>
-  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
+  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
+  dontRead?: boolean
+
+  isSupport?: true,
+  supportIsMe?: true
 }
 
 export type ChatSupportMessage = {
@@ -49,6 +51,7 @@ export type PersonalChatMessage = {
   text: string
   image: string
   time: string
+  user: CoachUser | Client | null
 }
 
 const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
@@ -93,23 +96,27 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       .reverse()
       .map(
         (message): ChatMessagesTypes => {
-          const isMine =
+          let isMine =
             (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
 
-          if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
-            let user: CoachUser | Client | null = null
+          if (config.supportIsMe) {
+            isMine = !!message.senderSupport
+          }
 
-            if (message.type === "SUPPORT") {
-              const user = message?.supportTicket?.support
-              return {
-                type: "SUPPORT",
-                id: message.id,
-                userName: `${user?.firstName} ${user?.lastName}`,
-                userAvatar: user?.avatar || null,
-                ticketStatus: message.systemTicketType,
-              }
+          let user: CoachUser | Client | null = null
+
+          if (message.type === "SUPPORT") {
+            const user = message?.supportTicket?.support
+            return {
+              type: "SUPPORT",
+              id: message.id,
+              userName: `${user?.firstName} ${user?.lastName}`,
+              userAvatar: user?.avatar || null,
+              ticketStatus: message.systemTicketType
             }
+          }
 
+          if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
             if (config.type === `coach`) {
               user = message.sessionRequest?.initiatorClient || message.sessionRequest?.receiverClient || null
             } else {
@@ -119,7 +126,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 message.sessionRequest.receiverCoach ||
                 null
             }
-
             return {
               type: message.type as "SYSTEM",
               id: message.id,
@@ -133,6 +139,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             }
           }
 
+          user = message.senderCoach || message.senderClient || message.senderSupport
+
           return {
             type: `TEXT`,
             id: message.id,
@@ -140,6 +148,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             text: message.text,
             image: message.image,
             time: date(message.creationDatetime).format(`HH:mm`),
+            user
           }
         }
       )
@@ -149,18 +158,20 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     messages: [message.data.id],
   }))
 
-  guard({
-    source: config.socket.events.onMessage,
-    filter: message => {
-      return (
-        (`SYSTEM` === message.data.type ||
-          (config.type === `client` && !!message.data.senderCoach) ||
-          (config.type === `coach` && !!message.data.senderClient)) &&
-        chatId === message.data.chat
-      )
-    },
-    target: readMessage,
-  })
+  if (!config.dontRead) {
+    guard({
+      source: config.socket.events.onMessage,
+      filter: message => {
+        return (
+          (`SYSTEM` === message.data.type ||
+            (config.type === `client` && !!message.data.senderCoach) ||
+            (config.type === `coach` && !!message.data.senderClient)) &&
+          chatId === message.data.chat
+        )
+      },
+      target: readMessage,
+    })
+  }
 
   guard({
     source: config.socket.events.onMessage,

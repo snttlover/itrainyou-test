@@ -7,7 +7,12 @@
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
     "start": "NODE_ENV=production node build/server.js",
-    "release:heroku": "heroku container:push -a itrainnew-frontend web && heroku container:release -a itrainnew-frontend web"
+    "release:heroku": "heroku container:push -a itrainnew-frontend web && heroku container:release -a itrainnew-frontend web",
+    "admin-chats-dev": "webpack-dev-server --config ./admin-chats/webpack.config.js --mode development --open --hot",
+    "admin-chats-build": "webpack  --config ./admin-chats/webpack.config.js  --mode production "
+  },
+  "alias": {
+    "#": "./src/"
   },
   "resolutions": {
     "@types/react": "16.9.37"
@@ -44,6 +49,7 @@
     "swiper": "^5.4.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
     "@effector/babel-plugin": "^0.5.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.6",
@@ -58,12 +64,17 @@
     "@types/serialize-javascript": "^1.5.0",
     "@types/styled-components": "^5.1.0",
     "@types/swiper": "^5.4.0",
+    "awesome-typescript-loader": "^5.2.1",
     "babel-plugin-styled-components": "^1.10.7",
+    "html-webpack-plugin": "^4.5.0",
     "prettier": "^2.0.5",
     "razzle": "^3.1.4",
     "razzle-plugin-typescript": "^3.1.4",
     "svg-sprite-loader": "^5.0.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   },
   "prettier": {
     "arrowParens": "avoid",

@@ -1,23 +1,30 @@
-import { Chat, ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
+import { ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
+import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api/interfaces/utils.interface"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
-import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
+import { combine, createEffect, createEvent, forward, restore } from "effector-root"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { PaginationRequest } from "@/feature/pagination/modules/pagination"
+import { ChatImage } from "@/lib/api/chats/clients/get-images"
+import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
 
 export type SupportChatModelConfig = {
   type: "client" | "coach"
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
+  fetchMaterials: (id: ChatId, params: PaginationRequest) => Promise<Pagination<ChatImage>>,
 }
 
-export const createSupportChatModel = (config: SupportChatModelConfig) => {
+export const createAdminSupportChatModel = (config: SupportChatModelConfig) => {
   const reset = createEvent()
   const changeId = createEvent<ChatId>()
 
-  const fetchSupportChatFx = createEffect({
+  const changeDialogVisibility = createEvent<boolean>()
+  const $showDialog = restore(changeDialogVisibility, true)
+
+  const fetchSupervisorChatFx = createEffect({
     handler: config.fetchChat,
   })
 
@@ -27,13 +34,18 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
 
   const chatMessages = createChatMessagesModule({
     ...config,
-    // @ts-ignore
-    fetchMessages: (id: number, params: CursorPaginationRequest) => config.fetchMessages("support", params),
+    fetchMessages: config.fetchMessages,
+    dontRead: true,
     isSupport: true,
     supportIsMe: true
   })
 
   const load = createEvent()
+
+  const materials = createChatMaterialsModule({
+    $chatId,
+    fetchMaterials: config.fetchMaterials
+  })
 
   forward({
     from: [reset],
@@ -54,58 +66,26 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
 
   forward({
     from: mounted,
-    to: [fetchSupportChatFx, chatMessages.pagination.methods.loadMore],
+    to: [fetchSupervisorChatFx],
   })
 
   forward({
-    from: fetchSupportChatFx.doneData.map(chat => chat.id),
+    from: fetchSupervisorChatFx.doneData.map(chat => chat.id),
     to: changeId,
   })
 
   forward({
-    from: fetchSupportChatFx.doneData,
+    from: changeId,
+    to: chatMessages.pagination.methods.loadMore
+  })
+
+  forward({
+    from: fetchSupervisorChatFx.doneData,
     to: changeChatInfo,
   })
 
-  const $support = combine($chatInfo, chatMessages.pagination.data.$list, (chat, messages) => {
-    let resolved = false
-
-    // @ts-ignore
-    const info = [...messages]
-      .filter(message => !!message.systemTicketType)
-      .reverse()
-      // @ts-ignore
-      .reduce((userInfo, message) => {
-        if (message.systemTicketType) {
-          if (message.systemTicketType === "SUPPORT_AGENT_FOUND") {
-            resolved = false
-            return {
-              avatar: message.supportTicket?.support?.avatar,
-              name: `${message.supportTicket?.support?.firstName} ${message.supportTicket?.support?.lastName}`,
-            }
-          } else {
-            resolved = true
-            return null
-          }
-        }
-      }, null) as { name: string; avatar: string | null } | null
-
-    if (resolved) {
-      return null
-    }
-
-    if (chat?.support) {
-      return {
-        name: `${chat.support.firstName} ${chat.support.lastName}`,
-        avatar: chat.support.avatar,
-      }
-    }
-
-    return info
-  })
-
-  const $loading = combine(
-    fetchSupportChatFx.pending,
+  const $firstLoading = combine(
+    fetchSupervisorChatFx.pending,
     chatMessages.pagination.data.$loading,
     chatMessages.pagination.data.$list,
     (chatLoading, messagesLoading, messages) => {
@@ -113,18 +93,29 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
     }
   )
 
+  const $chatHeader = $chatInfo.map((chat) => {
+    const user = chat?.coach || chat?.clients?.[0]
+    return {
+      name: `${user?.firstName} ${user?.lastName}`,
+      avatar: user?.avatar || null
+    }
+  })
+
   const messageBox = createChatMessageBoxModule({
     ...config,
     $chatId,
   })
 
   return {
-    $support,
+    materials,
+    $showDialog,
     chatMessages,
     socket: config.socket,
     messageBox,
     mounted,
     reset,
-    $firstLoading: $loading,
+    $firstLoading,
+    changeDialogVisibility,
+    $chatHeader
   }
 }

@@ -44,7 +44,7 @@ const MaterialsIcon = styled(Icon).attrs({ name: "chat-files" })`
 type ChatHeaderTypes = {
   avatar?: string | null
   name: string
-  backLink: any
+  backLink?: any
   link: string
   type: string
   blocked: boolean

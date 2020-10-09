@@ -15,7 +15,6 @@ const coachSupportChatModel = createSupportChatModel({
 
 export const CoachSupportChat = createSupportChat(coachSupportChatModel)
 
-
 const clientSupportChatModel = createSupportChatModel({
   fetchMessages: getClientChatMessages,
   socket: clientChatsSocket,

@@ -1,6 +1,9 @@
 import React from "react"
 import styled from "styled-components"
-import {MediaRange} from "@/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
+import { CoachUser } from "@/lib/api/coach"
+import { Client } from "@/lib/api/client/clientInfo"
+import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 
 type ContainerTypes = {
   "data-self": boolean
@@ -59,12 +62,25 @@ type ChatMessageTypes = {
   time: string
   text: string
   image: string
+  showUser?: boolean
+  user: CoachUser | Client | null
 } & ContainerTypes
 
 export const ChatMessage = (props: ChatMessageTypes) => (
-  <Container id={props.id} data-self={props["data-self"]}>
-    {!!props.image && <Image src={props.image} className='message-image' />}
-    {props.text}
-    <Time>{props.time}</Time>
-  </Container>
+  <>
+    {props.showUser && (
+      <MessageUserHeader
+        right={props["data-self"]}
+        hideDate={true}
+        showUser={true}
+        name={`${props.user?.firstName} ${props.user?.lastName}`}
+        avatar={props.user?.avatar || null}
+      />
+    )}
+    <Container id={props.id} data-self={props["data-self"]}>
+      {!!props.image && <Image src={props.image} className='message-image' />}
+      {props.text}
+      <Time>{props.time}</Time>
+    </Container>
+  </>
 )
