@@ -92,7 +92,7 @@ export const Search = (props: SearchProps) => {
         return
       }
 
-      searchHandler()
+      searchHandler('')
     }
 
     if (e.keyCode === 40) {
@@ -108,7 +108,7 @@ export const Search = (props: SearchProps) => {
 
   const getIcon = () => {
     if (!searchValue) {
-      return <SearchIcon focused={focused} onClick={() => searchHandler()} />
+      return <SearchIcon focused={focused} onClick={() => searchHandler('')} />
     }
     return <CloseIcon onClick={() => searchHandler(``)} />
   }

@@ -29,7 +29,15 @@ const MessagesWrapper = styled.div`
 export const createChatMessages = ($chatMessagesModule: ReturnType<typeof createChatMessagesModule>) => {
   const InfScroll = createReverseInfinityScroll($chatMessagesModule.pagination)
 
-  return ({ isSystem, showUser, commonSystemMessages }: { isSystem?: boolean, showUser?: boolean, commonSystemMessages?: boolean }) => {
+  return ({
+    isSystem,
+    showUser,
+    commonSystemMessages,
+  }: {
+    isSystem?: boolean
+    showUser?: boolean
+    commonSystemMessages?: boolean
+  }) => {
     const container = useRef<HTMLDivElement>(null)
     const messageWrapper = useRef<HTMLDivElement>(null)
     const [lastMessageId, changeLastMessage] = useState<null | number>(null)
@@ -63,9 +71,9 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
     useEffect(() => {
       const el = container.current
       if (el) {
-        const images = el.querySelectorAll('.message-image')
+        const images = el.querySelectorAll(".message-image")
         images.forEach(image => {
-          image.addEventListener('load', () => {
+          image.addEventListener("load", () => {
             el.scrollTop += image.clientHeight
           })
         })
@@ -77,7 +85,12 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
         <InfScroll scrollableTarget='messages'>
           <MessagesWrapper ref={messageWrapper}>
             {useList($chatMessagesModule.$messages, message => (
-              <ChatMessageSwitcher message={message} isSystemChat={!!isSystem} showUser={showUser} commonSystemMessages={commonSystemMessages} />
+              <ChatMessageSwitcher
+                message={message}
+                isSystemChat={!!isSystem}
+                showUser={showUser}
+                commonSystemMessages={commonSystemMessages}
+              />
             ))}
           </MessagesWrapper>
         </InfScroll>
