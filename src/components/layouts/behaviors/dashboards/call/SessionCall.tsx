@@ -41,7 +41,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
           <Header>
             {interlocutor.info && (
               <User>
-                {!interlocutor.micro && <DisabledInterlocutorMicro />}
+                {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
                 <StyledAvatar src={interlocutor.info.avatar} />
                 <Name>{interlocutor.info.name}</Name>
               </User>
@@ -172,7 +172,7 @@ const MyUserVideo = styled.div`
 const MyUserVideoPlaceholderIcon = styled(Icon).attrs({ name: `user` })`
   width: 50px;
   height: 50px;
-  fill: ${props => props.theme.colors.invert.primary};
+  fill: ${props => props.theme.colors.primary};
 `
 
 const MyUserVideoPlaceholder = styled.div`
