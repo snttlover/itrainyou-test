@@ -249,6 +249,7 @@ const StyledButton = styled(Button)`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
+  width: 160px;
 `
 
 const Amount = styled.div`
