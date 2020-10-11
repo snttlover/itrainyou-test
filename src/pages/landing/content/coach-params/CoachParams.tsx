@@ -14,8 +14,8 @@ const Title = styled.h3`
   color: #424242;
 
   @media screen and (max-width: 768px) {
-    font-size: 28px;
-    margin-bottom: 12px;
+    font-size: 24px;
+    line-height: 26px;
   }
   @media screen and (max-width: 480px) {
     font-size: 20px;
@@ -24,7 +24,7 @@ const Title = styled.h3`
 `
 const SubTitle = styled.h3`
   font-family: Roboto;
-  width: 650px;
+  max-width: 650px;
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -35,8 +35,8 @@ const SubTitle = styled.h3`
   margin-top: 12px;
 
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 20px;
+    line-height: 26px;
   }
 `
 
@@ -46,24 +46,15 @@ const StyledContainer = styled(LandingPageContainer)`
   align-items: center;
   padding-top: 60px;
   padding-bottom: 60px;
+
   @media screen and (max-width: 768px) {
-    padding-bottom: 63px;
-    padding-top: 26px;
+    padding: 26px 36px 63px;
   }
 `
 
 const CoachParamsCardsList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  @media screen and (max-width: 768px) {
-    justify-content: center;
-  }
-  @media screen and (max-width: 768px) {
-    justify-content: space-between;
-    width: auto;
-    max-width: 600px;
-    margin: 0 auto;
-  }
   @media screen and (max-width: 554px) {
     flex-direction: column;
     align-items: center;
@@ -74,6 +65,10 @@ const CoachParamsCardWrapper = styled.div`
   width: 33.3%;
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    width: 50%;
+  }
 `
 
 export const CoachParams = () => (

@@ -14,8 +14,8 @@ const Title = styled.h3`
   color: #fff;
 
   @media screen and (max-width: 768px) {
-    font-size: 28px;
-    line-height: 36px;
+    font-size: 24px;
+    line-height: 26px;
   }
   @media screen and (max-width: 480px) {
     font-size: 20px;
@@ -31,6 +31,14 @@ const Description = styled.p`
   color: #ffffff;
 
   margin-top: 16px;
+
+  @media screen and (max-width: 768px) {
+    width: 346px;
+    margin-top: 12px;
+
+    font-size: 16px;
+    line-height: 22px;
+  }
 `
 
 const StyledLandingPageContainer = styled(LandingPageContainer)`
@@ -39,11 +47,18 @@ const StyledLandingPageContainer = styled(LandingPageContainer)`
 
   margin-top: 51px;
   position: relative;
+  @media screen and (max-width: 768px) {
+    padding: 0 36px;
+  }
 `
 
 const StyledRegLink = styled(Link)`
   width: fit-content;
   margin-top: 28px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 12px;
+  }
 `
 
 export const Hero = () => (

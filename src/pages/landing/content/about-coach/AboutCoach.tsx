@@ -1,7 +1,7 @@
 import * as React from "react"
-import { LandingPageContainer } from "../../common/LandingPageContainer"
 import styled from "styled-components"
 import whoNeedCoachBg from "../../assets/who-need-coach.svg"
+import whoNeedCoachTabletBg from "../../assets/who-need-coach-tablet.svg"
 
 export const AboutCoach = () => <Background />
 
@@ -14,9 +14,11 @@ const Background = styled.div`
   max-width: 1140px;
   margin: 0 auto;
   height: 527px;
-`
 
-const StyledContainer = styled(LandingPageContainer)`
-  display: flex;
-  justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    height: 353px;
+    background-image: url(${whoNeedCoachTabletBg});
+    background-position: 36px 0;
+    top: 0;
+  }
 `

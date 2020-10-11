@@ -10,23 +10,22 @@ const StyledSteps = styled.div`
   position: relative;
   padding-top: 155px;
   padding-bottom: 100px;
-
-  @media screen and (max-width: 768px) {
-    padding-top: 0;
-    padding-bottom: 38px;
-  }
 `
 
 const BgImage = styled.div`
   background-image: url(${stepsBg});
   background-repeat: repeat-x;
   background-size: contain;
-  background-position: center;
+  background-position: left;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+
+  @media screen and (max-width: 768px) {
+    background-size: cover;
+  }
 `
 
 const StyledContainer = styled(LandingPageContainer)`
@@ -34,6 +33,10 @@ const StyledContainer = styled(LandingPageContainer)`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 36px;
+  }
 `
 
 const Title = styled.h3`
@@ -42,10 +45,12 @@ const Title = styled.h3`
   font-weight: bold;
   font-size: 24px;
   line-height: 26px;
+  text-align: center;
   color: #424242;
+
   @media screen and (max-width: 768px) {
-    font-size: 28px;
-    margin-bottom: 13px;
+    font-size: 24px;
+    line-height: 26px;
   }
   @media screen and (max-width: 565px) {
     font-size: 20px;
@@ -59,15 +64,24 @@ const Description = styled.p`
   font-weight: normal;
   font-size: 20px;
   line-height: 26px;
+  text-align: center;
   color: #4858cc;
 
   margin-top: 12px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+    line-height: 26px;
+  }
 `
 
 const StepsList = styled.div`
   margin-top: 64px;
   display: flex;
   justify-content: center;
+  @media screen and (max-width: 768px) {
+    margin-top: 32px;
+  }
   @media screen and (max-width: 565px) {
     flex-direction: column;
   }
@@ -77,6 +91,12 @@ const StepImage = styled.img`
   margin-top: 40px;
   width: 723.16px;
   height: 400.73px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 20px;
+    width: 440px;
+    height: 243.82px;
+  }
 `
 
 export const Steps = () => {

@@ -1,7 +1,9 @@
+import { Icon } from "@/components/icon/Icon"
 import { Input } from "@/components/input/Input"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
 import { RegisterButton } from "@/pages/landing/common/RegisterButton"
 import { CategoriesPicker } from "@/pages/landing/content/top-bar/categories-picker/CategoriesPicker"
+import { MobileMenu } from "@/pages/landing/content/top-bar/mobile-menu/MobileMenu"
 import { Search } from "@/pages/landing/content/top-bar/search/Search"
 import { routeNames } from "@/pages/route-names"
 import React from "react"
@@ -17,8 +19,9 @@ const StyledContainer = styled(LandingPageContainer)`
   align-items: center;
   z-index: 2;
   position: relative;
+
   @media screen and (max-width: 768px) {
-    padding: 21px 0;
+    padding: 21px 36px;
   }
   @media screen and (max-width: 480px) {
     padding: 8px;
@@ -31,9 +34,9 @@ const StyledLogo = styled.img.attrs({ src: logo })`
   height: 44px;
   margin-right: 40px;
   cursor: pointer;
-  @media screen and (max-width: 480px) {
-    width: 36px;
-    height: 36px;
+
+  @media screen and (max-width: 768px) {
+    margin-right: 16px;
   }
 `
 
@@ -44,8 +47,9 @@ const StyledLogoLink = styled(Link)`
 
 const StyledCategoriesPicker = styled(CategoriesPicker)`
   margin-right: 20px;
+
   @media screen and (max-width: 768px) {
-    display: none;
+    margin-right: 46px;
   }
 `
 
@@ -54,12 +58,13 @@ const StyledSearch = styled(Search)`
   height: 36px;
   flex: 1;
   max-width: 396px;
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 
   ${Input} {
     height: 36px;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 `
 
@@ -77,17 +82,18 @@ const ButtonsContainer = styled.div`
   align-items: center;
   margin-left: 24px;
   justify-content: flex-end;
+
   @media screen and (max-width: 768px) {
-    flex: 1;
-    display: flex;
-  }
-  @media screen and (max-width: 480px) {
-    display: none;
+    margin-left: 0;
   }
 `
 
 const StyledRegisterButton = styled(RegisterButton)`
   margin-left: 26px;
+`
+
+const SearchIcon = styled(Icon).attrs({ name: "search" })`
+  display: none;
 `
 
 export const LandingTopBar = () => (
@@ -103,5 +109,6 @@ export const LandingTopBar = () => (
         <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
       </Link>
     </ButtonsContainer>
+    <MobileMenu />
   </StyledContainer>
 )

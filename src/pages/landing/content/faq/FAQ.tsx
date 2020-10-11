@@ -1,6 +1,4 @@
-import { routeNames } from "@/pages/route-names"
 import * as React from "react"
-import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
 import { ExpansionPanel } from "@/components/expansion-panel/ExpansionPanel"
@@ -17,8 +15,8 @@ const Title = styled.h3`
   text-align: center;
   color: #424242;
   @media screen and (max-width: 768px) {
-    font-size: 28px;
-    margin-left: 20px;
+    font-size: 24px;
+    line-height: 26px;
   }
   @media screen and (max-width: 480px) {
     font-size: 20px;
@@ -38,10 +36,8 @@ const SubTitle = styled.h3`
   text-align: center;
   color: #4858cc;
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-    line-height: 22px;
-    margin-bottom: 24px;
-    margin-left: 20px;
+    font-size: 20px;
+    line-height: 26px;
   }
   @media screen and (max-width: 480px) {
     font-size: 16px;
@@ -56,6 +52,8 @@ const Content = styled.div`
   align-items: flex-start;
   @media screen and (max-width: 768px) {
     flex-direction: column;
+    margin: 32px auto 0;
+    max-width: 640px;
   }
 `
 
@@ -123,9 +121,6 @@ export const FAQ = () => (
           ))}
         </QuestionsList>
         <PeopleImage />
-        <Link to={routeNames.signup("1")}>
-          <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
-        </Link>
       </Content>
     </StyledContainer>
   </BackgroundColor>

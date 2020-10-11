@@ -13,7 +13,8 @@ const Title = styled.h3`
   color: #424242;
 
   @media screen and (max-width: 768px) {
-    font-size: 28px;
+    font-size: 24px;
+    line-height: 26px;
   }
   @media screen and (max-width: 480px) {
     font-size: 20px;
@@ -31,6 +32,7 @@ const SubTitle = styled.div`
   line-height: 22px;
   text-align: center;
   color: #4858cc;
+
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
@@ -49,7 +51,9 @@ export const AllNeedsCoach = () => (
     <Title>62% людей в мире коуч необходим Если вы здесь — вы в их числе</Title>
     <SubTitle>
       Коучинг вдохновляет людей на позитивные изменения и раскрывает внутренние ресурсы. Наставничество помогает решить
-      проблемы, мучившие с детства или возникшие совсем недавно.
+      проблемы, мучившие с детства
+      <br />
+      или возникшие совсем недавно.
     </SubTitle>
   </StyledContainer>
 )

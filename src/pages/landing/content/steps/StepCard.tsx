@@ -30,7 +30,8 @@ const StyledCard = styled.div`
     
     
     @media screen and (max-width: 768px) {
-      margin-right: 56px;
+      width: 128px;
+      margin-right: 48px;
       &:after {
         width: 24px;
         height: 24px;
@@ -69,8 +70,8 @@ const Index = styled.div<{ selected?: boolean }>`
   margin-bottom: 24px;
   text-align: center;
   @media screen and (max-width: 768px) {
-    font-size: 28px;
-    margin-bottom: 4px;
+    font-size: 40px;
+    line-height: 26px;
   }
   @media screen and (max-width: 565px) {
     font-size: 20px;
@@ -88,6 +89,7 @@ const Text = styled.div<{ selected?: boolean }>`
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
+    text-align: center;
   }
   @media screen and (max-width: 565px) {
     line-height: 16px;

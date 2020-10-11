@@ -1,4 +1,5 @@
 import { START } from "@/lib/effector"
+import { MediaRange } from "@/lib/responsive/media"
 import * as ourCoachesModel from "@/pages/landing/content/our-coaches/model"
 import { withGuest } from "@/feature/user/with-guest"
 import { LandingTopBar } from "@/pages/landing/LandingTopBar"
@@ -6,10 +7,8 @@ import styled from "styled-components"
 import { OurCoaches } from "./content/our-coaches/OurCoaches"
 import * as React from "react"
 import { Layout } from "@/components/layouts/behaviors/default/Layout"
-import { TopBar } from "./content/top-bar/TopBar"
 import { Hero } from "./content/hero/Hero"
 import { AboutCoach } from "./content/about-coach/AboutCoach"
-import { Benefits } from "./content/benefits/Benefits"
 import { Steps } from "./content/steps/Steps"
 import { CoachParams } from "./content/coach-params/CoachParams"
 import { PlatformAdvantages } from "./content/platform-advantages/PlatformAdvantages"
@@ -19,6 +18,7 @@ import { FAQ } from "./content/faq/FAQ"
 import { Footer } from "./content/footer/Footer"
 
 import heroBg from "./assets/hero-bg.svg"
+import heroBgTablet from "./assets/hero-bg-tablet.svg"
 import heroImg from "./assets/hero-img.svg"
 import bottomBg from "./assets/bottom-bg.svg"
 
@@ -32,6 +32,11 @@ const HeroBackground = styled.div`
   left: 0;
   width: 100%;
   height: calc(581px + 4vw);
+
+  @media screen and (max-width: 768px) {
+    height: 441px;
+    background-image: url(${heroBgTablet});
+  }
 `
 
 const HeroImage = styled.div`
@@ -42,6 +47,10 @@ const HeroImage = styled.div`
   position: absolute;
   top: calc(150px - 1.5vw);
   left: 160px;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `
 
 const StyledLayout = styled(Layout)`
@@ -50,6 +59,10 @@ const StyledLayout = styled(Layout)`
 
 const Container = styled.div`
   height: 581px;
+
+  @media screen and (max-width: 768px) {
+    height: 441px;
+  }
 `
 
 const RelativeContainer = styled.div`
@@ -68,34 +81,36 @@ const BottomBackgroundContainer = styled.div`
   background-position: 400px 0;
 
   padding-top: 200px;
+
+  @media screen and (max-width: 768px) {
+    padding-top: 200px;
+    background-position: 200px 0;
+  }
 `
 
-const LandingPageMarkup = () => {
-  return (
-    <StyledLayout>
-      <Container>
-        <HeroBackground />
-        <RelativeContainer>
-          <HeroImage />
-        </RelativeContainer>
-        <LandingTopBar />
-        <Hero />
-      </Container>
-      <AboutCoach />
-      <Steps />
-      {/*<Benefits />*/}
-      <CoachParams />
-      <OurCoaches />
-      <PlatformAdvantages />
-      <BottomBackgroundContainer>
-        <AllNeedsCoach />
-        <CoachAdvantages />
-        <FAQ />
-      </BottomBackgroundContainer>
-      <Footer />
-    </StyledLayout>
-  )
-}
+const LandingPageMarkup = () => (
+  <StyledLayout>
+    <Container>
+      <HeroBackground />
+      <RelativeContainer>
+        <HeroImage />
+      </RelativeContainer>
+      <LandingTopBar />
+      <Hero />
+    </Container>
+    <AboutCoach />
+    <Steps />
+    <CoachParams />
+    <OurCoaches />
+    <PlatformAdvantages />
+    <BottomBackgroundContainer>
+      <AllNeedsCoach />
+      <CoachAdvantages />
+      <FAQ />
+    </BottomBackgroundContainer>
+    <Footer />
+  </StyledLayout>
+)
 
 export const LandingPage = withGuest({ to: "/client" })(LandingPageMarkup)
 

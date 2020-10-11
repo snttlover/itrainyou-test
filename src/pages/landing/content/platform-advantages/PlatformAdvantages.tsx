@@ -16,8 +16,11 @@ const StyledContainer = styled(LandingPageContainer)`
   @media screen and (max-width: 1000px) {
     margin-bottom: 121px;
   }
-  @media screen and (max-width: 638px) {
-    margin-bottom: 53px;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 0;
+    height: 500px;
+    background-size: 558px 304px;
+    background-position: 120px 118px;
   }
 `
 
@@ -28,6 +31,13 @@ const AdvantageFirst = styled.div`
 
   width: 182px;
   height: 122px;
+
+  @media screen and (max-width: 768px) {
+    width: 159px;
+    height: 102px;
+
+    left: 36px;
+  }
 `
 
 const AdvantageSecond = styled.div`
@@ -37,6 +47,12 @@ const AdvantageSecond = styled.div`
 
   width: 187px;
   height: 122px;
+
+  @media screen and (max-width: 768px) {
+    width: 164px;
+    height: 102px;
+    left: 423px;
+  }
 `
 
 const AdvantageThird = styled.div`
@@ -46,6 +62,12 @@ const AdvantageThird = styled.div`
   left: 802px;
   width: 256px;
   height: 148px;
+
+  @media screen and (max-width: 768px) {
+    width: 162px;
+    height: 160px;
+    left: 570px;
+  }
 `
 
 const AdvantageTitle = styled.h4`
@@ -55,6 +77,11 @@ const AdvantageTitle = styled.h4`
   font-size: 20px;
   line-height: 26px;
   color: #4858cc;
+
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    line-height: 22px;
+  }
 `
 
 const AdvantageText = styled.p`
@@ -65,6 +92,11 @@ const AdvantageText = styled.p`
   font-size: 16px;
   line-height: 22px;
   color: #5b6670;
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 18px;
+  }
 `
 
 const Phone1 = styled.div`
@@ -75,6 +107,13 @@ const Phone1 = styled.div`
   left: 300px;
 
   background-image: url(${phone1});
+  background-size: cover;
+
+  @media screen and (max-width: 768px) {
+    width: 160px;
+    height: 322.17px;
+    left: 219px;
+  }
 `
 
 const Phone2 = styled.div`
@@ -85,6 +124,13 @@ const Phone2 = styled.div`
   height: 483px;
 
   background-image: url(${phone2});
+  background-size: cover;
+
+  @media screen and (max-width: 768px) {
+    width: 160px;
+    height: 322.17px;
+    left: 397px;
+  }
 `
 
 export const PlatformAdvantages = () => (

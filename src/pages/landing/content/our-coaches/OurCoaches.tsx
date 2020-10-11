@@ -39,6 +39,10 @@ const Bg = styled.div`
   left: 0;
   width: 100%;
   height: 120%;
+
+  @media screen and (max-width: 768px) {
+    background-size: cover;
+  }
 `
 
 const Title = styled.h3`
@@ -50,8 +54,8 @@ const Title = styled.h3`
   text-align: center;
   color: #424242;
   @media screen and (max-width: 768px) {
-    font-size: 28px;
-    line-height: 44px;
+    font-size: 24px;
+    line-height: 26px;
   }
   @media screen and (max-width: 480px) {
     font-size: 20px;
@@ -69,6 +73,11 @@ const Description = styled.div`
   line-height: 26px;
   text-align: center;
   color: #4858cc;
+
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+    line-height: 26px;
+  }
 `
 
 const CoachList = styled.div`

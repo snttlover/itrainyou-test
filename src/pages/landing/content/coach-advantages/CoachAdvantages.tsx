@@ -40,6 +40,12 @@ const SliderContainer = styled.div`
   background-image: url(${platform});
   width: 904px;
   height: 423px;
+
+  @media screen and (max-width: 768px) {
+    background-size: cover;
+    width: 696px;
+    height: 321px;
+  }
 `
 
 const LeftArrow = styled(Icon).attrs({ name: "left-icon" })`
@@ -53,6 +59,13 @@ const LeftArrow = styled(Icon).attrs({ name: "left-icon" })`
 
   cursor: pointer;
   user-select: none;
+
+  @media screen and (max-width: 768px) {
+    width: 11px;
+    height: 19px;
+    left: 42px;
+    top: 170px;
+  }
 `
 const RightArrow = styled(Icon).attrs({ name: "right-icon" })`
   position: absolute;
@@ -65,6 +78,13 @@ const RightArrow = styled(Icon).attrs({ name: "right-icon" })`
 
   cursor: pointer;
   user-select: none;
+
+  @media screen and (max-width: 768px) {
+    width: 11px;
+    height: 19px;
+    left: 350px;
+    top: 170px;
+  }
 `
 
 const Text = styled.div`
@@ -79,4 +99,10 @@ const Text = styled.div`
   font-size: 24px;
   line-height: 26px;
   color: #d3d7f3;
+
+  @media screen and (max-width: 768px) {
+    width: 260px;
+    left: 77px;
+    top: 128px;
+  }
 `
