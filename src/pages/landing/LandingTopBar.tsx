@@ -120,6 +120,11 @@ const Burger = styled(Icon).attrs({ name: "burger" })`
   fill: #fff;
   width: 36px;
   height: 36px;
+  margin-left: 12px;
+
+  @media screen and (min-width: 481px) {
+    display: none;
+  }
 `
 
 export const LandingTopBar = () => (
@@ -135,10 +140,16 @@ export const LandingTopBar = () => (
         <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
       </Link>
     </ButtonsContainer>
-    <StyledMobileMenu />
-    <BurgerMenu />
+    <MobileMenuContainer>
+      <StyledMobileMenu />
+      <BurgerMenu />
+    </MobileMenuContainer>
   </StyledContainer>
 )
+
+const MobileMenuContainer = styled.div`
+  display: flex;
+`
 
 const BurgerMenu = () => {
   const [showMenu, setShowMenu] = useState(false)
@@ -176,7 +187,7 @@ const BurgerContentContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media screen and (min-width: 479px) {
+  @media screen and (min-width: 481px) {
     display: none;
   }
 `
