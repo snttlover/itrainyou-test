@@ -6,6 +6,7 @@ import styled from "styled-components"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
 
 import footerBg from "../../assets/footer-bg.svg"
+import footerBgTablet from "../../assets/footer-bg-tablet.svg"
 import instagram from "../../assets/instagram.svg"
 import youtube from "../../assets/youtube.svg"
 import facebook from "../../assets/facebook.svg"
@@ -16,6 +17,10 @@ const StyledFooter = styled.div`
   background-position: 0 0;
   background-size: cover;
   margin: 0 auto;
+
+  @media screen and (max-width: 768px) {
+    background-image: url(${footerBgTablet});
+  }
 `
 
 const ComeHere = styled.div`
@@ -56,6 +61,7 @@ const StyledLink = styled(Link)`
 `
 
 const Description = styled.div`
+  width: 603px;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -67,8 +73,9 @@ const Description = styled.div`
   margin-top: 32px;
 
   @media screen and (max-width: 768px) {
-    font-size: 14px;
-    line-height: 18px;
+    width: 370px;
+    font-size: 16px;
+    line-height: 22px;
   }
   @media screen and (max-width: 480px) {
     font-size: 12px;
@@ -82,6 +89,11 @@ const StyledContainer = styled(LandingPageContainer)`
   height: 700px;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: 768px) {
+    padding: 64px 36px 38px;
+    height: 472px;
+  }
 `
 
 export const Footer = () => (
@@ -97,15 +109,9 @@ export const Footer = () => (
       </Header>
       <Description>
         <p>
-          Приглашаем коучей к сотрудничеству. Предлагаем
-          <br />
-          растущую базу клиентов, продвижение
-          <br />
-          по 12+ каналам рекламы и выгодные условия оплаты.
-        </p>
-        <p>
-          Вы станете известным, будете работать на удобной платформе
-          <br />и привлечете до 200% новых учеников.
+          Приглашаем коучей к сотрудничеству. Предлагаем растущую базу клиентов, продвижение по 12+ каналам рекламы и
+          выгодные условия оплаты. Вы станете известным, будете работать на удобной платформе и привлечете до 200% новых
+          учеников.
         </p>
       </Description>
       <MetaContainer>
