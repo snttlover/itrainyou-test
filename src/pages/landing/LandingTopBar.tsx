@@ -24,7 +24,8 @@ const StyledContainer = styled(LandingPageContainer)`
     padding: 21px 36px;
   }
   @media screen and (max-width: 480px) {
-    padding: 8px;
+    padding: 24px 12px;
+    margin: 0;
     justify-content: space-between;
   }
 `
@@ -50,6 +51,10 @@ const StyledCategoriesPicker = styled(CategoriesPicker)`
 
   @media screen and (max-width: 768px) {
     margin-right: 46px;
+  }
+
+  @media screen and (max-width: 480px) {
+    display: none;
   }
 `
 
@@ -86,6 +91,10 @@ const ButtonsContainer = styled.div`
   @media screen and (max-width: 768px) {
     margin-left: 0;
   }
+
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
 `
 
 const StyledRegisterButton = styled(RegisterButton)`
@@ -95,7 +104,16 @@ const StyledRegisterButton = styled(RegisterButton)`
 const StyledMobileMenu = styled(MobileMenu)`
   ${MobileSearchButton} {
     fill: #fff;
+
+    width: 36px;
+    height: 36px;
   }
+`
+
+const Burger = styled(Icon).attrs({ name: "burger" })`
+  fill: #fff;
+  width: 36px;
+  height: 36px;
 `
 
 export const LandingTopBar = () => (
@@ -112,5 +130,6 @@ export const LandingTopBar = () => (
       </Link>
     </ButtonsContainer>
     <StyledMobileMenu />
+    <Burger />
   </StyledContainer>
 )
