@@ -108,8 +108,9 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
     fetchSupportChatFx.pending,
     chatMessages.pagination.data.$loading,
     chatMessages.pagination.data.$list,
-    (chatLoading, messagesLoading, messages) => {
-      return chatLoading || (messagesLoading && !messages.length)
+    $chatInfo,
+    (chatLoading, messagesLoading, messages, chat) => {
+      return chatLoading || (messagesLoading && !messages.length) || !chat
     }
   )
 
