@@ -83,8 +83,7 @@ const StyledContainer = styled(LandingPageContainer)`
   margin-top: 85px;
   padding-bottom: 40px;
   @media screen and (max-width: 768px) {
-    padding: 0 7px;
-    padding-bottom: 68px;
+    padding: 0 7px 68px;
   }
   @media screen and (max-width: 480px) {
     padding-bottom: 18px;
