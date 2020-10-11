@@ -36,7 +36,7 @@ const Container = styled.div`
 const StyledContainer = styled(LandingPageContainer)`
   width: 100%;
   align-items: center;
-  padding: 15px 30px 15px 60px;
+  padding: 15px 30px 15px 40px;
   display: flex;
   @media screen and (max-width: 480px) {
     padding: 8px;

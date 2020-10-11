@@ -16,7 +16,6 @@ const Container = styled.div`
   width: 100%;
   max-width: 672px;
   margin-top: 36px;
-  margin-left: 40px;
   ${MediaRange.lessThan(`tablet`)`
     margin: 0 auto;
     margin-top: 40px;
