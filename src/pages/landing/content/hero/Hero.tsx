@@ -19,7 +19,7 @@ const Title = styled.h3`
   }
   @media screen and (max-width: 480px) {
     font-size: 20px;
-    line-height: 28px;
+    line-height: 26px;
   }
 `
 const Description = styled.p`
@@ -39,6 +39,12 @@ const Description = styled.p`
     font-size: 16px;
     line-height: 22px;
   }
+
+  @media screen and (max-width: 480px) {
+    width: unset;
+    font-size: 14px;
+    line-height: 18px;
+  }
 `
 
 const StyledLandingPageContainer = styled(LandingPageContainer)`
@@ -49,6 +55,12 @@ const StyledLandingPageContainer = styled(LandingPageContainer)`
   position: relative;
   @media screen and (max-width: 768px) {
     padding: 0 36px;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 0;
+    margin-top: 0;
+    font-size: 20px;
+    line-height: 26px;
   }
 `
 

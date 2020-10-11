@@ -6,11 +6,12 @@ import { CategoriesPicker } from "@/pages/landing/content/top-bar/categories-pic
 import { MobileMenu, MobileSearchButton } from "@/pages/landing/content/top-bar/mobile-menu/MobileMenu"
 import { Search } from "@/pages/landing/content/top-bar/search/Search"
 import { routeNames } from "@/pages/route-names"
-import React from "react"
+import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 import logo from "./assets/logo.svg"
+import mobileBurgerBg from "./assets/mobile-burger-menu-bg.svg"
 
 const StyledContainer = styled(LandingPageContainer)`
   width: 100%;
@@ -119,6 +120,11 @@ const Burger = styled(Icon).attrs({ name: "burger" })`
   fill: #fff;
   width: 36px;
   height: 36px;
+  margin-left: 12px;
+
+  @media screen and (min-width: 481px) {
+    display: none;
+  }
 `
 
 export const LandingTopBar = () => (
@@ -134,7 +140,96 @@ export const LandingTopBar = () => (
         <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
       </Link>
     </ButtonsContainer>
-    <StyledMobileMenu />
-    <Burger />
+    <MobileMenuContainer>
+      <StyledMobileMenu />
+      <BurgerMenu />
+    </MobileMenuContainer>
   </StyledContainer>
 )
+
+const MobileMenuContainer = styled.div`
+  display: flex;
+`
+
+const BurgerMenu = () => {
+  const [showMenu, setShowMenu] = useState(false)
+  return (
+    <>
+      <Burger onClick={() => setShowMenu(true)} />
+      {showMenu && (
+        <BurgerContentContainer>
+          <CrossIcon onClick={() => setShowMenu(false)} />
+          <MenuImage />
+          <StyledRegisterLink to={routeNames.signup("1")}>
+            <RegisterButton>Зарегистрироваться</RegisterButton>
+          </StyledRegisterLink>
+          <LoginButtonLink to={routeNames.login()}>Войти</LoginButtonLink>
+        </BurgerContentContainer>
+      )}
+    </>
+  )
+}
+
+const BurgerContentContainer = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0058cc -5.89%, #5758cc 51.66%, #8b58cc 97.71%);
+  z-index: 100;
+  left: 0;
+  top: 0;
+  padding: 24px;
+  overflow: hidden;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (min-width: 481px) {
+    display: none;
+  }
+`
+
+const CrossIcon = styled(Icon).attrs({ name: "cross" })`
+  width: 24px;
+  height: 24px;
+
+  position: absolute;
+  right: 12px;
+  top: 16px;
+
+  fill: #fff;
+`
+
+const MenuImage = styled.img.attrs({ src: mobileBurgerBg })`
+  margin-top: auto;
+`
+
+const StyledRegisterLink = styled(Link)`
+  margin-top: auto;
+  width: 100%;
+  ${RegisterButton} {
+    width: 100%;
+  }
+`
+
+const LoginButtonLink = styled(Link)`
+  margin-top: 16px;
+  width: 100%;
+  height: 34px;
+  background: #ffffff;
+  border-radius: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: #4858cc;
+`

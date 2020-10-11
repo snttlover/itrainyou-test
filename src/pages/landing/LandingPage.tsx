@@ -19,6 +19,7 @@ import { Footer } from "./content/footer/Footer"
 
 import heroBg from "./assets/hero-bg.svg"
 import heroBgTablet from "./assets/hero-bg-tablet.svg"
+import heroBgMobile from "./assets/hero-bg-mobile.svg"
 import heroImg from "./assets/hero-img.svg"
 import bottomBg from "./assets/bottom-bg.svg"
 
@@ -36,6 +37,11 @@ const HeroBackground = styled.div`
   @media screen and (max-width: 768px) {
     height: 441px;
     background-image: url(${heroBgTablet});
+  }
+
+  @media screen and (max-width: 480px) {
+    height: 495px;
+    background-image: url(${heroBgMobile});
   }
 `
 
