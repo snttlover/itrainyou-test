@@ -39,6 +39,11 @@ const StyledLogo = styled.img.attrs({ src: logo })`
   @media screen and (max-width: 768px) {
     margin-right: 16px;
   }
+
+  @media screen and (max-width: 480px) {
+    width: 135px;
+    height: 36px;
+  }
 `
 
 const StyledLogoLink = styled(Link)`
