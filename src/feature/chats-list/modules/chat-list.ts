@@ -177,6 +177,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
             materialCount: chat.materialsCount,
             isStarted: chatSessionIsStarted(chat),
             startSession: config.sessionCallModule.methods.connectToSession,
+            isImage: !!chat.lastMessage?.image,
             lastMessage: chat.lastMessage?.text || ``,
             lastMessageIsMine,
             highlightMessages: !!newMessagesCounter,

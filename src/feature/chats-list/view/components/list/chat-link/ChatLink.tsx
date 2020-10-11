@@ -21,6 +21,7 @@ export type ChatLinkTypes = {
   materialCount: number
   isStarted: boolean
   lastMessage: string
+  isImage: boolean
   lastMessageIsMine: boolean
   highlightMessages: boolean
   sessionTextStatus: string
@@ -45,6 +46,7 @@ export const ChatLink = (props: ChatLinkTypes) => {
           <UserName>{props.name}</UserName>
           <LastMessage data-is-mine={props.lastMessage}>
             {props.lastMessageIsMine && `Вы: `}
+            {props.isImage && `Фотография`}
             {props.lastMessage}
           </LastMessage>
         </MessageContent>
