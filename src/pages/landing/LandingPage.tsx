@@ -45,7 +45,7 @@ const HeroImage = styled.div`
   height: 407px;
   width: 942px;
   position: absolute;
-  top: calc(150px - 1.5vw);
+  top: calc(150px - 0.6vw);
   left: 160px;
 
   @media screen and (max-width: 768px) {

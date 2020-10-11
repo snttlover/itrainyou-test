@@ -3,7 +3,7 @@ import { Input } from "@/components/input/Input"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
 import { RegisterButton } from "@/pages/landing/common/RegisterButton"
 import { CategoriesPicker } from "@/pages/landing/content/top-bar/categories-picker/CategoriesPicker"
-import { MobileMenu } from "@/pages/landing/content/top-bar/mobile-menu/MobileMenu"
+import { MobileMenu, MobileSearchButton } from "@/pages/landing/content/top-bar/mobile-menu/MobileMenu"
 import { Search } from "@/pages/landing/content/top-bar/search/Search"
 import { routeNames } from "@/pages/route-names"
 import React from "react"
@@ -92,8 +92,10 @@ const StyledRegisterButton = styled(RegisterButton)`
   margin-left: 26px;
 `
 
-const SearchIcon = styled(Icon).attrs({ name: "search" })`
-  display: none;
+const StyledMobileMenu = styled(MobileMenu)`
+  ${MobileSearchButton} {
+    fill: #fff;
+  }
 `
 
 export const LandingTopBar = () => (
@@ -109,6 +111,6 @@ export const LandingTopBar = () => (
         <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
       </Link>
     </ButtonsContainer>
-    <MobileMenu />
+    <StyledMobileMenu />
   </StyledContainer>
 )
