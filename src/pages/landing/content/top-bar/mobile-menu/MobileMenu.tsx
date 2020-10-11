@@ -7,6 +7,11 @@ import { Input } from "@/components/input/Input"
 import { Categories, StyledCategoryCheckbox } from "@/pages/landing/content/top-bar/categories-picker/Categories"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
+import { useEvent, useStore } from "effector-react/ssr"
+import {
+  $mobileMenuVisibility,
+  changeMobileMenuVisibility
+} from "@/pages/landing/content/top-bar/mobile-menu/mobile-menu.model"
 
 export const MobileSearchButton = styled(Icon).attrs({ name: `search` })`
   width: 36px;
@@ -112,7 +117,8 @@ type MobileMenuTypes = {
 }
 
 export const MobileMenu = (props: MobileMenuTypes) => {
-  const [menuVisibility, changeMenuVisibility] = useState(false)
+  const menuVisibility = useStore($mobileMenuVisibility)
+  const changeMenuVisibility = useEvent(changeMobileMenuVisibility)
 
   const Menu = (
     <Container>
