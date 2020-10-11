@@ -28,6 +28,8 @@ const Tooltip = styled.div`
 
 const StyledContainer = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
 
   &:hover ${Tooltip} {
     display: block;
