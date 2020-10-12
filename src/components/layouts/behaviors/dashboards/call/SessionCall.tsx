@@ -368,6 +368,9 @@ const Container = styled.div`
       bottom: unset;
       display: flex;
     }
+    ${InterlocutorVideo} {
+      display: none;
+    }
   }
   &[data-interlocutor-is-connected="false"] {
     ${NotConnected} {
