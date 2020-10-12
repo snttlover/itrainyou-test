@@ -52,6 +52,7 @@ export type PersonalChatMessage = {
   image: string
   time: string
   user: CoachUser | Client | null
+  imageIndex: number
 }
 
 const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
@@ -90,6 +91,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       .map(id => messages.find(message => message.sessionRequest?.id === id)?.sessionRequest as SessionRequest)
 
     const getReq = (id: number) => reqs.find(req => req.id === id) as SessionRequest
+    let imageIndex = messages.filter(message => !!message.image).length - 1
 
     return messages
       .slice()
@@ -148,6 +150,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             text: message.text,
             image: message.image,
             time: date(message.creationDatetime).format(`HH:mm`),
+            imageIndex: message.image ? imageIndex-- : imageIndex,
             user
           }
         }

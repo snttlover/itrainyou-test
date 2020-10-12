@@ -37,6 +37,8 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const changeSessionsVisibility = useEvent(changeSessionsMobileVisibility)
     const openMaterials = useEvent($chatModule.materials.methods.openDialog)
 
+    const openImage = useEvent($chatModule.materials.modules.imagesDialog.openImageByIndex)
+
     useEffect(() => {
       mounted(parseInt(params.id))
       resetRev()
@@ -63,7 +65,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
             <MaterialsDialog />
             <ChatContainer>
               {Header}
-              <Messages isSystem={chat.chatType === `SYSTEM`} />
+              <Messages isSystem={chat.chatType === `SYSTEM`} imageClick={openImage} />
               {!isSystemChat && <MessageBox />}
             </ChatContainer>
             <Sessions />

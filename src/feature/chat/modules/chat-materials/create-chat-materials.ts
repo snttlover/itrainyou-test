@@ -54,6 +54,7 @@ export const createChatMaterialsModule = (config: createChatMaterialsModuleConfi
   })
 
   const openImage = createEvent<string>()
+  const openImageByIndex = createEvent<number>()
   const $images = $materials.map<string[]>(materials =>
     materials
       .map(material => material.file)
@@ -69,6 +70,11 @@ export const createChatMaterialsModule = (config: createChatMaterialsModuleConfi
     clock: openImage,
     fn: (images, image) => images.indexOf(image),
     target: changeInitialSlide
+  })
+
+  forward({
+    from: openImageByIndex,
+    to: changeInitialSlide
   })
 
   forward({
@@ -91,6 +97,8 @@ export const createChatMaterialsModule = (config: createChatMaterialsModuleConfi
     modules: {
       pagination,
       imagesDialog: {
+        $itemsCount: pagination.data.$itemsCount,
+        openImageByIndex,
         $images,
         $visibility: $imagesModal,
         changeVisibility: changeImageModalVisibility,

@@ -55,6 +55,7 @@ const Image = styled.img`
   width: auto;
   max-width: 100%;
   display: inline-block;
+  cursor: pointer;
 `
 
 type ChatMessageTypes = {
@@ -64,6 +65,8 @@ type ChatMessageTypes = {
   image: string
   showUser?: boolean
   user: CoachUser | Client | null
+  imageClick?: (index: number) => void
+  imageIndex: number
 } & ContainerTypes
 
 export const ChatMessage = (props: ChatMessageTypes) => (
@@ -78,7 +81,13 @@ export const ChatMessage = (props: ChatMessageTypes) => (
       />
     )}
     <Container id={props.id} data-self={props["data-self"]}>
-      {!!props.image && <Image src={props.image} className='message-image' />}
+      {!!props.image && (
+        <Image
+          src={props.image}
+          className='message-image'
+          onClick={() => props.imageClick && props.imageClick(props.imageIndex)}
+        />
+      )}
       {props.text}
       <Time>{props.time}</Time>
     </Container>

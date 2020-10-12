@@ -21,6 +21,8 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
     const openImage = useEvent($module.modules.imagesDialog.openImage)
     const initialSlide = useStore($module.modules.imagesDialog.$initialSlide)
     const previewDialogImages = useStore($module.modules.imagesDialog.$images)
+    const loadMore = useEvent($module.methods.load)
+    const itemsCount = useStore($module.modules.imagesDialog.$itemsCount)
 
     return (
       <>
@@ -44,9 +46,11 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
 
         {previewDialogVisibility && (
           <ImagesViewModal
+            count={itemsCount}
             close={() => changePreviewDialogVisibility(false)}
             initialSlide={initialSlide}
             photos={previewDialogImages}
+            loadMore={() => loadMore()}
           />
         )}
       </>

@@ -33,10 +33,12 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
     isSystem,
     showUser,
     commonSystemMessages,
+    imageClick
   }: {
     isSystem?: boolean
     showUser?: boolean
     commonSystemMessages?: boolean
+    imageClick?: (index: number) => void
   }) => {
     const container = useRef<HTMLDivElement>(null)
     const messageWrapper = useRef<HTMLDivElement>(null)
@@ -90,6 +92,7 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
                 isSystemChat={!!isSystem}
                 showUser={showUser}
                 commonSystemMessages={commonSystemMessages}
+                imageClick={imageClick}
               />
             ))}
           </MessagesWrapper>
