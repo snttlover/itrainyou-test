@@ -37,6 +37,10 @@ const StyledContainer = styled(LandingPageContainer)`
   @media screen and (max-width: 768px) {
     padding: 0 36px;
   }
+
+  @media screen and (max-width: 565px) {
+    padding: 0;
+  }
 `
 
 const Title = styled.h3`
@@ -53,7 +57,7 @@ const Title = styled.h3`
     line-height: 26px;
   }
   @media screen and (max-width: 565px) {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 26px;
   }
 `
@@ -72,6 +76,10 @@ const Description = styled.p`
   @media screen and (max-width: 768px) {
     font-size: 20px;
     line-height: 26px;
+  }
+  @media screen and (max-width: 565px) {
+    font-size: 14px;
+    line-height: 18px;
   }
 `
 
@@ -96,6 +104,9 @@ const StepImage = styled.img`
     margin-top: 20px;
     width: 440px;
     height: 243.82px;
+  }
+  @media screen and (max-width: 480px) {
+    display: none;
   }
 `
 
