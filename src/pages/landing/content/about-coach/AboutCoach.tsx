@@ -59,6 +59,10 @@ export const AboutCoach = () => (
 const MobileList = styled.div`
   position: relative;
   padding: 0 12px;
+
+  @media screen and (min-width: 481px) {
+    display: none;
+  }
 `
 
 const Ballons = styled.img.attrs({ src: mobile })`
