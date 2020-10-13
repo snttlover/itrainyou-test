@@ -7,6 +7,7 @@ import { LandingPageContainer } from "@/pages/landing/common/LandingPageContaine
 
 import footerBg from "../../assets/footer-bg.svg"
 import footerBgTablet from "../../assets/footer-bg-tablet.svg"
+import footerBgMobile from "./images/mobile-background.svg"
 import instagram from "../../assets/instagram.svg"
 import youtube from "../../assets/youtube.svg"
 import facebook from "../../assets/facebook.svg"
@@ -21,6 +22,9 @@ const StyledFooter = styled.div`
   @media screen and (max-width: 768px) {
     background-image: url(${footerBgTablet});
   }
+  @media screen and (max-width: 565px) {
+    background-image: url(${footerBgMobile});
+  }
 `
 
 const ComeHere = styled.div`
@@ -33,6 +37,12 @@ const ComeHere = styled.div`
   color: #ffffff;
 
   margin-top: 12px;
+
+  @media screen and (max-width: 565px) {
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 8px;
+  }
 `
 
 const Header = styled.div`
@@ -49,15 +59,22 @@ const Title = styled.div`
 
   color: #fff;
 
-  @media screen and (max-width: 480px) {
-    font-size: 20px;
+  @media screen and (max-width: 565px) {
+    font-size: 24px;
     line-height: 26px;
-    flex: 1;
   }
 `
 
 const StyledLink = styled(Link)`
   margin-left: 64px;
+  @media screen and (max-width: 565px) {
+    margin-left: 12px;
+
+    ${RegisterButton} {
+      width: 169px;
+      padding: 7px 0;
+    }
+  }
 `
 
 const Description = styled.div`
@@ -77,9 +94,8 @@ const Description = styled.div`
     font-size: 16px;
     line-height: 22px;
   }
-  @media screen and (max-width: 480px) {
-    font-size: 12px;
-    line-height: 16px;
+  @media screen and (max-width: 565px) {
+    display: none;
   }
 `
 
@@ -93,6 +109,11 @@ const StyledContainer = styled(LandingPageContainer)`
   @media screen and (max-width: 768px) {
     padding: 64px 36px 38px;
     height: 472px;
+  }
+  @media screen and (max-width: 565px) {
+    padding: 16px 12px 12px;
+    height: 365px;
+    margin: 0;
   }
 `
 
@@ -152,11 +173,31 @@ const SocialLink = styled.a`
   display: block;
   height: 52px;
   width: 52px;
+
+  @media screen and (max-width: 565px) {
+    height: 32px;
+    width: 32px;
+
+    & > img {
+      height: 32px;
+      width: 32px;
+    }
+  }
 `
 
 const Socials = styled.div`
   display: flex;
   & > ${SocialLink}:not(:first-child) {
     margin-left: 16px;
+  }
+
+  @media screen and (max-width: 565px) {
+    position: absolute;
+    bottom: 45px;
+    right: 12px;
+
+    & > ${SocialLink}:not(:first-child) {
+      margin-left: 12px;
+    }
   }
 `
