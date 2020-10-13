@@ -15,6 +15,7 @@ import { clientStarted } from "@/lib/effector"
 import { AppStyles } from "@/AppStyles"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { config } from "@/config"
+import styled, { createGlobalStyle } from "styled-components"
 
 export const createSupervisorChatApp = (chatId: number, token: string, backend: string) => {
   Object.assign(config, {
@@ -38,10 +39,29 @@ export const createSupervisorChatApp = (chatId: number, token: string, backend: 
     runInScope(clientStarted)
     ReactDOM.render(
       <Provider value={scope}>
-        <AppStyles />
-        <Chat />
+        <Styles />
+        <div id='root'>
+          <Chat />
+        </div>
       </Provider>,
       createAdminChatContainer()
     )
   })
 }
+
+const Styles = createGlobalStyle`
+  #root {
+    color: #424242;
+    font-family: Roboto, sans-serif;
+    * {
+      box-sizing: border-box;
+    }
+    a {
+      text-decoration: none;
+    }
+    button, a {  
+      -webkit-tap-highlight-color:  transparent;
+      user-select: none;
+    }
+  }
+`

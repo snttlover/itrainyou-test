@@ -16,6 +16,7 @@ import { AppStyles } from "@/AppStyles"
 import { getSupervisorChatImages } from "@/lib/api/chats/super-admin/get-images"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { config } from "@/config"
+import { createGlobalStyle } from "styled-components"
 
 export const createSupportChatApp = (chatId: number, token: string, backend: string) => {
   Object.assign(config, {
@@ -39,10 +40,29 @@ export const createSupportChatApp = (chatId: number, token: string, backend: str
     runInScope(clientStarted)
     ReactDOM.render(
       <Provider value={scope}>
-        <AppStyles />
-        <Chat />
+        <Styles />
+        <div id='root'>
+          <Chat />
+        </div>
       </Provider>,
       createAdminChatContainer()
     )
   })
 }
+
+const Styles = createGlobalStyle`
+  #root {
+    color: #424242;
+    font-family: Roboto, sans-serif;
+    * {
+      box-sizing: border-box;
+    }
+    a {
+      text-decoration: none;
+    }
+    button, a {  
+      -webkit-tap-highlight-color:  transparent;
+      user-select: none;
+    }
+  }
+`
