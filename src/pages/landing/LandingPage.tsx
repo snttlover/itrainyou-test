@@ -22,6 +22,7 @@ import heroBgTablet from "./assets/hero-bg-tablet.svg"
 import heroBgMobile from "./assets/hero-bg-mobile.svg"
 import heroImg from "./assets/hero-img.svg"
 import bottomBg from "./assets/bottom-bg.svg"
+import mobileFooterTopBg from "./assets/mobile-footer-top-bg.svg"
 
 const HeroBackground = styled.div`
   background-image: url(${heroBg});
@@ -75,7 +76,6 @@ const RelativeContainer = styled.div`
   position: absolute;
   max-width: 1080px;
   width: 100%;
-  height: 100%;
   left: 50%;
   top: 0;
   transform: translate(-50%, 0);
@@ -92,7 +92,14 @@ const BottomBackgroundContainer = styled.div`
     padding-top: 200px;
     background-position: 200px 0;
   }
+  @media screen and (max-width: 585px) {
+    margin-top: 74px;
+    padding-top: 0;
+    background-position: 200px 0;
+  }
 `
+
+const MobileBeautyImage = styled.img.attrs({ src: mobileFooterTopBg })``
 
 const LandingPageMarkup = () => (
   <StyledLayout>
@@ -109,9 +116,11 @@ const LandingPageMarkup = () => (
     <CoachParams />
     <OurCoaches />
     <PlatformAdvantages />
+    <CoachAdvantages />
     <BottomBackgroundContainer>
+      <MobileBeautyImage />
       <AllNeedsCoach />
-      <CoachAdvantages />
+      <CoachAdvantages hideMobile />
       <FAQ />
     </BottomBackgroundContainer>
     <Footer />

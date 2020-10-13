@@ -22,6 +22,14 @@ const StyledContainer = styled(LandingPageContainer)`
     background-size: 558px 304px;
     background-position: 120px 118px;
   }
+
+  @media screen and (max-width: 565px) {
+    margin-bottom: 80px;
+    height: unset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const AdvantageFirst = styled.div`
@@ -38,6 +46,9 @@ const AdvantageFirst = styled.div`
 
     left: 36px;
   }
+  @media screen and (max-width: 565px) {
+    position: unset;
+  }
 `
 
 const AdvantageSecond = styled.div`
@@ -52,6 +63,10 @@ const AdvantageSecond = styled.div`
     width: 164px;
     height: 102px;
     left: 423px;
+  }
+  @media screen and (max-width: 565px) {
+    position: unset;
+    margin-top: 16px;
   }
 `
 
@@ -68,6 +83,10 @@ const AdvantageThird = styled.div`
     height: 160px;
     left: 570px;
   }
+  @media screen and (max-width: 565px) {
+    position: unset;
+    margin-top: 16px;
+  }
 `
 
 const AdvantageTitle = styled.h4`
@@ -81,6 +100,9 @@ const AdvantageTitle = styled.h4`
   @media screen and (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
+  }
+  @media screen and (max-width: 565px) {
+    position: unset;
   }
 `
 
@@ -114,6 +136,10 @@ const Phone1 = styled.div`
     height: 322.17px;
     left: 219px;
   }
+  @media screen and (max-width: 565px) {
+    position: unset;
+    margin-top: 16px;
+  }
 `
 
 const Phone2 = styled.div`
@@ -131,20 +157,24 @@ const Phone2 = styled.div`
     height: 322.17px;
     left: 397px;
   }
+  @media screen and (max-width: 565px) {
+    position: unset;
+    margin-top: 16px;
+  }
 `
 
 export const PlatformAdvantages = () => (
   <StyledContainer>
-    <Phone1 />
-    <Phone2 />
     <AdvantageFirst>
       <AdvantageTitle>Личный кабинет</AdvantageTitle>
       <AdvantageText>Переписывайтесь, планируйте календарь, получайте материалы от коучей в одном окне.</AdvantageText>
     </AdvantageFirst>
+    <Phone1 />
     <AdvantageSecond>
       <AdvantageTitle>Удобный поиск</AdvantageTitle>
       <AdvantageText>Выбирайте коучей по направлению, цене и времени за несколько кликов.</AdvantageText>
     </AdvantageSecond>
+    <Phone2 />
     <AdvantageThird>
       <AdvantageTitle>Под контролем администрации</AdvantageTitle>
       <AdvantageText>

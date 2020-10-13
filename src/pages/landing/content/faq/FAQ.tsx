@@ -18,8 +18,8 @@ const Title = styled.h3`
     font-size: 24px;
     line-height: 26px;
   }
-  @media screen and (max-width: 480px) {
-    font-size: 20px;
+  @media screen and (max-width: 565px) {
+    font-size: 16px;
     line-height: 26px;
     margin-left: 0;
   }
@@ -39,9 +39,9 @@ const SubTitle = styled.h3`
     font-size: 20px;
     line-height: 26px;
   }
-  @media screen and (max-width: 480px) {
-    font-size: 16px;
-    line-height: 22px;
+  @media screen and (max-width: 565px) {
+    font-size: 14px;
+    line-height: 18px;
     margin-left: 0;
   }
 `
@@ -85,8 +85,10 @@ const StyledContainer = styled(LandingPageContainer)`
   @media screen and (max-width: 768px) {
     padding: 0 7px 68px;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     padding-bottom: 18px;
+    padding-top: 31px;
+    margin-top: -31px;
   }
 `
 

@@ -16,7 +16,7 @@ const texts = [
   "Ищущим вторую половину или строящим отношения",
 ]
 
-export const CoachAdvantages = () => {
+export const CoachAdvantages = ({ hideMobile }: { hideMobile?: boolean }) => {
   const [textIndex, setIndex] = useState(0)
 
   const moveIndex = (count: number) => () => {
@@ -30,9 +30,34 @@ export const CoachAdvantages = () => {
         <Text>{texts[textIndex]}</Text>
         <RightArrow onClick={moveIndex(1)} />
       </SliderContainer>
+      <MobileSliderContainer hideMobile={hideMobile}>
+        <MobileSlider>
+          <LeftArrow onClick={moveIndex(-1)} />
+          <Text>{texts[textIndex]}</Text>
+          <RightArrow onClick={moveIndex(1)} />
+        </MobileSlider>
+      </MobileSliderContainer>
     </LandingPageContainer>
   )
 }
+
+const MobileSliderContainer = styled.div<{ hideMobile?: boolean }>`
+  @media screen and (min-width: 565px) {
+    display: none;
+  }
+  @media screen and (max-width: 565px) {
+    display: ${({ hideMobile }) => (hideMobile ? "none" : "unset")};
+  }
+`
+
+const MobileSlider = styled.div`
+  position: relative;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 
 const SliderContainer = styled.div`
   position: relative;
@@ -45,6 +70,10 @@ const SliderContainer = styled.div`
     background-size: cover;
     width: 696px;
     height: 321px;
+  }
+
+  @media screen and (max-width: 565px) {
+    display: none;
   }
 `
 
@@ -66,6 +95,12 @@ const LeftArrow = styled(Icon).attrs({ name: "left-icon" })`
     left: 42px;
     top: 170px;
   }
+
+  @media screen and (max-width: 565px) {
+    position: unset;
+    fill: #4858cc;
+    margin-right: 4px;
+  }
 `
 const RightArrow = styled(Icon).attrs({ name: "right-icon" })`
   position: absolute;
@@ -84,6 +119,12 @@ const RightArrow = styled(Icon).attrs({ name: "right-icon" })`
     height: 19px;
     left: 350px;
     top: 170px;
+  }
+
+  @media screen and (max-width: 565px) {
+    position: unset;
+    fill: #4858cc;
+    margin-left: 4px;
   }
 `
 
@@ -104,5 +145,14 @@ const Text = styled.div`
     width: 260px;
     left: 77px;
     top: 128px;
+  }
+
+  @media screen and (max-width: 565px) {
+    position: unset;
+    text-align: center;
+
+    font-size: 16px;
+    line-height: 26px;
+    color: #4858cc;
   }
 `
