@@ -55,7 +55,8 @@ const StyledChatContainer = styled(ChatContainer)`
 `
 
 const StyledDialog = styled(Dialog)`
-  width: 700px;
+  width: 100%;
+  max-width: 700px;
   height: 90vh;
   padding: 0;
   border-radius: 10px;
