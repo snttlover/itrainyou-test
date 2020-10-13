@@ -75,7 +75,6 @@ const RelativeContainer = styled.div`
   position: absolute;
   max-width: 1080px;
   width: 100%;
-  height: 100%;
   left: 50%;
   top: 0;
   transform: translate(-50%, 0);
