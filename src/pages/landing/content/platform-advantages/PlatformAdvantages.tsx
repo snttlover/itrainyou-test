@@ -24,7 +24,7 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 
   @media screen and (max-width: 565px) {
-    margin-bottom: 0;
+    margin-bottom: 80px;
     height: unset;
     display: flex;
     flex-direction: column;

@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
 
 const Title = styled.h3`
-  width: 432px;
+  max-width: 432px;
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: bold;
@@ -24,7 +24,7 @@ const Title = styled.h3`
 
 const SubTitle = styled.div`
   margin-top: 12px;
-  width: 699px;
+  max-width: 699px;
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -44,6 +44,10 @@ const StyledContainer = styled(LandingPageContainer)`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (max-width: 585px) {
+    display: none;
+  }
 `
 
 export const AllNeedsCoach = () => (
