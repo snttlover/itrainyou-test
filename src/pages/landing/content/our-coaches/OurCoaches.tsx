@@ -104,6 +104,10 @@ const CoachList = styled.div`
       margin-bottom: 12px;
     }
   }
+
+  @media screen and (max-width: 565px) {
+    width: 100%;
+  }
 `
 
 const ShowMoreButton = styled(Link)`
