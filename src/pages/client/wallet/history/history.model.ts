@@ -54,7 +54,7 @@ export const $transactionsList = $transactions.map(transactions =>
     let price = transaction.amount
 
     if (transaction.type === "TOP_UP" || transaction.type === "TRANSFER_TO_CLIENT_WALLET") price = `+${price}`
-    else price = `-${price}`
+    else price = `${price}`
 
     let name = `Пополнение кошелька`
     if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") name = "Перевод с кошелька коуча"
