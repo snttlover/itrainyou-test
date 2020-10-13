@@ -38,9 +38,11 @@ const WithdrawButton = styled(Button)`
   position: absolute;
   right: 40px;
   top: 44px;
+  width: 182px;
   ${MediaRange.lessThan("mobile")`
     position: unset;
     margin: 100px auto 0;
+    width: 160px;
   `}
 `
 

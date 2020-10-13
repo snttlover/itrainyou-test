@@ -24,6 +24,12 @@ const Tooltip = styled.div`
      right: 0;
      top: 20px;
   `}
+
+  ${MediaRange.lessThan(`mobile`)`
+    right: 0;
+    width: 100%;
+    top: unset;
+  `}
 `
 
 const StyledContainer = styled.div`
@@ -34,6 +40,9 @@ const StyledContainer = styled.div`
   &:hover ${Tooltip} {
     display: block;
   }
+  ${MediaRange.lessThan(`mobile`)`
+      position: unset;
+  `}
 `
 
 const InfoIcon = styled(Icon).attrs({ name: `info` })`
