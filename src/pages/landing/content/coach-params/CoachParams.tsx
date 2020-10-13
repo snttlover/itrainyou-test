@@ -17,8 +17,8 @@ const Title = styled.h3`
     font-size: 24px;
     line-height: 26px;
   }
-  @media screen and (max-width: 480px) {
-    font-size: 20px;
+  @media screen and (max-width: 565px) {
+    font-size: 16px;
     line-height: 26px;
   }
 `
@@ -38,6 +38,10 @@ const SubTitle = styled.h3`
     font-size: 20px;
     line-height: 26px;
   }
+  @media screen and (max-width: 565px) {
+    font-size: 14px;
+    line-height: 18px;
+  }
 `
 
 const StyledContainer = styled(LandingPageContainer)`
@@ -49,6 +53,11 @@ const StyledContainer = styled(LandingPageContainer)`
 
   @media screen and (max-width: 768px) {
     padding: 26px 36px 63px;
+  }
+  @media screen and (max-width: 565px) {
+    padding: 26px 10px 63px;
+    font-size: 16px;
+    line-height: 26px;
   }
 `
 
@@ -68,6 +77,9 @@ const CoachParamsCardWrapper = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 50%;
+  }
+  @media screen and (max-width: 565px) {
+    width: 100%;
   }
 `
 

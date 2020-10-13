@@ -111,7 +111,7 @@ const StepImage = styled.img`
     width: 440px;
     height: 243.82px;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     display: none;
   }
 `
