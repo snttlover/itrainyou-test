@@ -10,6 +10,11 @@ const StyledSteps = styled.div`
   position: relative;
   padding-top: 155px;
   padding-bottom: 100px;
+
+  @media screen and (max-width: 480px) {
+    padding-top: 155px;
+    padding-bottom: 150px;
+  }
 `
 
 const BgImage = styled.div`
@@ -80,6 +85,7 @@ const Description = styled.p`
   @media screen and (max-width: 565px) {
     font-size: 14px;
     line-height: 18px;
+    padding: 0 10px;
   }
 `
 

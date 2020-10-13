@@ -42,7 +42,8 @@ const StyledCard = styled.div`
   
   
   @media screen and (max-width: 565px) {
-    width: 100%;
+    pointer-events: none;
+    width: 129px;
     margin-right: 0 !important;
     &:not(:last-child) {
       margin-bottom: 68px;
@@ -51,7 +52,7 @@ const StyledCard = styled.div`
         top: unset;
         left: 50%;
         transform: translateX(-50%);
-        bottom: -49px;
+        bottom: -40px;
         background-image: url("${arrowBottomImage}");
         background-size: 24px 24px;
         background-repeat: no-repeat;
@@ -74,8 +75,10 @@ const Index = styled.div<{ selected?: boolean }>`
     line-height: 26px;
   }
   @media screen and (max-width: 565px) {
-    font-size: 20px;
+    font-size: 40px;
     line-height: 26px;
+    margin-bottom: 12px;
+    color: #5b6670;
   }
 `
 
@@ -92,7 +95,9 @@ const Text = styled.div<{ selected?: boolean }>`
     text-align: center;
   }
   @media screen and (max-width: 565px) {
-    line-height: 16px;
+    font-size: 16px;
+    line-height: 22px;
+    color: #5b6670;
   }
 `
 
