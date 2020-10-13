@@ -5,6 +5,7 @@ import { DatePicker } from "@/pages/coach/schedule/components/DatePicker"
 import dayjs, { Dayjs } from "dayjs"
 import styled from "styled-components"
 import React, { useRef, useState } from "react"
+import { DateArray } from "@/pages/coach/schedule/models/sessions.model"
 
 const Container = styled.div`
   display: flex;
@@ -36,11 +37,9 @@ const StyledDatePicker = styled(DatePicker)`
   }
 `
 
-type DateRange = [Dayjs, Dayjs]
-
 type RemoveSessionsDateRangePickerProps = {
-  range: DateRange
-  rangeChanged: (range: DateRange) => void
+  range: DateArray
+  rangeChanged: (range: DateArray) => void
   className?: string
 }
 
@@ -58,7 +57,7 @@ export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePick
     setRightIsOpenOpen(false)
   })
 
-  const [from, to] = range.map(date => date.toDate())
+  const [from, to] = range.map(date => (date ? dayjs(date).toDate() : null))
 
   return (
     <Container className={className}>
@@ -70,7 +69,7 @@ export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePick
             <Calendar
               value={from}
               disabledFrom={to}
-              onChange={picked => rangeChanged([date(picked), date(to)])}
+              onChange={picked => rangeChanged([date(picked), date(to || dayjs(picked).add(1, `day`))])}
             />
           </LeftDropdown>
         )}
@@ -78,7 +77,7 @@ export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePick
           <RightDropdown>
             <Calendar
               value={to}
-              onChange={picked => rangeChanged([date(from), date(picked)])}
+              onChange={picked => rangeChanged([date(from || dayjs(picked).subtract(1, `day`)), date(picked)])}
             />
           </RightDropdown>
         )}
