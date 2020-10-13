@@ -43,6 +43,10 @@ const Bg = styled.div`
   @media screen and (max-width: 768px) {
     background-size: cover;
   }
+  @media screen and (max-width: 565px) {
+    background-position: right;
+    top: -40px;
+  }
 `
 
 const Title = styled.h3`
@@ -57,10 +61,10 @@ const Title = styled.h3`
     font-size: 24px;
     line-height: 26px;
   }
-  @media screen and (max-width: 480px) {
-    font-size: 20px;
+  @media screen and (max-width: 565px) {
+    font-size: 16px;
     line-height: 26px;
-    margin-bottom: 12px;
+    padding: 0 10px;
   }
 `
 
@@ -77,6 +81,10 @@ const Description = styled.div`
   @media screen and (max-width: 768px) {
     font-size: 20px;
     line-height: 26px;
+  }
+  @media screen and (max-width: 565px) {
+    font-size: 14px;
+    line-height: 18px;
   }
 `
 
