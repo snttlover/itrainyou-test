@@ -15,8 +15,13 @@ import { clientStarted } from "@/lib/effector"
 import { AppStyles } from "@/AppStyles"
 import { getSupervisorChatImages } from "@/lib/api/chats/super-admin/get-images"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
+import { config } from "@/config"
 
-export const createSupportChatApp = (chatId: number, token: string) => {
+export const createSupportChatApp = (chatId: number, token: string, backend: string) => {
+  Object.assign(config, {
+    BACKEND_URL: `https://${backend}`,
+    WS_HOST: `wss://${backend}`
+  })
   Cookies.set(TOKEN_COOKIE_KEY, token)
   const socket = createChatsSocket("support", { chat: chatId })
 
