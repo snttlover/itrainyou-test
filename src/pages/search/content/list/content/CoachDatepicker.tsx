@@ -243,13 +243,24 @@ const SessionPrice = styled.div`
   justify-content: center;
 `
 
-const StyledButton = styled(Button)`
+const StyledBuyButton = styled(Button)`
+  text-align: center;
   padding: 4px 24px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   width: 160px;
+`
+
+const StyledRegisterButton = styled(Button)`
+  text-align: center;
+  padding: 4px 24px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  width: 185px;
 `
 
 const Amount = styled.div`
@@ -503,16 +514,16 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
           </Amount>
           <ButtonContainer>
             <IsAuthed>
-              <StyledButton
+              <StyledBuyButton
                 disabled={buyLoading || selected.length === 0}
                 onClick={() => buySessionBulk(selected.map(item => item.id))}
               >
                 Купить
-              </StyledButton>
+              </StyledBuyButton>
             </IsAuthed>
             <IsGuest>
               <Link to={routeNames.signup("1")}>
-                <StyledButton>Зарегистрироваться</StyledButton>
+                <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
               </Link>
             </IsGuest>
           </ButtonContainer>
