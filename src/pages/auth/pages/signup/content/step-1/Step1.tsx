@@ -89,10 +89,8 @@ const Footer = styled.div`
 
   text-align: center;
   color: #544274;
-  width: 130px;
 
   ${MediaRange.greaterThan("mobile")`
-    width: auto;
     margin-top: 16px;
     font-size: 20px;
     line-height: 26px;
@@ -107,7 +105,10 @@ const StyledLink = styled(Link)`
   font-size: 14px;
   line-height: 18px;
 
+  width: 130px;
+
   ${MediaRange.greaterThan("mobile")`
+    width: auto;
     font-size: 20px;
     line-height: 26px;
   `}
@@ -115,6 +116,25 @@ const StyledLink = styled(Link)`
 
 const SignIn = styled.span`
   font-weight: 500;
+`
+
+const AcceptionText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  color: #ffffff;
+
+  max-width: 460px;
+  margin: 20px auto;
+
+  & a {
+    color: #fff;
+    font-weight: 500;
+    text-decoration: underline;
+  }
 `
 
 export const Step1 = () => {
@@ -176,6 +196,10 @@ export const Step1 = () => {
         <StyledLink to='/auth/login'>
           Уже есть аккаунт? <SignIn>Войдите</SignIn>
         </StyledLink>
+        <AcceptionText>
+          Регистрируясь вы принимаете условия <a href='/confidentially.pdf'>Политики конфиденциальности</a>,{" "}
+          <a href='/policy.pdf'>Политике по обработке персональных данных</a>
+        </AcceptionText>
       </Footer>
     </AuthLayout>
   )
