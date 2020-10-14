@@ -1,8 +1,9 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { changeShowFundUpDialog } from "@/feature/client-funds-up/dialog/fund-up.model"
+import { changeShowFundUpDialog, setRedirectUrl } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { isAxiosError } from "@/lib/network/network"
+import { routeNames } from "@/pages/route-names"
 import { runInScope } from "@/scope"
 import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample, split } from "effector-root"
 
@@ -93,10 +94,11 @@ export const genCoachSessions = (id = 0) => {
     type: "error",
     text: "Недостаточно средств, пополните баланс",
   }
-  insufficientBalance.watch(() => {
+  sample({ clock: insufficientBalance, source: $id }).watch(id => {
     runInScope(toasts.remove, sessionBookFailByInsufficientBalanceToast)
     runInScope(toasts.add, sessionBookFailByInsufficientBalanceToast)
     runInScope(changeShowFundUpDialog, true)
+    runInScope(setRedirectUrl, routeNames.searchCoachPage(id.toString()))
   })
 
   const sessionBookFailToast: Toast = { type: "error", text: "Не удалось забронировать сессию" }

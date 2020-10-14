@@ -17,6 +17,9 @@ export const resetFundUpModal = createEvent()
 export const submitFundUp = createEvent()
 
 export const changeShowFundUpDialog = createEvent<boolean>()
+export const setRedirectUrl = createEvent<string>()
+
+export const $redirectUrl = restore(setRedirectUrl, "")
 export const $isFundUpDialogShowed = restore(changeShowFundUpDialog, false)
 
 export const changeType = createEvent<"card" | "coach">()
@@ -54,6 +57,7 @@ export const $fundUpForm = combine({
   selectedCard: $card,
   amount: $amount,
   saveCard: $saveCard,
+  redirectUrl: $redirectUrl,
 })
 
 export const $fundUpErrors = combine({
@@ -71,6 +75,9 @@ const startTopUpFx = createEffect({
       const response = await startTopUp({
         amount: Number(form.amount),
         saveCard: form.saveCard,
+        returnUrl: !form.redirectUrl
+          ? undefined
+          : `${window.location.protocol}//${window.location.hostname}${form.redirectUrl}`,
       })
       localStorage.setItem("saved_payment_id", response.paymentId)
       window.location.href = response.confirmationUrl
