@@ -33,7 +33,7 @@ const Arrow = styled(Icon).attrs({ name: "arrow" })`
 
 const Container = styled.div`
   margin-top: 13px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
   display: none;
   @media screen and (max-width: 768px) {
