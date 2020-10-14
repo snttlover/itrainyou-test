@@ -67,13 +67,13 @@ const Title = styled.div`
 
 const StyledLink = styled(Link)`
   margin-left: 64px;
+
+  ${RegisterButton} {
+    width: 169px;
+    padding: 7px 0;
+  }
   @media screen and (max-width: 565px) {
     margin-left: 12px;
-
-    ${RegisterButton} {
-      width: 169px;
-      padding: 7px 0;
-    }
   }
 `
 
