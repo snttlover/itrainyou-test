@@ -1,7 +1,9 @@
 import { Coach, getCoach } from "@/lib/api/coach"
+import { addCoachToFavourites } from "@/lib/api/coach/add-coach-to-favourites"
+import { removeCoachFromFavourites } from "@/lib/api/coach/remove-coach-from-favourites"
 import { CoachReviewResponse, getCoachReviews } from "@/lib/api/reviews"
 import { createGate, runInScope } from "@/scope"
-import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
+import { createEffect, createEvent, createStore, forward, sample, guard, merge, restore } from "effector-root"
 import { genCoachSessions } from "@/components/coach-card/select-date/select-date.model"
 import { DurationType } from "@/lib/api/coach-sessions"
 
@@ -11,6 +13,14 @@ export const loadCoachFx = createEffect({
 
 export const loadReviewsFx = createEffect({
   handler: getCoachReviews,
+})
+
+export const addToFavouriteFx = createEffect({
+  handler: addCoachToFavourites,
+})
+
+export const removeFromFavouriteFx = createEffect({
+  handler: removeCoachFromFavourites,
 })
 
 export const coachByIdGate = createGate()
@@ -44,4 +54,25 @@ forward({
 forward({
   from: mounted,
   to: [loadCoachFx, loadReviewsFx],
+})
+
+export const toggleFavourite = createEvent()
+export const $isFavourite = $coach.map(coach => !!coach?.isFavourite).on(toggleFavourite, state => !state)
+const $id = restore(
+  mounted.map(({ id }) => id),
+  -1
+)
+
+sample({
+  clock: guard({ source: toggleFavourite, filter: $isFavourite }),
+  source: $id,
+  fn: id => ({ id }),
+  target: addToFavouriteFx,
+})
+
+sample({
+  clock: guard({ source: toggleFavourite, filter: $isFavourite.map(is => !is) }),
+  source: $id,
+  fn: id => ({ id }),
+  target: removeFromFavouriteFx,
 })
