@@ -40,7 +40,13 @@ const Title = styled.div`
   @media screen and (max-width: 768px) {
     font-size: 20px;
     line-height: 26px;
-    margin-bottom: 12px;
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 0;
   }
 `
 
@@ -55,6 +61,7 @@ const Description = styled.div`
     line-height: 18px;
   }
   @media screen and (max-width: 480px) {
+    margin-top: 8px;
     font-size: 12px;
     line-height: 16px;
   }
