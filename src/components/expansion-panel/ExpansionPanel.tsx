@@ -22,7 +22,7 @@ const Title = styled.div`
     line-height: 18px;
   }
   @media screen and (max-width: 480px) {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 16px;
   }
 `
@@ -41,7 +41,7 @@ const Container = styled.div`
     line-height: 18px;
   }
   @media screen and (max-width: 480px) {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 16px;
     margin-top: 8px;
   }
