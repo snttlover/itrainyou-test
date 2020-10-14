@@ -27,20 +27,6 @@ const serverStarted = root.createEvent<{
 
 const requestHandled = serverStarted.map(({ req, isSSR }) => ({ req, isSSR }))
 
-const tokenCookie = requestHandled.map(({ req }) => req.cookies[TOKEN_COOKIE_KEY] as string)
-
-guard({
-  source: tokenCookie,
-  filter: token => !!token,
-  target: changeToken,
-})
-
-guard({
-  source: changeToken,
-  filter: token => !!token,
-  target: loadUserData,
-})
-
 const routesMatched = requestHandled.map(({ req, isSSR }) => ({
   query: req.query as Record<string, string>,
   routes: isSSR ? matchRoutes(ROUTES, req.url.split("?")[0]).filter(lookupStartEvent).filter(Boolean) : [],
@@ -99,18 +85,19 @@ export const server = express()
   .get("/*", async (req: express.Request, res: express.Response) => {
     const currentRoutes = matchRoutes(ROUTES, req.url.split("?")[0])
     const isSSR = currentRoutes.reduce((_, route) => route.route.ssr, false)
-    const scope = fork(root)
+    const hasCookie = !!req.cookies[TOKEN_COOKIE_KEY]
 
-    try {
-      await allSettled(serverStarted, {
-        scope,
-        params: { req, res, isSSR },
-      })
-    } catch (error) {
-      console.log(error)
-    }
+    if (isSSR && !hasCookie) {
+      const scope = fork(root)
 
-    if (isSSR) {
+      try {
+        await allSettled(serverStarted, {
+          scope,
+          params: { req, res, isSSR },
+        })
+      } catch (error) {
+        console.log(error)
+      }
       if (res.statusCode >= 300 && res.statusCode < 400) {
         return
       }
@@ -134,9 +121,8 @@ export const server = express()
         sheet.seal()
       })
     } else {
-      const storesValues = effectorSerialize(scope, { ignore: [$token] })
       res.write(htmlStart(assets.client.css, assets.client.js))
-      res.end(htmlEnd(storesValues))
+      res.end(htmlEnd({}))
     }
   })
 
