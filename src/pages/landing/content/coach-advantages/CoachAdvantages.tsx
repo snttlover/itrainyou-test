@@ -16,7 +16,7 @@ const texts = [
   "Ищущим вторую половину или строящим отношения",
 ]
 
-export const CoachAdvantages = ({ hideMobile }: { hideMobile?: boolean }) => {
+export const CoachAdvantages = () => {
   const [textIndex, setIndex] = useState(0)
 
   const moveIndex = (count: number) => () => {
@@ -30,7 +30,7 @@ export const CoachAdvantages = ({ hideMobile }: { hideMobile?: boolean }) => {
         <Text>{texts[textIndex]}</Text>
         <RightArrow onClick={moveIndex(1)} />
       </SliderContainer>
-      <MobileSliderContainer hideMobile={hideMobile}>
+      <MobileSliderContainer>
         <MobileSlider>
           <LeftArrow onClick={moveIndex(-1)} />
           <Text>{texts[textIndex]}</Text>
@@ -41,12 +41,9 @@ export const CoachAdvantages = ({ hideMobile }: { hideMobile?: boolean }) => {
   )
 }
 
-const MobileSliderContainer = styled.div<{ hideMobile?: boolean }>`
+const MobileSliderContainer = styled.div`
   @media screen and (min-width: 565px) {
     display: none;
-  }
-  @media screen and (max-width: 565px) {
-    display: ${({ hideMobile }) => (hideMobile ? "none" : "unset")};
   }
 `
 

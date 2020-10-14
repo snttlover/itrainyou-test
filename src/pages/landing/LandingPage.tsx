@@ -99,7 +99,25 @@ const BottomBackgroundContainer = styled.div`
   }
 `
 
-const MobileBeautyImage = styled.img.attrs({ src: mobileFooterTopBg })``
+const MobileBeautyImage = styled.img.attrs({ src: mobileFooterTopBg })`
+  width: 100%;
+  @media screen and (min-width: 585px) {
+    display: none;
+  }
+`
+
+const IsMobile = styled.div`
+  display: none;
+  @media screen and (max-width: 585px) {
+    display: unset;
+  }
+`
+
+const IsNotMobile = styled.div`
+  @media screen and (max-width: 585px) {
+    display: none;
+  }
+`
 
 const LandingPageMarkup = () => (
   <StyledLayout>
@@ -116,11 +134,15 @@ const LandingPageMarkup = () => (
     <CoachParams />
     <OurCoaches />
     <PlatformAdvantages />
-    <CoachAdvantages />
+    <IsMobile>
+      <CoachAdvantages />
+    </IsMobile>
     <BottomBackgroundContainer>
       <MobileBeautyImage />
       <AllNeedsCoach />
-      <CoachAdvantages hideMobile />
+      <IsNotMobile>
+        <CoachAdvantages />
+      </IsNotMobile>
       <FAQ />
     </BottomBackgroundContainer>
     <Footer />
