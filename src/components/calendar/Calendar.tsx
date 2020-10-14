@@ -22,7 +22,7 @@ type CalendarTypes = {
   selectRange?: boolean
   isBig?: boolean
   className?: string
-  disabledFrom?: Date
+  disabledFrom?: Date | null
   startFrom?: Date
   pinTo?: Date | null
   onPrevMonth?: (prevMonth: Date) => void

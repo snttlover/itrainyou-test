@@ -5,7 +5,7 @@ import { date } from "@/lib/formatting/date"
 import { $monthEndDate, $monthStartDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
-import { Dayjs } from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, forward, restore, sample, merge, attach } from "effector-root"
 
 type DateRange = {
@@ -95,12 +95,26 @@ forward({
   to: loadSessionsWithParamsFx,
 })
 
-type Range = [Dayjs, Dayjs]
+export type PickerDate = Dayjs | null
+export type DateArray = [PickerDate, PickerDate]
 
-export const removeSessionsRange = createEvent<Range>()
+export const changePickedDeleteRange = createEvent<DateArray>()
+export const $pickedDeleteRange = restore<DateArray>(changePickedDeleteRange, [null, null])
+
+export const $deleteButtonIsDisabled = $pickedDeleteRange.map(dates => !dates[0] || !dates[1])
 
 forward({
-  from: removeSessionsRange.map(range => ({ from: range[0].format("YYYY-MM-DD"), to: range[1].format("YYYY-MM-DD") })),
+  from: CalendarGate.close,
+  to: changePickedDeleteRange.prepend(() => [null, null]),
+})
+
+export const removeSessionsRange = createEvent<DateArray>()
+
+forward({
+  from: removeSessionsRange.map(range => ({
+    from: dayjs(range[0] || undefined).format("YYYY-MM-DD"),
+    to: dayjs(range[1] || undefined).format("YYYY-MM-DD"),
+  })),
   to: removeSessionsRangeFx,
 })
 
