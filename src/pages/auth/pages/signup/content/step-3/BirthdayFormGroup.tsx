@@ -77,8 +77,7 @@ export const BirthdayFormGroup = () => {
       true
     )
 
-    if (date.format("YYYY-MM-DD") === dateStr) {
-      console.log(dateStr, date.format("YYYY-MM-DD"))
+    if (date.format("YYYY-MM-DD") === dateStr && !date.isAfter(dayjs(), "day")) {
       _birthdayChanged(date)
     } else _birthdayChanged(null)
   }, [day, month, year])
