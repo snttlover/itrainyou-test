@@ -15,13 +15,19 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${MediaRange.between("mobile", "tablet")`
-    transform: translate(50%, 0);
+  ${MediaRange.lessThan(`tablet`)`
+    right: unset;
+    top: 10px;
+    left: 0;
+    transform: unset;
+    flex-direction: row;
+    height: auto;
+    width: 100%;
   `}
 
   ${MediaRange.lessThan(`mobile`)`
     right: unset;
-    top: 30px;
+    top: 10px;
     left: 0;
     transform: unset;
     flex-direction: row;
@@ -44,11 +50,26 @@ const Tab = styled.div`
     margin-bottom: 0;
   }
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan(`tablet`)`
+    
+    flex-direction: row;
     margin-bottom: unset;
-    margin-right: 16px;
-    width: 96px;
-    height: 100px;
+    margin-right: 12px;
+    width: 100%;
+    height: 58px;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  `}
+
+  ${MediaRange.lessThan(`mobile`)`
+    
+    flex-direction: column;
+    margin-bottom: unset;
+    margin-right: 12px;
+    width: 100%;
+    height: 58px;
     
     &:last-child {
       margin-right: 0;
@@ -66,9 +87,18 @@ const Title = styled.div`
   color: #ffffff;
   width: 91px;
 
+  ${MediaRange.lessThan(`tablet`)`
+    width: unset;
+    
+    font-size: 14px;
+    line-height: 18px;
+  `}
+
   ${MediaRange.lessThan(`mobile`)`
-    width: 74px;
-    margin-bottom: 10px;
+    width: unset;
+    
+    font-size: 14px;
+    line-height: 18px;
   `}
 `
 
@@ -79,9 +109,17 @@ const Counter = styled.div`
   line-height: 44px;
   text-align: center;
   color: #ffffff;
+  ${MediaRange.lessThan(`tablet`)`
+    margin-left: 24px;
+    font-size: 20px;
+    line-height: 26px;
+  `}
+
   ${MediaRange.lessThan(`mobile`)`
-     font-size: 28px;
-     line-height: 26px;
+    margin-left: 0;
+    margin-top: 4px;
+    font-size: 16px;
+    line-height: 22px;
   `}
 `
 

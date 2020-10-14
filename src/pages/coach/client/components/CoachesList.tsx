@@ -1,12 +1,11 @@
-import { Avatar } from "@/components/avatar/Avatar"
-import { Icon } from "@/components/icon/Icon"
-import { createInfinityScroll } from "@/feature/pagination"
-import { clientCoachesPagination } from "@/pages/coach/client/client-page.model"
+import { Button } from "@/components/button/normal/Button"
+import { $isNoteEdit, $note, noteChanged, saveNote, setIsEdit } from "@/pages/coach/client/client-page.model"
 import { SessionsStats } from "@/pages/coach/client/components/SessionsStats"
-import { useList, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react/ssr"
 import * as React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
+import { Textarea } from "@/components/textarea/Textarea"
 
 const Container = styled.div`
   width: 100%;
@@ -14,20 +13,32 @@ const Container = styled.div`
   position: relative;
   max-width: 600px;
 
+  ${MediaRange.lessThan(`tablet`)`
+    padding-right: 0;
+    padding-top: 80px;
+    margin-top: 0;
+  `}
+
   ${MediaRange.lessThan(`mobile`)`
     padding-right: 0;
-    padding-top: 100px;
-    margin-top: 16px;
+    padding-top: 80px;
+    margin-top: 0;
   `}
 `
 
 const Coaches = styled.div`
+  display: flex;
+  flex-direction: column;
   max-width: 600px;
   width: 100%;
   border-radius: 2px;
   background: #fff;
   padding: 24px;
   min-height: 350px;
+
+  ${MediaRange.lessThan(`mobile`)`
+    padding: 12px;
+  `}
 `
 
 const Title = styled.div`
@@ -35,79 +46,63 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #424242;
-  margin-bottom: 23px;
 
   ${MediaRange.lessThan(`mobile`)`
-     padding-top: 30px;
+     padding-top: 0;
      font-size: 16px;
      line-height: 26px;
   `}
 `
 
-const CoachContainer = styled.div`
-  display: flex;
-  align-items: center;
+const SubTitle = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #424242;
 `
 
-const CoachAvatar = styled(Avatar)`
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  min-width: 40px;
-  margin-right: 4px;
+const StyledTextArea = styled(Textarea)`
+  margin-top: 8px;
+  width: 100%;
+  resize: none;
+  min-height: 309px;
+  margin-bottom: 12px;
 `
 
-const TopCoachArrow = styled(Icon).attrs({ name: "top-coach" })`
-  fill: #e8c268;
-  width: 16px;
-  margin-left: 8px;
-  margin-right: 4px;
-`
-
-const Name = styled.span`
+const Text = styled.div`
+  margin-top: 8px;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 22px;
   color: #424242;
-  margin-left: 4px;
 `
 
-const EmptyPlaceholder = styled.div`
-  margin-top: 100px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
-  text-align: center;
-  color: #9aa0a6;
+const StyledButton = styled(Button)`
+  margin: auto auto 0;
 `
 
 export const CoachesList = () => {
-  const InfinityScroll = createInfinityScroll(clientCoachesPagination)
-  const listIsEmpty = useStore(clientCoachesPagination.data.$listIsEmpty)
+  const isEdit = useStore($isNoteEdit)
+  const note = useStore($note)
 
-  const coachList = useList(clientCoachesPagination.data.$list, coach => {
-    return (
-      <CoachContainer>
-        <CoachAvatar src={coach.avatar} />
-        {coach.isTopCoach && <TopCoachArrow />}
-        <Name>
-          {coach.firstName} {coach.lastName}
-        </Name>
-      </CoachContainer>
-    )
-  })
+  const _saveNote = useEvent(saveNote)
+  const _noteChanged = useEvent(noteChanged)
+  const _setIsEdit = useEvent(setIsEdit)
 
   return (
     <Container>
       <SessionsStats />
       <Coaches>
-        <Title>Коучи, с которыми занимался клиент</Title>
-        <InfinityScroll>{coachList}</InfinityScroll>
-        {listIsEmpty && <EmptyPlaceholder>Клиент пока не занимался с коучами</EmptyPlaceholder>}
+        <Title>Записи о клиенте</Title>
+        <SubTitle>Вы тут можете оставить свои мысли о клиенте (только для вас)</SubTitle>
+        {isEdit ? <StyledTextArea value={note} onChange={_noteChanged} /> : <Text>{note}</Text>}
+        <StyledButton onClick={() => (isEdit ? _saveNote() : _setIsEdit(true))}>
+          {isEdit ? "Сохранить" : "Редактировать"}
+        </StyledButton>
       </Coaches>
     </Container>
   )

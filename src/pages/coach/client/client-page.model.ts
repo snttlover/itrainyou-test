@@ -1,31 +1,43 @@
-import { createPagination } from "@/feature/pagination"
 import { ClientResponse, getClient } from "@/lib/api/client/get-client"
-import { ClientCoachesResponse, getClientCoaches } from "@/lib/api/client/get-client-coaches"
+import { updateClientNote } from "@/lib/api/client/update-client-note"
 import { createGate } from "@/scope"
-import { createEffect, forward, restore } from "effector-root"
+import { createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 import { some } from "patronum"
+import { getClientNote } from "@/lib/api/client/get-client-note"
 
 export const clientPageGate = createGate<number>()
 const loadClientFx = createEffect({ handler: getClient })
+const loadClientNoteFx = createEffect({ handler: getClientNote })
+const updateClientNoteFx = createEffect({ handler: updateClientNote })
 
-export const clientCoachesPagination = createPagination<ClientCoachesResponse>({
-  fetchMethod: getClientCoaches,
-  $query: restore(
-    clientPageGate.open.map(id => ({ id })),
-    { id: 0 }
-  ),
-})
+export const noteChanged = createEvent<string>()
+export const saveNote = createEvent()
 
 export const $clientData = restore<ClientResponse | null>(loadClientFx.doneData, null).reset(clientPageGate.close)
+export const $note = restore(
+  loadClientNoteFx.doneData.map(response => response.text),
+  ""
+)
+  .on(noteChanged, (_, note) => note)
+  .reset(clientPageGate.close)
 
-export const $isLoading = some(true, [loadClientFx.pending])
+export const setIsEdit = createEvent<boolean>()
+export const $isNoteEdit = createStore(false).on(setIsEdit, (_, payload) => payload)
+
+export const $isLoading = some(true, [loadClientFx.pending, loadClientNoteFx.pending, updateClientNoteFx.pending])
 
 forward({
   from: clientPageGate.open,
-  to: [loadClientFx, clientCoachesPagination.methods.loadMore],
+  to: [loadClientFx, loadClientNoteFx.prepend(id => ({ id }))],
+})
+
+sample({
+  clock: saveNote,
+  source: { text: $note, id: clientPageGate.state },
+  target: updateClientNoteFx,
 })
 
 forward({
-  from: clientPageGate.close,
-  to: clientCoachesPagination.methods.reset,
+  from: updateClientNoteFx.done,
+  to: setIsEdit.prepend(() => false),
 })
