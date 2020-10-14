@@ -66,7 +66,7 @@ export const $transactionsList = $transactions.map(transactions =>
     }
 
     let avatar = null
-    if (transaction.type === "TOP_UP" || transaction.type === "TRANSFER_TO_CLIENT_WALLET") {
+    if (["WITHDRAW", "TRANSFER_TO_CLIENT_WALLET", "TOP_UP"].includes(transaction.type)) {
       avatar = WalletTransactionImage
     } else if (transaction.enrolledClient?.avatar) {
       avatar = transaction.enrolledClient?.avatar
