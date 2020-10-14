@@ -82,6 +82,7 @@ const Text = styled.div`
 `
 
 const StyledButton = styled(Button)`
+  min-width: 160px;
   margin: auto auto 0;
 `
 
