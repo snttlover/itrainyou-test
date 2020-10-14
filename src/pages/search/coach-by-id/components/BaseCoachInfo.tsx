@@ -14,8 +14,13 @@ import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
-
-  ${MediaRange.greaterThan("mobile")`        
+  
+  width: 80px;
+  min-width: 80px;
+  height: 80px;
+  min-height: 80px;
+    
+  ${MediaRange.greaterThan("tablet")`        
     width: 120px;
     min-width: 120px;
     height: 120px;
