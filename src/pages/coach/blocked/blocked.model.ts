@@ -35,7 +35,10 @@ export const $restrictedClients = restore(getRestrictedClientsFx.doneData.map(se
   .on(unrestrictClientFx.done, findAndSetIsBanned(false))
   .reset(BlockedPageGate.open)
 
-export const $isLoading = some(true, [getBannedClientsFx.pending, getRestrictedClientsFx.pending])
+export const $isLoading = some({
+  predicate: true,
+  stores: [getBannedClientsFx.pending, getRestrictedClientsFx.pending],
+})
 
 forward({
   from: BlockedPageGate.open,

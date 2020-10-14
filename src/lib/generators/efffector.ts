@@ -37,7 +37,7 @@ export const createEffectorField = <T, R = T>(
 
   if (options.reset) {
     $store.reset(options.reset)
-    $isDirty.reset(delay(options.reset, 0))
+    $isDirty.reset(delay({ source: options.reset, timeout: 1 }))
     $errorMessage.reset(options.reset)
   }
 

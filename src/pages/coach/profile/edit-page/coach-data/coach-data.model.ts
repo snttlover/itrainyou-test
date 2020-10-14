@@ -14,6 +14,7 @@ import {
   forward,
   restore,
   sample,
+  Event,
 } from "effector-root"
 import { every, spread } from "patronum"
 
@@ -106,31 +107,34 @@ export const $formErrors = combine({
   photos: $photosError,
 })
 
-export const $formValid = every(true, [
-  $isEducationCorrect,
-  $isWorkExperienceCorrect,
-  $isDescriptionCorrect,
-  $isPhoneCorrect,
-  $isCategoriesCorrect,
-  $isPhotosCorrect,
-])
+export const $formValid = every({
+  predicate: true,
+  stores: [
+    $isEducationCorrect,
+    $isWorkExperienceCorrect,
+    $isDescriptionCorrect,
+    $isPhoneCorrect,
+    $isCategoriesCorrect,
+    $isPhotosCorrect,
+  ],
+})
 
 const userDataLoaded = sample({
   source: $userData,
   clock: CoachDataGate.open,
 })
 
-spread(
-  userDataLoaded.map(data => data.coach),
-  {
+spread({
+  source: userDataLoaded.map(data => data.coach) as Event<any>,
+  targets: {
     description: descriptionChanged,
     education: educationChanged,
     phone: phoneChanged,
     photos: restorePhotos,
     videoInterview: videoInterviewChanged,
     workExperience: workExperienceChanged,
-  }
-)
+  },
+})
 
 forward({
   from: userDataLoaded.map(data => data.coach?.categories.map(cat => cat.id) || []),

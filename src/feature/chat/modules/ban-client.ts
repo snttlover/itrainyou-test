@@ -60,9 +60,7 @@ coachChat.chat.$chatInfo
   .on(restrictFx.doneData, updateChat("isRestricted", true))
   .on(unRestrictFx.doneData, updateChat("isRestricted", false))
 
-export const $banClientLoading = some(v => v, [
-  restrictFx.pending,
-  unRestrictFx.pending,
-  banFx.pending,
-  unBanFx.pending,
-])
+export const $banClientLoading = some({
+  predicate: v => v,
+  stores: [restrictFx.pending, unRestrictFx.pending, banFx.pending, unBanFx.pending],
+})

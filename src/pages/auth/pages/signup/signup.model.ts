@@ -6,7 +6,7 @@ import { attach, createEffect, createEvent, createStore, forward, merge, sample,
 
 export const REGISTER_SAVE_KEY = "__register-data__"
 
-type ClientData = {
+export type ClientData = {
   firstName: string
   lastName: string
   birthDate: string | null
@@ -14,15 +14,16 @@ type ClientData = {
   avatar: string | null
 }
 
-type CoachData = {
+export type CoachData = {
   workExperience: string
   education: string
   description: string
   phone: string
+  photos: string[]
   videoInterview: string
 }
 
-type UserData = {
+export type UserData = {
   type: "coach" | "client"
   clientData: ClientData
   categories: number[]
@@ -43,7 +44,7 @@ export const userDataReset = createEvent()
 export const $userData = createStore<UserData>({
   type: "client",
   clientData: { avatar: null, birthDate: null, lastName: "", sex: "", firstName: "" },
-  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "" },
+  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
   categories: [],
 })
   .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))

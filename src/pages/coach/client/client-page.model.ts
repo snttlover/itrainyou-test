@@ -24,7 +24,10 @@ export const $note = restore(
 export const setIsEdit = createEvent<boolean>()
 export const $isNoteEdit = createStore(false).on(setIsEdit, (_, payload) => payload)
 
-export const $isLoading = some(true, [loadClientFx.pending, loadClientNoteFx.pending, updateClientNoteFx.pending])
+export const $isLoading = some({
+  predicate: true,
+  stores: [loadClientFx.pending, loadClientNoteFx.pending, updateClientNoteFx.pending],
+})
 
 forward({
   from: clientPageGate.open,

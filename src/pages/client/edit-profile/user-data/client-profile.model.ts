@@ -6,7 +6,7 @@ import { createEffectorField } from "@/lib/generators/efffector"
 import { trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, restore, sample, Event } from "effector-root"
 import { every, spread } from "patronum"
 import { updateMyClient } from "@/lib/api/client/update"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
@@ -65,8 +65,8 @@ export const $clientProfileForm = combine({
 
 export const userProfileGate = createGate()
 
-spread(
-  sample({
+spread({
+  source: sample({
     clock: userProfileGate.open,
     source: $userData,
     fn: data => ({
@@ -76,8 +76,8 @@ spread(
       sex: data.client!.sex,
       avatar: data.client!.avatar,
     }),
-  }),
-  {
+  }) as Event<any>,
+  targets: {
     firstName: nameChanged,
     lastName: lastNameChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
@@ -85,8 +85,8 @@ spread(
     ),
     sex: sexChanged,
     avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
-  }
-)
+  },
+})
 
 export const $clientProfileFormErrors = combine({
   name: $nameError,
@@ -95,13 +95,10 @@ export const $clientProfileFormErrors = combine({
   sex: $sexError,
 })
 
-export const $isClientProfileFormValid = every(true, [
-  $isNameCorrect,
-  $isLastNameCorrect,
-  $isBirthdayCorrect,
-  $isSexCorrect,
-  $isImageCorrect,
-])
+export const $isClientProfileFormValid = every({
+  predicate: true,
+  stores: [$isNameCorrect, $isLastNameCorrect, $isBirthdayCorrect, $isSexCorrect, $isImageCorrect],
+})
 
 export const saveClientUserData = createEvent()
 const saveClientUserDataFx = createEffect({
