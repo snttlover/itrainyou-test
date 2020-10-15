@@ -432,6 +432,10 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const formattedDate = date(headerDate).format("DD MMMM")
   const currentDateEqual = date(currentDate as Date).format(equalDateFormat)
 
+  if (!props.coach.prices[activeTab] && tabs.length) {
+    changeActiveTab(tabs[0].key)
+  }
+
   const times = sessions
     .filter(session => {
       return date(session.startDatetime).format(equalDateFormat) === currentDateEqual
