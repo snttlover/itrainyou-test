@@ -1,5 +1,4 @@
 import { changeDashboardType, DashboardType } from "@/feature/dashboard/dashboard"
-import { loadUserData } from "@/feature/user/user.model"
 import { changeToken, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import { Effect, Event, root, Store } from "effector-root"
 import { hydrate } from "effector/fork"
@@ -29,5 +28,4 @@ export const restoreState = async () => {
 
   await runInScope(changeToken, Cookies.get(TOKEN_COOKIE_KEY))
   await runInScope(changeDashboardType, Cookies.get("dashboard") as DashboardType)
-  await runInScope(loadUserData)
 }
