@@ -11,25 +11,37 @@ import { Router } from "react-router-dom"
 import { history } from "@/feature/navigation"
 import { Application } from "./application"
 
+const token = Cookies.get(TOKEN_COOKIE_KEY)
 runInScope(changeToken, Cookies.get(TOKEN_COOKIE_KEY))
 runInScope(changeDashboardType, Cookies.get("dashboard") as DashboardType)
 
-runInScope(loadUserData)
+if (token) {
+  runInScope(loadUserData)
 
-const unwatch = getMyUserFx.finally.watch(() => {
-  unwatch()
+  const unwatch = getMyUserFx.finally.watch(() => {
+    unwatch()
 
-  restoreState().then(() => {
-    ReactDOM.hydrate(
-      <Router history={history!}>
-        <Application />
-      </Router>,
-      document.getElementById("root")
-    )
+    restoreState().then(() => {
+      ReactDOM.hydrate(
+        <Router history={history!}>
+          <Application />
+        </Router>,
+        document.getElementById("root")
+      )
 
-    runInScope(clientStarted)
+      runInScope(clientStarted)
+    })
   })
-})
+} else {
+  ReactDOM.render(
+    <Router history={history!}>
+      <Application />
+    </Router>,
+    document.getElementById("root")
+  )
+
+  runInScope(clientStarted)
+}
 
 if (module.hot) {
   module.hot.accept()
