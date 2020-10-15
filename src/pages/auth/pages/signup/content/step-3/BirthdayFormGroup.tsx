@@ -57,7 +57,7 @@ const sexItems: { label: string; value: "M" | "F" }[] = [
   },
 ]
 
-export const BirthdayFormGroup = () => {
+export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value: boolean) => void }) => {
   const userType = useStore($userData).type
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -68,8 +68,11 @@ export const BirthdayFormGroup = () => {
   const [day, setDay] = useState("")
   const [month, setMonth] = useState(-1)
   const [year, setYear] = useState("")
+  const [birthdayError, setBirthdayError] = useState<string | null>(null)
+  const [isDirty, setIsDirty] = useState(false)
 
   useEffect(() => {
+    if (!isDirty) return
     const dateStr = `${year.padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.padStart(2, "0")}`
     const date = dayjs(
       `${year.padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.padStart(2, "0")}`,
@@ -79,20 +82,48 @@ export const BirthdayFormGroup = () => {
 
     if (date.format("YYYY-MM-DD") === dateStr && !date.isAfter(dayjs(), "day")) {
       _birthdayChanged(date)
-    } else _birthdayChanged(null)
-  }, [day, month, year])
+      setBirthdayError(null)
+      setNextDisabled(false)
+    } else {
+      _birthdayChanged(null)
+      setBirthdayError("Неверная дата")
+      setNextDisabled(true)
+    }
+  }, [day, month, year, isDirty])
 
   return (
     <React.Fragment>
       <FormGroup>
-        <StyledFormItem label='Дата рождения' required={userType === "coach"}>
-          <Input placeholder='День' value={day} onChange={setDay} />
+        <StyledFormItem label='Дата рождения' required={userType === "coach"} error={birthdayError}>
+          <Input
+            placeholder='День'
+            value={day}
+            onChange={value => {
+              setDay(value)
+              setIsDirty(true)
+            }}
+          />
         </StyledFormItem>
-        <StyledFormItem label=''>
-          <SelectInput placeholder='Месяц' value={month} onChange={setMonth} options={months} />
+        <StyledFormItem label='' error={birthdayError && ""}>
+          <SelectInput
+            placeholder='Месяц'
+            value={month}
+            onChange={value => {
+              setMonth(value)
+              setIsDirty(true)
+            }}
+            options={months}
+          />
         </StyledFormItem>
-        <StyledFormItem label=''>
-          <Input placeholder='Год' value={year} onChange={setYear} />
+        <StyledFormItem label='' error={birthdayError && ""}>
+          <Input
+            placeholder='Год'
+            value={year}
+            onChange={value => {
+              setYear(value)
+              setIsDirty(true)
+            }}
+          />
         </StyledFormItem>
       </FormGroup>
       <FormGroup>

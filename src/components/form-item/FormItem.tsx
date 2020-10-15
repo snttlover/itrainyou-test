@@ -49,9 +49,9 @@ export const FormItem = styled(({ label, children, error, required, ...props }: 
       </Label>
       {React.Children.map(children, child => {
         if (!React.isValidElement(child)) return null
-        return React.cloneElement(child, { error: !!error })
+        return React.cloneElement(child, { error: typeof error === "string" })
       })}
-      {error && <Error>{error}</Error>}
+      {typeof error === "string" && <Error>{error}</Error>}
     </StyledFormItem>
   )
 })``
