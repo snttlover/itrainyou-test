@@ -125,7 +125,7 @@ const userDataLoaded = sample({
 })
 
 spread({
-  source: userDataLoaded.map(data => data.coach) as Event<any>,
+  source: (userDataLoaded.map(data => data.coach) as unknown) as Event<any>,
   targets: {
     description: descriptionChanged,
     education: educationChanged,

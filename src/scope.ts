@@ -2,7 +2,6 @@ import { changeDashboardType, DashboardType } from "@/feature/dashboard/dashboar
 import { loadUserData } from "@/feature/user/user.model"
 import { changeToken, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import { Effect, Event, root, Store } from "effector-root"
-import { createGate as createEffectorGate } from "effector-react"
 import { hydrate } from "effector/fork"
 import Cookies from "js-cookie"
 
@@ -19,7 +18,10 @@ export const createGate = <T>(defaultState?: T) => {
     domain: root,
   }
   if (!defaultState) delete params.defaultState
-  return createEffectorGate<T>(params)
+  const effectorCreateGate = require("effector-react").createGate
+
+  // @ts-ignore
+  return effectorCreateGate<T>(params)
 }
 
 export const restoreState = async () => {

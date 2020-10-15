@@ -64,7 +64,7 @@ export const $step3Form = combine({
 export const userProfileGate = createGate()
 
 spread({
-  source: sample({
+  source: (sample({
     clock: userProfileGate.open,
     source: $userData,
     fn: data => ({
@@ -74,7 +74,7 @@ spread({
       sex: data.coach!.sex,
       avatar: data.coach!.avatar,
     }),
-  }) as Event<any>,
+  }) as unknown) as Event<any>,
   targets: {
     firstName: nameChanged,
     lastName: lastNameChanged,

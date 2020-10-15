@@ -12,8 +12,14 @@ module.exports = {
       },
     },
   ],
-  modify(baseConfig) {
-    const config = Object.assign({}, baseConfig)
+  modifyBabelOptions(options, { target }) {
+    if (target === "web") options.plugins.push("effector/babel-plugin")
+    if (target === "node") options.plugins.push(["effector/babel-plugin", { reactSsr: true }])
+
+    return options
+  },
+  modifyWebpackConfig({ webpackConfig }) {
+    const config = Object.assign({}, webpackConfig)
 
     config.module.rules[2].exclude.push(path.resolve("src/components/icon/icons"))
     config.module.rules.push({
