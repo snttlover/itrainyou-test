@@ -21,7 +21,7 @@ import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModa
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 
 const StyledSteps = styled(Steps)`
@@ -148,6 +148,7 @@ export const Step3 = () => {
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
+  const [nextDisabled, setNextDisabled] = useState(false)
 
   useEffect(() => {
     mounted()
@@ -180,9 +181,9 @@ export const Step3 = () => {
           <FormItem label='Фамилия' error={errors.lastName} required>
             <Input value={values.lastName} onChange={_lastNameChanged} />
           </FormItem>
-          <BirthdayFormGroup />
+          <BirthdayFormGroup setNextDisabled={setNextDisabled} />
 
-          <NextButton onClick={() => history!.push("/auth/signup/4")} disabled={!isFormValid} />
+          <NextButton onClick={() => history!.push("/auth/signup/4")} disabled={!isFormValid || nextDisabled} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}

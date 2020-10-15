@@ -8,7 +8,7 @@ export const FormGroup = styled.div`
   color: #fff;
 
   ${MediaRange.greaterThan("mobile")`
-    align-items: flex-end;
+    align-items: flex-start;
     flex-direction: row;
     color: #424242;
     

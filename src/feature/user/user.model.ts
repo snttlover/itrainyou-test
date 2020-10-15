@@ -11,6 +11,7 @@ import Cookies from "js-cookie"
 export type UserData = {
   coach: CoachSelfData | null
   client: ClientSelfData | null
+  timeZone?: string
 }
 
 export const loggedIn = createEvent<{ token: string }>()
@@ -33,7 +34,7 @@ export const $coachAccess = $userData.map(userData => ({
 
 export const $isLoggedIn = $token.map(token => !!token)
 
-export const $timeZone = $userData.map(data => data.client?.user.timeZone || data.coach?.user.timeZone)
+export const $timeZone = $userData.map(data => data.client?.user.timeZone || data.coach?.user.timeZone || data.timeZone)
 
 forward({
   from: loggedIn.map(({ token }) => token),
