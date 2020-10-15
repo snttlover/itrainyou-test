@@ -7,7 +7,7 @@ import { $clientData } from "@/pages/coach/client/client-page.model"
 import { routeNames } from "@/pages/route-names"
 import { Link } from "react-router-dom"
 import { Block } from "./common/Block"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 

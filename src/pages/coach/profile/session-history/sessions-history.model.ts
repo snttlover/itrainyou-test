@@ -1,5 +1,6 @@
 import { getMyTransactionsCoach, SessionTransaction } from "@/lib/api/transactions/client/list-transaction"
 import { date } from "@/lib/formatting/date"
+import WalletTransactionImage from "@/pages/coach/wallet/history/images/wallet.svg"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 
@@ -49,12 +50,33 @@ sample({
 export const $profilePageSessions = $ProfileSessions.map(transactions =>
   transactions.map(transaction => {
     const session = transaction.session
+
+    let price = transaction.amount
+
+    if (["WITHDRAW", "TRANSFER_TO_CLIENT_WALLET", "SESSION_CANCELLATION"].includes(transaction.type)) price = `${price}`
+    else price = `+${price}`
+
+    let name = `Пополнение кошелька`
+
+    if (transaction.enrolledClient) {
+      name = `${transaction.enrolledClient.firstName} ${transaction.enrolledClient.lastName}`
+    } else if (transaction.type === "SESSION_CANCELLATION") {
+      name = `Сессия отменена`
+    } else if (transaction.session?.client) {
+      name = `${transaction.session.client.firstName} ${transaction.session.client.lastName}`
+    }
+
+    let avatar = null
+    if (transaction.enrolledClient?.avatar) {
+      avatar = transaction.enrolledClient?.avatar
+    } else if (transaction.session?.client?.avatar) {
+      avatar = transaction.session?.client.avatar
+    }
+
     return {
-      avatar: session.coach.avatar,
-      name: `${session.coach.firstName} ${session.coach.lastName}`,
-      price: `${+session.clientPrice > 0 && transaction.type !== `SESSION_CANCELLATION` ? `+` : `-`} ${
-        session.clientPrice
-      }`,
+      avatar: avatar,
+      name: name,
+      price: price,
       time: date(session.startDatetime).format(`HH:mm`),
       date: date(session.startDatetime).format(`DD.MM.YYYY`),
       isCanceled: transaction.type === `SESSION_CANCELLATION`,

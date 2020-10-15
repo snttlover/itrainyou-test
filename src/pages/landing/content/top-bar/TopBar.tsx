@@ -28,6 +28,14 @@ const Container = styled.div`
   background: #dbdee0;
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 20px;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 0;
+  }
 `
 
 const StyledLogo = styled(Logo)`

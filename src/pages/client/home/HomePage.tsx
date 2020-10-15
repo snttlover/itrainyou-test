@@ -5,7 +5,7 @@ import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { Loader, Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { SessionCard } from "@/pages/client/home/SessionCard"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
   $activeSessions,

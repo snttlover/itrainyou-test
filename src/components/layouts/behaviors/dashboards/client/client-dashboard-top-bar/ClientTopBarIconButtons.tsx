@@ -6,7 +6,7 @@ import { Burger } from "@/components/layouts/behaviors/dashboards/common/menu/co
 import { Avatar } from "@/components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
 import { CoachTooltip } from "@/components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { $userData } from "@/feature/user/user.model"
 import { MobileMenu, MobileSearchButton } from "@/pages/landing/content/top-bar/mobile-menu/MobileMenu"
 import * as React from "react"

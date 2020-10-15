@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useEvent, useList } from "effector-react/ssr"
+import { useEvent, useList } from "effector-react"
 import { $toasts, toasts, ToastType } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { Icon } from "@/components/icon/Icon"
 import React, { useEffect } from "react"
@@ -17,7 +17,7 @@ const Container = styled.div`
 const Toast = styled.div<{ type: ToastType }>`
   margin-top: 10px;
   padding: 12px;
-  background: ${({ type }) => (type === `info` ? `#4858cc` : `#FF6000`)};
+  background: ${({ type, theme }) => (type === `info` ? theme.colors.primary : `#FF6000`)};
   border-radius: 2px;
   color: #fff;
   display: flex;

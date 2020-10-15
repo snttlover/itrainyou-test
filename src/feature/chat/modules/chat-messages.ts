@@ -1,12 +1,11 @@
 import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
-import { createEffect, createEvent, createStore, guard, sample } from "effector-root"
-import { createCursorPagination, CursorPaginationFetchMethod } from "@/feature/pagination/modules/cursor-pagination"
+import { createEvent, createStore, guard  } from "effector-root"
+import { createCursorPagination } from "@/feature/pagination/modules/cursor-pagination"
 import {
-  Chat,
   ChatMessage,
   ConflictStatus,
   MessageSessionRequestStatuses,
-  SupportTicketType
+  SupportTicketType,
 } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
@@ -18,7 +17,11 @@ import { ChatId } from "@/lib/api/chats/coach/get-messages"
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
   socket: ReturnType<typeof createChatsSocket>
-  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
+  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
+  dontRead?: boolean
+
+  isSupport?: true,
+  supportIsMe?: true
 }
 
 export type ChatSupportMessage = {
@@ -41,19 +44,22 @@ export type ChatSystemMessage = {
   date: string
 }
 
-export type ChatTextMessage = {
+export type PersonalChatMessage = {
   type: "TEXT"
   id: number
   isMine: boolean
   text: string
+  image: string
   time: string
+  user: CoachUser | Client | null
+  imageIndex: number
 }
 
 const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
   return self.indexOf(value) === index
 }
 
-export type ChatMessagesTypes = ChatSystemMessage | ChatTextMessage | ChatSupportMessage
+export type ChatMessagesTypes = ChatSystemMessage | PersonalChatMessage | ChatSupportMessage
 
 export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) => {
   const changeId = createEvent<ChatId>()
@@ -85,29 +91,34 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       .map(id => messages.find(message => message.sessionRequest?.id === id)?.sessionRequest as SessionRequest)
 
     const getReq = (id: number) => reqs.find(req => req.id === id) as SessionRequest
+    let imageIndex = messages.filter(message => !!message.image).length - 1
 
     return messages
       .slice()
       .reverse()
       .map(
         (message): ChatMessagesTypes => {
-          const isMine =
+          let isMine =
             (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
 
-          if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
-            let user: CoachUser | Client | null = null
+          if (config.supportIsMe) {
+            isMine = !!message.senderSupport
+          }
 
-            if (message.type === 'SUPPORT') {
-              const user = message?.supportTicket?.support
-              return {
-                type: "SUPPORT",
-                id: message.id,
-                userName: `${user?.firstName} ${user?.lastName}`,
-                userAvatar: user?.avatar || null,
-                ticketStatus: message.systemTicketType
-              }
+          let user: CoachUser | Client | null = null
+
+          if (message.type === "SUPPORT") {
+            const user = message?.supportTicket?.support
+            return {
+              type: "SUPPORT",
+              id: message.id,
+              userName: `${user?.firstName} ${user?.lastName}`,
+              userAvatar: user?.avatar || null,
+              ticketStatus: message.systemTicketType
             }
+          }
 
+          if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
             if (config.type === `coach`) {
               user = message.sessionRequest?.initiatorClient || message.sessionRequest?.receiverClient || null
             } else {
@@ -117,7 +128,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 message.sessionRequest.receiverCoach ||
                 null
             }
-
             return {
               type: message.type as "SYSTEM",
               id: message.id,
@@ -131,12 +141,17 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             }
           }
 
+          user = message.senderCoach || message.senderClient || message.senderSupport
+
           return {
             type: `TEXT`,
             id: message.id,
             isMine,
             text: message.text,
+            image: message.image,
             time: date(message.creationDatetime).format(`HH:mm`),
+            imageIndex: message.image ? imageIndex-- : imageIndex,
+            user
           }
         }
       )
@@ -146,18 +161,20 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     messages: [message.data.id],
   }))
 
-  guard({
-    source: config.socket.events.onMessage,
-    filter: message => {
-      return (
-        (`SYSTEM` === message.data.type ||
-          (config.type === `client` && !!message.data.senderCoach) ||
-          (config.type === `coach` && !!message.data.senderClient)) &&
-        chatId === message.data.chat
-      )
-    },
-    target: readMessage,
-  })
+  if (!config.dontRead) {
+    guard({
+      source: config.socket.events.onMessage,
+      filter: message => {
+        return (
+          (`SYSTEM` === message.data.type ||
+            (config.type === `client` && !!message.data.senderCoach) ||
+            (config.type === `coach` && !!message.data.senderClient)) &&
+          chatId === message.data.chat
+        )
+      },
+      target: readMessage,
+    })
+  }
 
   guard({
     source: config.socket.events.onMessage,

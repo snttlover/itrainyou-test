@@ -1,4 +1,4 @@
-import { useEvent, useList } from "effector-react/ssr"
+import { useEvent, useList } from "effector-react"
 import {
   $categoriesList,
   toggleCategorySelection,

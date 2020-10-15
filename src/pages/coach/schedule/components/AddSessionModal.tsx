@@ -16,7 +16,7 @@ import {
   durationChanged,
   startDatetimeChanged,
 } from "@/pages/coach/schedule/models/add-session.model"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react"
 import React, { useRef } from "react"
 import styled from "styled-components"
 

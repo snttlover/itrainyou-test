@@ -1,6 +1,4 @@
-import { routeNames } from "@/pages/route-names"
 import * as React from "react"
-import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
 import { ExpansionPanel } from "@/components/expansion-panel/ExpansionPanel"
@@ -9,47 +7,53 @@ import questions from "./questions"
 import { Button } from "@/components/button/normal/Button"
 
 const Title = styled.h3`
+  font-family: Roboto Slab;
   font-style: normal;
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
-  margin-bottom: 12px;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 26px;
   text-align: center;
+  color: #424242;
   @media screen and (max-width: 768px) {
-    font-size: 28px;
-    margin-left: 20px;
+    font-size: 24px;
+    line-height: 26px;
   }
-  @media screen and (max-width: 480px) {
-    font-size: 20px;
+  @media screen and (max-width: 565px) {
+    font-size: 16px;
     line-height: 26px;
     margin-left: 0;
   }
 `
 
 const SubTitle = styled.h3`
-  font-weight: 600;
+  margin-top: 12px;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
   font-size: 20px;
   line-height: 26px;
-  margin-bottom: 36px;
   text-align: center;
+  color: #4858cc;
   @media screen and (max-width: 768px) {
-    font-size: 16px;
-    line-height: 22px;
-    margin-bottom: 24px;
-    margin-left: 20px;
+    font-size: 20px;
+    line-height: 26px;
   }
-  @media screen and (max-width: 480px) {
-    font-size: 16px;
-    line-height: 22px;
+  @media screen and (max-width: 565px) {
+    font-size: 14px;
+    line-height: 18px;
     margin-left: 0;
   }
 `
 
 const Content = styled.div`
+  margin-top: 44px;
   display: flex;
   align-items: flex-start;
   @media screen and (max-width: 768px) {
     flex-direction: column;
+    margin: 32px auto 0;
+    max-width: 640px;
   }
 `
 
@@ -61,9 +65,8 @@ const QuestionsList = styled.div`
 `
 
 const PeopleImage = styled.img.attrs({ src: peopleImage })`
-  width: 360px;
+  width: 296px;
   margin-left: 40px;
-  margin-top: 140px;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -77,13 +80,15 @@ const StyledExpansionPanel = styled(ExpansionPanel)`
 `
 
 const StyledContainer = styled(LandingPageContainer)`
+  margin-top: 85px;
   padding-bottom: 40px;
   @media screen and (max-width: 768px) {
-    padding: 0 7px;
-    padding-bottom: 68px;
+    padding: 0 7px 68px;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 565px) {
     padding-bottom: 18px;
+    padding-top: 31px;
+    margin-top: -31px;
   }
 `
 
@@ -99,22 +104,25 @@ const StyledRegistrationButton = styled(Button)`
   }
 `
 
+const BackgroundColor = styled.div`
+  background-color: #dbdee0;
+`
+
 export const FAQ = () => (
-  <StyledContainer>
-    <Title>У вас уже возникло много вопросов</Title>
-    <SubTitle>Даем ответы на 7 самых популярных</SubTitle>
-    <Content>
-      <QuestionsList>
-        {questions.map((faq, i) => (
-          <StyledExpansionPanel key={i} title={faq.question}>
-            {faq.answer}
-          </StyledExpansionPanel>
-        ))}
-      </QuestionsList>
-      <PeopleImage />
-      <Link to={routeNames.signup("1")}>
-        <StyledRegistrationButton>Зарегистрироваться</StyledRegistrationButton>
-      </Link>
-    </Content>
-  </StyledContainer>
+  <BackgroundColor>
+    <StyledContainer>
+      <Title>Новая сфера требует развернутых ответов</Title>
+      <SubTitle>Даем ответы на самые популярные</SubTitle>
+      <Content>
+        <QuestionsList>
+          {questions.map((faq, i) => (
+            <StyledExpansionPanel key={i} title={faq.question}>
+              {faq.answer}
+            </StyledExpansionPanel>
+          ))}
+        </QuestionsList>
+        <PeopleImage />
+      </Content>
+    </StyledContainer>
+  </BackgroundColor>
 )

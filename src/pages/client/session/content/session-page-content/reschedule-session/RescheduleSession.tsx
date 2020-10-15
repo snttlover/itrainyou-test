@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { RescheduleSessionCard } from "@/pages/client/session/content/session-page-content/reschedule-session/dialog/RescheduleSessionCard"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import {
   $rescheduleVisibility,
   changeRescheduleVisibility

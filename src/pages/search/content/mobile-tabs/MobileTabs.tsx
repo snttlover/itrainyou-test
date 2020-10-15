@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled, { css } from "styled-components"
 import { changeMobileFiltersVisibility } from "./mobile-tabs.model"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { $searchPageQuery, addSearchPageQuery } from "@/pages/search/coaches-search.model"
 import { CoachSortingType, GetCoachesParamsTypes } from "@/lib/api/coach"
 import { SortingContainer, SortingPicker } from "@/pages/search/content/list/content/sorting/SortingPicker"

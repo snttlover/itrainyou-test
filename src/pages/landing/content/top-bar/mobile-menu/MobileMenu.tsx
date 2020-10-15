@@ -1,17 +1,22 @@
 import * as React from "react"
 import styled from "styled-components"
-import {Icon} from "@/components/icon/Icon"
+import { Icon } from "@/components/icon/Icon"
 import { useState } from "react"
 import { Search } from "@/pages/landing/content/top-bar/search/Search"
-import {Input} from "@/components/input/Input"
+import { Input } from "@/components/input/Input"
 import { Categories, StyledCategoryCheckbox } from "@/pages/landing/content/top-bar/categories-picker/Categories"
-import {Button} from "@/components/button/normal/Button"
+import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
+import { useEvent, useStore } from "effector-react"
+import {
+  $mobileMenuVisibility,
+  changeMobileMenuVisibility
+} from "@/pages/landing/content/top-bar/mobile-menu/mobile-menu.model"
 
 export const MobileSearchButton = styled(Icon).attrs({ name: `search` })`
   width: 36px;
   height: 36px;
-  fill: #4858CC;
+  fill: #4858cc;
   display: none;
   margin-left: 25px;
   @media screen and (max-width: 768px) {
@@ -27,7 +32,7 @@ const Container = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-  background: #ECEFF1;
+  background: #eceff1;
   z-index: 100;
   left: 0;
   top: 0;
@@ -57,7 +62,7 @@ const StyledSearch = styled(Search)`
 const tabletCloseIconSize = `36px`
 const mobileCloseIconSize = `24px`
 const Close = styled(Icon).attrs({ name: `close` })`
-  fill: #4858CC;
+  fill: #4858cc;
   width: ${tabletCloseIconSize};
   height: ${tabletCloseIconSize};
   align-self: flex-end;
@@ -71,7 +76,7 @@ const CategoriesWrapper = styled.div`
   margin-top: 64px;
   ${StyledCategoryCheckbox} {
     margin-top: 12px;
-    background: #fff;  
+    background: #fff;
     padding: 12px 16px;
     border-radius: 2px;
   }
@@ -89,7 +94,7 @@ const ItemsWrapper = styled.div`
 `
 
 const SearchButtonWrapper = styled.div`
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 54px;
@@ -112,7 +117,8 @@ type MobileMenuTypes = {
 }
 
 export const MobileMenu = (props: MobileMenuTypes) => {
-  const [menuVisibility, changeMenuVisibility] = useState(false)
+  const menuVisibility = useStore($mobileMenuVisibility)
+  const changeMenuVisibility = useEvent(changeMobileMenuVisibility)
 
   const Menu = (
     <Container>
@@ -124,7 +130,7 @@ export const MobileMenu = (props: MobileMenuTypes) => {
           <Categories />
         </CategoriesWrapper>
         <SearchButtonWrapper>
-          <Button onClick={() => changeMenuVisibility(false)} >Поиск</Button>
+          <Button onClick={() => changeMenuVisibility(false)}>Поиск</Button>
         </SearchButtonWrapper>
       </ItemsWrapper>
     </Container>

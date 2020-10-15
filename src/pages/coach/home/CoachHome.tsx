@@ -10,7 +10,7 @@ import { AwaitingApproval } from "@/pages/coach/home/awaiting-approval/AwaitingA
 import { $coachHomeState } from "@/pages/coach/home/coach-home.model"
 import { CoachGetAccess } from "@/pages/coach/home/get-access/CoachGetAccess"
 import { CoachSessionsPage } from "@/pages/coach/home/sessions/CoachSessionsPage"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 

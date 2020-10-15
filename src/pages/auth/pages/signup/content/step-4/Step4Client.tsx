@@ -4,7 +4,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { Step4ClientLayout } from "@/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"
 import { $userData, registerUserFx, categoriesChanged, userRegistered } from "@/pages/auth/pages/signup/signup.model"
 import { CategoryCard } from "./client/CategoryCard"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 

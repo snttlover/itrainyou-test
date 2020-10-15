@@ -12,7 +12,7 @@ const editDataFx = createEffect({
   handler: updateMyCoach,
 })
 
-export const $canSendForm = every(true, [$isStep3FormValid, $formValid])
+export const $canSendForm = every({ predicate: true, stores: [$isStep3FormValid, $formValid] })
 
 sample({
   clock: guard({ source: saveCoachData, filter: $canSendForm }),

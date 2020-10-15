@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { ChatMessage } from "@/pages/client/chats/chat/content/client-chat/content/ChatMessage"
 import { MediaRange } from "@/lib/responsive/media"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
-import { useList, useStore } from "effector-react/ssr"
+import { useList, useStore } from "effector-react"
 import { createReverseInfinityScroll } from "@/feature/pagination/view/ReverseInfinityScroll"
 import { ChatMessageSwitcher } from "@/feature/chat/view/content/messages/content/ChatMessageSwitcher"
 
@@ -30,7 +29,17 @@ const MessagesWrapper = styled.div`
 export const createChatMessages = ($chatMessagesModule: ReturnType<typeof createChatMessagesModule>) => {
   const InfScroll = createReverseInfinityScroll($chatMessagesModule.pagination)
 
-  return ({ isSystem }: { isSystem?: boolean }) => {
+  return ({
+    isSystem,
+    showUser,
+    commonSystemMessages,
+    imageClick
+  }: {
+    isSystem?: boolean
+    showUser?: boolean
+    commonSystemMessages?: boolean
+    imageClick?: (index: number) => void
+  }) => {
     const container = useRef<HTMLDivElement>(null)
     const messageWrapper = useRef<HTMLDivElement>(null)
     const [lastMessageId, changeLastMessage] = useState<null | number>(null)
@@ -61,12 +70,30 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
       return () => {}
     }, [messages])
 
+    useEffect(() => {
+      const el = container.current
+      if (el) {
+        const images = el.querySelectorAll(".message-image")
+        images.forEach(image => {
+          image.addEventListener("load", () => {
+            el.scrollTop += image.clientHeight
+          })
+        })
+      }
+    }, [])
+
     return (
       <Container ref={container} id='messages'>
         <InfScroll scrollableTarget='messages'>
           <MessagesWrapper ref={messageWrapper}>
             {useList($chatMessagesModule.$messages, message => (
-              <ChatMessageSwitcher message={message} isSystemChat={!!isSystem} />
+              <ChatMessageSwitcher
+                message={message}
+                isSystemChat={!!isSystem}
+                showUser={showUser}
+                commonSystemMessages={commonSystemMessages}
+                imageClick={imageClick}
+              />
             ))}
           </MessagesWrapper>
         </InfScroll>

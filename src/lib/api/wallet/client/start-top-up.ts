@@ -5,6 +5,7 @@ import { post } from "@/lib/network/network"
 type StartTopUpParams = {
   amount: number
   saveCard?: boolean
+  returnUrl?: string
 }
 
 type StartTopUpResponse = {

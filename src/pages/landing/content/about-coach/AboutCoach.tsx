@@ -1,160 +1,146 @@
 import * as React from "react"
-import { LandingPageContainer } from "../../common/LandingPageContainer"
 import styled from "styled-components"
+import whoNeedCoachBg from "../../assets/who-need-coach.svg"
+import whoNeedCoachTabletBg from "../../assets/who-need-coach-tablet.svg"
+import mobile from "../../assets/about-coach-mobile-bg.svg"
 
-const StyledContainer = styled(LandingPageContainer)`
-  margin-top: 70px;
-  margin-bottom: 50px;
-  display: flex;
-  justify-content: space-between;
-  @media screen and (max-width: 768px) {
-    margin: 52px 19px 64px 44px;
-  }
+export const AboutCoach = () => (
+  <>
+    <DesktopTabletBackground />
+    <MobileList>
+      <Ballons />
+      <Title>
+        Кому
+        <br />
+        нужен коуч
+      </Title>
+      <Items>
+        <Item>
+          <ItemIndex color='#FF4A00'>1</ItemIndex>
+          <ItemText>Мир меняется, а я не знаю, за что хвататься, чтобы завтра было лучше</ItemText>
+        </Item>
+        <Item>
+          <ItemIndex color='#0AA7FF'>2</ItemIndex>
+          <ItemText>У меня проблемы на работе или ее вообще нет, и я хочу ее найти</ItemText>
+        </Item>
+        <Item>
+          <ItemIndex color='#4858CC'>3</ItemIndex>
+          <ItemText>Я хочу быстрых и стоящих результатов</ItemText>
+        </Item>
+        <Item>
+          <ItemIndex color='#4858CC'>4</ItemIndex>
+          <ItemText>Я работаю над сложным проектом, а достижения все равно не приносят удовлетворения</ItemText>
+        </Item>
+        <Item>
+          <ItemIndex color='#4858CC'>5</ItemIndex>
+          <ItemText>Я не хочу долго разбирать проблемы с психологом, но решение необходимо</ItemText>
+        </Item>
+        <Item>
+          <ItemIndex color='#0AA7FF'>6</ItemIndex>
+          <ItemText>У меня много желаний, но я не знаю, как воплотить их в жизнь</ItemText>
+        </Item>
+        <Item>
+          <ItemIndex color='#4858CC'>7</ItemIndex>
+          <ItemText>Все дается мне сложно, я очень устаю</ItemText>
+        </Item>
+        <Item>
+          <ItemIndex color='#FF4A00'>8</ItemIndex>
+          <ItemText>Я не могу найти свое призвание</ItemText>
+        </Item>
+        <Item>
+          <ItemIndex color='#7C3AA6'>9</ItemIndex>
+          <ItemText>Я мечтаю, что мои дети будут успешными и счастливыми</ItemText>
+        </Item>
+      </Items>
+    </MobileList>
+  </>
+)
 
-  @media screen and (max-width: 480px) {
-    flex-direction: column;
-    margin-left: 12px;
-    margin-right: 12px;
-  }
-`
-
-const MobileBr = styled.div`
-  display: none;
-
-  @media screen and (max-width: 480px) {
-    display: block;
-  }
-`
-
-const TextColumn = styled.div`
-  flex: 1;
-  max-width: 460px;
-  @media screen and (max-width: 768px) {
-    margin-right: 24px;
-  }
-  @media screen and (max-width: 480px) {
-    margin-right: 0;
-  }
-`
-
-const Title = styled.h3`
-  font-weight: 600;
-  font-size: 28px;
-  line-height: 44px;
-  color: #544274;
-  @media screen and (max-width: 768px) {
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 26px;
-  }
-`
-
-const Subtitle = styled.h5`
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 26px;
-  padding-top: 8px;
-  margin-bottom: 32px;
-  @media screen and (max-width: 768px) {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 22px;
-  }
-`
-
-const Paragraph = styled.div`
-  font-size: 16px;
-  line-height: 22px;
-  margin-bottom: 8px;
-  b {
-    color: #544274;
-  }
-  @media screen and (max-width: 768px) {
-    font-size: 14px;
-    line-height: 18px;
-  }
-  @media screen and (max-width: 480px) {
-    font-size: 12px;
-    line-height: 16px;
-  }
-`
-
-const VideoColumn = styled.div`
-  display: flex;
-  align-items: center;
-  padding-right: 20px;
-  padding-left: 20px;
-
-  @media screen and (max-width: 768px) {
-    align-items: flex-start;
-    padding-left: 0;
-  }
-  @media screen and (max-width: 480px) {
-    display: flex;
-    justify-content: center;
-  }
-`
-
-const Video = styled.iframe.attrs({
-  src: `https://www.youtube.com/embed/ilu61IUs0IA`,
-  allow: `accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture`,
-})`
-  width: 100%;
-  height: 100%;
-`
-
-const VideoWrapper = styled.div`
+const MobileList = styled.div`
   position: relative;
-  width: 427px;
-  height: 239px;
-  &:after {
-    position: absolute;
-    content: "";
-    z-index: -1;
-    right: -20px;
-    top: -20px;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(211.29deg, #a3cff3 14.5%, rgba(255, 255, 255, 0) 85.5%), #9f8dc1;
-  }
-  @media screen and (max-width: 768px) {
-    width: 269.38px;
-    height: 148.61px;
-    margin-top: 70px;
-  }
-  @media screen and (max-width: 480px) {
-    width: 269px;
-    height: 148.61px;
-  }
-`
+  padding: 0 12px;
 
-const HideTabletParagraph = styled(Paragraph)`
-  @media screen and (max-width: 768px) {
+  @media screen and (min-width: 481px) {
     display: none;
   }
 `
 
-export const AboutCoach = () => (
-  <StyledContainer>
-    <TextColumn>
-      <Title>Коуч — необходимость нашего времени</Title>
-      <Subtitle>Сила у тех, кто понял это раньше остальных</Subtitle>
-      <Paragraph>
-        <b>Коуч</b> — это наставник и тренер в одном лице.
-        <MobileBr /> Он помогает человеку решить проблему, поставить жизненные задачи, найти мотивацию на успех.
-      </Paragraph>
-      <HideTabletParagraph>
-        Коучи комбинируют методики педагогики, клинической, спортивной и социальной психологии, чтобы подобрать подход к
-        каждому клиенту.
-      </HideTabletParagraph>
-      <HideTabletParagraph>
-        Благодаря наставничеству люди достигают личных и профессиональных целей, которые ранее считали недоступными.
-      </HideTabletParagraph>
-    </TextColumn>
-    <VideoColumn>
-      <VideoWrapper>
-        <Video frameBorder={0} />
-      </VideoWrapper>
-    </VideoColumn>
-  </StyledContainer>
-)
+const Ballons = styled.img.attrs({ src: mobile })`
+  position: absolute;
+  right: 12px;
+  top: 12px;
+`
+
+const Title = styled.div`
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 26px;
+  color: #4858cc;
+`
+
+const Items = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+`
+
+const Item = styled.div`
+  display: flex;
+
+  &:not(:first-of-type) {
+    margin-top: 12px;
+  }
+`
+
+const ItemIndex = styled.div<{ color: string }>`
+  min-width: 16px;
+  height: 16px;
+  background-color: ${({ color }) => color};
+  border-radius: 50%;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const ItemText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: #5b6670;
+
+  margin-left: 8px;
+`
+
+const DesktopTabletBackground = styled.div`
+  position: relative;
+  top: -10px;
+  background-image: url(${whoNeedCoachBg});
+  background-repeat: no-repeat;
+  background-position: 64px 0;
+  max-width: 1140px;
+  margin: 0 auto;
+  height: 527px;
+
+  @media screen and (max-width: 768px) {
+    height: 353px;
+    background-image: url(${whoNeedCoachTabletBg});
+    background-position: 36px 0;
+    top: 0;
+  }
+
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
+`

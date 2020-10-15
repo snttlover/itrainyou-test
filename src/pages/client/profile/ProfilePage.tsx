@@ -7,7 +7,7 @@ import { ProfileInterests } from "@/pages/client/profile/content/interests/Inter
 import { IndividualSessions } from "@/pages/client/profile/content/sessions-list/IndividualSessions"
 import { $profilePageLoading, $profilePageSessionsCount, mounted } from "./profile-page.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import { ProfileCoachButton } from "@/pages/client/profile/content/coach-button/ProfileCoachButton"
 

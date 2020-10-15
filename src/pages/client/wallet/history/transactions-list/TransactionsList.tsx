@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { Transaction } from "./Transaction"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEvent, useGate, useList, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useList, useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import SimpleBar from "simplebar-react"
 import InfiniteScroll from "react-infinite-scroll-component"
@@ -20,26 +20,6 @@ const Container = styled.div`
   max-width: 650px;
   background: #fff;
   border-radius: 2px;
-  margin-top: 14px;
-  padding: 11px 20px;
-  margin-bottom: 30px;
-
-  ${MediaRange.lessThan(`mobile`)`
-    margin-top: 16px;
-  `}
-`
-
-const Title = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #5b6670;
-  text-align: center;
-  margin-bottom: 10px;
-  ${MediaRange.lessThan(`mobile`)`
-    font-size: 12px;
-    line-height: 16px;
-  `}
 `
 
 const ListContainer = styled.div`
@@ -83,12 +63,7 @@ const SessionsEmpty = styled.p`
   font-weight: normal;
   font-size: 20px;
   line-height: 26px;
-  /* identical to box height, or 130% */
-
   text-align: center;
-
-  /* средне-серый */
-
   color: #9aa0a6;
 `
 

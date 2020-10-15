@@ -1,6 +1,7 @@
 import { getCoachTransactionsList, Transaction } from "@/lib/api/wallet/coach/get-list-transactions"
 import { date } from "@/lib/formatting/date"
 import { createGate } from "@/scope"
+import WalletTransactionImage from "./images/wallet.svg"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 
 export const WalletHistoryPageGate = createGate()
@@ -48,31 +49,38 @@ sample({
 
 export const $transactionsList = $transactions.map(transactions =>
   transactions.map(transaction => {
-    const session = transaction.session
-
     let price = transaction.amount
-    if (session)
-      price = `${
-        +session.clientPrice > 0 &&
-        transaction.type !== `SESSION_CANCELLATION` &&
-        transaction.type !== "TRANSFER_TO_CLIENT_WALLET"
-          ? `+`
-          : `-`
-      } ${session.clientPrice}`
+
+    if (["WITHDRAW", "TRANSFER_TO_CLIENT_WALLET", "SESSION_CANCELLATION"].includes(transaction.type)) price = `${price}`
+    else price = `+${price}`
 
     let name = `Пополнение кошелька`
+    if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") {
+      name = "Перевод на кошелек клиента"
+    } else if (transaction.type === "WITHDRAW") {
+      name = "Вывод"
+    } else if (transaction.enrolledClient) {
+      name = `${transaction.enrolledClient.firstName} ${transaction.enrolledClient.lastName}`
+    } else if (transaction.session?.client) {
+      name = `${transaction.session.client.firstName} ${transaction.session.client.lastName}`
+    }
 
-    if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") name = "Перевод в кошелек клиента"
-    if (session) name = `${session.coach.firstName} ${session.coach.lastName}`
+    let avatar = null
+    if (["WITHDRAW", "TRANSFER_TO_CLIENT_WALLET", "TOP_UP"].includes(transaction.type)) {
+      avatar = WalletTransactionImage
+    } else if (transaction.enrolledClient?.avatar) {
+      avatar = transaction.enrolledClient?.avatar
+    } else if (transaction.session?.client?.avatar) {
+      avatar = transaction.session?.client.avatar
+    }
 
     return {
-      avatar: session?.coach.avatar || null,
-      name,
+      avatar: avatar,
+      name: name,
       price: price,
       time: date(transaction.creationDatetime).format(`HH:mm`),
       date: date(transaction.creationDatetime).format(`DD.MM.YYYY`),
       isCanceled: transaction.type === `SESSION_CANCELLATION`,
-      isWalletTransaction: !!session,
     }
   })
 )

@@ -1,4 +1,5 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { startSaveCard } from "@/lib/api/wallet/coach/start-save-card"
 import { withdrawMoney } from "@/lib/api/wallet/coach/withdraw-money"
 import { createEffectorField } from "@/lib/generators/efffector"
 import { InferStoreType } from "@/lib/types/effector"
@@ -16,17 +17,12 @@ export const changeShowWithdrawDialog = createEvent<boolean>()
 export const $isWithdrawDialogShowed = restore(changeShowWithdrawDialog, false)
 
 export const [$card, cardChanged, $cardError] = createEffectorField({
-  defaultValue: -1,
+  defaultValue: -2,
   validator: card => {
     if (card === -1) return "Необходимо выбрать карту"
 
     return null
   },
-  reset: resetFundUpModal,
-})
-
-export const [$saveCard, saveCardChanged] = createEffectorField({
-  defaultValue: false,
   reset: resetFundUpModal,
 })
 
@@ -42,36 +38,51 @@ export const [$amount, amountChanged, $amountError, $isAmountCorrect] = createEf
   reset: resetFundUpModal,
 })
 
-export const $fundUpForm = combine({
+export const $withdrawForm = combine({
   selectedCard: $card,
   amount: $amount,
-  saveCard: $saveCard,
 })
 
-export const $fundUpErrors = combine({
+export const $withdrawErrors = combine({
   selectedCard: $cardError,
   amount: $amountError,
 })
 
-export const $canSubmit = every(true, [$isAmountCorrect])
+export const $canSubmit = combine($withdrawForm, $withdrawErrors, (form, errors) => {
+  if (form.selectedCard === -2) return true
 
-const startTopUpFx = createEffect({
-  handler: async (form: InferStoreType<typeof $fundUpForm>) => {
-    return withdrawMoney({ amount: Number(form.amount), card: form.selectedCard })
+  return Object.values(errors).every(value => value === null)
+})
+
+const startWithdrawFx = createEffect({
+  handler: async (form: InferStoreType<typeof $withdrawForm>) => {
+    if (form.selectedCard === -2) {
+      const response = await startSaveCard()
+      localStorage.setItem("saved_withdraw_id", response.paymentId)
+      localStorage.setItem("try_save_card", String(true))
+      window.location.href = response.confirmationUrl
+
+      return response
+    } else {
+      return withdrawMoney({ amount: Number(form.amount), card: form.selectedCard })
+    }
   },
 })
 
-export const $isTopUpLoading = startTopUpFx.pending
+export const $isTopUpLoading = startWithdrawFx.pending
 
-const failMessage: Toast = { text: "Не удалось вывести деньги", type: "error" }
+const failMessage: Toast = { text: '', type: "error" }
 forward({
-  from: startTopUpFx.failData.map(_ => failMessage),
+  from: startWithdrawFx.failData.map(error => {
+    failMessage.text = (error as any)?.response.data.non_field_errors.toString() || "Не удалось вывести деньги"
+    return failMessage
+  }),
   to: [toasts.remove, toasts.add],
 })
 
 const successMessage: Toast = { text: "Вывод произведен", type: "info" }
 forward({
-  from: startTopUpFx.doneData.map(_ => successMessage),
+  from: startWithdrawFx.doneData.map(_ => successMessage),
   to: [
     toasts.remove,
     toasts.add,
@@ -84,8 +95,8 @@ forward({
 
 sample({
   clock: guard({ source: submitFundUp, filter: $canSubmit }),
-  source: $fundUpForm,
-  target: startTopUpFx,
+  source: $withdrawForm,
+  target: startWithdrawFx,
 })
 
 forward({

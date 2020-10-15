@@ -10,7 +10,7 @@ import {
   changeCategoriesPickerVisibility,
   setSelectedCategories,
 } from "./categories-picker.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { Categories } from "@/pages/landing/content/top-bar/categories-picker/Categories"
 import { useLocation } from "react-router-dom"
 

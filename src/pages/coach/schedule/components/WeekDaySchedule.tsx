@@ -9,7 +9,7 @@ import {
   addSlot,
   removeSlot,
 } from "@/pages/coach/schedule/models/weekday-schedule.model"
-import { useEvent, useStore, useStoreMap } from "effector-react/ssr"
+import { useEvent, useStore, useStoreMap } from "effector-react"
 import styled from "styled-components"
 import React, { useState } from "react"
 import { PricesDialog } from "@/pages/coach/schedule/components/PricesDialog"

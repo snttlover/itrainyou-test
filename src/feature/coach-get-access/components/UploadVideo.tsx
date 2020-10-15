@@ -7,7 +7,7 @@ import {
   videoUploadFx,
 } from "@/feature/coach-get-access/coach-get-access.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
@@ -134,7 +134,7 @@ export const UploadVideo = () => {
     onDropAccepted,
     multiple: false,
     noClick: true,
-    accept: "video/*",
+    accept: ["video/mp4", "video/mpeg", "video/ogg", "video/webm"],
   })
 
   return (

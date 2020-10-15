@@ -2,7 +2,7 @@ import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { MediaRange } from "@/lib/responsive/media"
 import { TabsContainer } from "@/pages/coach/profile/common/TabsContainer"
-import { useGate, useStore } from "effector-react/ssr"
+import { useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { ProfileTabs } from "../common/ProfileTabs"
@@ -103,16 +103,6 @@ const InfoText = styled.p`
   `}
 `
 
-const ThinkYouAreTopCoach = styled.p`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 22px;
-  color: #9aa0a6;
-  margin-top: -8px;
-`
-
 const Datepicker = () => {
   const coach = useStore($profileData)
 
@@ -147,7 +137,6 @@ export const CoachProfilePage = () => {
           </CoachInfoContainer>
           <BuySidebar>
             <Datepicker />
-            {!coach.isTopCoach && <ThinkYouAreTopCoach>Думаете вы топ-коуч?</ThinkYouAreTopCoach>}
           </BuySidebar>
         </InfoWithSidebar>
       </ContentContainer>

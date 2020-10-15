@@ -1,4 +1,5 @@
 import { FormItem, Label } from "@/components/form-item/FormItem"
+import { Input } from "@/components/input/Input"
 import { SelectInput } from "@/components/select-input/SelectInput"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
@@ -10,9 +11,10 @@ import {
   sexChanged,
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import dayjs from "dayjs"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 
 const StyledFormItem = styled(FormItem)`
@@ -42,10 +44,7 @@ const months = [
   "Октябрь",
   "Ноябрь",
   "Декабрь",
-].map((label, index) => ({ label, value: index }))
-
-const currentYear = date().year()
-const years = Array.from({ length: 100 }, (v, k) => currentYear - k).map(year => ({ label: `${year}`, value: year }))
+].map((label, index) => ({ label, value: index + 1 }))
 
 const sexItems: { label: string; value: "M" | "F" }[] = [
   {
@@ -59,7 +58,6 @@ const sexItems: { label: string; value: "M" | "F" }[] = [
 ]
 
 export const BirthdayFormGroup = () => {
-  let birthday = useStore($step3Form).birthday
   const userType = useStore($userData).type
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -67,59 +65,34 @@ export const BirthdayFormGroup = () => {
   const _birthdayChanged = useEvent(birthdayChanged)
   const _sexChanged = useEvent(sexChanged)
 
-  const [days, setDays] = useState<{ label: string; value: number }[]>(
-    Array.from({ length: 31 }, (v, k) => k + 1).map(day => ({ label: `${day}`, value: day }))
-  )
+  const [day, setDay] = useState("")
+  const [month, setMonth] = useState(-1)
+  const [year, setYear] = useState("")
 
-  const changeYear = (year: number) => {
-    if (!birthday || !birthday.isValid()) {
-      birthday = date()
-    }
-    _birthdayChanged(birthday.set("year", year))
-  }
-  const changeDay = (day: number) => {
-    if (!birthday || !birthday.isValid()) {
-      birthday = date()
-    }
-    _birthdayChanged(birthday.set("date", day))
-  }
+  useEffect(() => {
+    const dateStr = `${year.padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.padStart(2, "0")}`
+    const date = dayjs(
+      `${year.padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.padStart(2, "0")}`,
+      "YYYY-MM-DD",
+      true
+    )
 
-  const changeMonth = (month: number) => {
-    if (!birthday || !birthday.isValid()) {
-      birthday = date()
-    }
-    const newDate = birthday.set("month", month)
-    const date2 = newDate.add(1, "month")
-    const days = date2.diff(newDate, "day")
-    _birthdayChanged(newDate)
-    setDays(Array.from({ length: days }, (v, k) => k + 1).map(day => ({ label: `${day}`, value: day })))
-    if (birthday.day() > days) {
-      // Если переключили на февраль, а день больше чем максимальный в феврале
-      // февраль 28 дней, а выбран сейчас 31, то переключится на 28
-      changeDay(days)
-    }
-  }
+    if (date.format("YYYY-MM-DD") === dateStr && !date.isAfter(dayjs(), "day")) {
+      _birthdayChanged(date)
+    } else _birthdayChanged(null)
+  }, [day, month, year])
+
   return (
     <React.Fragment>
       <FormGroup>
         <StyledFormItem label='Дата рождения' required={userType === "coach"}>
-          <SelectInput placeholder='День' value={birthday ? birthday.date() : -1} onChange={changeDay} options={days} />
+          <Input placeholder='День' value={day} onChange={setDay} />
         </StyledFormItem>
         <StyledFormItem label=''>
-          <SelectInput
-            placeholder='Месяц'
-            value={birthday ? birthday.month() : -1}
-            onChange={changeMonth}
-            options={months}
-          />
+          <SelectInput placeholder='Месяц' value={month} onChange={setMonth} options={months} />
         </StyledFormItem>
         <StyledFormItem label=''>
-          <SelectInput
-            placeholder='Год'
-            value={birthday ? birthday.year() : -1}
-            onChange={changeYear}
-            options={years}
-          />
+          <Input placeholder='Год' value={year} onChange={setYear} />
         </StyledFormItem>
       </FormGroup>
       <FormGroup>

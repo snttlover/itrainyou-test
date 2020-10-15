@@ -5,7 +5,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import React, { useEffect } from "react"
 import { $coachSessionsPageLoading, mounted } from "./coach-sessions-page.model"
 import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySessions"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
 import { $hasStartedSessions } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
 import { Loader } from "@/components/spinner/Spinner"
@@ -16,7 +16,6 @@ const Container = styled.div`
   width: 100%;
   max-width: 672px;
   margin-top: 36px;
-  margin-left: 40px;
   ${MediaRange.lessThan(`tablet`)`
     margin: 0 auto;
     margin-top: 40px;

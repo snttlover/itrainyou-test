@@ -51,9 +51,17 @@ const StyledButton = styled(WhiteButton)`
     
     &:disabled,
     &:disabled + ${Arrow} {
+      cursor: default;
       color: #EFEFEF;
       ${Arrow} {
         fill: #EFEFEF;
+      }
+      
+      &:hover {
+        color: #EFEFEF;
+        ${Arrow} {
+          fill: #EFEFEF;
+        }
       }
     }
     

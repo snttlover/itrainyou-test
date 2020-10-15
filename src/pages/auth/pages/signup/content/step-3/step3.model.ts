@@ -111,21 +111,24 @@ const loadDataFx = createEffect({
 })
 
 export const step3Mounted = createEvent()
-const waitAllEvents = combineEvents([step3Mounted, signUpPageMounted])
+const waitAllEvents = combineEvents({ events: [step3Mounted, signUpPageMounted] })
 
 forward({
   from: waitAllEvents,
   to: loadDataFx,
 })
 
-spread(loadDataFx.doneData, {
-  firstName: nameChanged,
-  lastName: lastNameChanged,
-  birthDate: birthdayChanged.prepend((birthDate: string) =>
-    date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
-  ),
-  sex: sexChanged,
-  avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
+spread({
+  source: loadDataFx.doneData,
+  targets: {
+    firstName: nameChanged,
+    lastName: lastNameChanged,
+    birthDate: birthdayChanged.prepend((birthDate: string) =>
+      date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
+    ),
+    sex: sexChanged,
+    avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
+  },
 })
 
 export const $step3FormErrors = combine({

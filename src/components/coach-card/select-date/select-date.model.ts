@@ -1,9 +1,11 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { changeShowFundUpDialog, setRedirectUrl } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
+import { isAxiosError } from "@/lib/network/network"
+import { routeNames } from "@/pages/route-names"
 import { runInScope } from "@/scope"
-import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
-import { clientChatsList } from "@/pages/client/chats/list/client-chats-list.module"
+import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample, split } from "effector-root"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -84,8 +86,23 @@ export const genCoachSessions = (id = 0) => {
     // runInScope(clientChatsList.methods.reset)
   })
 
+  const { insufficientBalance, __: unknownError } = split(buySessionsFx.fail, {
+    insufficientBalance: ({ error }) => isAxiosError(error) && error.response?.data.code === "INSUFFICIENT_BALANCE",
+  })
+
+  const sessionBookFailByInsufficientBalanceToast: Toast = {
+    type: "error",
+    text: "Недостаточно средств, пополните баланс",
+  }
+  sample({ clock: insufficientBalance, source: $id }).watch(id => {
+    runInScope(toasts.remove, sessionBookFailByInsufficientBalanceToast)
+    runInScope(toasts.add, sessionBookFailByInsufficientBalanceToast)
+    runInScope(changeShowFundUpDialog, true)
+    runInScope(setRedirectUrl, routeNames.searchCoachPage(id.toString()))
+  })
+
   const sessionBookFailToast: Toast = { type: "error", text: "Не удалось забронировать сессию" }
-  buySessionsFx.fail.watch(() => {
+  unknownError.watch(() => {
     runInScope(toasts.remove, sessionBookFailToast)
     runInScope(toasts.add, sessionBookFailToast)
   })

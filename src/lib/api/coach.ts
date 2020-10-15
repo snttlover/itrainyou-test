@@ -36,7 +36,7 @@ export type Coach = {
     D90: null | number
   }
   duration: string
-
+  isFavourite: boolean
   isApproved: string
   photos: string[]
   description: string

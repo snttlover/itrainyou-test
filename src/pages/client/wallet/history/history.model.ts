@@ -1,5 +1,6 @@
 import { getClientTransactionsList, Transaction } from "@/lib/api/wallet/client/get-list-transactions"
 import { date } from "@/lib/formatting/date"
+import WalletTransactionImage from "@/pages/client/wallet/history/images/wallet.svg"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 
@@ -52,18 +53,27 @@ export const $transactionsList = $transactions.map(transactions =>
 
     let price = transaction.amount
 
-    if (session)
-      price = `${+session.clientPrice > 0 && transaction.type !== `SESSION_CANCELLATION` ? `+` : `-`} ${
-        session.clientPrice
-      }`
+    if (transaction.type === "TOP_UP" || transaction.type === "TRANSFER_TO_CLIENT_WALLET") price = `+${price}`
+    else price = `${price}`
+
+    let name = `Пополнение кошелька`
+    if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") name = "Перевод с кошелька коуча"
+    else if (session) name = `${session.coach.firstName} ${session.coach.lastName}`
+
+    let avatar = null
+    if (transaction.type === "TOP_UP" || transaction.type === "TRANSFER_TO_CLIENT_WALLET") {
+      avatar = WalletTransactionImage
+    } else if (session?.coach.avatar) {
+      avatar = session.coach.avatar
+    }
+
     return {
-      avatar: session?.coach.avatar || null,
-      name: session ? `${session.coach.firstName} ${session.coach.lastName}` : `Пополнение кошелька`,
+      avatar: avatar,
+      name: name,
       price: price,
       time: date(transaction.creationDatetime).format(`HH:mm`),
       date: date(transaction.creationDatetime).format(`DD.MM.YYYY`),
       isCanceled: transaction.type === `SESSION_CANCELLATION`,
-      isWalletTransaction: !!session,
     }
   })
 )

@@ -4,9 +4,10 @@ import { GeneralSettingsForm } from "./content/general-settings-form/GeneralSett
 import { PasswordForm } from "./content/PasswordForm"
 import { MediaRange } from "@/lib/responsive/media"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import { LeftPageContainer } from "@/pages/common/settings/content/LeftPageContainer"
+import { ContentContainer } from "@/components/layouts/ContentContainer"
 
 const Title = styled.div`
   font-family: Roboto Slab;
@@ -32,16 +33,18 @@ const StyledLoaderWrapper = styled.div`
 export const SettingsPage = () => {
   const pending = useStore(getMyUserFx.pending)
   return (
-    <LeftPageContainer>
-      {pending && (
-        <StyledLoaderWrapper>
-          <Loader />
-        </StyledLoaderWrapper>
-      )}
-      <Title>Настройки</Title>
-      <GeneralSettingsForm />
-      <PasswordForm />
-    </LeftPageContainer>
+    <ContentContainer>
+      <LeftPageContainer>
+        {pending && (
+          <StyledLoaderWrapper>
+            <Loader />
+          </StyledLoaderWrapper>
+        )}
+        <Title>Настройки</Title>
+        <GeneralSettingsForm />
+        <PasswordForm />
+      </LeftPageContainer>
+    </ContentContainer>
   )
 }
 

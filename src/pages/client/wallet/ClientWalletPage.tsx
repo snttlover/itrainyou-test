@@ -2,12 +2,10 @@ import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { Tab, Tabs } from "@/components/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
-import { ConfirmationGate } from "@/pages/client/wallet/confirmation.model"
 import { WalletHistoryTab } from "@/pages/client/wallet/history/WalletHistoryTab"
 import { CardsTabGate } from "./cards/cards.model"
-import { FundsUpDialog } from "./funds-up-dialog/FundsUpDialog"
 import { InfoTabGate } from "./info/info.model"
-import { useGate } from "effector-react/ssr"
+import { useGate } from "effector-react"
 import { WalletsCardsTab } from "./cards/WalletCardsTab"
 import { WalletInfoTab } from "./info/WalletInfoTab"
 import React, { useState } from "react"
@@ -33,7 +31,6 @@ const WalletTabContentContainer = styled.div``
 export const ClientWalletPage = () => {
   useGate(InfoTabGate)
   useGate(CardsTabGate)
-  useGate(ConfirmationGate)
   const [tab, changeTab] = useState("wallet")
 
   return (
@@ -51,7 +48,6 @@ export const ClientWalletPage = () => {
             {tab === "cards" && <WalletsCardsTab />}
           </WalletTabContentContainer>
         </WalletContainer>
-        <FundsUpDialog />
       </ContentContainer>
     </ClientDashboardLayout>
   )

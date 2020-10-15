@@ -4,7 +4,7 @@ import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Spinner } from "@/components/spinner/Spinner"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react"
 import { FormEvent } from "react"
 import {
   $commonError,

@@ -19,7 +19,7 @@ import {
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect } from "react"
 import styled from "styled-components"

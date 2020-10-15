@@ -3,7 +3,7 @@ import { $categoriesList, fetchCategoriesListFx } from "@/feature/categories/cat
 import { $selectedCategories, toggleCategory } from "./coach-data.model"
 import { CategoryCard } from "./CategoryCard"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 

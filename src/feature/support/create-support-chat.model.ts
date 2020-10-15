@@ -1,14 +1,15 @@
-import { Chat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { Chat, ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
-import { combine, createEffect, createEvent, forward, restore, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 
 export type SupportChatModelConfig = {
   type: "client" | "coach"
+  fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
-  fetchChat: () => Promise<Chat>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
 }
 
@@ -21,11 +22,15 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
   })
 
   const $chatId = restore<ChatId>(changeId, 0).reset(reset)
+  const changeChatInfo = createEvent<null | PersonalChat>()
+  const $chatInfo = restore<PersonalChat | null>(changeChatInfo, null).reset(reset)
 
   const chatMessages = createChatMessagesModule({
     ...config,
     // @ts-ignore
     fetchMessages: (id: number, params: CursorPaginationRequest) => config.fetchMessages("support", params),
+    isSupport: true,
+    supportIsMe: true
   })
 
   const load = createEvent()
@@ -45,17 +50,6 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
     to: chatMessages.changeId,
   })
 
-  const send = createEvent<string>()
-
-  sample({
-    // @ts-ignore
-    source: $chatId,
-    clock: send,
-    // @ts-ignore
-    fn: (chatId, message) => ({ chat: chatId, text: message }),
-    target: config.socket.methods.send,
-  })
-
   const mounted = createEvent<ChatId>()
 
   forward({
@@ -65,32 +59,71 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
 
   forward({
     from: fetchSupportChatFx.doneData.map(chat => chat.id),
-    to: [changeId],
+    to: changeId,
   })
 
-  const $loading = fetchSupportChatFx.pending
+  forward({
+    from: fetchSupportChatFx.doneData,
+    to: changeChatInfo,
+  })
 
-  const $support = chatMessages.pagination.data.$list.map(messages => {
+  const $support = combine($chatInfo, chatMessages.pagination.data.$list, (chat, messages) => {
+    let resolved = false
+
     // @ts-ignore
-    return [...messages].reverse().reduce((userInfo, message) => {
-      if (message.systemTicketType) {
-        if (message.systemTicketType === "SUPPORT_AGENT_FOUND") {
-          return {
-            avatar: message.supportTicket?.support?.avatar,
-            name: `${message.supportTicket?.support?.firstName} ${message.supportTicket?.support?.lastName}`,
+    const info = [...messages]
+      .filter(message => !!message.systemTicketType)
+      .reverse()
+      // @ts-ignore
+      .reduce((userInfo, message) => {
+        if (message.systemTicketType) {
+          if (message.systemTicketType === "SUPPORT_AGENT_FOUND") {
+            resolved = false
+            return {
+              avatar: message.supportTicket?.support?.avatar,
+              name: `${message.supportTicket?.support?.firstName} ${message.supportTicket?.support?.lastName}`,
+            }
+          } else {
+            resolved = true
+            return null
           }
-        } else {
-          return null
         }
+      }, null) as { name: string; avatar: string | null } | null
+
+    if (resolved) {
+      return null
+    }
+
+    if (chat?.support) {
+      return {
+        name: `${chat.support.firstName} ${chat.support.lastName}`,
+        avatar: chat.support.avatar,
       }
-    }, null) as { name: string, avatar: string | null } | null
+    }
+
+    return info
+  })
+
+  const $loading = combine(
+    fetchSupportChatFx.pending,
+    chatMessages.pagination.data.$loading,
+    chatMessages.pagination.data.$list,
+    $chatInfo,
+    (chatLoading, messagesLoading, messages, chat) => {
+      return chatLoading || (messagesLoading && !messages.length) || !chat
+    }
+  )
+
+  const messageBox = createChatMessageBoxModule({
+    ...config,
+    $chatId,
   })
 
   return {
     $support,
     chatMessages,
     socket: config.socket,
-    send,
+    messageBox,
     mounted,
     reset,
     $firstLoading: $loading,

@@ -6,7 +6,7 @@ import { createEffectorField } from "@/lib/generators/efffector"
 import { trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import { Dayjs } from "dayjs"
-import { combine, createEvent, createStore, sample } from "effector-root"
+import { combine, createEvent, createStore, sample, Event } from "effector-root"
 import { every, spread } from "patronum"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
@@ -63,8 +63,8 @@ export const $step3Form = combine({
 
 export const userProfileGate = createGate()
 
-spread(
-  sample({
+spread({
+  source: (sample({
     clock: userProfileGate.open,
     source: $userData,
     fn: data => ({
@@ -74,8 +74,8 @@ spread(
       sex: data.coach!.sex,
       avatar: data.coach!.avatar,
     }),
-  }),
-  {
+  }) as unknown) as Event<any>,
+  targets: {
     firstName: nameChanged,
     lastName: lastNameChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
@@ -83,8 +83,8 @@ spread(
     ),
     sex: sexChanged,
     avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
-  }
-)
+  },
+})
 
 export const $step3FormErrors = combine({
   name: $nameError,
@@ -93,10 +93,7 @@ export const $step3FormErrors = combine({
   sex: $sexError,
 })
 
-export const $isStep3FormValid = every(true, [
-  $isNameCorrect,
-  $isLastNameCorrect,
-  $isBirthdayCorrect,
-  $isSexCorrect,
-  $isImageCorrect,
-])
+export const $isStep3FormValid = every({
+  predicate: true,
+  stores: [$isNameCorrect, $isLastNameCorrect, $isBirthdayCorrect, $isSexCorrect, $isImageCorrect],
+})

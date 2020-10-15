@@ -13,7 +13,7 @@ import {
 import { $userData, loadUserData } from "@/feature/user/user.model"
 import { updateMyCoach } from "@/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/lib/types/effector"
-import { combine, createEffect, createEvent, forward, sample } from "effector-root"
+import { combine, createEffect, createEvent, forward, sample, Event } from "effector-root"
 import { spread } from "patronum"
 
 const calculateProgress = ({
@@ -66,17 +66,17 @@ const userDataLoaded = sample({
   clock: coachGetAccessMounted,
 })
 
-spread(
-  userDataLoaded.map(data => data.coach),
-  {
+spread({
+  source: userDataLoaded.map(data => data.coach) as Event<any>,
+  targets: {
     description: descriptionChanged,
     education: educationChanged,
     phone: phoneChanged,
     photos: restorePhotos,
     videoInterview: videoInterviewChanged,
     workExperience: workExperienceChanged,
-  }
-)
+  },
+})
 
 forward({
   from: userDataLoaded.map(data => data.coach?.categories.map(cat => cat.id) || []),

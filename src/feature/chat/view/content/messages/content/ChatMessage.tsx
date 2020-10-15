@@ -1,6 +1,9 @@
 import React from "react"
 import styled from "styled-components"
-import {MediaRange} from "@/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
+import { CoachUser } from "@/lib/api/coach"
+import { Client } from "@/lib/api/client/clientInfo"
+import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 
 type ContainerTypes = {
   "data-self": boolean
@@ -27,6 +30,7 @@ const Container = styled.div<ContainerTypes>`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  position: relative;
 
   &[data-self="true"] {
     background: ${props => props.theme.colors.primary};
@@ -47,15 +51,45 @@ const Container = styled.div<ContainerTypes>`
   `}
 `
 
+const Image = styled.img`
+  width: auto;
+  max-width: 100%;
+  display: inline-block;
+  cursor: pointer;
+`
+
 type ChatMessageTypes = {
   id: string
-  children: React.ReactChild
   time: string
+  text: string
+  image: string
+  showUser?: boolean
+  user: CoachUser | Client | null
+  imageClick?: (index: number) => void
+  imageIndex: number
 } & ContainerTypes
 
 export const ChatMessage = (props: ChatMessageTypes) => (
-  <Container id={props.id} data-self={props["data-self"]}>
-    {props.children}
-    <Time>{props.time}</Time>
-  </Container>
+  <>
+    {props.showUser && (
+      <MessageUserHeader
+        right={props["data-self"]}
+        hideDate={true}
+        showUser={true}
+        name={`${props.user?.firstName} ${props.user?.lastName}`}
+        avatar={props.user?.avatar || null}
+      />
+    )}
+    <Container id={props.id} data-self={props["data-self"]}>
+      {!!props.image && (
+        <Image
+          src={props.image}
+          className='message-image'
+          onClick={() => props.imageClick && props.imageClick(props.imageIndex)}
+        />
+      )}
+      {props.text}
+      <Time>{props.time}</Time>
+    </Container>
+  </>
 )

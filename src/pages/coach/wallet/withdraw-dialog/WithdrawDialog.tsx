@@ -9,35 +9,37 @@ import { PriceInput } from "@/pages/coach/schedule/components/PriceInput"
 import React from "react"
 import styled from "styled-components"
 import {
-  $fundUpForm,
+  $withdrawForm,
   $isWithdrawDialogShowed,
   changeShowWithdrawDialog,
   cardChanged,
   amountChanged,
-  $fundUpErrors,
+  $withdrawErrors,
   submitFundUp,
   $canSubmit,
   $isTopUpLoading,
 } from "./withdraw.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 
 export const WithdrawDialog = () => {
   const _changeShowFundUpDialog = useEvent(changeShowWithdrawDialog)
   const isShowed = useStore($isWithdrawDialogShowed)
   const cards = useStore($cardsListForView)
-  const errors = useStore($fundUpErrors)
+  const errors = useStore($withdrawErrors)
   const canSubmit = useStore($canSubmit)
   const isLoading = useStore($isTopUpLoading)
 
-  const form = useStore($fundUpForm)
+  const form = useStore($withdrawForm)
   const _cardChanged = useEvent(cardChanged)
   const _amountChanged = useEvent(amountChanged)
   const _submitFundUp = useEvent(submitFundUp)
 
-  const cardsOptions = cards.map(card => ({
-    label: `XXXX XXXX XXXX ${card.cardEnd} (${card.expireDate})`,
-    value: card.id,
-  }))
+  const cardsOptions = cards
+    .map(card => ({
+      label: `XXXX XXXX XXXX ${card.cardEnd} (${card.expireDate})`,
+      value: card.id,
+    }))
+    .concat({ label: `Другая`, value: -2 })
 
   return (
     <StyledDialog value={isShowed} onChange={_changeShowFundUpDialog}>
@@ -51,11 +53,21 @@ export const WithdrawDialog = () => {
         <CardFormItem label='Выберите карту' required error={errors.selectedCard}>
           <SelectInput value={form.selectedCard} onChange={_cardChanged} options={cardsOptions} />
         </CardFormItem>
-        <AmountMargin>
-          <FormItem label='Сумма' required error={errors.amount}>
-            <PriceInput type='number' value={form.amount} onChange={_amountChanged} placeholder='50' />
-          </FormItem>
-        </AmountMargin>
+        {form.selectedCard !== -2 && (
+          <AmountMargin>
+            <FormItem label='Сумма' required error={errors.amount}>
+              <PriceInput type='number' value={form.amount} onChange={_amountChanged} placeholder='50' />
+            </FormItem>
+          </AmountMargin>
+        )}
+        {form.selectedCard === -2 && (
+          <AmountMargin>
+            <AddNewCardAttentionText>
+              Для вывода на карту вам необходимо добавить карту к себе в аккаунт. Мы спишем 1 рубль с неё и вернем вам
+              обратно.
+            </AddNewCardAttentionText>
+          </AmountMargin>
+        )}
         <SubmitButton type='submit' disabled={!canSubmit}>
           Вывести
         </SubmitButton>
@@ -83,6 +95,16 @@ const SubmitButton = styled(Button)`
 const CardFormItem = styled(FormItem)`
   margin-top: 36px;
   margin-bottom: 0;
+`
+
+const AddNewCardAttentionText = styled.p`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.primary};
+  text-align: center;
 `
 
 const StyledDialog = styled(Dialog)`

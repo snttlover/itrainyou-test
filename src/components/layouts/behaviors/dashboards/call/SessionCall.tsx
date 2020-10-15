@@ -4,7 +4,7 @@ import styled, { css } from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
@@ -41,7 +41,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
           <Header>
             {interlocutor.info && (
               <User>
-                {!interlocutor.micro && <DisabledInterlocutorMicro />}
+                {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
                 <StyledAvatar src={interlocutor.info.avatar} />
                 <Name>{interlocutor.info.name}</Name>
               </User>
@@ -144,7 +144,7 @@ const InterlocutorVideo = styled.div`
 const InterlocutorIcon = styled(Icon).attrs({ name: `user` })`
   width: 34px;
   height: 34px;
-  fill: ${props => props.theme.colors.primary};
+  fill: ${props => props.theme.colors.invert.primary};
 `
 
 const InterlocutorVideoPlaceholder = styled(InterlocutorVideo)`
@@ -152,7 +152,7 @@ const InterlocutorVideoPlaceholder = styled(InterlocutorVideo)`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.invert.primary};
   z-index: 1;
   background: #dbdee0;
 `
@@ -357,6 +357,7 @@ const Container = styled.div`
 
   &[data-interlocutor-was-connected="false"],
   &[data-interlocutor-is-connected="false"] {
+    ${MyUserVideoPlaceholder},
     ${MyUserVideo} {
       width: 100%;
       height: 100%;
@@ -366,6 +367,9 @@ const Container = styled.div`
       right: unset;
       bottom: unset;
       display: flex;
+    }
+    ${InterlocutorVideo} {
+      display: none;
     }
   }
   &[data-interlocutor-is-connected="false"] {

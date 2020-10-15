@@ -1,5 +1,5 @@
-const isArray = <T>(a: any | T[]): a is T[] => Array.isArray(a)
-const isObject = (o: any): o is object => o === Object(o) && !isArray(o) && typeof o !== "function"
+export const isArray = <T>(a: any | T[]): a is T[] => Array.isArray(a)
+export const isObject = (o: any): o is object => o === Object(o) && !isArray(o) && typeof o !== "function"
 const toCamel = (s: string) => s.replace(/([-_][a-z])/gi, $1 => $1.toUpperCase().replace("_", ""))
 const toSnake = (s: string) => s.replace(/(?:^|\.?)([A-Z])/g, (x, y) => "_" + y.toLowerCase()).replace(/^_/, "")
 

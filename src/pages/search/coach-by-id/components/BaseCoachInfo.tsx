@@ -5,17 +5,22 @@ import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { IsAuthed } from "@/feature/user/IsAuthed"
 import { getYearsCount } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
-import { $coach } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { $coach, $isFavourite, toggleFavourite } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
 import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
-
-  ${MediaRange.greaterThan("mobile")`        
+  
+  width: 80px;
+  min-width: 80px;
+  height: 80px;
+  min-height: 80px;
+    
+  ${MediaRange.greaterThan("tablet")`        
     width: 120px;
     min-width: 120px;
     height: 120px;
@@ -157,8 +162,10 @@ const MobileWriteButton = styled(WriteButton)`
 
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($coach)
+  const isFavourite = useStore($isFavourite)
   const write = useEvent(writeToCoach)
-  const [isLiked, setLiked] = useState(false)
+  const _toggleFavourite = useEvent(toggleFavourite)
+
   return (
     <StyledBlock inline {...props}>
       <UserInfoWrapper>
@@ -168,7 +175,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
             {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
             <Year>{getYearsCount(coach?.birthDate!)} лет</Year>
             <IsAuthed>
-              <Like name={isLiked ? "hearth-full" : "hearth"} onClick={() => setLiked(!isLiked)} />
+              <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />
             </IsAuthed>
           </Name>
           <Rating>

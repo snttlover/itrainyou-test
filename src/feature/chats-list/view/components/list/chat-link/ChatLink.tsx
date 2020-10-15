@@ -6,11 +6,11 @@ import { Button } from "@/components/button/normal/Button"
 import { ChatLinkMaterials } from "@/feature/chats-list/view/components/list/chat-link/ChatLinkMaterials"
 import { Link } from "react-router-dom"
 import { ChatTypes } from "@/lib/api/chats/clients/get-chats"
-import {Event} from "effector"
+import { Event } from "effector-root"
 import { useEvent } from "effector-react"
 
 export type ChatLinkTypes = {
-  id: number,
+  id: number
   type: ChatTypes
   userLink: string
   link: string
@@ -21,6 +21,7 @@ export type ChatLinkTypes = {
   materialCount: number
   isStarted: boolean
   lastMessage: string
+  isImage: boolean
   lastMessageIsMine: boolean
   highlightMessages: boolean
   sessionTextStatus: string
@@ -45,6 +46,7 @@ export const ChatLink = (props: ChatLinkTypes) => {
           <UserName>{props.name}</UserName>
           <LastMessage data-is-mine={props.lastMessage}>
             {props.lastMessageIsMine && `Вы: `}
+            {props.isImage && `Фотография`}
             {props.lastMessage}
           </LastMessage>
         </MessageContent>

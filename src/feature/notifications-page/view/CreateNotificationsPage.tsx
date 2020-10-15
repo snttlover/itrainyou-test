@@ -1,11 +1,12 @@
 import React, { useEffect } from "react"
 import { createNotificationsPageModel } from "@/feature/notifications-page/model/create-notifications-page.model"
 import { createInfinityScroll } from "@/feature/pagination"
-import { useEvent, useList, useStore } from "effector-react/ssr"
+import { useEvent, useList, useStore } from "effector-react"
 import { LeftPageContainer } from "@/pages/common/settings/content/LeftPageContainer"
 import styled from "styled-components"
 import { NotificationSwitcher } from "@/feature/notifications-page/view/content/NotificationSwitcher"
 import { MediaRange } from "@/lib/responsive/media"
+import { ContentContainer } from "@/components/layouts/ContentContainer"
 
 export const createNotificationsPage = ($module: ReturnType<typeof createNotificationsPageModel>) => {
   const Infinity = createInfinityScroll($module.modules.pagination)
@@ -20,15 +21,17 @@ export const createNotificationsPage = ($module: ReturnType<typeof createNotific
     }, [])
 
     return (
-      <LeftPageContainer>
-        <Title>Все уведомления</Title>
-        {empty && <NotFound>Нет уведомлений</NotFound>}
-        <Infinity>
-          {useList($module.data.$notifications, notification => (
-            <NotificationSwitcher {...notification} />
-          ))}
-        </Infinity>
-      </LeftPageContainer>
+      <ContentContainer>
+        <LeftPageContainer>
+          <Title>Все уведомления</Title>
+          {empty && <NotFound>Нет уведомлений</NotFound>}
+          <Infinity>
+            {useList($module.data.$notifications, notification => (
+              <NotificationSwitcher {...notification} />
+            ))}
+          </Infinity>
+        </LeftPageContainer>
+      </ContentContainer>
     )
   }
 }

@@ -1,20 +1,38 @@
 import { config } from "@/config"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
-import { ISODate, Pagination, Sex } from "@/lib/api/interfaces/utils.interface"
+import { Day, ISODate, Pagination, Sex } from "@/lib/api/interfaces/utils.interface"
 
 type TransactionType = "SESSION_ENROLLMENT" | "SESSION_CANCELLATION" | "TOP_UP" | "WITHDRAW" | "CLIENT_ENROLLED_SESSION"
 
 export type Transaction = {
   id: number
   type: "TRANSFER_TO_CLIENT_WALLET" | TransactionType
-  enrolledClient: null
+  enrolledClient: {
+    avatar: string
+    birthDate: Day
+    creationDatetime: ISODate
+    firstName: string
+    id: number
+    lastName: string
+    sex: Sex
+  } | null
   isHeld: boolean
   amount: string
   wallet: number
   session: {
     id: string
     coach: {
+      id: string
+      firstName: string
+      lastName: string
+      birthDate: string
+      sex: Sex
+      avatar: string
+      isTopCoach: boolean
+      creationDatetime: ISODate
+    }
+    client: {
       id: string
       firstName: string
       lastName: string

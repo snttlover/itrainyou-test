@@ -11,7 +11,7 @@ import {
   coachSessionRequests,
   createSessionRequestsModule,
 } from "@/feature/session-request/createSessionRequestsModule"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { Loader, Spinner } from "@/components/spinner/Spinner"
 import {
   $revocated,
@@ -20,6 +20,7 @@ import {
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { Avatar } from "@/components/avatar/Avatar"
 import { changeCurrentDenyCompletationRequest } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
+import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 
 const dateFormat = `DD MMM YYYY`
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -36,7 +37,8 @@ const formatSessionDate = (start?: ISODate, end?: ISODate) => {
 const getText = (
   request: SessionRequest,
   status: MessageSessionRequestStatuses | ConflictStatus,
-  chatType: "coach" | "client"
+  chatType: "coach" | "client",
+  commonSystemMessages?: boolean
 ) => {
   const is = (
     requestType: SessionRequestTypes | SessionRequestTypes[],
@@ -52,6 +54,103 @@ const getText = (
       checkStatus(request.type, requestType) &&
       checkStatus(status, messageStatus)
     )
+  }
+
+  if (commonSystemMessages) {
+    if (is("BOOK", "APPROVED", "COMPLETED")) {
+      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии`
+    }
+
+    if (is("BOOK", "DENIED", "COMPLETED")) {
+      return `${request.receiverCoach?.firstName} не подтвердил запрос на бронирование сессии`
+    }
+
+    if (is("CANCEL", "DENIED", "COMPLETED")) {
+      return `${request.receiverCoach?.firstName} не подтвердил${
+        request.receiverCoach?.sex === `F` ? `a` : ``
+      } запрос на бронирование сессии`
+    }
+
+    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+      return `Вы хотите перенести сессию на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], "COMPLETED") && request.initiatorCoach) {
+      return `${request.initiatorCoach?.firstName} отменил${request.initiatorCoach?.sex === `F` ? `a` : ``}  сессию`
+    }
+
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED"], ["COMPLETED"]) && request.initiatorClient) {
+      return `${request.initiatorClient?.firstName} отменил${request.receiverCoach?.sex === `F` ? `a` : ``} сессию`
+    }
+
+    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED") && request.initiatorClient) {
+      return `${request.initiatorClient?.firstName} отправил${
+        request.initiatorClient?.sex === `F` ? `a` : ``
+      } запрос на подтверждение сессии`
+    }
+
+
+    if (is("BOOK", "CANCELLED", "COMPLETED") && request.initiatorClient) {
+      return `${request.initiatorClient?.firstName} отменил${
+        request.initiatorClient?.sex === `F` ? `a` : ``
+      } запрос на подтверждение сессии`
+    }
+
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+      return `${request.initiatorClient?.firstName} отправил${
+        request.initiatorClient?.sex === `F` ? `a` : ``
+      } запрос на отмену сессии`
+    }
+
+    if (is("CANCEL", "CANCELLED", "COMPLETED")) {
+      return `${request.initiatorClient?.firstName} отменил${
+        request.initiatorClient?.sex === `F` ? `a` : ``
+      } запрос на отмену сессии`
+    }
+
+    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+      return `${request.initiatorClient?.firstName} хочет перенести сессию на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("RESCHEDULE", "DENIED", "COMPLETED")) {
+      return `Вы отклонили перонос сессии на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("RESCHEDULE", "APPROVED", "COMPLETED")) {
+      return `Вы подтвердили перонос сессии на ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("RESCHEDULE", "CANCELLED", "COMPLETED")) {
+      return `${request.receiverClient?.firstName} отменил${
+        request.receiverClient?.sex === `F` ? `a` : ``
+      } перенос сессии на  ${formatSessionDate(
+        request.rescheduleSession?.startDatetime,
+        request.rescheduleSession?.endDatetime
+      )}`
+    }
+
+    if (is("CANCEL", "AUTOMATICALLY_APPROVED", ["COMPLETED", "INITIATED"]) && request.initiatorClient) {
+      return `${request.initiatorClient?.firstName} отменил${request.initiatorClient?.sex === `F` ? `a` : ``} сессию`
+    }
+
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED") && request.initiatorClient) {
+      return `${request.initiatorClient?.firstName} отправил${
+        request.initiatorClient?.sex === `F` ? `a` : ``
+      } запрос на отмену сессии`
+    }
+
   }
 
   if (chatType === `client`) {
@@ -100,11 +199,11 @@ const getText = (
       return `Вы отменили перенос сессии на ${formatDate(request.resultDatetime)}`
     }
 
-    if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED"]) && request.initiatorCoach) {
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], "COMPLETED") && request.initiatorCoach) {
       return `${request.initiatorCoach?.firstName} отменил${request.initiatorCoach?.sex === `F` ? `a` : ``}  сессию`
     }
 
-    if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], ["COMPLETED", "INITIATED"])) {
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], "COMPLETED")) {
       return `Вы отменили сессию`
     }
 
@@ -282,20 +381,25 @@ const getText = (
 
 export const SystemMessageSwitcher = ({
   message,
-  isSystemChat,
+  isSystemChat, commonSystemMessages
 }: {
   isSystemChat: boolean
   message: ChatSystemMessage
+  commonSystemMessages?: boolean
 }) => {
-  const text = getText(message.request, message.status, message.chatType)
-  const Buttons = getSystemButtons(message.request, message.chatType, message.showButtons, message.status, {
+  const text = getText(message.request, message.status, message.chatType, commonSystemMessages)
+  let Buttons = getSystemButtons(message.request, message.chatType, message.showButtons, message.status, {
     name: message.userName,
     avatar: message.userAvatar || ``,
   })
 
+  if (commonSystemMessages) {
+    Buttons = <></>
+  }
+
   return (
     <>
-      <UserHeader showUser={isSystemChat} name={message.userName} avatar={message.userAvatar} date={message.date} />
+      <MessageUserHeader showUser={isSystemChat} name={message.userName} avatar={message.userAvatar} date={message.date} />
       <SystemMessage
         id={message.id}
         text={text}
@@ -307,71 +411,6 @@ export const SystemMessageSwitcher = ({
     </>
   )
 }
-
-type UserHeaderProps = {
-  showUser: boolean
-  name: string
-  avatar: string | null
-  date: string
-}
-
-const UserHeader = (props: UserHeaderProps) => {
-  return (
-    <StyledUserHeader>
-      {
-        props.showUser && (
-          <UserData>
-            <StyledAvatar src={props.avatar} />
-            <UserHeaderTitle>{props.name}</UserHeaderTitle>
-          </UserData>
-        )
-      }
-      <Time>{date(props.date).format('HH:mm')}</Time>
-    </StyledUserHeader>
-  )
-}
-
-const Time = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #9aa0a6;
-  
-  flex: 1;
-  text-align: right;
-  ${MediaRange.lessThan(`mobile`)`  
-    font-size: 12px;
-    line-height: 16px;
-  `}
-`
-
-const UserData = styled.div`
-  display: flex;
-  align-items: flex-end;
-`
-
-const StyledUserHeader = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 8px;
-  justify-content: space-between;
-`
-
-const StyledAvatar = styled(Avatar)`
-  width: 24px;
-  height: 24px;
-  margin-right: 4px;
-`
-
-const UserHeaderTitle = styled.div`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: #424242;
-  ${MediaRange.lessThan(`mobile`)`
-    font-size: 12px;
-    line-height: 16px;
-  `}
-`
 
 type SystemMessageTypes = {
   id: number

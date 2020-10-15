@@ -1,9 +1,9 @@
 import { Button } from "@/components/button/normal/Button"
 import { Spinner } from "@/components/spinner/Spinner"
+import { changeShowFundUpDialog } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { changeShowFundUpDialog } from "../funds-up-dialog/fund-up.model"
-import { $amount, $frozenAmount, $isLoading, $totalAmount, InfoTabGate } from "./info.model"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { $amount, $frozenAmount, $isLoading, $totalAmount } from "./info.model"
+import { useEvent, useStore } from "effector-react"
 import { WalletAmount } from "./WalletAmount"
 import React from "react"
 import styled from "styled-components"
@@ -54,9 +54,17 @@ export const WalletInfoTab = () => {
 
   return (
     <WalletInfoContainer>
-      <StyledWalletAmount title='Доступно' amount={amount} description='qweqwe asd asd Lorem ipsum trali vali' />
-      <StyledWalletAmount title='Заморожено' amount={frozenAmount} description={"asdasdasd"} />
-      <StyledWalletAmount title='Всего средств' amount={totalAmount} description={"asdasdasd"} />
+      <StyledWalletAmount title='Доступно' amount={amount} description='Доступно для покупки сессий' />
+      <StyledWalletAmount
+          title='Заморожено'
+          amount={frozenAmount}
+          description={"Данная сумма заморожена, пока коуч не подвердит или не отклонит Ваши запросы на бронирование"}
+      />
+      <StyledWalletAmount
+          title='Всего средств'
+          amount={totalAmount}
+          description={"Общая сумма средств"}
+      />
       <ButtonContainer>
         <AddFundsButton onClick={() => _changeShowFundUpDialog(true)}>Пополнить кошелек</AddFundsButton>
       </ButtonContainer>

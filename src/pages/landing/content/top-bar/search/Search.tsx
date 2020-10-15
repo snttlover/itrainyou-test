@@ -4,7 +4,7 @@ import { SearchInput } from "@/components/search-input/SearchInput"
 import { SearchInputItem } from "@/components/search-input/SearchInputItem"
 import searchIcon from "./images/search.svg"
 import { updateSearch, $search, $hintsList, find } from "@/pages/landing/content/top-bar/search/search.model"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react"
 import { useEffect, useState } from "react"
 import styled, { css } from "styled-components"
 import { $searchPageQuery } from "@/pages/search/coaches-search.model"
@@ -92,7 +92,7 @@ export const Search = (props: SearchProps) => {
         return
       }
 
-      searchHandler()
+      searchHandler('')
     }
 
     if (e.keyCode === 40) {
@@ -108,7 +108,7 @@ export const Search = (props: SearchProps) => {
 
   const getIcon = () => {
     if (!searchValue) {
-      return <SearchIcon focused={focused} onClick={() => searchHandler()} />
+      return <SearchIcon focused={focused} onClick={() => searchHandler('')} />
     }
     return <CloseIcon onClick={() => searchHandler(``)} />
   }

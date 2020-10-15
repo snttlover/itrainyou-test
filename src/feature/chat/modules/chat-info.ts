@@ -60,8 +60,11 @@ export const createChatInfoModule = (config: createChatInfoModuleTypes) => {
     }
 
     if (chat.type === `client`) {
-      if (chat.blocked || chat.restricted) {
-        return `${chat.name} заблокировал${chat.userSex === `F` ? `a` : ``} вас`
+      if (chat.blocked) {
+        return `Коуч заблокировал вас`
+      }
+      if (chat.restricted) {
+        return `Коуч заблокировал вас до покупки сессии`
       }
     }
     return null

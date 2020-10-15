@@ -5,7 +5,7 @@ import { updateMyUser } from "@/lib/api/users/update-my-user"
 import { keysToCamel } from "@/lib/network/casing"
 import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import dayjs from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, guard, restore, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard } from "effector-root"
 import Cookies from "js-cookie"
 
 export type UserData = {
@@ -21,7 +21,7 @@ export const $userData = createStore<UserData>({ client: null, coach: null })
   .on([setUserData, getMyUserFx.doneData.map(data => keysToCamel(data.data))], (state, payload) => payload)
   .reset(logout)
 
-export const $isFullRegistered = $userData.map(userData => userData.client || userData.coach)
+export const $isFullRegistered = $userData.map(userData => !!(userData.client || userData.coach))
 
 export const $coachAccess = $userData.map(userData => ({
   isApproved: userData.coach?.isApproved,

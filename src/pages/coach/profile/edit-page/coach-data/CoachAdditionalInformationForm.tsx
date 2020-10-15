@@ -13,7 +13,7 @@ import {
   photoRemoved,
 } from "./coach-data.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
@@ -108,7 +108,7 @@ export const CoachAdditionalInformationForm: React.FC = () => {
       </FormItem>
       <FormItem label='Телефон' error={errors.phone}>
         <Input
-          mask='+7 111 111-11-11'
+          mask='+1 111 111-11-11'
           placeholder='+7 900 000-00-00'
           value={values.phone}
           onChange={(value: any) => _phoneChanged(value)}

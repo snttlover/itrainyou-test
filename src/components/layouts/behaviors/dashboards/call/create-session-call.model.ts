@@ -205,7 +205,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     if (!tokenData || !minutes) {
       return false
     }
-    return minutes < tokenData.extraTimeMinutes
+    return minutes <= tokenData.extraTimeMinutes
   })
 
   forward({
@@ -334,7 +334,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       $callsVisibility,
       $self,
       $interlocutor,
-      $time
+      $time,
+      dashboardType: config.dashboard
     },
     methods: {
       play,

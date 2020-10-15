@@ -1,6 +1,6 @@
 import { $coachAccess } from "@/feature/user/user.model"
 import { routeNames } from "@/pages/route-names"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import styled from "styled-components"
 import * as React from "react"
 import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"

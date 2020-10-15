@@ -3,7 +3,7 @@ import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectio
 import { PhoneWithGirl } from "@/feature/coach-placeholder/right-images/PhoneWithGirl"
 import * as React from "react"
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { $coachHomeState } from "@/pages/coach/home/coach-home.model"
 import { Loader } from "@/components/spinner/Spinner"

@@ -2,19 +2,19 @@ import { createSupportChatModel } from "@/feature/support/create-support-chat.mo
 import { createChatMessages } from "@/feature/chat/view/content/messages/ChatMessages"
 import { Loader } from "@/components/spinner/Spinner"
 import { ChatContainer } from "@/feature/chat/view/content/ChatContainer"
-import { ChatMessageBox } from "@/feature/chat/view/content/ChatMessageBox"
+import { createChatMessageBox } from "@/feature/chat/view/content/message-box/ChatMessageBox"
 import React, { useEffect } from "react"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import styled from "styled-components"
 import { SupportChatHeader } from "@/feature/support/SupportChatHeader"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 
 export const createSupportChat = ($chatModule: ReturnType<typeof createSupportChatModel>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
+  const MessageBox = createChatMessageBox($chatModule.messageBox)
 
   return () => {
     const messagesFirstLoading = useStore($chatModule.$firstLoading)
-    const send = useEvent($chatModule.send)
 
     const mounted = useEvent($chatModule.mounted)
     const unmounted = useEvent($chatModule.reset)
@@ -35,7 +35,7 @@ export const createSupportChat = ($chatModule: ReturnType<typeof createSupportCh
               <ChatContainer>
                 <SupportChatHeader avatar={support?.avatar} hasUser={!!support} backLink={"/coach"} supportName={support?.name} />
                 <Messages />
-                <ChatMessageBox onSend={send} />
+                <MessageBox />
               </ChatContainer>
             </>
           )}

@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { CoachList } from "./content/CoachList"
 import { $coachesList, fetchCoachesListFx } from "@/pages/search/coaches-search.model"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { Spinner } from "@/components/spinner/Spinner"
 import { ResetFiltersButton } from "@/pages/search/content/filters/content/ResetFiltersButton"
 

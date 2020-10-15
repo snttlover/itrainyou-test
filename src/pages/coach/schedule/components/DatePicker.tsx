@@ -4,6 +4,7 @@ import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import React from "react"
 import styled from "styled-components"
+import { PickerDate } from "@/pages/coach/schedule/models/sessions.model"
 
 const Container = styled.div`
   position: relative;
@@ -33,13 +34,13 @@ export type DatePickerTypes = {
   onFocus?: (e: React.FocusEvent) => void
   onClick?: (e: React.MouseEvent) => void
   onBlur?: (e: React.FocusEvent) => void
-  value?: Date
+  value?: Date | null
 }
 
 export const DatePicker: React.FC<DatePickerTypes> = ({ placeholder, value, className, ...props }) => {
   return (
     <Container className={className}>
-      <StyledInput withoutBorder value={date(value)?.format("DD-MM-YYYY") || ""} placeholder={placeholder} {...props} />
+      <StyledInput withoutBorder value={value ? date(value)?.format("DD-MM-YYYY") : ""} placeholder={placeholder} {...props} />
       <CalendarIcon onClick={props.onClick} />
     </Container>
   )

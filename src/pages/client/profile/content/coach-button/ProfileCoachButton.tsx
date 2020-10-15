@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { Close, Dialog } from "@/components/dialog/Dialog"
 import { Button } from "@/components/button/normal/Button"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import {
   $profileCoachButtonVisibility, $userHasCoach, becomeCoach,
   changeProfileCoachButtonVisibility, reset

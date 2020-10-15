@@ -6,7 +6,7 @@ import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { UserTypeCard } from "@/pages/auth/pages/signup/content/step-2/UserTypeCard"
 import { userTypeChanged, $userData } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 

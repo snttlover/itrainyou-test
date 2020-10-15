@@ -1,5 +1,5 @@
 import { deletedCard } from "@/pages/client/wallet/cards/cards.model"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import styled from "styled-components"
 import React from "react"
 

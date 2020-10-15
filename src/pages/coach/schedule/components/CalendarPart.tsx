@@ -12,10 +12,18 @@ import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionMod
 import { RemoveSessionsDateRangePicker } from "@/pages/coach/schedule/components/RemoveSessionsDateRangePicker"
 import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"
 import { setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
-import { CalendarGate, loadSessionsFx, removeSessionsRange } from "@/pages/coach/schedule/models/sessions.model"
+import {
+  $deleteButtonIsDisabled,
+  $pickedDeleteRange,
+  CalendarGate,
+  changePickedDeleteRange,
+  DateArray,
+  loadSessionsFx,
+  removeSessionsRange,
+} from "@/pages/coach/schedule/models/sessions.model"
 import { Description, Title } from "@/pages/coach/schedule/Schedule"
 import { Dayjs } from "dayjs"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
 
@@ -91,7 +99,10 @@ export const CalendarPart = () => {
   const _setDate = useEvent(setAddSessionDate)
   const _removeSessionsRange = useEvent(removeSessionsRange)
   const _setCurrentMonth = useEvent(setCurrentMonth)
-  const [range, setRange] = useState<[Dayjs, Dayjs]>([date(), date()])
+
+  const range = useStore($pickedDeleteRange)
+  const setRange = useEvent(changePickedDeleteRange)
+  const disabledDelete = useStore($deleteButtonIsDisabled)
 
   useGate(CalendarGate)
 
@@ -103,10 +114,12 @@ export const CalendarPart = () => {
   return (
     <>
       <Title>Календарь</Title>
-      <Description>Удалить промежуток в календаре</Description>
+      <Description>Планируете отпуск? Отмените сессии на промежутке дат</Description>
       <RemoveDateRangeContainer>
         <StyledDateRangePicker range={range} rangeChanged={setRange} />
-        <RemoveButton onClick={() => _removeSessionsRange(range)}>Удалить</RemoveButton>
+        <RemoveButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
+          Удалить
+        </RemoveButton>
       </RemoveDateRangeContainer>
       <CalendarContainer>
         <MobileCalendar>

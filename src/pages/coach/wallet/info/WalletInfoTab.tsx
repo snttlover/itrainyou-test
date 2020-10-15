@@ -3,7 +3,7 @@ import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { changeShowWithdrawDialog } from "@/pages/coach/wallet/withdraw-dialog/withdraw.model"
 import { $amount, $frozenAmount, $isLoading } from "./info.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { WalletAmount } from "./WalletAmount"
 import React from "react"
 import styled from "styled-components"
@@ -34,13 +34,15 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `
 
-const AddFundsButton = styled(Button)`
+const WithdrawButton = styled(Button)`
   position: absolute;
   right: 40px;
   top: 44px;
+  width: 182px;
   ${MediaRange.lessThan("mobile")`
     position: unset;
     margin: 100px auto 0;
+    width: 160px;
   `}
 `
 
@@ -53,10 +55,16 @@ export const WalletInfoTab = () => {
 
   return (
     <WalletInfoContainer>
-      <StyledWalletAmount title='Доступно' amount={amount} description='qweqwe asd asd Lorem ipsum trali vali' />
-      <StyledWalletAmount title='Ваши тренинги забронировали на' amount={frozenAmount} description={"asdasdasd"} />
+      <StyledWalletAmount title='Доступно' amount={amount} description='Доступные для вывода средства' />
+      <StyledWalletAmount
+          title='Ваши тренинги забронировали на'
+          amount={frozenAmount}
+          description={"Данные средства будут вам перечислены при успешном завершении запланированных сессий"}
+      />
       <ButtonContainer>
-        <AddFundsButton onClick={() => _changeShowWithdrawDialog(true)}>Вывести</AddFundsButton>
+        <WithdrawButton data-slim onClick={() => _changeShowWithdrawDialog(true)}>
+          Вывести
+        </WithdrawButton>
       </ButtonContainer>
       {isLoading && <Spinner />}
     </WalletInfoContainer>

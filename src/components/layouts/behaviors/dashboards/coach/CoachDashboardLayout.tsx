@@ -1,7 +1,7 @@
 import { changeDashboardType } from "@/feature/dashboard/dashboard"
 import { withFullRegister } from "@/feature/user/with-full-register"
 import { routeNames } from "@/pages/route-names"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { withProtect } from "@/feature/user/with-protect"

@@ -5,6 +5,7 @@ import React, { useRef, useState } from "react"
 import ReactIdSwiper, { SwiperInstance, SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
 import Swiper, { SwiperOptions } from "swiper"
+import { Loader } from "@/components/spinner/Spinner"
 
 const Layout = styled.div`
   position: fixed;
@@ -131,17 +132,23 @@ const SliderWrapper = styled.div`
     display: flex;
     align-items: center;
   }
+  &[data-is-first-image="true"] .photo-viewer__prev-button {
+    opacity: 0;
+  }
 `
 
 type ImagesViewModalProps = {
   photos: string[]
   initialSlide: number
   close: () => void
+  loadMore?: () => void
+  count?: number
 }
 
-export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModalProps) => {
+export const ImagesViewModal = ({ photos, initialSlide, close, loadMore, count }: ImagesViewModalProps) => {
   const swiper = useRef<SwiperRefNode>(null)
   const [currentIndex, setCurrentIndex] = useState(initialSlide)
+  const [loading, changeLoading] = useState(false)
 
   const swiperOptions: SwiperOptions = {
     navigation: {
@@ -157,6 +164,25 @@ export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModal
     },
   }
 
+  const setLoading = (fetching: boolean) => {
+    if (fetching !== loading) {
+      changeLoading(fetching)
+    }
+  }
+
+  if (!photos[currentIndex] && loadMore) {
+    loadMore()
+  }
+  setLoading(!!(!photos[currentIndex] && loadMore))
+
+  const checkNext = () => {
+    if (count && count !== currentIndex + 1 && !photos[currentIndex + 1]) {
+      setCurrentIndex(currentIndex + 1)
+      setLoading(true)
+      loadMore && loadMore()
+    }
+  }
+
   return (
     <Modal>
       <Layout>
@@ -165,20 +191,34 @@ export const ImagesViewModal = ({ photos, initialSlide, close }: ImagesViewModal
           <Cross onClick={close} />
         </Header>
         <Content>
-          <CounterText>
-            {currentIndex + 1} из {photos.length}
-          </CounterText>
-          <SliderWrapper>
-            <ArrowButton className='photo-viewer__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
-            <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} ref={swiper}>
-              {photos.map(src => (
-                <PhotoWrapper>
-                  <Photo key={src} src={src} />
-                </PhotoWrapper>
-              ))}
-            </ReactIdSwiper>
-            <ArrowButton className='photo-viewer__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
-          </SliderWrapper>
+          {loading && <Loader />}
+          {!loading && (
+            <>
+              <CounterText>
+                {currentIndex + 1} из {count || photos.length}
+              </CounterText>
+              <SliderWrapper data-is-first-image={currentIndex === 0}>
+                <ArrowButton
+                  className='photo-viewer__prev-button'
+                  onClick={() => swiper.current?.swiper?.slidePrev()}
+                />
+                <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} ref={swiper}>
+                  {photos.map((src, index) => (
+                    <PhotoWrapper>
+                      <Photo key={index} src={src} />
+                    </PhotoWrapper>
+                  ))}
+                </ReactIdSwiper>
+                <ArrowButton
+                  className='photo-viewer__next-button'
+                  onClick={() => {
+                    checkNext()
+                    swiper.current?.swiper?.slideNext()
+                  }}
+                />
+              </SliderWrapper>
+            </>
+          )}
         </Content>
       </Layout>
     </Modal>

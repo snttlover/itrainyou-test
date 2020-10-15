@@ -37,7 +37,7 @@ export const createPagination = <ListItemType>(
   const reset = createEvent()
 
   const loadMoreFx = createEffect({
-    handler: ({ page, query }: { page: number; query: any }) => config.fetchMethod({ page, pageSize: 12, ...query }),
+    handler: ({ page, query }: { page: number; query: any }) => config.fetchMethod({ page, pageSize: 30, ...query }),
   })
 
   const $itemsCount = createStore<number>(Infinity)

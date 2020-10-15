@@ -4,6 +4,7 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { Icon } from "@/components/icon/Icon"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
+import { Link } from "react-router-dom"
 
 type UserHeaderProps = {
   userId: number | null
@@ -14,14 +15,17 @@ type UserHeaderProps = {
   sessionsCount: number
   onWrite: (id: number | null) => void
   hasUser: boolean
+  userLink: string
 }
 
 export const UserHeader = (props: UserHeaderProps) => (
   <Container>
     <UserInfo>
-      <StyledAvatar src={props.userAvatar} />
+      <Link to={props.userLink}>
+        <StyledAvatar src={props.userAvatar} />
+      </Link>
       <Info>
-        <Name>{props.hasUser ? props.userName : `Клиентов нет`}</Name>
+        <Name to={props.userLink}>{props.hasUser ? props.userName : `Клиентов нет`}</Name>
         {!!props.rating && (
           <Rating>
             <RatingIcon />
@@ -67,7 +71,8 @@ const Info = styled.div`
   flex: 1;
 `
 
-const Name = styled.div`
+const Name = styled(Link)`
+  text-decoration: none;
   font-family: Roboto Slab;
   font-size: 20px;
   line-height: 26px;

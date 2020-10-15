@@ -3,16 +3,18 @@ import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
 import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect, restore } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
-import { $isLoggedIn, $userData } from "@/feature/user/user.model"
+import { $isFullRegistered, $isLoggedIn, $userData } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
-import { create } from "domain"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
+import { condition } from "patronum"
+import { runInScope } from "@/scope"
 
 type SendSocketChatMessage = {
   chat: number
-  text: string
+  text?: string
+  image?: string
 }
 
 type ReadChatMessages = {
@@ -49,6 +51,10 @@ export type WriteChatMessageDone = {
   data: ChatMessage
 }
 
+type PongMessage = {
+  type: "PONG"
+}
+
 export type SessionStarted = {
   type: `SESSION_STARTED`
   data: DashboardSession
@@ -68,13 +74,13 @@ type SocketMessageReceive =
   | ReadNotificationsDone
   | SessionStarted
 
-type UserType = "client" | "coach"
+type UserType = "client" | "coach" | "admin" | "support"
 
-const getChatSocketLink = (type: UserType, token: string) => {
-  return `${config.WS_HOST}/ws/chat/${type}/?token=${token}`
+const getChatSocketLink = (type: UserType, token: string, query?: any) => {
+  return `${config.WS_HOST}/ws/chat/${type}/?${new URLSearchParams({ token, ...query }).toString()}`
 }
 
-export const createChatsSocket = (userType: UserType) => {
+export const createChatsSocket = (userType: UserType, query?: any) => {
   const socket = createSocket()
 
   const onMessage = createEvent<WriteChatMessageDone>()
@@ -91,7 +97,8 @@ export const createChatsSocket = (userType: UserType) => {
     $isLoggedIn,
     $isClient,
     $userData,
-    (l, c, user) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved)
+    $isFullRegistered,
+    (l, c, user, full) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved) && full
   )
 
   const connect = guard({
@@ -204,7 +211,7 @@ export const createChatsSocket = (userType: UserType) => {
   sample({
     source: $token,
     clock: merge([$needConnect, registerUserFx.done]),
-    fn: token => getChatSocketLink(userType, token),
+    fn: token => getChatSocketLink(userType, token, query),
     target: connect,
   })
 
@@ -233,13 +240,39 @@ export const createChatsSocket = (userType: UserType) => {
         clearInterval(pingPongInterval)
         pingPongInterval = null
       }
-      pingPongInterval = setInterval(ping, 5000)
+      pingPongInterval = setInterval(() => runInScope(ping), 5000)
     },
   })
 
   forward({
     from: socket.events.onConnect.map(() => {}),
     to: pingPongFx,
+  })
+
+  const changePonged = createEvent<boolean>()
+  const $wasPonged = restore(changePonged, true)
+
+  guard({
+    source: socket.events.onMessage,
+    filter: (payload: PongMessage) => payload.type === "PONG",
+    target: changePonged.prepend(() => true),
+  })
+
+  condition({
+    source: ping,
+    if: $wasPonged.map(ponged => !ponged),
+    then: socket.methods.reconnect,
+    else: changePonged.prepend(() => false),
+  })
+
+  forward({
+    from: socket.methods.reconnect,
+    to: changePonged.prepend(() => true),
+  })
+
+  forward({
+    from: socket.events.onConnect,
+    to: changePonged.prepend(() => true),
   })
 
   return {

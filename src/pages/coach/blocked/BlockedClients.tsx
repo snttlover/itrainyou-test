@@ -13,7 +13,7 @@ import {
   unrestrictClientFx,
 } from "@/pages/coach/blocked/blocked.model"
 import { BlockedClient } from "@/pages/coach/blocked/BlockedClient"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
 
@@ -60,7 +60,7 @@ type BlockedClientsListProps = {
 
 const BlockedClientsList = ({ clients, ban, unban }: BlockedClientsListProps) => (
   <>
-    {clients.length === 0 && <Placeholder>Вы никого не банили</Placeholder>}
+    {clients.length === 0 && <Placeholder>У вас нет заблокированных клиентов</Placeholder>}
     {clients.map(client => (
       <BlockedClient
         key={client.id}
@@ -91,6 +91,10 @@ const Container = styled.div`
 
 const Content = styled.div`
   padding: 16px;
+
+  ${MediaRange.lessThan("mobile")`
+    padding: 16px 0;
+  `}
 `
 
 const Description = styled.div`
@@ -100,7 +104,12 @@ const Description = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #5b6670;
-  margin: 0 16px;
+
+  ${MediaRange.lessThan("mobile")`
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0 16px;
+  `}
 `
 
 const Placeholder = styled.div`

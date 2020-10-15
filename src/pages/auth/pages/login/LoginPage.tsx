@@ -5,7 +5,7 @@ import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { LoginForm } from "@/pages/auth/pages/login/content/LoginForm"
 import { WhiteContainer } from "@/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/pages/auth/components/CenterFormContainer"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import { resetLoginForm } from "@/pages/auth/pages/login/login.model"
 import { useEffect } from "react"
 
