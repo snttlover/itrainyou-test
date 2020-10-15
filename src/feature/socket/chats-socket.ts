@@ -3,7 +3,7 @@ import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
 import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect, restore } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
-import { $isLoggedIn, $userData } from "@/feature/user/user.model"
+import { $isFullRegistered, $isLoggedIn, $userData } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
@@ -97,7 +97,8 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     $isLoggedIn,
     $isClient,
     $userData,
-    (l, c, user) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved)
+    $isFullRegistered,
+    (l, c, user, full) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved) && full
   )
 
   const connect = guard({

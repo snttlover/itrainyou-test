@@ -21,7 +21,7 @@ export const $userData = createStore<UserData>({ client: null, coach: null })
   .on([setUserData, getMyUserFx.doneData.map(data => keysToCamel(data.data))], (state, payload) => payload)
   .reset(logout)
 
-export const $isFullRegistered = $userData.map(userData => userData.client || userData.coach)
+export const $isFullRegistered = $userData.map(userData => !!(userData.client || userData.coach))
 
 export const $coachAccess = $userData.map(userData => ({
   isApproved: userData.coach?.isApproved,
