@@ -3,7 +3,7 @@ import styled from "styled-components"
 import * as React from "react"
 import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
 import { MediaRange } from "@/lib/responsive/media"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { clientChatsSocket } from "@/feature/socket/chats-socket"
 
 const ItemsWrapper = styled.div`

@@ -13,7 +13,7 @@ import {
   unrestrictClientFx,
 } from "@/pages/coach/blocked/blocked.model"
 import { BlockedClient } from "@/pages/coach/blocked/BlockedClient"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
 

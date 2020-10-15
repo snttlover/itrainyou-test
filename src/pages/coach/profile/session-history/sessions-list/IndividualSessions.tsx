@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { IndividualSessionItem } from "./IndividualSessionItem"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEvent, useGate, useList, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useList, useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import SimpleBar from "simplebar-react"
 import InfiniteScroll from "react-infinite-scroll-component"

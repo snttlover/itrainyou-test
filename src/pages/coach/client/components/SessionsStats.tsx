@@ -1,7 +1,7 @@
 import { $clientData } from "@/pages/coach/client/client-page.model"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import * as React from "react"
 
 const Container = styled.div`

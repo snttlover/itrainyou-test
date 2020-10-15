@@ -51,7 +51,7 @@ forward({
   to: [toasts.remove, toasts.add],
 })
 
-export const $isLoading = some(true, [loadCardsFx.pending, deleteCardFx.pending])
+export const $isLoading = some({ predicate: true, stores: [loadCardsFx.pending, deleteCardFx.pending] })
 
 const $cards = restore<CardResponse[]>(
   loadCardsFx.doneData.map(data => data.results),

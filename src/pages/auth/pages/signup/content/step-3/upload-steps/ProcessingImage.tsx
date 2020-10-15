@@ -1,7 +1,7 @@
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { MediaRange } from "@/lib/responsive/media"
 import { uploadImage } from "@/pages/auth/pages/signup/content/step-3/upload-modal.model"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"

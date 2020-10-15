@@ -2,7 +2,7 @@ import { navigateReplace } from "@/feature/navigation"
 import { $isFullRegistered, $isLoggedIn } from "@/feature/user/user.model"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { routeNames } from "@/pages/route-names"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 
 export const withFullRegister = (Child: React.ComponentType) => {

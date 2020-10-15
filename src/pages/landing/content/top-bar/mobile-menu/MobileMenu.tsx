@@ -7,7 +7,7 @@ import { Input } from "@/components/input/Input"
 import { Categories, StyledCategoryCheckbox } from "@/pages/landing/content/top-bar/categories-picker/Categories"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import {
   $mobileMenuVisibility,
   changeMobileMenuVisibility

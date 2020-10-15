@@ -113,10 +113,10 @@ forward({
 
 sample({
   clock: merge([
-    debounce(d30Changed, 500),
-    debounce(d45Changed, 500),
-    debounce(d60Changed, 500),
-    debounce(d90Changed, 500),
+    debounce({ source: d30Changed, timeout: 500 }),
+    debounce({ source: d45Changed, timeout: 500 }),
+    debounce({ source: d60Changed, timeout: 500 }),
+    debounce({ source: d90Changed, timeout: 500 }),
   ]),
   source: $prices,
   fn: (_, { name, value }: ChangePriceEvent) => ({ [name]: value }),

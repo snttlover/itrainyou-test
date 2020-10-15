@@ -1,7 +1,7 @@
 import { START } from "@/lib/effector"
 import { parseQueryString } from "@/lib/helpers/query"
 import { resetSearchQuery, pageLoaded, setSearchPageQuery, loadCoaches } from "@/pages/search/coaches-search.model"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import { useEffect } from "react"
 import * as React from "react"
 import { PageContainer } from "@/components/page-container/PageContainer"

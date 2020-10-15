@@ -1,5 +1,5 @@
 import React from "react"
-import { useEvent, useList, useStore } from "effector-react/ssr"
+import { useEvent, useList, useStore } from "effector-react"
 import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
 import styled from "styled-components"
 import { Close, Dialog } from "@/components/dialog/Dialog"

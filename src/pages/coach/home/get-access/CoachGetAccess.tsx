@@ -6,7 +6,7 @@ import {
   patchCoachDataFx,
   updateCoachData,
 } from "@/pages/coach/home/get-access/coach-get-access.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 

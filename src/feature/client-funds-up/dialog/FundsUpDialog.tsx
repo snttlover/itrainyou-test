@@ -23,7 +23,7 @@ import {
   saveCardChanged,
   $isTopUpLoading,
 } from "./fund-up.model"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react"
 import { Checkbox } from "@/components/checkbox/Checkbox"
 
 export const FundsUpDialog = () => {

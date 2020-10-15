@@ -4,7 +4,7 @@ import { CoachCard } from "@/components/coach-card/CoachCard"
 import * as React from "react"
 import styled from "styled-components"
 import { $coachesList } from "./model"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import bg from "../../assets/our-coaches-bg.svg"
 
 const OurCoachesContainer = styled.div`

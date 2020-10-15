@@ -1,7 +1,7 @@
 import { uploadMedia } from "@/lib/api/media"
 import { createEffectorField } from "@/lib/generators/efffector"
 import { phoneValidator, trimString } from "@/lib/validators"
-import { combine, createEffect, createEvent, createStore, createStoreObject, forward, restore } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -98,7 +98,7 @@ const $categoriesError = $selectedCategories.map(categories => {
 
 const $isCategoriesCorrect = $categoriesError.map(value => !value)
 
-export const $form = createStoreObject({
+export const $form = combine({
   education: $education,
   workExperience: $workExperience,
   description: $description,

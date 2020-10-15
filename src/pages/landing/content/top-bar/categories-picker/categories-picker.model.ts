@@ -1,4 +1,4 @@
-import { combine, createEvent, forward, restore, sample } from "effector-root"
+import { combine, createEvent, forward, restore, sample, Event } from "effector-root"
 import { $categoriesList as $categories } from "@/feature/categories/categories.store"
 import { addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
 import { splitMap } from "patronum"
@@ -15,8 +15,8 @@ export const $categoriesList = combine([$categories, $selectedCategories], ([cat
 export const changeCategoriesPickerVisibility = createEvent<boolean>()
 export const $categoriesPickerVisibility = restore(changeCategoriesPickerVisibility, false)
 
-const { remove, add } = splitMap(
-  sample({
+const { remove, add } = splitMap({
+  source: sample({
     source: $selectedCategories,
     clock: toggleCategorySelection,
     fn: (categories, catId) => {
@@ -24,12 +24,12 @@ const { remove, add } = splitMap(
 
       return [...categories, catId]
     },
-  }),
-  {
-    remove: categories => (categories.length === 0 ? (["categories"] as ["categories"]) : undefined),
-    add: categories => (categories.length > 0 ? { categories: categories.join(",") } : undefined),
-  }
-)
+  }) as Event<any>,
+  cases: {
+    remove: (categories: number[]) => (categories.length === 0 ? (["categories"] as ["categories"]) : undefined),
+    add: (categories: number[]) => (categories.length > 0 ? { categories: categories.join(",") } : undefined),
+  },
+})
 
 forward({
   from: add,

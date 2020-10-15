@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled, { css } from "styled-components"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { $coachesList, $searchPageQuery, addSearchPageQuery } from "@/pages/search/coaches-search.model"
 import { declOfNum, DeclOfNumListType } from "@/lib/formatting/numerals"
 import { CoachSortingType } from "@/lib/api/coach"

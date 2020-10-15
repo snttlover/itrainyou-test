@@ -6,10 +6,10 @@ import { Router } from "react-router-dom"
 import { history } from "@/feature/navigation"
 import { Application } from "./application"
 
-restoreState().then(scope => {
+restoreState().then(() => {
   ReactDOM.hydrate(
     <Router history={history!}>
-      <Application root={scope} />
+      <Application />
     </Router>,
     document.getElementById("root")
   )

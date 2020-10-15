@@ -6,7 +6,7 @@ import { DashboardMenuMobileHeader } from "@/components/layouts/behaviors/dashbo
 import { DashboardMenuContainer } from "@/components/layouts/behaviors/dashboards/common/menu/MenuContainer"
 import * as React from "react"
 import { ProfileHeader } from "@/components/layouts/behaviors/dashboards/client/menu/content/ProfileHeader"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { blueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import { CoachMenuItems } from "@/components/layouts/behaviors/dashboards/coach/menu/content/CoachMenuItems"
 import { MediaRange } from "@/lib/responsive/media"

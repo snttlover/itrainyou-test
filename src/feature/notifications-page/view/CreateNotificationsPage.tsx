@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { createNotificationsPageModel } from "@/feature/notifications-page/model/create-notifications-page.model"
 import { createInfinityScroll } from "@/feature/pagination"
-import { useEvent, useList, useStore } from "effector-react/ssr"
+import { useEvent, useList, useStore } from "effector-react"
 import { LeftPageContainer } from "@/pages/common/settings/content/LeftPageContainer"
 import styled from "styled-components"
 import { NotificationSwitcher } from "@/feature/notifications-page/view/content/NotificationSwitcher"

@@ -4,7 +4,7 @@ import { GeneralSettingsForm } from "./content/general-settings-form/GeneralSett
 import { PasswordForm } from "./content/PasswordForm"
 import { MediaRange } from "@/lib/responsive/media"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import { LeftPageContainer } from "@/pages/common/settings/content/LeftPageContainer"
 import { ContentContainer } from "@/components/layouts/ContentContainer"

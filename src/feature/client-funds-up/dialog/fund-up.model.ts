@@ -65,7 +65,7 @@ export const $fundUpErrors = combine({
   amount: $amountError,
 })
 
-export const $canSubmit = every(true, [$isAmountCorrect])
+export const $canSubmit = every({ predicate: true, stores: [$isAmountCorrect] })
 
 const startTopUpFx = createEffect({
   handler: async (form: InferStoreType<typeof $fundUpForm>) => {

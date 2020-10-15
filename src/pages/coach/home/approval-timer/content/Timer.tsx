@@ -1,5 +1,5 @@
 import { $datetimeLeft } from "@/pages/coach/home/coach-home.model"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"

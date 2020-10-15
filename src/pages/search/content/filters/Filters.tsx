@@ -9,7 +9,7 @@ import {
   $mobileFiltersVisibility,
   changeMobileFiltersVisibility,
 } from "@/pages/search/content/mobile-tabs/mobile-tabs.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import close from "./images/close.svg"
 import SimpleBar from "simplebar-react"
 import { SessionTimeFilter } from "./content/session-time-filter/SessionTimeFilter"

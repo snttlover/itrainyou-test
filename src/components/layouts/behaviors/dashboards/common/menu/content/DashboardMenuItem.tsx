@@ -4,7 +4,7 @@ import { Icon, IconName } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { changeBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import { Link, useLocation } from "react-router-dom"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 
 const MenuItemIcon = styled(Icon).attrs(props => ({
   name: props.name,

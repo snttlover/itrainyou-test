@@ -91,7 +91,7 @@ export const loadCoaches = createEvent()
 
 sample({
   source: $searchPageQuery,
-  clock: throttle(loadCoaches, 100),
+  clock: throttle({ source: loadCoaches, timeout: 100 }),
   target: fetchCoachesListFx,
 })
 

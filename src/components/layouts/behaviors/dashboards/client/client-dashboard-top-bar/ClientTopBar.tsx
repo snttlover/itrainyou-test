@@ -6,7 +6,7 @@ import { CategoriesPicker } from "@/pages/landing/content/top-bar/categories-pic
 import { Search } from "@/pages/landing/content/top-bar/search/Search"
 import { ClientTopBarIconButtons } from "@/components/layouts/behaviors/dashboards/client/client-dashboard-top-bar/ClientTopBarIconButtons"
 import { Logo } from "@/pages/landing/content/top-bar/logo/Logo"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { coachChatsSocket } from "@/feature/socket/chats-socket"
 
 const StyledLogo = styled(Logo)`

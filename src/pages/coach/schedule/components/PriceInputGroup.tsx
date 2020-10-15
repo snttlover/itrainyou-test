@@ -1,7 +1,7 @@
 import { FormItem } from "@/components/form-item/FormItem"
 import { PriceInput } from "@/pages/coach/schedule/components/PriceInput"
 import { $pricesWithFee, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings.model"
-import { useEvent, useStoreMap } from "effector-react/ssr"
+import { useEvent, useStoreMap } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 

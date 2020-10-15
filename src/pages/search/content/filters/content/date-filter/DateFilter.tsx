@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { RadioGroup, RadioOption } from "@/components/radio/Radio"
 import { useEffect, useState } from "react"
 import { Calendar, CalendarDateType } from "@/components/calendar/Calendar"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import arrowImage from "./images/arrow.svg"
 import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
 import {

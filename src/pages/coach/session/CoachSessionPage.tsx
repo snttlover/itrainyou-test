@@ -11,7 +11,7 @@ import {
 } from "@/pages/client/session/content/session-page-content/session-info/SessionInfo"
 import { coachSessionPage } from "@/pages/coach/session/coach-session-page"
 import { useParams } from "react-router-dom"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { SessionsHistory } from "@/pages/client/session/content/session-page-content/session-history/SessionsHistory"

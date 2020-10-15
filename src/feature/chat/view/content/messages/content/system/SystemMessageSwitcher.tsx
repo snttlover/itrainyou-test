@@ -11,7 +11,7 @@ import {
   coachSessionRequests,
   createSessionRequestsModule,
 } from "@/feature/session-request/createSessionRequestsModule"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { Loader, Spinner } from "@/components/spinner/Spinner"
 import {
   $revocated,

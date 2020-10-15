@@ -4,7 +4,7 @@ import { CoachInformation } from "@/feature/coach-get-access/components/CoachInf
 import { Step4CoachLayout } from "@/pages/auth/pages/signup/content/step-4/coach/Step4CoachLayout"
 import { step4CoachMounted } from "@/pages/auth/pages/signup/content/step-4/step-4-coach.model"
 import { $userData, registerUserFx, skipCoach, userRegistered } from "@/pages/auth/pages/signup/signup.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { useEffect } from "react"
 import * as React from "react"
 

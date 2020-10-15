@@ -1,6 +1,6 @@
 import { $lastUrlServerNavigation } from "@/feature/navigation"
-import { loadUserData } from "@/feature/user/user.model"
-import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { Provider } from "effector-react/ssr"
 import express from "express"
 import serialize from "serialize-javascript"
 
@@ -12,7 +12,7 @@ import { ServerStyleSheet } from "styled-components"
 import cookieParser from "cookie-parser"
 
 import { fork, serialize as effectorSerialize, allSettled } from "effector/fork"
-import { root, Event, forward, guard, sample } from "effector-root"
+import { root, Event, forward, sample } from "effector-root"
 import { config } from "./config"
 
 import { getStart, START } from "./lib/effector"
@@ -26,20 +26,6 @@ const serverStarted = root.createEvent<{
 }>()
 
 const requestHandled = serverStarted.map(({ req, isSSR }) => ({ req, isSSR }))
-
-const tokenCookie = requestHandled.map(({ req }) => req.cookies[TOKEN_COOKIE_KEY] as string)
-
-guard({
-  source: tokenCookie,
-  filter: token => !!token,
-  target: changeToken,
-})
-
-guard({
-  source: changeToken,
-  filter: token => !!token,
-  target: loadUserData,
-})
 
 const routesMatched = requestHandled.map(({ req, isSSR }) => ({
   query: req.query as Record<string, string>,
@@ -99,18 +85,19 @@ export const server = express()
   .get("/*", async (req: express.Request, res: express.Response) => {
     const currentRoutes = matchRoutes(ROUTES, req.url.split("?")[0])
     const isSSR = currentRoutes.reduce((_, route) => route.route.ssr, false)
-    const scope = fork(root)
+    const hasCookie = !!req.cookies[TOKEN_COOKIE_KEY]
 
-    try {
-      await allSettled(serverStarted, {
-        scope,
-        params: { req, res, isSSR },
-      })
-    } catch (error) {
-      console.log(error)
-    }
+    if (isSSR && !hasCookie) {
+      const scope = fork(root)
 
-    if (isSSR) {
+      try {
+        await allSettled(serverStarted, {
+          scope,
+          params: { req, res, isSSR },
+        })
+      } catch (error) {
+        console.log(error)
+      }
       if (res.statusCode >= 300 && res.statusCode < 400) {
         return
       }
@@ -120,12 +107,14 @@ export const server = express()
 
       const jsx = sheet.collectStyles(
         <StaticRouter context={context} location={req.url}>
-          <Application root={scope} />
+          <Provider value={scope}>
+            <Application />
+          </Provider>
         </StaticRouter>
       )
 
       const stream = sheet.interleaveWithNodeStream(ReactDOMServer.renderToNodeStream(jsx))
-      const storesValues = effectorSerialize(scope, { ignore: [$token] })
+      const storesValues = effectorSerialize(scope, { ignore: [$token], onlyChanges: true })
 
       res.write(htmlStart(assets.client.css, assets.client.js))
       stream.pipe(res, { end: false })
@@ -134,9 +123,8 @@ export const server = express()
         sheet.seal()
       })
     } else {
-      const storesValues = effectorSerialize(scope, { ignore: [$token] })
       res.write(htmlStart(assets.client.css, assets.client.js))
-      res.end(htmlEnd(storesValues))
+      res.end(htmlEnd({}))
     }
   })
 
