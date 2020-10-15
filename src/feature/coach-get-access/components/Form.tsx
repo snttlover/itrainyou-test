@@ -14,7 +14,7 @@ import {
   photoRemoved,
 } from "@/feature/coach-get-access/coach-get-access.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react"
 import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"

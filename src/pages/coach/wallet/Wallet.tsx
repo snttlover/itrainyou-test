@@ -5,7 +5,7 @@ import { WithdrawDialog } from "@/pages/coach/wallet/withdraw-dialog/WithdrawDia
 import { WalletHistoryTab } from "./history/WalletHistoryTab"
 import { CardsTabGate } from "./cards/cards.model"
 import { InfoTabGate } from "./info/info.model"
-import { useGate } from "effector-react/ssr"
+import { useGate } from "effector-react"
 import { WalletsCardsTab } from "./cards/WalletCardsTab"
 import { WalletInfoTab } from "./info/WalletInfoTab"
 import React, { useState } from "react"

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { createChatListModule } from "@/feature/chats-list/modules/chat-list"
-import { useEvent, useList, useStore } from "effector-react/ssr"
+import { useEvent, useList, useStore } from "effector-react"
 import { createInfinityScroll } from "@/feature/pagination"
 import { MediaRange } from "@/lib/responsive/media"
 import { ChatsSearch } from "@/feature/chats-list/view/components/search/ChatsSearch"

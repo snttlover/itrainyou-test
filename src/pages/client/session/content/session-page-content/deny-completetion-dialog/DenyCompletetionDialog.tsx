@@ -1,5 +1,5 @@
 import React from "react"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import {
   $currentDenyCompletationProblem,
   $denyCompletationDialogVisibility,
@@ -14,7 +14,7 @@ import {
 } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
 import { Dialog } from "@/components/dialog/Dialog"
 import styled from "styled-components"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import { Textarea } from "@/components/textarea/Textarea"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { Avatar } from "@/components/avatar/Avatar"

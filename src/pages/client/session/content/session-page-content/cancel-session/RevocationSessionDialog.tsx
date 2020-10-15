@@ -5,7 +5,7 @@ import { Textarea } from "@/components/textarea/Textarea"
 import { Avatar } from "@/components/avatar/Avatar"
 import { RatingPicker } from "@/components/rating/RatingPicker"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import {
   $rating,

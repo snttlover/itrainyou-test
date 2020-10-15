@@ -4,7 +4,7 @@ import styled, { css } from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { useStore, useEvent } from "effector-react/ssr"
+import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {

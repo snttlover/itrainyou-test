@@ -1,6 +1,6 @@
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import styled from "styled-components"
 import { Button } from "@/components/button/normal/Button"
 import { FeatureItem } from "@/feature/coach-placeholder/FeatureItem"

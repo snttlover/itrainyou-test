@@ -10,7 +10,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
-import { useGate, useStore } from "effector-react/ssr"
+import { useGate, useStore } from "effector-react"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 

@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { $coachesList } from "@/pages/search/coaches-search.model"
 import { CoachCard } from "@/components/coach-card/CoachCard"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 
 const Container = styled.div``
 

@@ -2,7 +2,7 @@ import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { MediaRange } from "@/lib/responsive/media"
 import { TabsContainer } from "@/pages/coach/profile/common/TabsContainer"
-import { useGate, useStore } from "effector-react/ssr"
+import { useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { ProfileTabs } from "../common/ProfileTabs"

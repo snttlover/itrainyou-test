@@ -5,7 +5,7 @@ import { PersonalChatHeader } from "./content/headers/personal/PersonalChatHeade
 import { createChatMessages } from "./content/messages/ChatMessages"
 import { createChatMessageBox } from "./content/message-box/ChatMessageBox"
 import { createChatModule } from "@/feature/chat"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import { useParams } from "react-router-dom"
 import { NotFound } from "@/feature/not-found/components/NotFound"

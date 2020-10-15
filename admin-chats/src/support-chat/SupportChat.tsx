@@ -3,7 +3,7 @@ import { createChatMessages } from "@/feature/chat/view/content/messages/ChatMes
 import { Loader } from "@/components/spinner/Spinner"
 import { ChatContainer } from "@/feature/chat/view/content/ChatContainer"
 import React, { useEffect } from "react"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import styled from "styled-components"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { ClientTheme } from "@/components/layouts/themes"

@@ -1,4 +1,4 @@
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { Checkbox } from "@/components/checkbox/Checkbox"

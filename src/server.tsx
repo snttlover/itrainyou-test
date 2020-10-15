@@ -1,6 +1,6 @@
 import { $lastUrlServerNavigation } from "@/feature/navigation"
-import { loadUserData } from "@/feature/user/user.model"
-import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { Provider } from "effector-react/ssr"
 import express from "express"
 import serialize from "serialize-javascript"
 
@@ -12,7 +12,7 @@ import { ServerStyleSheet } from "styled-components"
 import cookieParser from "cookie-parser"
 
 import { fork, serialize as effectorSerialize, allSettled } from "effector/fork"
-import { root, Event, forward, guard, sample } from "effector-root"
+import { root, Event, forward, sample } from "effector-root"
 import { config } from "./config"
 
 import { getStart, START } from "./lib/effector"
@@ -107,12 +107,14 @@ export const server = express()
 
       const jsx = sheet.collectStyles(
         <StaticRouter context={context} location={req.url}>
-          <Application root={scope} />
+          <Provider value={scope}>
+            <Application />
+          </Provider>
         </StaticRouter>
       )
 
       const stream = sheet.interleaveWithNodeStream(ReactDOMServer.renderToNodeStream(jsx))
-      const storesValues = effectorSerialize(scope, { ignore: [$token] })
+      const storesValues = effectorSerialize(scope, { ignore: [$token], onlyChanges: true })
 
       res.write(htmlStart(assets.client.css, assets.client.js))
       stream.pipe(res, { end: false })

@@ -4,7 +4,7 @@ import { Icon } from "@/components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
 import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import SimpleBar from "simplebar-react"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 type MessageBoxUploadProps = {

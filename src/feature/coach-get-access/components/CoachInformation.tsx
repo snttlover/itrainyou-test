@@ -14,7 +14,7 @@ import { CategoryCard } from "@/feature/coach-get-access/components/CategoryCard
 import { CheckStep } from "@/feature/coach-get-access/components/check-step/CheckStep"
 import { Form } from "@/feature/coach-get-access/components/Form"
 import { UploadVideo } from "@/feature/coach-get-access/components/UploadVideo"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import study from "./check-step/study.svg"

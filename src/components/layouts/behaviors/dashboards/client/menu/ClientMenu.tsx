@@ -8,7 +8,7 @@ import { ClientMenuItems } from "./content/ClientMenuItems"
 import { CoachLink } from "@/components/layouts/behaviors/dashboards/client/menu/content/CoachLink"
 import { DesktopDashboardMenuLogo } from "@/components/layouts/behaviors/dashboards/common/menu/content/DesktopDashboardMenuLogo"
 import { blueLayoutMobileMenuVisibility } from "./blue-layout.mobile-menu"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { DashboardMenuContainer } from "@/components/layouts/behaviors/dashboards/common/menu/MenuContainer"
 import { $userData } from "@/feature/user/user.model"
 

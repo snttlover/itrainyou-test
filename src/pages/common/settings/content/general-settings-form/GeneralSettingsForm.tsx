@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react"
 import {
   $changeGeneralSettingsForm,
   $changeGeneralSettingsFormErrors,

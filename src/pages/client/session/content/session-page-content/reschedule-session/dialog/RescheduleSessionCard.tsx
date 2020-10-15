@@ -5,7 +5,7 @@ import { RescheduleSessionCoach as Coach } from "@/pages/client/session/content/
 import { RescheduleSessionDatepicker as Datepicker } from "@/pages/client/session/content/session-page-content/reschedule-session/dialog/content/ RescheduleSessionDatepicker"
 import { MediaRange } from "@/lib/responsive/media"
 import { Icon } from "@/components/icon/Icon"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import {
   $rescheduleCoach,
   $rescheduleInitLoading,

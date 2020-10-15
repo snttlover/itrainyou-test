@@ -1,7 +1,7 @@
 import { navigatePush } from "@/feature/navigation"
 import { updateRegistrationFx } from "@/pages/coach/home/coach-home.model"
 import { routeNames } from "@/pages/route-names"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval/common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval/common/SubTitle"

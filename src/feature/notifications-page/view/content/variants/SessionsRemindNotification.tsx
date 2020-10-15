@@ -2,7 +2,7 @@ import React from "react"
 import { SessionsRemindNotificationType } from "@/lib/api/client/get-notifications"
 
 import { Card, NotificationAvatar, SessionTime, Title, Bold, Time, Row } from "../common/NotificationsCommon"
-import { useStore } from "effector-react/ssr"
+import { useStore } from "effector-react"
 import { $dashboard } from "@/feature/dashboard/dashboard"
 import { Avatar } from "@/components/avatar/Avatar"
 import styled from "styled-components"

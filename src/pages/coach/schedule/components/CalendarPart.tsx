@@ -23,7 +23,7 @@ import {
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Description, Title } from "@/pages/coach/schedule/Schedule"
 import { Dayjs } from "dayjs"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
 

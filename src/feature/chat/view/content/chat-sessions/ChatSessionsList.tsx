@@ -8,9 +8,9 @@ import {
   createChatSessionsModule,
 } from "@/feature/chat/modules/chat-sessions"
 import { createInfinityScroll } from "@/feature/pagination"
-import { useList, useStore } from "effector-react/ssr"
+import { useList, useStore } from "effector-react"
 import { Tabs, Tab } from "@/components/tabs/Tabs"
-import { useEvent } from "effector-react/ssr"
+import { useEvent } from "effector-react"
 import { Icon } from "@/components/icon/Icon"
 
 export const createChatSessions = (sessionsModule: ReturnType<typeof createChatSessionsModule>) => {

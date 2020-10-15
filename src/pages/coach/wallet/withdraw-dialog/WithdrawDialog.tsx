@@ -19,7 +19,7 @@ import {
   $canSubmit,
   $isTopUpLoading,
 } from "./withdraw.model"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 
 export const WithdrawDialog = () => {
   const _changeShowFundUpDialog = useEvent(changeShowWithdrawDialog)

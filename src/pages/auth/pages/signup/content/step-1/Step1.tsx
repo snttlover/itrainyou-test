@@ -19,7 +19,7 @@ import {
   step1Gate,
   step1Registered,
 } from "./step1.model"
-import { useEvent, useGate, useStore } from "effector-react/ssr"
+import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 

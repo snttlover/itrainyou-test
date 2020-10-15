@@ -4,7 +4,7 @@ import { date } from "@/lib/formatting/date"
 import { $currentMonth, changeDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import { $allSessions, removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
-import { useEvent, useStore } from "effector-react/ssr"
+import { useEvent, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 
