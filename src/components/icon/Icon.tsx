@@ -69,6 +69,9 @@ export type IconName =
   | "document"
   | "play"
   | "minus"
+  | "vk-login"
+  | "google-login"
+  | "facebook-login"
 
 type IconProps = {
   name: IconName

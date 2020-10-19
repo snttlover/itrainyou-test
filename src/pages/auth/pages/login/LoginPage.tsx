@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { LoginForm } from "@/pages/auth/pages/login/content/LoginForm"
+import { Socials } from '@/pages/auth/pages/login/content/Socials'
 import { WhiteContainer } from "@/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/pages/auth/components/CenterFormContainer"
 import { useEvent } from "effector-react"
@@ -53,6 +54,7 @@ export const LoginPage = () => {
       <CenterFormContainer>
         <WhiteContainer>
           <Header>Вход</Header>
+          <Socials />
           <LoginForm />
         </WhiteContainer>
         <ResetPasswordLink to='/auth/recovery'>Забыли пароль?</ResetPasswordLink>
