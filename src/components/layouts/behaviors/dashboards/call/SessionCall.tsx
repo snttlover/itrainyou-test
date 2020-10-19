@@ -95,10 +95,10 @@ const Tooltip = styled.div`
   line-height: 18px;
   color: #ffffff;
   display: none;
-  z-index: 3;
   text-align: center;
   width: 100%;
   justify-content: center;
+  z-index: 5;
 `
 
 const WasNotConnected = styled(Tooltip)``
