@@ -197,8 +197,8 @@ export const Step1 = () => {
           Уже есть аккаунт? <SignIn>Войдите</SignIn>
         </StyledLink>
         <AcceptionText>
-          Регистрируясь вы принимаете условия <a href='/confidentially.pdf'>Политики конфиденциальности</a>,{" "}
-          <a href='/policy.pdf'>Политике по обработке персональных данных</a>
+          Регистрируясь вы принимаете условия <a href='/privacy_policy.pdf'>Политики конфиденциальности</a>,{" "}
+          <a href='/user_agreement.pdf'>Пользовательского соглашения</a>
         </AcceptionText>
       </Footer>
     </AuthLayout>
