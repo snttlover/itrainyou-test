@@ -137,30 +137,6 @@ function htmlStart(assetsCss: string, assetsJs: string) {
         <title>Itrainyou</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">     
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,600|Roboto:300,400,500,700,900&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-B664BMTWRH"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-        
-          gtag('config', 'G-B664BMTWRH');
-        </script>
-        <!-- Yandex.Metrika counter -->
-        <script type="text/javascript" >
-           (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-           m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-           (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-        
-           ym(68738200, "init", {
-                clickmap:true,
-                trackLinks:true,
-                accurateTrackBounce:true,
-                webvisor:true
-           });
-        </script>
-        <noscript><div><img src="https://mc.yandex.ru/watch/68738200" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-        <!-- /Yandex.Metrika counter -->   
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ""}
         <script>window.env = ${serialize(config)};</script>
         ${
