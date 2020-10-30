@@ -3,6 +3,7 @@ import { Input } from "@/components/input/Input"
 import { PasswordInput } from "@/components/input/PasswordInput"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/lib/responsive/media"
+import { Socials } from '@/pages/auth/pages/login/content/Socials'
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
@@ -18,6 +19,7 @@ import {
   registerFx,
   step1Gate,
   step1Registered,
+  step1RegisteredFromSocials,
 } from "./step1.model"
 import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
@@ -67,7 +69,7 @@ const Form = styled.form`
     margin-left: auto;
   }
   ${MediaRange.greaterThan("mobile")`
-    color: inherit;  
+    color: inherit;
   `}
 `
 
@@ -144,6 +146,7 @@ export const Step1 = () => {
   const isFetching = useStore(registerFx.pending)
   const _userDataReset = useEvent(userDataReset)
   const _step1Registered = useEvent(step1Registered)
+  const _step1RegisteredFromSocials = useEvent(step1RegisteredFromSocials)
   const _emailChanged = useEvent(emailChanged)
   const _passwordChanged = useEvent(passwordChanged)
   const _passwordRepeatChanged = useEvent(passwordRepeatChanged)
@@ -159,6 +162,12 @@ export const Step1 = () => {
     _step1Registered()
   }
 
+  const handleSocials = (event: any )  => {
+    event.preventDefault()
+    _step1RegisteredFromSocials()
+    console.log("SOCIALS")
+  }
+
   return (
     <AuthLayout>
       <Steps activeId='1'>
@@ -168,7 +177,8 @@ export const Step1 = () => {
         <Steps.Step id='4'>4</Steps.Step>
       </Steps>
       <Container>
-        <Title>Регистрация</Title>
+        <Title onClick={handleSocials}>Регистрация</Title>
+        <Socials onClick={handleSocials} />
         <Form onSubmit={handleSubmit}>
           <FormItem label='Почта' error={errors.email}>
             <Input value={form.email} type='email' name='email' onChange={_emailChanged} />

@@ -40,6 +40,8 @@ export const clientDataChanged = createEvent<ClientData>()
 export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
+export const userDataSetWithSocials = createEvent()
+
 
 export const $userData = createStore<UserData>({
   type: "client",
@@ -52,6 +54,7 @@ export const $userData = createStore<UserData>({
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
+  .on(userDataSetWithSocials, (_, payload) => payload)
   .reset(userDataReset)
 
 const saveDataFx = createEffect({

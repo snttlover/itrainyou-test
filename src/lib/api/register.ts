@@ -2,6 +2,7 @@ import { config } from "@/config"
 import { SessionCategory } from "@/lib/api/categories"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post } from "@/lib/network/network"
+import { UserData } from "@/pages/auth/pages/signup/signup.model"
 
 export interface RegisterAsUserRequest {
   email: string
@@ -12,10 +13,33 @@ export interface RegisterAsUserResponse {
   token: string
 }
 
+export interface RegisterAsUserFromSocialsResponse {
+  token: string
+  payload: UserData
+}
+
+/*let  token: string = "test"
+let payload: UserData = {
+  type: "client",
+  clientData: { avatar: null, birthDate: null, lastName: "Kirik", sex: "M", firstName: "Alkash" },
+  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
+  categories: [],
+}*/
+
 export const registerAsUser = (data: RegisterAsUserRequest) =>
   post<RegisterAsUserResponse, RegisterAsUserRequest>(`${config.BACKEND_URL}/api/v1/web/auth/register/`, data)
     .then(response => response.data)
     .then(keysToCamel)
+
+export const registerAsUserFromSocials = (): RegisterAsUserFromSocialsResponse => {
+  new Promise(resolve=> resolve({token:"test",payload: {
+    type: "client",
+    clientData: { avatar: null, birthDate: null, lastName: "Kirik", sex: "M", firstName: "Alkash" },
+    coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
+    categories: [],
+  }})).then(response=>console.log(response))
+
+}
 
 export interface RegisterAsClientRequest {
   firstName: string

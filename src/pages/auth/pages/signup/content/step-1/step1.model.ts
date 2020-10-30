@@ -1,9 +1,9 @@
 import { loggedIn } from "@/feature/user/user.model"
-import { registerAsUser, RegisterAsUserResponse } from "@/lib/api/register"
+import { registerAsUser, registerAsUserFromSocials, RegisterAsUserResponse } from "@/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigatePush } from "@/feature/navigation"
 import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
-import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
+import { userDataReset,userDataSetWithSocials } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
 import { createGate } from "@/scope"
 import { AxiosError } from "axios"
@@ -12,9 +12,37 @@ import { combine, createEffect, createEvent, createStoreObject, forward, sample 
 export const step1Gate = createGate()
 
 export const step1Registered = createEvent()
+export const step1RegisteredFromSocials = createEvent()
 export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form>, RegisterAsUserResponse, AxiosError>({
   handler: ({ email, password }) => registerAsUser({ email, password }),
 })
+
+export const registerFromSocialsFx = createEffect<any>({
+  handler: () => registerAsUserFromSocials(),
+})
+
+forward({
+  from:step1RegisteredFromSocials,
+  to:registerFromSocialsFx,
+})
+
+
+
+forward({
+  from: registerFromSocialsFx.doneData.map(data => ({ token: data.token })),
+  to: loggedIn,
+})
+
+forward({
+  from: registerFromSocialsFx.doneData.map(() => ({ url: routeNames.signup("2") })),
+  to: navigatePush,
+})
+
+forward({
+  from: registerFromSocialsFx.doneData,
+  to: userDataSetWithSocials,
+})
+
 
 forward({
   from: registerFx.doneData.map(data => ({ token: data.token })),
