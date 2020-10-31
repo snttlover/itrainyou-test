@@ -18,27 +18,19 @@ export interface RegisterAsUserFromSocialsResponse {
   payload: UserData
 }
 
-/*let  token: string = "test"
-let payload: UserData = {
-  type: "client",
-  clientData: { avatar: null, birthDate: null, lastName: "Kirik", sex: "M", firstName: "Alkash" },
-  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
-  categories: [],
-}*/
-
 export const registerAsUser = (data: RegisterAsUserRequest) =>
   post<RegisterAsUserResponse, RegisterAsUserRequest>(`${config.BACKEND_URL}/api/v1/web/auth/register/`, data)
     .then(response => response.data)
     .then(keysToCamel)
 
-export const registerAsUserFromSocials = (): RegisterAsUserFromSocialsResponse => {
-  new Promise(resolve=> resolve({token:"test",payload: {
-    type: "client",
-    clientData: { avatar: null, birthDate: null, lastName: "Kirik", sex: "M", firstName: "Alkash" },
-    coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
-    categories: [],
-  }})).then(response=>console.log(response))
-
+export const registerAsUserFromSocials = () => {
+   return  Promise.resolve({token:"test",
+    payload: {
+      type: "client",
+      clientData: { avatar: null, birthDate: null, lastName: "Kirik", sex: "M", firstName: "Alkash",email:"klirik@mail.ru" },
+      coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
+      categories: [],
+    }})
 }
 
 export interface RegisterAsClientRequest {

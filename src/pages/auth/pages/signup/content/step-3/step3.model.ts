@@ -43,6 +43,15 @@ export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorFi
   eventMapper: event => event.map(trimString),
 })
 
+export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField({
+  defaultValue: "",
+  validator: value => {
+    if (!value) return "Поле обязательно к заполнению"
+    return null
+  },
+  eventMapper: event => event.map(trimString),
+})
+
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",
   validator: value => {
@@ -88,6 +97,7 @@ export const $step3Form = combine({
   lastName: $lastName,
   birthday: $birthday,
   sex: $sex,
+  email: $email,
 })
 
 sample({
@@ -99,6 +109,7 @@ sample({
     firstName: data.name,
     lastName: data.lastName,
     sex: data.sex,
+    email: date.email,
   }),
   target: clientDataChanged,
 })
@@ -123,6 +134,7 @@ spread({
   targets: {
     firstName: nameChanged,
     lastName: lastNameChanged,
+    email: emailChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
       date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
     ),
@@ -136,6 +148,7 @@ export const $step3FormErrors = combine({
   lastName: $lastNameError,
   birthday: $birthdayError,
   sex: $sexError,
+  email: $emailError,
 })
 
 export const $isStep3FormValid = combine(

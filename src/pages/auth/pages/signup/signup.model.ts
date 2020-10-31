@@ -1,5 +1,5 @@
 import { navigatePush } from "@/feature/navigation"
-import { registerAsClient, registerAsCoach } from "@/lib/api/register"
+import { registerAsClient, registerAsCoach, RegisterAsUserFromSocialsResponse } from "@/lib/api/register"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { routeNames } from "@/pages/route-names"
 import { attach, createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
@@ -12,6 +12,7 @@ export type ClientData = {
   birthDate: string | null
   sex: "M" | "F" | ""
   avatar: string | null
+  email: string | null
 }
 
 export type CoachData = {
@@ -40,12 +41,12 @@ export const clientDataChanged = createEvent<ClientData>()
 export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
-export const userDataSetWithSocials = createEvent()
+export const userDataSetWithSocials = createEvent<RegisterAsUserFromSocialsResponse>()
 
 
 export const $userData = createStore<UserData>({
   type: "client",
-  clientData: { avatar: null, birthDate: null, lastName: "", sex: "", firstName: "" },
+  clientData: { avatar: null, birthDate: null, lastName: "", sex: "", firstName: "",email: null },
   coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
   categories: [],
 })
@@ -54,7 +55,7 @@ export const $userData = createStore<UserData>({
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
-  .on(userDataSetWithSocials, (_, payload) => payload)
+  .on(userDataSetWithSocials, (_, payload) => payload.payload)
   .reset(userDataReset)
 
 const saveDataFx = createEffect({
