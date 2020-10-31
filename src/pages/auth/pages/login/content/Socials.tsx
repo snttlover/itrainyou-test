@@ -1,6 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
 import { Social } from "@/pages/auth/pages/login/content/Social"
+import { step1RegisteredFromSocials } from "@/pages/auth/pages/signup/content/step-1/step1.model"
+import { useEvent} from "effector-react"
 
 const SocialsRoot = styled.div`
   width: 100%;
@@ -28,15 +30,20 @@ const SocialsM = styled(SocialsRoot)`
   }
 `
 
-export const Socials = () => {
+export const Socials = (props) => {
+  const _step1RegisteredFromSocials = useEvent(step1RegisteredFromSocials)
+  const handleSocials = (event: any )  => {
+    event.preventDefault()
+    _step1RegisteredFromSocials()
+  }
   return (
     <>
-      <SocialsM>
+      <SocialsM onClick={handleSocials}>
         <Social name="google" />
         <Social name="vk" />
         <Social name="facebook" />
       </SocialsM>
-      <SocialsS>
+      <SocialsS onClick={handleSocials}>
         <Social name="google-s" />
         <Social name="vk-s" />
         <Social name="facebook-s" />

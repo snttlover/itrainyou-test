@@ -162,12 +162,6 @@ export const Step1 = () => {
     _step1Registered()
   }
 
-  const handleSocials = (event: any )  => {
-    event.preventDefault()
-    _step1RegisteredFromSocials()
-    console.log("SOCIALS")
-  }
-
   return (
     <AuthLayout>
       <Steps activeId='1'>
@@ -177,8 +171,8 @@ export const Step1 = () => {
         <Steps.Step id='4'>4</Steps.Step>
       </Steps>
       <Container>
-        <Title onClick={handleSocials}>Регистрация</Title>
-        <Socials onClick={handleSocials} />
+        <Title>Регистрация</Title>
+        <Socials />
         <Form onSubmit={handleSubmit}>
           <FormItem label='Почта' error={errors.email}>
             <Input value={form.email} type='email' name='email' onChange={_emailChanged} />

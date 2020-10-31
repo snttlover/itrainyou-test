@@ -16,6 +16,7 @@ import {
   nameChanged,
   step3Mounted,
   toggleUploadModal,
+  emailChanged,
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
@@ -148,6 +149,7 @@ export const Step3 = () => {
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
+  const _emailChanged = useEvent(emailChanged)
   const [nextDisabled, setNextDisabled] = useState(false)
 
   useEffect(() => {
@@ -181,6 +183,11 @@ export const Step3 = () => {
           <FormItem label='Фамилия' error={errors.lastName} required>
             <Input value={values.lastName} onChange={_lastNameChanged} />
           </FormItem>
+          { values.email !== null ?
+            <FormItem label='Почта' error={errors.email} required>
+            <Input value={values.email} onChange={_emailChanged} />
+          </FormItem>
+          : null}
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
 
           <NextButton onClick={() => history!.push("/auth/signup/4")} disabled={!isFormValid || nextDisabled} />

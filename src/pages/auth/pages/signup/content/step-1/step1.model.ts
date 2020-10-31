@@ -1,5 +1,5 @@
 import { loggedIn } from "@/feature/user/user.model"
-import { registerAsUser, registerAsUserFromSocials, RegisterAsUserResponse } from "@/lib/api/register"
+import { registerAsUser, registerAsUserFromSocials, RegisterAsUserResponse,RegisterAsUserFromSocialsResponse } from "@/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigatePush } from "@/feature/navigation"
 import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
@@ -17,7 +17,7 @@ export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form
   handler: ({ email, password }) => registerAsUser({ email, password }),
 })
 
-export const registerFromSocialsFx = createEffect<any>({
+export const registerFromSocialsFx = createEffect<any, any, any>({
   handler: () => registerAsUserFromSocials(),
 })
 
@@ -42,6 +42,7 @@ forward({
   from: registerFromSocialsFx.doneData,
   to: userDataSetWithSocials,
 })
+
 
 
 forward({
