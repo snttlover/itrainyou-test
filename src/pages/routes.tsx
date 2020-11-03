@@ -34,6 +34,7 @@ import { CoachSessionPage } from "@/pages/coach/session/CoachSessionPage"
 import { EditClientProfilePage } from "@/pages/client/edit-profile/EditClientProfile"
 import { ClientNotificationsPage } from "@/pages/client/notifications/ClientNotificationsPage"
 import { CoachNotificationsPage } from "@/pages/coach/notifications/CoachNotificationsPage"
+import { SignUpWithSocials } from "@/pages/auth/pages/signup/content/socials/SignUpWithSocials"
 
 export const ROUTES: RouteConfig[] = [
   {
@@ -74,6 +75,10 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.signup(":step"),
     component: SignUpPage,
+  },
+  {
+    path: routeNames.signupWithSocials(),
+    component: SignUpWithSocials,
   },
   {
     path: routeNames.recovery(),

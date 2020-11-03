@@ -109,7 +109,7 @@ sample({
     firstName: data.name,
     lastName: data.lastName,
     sex: data.sex,
-    email: date.email,
+    email: data.email,
   }),
   target: clientDataChanged,
 })

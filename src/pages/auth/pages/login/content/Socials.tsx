@@ -3,6 +3,9 @@ import styled from "styled-components"
 import { Social } from "@/pages/auth/pages/login/content/Social"
 import { step1RegisteredFromSocials } from "@/pages/auth/pages/signup/content/step-1/step1.model"
 import { useEvent} from "effector-react"
+import { useLocation } from "react-router-dom"
+import { parseQueryString } from "@/lib/helpers/query"
+import { useEffect } from "react"
 
 const SocialsRoot = styled.div`
   width: 100%;
@@ -36,6 +39,12 @@ export const Socials = (props) => {
     event.preventDefault()
     _step1RegisteredFromSocials()
   }
+  const location = useLocation()
+  useEffect(() => {
+    const querySearch = parseQueryString<{ search?: string }>(location).key
+    console.log("querysearch",querySearch)
+    console.log("LOCATION",location)
+  }, [])
   return (
     <>
       <SocialsM onClick={handleSocials}>
