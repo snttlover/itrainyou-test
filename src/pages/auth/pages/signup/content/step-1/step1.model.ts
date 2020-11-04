@@ -18,15 +18,13 @@ export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form
 })
 
 export const registerFromSocialsFx = createEffect<any, any, any>({
-  handler: () => registerAsUserFromSocials(),
+  handler: (data) => registerAsUserFromSocials(data),
 })
 
-forward({
+/*forward({
   from:step1RegisteredFromSocials,
   to:registerFromSocialsFx,
 })
-
-
 
 forward({
   from: registerFromSocialsFx.doneData.map(data => ({ token: data.token })),
@@ -41,7 +39,7 @@ forward({
 forward({
   from: registerFromSocialsFx.doneData,
   to: userDataSetWithSocials,
-})
+})*/
 
 
 

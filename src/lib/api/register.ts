@@ -2,7 +2,7 @@ import { config } from "@/config"
 import { SessionCategory } from "@/lib/api/categories"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post } from "@/lib/network/network"
-import { UserData } from "@/pages/auth/pages/signup/signup.model"
+import { UserData,SocialsData } from "@/pages/auth/pages/signup/signup.model"
 
 export interface RegisterAsUserRequest {
   email: string
@@ -13,9 +13,14 @@ export interface RegisterAsUserResponse {
   token: string
 }
 
+
+export interface RegisterWithSocialsRequest{
+  access_token: string
+}
+
 export interface RegisterAsUserFromSocialsResponse {
-  token: string
-  payload: UserData
+  status: string
+  data: SocialsData
 }
 
 export const registerAsUser = (data: RegisterAsUserRequest) =>
@@ -23,7 +28,7 @@ export const registerAsUser = (data: RegisterAsUserRequest) =>
     .then(response => response.data)
     .then(keysToCamel)
 
-export const registerAsUserFromSocials = () => {
+export const registerAsUserFromSocialsMock = () => {
    return  Promise.resolve({token:"test",
     payload: {
       type: "client",
@@ -31,6 +36,11 @@ export const registerAsUserFromSocials = () => {
       coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
       categories: [],
     }})
+}
+
+export const registerAsUserFromSocials = (access_token: RegisterWithSocialsRequest) => {
+  post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/facebook/`, access_token)
+    .then(response => response)
 }
 
 export interface RegisterAsClientRequest {

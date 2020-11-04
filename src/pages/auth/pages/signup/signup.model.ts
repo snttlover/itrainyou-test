@@ -31,6 +31,15 @@ export type UserData = {
   coachData: CoachData
 }
 
+export type SocialsData = {
+    email: string
+    first_name: string
+    last_name: string
+    sex: string
+    birth_date: string | null
+    photo: string | null
+}
+
 export type RegisterUserType = "client" | "coach"
 
 export const signUpPageMounted = createEvent()
@@ -55,7 +64,7 @@ export const $userData = createStore<UserData>({
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
-  .on(userDataSetWithSocials, (_, payload) => payload.payload)
+  .on(userDataSetWithSocials, (_, payload) => payload.data)
   .reset(userDataReset)
 
 const saveDataFx = createEffect({
