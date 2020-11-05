@@ -38,10 +38,11 @@ export const registerAsUserFromSocialsMock = () => {
     }})
 }
 
-export const registerAsUserFromSocials = (access_token: RegisterWithSocialsRequest) => {
-  post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/facebook/`, access_token)
-    .then(response => response)
-}
+export const registerAsUserFromSocials = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponse> =>
+  post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/facebook/`, accessToken)
+    .then(response => response.data)
+    .then(keysToCamel)
+
 
 export interface RegisterAsClientRequest {
   firstName: string

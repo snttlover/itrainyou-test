@@ -6,6 +6,16 @@ import { useEvent} from "effector-react"
 import { useLocation } from "react-router-dom"
 import { parseQueryString } from "@/lib/helpers/query"
 import { useEffect } from "react"
+import { config as appConfig } from "@/config"
+
+//const redirect_uri= process.env.NODE_ENV === "development" ? `http://localhost/auth/socials` : `${appConfig.BACKEND_URL}auth/socials`
+
+//const https =`https://www.facebook.com/v3.0/dialog/oauth?client_id=588161764971621&display=popup&response_type=token&redirect_uri=${redirect_uri}&fields=id,name,email,gender,birthday,profile_pic,profile_picture`
+const https = `https://www.facebook.com/v3.0/dialog/oauth?client_id=588161764971621&display=popup&response_type=token&redirect_uri=http://localhost/auth/socials&fields=id,name,email,gender,birthday,profile_pic,profile_picture`
+
+const ExternalLink = styled.a`
+
+`
 
 const SocialsRoot = styled.div`
   width: 100%;
@@ -33,26 +43,20 @@ const SocialsM = styled(SocialsRoot)`
   }
 `
 
-export const Socials = (props) => {
+export const Socials = () => {
   const _step1RegisteredFromSocials = useEvent(step1RegisteredFromSocials)
   const handleSocials = (event: any )  => {
     event.preventDefault()
     _step1RegisteredFromSocials()
   }
-  const location = useLocation()
-  useEffect(() => {
-    const querySearch = parseQueryString<{ search?: string }>(location).key
-    console.log("querysearch",querySearch)
-    console.log("LOCATION",location)
-  }, [])
   return (
     <>
-      <SocialsM onClick={handleSocials}>
+      <SocialsM>
         <Social name="google" />
         <Social name="vk" />
-        <Social name="facebook" />
+        <ExternalLink href={https}><Social name="facebook" /></ExternalLink>
       </SocialsM>
-      <SocialsS onClick={handleSocials}>
+      <SocialsS>
         <Social name="google-s" />
         <Social name="vk-s" />
         <Social name="facebook-s" />

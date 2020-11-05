@@ -32,12 +32,12 @@ export type UserData = {
 }
 
 export type SocialsData = {
-    email: string
+    email: string | null
     first_name: string
     last_name: string
     sex: string
     birth_date: string | null
-    photo: string | null
+    avatar: string | null
 }
 
 export type RegisterUserType = "client" | "coach"
@@ -50,7 +50,7 @@ export const clientDataChanged = createEvent<ClientData>()
 export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
-export const userDataSetWithSocials = createEvent<RegisterAsUserFromSocialsResponse>()
+export const userDataSetWithSocials = createEvent<UserData>()
 
 
 export const $userData = createStore<UserData>({
@@ -64,7 +64,7 @@ export const $userData = createStore<UserData>({
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
-  .on(userDataSetWithSocials, (_, payload) => payload.data)
+  .on(userDataSetWithSocials, (_, payload) => payload)
   .reset(userDataReset)
 
 const saveDataFx = createEffect({

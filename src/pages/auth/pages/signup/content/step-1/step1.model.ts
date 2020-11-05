@@ -17,11 +17,11 @@ export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form
   handler: ({ email, password }) => registerAsUser({ email, password }),
 })
 
-export const registerFromSocialsFx = createEffect<any, any, any>({
-  handler: (data) => registerAsUserFromSocials(data),
+/*export const registerFromSocialsFx = createEffect<any, any, any>({
+  handler: () => registerAsUserFromSocialsMock(),
 })
 
-/*forward({
+forward({
   from:step1RegisteredFromSocials,
   to:registerFromSocialsFx,
 })

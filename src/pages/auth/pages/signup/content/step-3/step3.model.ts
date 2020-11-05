@@ -44,12 +44,15 @@ export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorFi
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField({
-  defaultValue: "",
+  defaultValue: null,
   validator: value => {
     if (!value) return "Поле обязательно к заполнению"
     return null
   },
-  eventMapper: event => event.map(trimString),
+  eventMapper: event => {
+    if (event !== null) return event.map(trimString)
+    return
+  },
 })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
