@@ -20,6 +20,7 @@ import {
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
+import { $social, nextonClick } from "@/pages/auth/pages/signup/content/socials/socials.model"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
@@ -144,14 +145,20 @@ export const Step3 = () => {
   const isFormValid = useStore($isStep3FormValid)
   const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
+  const social = useStore($social)
 
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
+  const _nextonClick = useEvent(nextonClick)
   const [nextDisabled, setNextDisabled] = useState(false)
 
+  const _onClick = () => {
+    //() => history!.push("/auth/signup/4")
+    _nextonClick()
+  }
   useEffect(() => {
     mounted()
   }, [])
@@ -183,14 +190,14 @@ export const Step3 = () => {
           <FormItem label='Фамилия' error={errors.lastName} required>
             <Input value={values.lastName} onChange={_lastNameChanged} />
           </FormItem>
-          { values.email !== null ?
+          { social !== null ?
             <FormItem label='Почта' error={errors.email} required>
             <Input value={values.email} onChange={_emailChanged} />
           </FormItem>
           : null}
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
 
-          <NextButton onClick={() => history!.push("/auth/signup/4")} disabled={!isFormValid || nextDisabled} />
+          <NextButton onClick={_onClick} disabled={!isFormValid || nextDisabled} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}

@@ -19,7 +19,6 @@ import {
   registerFx,
   step1Gate,
   step1Registered,
-  step1RegisteredFromSocials,
 } from "./step1.model"
 import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
@@ -146,7 +145,6 @@ export const Step1 = () => {
   const isFetching = useStore(registerFx.pending)
   const _userDataReset = useEvent(userDataReset)
   const _step1Registered = useEvent(step1Registered)
-  const _step1RegisteredFromSocials = useEvent(step1RegisteredFromSocials)
   const _emailChanged = useEvent(emailChanged)
   const _passwordChanged = useEvent(passwordChanged)
   const _passwordRepeatChanged = useEvent(passwordRepeatChanged)

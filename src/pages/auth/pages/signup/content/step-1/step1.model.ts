@@ -1,9 +1,9 @@
 import { loggedIn } from "@/feature/user/user.model"
-import { registerAsUser, registerAsUserFromSocials, RegisterAsUserResponse,RegisterAsUserFromSocialsResponse } from "@/lib/api/register"
+import { registerAsUser, RegisterAsUserResponse,RegisterAsUserFromSocialsResponse } from "@/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigatePush } from "@/feature/navigation"
 import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
-import { userDataReset,userDataSetWithSocials } from "@/pages/auth/pages/signup/signup.model"
+import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
 import { createGate } from "@/scope"
 import { AxiosError } from "axios"
@@ -12,7 +12,6 @@ import { combine, createEffect, createEvent, createStoreObject, forward, sample 
 export const step1Gate = createGate()
 
 export const step1Registered = createEvent()
-export const step1RegisteredFromSocials = createEvent()
 export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form>, RegisterAsUserResponse, AxiosError>({
   handler: ({ email, password }) => registerAsUser({ email, password }),
 })

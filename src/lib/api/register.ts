@@ -3,6 +3,7 @@ import { SessionCategory } from "@/lib/api/categories"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post } from "@/lib/network/network"
 import { UserData,SocialsData } from "@/pages/auth/pages/signup/signup.model"
+import { User } from "@/lib/api/client/clientInfo"
 
 export interface RegisterAsUserRequest {
   email: string
@@ -14,8 +15,22 @@ export interface RegisterAsUserResponse {
 }
 
 
-export interface RegisterWithSocialsRequest{
+export interface RegisterWithSocialsRequest {
   access_token: string
+}
+
+export interface CreateUserWithSocialsRequest {
+  accessToken: string
+  email: string
+  socialNetwork: string
+}
+
+export interface CreateUserWithSocialsResponse {
+  token: string
+  user: User & {
+    coach: string | null
+    client: string | null
+  }
 }
 
 export interface RegisterAsUserFromSocialsResponse {
@@ -38,8 +53,14 @@ export const registerAsUserFromSocialsMock = () => {
     }})
 }
 
-export const registerAsUserFromSocials = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponse> =>
+export const registerAsUserFromFacebook = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponse> =>
   post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/facebook/`, accessToken)
+    .then(response => response.data)
+    .then(keysToCamel)
+
+export const createrUserFromSocials = (data: CreateUserWithSocialsRequest): Promise<CreateUserWithSocialsResponse> =>
+  post<CreateUserWithSocialsResponse, CreateUserWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/create-user-from-social/`,
+     keysToSnake(data))
     .then(response => response.data)
     .then(keysToCamel)
 

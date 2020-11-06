@@ -1,11 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
 import { Social } from "@/pages/auth/pages/login/content/Social"
-import { step1RegisteredFromSocials } from "@/pages/auth/pages/signup/content/step-1/step1.model"
+import {  logInWithSocials } from "@/pages/auth/pages/signup/content/socials/socials.model"
 import { useEvent} from "effector-react"
-import { useLocation } from "react-router-dom"
-import { parseQueryString } from "@/lib/helpers/query"
-import { useEffect } from "react"
 import { config as appConfig } from "@/config"
 
 //const redirect_uri= process.env.NODE_ENV === "development" ? `http://localhost/auth/socials` : `${appConfig.BACKEND_URL}auth/socials`
@@ -44,17 +41,16 @@ const SocialsM = styled(SocialsRoot)`
 `
 
 export const Socials = () => {
-  const _step1RegisteredFromSocials = useEvent(step1RegisteredFromSocials)
-  const handleSocials = (event: any )  => {
-    event.preventDefault()
-    _step1RegisteredFromSocials()
+  const _logInWithSocials = useEvent(logInWithSocials)
+  const handleSocials = (socials: string) => {
+    _logInWithSocials(socials)
   }
   return (
     <>
       <SocialsM>
         <Social name="google" />
         <Social name="vk" />
-        <ExternalLink href={https}><Social name="facebook" /></ExternalLink>
+        <ExternalLink href={https} onClick={()=>handleSocials("facebook")}><Social name="facebook" /></ExternalLink>
       </SocialsM>
       <SocialsS>
         <Social name="google-s" />
