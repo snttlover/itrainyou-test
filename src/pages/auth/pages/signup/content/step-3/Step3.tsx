@@ -17,11 +17,12 @@ import {
   step3Mounted,
   toggleUploadModal,
   emailChanged,
+  step3Gate,
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { $social, nextonClick } from "@/pages/auth/pages/signup/content/socials/socials.model"
-import { useEvent, useStore } from "effector-react"
+import { $social, nextonClick, createrUserFromSocialsFx } from "@/pages/auth/pages/signup/content/socials/socials.model"
+import { useEvent, useStore, useGate } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
@@ -153,10 +154,12 @@ export const Step3 = () => {
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
   const _nextonClick = useEvent(nextonClick)
+  const _createUserFromSocials = useEvent(createrUserFromSocialsFx.done)
   const [nextDisabled, setNextDisabled] = useState(false)
 
+  useGate(step3Gate)
+
   const _onClick = () => {
-    //() => history!.push("/auth/signup/4")
     _nextonClick()
   }
   useEffect(() => {

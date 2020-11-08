@@ -1,5 +1,5 @@
 import { navigatePush } from "@/feature/navigation"
-import { registerAsClient, registerAsCoach, RegisterAsUserFromSocialsResponse } from "@/lib/api/register"
+import { registerAsClient, registerAsCoach } from "@/lib/api/register"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { routeNames } from "@/pages/route-names"
 import { attach, createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
@@ -31,13 +31,22 @@ export type UserData = {
   coachData: CoachData
 }
 
-export type SocialsData = {
+export type SocialsDataNotFound = {
     email: string | null
     first_name: string
     last_name: string
-    sex: string
+    sex: "M" | "F" | ""
     birth_date: string | null
     avatar: string | null
+}
+
+export type SocialsDataFound = {
+    id: number
+    email: string
+    time_zone: string
+    creation_datetime: string
+    coach: string | null
+    client: string | null
 }
 
 export type RegisterUserType = "client" | "coach"

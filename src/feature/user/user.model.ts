@@ -34,9 +34,6 @@ export const $coachAccess = $userData.map(userData => ({
 }))
 
 export const $isLoggedInWithSocials = restore(loggedInWithSocials,false)
-$isLoggedInWithSocials.watch(response => {
-  console.log("$isLoggedInWithSocials ",response)
-})
 export const $isLoggedIn = $token.map(token => !!token)
 
 export const $timeZone = $userData.map(data => data.client?.user.timeZone || data.coach?.user.timeZone || data.timeZone)

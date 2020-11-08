@@ -1,5 +1,5 @@
 import { loggedIn } from "@/feature/user/user.model"
-import { registerAsUser, RegisterAsUserResponse,RegisterAsUserFromSocialsResponse } from "@/lib/api/register"
+import { registerAsUser, RegisterAsUserResponse } from "@/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigatePush } from "@/feature/navigation"
 import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
@@ -15,32 +15,6 @@ export const step1Registered = createEvent()
 export const registerFx = createEffect<UnpackedStoreObjectType<typeof $step1Form>, RegisterAsUserResponse, AxiosError>({
   handler: ({ email, password }) => registerAsUser({ email, password }),
 })
-
-/*export const registerFromSocialsFx = createEffect<any, any, any>({
-  handler: () => registerAsUserFromSocialsMock(),
-})
-
-forward({
-  from:step1RegisteredFromSocials,
-  to:registerFromSocialsFx,
-})
-
-forward({
-  from: registerFromSocialsFx.doneData.map(data => ({ token: data.token })),
-  to: loggedIn,
-})
-
-forward({
-  from: registerFromSocialsFx.doneData.map(() => ({ url: routeNames.signup("2") })),
-  to: navigatePush,
-})
-
-forward({
-  from: registerFromSocialsFx.doneData,
-  to: userDataSetWithSocials,
-})*/
-
-
 
 forward({
   from: registerFx.doneData.map(data => ({ token: data.token })),

@@ -11,6 +11,9 @@ import {
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
+import { createGate } from "@/scope"
+
+export const step3Gate = createGate()
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -157,5 +160,6 @@ export const $isStep3FormValid = combine(
   $isBirthdayCorrect,
   $isSexCorrect,
   $isImageCorrect,
+  $isEmailCorrect,
   (...args) => args.every(val => val)
 )

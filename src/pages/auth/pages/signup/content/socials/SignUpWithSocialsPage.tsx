@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { useEvent, useStore } from "effector-react"
+import { useEvent } from "effector-react"
 import { Spinner } from "@/components/spinner/Spinner"
 import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
@@ -17,17 +17,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`
-
-const SocialLink = styled.a`
-  display: block;
-  height: 52px;
-  width: 52px;
-`
-const Button = styled.button`
-  display: block;
-  height: 52px;
-  width: 52px;
 `
 
 export const SignUpWithSocialsPage = () => {

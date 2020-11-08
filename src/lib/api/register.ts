@@ -2,7 +2,7 @@ import { config } from "@/config"
 import { SessionCategory } from "@/lib/api/categories"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post } from "@/lib/network/network"
-import { UserData,SocialsData } from "@/pages/auth/pages/signup/signup.model"
+import { UserData, SocialsDataFound, SocialsDataNotFound  } from "@/pages/auth/pages/signup/signup.model"
 import { User } from "@/lib/api/client/clientInfo"
 
 export interface RegisterAsUserRequest {
@@ -22,7 +22,7 @@ export interface RegisterWithSocialsRequest {
 export interface CreateUserWithSocialsRequest {
   accessToken: string
   email: string
-  socialNetwork: string
+  socialNetwork: string | null
 }
 
 export interface CreateUserWithSocialsResponse {
@@ -33,9 +33,17 @@ export interface CreateUserWithSocialsResponse {
   }
 }
 
-export interface RegisterAsUserFromSocialsResponse {
+export interface RegisterAsUserFromSocialsResponseNotFound {
   status: string
-  data: SocialsData
+  data: SocialsDataNotFound
+}
+
+export interface RegisterAsUserFromSocialsResponseFound {
+  status: string
+  data: {
+    token : string
+    user : SocialsDataFound
+  }
 }
 
 export const registerAsUser = (data: RegisterAsUserRequest) =>
@@ -43,18 +51,8 @@ export const registerAsUser = (data: RegisterAsUserRequest) =>
     .then(response => response.data)
     .then(keysToCamel)
 
-export const registerAsUserFromSocialsMock = () => {
-   return  Promise.resolve({token:"test",
-    payload: {
-      type: "client",
-      clientData: { avatar: null, birthDate: null, lastName: "Kirik", sex: "M", firstName: "Alkash",email:"klirik@mail.ru" },
-      coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
-      categories: [],
-    }})
-}
-
-export const registerAsUserFromFacebook = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponse> =>
-  post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/facebook/`, accessToken)
+export const registerAsUserFromFacebook = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound> =>
+  post<RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/facebook/`, accessToken)
     .then(response => response.data)
     .then(keysToCamel)
 

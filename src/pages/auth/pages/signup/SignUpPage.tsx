@@ -20,7 +20,7 @@ const ProtectedStep4 = withProtect({ to: routeNames.signup("1") })(Step4)
 export const SignUpPage = () => {
   const isLoggedIn = useStore($isLoggedIn)
   const isFullRegistered = useStore($isFullRegistered)
-  const isLoggedInWithSocials = useStore($isLoggedInWithSocials )
+  const isLoggedInWithSocials = useStore($isLoggedInWithSocials)
   const navigate = useEvent(navigateReplace)
   const _pageMounted = useEvent(signUpPageMounted)
   const params = useParams<{ step: string }>()

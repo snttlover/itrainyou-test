@@ -7,6 +7,7 @@ import { emailValidator, trimString } from "@/lib/validators"
 import { routeNames } from "@/pages/route-names"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
+import { userFound } from "@/pages/auth/pages/signup/content/socials/socials.model.ts"
 
 export const loginFormSent = createEvent()
 
@@ -81,6 +82,37 @@ sample({
 
 forward({
   from: loginFx.doneData,
+  to: [
+    loggedIn,
+    setUserData.prepend((response: LoginResponse) => ({ client: response.user.client, coach: response.user.coach })),
+  ],
+})
+
+sample({
+  source: $dashboard,
+  clock: userFound,
+  fn: (dashboard, data) => {
+    let url
+    if (!data.user.client && !data.user.coach) {
+      url = routeNames.signup("2")
+    } else if (dashboard === "client") {
+      url = routeNames.client()
+    } else if (dashboard === "coach" && data.user.coach) {
+      url = routeNames.coach()
+    } else if (data.user.coach) {
+      url = routeNames.coach()
+    } else {
+      url = routeNames.client()
+    }
+    return {
+      url,
+    }
+  },
+  target: navigateReplace,
+})
+
+forward({
+  from: userFound,
   to: [
     loggedIn,
     setUserData.prepend((response: LoginResponse) => ({ client: response.user.client, coach: response.user.coach })),
