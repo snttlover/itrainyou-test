@@ -7,5 +7,6 @@ if (!dataSource.env) {
 export const config = {
   BACKEND_URL: dataSource.env.BACKEND_URL,
   WS_HOST: dataSource.env.WS_HOST,
-  AGORA_ID: dataSource.env.AGORA_ID
+  AGORA_ID: dataSource.env.AGORA_ID,
+  FACEBOOK_CLIENT_ID: dataSource.env.FACEBOOK_CLIENT_ID,
 }
