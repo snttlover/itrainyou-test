@@ -40,7 +40,7 @@ module.exports = {
         ],
         "no-multiple-empty-lines": [
             "error",
-            {"max": 1, "maxEOF": 1}
+            {"max": 2, "maxEOF": 1}
         ]
     }
 }
