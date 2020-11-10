@@ -33,10 +33,10 @@ export type UserData = {
 
 export type SocialsDataNotFound = {
     email: string | null
-    first_name: string
-    last_name: string
+    firstName: string
+    lastName: string
     sex: "M" | "F" | ""
-    birth_date: string | null
+    birthDate: string | null
     avatar: string | null
 }
 

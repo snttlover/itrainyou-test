@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Social } from "@/pages/auth/pages/login/content/Social"
+import { SocialIcon } from "@/pages/auth/pages/login/content/SocialIcon"
 import {  logInWithSocials } from "@/pages/auth/pages/signup/content/socials/socials.model"
 import { useEvent} from "effector-react"
 import { config } from "@/config"
@@ -43,18 +43,18 @@ export const Socials = () => {
   return (
     <>
       <SocialsM>
-        <Social name="google" />
-        <Social name="vk" />
+        <SocialIcon name="google" />
+        <SocialIcon name="vk" />
         <ExternalLink
           href={`https://www.facebook.com/v3.0/dialog/oauth?client_id=${config.FACEBOOK_CLIENT_ID}&display=popup&response_type=token&redirect_uri=https://${window.location.hostname}/auth/socials&fields=id,name,email,gender,birthday,profile_pic,profile_picture`}
           onClick={()=>handleSocials("facebook")}>
-          <Social name="facebook" />
+          <SocialIcon name="facebook" />
         </ExternalLink>
       </SocialsM>
       <SocialsS>
-        <Social name="google-s" />
-        <Social name="vk-s" />
-        <Social name="facebook-s" />
+        <SocialIcon name="google-s" />
+        <SocialIcon name="vk-s" />
+        <SocialIcon name="facebook-s" />
       </SocialsS>
     </>
   )

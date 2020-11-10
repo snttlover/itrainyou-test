@@ -21,7 +21,7 @@ import {
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { $social, nextonClick, createrUserFromSocialsFx } from "@/pages/auth/pages/signup/content/socials/socials.model"
+import { $socialNetworkName, nextonClick, createUserFromSocialsFx } from "@/pages/auth/pages/signup/content/socials/socials.model"
 import { useEvent, useStore, useGate } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
@@ -146,7 +146,7 @@ export const Step3 = () => {
   const isFormValid = useStore($isStep3FormValid)
   const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
-  const social = useStore($social)
+  const social = useStore($socialNetworkName)
 
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
@@ -154,7 +154,7 @@ export const Step3 = () => {
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
   const _nextonClick = useEvent(nextonClick)
-  const _createUserFromSocials = useEvent(createrUserFromSocialsFx.done)
+  const _createUserFromSocials = useEvent(createUserFromSocialsFx.done)
   const [nextDisabled, setNextDisabled] = useState(false)
 
   useGate(step3Gate)

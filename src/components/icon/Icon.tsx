@@ -72,6 +72,9 @@ export type IconName =
   | "vk-login"
   | "google-login"
   | "facebook-login"
+  | "vk-s-login"
+  | "google-s-login"
+  | "facebook-s-login"
 
 type IconProps = {
   name: IconName

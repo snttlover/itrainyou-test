@@ -22,7 +22,7 @@ const Container = styled.div`
 export const SignUpWithSocialsPage = () => {
   const _mounted = useEvent(mounted)
   const location = useLocation()
-  const parsed = parseQueryString<{ search?: string }>(location.hash)
+  const parsed = parseQueryString<{ search?: string }>(location.hash)["#access_token"]
   useEffect(() => {
     _mounted(parsed)
   }, [])
