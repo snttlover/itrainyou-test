@@ -1,5 +1,5 @@
 import { navigateReplace } from "@/feature/navigation"
-import { $isFullRegistered, $isLoggedIn, $isLoggedInWithSocials  } from "@/feature/user/user.model"
+import { $isFullRegistered, $isLoggedIn, $isSocialSignupInProgress  } from "@/feature/user/user.model"
 import { withGuest } from "@/feature/user/with-guest"
 import { withProtect } from "@/feature/user/with-protect"
 import { signUpPageMounted } from "@/pages/auth/pages/signup/signup.model"
@@ -20,7 +20,7 @@ const ProtectedStep4 = withProtect({ to: routeNames.signup("1") })(Step4)
 export const SignUpPage = () => {
   const isLoggedIn = useStore($isLoggedIn)
   const isFullRegistered = useStore($isFullRegistered)
-  const isLoggedInWithSocials = useStore($isLoggedInWithSocials)
+  const isLoggedInWithSocials = useStore($isSocialSignupInProgress)
   const navigate = useEvent(navigateReplace)
   const _pageMounted = useEvent(signUpPageMounted)
   const params = useParams<{ step: string }>()

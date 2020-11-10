@@ -33,7 +33,7 @@ export const $coachAccess = $userData.map(userData => ({
   lastRegistrationApplyDatetime: userData.coach?.lastRegistrationApplyDatetime,
 }))
 
-export const $isLoggedInWithSocials = restore(loggedInWithSocials,false)
+export const $isSocialSignupInProgress = restore(loggedInWithSocials,false)
 export const $isLoggedIn = $token.map(token => !!token)
 
 export const $timeZone = $userData.map(data => data.client?.user.timeZone || data.coach?.user.timeZone || data.timeZone)
