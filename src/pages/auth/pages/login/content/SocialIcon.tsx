@@ -7,6 +7,7 @@ type SocialIconTypes = {
 }
 
 export const SocialIcon = ({ name }: SocialIconTypes) => {
+  // @ts-ignore
   const CurrentIcon = styled(Icon).attrs({ name: `${name}-login` })`
     margin: 0 8px;
     width: 40px;
