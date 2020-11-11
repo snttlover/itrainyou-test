@@ -9,4 +9,5 @@ export const config = {
   WS_HOST: dataSource.env.WS_HOST,
   AGORA_ID: dataSource.env.AGORA_ID,
   FACEBOOK_CLIENT_ID: dataSource.env.FACEBOOK_CLIENT_ID,
+  VK_CLIENT_ID: dataSource.env.VK_CLIENT_ID
 }

@@ -6,7 +6,7 @@ import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import { parseQueryString } from "@/lib/helpers/query"
 import {
-  mounted,
+  mounted, LOGGED_IN_WITH_SOCIALS
 } from "./socials.model"
 
 
@@ -22,9 +22,10 @@ const Container = styled.div`
 export const SignUpWithSocialsPage = () => {
   const _mounted = useEvent(mounted)
   const location = useLocation()
-  const parsed = parseQueryString<{ search?: string }>(location.hash)["#access_token"]
+  const token: string = parseQueryString<{ search?: string }>(location.hash)["#access_token"]
+  const socialNetwork = localStorage.getItem(LOGGED_IN_WITH_SOCIALS)
   useEffect(() => {
-    _mounted(parsed)
+    _mounted({token,socialNetwork})
   }, [])
   return (
     <Container>

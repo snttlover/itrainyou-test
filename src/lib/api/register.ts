@@ -56,6 +56,11 @@ export const registerAsUserFromFacebook = (accessToken: RegisterWithSocialsReque
     .then(response => response.data)
     .then(keysToCamel)
 
+export const registerAsUserFromVk = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound> =>
+  post<RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/vk/`, accessToken)
+    .then(response => response.data)
+    .then(keysToCamel)
+
 export const createrUserFromSocials = (data: CreateUserWithSocialsRequest): Promise<CreateUserWithSocialsResponse> =>
   post<CreateUserWithSocialsResponse, CreateUserWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/create-user-from-social/`,
      keysToSnake(data))
