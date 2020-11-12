@@ -8,5 +8,6 @@ export const config = {
   BACKEND_URL: dataSource.env.BACKEND_URL,
   WS_HOST: dataSource.env.WS_HOST,
   AGORA_ID: dataSource.env.AGORA_ID,
-  SENTRY_DSN: dataSource.env.SENTRY_DSN,
+  SENTRY_CLIENT_DSN: dataSource.env.SENTRY_CLIENT_DSN,
+  SENTRY_SERVER_DSN: dataSource.env.SENTRY_SERVER_DSN,
 }

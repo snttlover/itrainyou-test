@@ -2,6 +2,7 @@ import { $lastUrlServerNavigation } from "@/feature/navigation"
 import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import { Provider } from "effector-react/ssr"
 import express from "express"
+import * as Sentry from "@sentry/node";
 import serialize from "serialize-javascript"
 
 import * as React from "react"
@@ -18,6 +19,13 @@ import { config } from "./config"
 import { getStart, START } from "./lib/effector"
 import { Application } from "./application"
 import { ROUTES } from "./pages/routes"
+
+Sentry.init({
+  dsn: `${config.SENTRY_SERVER_DSN}`,
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
 
 const serverStarted = root.createEvent<{
   req: express.Request
@@ -80,6 +88,7 @@ syncLoadAssets()
 
 export const server = express()
   .disable("x-powered-by")
+  .use(Sentry.Handlers.requestHandler())
   .use(cookieParser())
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get("/*", async (req: express.Request, res: express.Response) => {
@@ -127,6 +136,7 @@ export const server = express()
       res.end(htmlEnd({}))
     }
   })
+  .use(Sentry.Handlers.errorHandler())
 
 function htmlStart(assetsCss: string, assetsJs: string) {
   return `<!doctype html>
