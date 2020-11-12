@@ -7,7 +7,7 @@ import { emailValidator, trimString } from "@/lib/validators"
 import { routeNames } from "@/pages/route-names"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
-import { userFound } from "@/pages/auth/pages/signup/content/socials/socials.model.ts"
+import { userFound } from "@/pages/auth/pages/socials/socials.model.ts"
 
 export const loginFormSent = createEvent()
 

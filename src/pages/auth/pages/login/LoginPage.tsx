@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { LoginForm } from "@/pages/auth/pages/login/content/LoginForm"
-import { Socials } from '@/pages/auth/pages/login/content/Socials'
+import { Socials } from "@/pages/auth/pages/socials/content/Socials"
 import { WhiteContainer } from "@/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/pages/auth/components/CenterFormContainer"
 import { useEvent } from "effector-react"
@@ -20,7 +20,7 @@ const Header = styled.h3`
   width: 100%;
   text-align: center;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 28px;
     line-height: 44px;
     padding-top: 20px;
@@ -37,7 +37,7 @@ const ResetPasswordLink = styled(Link)`
   text-align: center;
   width: 200px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
   `}

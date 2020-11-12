@@ -23,7 +23,8 @@ export const SignUpWithSocialsPage = () => {
   const _mounted = useEvent(mounted)
   const location = useLocation()
   const token: string = parseQueryString<{ search?: string }>(location.hash)["#access_token"]
-  const socialNetwork = localStorage.getItem(LOGGED_IN_WITH_SOCIALS)
+  // @ts-ignore
+  const socialNetwork: "vk" | "google" | "facebook" | null  = localStorage.getItem(LOGGED_IN_WITH_SOCIALS).replace(/\"/g, '')
   useEffect(() => {
     _mounted({token,socialNetwork})
   }, [])

@@ -21,7 +21,7 @@ import {
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { $socialNetworkName, nextonClick, createUserFromSocialsFx } from "@/pages/auth/pages/signup/content/socials/socials.model"
+import { $socialNetwork, nextonClick, createUserFromSocialsFx } from "@/pages/auth/pages/socials/socials.model"
 import { useEvent, useStore, useGate } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
@@ -146,7 +146,7 @@ export const Step3 = () => {
   const isFormValid = useStore($isStep3FormValid)
   const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
-  const social = useStore($socialNetworkName)
+  const social = useStore($socialNetwork)
 
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
@@ -193,11 +193,11 @@ export const Step3 = () => {
           <FormItem label='Фамилия' error={errors.lastName} required>
             <Input value={values.lastName} onChange={_lastNameChanged} />
           </FormItem>
-          { social !== null ?
+          { social.nameOfNetwork !== null ?
             <FormItem label='Почта' error={errors.email} required>
-            <Input value={values.email} onChange={_emailChanged} />
-          </FormItem>
-          : null}
+              <Input value={values.email} onChange={_emailChanged} />
+            </FormItem>
+            : null}
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
 
           <NextButton onClick={_onClick} disabled={!isFormValid || nextDisabled} />

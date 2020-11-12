@@ -34,7 +34,7 @@ import { CoachSessionPage } from "@/pages/coach/session/CoachSessionPage"
 import { EditClientProfilePage } from "@/pages/client/edit-profile/EditClientProfile"
 import { ClientNotificationsPage } from "@/pages/client/notifications/ClientNotificationsPage"
 import { CoachNotificationsPage } from "@/pages/coach/notifications/CoachNotificationsPage"
-import { SignUpWithSocialsPage } from "@/pages/auth/pages/signup/content/socials/SignUpWithSocialsPage"
+import { SignUpWithSocialsPage } from "@/pages/auth/pages/socials/SignUpWithSocialsPage"
 
 export const ROUTES: RouteConfig[] = [
   {
