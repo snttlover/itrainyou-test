@@ -7,5 +7,6 @@ if (!dataSource.env) {
 export const config = {
   BACKEND_URL: dataSource.env.BACKEND_URL,
   WS_HOST: dataSource.env.WS_HOST,
-  AGORA_ID: dataSource.env.AGORA_ID
+  AGORA_ID: dataSource.env.AGORA_ID,
+  SENTRY_DSN: dataSource.env.SENTRY_DSN,
 }
