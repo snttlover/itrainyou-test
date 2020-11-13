@@ -1,9 +1,14 @@
 import { post } from "@/lib/network/network"
 import { config } from "@/config"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
-import { SocialsDataFound, SocialsDataNotFound } from "@/pages/auth/pages/signup/signup.model"
-import { User } from "@/lib/api/client/clientInfo"
+import { ClientSelfData, User } from "@/lib/api/client/clientInfo"
+import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
 
+
+export type SocialsDataFound = User & {
+  coach: null | CoachSelfData
+  client: null | ClientSelfData
+}
 
 export interface RegisterAsUserFromSocialsResponseFound {
   status: string
@@ -11,6 +16,15 @@ export interface RegisterAsUserFromSocialsResponseFound {
     token: string
     user: SocialsDataFound
   }
+}
+
+export type SocialsDataNotFound = {
+  email: string | null
+  firstName: string
+  lastName: string
+  sex: "M" | "F" | ""
+  birthDate: string | null
+  avatar: string | null
 }
 
 export interface RegisterAsUserFromSocialsResponseNotFound {
@@ -21,8 +35,8 @@ export interface RegisterAsUserFromSocialsResponseNotFound {
 export interface CreateUserWithSocialsResponse {
   token: string
   user: User & {
-    coach: string | null
-    client: string | null
+    coach: null | CoachSelfData
+    client: null | ClientSelfData
   }
 }
 
@@ -36,14 +50,17 @@ export interface CreateUserWithSocialsRequest {
   socialNetwork: string | null
 }
 
-export const AuthWithVK = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound> =>
-  post<RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/vk/`,
+export type RegisterAsUserFromSocialsResponse = RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound
+
+
+export const AuthWithVK = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponse> =>
+  post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/vk/`,
     keysToSnake(accessToken))
     .then(response => response.data)
     .then(keysToCamel)
 
-export const AuthWithFB = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound> =>
-  post<RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/facebook/`,
+export const AuthWithFB = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponse> =>
+  post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/facebook/`,
     keysToSnake(accessToken))
     .then(response => response.data)
     .then(keysToCamel)

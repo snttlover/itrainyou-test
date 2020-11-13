@@ -1,13 +1,14 @@
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
-import { trimString } from "@/lib/validators"
+import { trimString, emailValidator } from "@/lib/validators"
 import {
   $userData,
   clientDataChanged,
   REGISTER_SAVE_KEY,
   signUpPageMounted,
 } from "@/pages/auth/pages/signup/signup.model"
+import { $socialNetwork, LOGGED_IN_WITH_SOCIALS, loadSocialsFx } from "@/pages/auth/pages/socials/socials.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
@@ -46,14 +47,20 @@ export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorFi
   eventMapper: event => event.map(trimString),
 })
 
-export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField({
-  defaultValue: "",
-  validator: value => {
-    if (!value) return "Поле обязательно к заполнению"
-    return null
-  },
-  eventMapper: event => event.map(trimString),
-})
+export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<
+  string | null,
+  { socialNetwork: UnpackedStoreObjectType<typeof $socialNetwork>; value: string | null }
+  >({
+    defaultValue: "",
+    validatorEnhancer: $store => combine($socialNetwork, $store, (socialNetwork, value) => ({ socialNetwork, value })),
+    validator: obj => {
+      const networkName = obj.socialNetwork.nameOfNetwork
+      const value = obj.value
+
+      if (networkName !== null) return emailValidator(value)
+      return null},
+    eventMapper: event => event.map(trimString),
+  })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",

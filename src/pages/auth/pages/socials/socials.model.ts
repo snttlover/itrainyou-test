@@ -1,7 +1,7 @@
 import { loggedInWithSocials, loggedIn } from "@/feature/user/user.model"
 import { UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigatePush } from "@/feature/navigation"
-import { userDataSetWithSocials, SocialsDataFound, UserData } from "@/pages/auth/pages/signup/signup.model"
+import { userDataSetWithSocials, UserData } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
 import { AxiosError } from "axios"
 import {
@@ -13,10 +13,17 @@ import {
   AuthWithFB,
   AuthWithVK,
   createUserFromSocials, CreateUserWithSocialsResponse,
-  RegisterAsUserFromSocialsResponseFound, RegisterAsUserFromSocialsResponseNotFound
+  RegisterAsUserFromSocialsResponseFound, RegisterAsUserFromSocialsResponseNotFound,
+  RegisterAsUserFromSocialsResponse, SocialsDataFound
 } from "@/lib/api/auth-socials"
 
+
 type SocialNetworkNameType = "vk" | "google" | "facebook" | null
+type SocialNetwork = {
+  accessToken: string
+  nameOfNetwork: SocialNetworkNameType
+  mail: string | undefined
+}
 
 export const LOGGED_IN_WITH_SOCIALS = "__social-data__"
 
@@ -24,6 +31,7 @@ export const LOGGED_IN_WITH_SOCIALS = "__social-data__"
 export const mounted = createEvent<{
   token: string
   socialNetwork: SocialNetworkNameType
+  mail: string | undefined
 }>()
 export const logInWithSocials = createEvent<string>()
 export const nextonClick = createEvent()
@@ -35,13 +43,13 @@ export const userNotFound = createEvent<RegisterAsUserFromSocialsResponseNotFoun
 const reset = createEvent()
 
 
-export const $socialNetwork = createStoreObject<{
-    accessToken: string
-    nameOfNetwork: SocialNetworkNameType }>({
-      accessToken: "",
-      nameOfNetwork: null
-    })
-  .on(mounted, (state, payload) => ({ nameOfNetwork: payload.socialNetwork, accessToken: payload.token}))
+export const $socialNetwork = createStoreObject<SocialNetwork>({
+  accessToken: "",
+  nameOfNetwork: null,
+  mail: undefined,
+})
+  .on(mounted, (state, payload) =>
+    ({ nameOfNetwork: payload.socialNetwork, accessToken: payload.token, mail: payload.mail}))
   .reset(reset)
 
 
@@ -54,11 +62,11 @@ const reportUnknownTypeFx = createEffect<any, any, AxiosError>({
   handler: (response) => console.log("reportUnknownType", response),
 })
 
-export const registerWithFacebookFx = createEffect<string, RegisterAsUserFromSocialsResponseFound | RegisterAsUserFromSocialsResponseNotFound, AxiosError>({
+export const registerWithFacebookFx = createEffect<string, RegisterAsUserFromSocialsResponse, AxiosError>({
   handler: (accessToken) => AuthWithFB({ accessToken: accessToken }),
 })
 
-export const registerWithVkFx = createEffect<string, RegisterAsUserFromSocialsResponseFound | RegisterAsUserFromSocialsResponseNotFound, AxiosError>({
+export const registerWithVkFx = createEffect<string, RegisterAsUserFromSocialsResponse, AxiosError>({
   handler: (accessToken) => AuthWithVK({ accessToken: accessToken }),
 })
 
@@ -81,6 +89,15 @@ const saveSocialsFx = createEffect({
   },
 })
 
+export const loadSocialsFx = createEffect({
+  handler: () => {
+    try {
+      const data = localStorage.getItem(LOGGED_IN_WITH_SOCIALS)
+      if (!data) return
+      return JSON.parse(data)
+    } catch (e) {}
+  },
+})
 
 const deleteSocialsFx = createEffect({
   handler: () => localStorage.removeItem(LOGGED_IN_WITH_SOCIALS)
@@ -119,7 +136,7 @@ forward({
   to: navigatePush,
 })
 
-forward({
+/*forward({
   from: userNotFound.map((response: RegisterAsUserFromSocialsResponseNotFound): UserData => ({
     type: "client",
     clientData: response.data,
@@ -132,8 +149,68 @@ forward({
       photos: [],
       videoInterview: ""
     }
-  })),
+  })
+  ),
   to: userDataSetWithSocials,
+})*/
+
+sample({
+  source: $socialNetwork,
+  clock: userNotFound,
+  fn: (socialnetwork: SocialNetwork, response: RegisterAsUserFromSocialsResponseNotFound): UserData => {
+    if(response.data.email !== null ){
+      return {
+        type: "client",
+        clientData: response.data,
+        categories: [],
+        coachData: {
+          workExperience: "",
+          education: "",
+          description: "",
+          phone: "",
+          photos: [],
+          videoInterview: ""
+        }
+      }
+    } else {
+      if(socialnetwork.mail === undefined){
+        return {
+          type: "client",
+          clientData: response.data,
+          categories: [],
+          coachData: {
+            workExperience: "",
+            education: "",
+            description: "",
+            phone: "",
+            photos: [],
+            videoInterview: ""
+          }
+        }
+      } else {
+        return {
+          type: "client",
+          clientData: {
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            birthDate: response.data.birthDate,
+            sex: response.data.sex,
+            avatar: response.data.avatar,
+            email: socialnetwork.mail,
+          },
+          categories: [],
+          coachData: {
+            workExperience: "",
+            education: "",
+            description: "",
+            phone: "",
+            photos: [],
+            videoInterview: ""
+          }
+        }
+      }
+    }},
+  target: userDataSetWithSocials,
 })
 
 
@@ -151,14 +228,11 @@ split({
     google: socialNetwork => socialNetwork.nameOfNetwork === "google",
   },
   cases: {
-    vK: registerWithVkFx.prepend((socialNetwork: {accessToken: string
-      nameOfNetwork: SocialNetworkNameType}) => socialNetwork.accessToken),
+    vK: registerWithVkFx.prepend((socialNetwork: SocialNetwork) => socialNetwork.accessToken),
 
-    faceBook: registerWithFacebookFx.prepend((socialNetwork: {accessToken: string
-      nameOfNetwork: SocialNetworkNameType}) => socialNetwork.accessToken),
+    faceBook: registerWithFacebookFx.prepend((socialNetwork: SocialNetwork) => socialNetwork.accessToken),
 
-    google: registerWithGoogleFx.prepend((socialNetwork: {accessToken: string
-      nameOfNetwork: SocialNetworkNameType}) => socialNetwork.accessToken),
+    google: registerWithGoogleFx.prepend((socialNetwork: SocialNetwork) => socialNetwork.accessToken),
     __: reportUnknownTypeFx,
   },
 })
@@ -207,11 +281,7 @@ saveSocialsFx.watch(response => {
 })
 
 registerWithFacebookFx.done.watch(response => {
-  console.log("REGISTER DONE", response)
-})
-
-registerWithFacebookFx.doneData.map(response => response).watch(response => {
-  console.log("REGISTER DONE DATA", response)
+  console.log("REGISTER with FB DONE", response)
 })
 
 registerWithVkFx.doneData.map(response => response).watch(response => {
@@ -224,5 +294,5 @@ createUserFromSocialsFx.doneData.map(response => response).watch(response => {
 
 
 $socialNetwork.watch(response => {
-  console.log("chto v $token", response)
+  console.log("chto v $socialNetwork", response)
 })

@@ -46,7 +46,7 @@ export const Socials = () => {
       <SocialsM>
         <SocialIcon name="google" />
         <ExternalLink
-          href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=http://${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
+          href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=https://${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
           onClick={()=>handleSocials("vk")}>
           <SocialIcon name="vk" />
         </ExternalLink>
@@ -59,7 +59,7 @@ export const Socials = () => {
       <SocialsS>
         <SocialIcon name="google-s" />
         <ExternalLink
-          href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=http://${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
+          href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=https://${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
           onClick={()=>handleSocials("vk")}>
           <SocialIcon name="vk-s" />
         </ExternalLink>

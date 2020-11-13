@@ -31,24 +31,6 @@ export type UserData = {
   coachData: CoachData
 }
 
-export type SocialsDataNotFound = {
-    email: string | null
-    firstName: string
-    lastName: string
-    sex: "M" | "F" | ""
-    birthDate: string | null
-    avatar: string | null
-}
-
-export type SocialsDataFound = {
-    id: number
-    email: string
-    time_zone: string
-    creation_datetime: string
-    coach: string | null
-    client: string | null
-}
-
 export type RegisterUserType = "client" | "coach"
 
 export const signUpPageMounted = createEvent()
