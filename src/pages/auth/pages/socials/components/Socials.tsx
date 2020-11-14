@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
-import { SocialIcon } from "@/pages/auth/pages/socials/content/SocialIcon"
-import {  logInWithSocials } from "@/pages/auth/pages/socials/socials.model"
+import { SocialIcon } from "@/pages/auth/pages/socials/components/SocialIcon"
+import {  authWithSocialNetwork } from "@/pages/auth/pages/socials/socials.model"
 import { useEvent} from "effector-react"
 import { config } from "@/config"
 import { MediaRange } from "@/lib/responsive/media"
@@ -35,10 +35,10 @@ const SocialsM = styled(SocialsRoot)`
 `
 
 export const Socials = () => {
-  const _logInWithSocials = useEvent(logInWithSocials)
+  const _authWithSocialNetwork = useEvent(authWithSocialNetwork)
 
   const handleSocials = (socialNetwork: "vk" | "facebook" | "google") => {
-    _logInWithSocials(socialNetwork)
+    _authWithSocialNetwork(socialNetwork)
   }
 
   return (

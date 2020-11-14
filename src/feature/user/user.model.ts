@@ -15,7 +15,7 @@ export type UserData = {
 }
 
 export const loggedIn = createEvent<{ token: string }>()
-export const loggedInWithSocials = createEvent<boolean>()
+export const setIsSocialSignupInProgress = createEvent<boolean>()
 export const loadUserData = createEvent()
 export const setUserData = createEvent<UserData>()
 
@@ -33,7 +33,7 @@ export const $coachAccess = $userData.map(userData => ({
   lastRegistrationApplyDatetime: userData.coach?.lastRegistrationApplyDatetime,
 }))
 
-export const $isSocialSignupInProgress = restore(loggedInWithSocials,false)
+export const $isSocialSignupInProgress = restore(setIsSocialSignupInProgress,false)
 export const $isLoggedIn = $token.map(token => !!token)
 
 export const $timeZone = $userData.map(data => data.client?.user.timeZone || data.coach?.user.timeZone || data.timeZone)

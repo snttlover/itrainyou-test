@@ -6,7 +6,7 @@ import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import { parseQueryString } from "@/lib/helpers/query"
 import {
-  mounted, LOGGED_IN_WITH_SOCIALS
+  signUpWithSocialsPageMounted, SOCIAL_NETWORK_SAVE_KEY
 } from "./socials.model"
 
 
@@ -20,14 +20,14 @@ const Container = styled.div`
 `
 
 export const SignUpWithSocialsPage = () => {
-  const _mounted = useEvent(mounted)
+  const _mounted = useEvent(signUpWithSocialsPageMounted)
   const location = useLocation()
   const token: string = parseQueryString<{ search?: string }>(location.hash)["#access_token"]
-  const mail: string | undefined = parseQueryString<{ search?: string }>(location.hash)["email"]
+  const email: string = parseQueryString<{ search?: string }>(location.hash)["email"] || ""
   // @ts-ignore
-  const socialNetwork: "vk" | "google" | "facebook" | null  = localStorage.getItem(LOGGED_IN_WITH_SOCIALS).replace(/\"/g, '')
+  const socialNetwork: "vk" | "google" | "facebook" | null  = localStorage.getItem(SOCIAL_NETWORK_SAVE_KEY).replace(/\"/g, '')
   useEffect(() => {
-    _mounted({token,socialNetwork,mail})
+    _mounted({ token, socialNetwork, email })
   }, [])
   return (
     <Container>

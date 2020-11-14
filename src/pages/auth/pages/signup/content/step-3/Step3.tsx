@@ -11,20 +11,21 @@ import {
   $isUploadModelOpen,
   $step3Form,
   $step3FormErrors,
+  emailChanged,
   lastNameChanged,
   nameChanged,
+  step3Gate,
   step3Mounted,
   toggleUploadModal,
-  emailChanged,
-  step3Gate,
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { $socialNetwork, nextonClick, createUserFromSocialsFx } from "@/pages/auth/pages/socials/socials.model"
-import { useEvent, useStore, useGate } from "effector-react"
+import { $socialNetwork, registerStep3FormSubmitted } from "@/pages/auth/pages/socials/socials.model"
+import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
+import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -145,22 +146,18 @@ export const Step3 = () => {
   const isFormValid = useStore($isStep3FormValid)
   const userType = useStore($userData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
-  const social = useStore($socialNetwork)
+  const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
-  const _nextonClick = useEvent(nextonClick)
-  const _createUserFromSocials = useEvent(createUserFromSocialsFx.done)
+  const _registerStep3FormSubmitted = useEvent(registerStep3FormSubmitted)
   const [nextDisabled, setNextDisabled] = useState(false)
 
   useGate(step3Gate)
 
-  const _onClick = () => {
-    _nextonClick()
-  }
   useEffect(() => {
     mounted()
   }, [])
@@ -192,14 +189,14 @@ export const Step3 = () => {
           <FormItem label='Фамилия' error={errors.lastName} required>
             <Input value={values.lastName} onChange={_lastNameChanged} />
           </FormItem>
-          { social.nameOfNetwork !== null ?
+          {isSocialSignupInProgress && (
             <FormItem label='Почта' error={errors.email} required>
               <Input value={values.email} onChange={_emailChanged} />
             </FormItem>
-            : null}
+          )}
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
 
-          <NextButton onClick={_onClick} disabled={!isFormValid || nextDisabled} />
+          <NextButton onClick={() => _registerStep3FormSubmitted()} disabled={!isFormValid || nextDisabled} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}

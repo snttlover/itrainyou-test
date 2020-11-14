@@ -3,7 +3,7 @@ import { Input } from "@/components/input/Input"
 import { PasswordInput } from "@/components/input/PasswordInput"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/lib/responsive/media"
-import { Socials } from '@/pages/auth/pages/socials/content/Socials'
+import { Socials } from '@/pages/auth/pages/socials/components/Socials'
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { userDataReset } from "@/pages/auth/pages/signup/signup.model"

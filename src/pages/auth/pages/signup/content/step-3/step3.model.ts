@@ -1,18 +1,19 @@
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
-import { trimString, emailValidator } from "@/lib/validators"
+import { emailValidator, trimString } from "@/lib/validators"
 import {
   $userData,
   clientDataChanged,
   REGISTER_SAVE_KEY,
   signUpPageMounted,
 } from "@/pages/auth/pages/signup/signup.model"
-import { $socialNetwork, LOGGED_IN_WITH_SOCIALS, loadSocialsFx } from "@/pages/auth/pages/socials/socials.model"
+import { $socialNetwork } from "@/pages/auth/pages/socials/socials.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
 import { createGate } from "@/scope"
+import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 
 export const step3Gate = createGate()
 
@@ -48,17 +49,12 @@ export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorFi
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<
-  string | null,
-  { socialNetwork: UnpackedStoreObjectType<typeof $socialNetwork>; value: string | null }
+  string,
+  { isSocialSignupInProgress: UnpackedStoreObjectType<typeof $isSocialSignupInProgress>; value: string }
   >({
     defaultValue: "",
-    validatorEnhancer: $store => combine($socialNetwork, $store, (socialNetwork, value) => ({ socialNetwork, value })),
-    validator: obj => {
-      const networkName = obj.socialNetwork.nameOfNetwork
-      const value = obj.value
-
-      if (networkName !== null) return emailValidator(value)
-      return null},
+    validatorEnhancer: $store => combine($isSocialSignupInProgress, $store, (isSocialSignupInProgress, value) => ({ isSocialSignupInProgress, value })),
+    validator: obj => obj.isSocialSignupInProgress ? emailValidator(obj.value) : null,
     eventMapper: event => event.map(trimString),
   })
 

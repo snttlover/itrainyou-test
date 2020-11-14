@@ -1,4 +1,4 @@
-import { loggedInWithSocials, loggedIn } from "@/feature/user/user.model"
+import { setIsSocialSignupInProgress, loggedIn } from "@/feature/user/user.model"
 import { UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigatePush } from "@/feature/navigation"
 import { userDataSetWithSocials, UserData } from "@/pages/auth/pages/signup/signup.model"
@@ -21,20 +21,21 @@ import {
 type SocialNetworkNameType = "vk" | "google" | "facebook" | null
 type SocialNetwork = {
   accessToken: string
-  nameOfNetwork: SocialNetworkNameType
-  mail: string | undefined
+  name: SocialNetworkNameType
+  email: string
 }
 
-export const LOGGED_IN_WITH_SOCIALS = "__social-data__"
+export const SOCIAL_NETWORK_SAVE_KEY = "__social-data__"
 
 
-export const mounted = createEvent<{
+export const signUpWithSocialsPageMounted = createEvent<{
   token: string
   socialNetwork: SocialNetworkNameType
-  mail: string | undefined
+  email: string
 }>()
-export const logInWithSocials = createEvent<string>()
-export const nextonClick = createEvent()
+
+export const authWithSocialNetwork = createEvent<string>()
+export const registerStep3FormSubmitted = createEvent()
 export const userFound = createEvent<{
   token: string
   user: SocialsDataFound
@@ -45,16 +46,16 @@ const reset = createEvent()
 
 export const $socialNetwork = createStoreObject<SocialNetwork>({
   accessToken: "",
-  nameOfNetwork: null,
-  mail: undefined,
+  name: null,
+  email: "",
 })
-  .on(mounted, (state, payload) =>
-    ({ nameOfNetwork: payload.socialNetwork, accessToken: payload.token, mail: payload.mail}))
+  .on(signUpWithSocialsPageMounted, (state, payload) =>
+    ({ name: payload.socialNetwork, accessToken: payload.token, email: payload.email}))
   .reset(reset)
 
 
-export const $socialsForm = combine($socialNetwork, $email, (token, mail) =>({
-  accessToken: token.accessToken, email: mail, socialNetwork: token.nameOfNetwork,
+export const $socialsForm = combine($socialNetwork, $email, (token, email) =>({
+  accessToken: token.accessToken, email: email, socialNetwork: token.name,
 })).reset(reset)
 
 
@@ -78,35 +79,35 @@ export const createUserFromSocialsFx = createEffect<UnpackedStoreObjectType<type
   handler: ({ accessToken, email, socialNetwork }) => createUserFromSocials({ accessToken, email, socialNetwork }),
 })
 
-const saveSocialsFx = createEffect({
-  handler: (socials: string | null) => {
+const saveSocialNetworkNameFx = createEffect({
+  handler: (socialNetworkName: string | null) => {
     try {
-      const data = JSON.stringify(socials)
-      localStorage.setItem(LOGGED_IN_WITH_SOCIALS, data)
+      const data = JSON.stringify(socialNetworkName)
+      localStorage.setItem(SOCIAL_NETWORK_SAVE_KEY, data)
       // eslint-disable-next-line no-empty
     } catch (e) {
     }
   },
 })
 
-export const loadSocialsFx = createEffect({
+export const loadSocialNetworkNameFx = createEffect({
   handler: () => {
     try {
-      const data = localStorage.getItem(LOGGED_IN_WITH_SOCIALS)
+      const data = localStorage.getItem(SOCIAL_NETWORK_SAVE_KEY)
       if (!data) return
       return JSON.parse(data)
     } catch (e) {}
   },
 })
 
-const deleteSocialsFx = createEffect({
-  handler: () => localStorage.removeItem(LOGGED_IN_WITH_SOCIALS)
+const deleteSocialNetworkNameFx = createEffect({
+  handler: () => localStorage.removeItem(SOCIAL_NETWORK_SAVE_KEY)
 })
 
 
 forward({
-  from: logInWithSocials,
-  to: saveSocialsFx,
+  from: authWithSocialNetwork,
+  to: saveSocialNetworkNameFx,
 })
 
 const merged = merge([registerWithVkFx.doneData,registerWithFacebookFx.doneData])
@@ -128,7 +129,7 @@ split({
 
 forward({
   from: userNotFound.map(() => true),
-  to: loggedInWithSocials,
+  to: setIsSocialSignupInProgress,
 })
 
 forward({
@@ -136,80 +137,25 @@ forward({
   to: navigatePush,
 })
 
-/*forward({
-  from: userNotFound.map((response: RegisterAsUserFromSocialsResponseNotFound): UserData => ({
-    type: "client",
-    clientData: response.data,
-    categories: [],
-    coachData: {
-      workExperience: "",
-      education: "",
-      description: "",
-      phone: "",
-      photos: [],
-      videoInterview: ""
-    }
-  })
-  ),
-  to: userDataSetWithSocials,
-})*/
-
 sample({
   source: $socialNetwork,
   clock: userNotFound,
-  fn: (socialnetwork: SocialNetwork, response: RegisterAsUserFromSocialsResponseNotFound): UserData => {
-    if(response.data.email !== null ){
-      return {
-        type: "client",
-        clientData: response.data,
-        categories: [],
-        coachData: {
-          workExperience: "",
-          education: "",
-          description: "",
-          phone: "",
-          photos: [],
-          videoInterview: ""
-        }
+  fn: (socialNetwork: SocialNetwork, response: RegisterAsUserFromSocialsResponseNotFound): UserData => {
+    const email = response.data.email || socialNetwork.email
+    return {
+      type: "client",
+      clientData: { ...response.data, email },
+      categories: [],
+      coachData: {
+        workExperience: "",
+        education: "",
+        description: "",
+        phone: "",
+        photos: [],
+        videoInterview: ""
       }
-    } else {
-      if(socialnetwork.mail === undefined){
-        return {
-          type: "client",
-          clientData: response.data,
-          categories: [],
-          coachData: {
-            workExperience: "",
-            education: "",
-            description: "",
-            phone: "",
-            photos: [],
-            videoInterview: ""
-          }
-        }
-      } else {
-        return {
-          type: "client",
-          clientData: {
-            firstName: response.data.firstName,
-            lastName: response.data.lastName,
-            birthDate: response.data.birthDate,
-            sex: response.data.sex,
-            avatar: response.data.avatar,
-            email: socialnetwork.mail,
-          },
-          categories: [],
-          coachData: {
-            workExperience: "",
-            education: "",
-            description: "",
-            phone: "",
-            photos: [],
-            videoInterview: ""
-          }
-        }
-      }
-    }},
+    }
+  },
   target: userDataSetWithSocials,
 })
 
@@ -223,9 +169,9 @@ const socialNetworkGuardedUpdated = guard({
 split({
   source: socialNetworkGuardedUpdated,
   match: {
-    vK: socialNetwork => socialNetwork.nameOfNetwork === "vk",
-    faceBook: socialNetwork => socialNetwork.nameOfNetwork === "facebook",
-    google: socialNetwork => socialNetwork.nameOfNetwork === "google",
+    vK: socialNetwork => socialNetwork.name === "vk",
+    faceBook: socialNetwork => socialNetwork.name === "facebook",
+    google: socialNetwork => socialNetwork.name === "google",
   },
   cases: {
     vK: registerWithVkFx.prepend((socialNetwork: SocialNetwork) => socialNetwork.accessToken),
@@ -239,7 +185,7 @@ split({
 
 forward({
   from: step3Gate.close,
-  to: [deleteSocialsFx, reset]
+  to: [deleteSocialNetworkNameFx, reset]
 })
 
 forward({
@@ -249,7 +195,7 @@ forward({
 
 forward({
   from: createUserFromSocialsFx.done.map(() => false),
-  to: loggedInWithSocials,
+  to: setIsSocialSignupInProgress,
 })
 
 forward({
@@ -260,8 +206,8 @@ forward({
 sample({
   source: $socialsForm,
   clock: guard({
-    source: nextonClick,
-    filter: combine($socialNetwork, (socials) => socials.nameOfNetwork !== null),
+    source: registerStep3FormSubmitted,
+    filter: combine($socialNetwork, (socials) => socials.name !== null),
   }),
   target: createUserFromSocialsFx,
 })
@@ -269,14 +215,14 @@ sample({
 sample({
   source: combine({ url: routeNames.signup("4") }),
   clock: guard({
-    source: nextonClick,
-    filter: combine($socialNetwork, (socials) => socials.nameOfNetwork === null),
+    source: registerStep3FormSubmitted,
+    filter: combine($socialNetwork, (socials) => socials.name === null),
   }),
   target: navigatePush,
 })
 
 
-saveSocialsFx.watch(response => {
+saveSocialNetworkNameFx.watch(response => {
   console.log("SAVED SOCIALS DONE", response)
 })
 
