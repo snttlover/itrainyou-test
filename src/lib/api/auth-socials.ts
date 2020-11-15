@@ -65,6 +65,11 @@ export const AuthWithFB = (accessToken: RegisterWithSocialsRequest): Promise<Reg
     .then(response => response.data)
     .then(keysToCamel)
 
+export const AuthWithGoogle = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponse> =>
+  post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/google/`,
+    keysToSnake(accessToken))
+    .then(response => response.data)
+    .then(keysToCamel)
 
 export const createUserFromSocials = (data: CreateUserWithSocialsRequest): Promise<CreateUserWithSocialsResponse> =>
   post<CreateUserWithSocialsResponse, CreateUserWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/create-user-from-social/`,

@@ -14,9 +14,10 @@ import {
   AuthWithVK,
   createUserFromSocials, CreateUserWithSocialsResponse,
   RegisterAsUserFromSocialsResponseFound, RegisterAsUserFromSocialsResponseNotFound,
-  RegisterAsUserFromSocialsResponse, SocialsDataFound
+  RegisterAsUserFromSocialsResponse, SocialsDataFound, AuthWithGoogle
 } from "@/lib/api/auth-socials"
-
+import { parseQueryString } from "@/lib/helpers/query"
+import { createGate } from "@/scope"
 
 type SocialNetworkNameType = "vk" | "google" | "facebook" | null
 type SocialNetwork = {
@@ -27,12 +28,8 @@ type SocialNetwork = {
 
 export const SOCIAL_NETWORK_SAVE_KEY = "__social-data__"
 
-
-export const signUpWithSocialsPageMounted = createEvent<{
-  token: string
-  socialNetwork: SocialNetworkNameType
-  email: string
-}>()
+export const signUpWithSocialsPageGate = createGate()
+export const socialsGate = createGate()
 
 export const authWithSocialNetwork = createEvent<string>()
 export const registerStep3FormSubmitted = createEvent()
@@ -43,14 +40,44 @@ export const userFound = createEvent<{
 export const userNotFound = createEvent<RegisterAsUserFromSocialsResponseNotFound>()
 const reset = createEvent()
 
+const getEmailAndTokenFx = createEffect({
+  handler:  () => {
+    try {
+      const token: string = parseQueryString<{ search?: string }>(location.hash)["#access_token"]
+      const email: string = parseQueryString<{ search?: string }>(location.hash)["email"] || ""
+      // @ts-ignore
+      const socialNetwork: "vk" | "google" | "facebook" | null  = localStorage.getItem(SOCIAL_NETWORK_SAVE_KEY).replace(/\"/g, '')
+      if (socialNetwork === "google"){
+        const token: string = parseQueryString<{ search?: string }>(location.hash)["id_token"]
+        return {
+          accessToken: token,
+          name: socialNetwork,
+          email: email,
+        }
+      }
+
+      return {
+        accessToken: token,
+        name: socialNetwork,
+        email: email,
+      }
+    } catch (e) {
+      return {
+        accessToken: "",
+        name: null,
+        email: "",
+      }
+    }
+  },
+})
 
 export const $socialNetwork = createStoreObject<SocialNetwork>({
   accessToken: "",
   name: null,
   email: "",
 })
-  .on(signUpWithSocialsPageMounted, (state, payload) =>
-    ({ name: payload.socialNetwork, accessToken: payload.token, email: payload.email}))
+  .on(getEmailAndTokenFx.doneData, (state, payload) =>
+    ({ name: payload.name, accessToken: payload.accessToken, email: payload.email}))
   .reset(reset)
 
 
@@ -71,8 +98,8 @@ export const registerWithVkFx = createEffect<string, RegisterAsUserFromSocialsRe
   handler: (accessToken) => AuthWithVK({ accessToken: accessToken }),
 })
 
-export const registerWithGoogleFx = createEffect<string, any, AxiosError>({
-  handler: (accessToken) => console.log,
+export const registerWithGoogleFx = createEffect<string, RegisterAsUserFromSocialsResponse, AxiosError>({
+  handler: (accessToken) => AuthWithGoogle({accessToken: accessToken}),
 })
 
 export const createUserFromSocialsFx = createEffect<UnpackedStoreObjectType<typeof $socialsForm>, CreateUserWithSocialsResponse, AxiosError>({
@@ -90,18 +117,14 @@ const saveSocialNetworkNameFx = createEffect({
   },
 })
 
-export const loadSocialNetworkNameFx = createEffect({
-  handler: () => {
-    try {
-      const data = localStorage.getItem(SOCIAL_NETWORK_SAVE_KEY)
-      if (!data) return
-      return JSON.parse(data)
-    } catch (e) {}
-  },
-})
 
 const deleteSocialNetworkNameFx = createEffect({
   handler: () => localStorage.removeItem(SOCIAL_NETWORK_SAVE_KEY)
+})
+
+forward({
+  from: signUpWithSocialsPageGate.open,
+  to: getEmailAndTokenFx,
 })
 
 
@@ -110,7 +133,7 @@ forward({
   to: saveSocialNetworkNameFx,
 })
 
-const merged = merge([registerWithVkFx.doneData,registerWithFacebookFx.doneData])
+const merged = merge([registerWithVkFx.doneData, registerWithFacebookFx.doneData, registerWithGoogleFx.doneData])
 
 split({
   source: merged,
@@ -179,12 +202,13 @@ split({
     faceBook: registerWithFacebookFx.prepend((socialNetwork: SocialNetwork) => socialNetwork.accessToken),
 
     google: registerWithGoogleFx.prepend((socialNetwork: SocialNetwork) => socialNetwork.accessToken),
+
     __: reportUnknownTypeFx,
   },
 })
 
 forward({
-  from: step3Gate.close,
+  from: [step3Gate.close, socialsGate.open],
   to: [deleteSocialNetworkNameFx, reset]
 })
 

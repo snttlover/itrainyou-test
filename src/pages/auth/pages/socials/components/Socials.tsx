@@ -1,12 +1,14 @@
 import * as React from "react"
 import styled from "styled-components"
 import { SocialIcon } from "@/pages/auth/pages/socials/components/SocialIcon"
-import {  authWithSocialNetwork } from "@/pages/auth/pages/socials/socials.model"
-import { useEvent} from "effector-react"
+import { authWithSocialNetwork, socialsGate } from "@/pages/auth/pages/socials/socials.model"
+import { useEvent, useGate } from "effector-react"
 import { config } from "@/config"
 import { MediaRange } from "@/lib/responsive/media"
+import { useGoogleLogin } from "react-google-login"
 
 const ExternalLink = styled.a``
+const GoogleLink = styled.div``
 
 const SocialsRoot = styled.div`
   width: 100%;
@@ -36,15 +38,36 @@ const SocialsM = styled(SocialsRoot)`
 
 export const Socials = () => {
   const _authWithSocialNetwork = useEvent(authWithSocialNetwork)
+  const { signIn } = useGoogleLogin({
+    onSuccess: (response)=>{
+      console.log("onsiucces",response)
+    },
+    clientId: `${config.GOOGLE_CLIENT_ID}`,
+    redirectUri: `http://${window.location.hostname}/auth/socials`,
+    onFailure: (response)=>{
+      console.log("failure",response)
+    },
+    uxMode: `redirect`,
+    accessType: `online`,
+    responseType: `token`,
+  })
 
   const handleSocials = (socialNetwork: "vk" | "facebook" | "google") => {
+    if (socialNetwork === "google") {
+      _authWithSocialNetwork(socialNetwork)
+      signIn()
+    }
     _authWithSocialNetwork(socialNetwork)
   }
+
+  useGate(socialsGate)
 
   return (
     <>
       <SocialsM>
-        <SocialIcon name="google" />
+        <GoogleLink onClick={()=>handleSocials("google")}>
+          <SocialIcon name="google" />
+        </GoogleLink>
         <ExternalLink
           href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=https://${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
           onClick={()=>handleSocials("vk")}>
@@ -57,7 +80,9 @@ export const Socials = () => {
         </ExternalLink>
       </SocialsM>
       <SocialsS>
-        <SocialIcon name="google-s" />
+        <GoogleLink onClick={()=>handleSocials("google")}>
+          <SocialIcon name="google-s" />
+        </GoogleLink>
         <ExternalLink
           href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=https://${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
           onClick={()=>handleSocials("vk")}>
