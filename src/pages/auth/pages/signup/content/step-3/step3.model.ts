@@ -8,7 +8,6 @@ import {
   REGISTER_SAVE_KEY,
   signUpPageMounted,
 } from "@/pages/auth/pages/signup/signup.model"
-import { $socialNetwork } from "@/pages/auth/pages/socials/socials.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"

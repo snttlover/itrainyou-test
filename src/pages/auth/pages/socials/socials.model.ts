@@ -8,7 +8,7 @@ import {
   combine, createEffect, createEvent, guard,
   forward, sample, split, createStoreObject, merge
 } from "effector-root"
-import { $email, step3Gate } from "@/pages/auth/pages/signup/content/step-3/step3.model"
+import { $email } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import {
   AuthWithFB,
   AuthWithVK,
@@ -40,33 +40,21 @@ export const userFound = createEvent<{
 export const userNotFound = createEvent<RegisterAsUserFromSocialsResponseNotFound>()
 const reset = createEvent()
 
-const getEmailAndTokenFx = createEffect({
+const socialNetworkDataFx = createEffect({
   handler:  () => {
-    try {
-      const token: string = parseQueryString<{ search?: string }>(location.hash)["#access_token"]
-      const email: string = parseQueryString<{ search?: string }>(location.hash)["email"] || ""
-      // @ts-ignore
-      const socialNetwork: "vk" | "google" | "facebook" | null  = localStorage.getItem(SOCIAL_NETWORK_SAVE_KEY).replace(/\"/g, '')
-      if (socialNetwork === "google"){
-        const token: string = parseQueryString<{ search?: string }>(location.hash)["id_token"]
-        return {
-          accessToken: token,
-          name: socialNetwork,
-          email: email,
-        }
-      }
+    const stringData = localStorage.getItem(SOCIAL_NETWORK_SAVE_KEY)
+    const name: SocialNetworkNameType = JSON.parse(stringData!)
 
-      return {
-        accessToken: token,
-        name: socialNetwork,
-        email: email,
-      }
-    } catch (e) {
-      return {
-        accessToken: "",
-        name: null,
-        email: "",
-      }
+    const tokenQueryParamName = name === "google" ? "id_token" : "#access_token"
+
+    const getHashParam = (key: string) => parseQueryString<{ search?: string }>(location.hash)[key] || ""
+    const accessToken = getHashParam(tokenQueryParamName)
+    const email = getHashParam("email")
+
+    return {
+      accessToken,
+      name,
+      email,
     }
   },
 })
@@ -76,7 +64,7 @@ export const $socialNetwork = createStoreObject<SocialNetwork>({
   name: null,
   email: "",
 })
-  .on(getEmailAndTokenFx.doneData, (state, payload) =>
+  .on(socialNetworkDataFx.doneData, (state, payload) =>
     ({ name: payload.name, accessToken: payload.accessToken, email: payload.email}))
   .reset(reset)
 
@@ -124,7 +112,7 @@ const deleteSocialNetworkNameFx = createEffect({
 
 forward({
   from: signUpWithSocialsPageGate.open,
-  to: getEmailAndTokenFx,
+  to: socialNetworkDataFx,
 })
 
 
@@ -208,7 +196,7 @@ split({
 })
 
 forward({
-  from: [step3Gate.close, socialsGate.open],
+  from: socialsGate.open,
   to: [deleteSocialNetworkNameFx, reset]
 })
 
@@ -217,7 +205,7 @@ forward({
   to: loggedIn,
 })
 
-forward({
+/*forward({
   from: createUserFromSocialsFx.done.map(() => false),
   to: setIsSocialSignupInProgress,
 })
@@ -230,7 +218,7 @@ forward({
 sample({
   source: $socialsForm,
   clock: guard({
-    source: registerStep3FormSubmitted,
+    source: registerStep4Merged,
     filter: combine($socialNetwork, (socials) => socials.name !== null),
   }),
   target: createUserFromSocialsFx,
@@ -243,26 +231,11 @@ sample({
     filter: combine($socialNetwork, (socials) => socials.name === null),
   }),
   target: navigatePush,
+})*/
+
+sample({
+  source: combine({ url: routeNames.signup("4") }),
+  clock: registerStep3FormSubmitted,
+  target: navigatePush,
 })
 
-
-saveSocialNetworkNameFx.watch(response => {
-  console.log("SAVED SOCIALS DONE", response)
-})
-
-registerWithFacebookFx.done.watch(response => {
-  console.log("REGISTER with FB DONE", response)
-})
-
-registerWithVkFx.doneData.map(response => response).watch(response => {
-  console.log("REGISTER with VK DONE DATA", response)
-})
-
-createUserFromSocialsFx.doneData.map(response => response).watch(response => {
-  console.log("CREATE uSER FROM SOCIALS DONE DATA", response)
-})
-
-
-$socialNetwork.watch(response => {
-  console.log("chto v $socialNetwork", response)
-})

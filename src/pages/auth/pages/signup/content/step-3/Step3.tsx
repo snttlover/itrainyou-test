@@ -20,7 +20,7 @@ import {
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
 import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { $socialNetwork, registerStep3FormSubmitted } from "@/pages/auth/pages/socials/socials.model"
+import { registerStep3FormSubmitted } from "@/pages/auth/pages/socials/socials.model"
 import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"

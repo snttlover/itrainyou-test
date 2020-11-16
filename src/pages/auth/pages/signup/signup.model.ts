@@ -2,7 +2,10 @@ import { navigatePush } from "@/feature/navigation"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { routeNames } from "@/pages/route-names"
-import { attach, createEffect, createEvent, createStore, forward, merge, sample, split } from "effector-root"
+import { attach, createEffect, createEvent, createStore, forward, merge, sample, split, guard, combine } from "effector-root"
+import { $socialsForm, createUserFromSocialsFx, } from "@/pages/auth/pages/socials/socials.model"
+import { $isSocialSignupInProgress } from "@/feature/user/user.model"
+
 
 export const REGISTER_SAVE_KEY = "__register-data__"
 
@@ -127,10 +130,34 @@ forward({
   to: navigatePush,
 })
 
-const registerUser = merge([userRegistered, skipCoach])
+export const registerStep4Merged = merge([userRegistered, skipCoach])
+
+/*sample({
+  source: $userData,
+  clock: registerStep4Merged,
+  target: registerUserFx,
+})*/
 
 sample({
   source: $userData,
-  clock: registerUser,
+  clock: guard({
+    source: registerStep4Merged,
+    filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
+  }),
+  target: registerUserFx,
+})
+
+sample({
+  source: $socialsForm,
+  clock: guard({
+    source: registerStep4Merged,
+    filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
+  }),
+  target: createUserFromSocialsFx,
+})
+
+sample({
+  source: $userData,
+  clock: createUserFromSocialsFx.done,
   target: registerUserFx,
 })

@@ -39,25 +39,18 @@ const SocialsM = styled(SocialsRoot)`
 export const Socials = () => {
   const _authWithSocialNetwork = useEvent(authWithSocialNetwork)
   const { signIn } = useGoogleLogin({
-    onSuccess: (response)=>{
-      console.log("onsiucces",response)
-    },
     clientId: `${config.GOOGLE_CLIENT_ID}`,
-    redirectUri: `http://${window.location.hostname}/auth/socials`,
-    onFailure: (response)=>{
-      console.log("failure",response)
-    },
-    uxMode: `redirect`,
-    accessType: `online`,
-    responseType: `token`,
+    redirectUri: `${window.location.protocol}//${window.location.hostname}/auth/socials`,
+    uxMode: "redirect",
+    accessType: "online",
+    responseType: "token",
   })
 
   const handleSocials = (socialNetwork: "vk" | "facebook" | "google") => {
+    _authWithSocialNetwork(socialNetwork)
     if (socialNetwork === "google") {
-      _authWithSocialNetwork(socialNetwork)
       signIn()
     }
-    _authWithSocialNetwork(socialNetwork)
   }
 
   useGate(socialsGate)
@@ -69,12 +62,12 @@ export const Socials = () => {
           <SocialIcon name="google" />
         </GoogleLink>
         <ExternalLink
-          href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=https://${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
+          href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=${window.location.protocol}//${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
           onClick={()=>handleSocials("vk")}>
           <SocialIcon name="vk" />
         </ExternalLink>
         <ExternalLink
-          href={`https://www.facebook.com/v3.0/dialog/oauth?client_id=${config.FACEBOOK_CLIENT_ID}&display=popup&response_type=token&redirect_uri=https://${window.location.hostname}/auth/socials&fields=id,name,email,gender,birthday,profile_pic,profile_picture`}
+          href={`https://www.facebook.com/v3.0/dialog/oauth?client_id=${config.FACEBOOK_CLIENT_ID}&display=popup&response_type=token&redirect_uri=${window.location.protocol}//${window.location.hostname}/auth/socials&fields=id,name,email,gender,birthday,profile_pic,profile_picture`}
           onClick={()=>handleSocials("facebook")}>
           <SocialIcon name="facebook" />
         </ExternalLink>
@@ -84,12 +77,12 @@ export const Socials = () => {
           <SocialIcon name="google-s" />
         </GoogleLink>
         <ExternalLink
-          href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=https://${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
+          href={`https://oauth.vk.com/authorize?client_id=${config.VK_CLIENT_ID}&scope=photos,offline,email&redirect_uri=${window.location.protocol}//${window.location.hostname}/auth/socials&display=page&v=5.0&response_type=token`}
           onClick={()=>handleSocials("vk")}>
           <SocialIcon name="vk-s" />
         </ExternalLink>
         <ExternalLink
-          href={`https://www.facebook.com/v3.0/dialog/oauth?client_id=${config.FACEBOOK_CLIENT_ID}&display=popup&response_type=token&redirect_uri=https://${window.location.hostname}/auth/socials&fields=id,name,email,gender,birthday,profile_pic,profile_picture`}
+          href={`https://www.facebook.com/v3.0/dialog/oauth?client_id=${config.FACEBOOK_CLIENT_ID}&display=popup&response_type=token&redirect_uri=${window.location.protocol}//${window.location.hostname}/auth/socials&fields=id,name,email,gender,birthday,profile_pic,profile_picture`}
           onClick={()=>handleSocials("facebook")}>
           <SocialIcon name="facebook-s" />
         </ExternalLink>
