@@ -15,7 +15,7 @@ export const passwordValidator = (value: string) => {
   return null
 }
 
-export const trimString = (value: string) => value.trim()
+export const trimString = (value: string | null) => value === null ? "" : value.trim()
 
 export const phoneValidator = (value: string) => {
   const clearValue = value.replace(/[^0-9]/g, "")

@@ -5,6 +5,7 @@ export const routeNames = {
 
   login: () => `/auth/login`,
   signup: (step: string) => `/auth/signup/${step}`,
+  signupWithSocials: () => `/auth/socials`,
   recovery: () => `/auth/recovery`,
   resetPassword: (token: string) => `/reset-password/${token}`,
 

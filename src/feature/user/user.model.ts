@@ -5,7 +5,7 @@ import { updateMyUser } from "@/lib/api/users/update-my-user"
 import { keysToCamel } from "@/lib/network/casing"
 import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import dayjs from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, guard } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard, restore } from "effector-root"
 import Cookies from "js-cookie"
 
 export type UserData = {
@@ -15,6 +15,7 @@ export type UserData = {
 }
 
 export const loggedIn = createEvent<{ token: string }>()
+export const setIsSocialSignupInProgress = createEvent<boolean>()
 export const loadUserData = createEvent()
 export const setUserData = createEvent<UserData>()
 
@@ -32,6 +33,7 @@ export const $coachAccess = $userData.map(userData => ({
   lastRegistrationApplyDatetime: userData.coach?.lastRegistrationApplyDatetime,
 }))
 
+export const $isSocialSignupInProgress = restore(setIsSocialSignupInProgress,false)
 export const $isLoggedIn = $token.map(token => !!token)
 
 export const $timeZone = $userData.map(data => data.client?.user.timeZone || data.coach?.user.timeZone || data.timeZone)

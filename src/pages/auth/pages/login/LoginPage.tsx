@@ -3,11 +3,13 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { LoginForm } from "@/pages/auth/pages/login/content/LoginForm"
+import { Socials } from "@/pages/auth/pages/socials/components/Socials"
 import { WhiteContainer } from "@/pages/auth/components/WhiteContainer"
 import { CenterFormContainer } from "@/pages/auth/components/CenterFormContainer"
 import { useEvent } from "effector-react"
 import { resetLoginForm } from "@/pages/auth/pages/login/login.model"
 import { useEffect } from "react"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Header = styled.h3`
   font-family: "Roboto Slab";
@@ -18,11 +20,11 @@ const Header = styled.h3`
   width: 100%;
   text-align: center;
 
-  @media screen and (max-width: 480px) {
+  ${MediaRange.lessThan("mobile")`
     font-size: 28px;
     line-height: 44px;
     padding-top: 20px;
-  }
+  `}
 `
 
 const ResetPasswordLink = styled(Link)`
@@ -35,10 +37,10 @@ const ResetPasswordLink = styled(Link)`
   text-align: center;
   width: 200px;
 
-  @media screen and (max-width: 480px) {
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
-  }
+  `}
 `
 
 export const LoginPage = () => {
@@ -53,6 +55,7 @@ export const LoginPage = () => {
       <CenterFormContainer>
         <WhiteContainer>
           <Header>Вход</Header>
+          <Socials />
           <LoginForm />
         </WhiteContainer>
         <ResetPasswordLink to='/auth/recovery'>Забыли пароль?</ResetPasswordLink>

@@ -12,10 +12,12 @@ export interface RegisterAsUserResponse {
   token: string
 }
 
+
 export const registerAsUser = (data: RegisterAsUserRequest) =>
   post<RegisterAsUserResponse, RegisterAsUserRequest>(`${config.BACKEND_URL}/api/v1/web/auth/register/`, data)
     .then(response => response.data)
     .then(keysToCamel)
+
 
 export interface RegisterAsClientRequest {
   firstName: string

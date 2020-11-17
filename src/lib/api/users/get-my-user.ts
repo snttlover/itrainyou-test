@@ -10,7 +10,7 @@ export type GetMyUserResponse = {
   id: number
   client: ClientSelfData
   coach: CoachSelfData
-  email: string
+  email: string 
   timeZone: string
   creationDatetime: string
 }

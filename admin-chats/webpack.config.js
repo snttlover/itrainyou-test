@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './admin-chats/index.ts',
+  entry: './admin-chats/units.ts',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./../src"),
