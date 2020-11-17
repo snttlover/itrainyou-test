@@ -10,12 +10,12 @@ import {
   birthdayChanged,
   sexChanged,
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
-import { $userData } from "@/pages/auth/pages/signup/signup.model"
 import dayjs from "dayjs"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
+import { $userData } from "@/pages/auth/pages/signup/models/init"
 
 const StyledFormItem = styled(FormItem)`
   color: #424242;

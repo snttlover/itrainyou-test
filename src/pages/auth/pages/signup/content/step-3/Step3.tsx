@@ -19,13 +19,14 @@ import {
   toggleUploadModal,
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
-import { $userData } from "@/pages/auth/pages/signup/signup.model"
-import { registerStep3FormSubmitted } from "@/pages/auth/pages/socials/socials.model"
 import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
+import { history } from "@/feature/navigation"
+import { registerStep3FormSubmitted } from "@/pages/auth/pages/socials/models/init"
+import { $userData } from "@/pages/auth/pages/signup/models/init"
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -196,7 +197,7 @@ export const Step3 = () => {
           )}
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
 
-          <NextButton onClick={() => _registerStep3FormSubmitted()} disabled={!isFormValid || nextDisabled} />
+          <NextButton onClick={() => history!.push("/auth/signup/4")} disabled={!isFormValid || nextDisabled} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}

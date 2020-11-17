@@ -6,7 +6,6 @@ import { MediaRange } from "@/lib/responsive/media"
 import { Socials } from '@/pages/auth/pages/socials/components/Socials'
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
-import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import {
@@ -23,6 +22,7 @@ import {
 import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
+import { userDataReset } from "@/pages/auth/pages/signup/models/init"
 
 const Container = styled.div`
   min-width: 320px;

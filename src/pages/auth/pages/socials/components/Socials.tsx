@@ -1,11 +1,11 @@
 import * as React from "react"
 import styled from "styled-components"
 import { SocialIcon } from "@/pages/auth/pages/socials/components/SocialIcon"
-import { authWithSocialNetwork, socialsGate } from "@/pages/auth/pages/socials/socials.model"
 import { useEvent, useGate } from "effector-react"
 import { config } from "@/config"
 import { MediaRange } from "@/lib/responsive/media"
 import { useGoogleLogin } from "react-google-login"
+import { authWithSocialNetwork, socialsGate } from "@/pages/auth/pages/socials/models/init"
 
 const ExternalLink = styled.a``
 const GoogleLink = styled.div``

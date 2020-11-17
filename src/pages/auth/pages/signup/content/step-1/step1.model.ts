@@ -3,11 +3,11 @@ import { registerAsUser, RegisterAsUserResponse } from "@/lib/api/register"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigatePush } from "@/feature/navigation"
 import { emailValidator, passwordValidator, trimString } from "@/lib/validators"
-import { userDataReset } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
 import { createGate } from "@/scope"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
+import { userDataReset } from "@/pages/auth/pages/signup/models/init"
 
 export const step1Gate = createGate()
 

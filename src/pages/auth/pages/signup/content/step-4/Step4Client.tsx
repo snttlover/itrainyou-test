@@ -2,11 +2,11 @@ import { Button } from "@/components/button/normal/Button"
 import { $categoriesList } from "@/feature/categories/categories.store"
 import { MediaRange } from "@/lib/responsive/media"
 import { Step4ClientLayout } from "@/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"
-import { $userData, registerUserFx, categoriesChanged, userRegistered } from "@/pages/auth/pages/signup/signup.model"
 import { CategoryCard } from "./client/CategoryCard"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
+import { $userData, categoriesChanged, registerUserFx, userRegistered } from "@/pages/auth/pages/signup/models/init"
 
 const Container = styled.div`
   min-width: 320px;

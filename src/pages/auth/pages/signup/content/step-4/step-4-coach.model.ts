@@ -1,11 +1,4 @@
-import {
-  categoriesChanged,
-  CoachData,
-  coachDataChanged,
-  REGISTER_SAVE_KEY,
-  signUpPageMounted,
-  UserData,
-} from "@/pages/auth/pages/signup/signup.model"
+
 import {
   descriptionChanged,
   educationChanged,
@@ -19,6 +12,8 @@ import {
 } from "@/feature/coach-get-access/coach-get-access.model"
 import { createEffect, createEvent, forward, Event } from "effector-root"
 import { combineEvents, spread } from "patronum"
+import { CoachData, REGISTER_SAVE_KEY, UserData } from "@/pages/auth/pages/signup/models/types"
+import { categoriesChanged, coachDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/init"
 
 export const step4CoachMounted = createEvent()
 const waitAllEvents = combineEvents({ events: [step4CoachMounted, signUpPageMounted] })

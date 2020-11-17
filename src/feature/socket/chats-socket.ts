@@ -6,10 +6,10 @@ import { $token, logout } from "@/lib/network/token"
 import { $isFullRegistered, $isLoggedIn, $userData } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
-import { registerUserFx } from "@/pages/auth/pages/signup/signup.model"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { condition } from "patronum"
 import { runInScope } from "@/scope"
+import { registerUserFx } from "@/pages/auth/pages/signup/models/init"
 
 type SendSocketChatMessage = {
   chat: number

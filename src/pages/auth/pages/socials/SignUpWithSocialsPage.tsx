@@ -2,9 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { useGate } from "effector-react"
 import { Spinner } from "@/components/spinner/Spinner"
-import {
-  signUpWithSocialsPageGate,
-} from "./socials.model"
+import { signUpWithSocialsPageGate } from "@/pages/auth/pages/socials/models/init"
 
 
 const Container = styled.div`

@@ -2,7 +2,6 @@ import { navigateReplace } from "@/feature/navigation"
 import { $isFullRegistered, $isLoggedIn, $isSocialSignupInProgress  } from "@/feature/user/user.model"
 import { withGuest } from "@/feature/user/with-guest"
 import { withProtect } from "@/feature/user/with-protect"
-import { signUpPageMounted } from "@/pages/auth/pages/signup/signup.model"
 import { routeNames } from "@/pages/route-names"
 import { useEvent, useStore } from "effector-react"
 import { useEffect } from "react"
@@ -12,6 +11,7 @@ import { Step2 } from "@/pages/auth/pages/signup/content/step-2/Step2"
 import { Step3 } from "@/pages/auth/pages/signup/content/step-3/Step3"
 import { Step4 } from "@/pages/auth/pages/signup/content/step-4/Step4"
 import { useParams } from "react-router-dom"
+import { signUpPageMounted } from "@/pages/auth/pages/signup/models/init"
 
 const ProtectedStep2 = withProtect({ to: routeNames.signup("1") })(Step2)
 const ProtectedStep3 = withProtect({ to: routeNames.signup("1") })(Step3)
