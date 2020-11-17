@@ -5,13 +5,12 @@ import { emailValidator, trimString } from "@/lib/validators"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
-import { createGate } from "@/scope"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
-import { $userData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/init"
+import { $userData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
 
-export const step3Gate = createGate()
 
+export const step3FormSubmitted = createEvent()
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
   imageUploaded,

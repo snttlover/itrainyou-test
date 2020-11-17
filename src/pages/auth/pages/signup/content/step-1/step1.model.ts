@@ -7,7 +7,7 @@ import { routeNames } from "@/pages/route-names"
 import { createGate } from "@/scope"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward, sample } from "effector-root"
-import { userDataReset } from "@/pages/auth/pages/signup/models/init"
+import { userDataReset } from "@/pages/auth/pages/signup/models/units"
 
 export const step1Gate = createGate()
 

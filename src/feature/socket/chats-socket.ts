@@ -9,7 +9,7 @@ import { changePasswordFx } from "@/pages/common/settings/content/password-form.
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { condition } from "patronum"
 import { runInScope } from "@/scope"
-import { registerUserFx } from "@/pages/auth/pages/signup/models/init"
+import { registerUserFx } from "@/pages/auth/pages/signup/models/units"
 
 type SendSocketChatMessage = {
   chat: number

@@ -22,7 +22,7 @@ import {
 import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import { userDataReset } from "@/pages/auth/pages/signup/models/init"
+import { userDataReset } from "@/pages/auth/pages/signup/models/units"
 
 const Container = styled.div`
   min-width: 320px;

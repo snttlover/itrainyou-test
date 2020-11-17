@@ -4,6 +4,13 @@ import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { ClientSelfData, User } from "@/lib/api/client/clientInfo"
 import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
 
+export type CheckEmailRequest = {
+  email: string
+}
+
+export type CheckEmailResponse = {
+  isReserved: boolean
+}
 
 export type SocialsDataFound = User & {
   coach: null | CoachSelfData
@@ -50,6 +57,7 @@ export interface CreateUserWithSocialsRequest {
   socialNetwork: string | null
 }
 
+
 export type RegisterAsUserFromSocialsResponse = RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound
 
 
@@ -73,6 +81,12 @@ export const AuthWithGoogle = (accessToken: RegisterWithSocialsRequest): Promise
 
 export const createUserFromSocials = (data: CreateUserWithSocialsRequest): Promise<CreateUserWithSocialsResponse> =>
   post<CreateUserWithSocialsResponse, CreateUserWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/create-user-from-social/`,
+    keysToSnake(data))
+    .then(response => response.data)
+    .then(keysToCamel)
+
+export const checkEmail = (data: CheckEmailRequest): Promise<CheckEmailResponse> =>
+  post<CheckEmailResponse, CheckEmailRequest>(`${config.BACKEND_URL}/api/v1/web/auth/check-email/`,
     keysToSnake(data))
     .then(response => response.data)
     .then(keysToCamel)

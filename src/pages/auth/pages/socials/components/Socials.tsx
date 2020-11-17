@@ -5,7 +5,7 @@ import { useEvent, useGate } from "effector-react"
 import { config } from "@/config"
 import { MediaRange } from "@/lib/responsive/media"
 import { useGoogleLogin } from "react-google-login"
-import { authWithSocialNetwork, socialsGate } from "@/pages/auth/pages/socials/models/init"
+import { authWithSocialNetwork, socialsGate } from "@/pages/auth/pages/socials/models/units"
 
 const ExternalLink = styled.a``
 const GoogleLink = styled.div``

@@ -15,7 +15,7 @@ import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { $userData } from "@/pages/auth/pages/signup/models/init"
+import { $userData } from "@/pages/auth/pages/signup/models/units"
 
 const StyledFormItem = styled(FormItem)`
   color: #424242;

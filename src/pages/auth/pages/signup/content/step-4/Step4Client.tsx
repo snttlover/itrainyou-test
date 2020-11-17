@@ -6,7 +6,7 @@ import { CategoryCard } from "./client/CategoryCard"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import { $userData, categoriesChanged, registerUserFx, userRegistered } from "@/pages/auth/pages/signup/models/init"
+import { $userData, categoriesChanged, registerUserFx, userRegistered } from "@/pages/auth/pages/signup/models/units"
 
 const Container = styled.div`
   min-width: 320px;

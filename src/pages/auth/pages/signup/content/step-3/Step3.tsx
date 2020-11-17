@@ -13,20 +13,17 @@ import {
   $step3FormErrors,
   emailChanged,
   lastNameChanged,
-  nameChanged,
-  step3Gate,
+  nameChanged, step3FormSubmitted,
   step3Mounted,
-  toggleUploadModal,
+  toggleUploadModal
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { UploadModal } from "@/pages/auth/pages/signup/content/step-3/UploadModal"
-import { useEvent, useGate, useStore } from "effector-react"
+import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
-import { history } from "@/feature/navigation"
-import { registerStep3FormSubmitted } from "@/pages/auth/pages/socials/models/init"
-import { $userData } from "@/pages/auth/pages/signup/models/init"
+import { $userData } from "@/pages/auth/pages/signup/models/units"
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -137,10 +134,6 @@ const AvatarHint = styled.div`
   `}
 `
 
-const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault()
-}
-
 export const Step3 = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -154,10 +147,16 @@ export const Step3 = () => {
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
-  const _registerStep3FormSubmitted = useEvent(registerStep3FormSubmitted)
+  const _step3FormSubmitted = useEvent(step3FormSubmitted)
   const [nextDisabled, setNextDisabled] = useState(false)
 
-  useGate(step3Gate)
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+  }
+
+  const nextOnClick = () => {
+    _step3FormSubmitted()
+  }
 
   useEffect(() => {
     mounted()
@@ -197,7 +196,7 @@ export const Step3 = () => {
           )}
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
 
-          <NextButton onClick={() => history!.push("/auth/signup/4")} disabled={!isFormValid || nextDisabled} />
+          <NextButton onClick={nextOnClick} disabled={!isFormValid || nextDisabled} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}

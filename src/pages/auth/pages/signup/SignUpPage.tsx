@@ -11,7 +11,7 @@ import { Step2 } from "@/pages/auth/pages/signup/content/step-2/Step2"
 import { Step3 } from "@/pages/auth/pages/signup/content/step-3/Step3"
 import { Step4 } from "@/pages/auth/pages/signup/content/step-4/Step4"
 import { useParams } from "react-router-dom"
-import { signUpPageMounted } from "@/pages/auth/pages/signup/models/init"
+import { signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
 
 const ProtectedStep2 = withProtect({ to: routeNames.signup("1") })(Step2)
 const ProtectedStep3 = withProtect({ to: routeNames.signup("1") })(Step3)

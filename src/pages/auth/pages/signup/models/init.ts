@@ -1,72 +1,72 @@
-import { attach, createEffect, createEvent, createStore, merge, sample, split } from "effector-root"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
+import { combine, forward, guard, sample } from "effector-root"
+import { $isSocialSignupInProgress, $isLoggedIn } from "@/feature/user/user.model"
+import { $socialsForm, createUserFromSocialsFx } from "@/pages/auth/pages/socials/models/units"
+import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import {
-  ClientData,
-  CoachData,
-  REGISTER_SAVE_KEY,
-  RegisterUserType,
-  UserData
-} from "@/pages/auth/pages/signup/models/types"
-import { registerAsClient, registerAsCoach } from "@/lib/api/register"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
+  $userData, categoriesChanged, clientDataChanged, coachDataChanged,
+  getMyUserDataFx,
+  loadDataFx,
+  registerStep4Merged,
+  registerUserFx,
+  saveDataFx,
+  signUpPageMounted, userDataChanged, userDataReset, userDataSetWithSocials,
+  userType, userTypeChanged
+} from "@/pages/auth/pages/signup/models/units"
 
-export const signUpPageMounted = createEvent()
-export const userTypeChanged = createEvent<RegisterUserType>()
-export const userDataChanged = createEvent<UserData>()
-export const clientDataChanged = createEvent<ClientData>()
-export const categoriesChanged = createEvent<number[]>()
-export const coachDataChanged = createEvent<CoachData>()
-export const userDataReset = createEvent()
-export const userDataSetWithSocials = createEvent<UserData>()
-export const $userData = createStore<UserData>({
-  type: "client",
-  clientData: { avatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null },
-  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
-  categories: []
-})
-  .on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
+$userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
   .on(userDataSetWithSocials, (_, payload) => payload)
   .reset(userDataReset)
-export const saveDataFx = createEffect({
-  handler: (userData: UserData) => {
-    try {
-      const data = JSON.stringify(userData)
-      localStorage.setItem(REGISTER_SAVE_KEY, data)
-    } catch (e) {
-    }
-  }
+
+forward({
+  from: $userData.updates,
+  to: saveDataFx,
 })
-export const loadDataFx = createEffect({
-  handler: () => {
-    try {
-      const data = localStorage.getItem(REGISTER_SAVE_KEY)
-      if (!data) return
-      return JSON.parse(data)
-    } catch (e) {
-    }
-  }
+
+forward({ from: loadDataFx.doneData, to: $userData })
+forward({ from: signUpPageMounted, to: loadDataFx })
+
+forward({ from: registerUserFx.done, to: getMyUserDataFx })
+
+registerUserFx.done.watch(_ => {
+  localStorage.removeItem(REGISTER_SAVE_KEY)
 })
-export const userRegistered = createEvent()
-export const registerUserFx = createEffect({
-  handler(params: UserData) {
-    if (params.type === "client") {
-      return registerAsClient({ ...params.clientData!, categories: params.categories })
-    } else {
-      return registerAsCoach({ ...params.clientData!, categories: params.categories, ...params.coachData! })
-    }
-  }
+
+forward({
+  from: userType.client.map(() => ({ url: routeNames.client() })),
+  to: navigatePush,
 })
-export const skipCoach = createEvent()
-export const getMyUserDataFx = attach({
-  effect: getMyUserFx as any,
-  mapParams: () => ({})
+
+forward({
+  from: userType.coach.map(() => ({ url: routeNames.coach() })),
+  to: navigatePush,
 })
-const event = sample({ clock: getMyUserDataFx.done, source: registerUserFx.done.map(({ params }) => params) })
-export const userType = split(event, {
-  client: ({ type }) => type === "client",
-  coach: ({ type }) => type === "coach"
+
+sample({
+  source: $userData,
+  clock: guard({
+    source: registerStep4Merged,
+    filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
+  }),
+  target: registerUserFx,
 })
-export const registerStep4Merged = merge([userRegistered, skipCoach])
+
+sample({
+  source: $socialsForm,
+  clock: guard({
+    source: registerStep4Merged,
+    filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
+  }),
+  target: createUserFromSocialsFx,
+})
+
+sample({
+  source: $userData,
+  clock: $isLoggedIn.updates,
+  target: registerUserFx,
+})
