@@ -17,6 +17,7 @@ export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
 export const userDataSetWithSocials = createEvent<UserData>()
+
 export const $userData = createStore<UserData>({
   type: "client",
   clientData: { avatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null },
@@ -26,24 +27,21 @@ export const $userData = createStore<UserData>({
 
 export const saveDataFx = createEffect({
   handler: (userData: UserData) => {
-    try {
-      const data = JSON.stringify(userData)
-      localStorage.setItem(REGISTER_SAVE_KEY, data)
-    } catch (e) {
-    }
+    const data = JSON.stringify(userData)
+    localStorage.setItem(REGISTER_SAVE_KEY, data)
   }
 })
+
 export const loadDataFx = createEffect({
   handler: () => {
-    try {
-      const data = localStorage.getItem(REGISTER_SAVE_KEY)
-      if (!data) return
-      return JSON.parse(data)
-    } catch (e) {
-    }
+    const data = localStorage.getItem(REGISTER_SAVE_KEY)
+    if (!data) return
+    return JSON.parse(data)
   }
 })
+
 export const userRegistered = createEvent()
+
 export const registerUserFx = createEffect({
   handler(params: UserData) {
     if (params.type === "client") {
@@ -54,13 +52,17 @@ export const registerUserFx = createEffect({
   }
 })
 export const skipCoach = createEvent()
+
 export const getMyUserDataFx = attach({
   effect: getMyUserFx as any,
   mapParams: () => ({})
 })
+
 const event = sample({ clock: getMyUserDataFx.done, source: registerUserFx.done.map(({ params }) => params) })
+
 export const userType = split(event, {
   client: ({ type }) => type === "client",
   coach: ({ type }) => type === "coach"
 })
+
 export const registerStep4Merged = merge([userRegistered, skipCoach])

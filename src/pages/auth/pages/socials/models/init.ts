@@ -3,7 +3,6 @@ import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { combine, forward, guard, merge, sample, split, attach } from "effector-root"
 import {
-  CheckEmailResponse,
   RegisterAsUserFromSocialsResponseFound,
   RegisterAsUserFromSocialsResponseNotFound
 } from "@/lib/api/auth-socials"
@@ -29,7 +28,7 @@ import {
 } from "@/pages/auth/pages/socials/models/units"
 import { SocialNetwork } from "@/pages/auth/pages/socials/models/types"
 import { UserData } from "@/pages/auth/pages/signup/models/types"
-import { registerStep4Merged, userDataSetWithSocials } from "@/pages/auth/pages/signup/models/units"
+import { userDataSetWithSocials } from "@/pages/auth/pages/signup/models/units"
 import { step3FormSubmitted, $emailError } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 
 $socialNetwork.on(socialNetworkDataFx.doneData, (state, payload) =>
