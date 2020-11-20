@@ -3,7 +3,7 @@ import { Input } from "@/components/input/Input"
 import { PasswordInput } from "@/components/input/PasswordInput"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/lib/responsive/media"
-import { Socials } from '@/pages/auth/pages/socials/components/Socials'
+import { Socials } from "@/pages/auth/pages/socials/components/Socials"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { useEffect } from "react"
@@ -41,7 +41,7 @@ const Container = styled.div`
 
   ${MediaRange.greaterThan("laptop")`
     margin: 20px 170px 0;
-    padding: 36px 100px 31px;
+    padding: 52px 100px 31px;
   `}
 `
 
@@ -50,7 +50,7 @@ const Title = styled.h1`
   font-weight: 600;
   font-size: 24px;
   line-height: 26px;
-  margin-bottom: 73px;
+  margin-bottom: 32px;
 
   text-align: center;
   color: #ffffff;

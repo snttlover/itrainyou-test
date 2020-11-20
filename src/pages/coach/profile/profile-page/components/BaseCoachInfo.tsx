@@ -9,8 +9,9 @@ import { Link } from "react-router-dom"
 import { $profileData } from "../profile.model"
 import { Block } from "./common/Block"
 import { useStore } from "effector-react"
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
+import { declOfNum } from "@/lib/formatting/numerals"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
@@ -146,6 +147,7 @@ const MobileEditButton = styled(EditButton)`
 
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($profileData)
+
   return (
     <StyledBlock inline {...props}>
       <UserInfoWrapper>
@@ -153,7 +155,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
         <UserInfo>
           <Name>
             {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-            <Year>{getYearsCount(coach?.birthDate!)} лет</Year>
+            <Year>{getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate),["год", "года", "лет"])}</Year>
           </Name>
           <Rating>
             <StarIcon name='star' />
