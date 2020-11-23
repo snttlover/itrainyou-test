@@ -108,7 +108,7 @@ export const server = express()
           params: { req, res, isSSR },
         })
         const t2 = performance.now()
-        console.log(`Effector works ${t2 - t1}ms`)
+        console.log(`Load data from backend: ${t2 - t1}ms`)
       } catch (error) {
         console.log(error)
       }
