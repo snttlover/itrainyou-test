@@ -46,7 +46,7 @@ export const loadHints = searchDomain.createEvent<GetHintsParamsTypes>()
 export const $hintsList = searchDomain
   .createStore<Hint[]>([])
   .on(fetchHintsList.doneData, (_, list) => list)
-  .reset(fetchHintsList)
+
 
 forward({
   from: updateSearch.map(search => ({ search })),
