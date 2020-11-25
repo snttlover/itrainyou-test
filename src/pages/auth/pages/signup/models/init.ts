@@ -29,6 +29,7 @@ forward({
 })
 
 forward({ from: loadDataFx.doneData, to: $userData })
+
 forward({ from: signUpPageMounted, to: loadDataFx })
 
 forward({ from: registerUserFx.done, to: getMyUserDataFx })

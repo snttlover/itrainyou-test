@@ -19,14 +19,17 @@ import { $email } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 
 export const signUpWithSocialsPageGate = createGate()
 export const socialsGate = createGate()
+
 export const setEmailError = createEvent<string | null>()
 export const authWithSocialNetwork = createEvent<string>()
 export const userFound = createEvent<{
   token: string
   user: SocialsDataFound
 }>()
+
 export const userNotFound = createEvent<RegisterAsUserFromSocialsResponseNotFound>()
 export const reset = createEvent()
+
 export const socialNetworkDataFx = createEffect({
   handler: () => {
     const stringData = localStorage.getItem(SOCIAL_NETWORK_SAVE_KEY)
@@ -45,6 +48,7 @@ export const socialNetworkDataFx = createEffect({
     }
   },
 })
+
 export const $socialNetwork = createStoreObject<SocialNetwork>({
   accessToken: "",
   name: null,
@@ -58,31 +62,34 @@ export const $socialsForm = combine($socialNetwork, $email, (token, email) => ({
 export const reportUnknownTypeFx = createEffect<any, any, AxiosError>({
   handler: (response) => console.log("reportUnknownType", response),
 })
+
 export const registerWithFacebookFx = createEffect<string, RegisterAsUserFromSocialsResponse, AxiosError>({
   handler: (accessToken) => AuthWithFB({ accessToken: accessToken }),
 })
+
 export const registerWithVkFx = createEffect<string, RegisterAsUserFromSocialsResponse, AxiosError>({
   handler: (accessToken) => AuthWithVK({ accessToken: accessToken }),
 })
+
 export const registerWithGoogleFx = createEffect<string, RegisterAsUserFromSocialsResponse, AxiosError>({
   handler: (accessToken) => AuthWithGoogle({ accessToken: accessToken }),
 })
+
 export const createUserFromSocialsFx = createEffect<UnpackedStoreObjectType<typeof $socialsForm>, CreateUserWithSocialsResponse, AxiosError>({
   handler: ({ accessToken, email, socialNetwork }) => createUserFromSocials({ accessToken, email, socialNetwork }),
 })
+
 export const checkEmailFx = createEffect<UnpackedStoreObjectType<typeof $socialsForm>, CheckEmailResponse, AxiosError>({
   handler: ({email}) => checkEmail({ email }),
 })
+
 export const saveSocialNetworkNameFx = createEffect({
   handler: (socialNetworkName: string | null) => {
-    try {
-      const data = JSON.stringify(socialNetworkName)
-      localStorage.setItem(SOCIAL_NETWORK_SAVE_KEY, data)
-      // eslint-disable-next-line no-empty
-    } catch (e) {
-    }
+    const data = JSON.stringify(socialNetworkName)
+    localStorage.setItem(SOCIAL_NETWORK_SAVE_KEY, data)
   },
 })
+
 export const deleteSocialNetworkNameFx = createEffect({
   handler: () => localStorage.removeItem(SOCIAL_NETWORK_SAVE_KEY)
 })

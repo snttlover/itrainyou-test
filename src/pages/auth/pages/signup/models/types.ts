@@ -21,4 +21,5 @@ export type UserData = {
   coachData: CoachData
 }
 export type RegisterUserType = "client" | "coach"
+
 export const REGISTER_SAVE_KEY = "__register-data__"

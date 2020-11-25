@@ -13,7 +13,7 @@ const GoogleLink = styled.div``
 const SocialsRoot = styled.div`
   width: 100%;
   justify-content: center;
-  margin-bottom: 36px;
+  margin-bottom: 16px;
 
   ${MediaRange.lessThan("tablet")`
     margin-bottom: 16px;
@@ -42,6 +42,7 @@ export const Socials = () => {
     clientId: `${config.GOOGLE_CLIENT_ID}`,
     redirectUri: `${window.location.protocol}//${window.location.hostname}/auth/socials`,
     uxMode: "redirect",
+    scope: "https://spreadsheets.google.com/feeds profile email https://docs.google.com/feeds",
     accessType: "online",
     responseType: "token",
   })

@@ -16,6 +16,10 @@ import { AllNeedsCoach } from "./content/all-needs-coach/AllNeedsCoach"
 import { CoachAdvantages } from "./content/coach-advantages/CoachAdvantages"
 import { FAQ } from "./content/faq/FAQ"
 import { Footer } from "./content/footer/Footer"
+import { DashboardContainer } from "@/components/layouts/behaviors/dashboards/common/DashboardContainer"
+import { DashboardContent } from "@/components/layouts/behaviors/dashboards/common/DashboardPageContent"
+import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
+import { PageContainer } from "@/components/page-container/PageContainer"
 
 import heroBg from "./assets/hero-bg.svg"
 import heroBgTablet from "./assets/hero-bg-tablet.svg"
@@ -23,6 +27,7 @@ import heroBgMobile from "./assets/hero-bg-mobile.svg"
 import heroImg from "./assets/hero-img.svg"
 import bottomBg from "./assets/bottom-bg.svg"
 import mobileFooterTopBg from "./assets/mobile-footer-top-bg.svg"
+
 
 const HeroBackground = styled.div`
   background-image: url(${heroBg});
@@ -119,6 +124,32 @@ const IsNotMobile = styled.div`
   }
 `
 
+const StyledPageContainer = styled(PageContainer)`
+  display: flex;
+  max-width: none;
+`
+
+const ContentWrapper = styled.div`
+  flex: 1;
+`
+
+const Dashboard = () => (
+  <DashboardContainer>
+    <DashboardContent>
+      <HeroBackground />
+      <LandingTopBar />
+      <DashboardPageWrapper>
+        <StyledPageContainer>
+          <ContentWrapper>
+            <LandingPageMarkup />
+          </ContentWrapper>
+        </StyledPageContainer>
+      </DashboardPageWrapper>
+    </DashboardContent>
+  </DashboardContainer>
+)
+
+
 const LandingPageMarkup = () => (
   <StyledLayout>
     <Container>
@@ -126,7 +157,6 @@ const LandingPageMarkup = () => (
       <RelativeContainer>
         <HeroImage />
       </RelativeContainer>
-      <LandingTopBar />
       <Hero />
     </Container>
     <AboutCoach />
@@ -149,6 +179,6 @@ const LandingPageMarkup = () => (
   </StyledLayout>
 )
 
-export const LandingPage = withGuest({ to: "/client" })(LandingPageMarkup)
+export const LandingPage = withGuest({ to: "/client" })(Dashboard)
 
 LandingPage[START] = ourCoachesModel.loadCoaches

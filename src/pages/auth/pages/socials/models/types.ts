@@ -1,4 +1,5 @@
 export type SocialNetworkNameType = "vk" | "google" | "facebook" | null
+
 export type SocialNetwork = {
   accessToken: string
   name: SocialNetworkNameType
