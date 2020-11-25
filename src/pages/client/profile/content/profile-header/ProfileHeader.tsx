@@ -7,6 +7,8 @@ import { $pageProfile } from "@/pages/client/profile/profile-page.model"
 import { Icon } from "@/components/icon/Icon"
 import { Link } from "react-router-dom"
 import { routeNames } from "@/pages/route-names"
+import { declOfNum } from "@/lib/formatting/numerals"
+
 
 const Container = styled.div`
   margin-top: 46px;
@@ -68,6 +70,7 @@ const Edit = styled(Icon).attrs({ name: 'edit' })`
 
 export const ProfileHeader = () => {
   const profile = useStore($pageProfile)
+
   return (
     <Container>
       <StyledAvatar src={profile?.avatar} />
@@ -76,7 +79,7 @@ export const ProfileHeader = () => {
         <br />
         {profile?.lastName}
       </Name>
-      {!isNaN(profile.age) && <Age>{profile.age} года</Age>}
+      {!isNaN(profile.age) && <Age>{profile.age} {declOfNum(profile.age,["год", "года", "лет"])}</Age>}
       <Link to={routeNames.clientProfileEdit()}>
         <Edit />
       </Link>

@@ -92,7 +92,7 @@ export const Search = (props: SearchProps) => {
         return
       }
 
-      searchHandler('')
+      searchHandler(searchValue)
     }
 
     if (e.keyCode === 40) {

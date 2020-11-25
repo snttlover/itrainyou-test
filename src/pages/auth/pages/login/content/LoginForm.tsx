@@ -26,7 +26,7 @@ const StyledForm = styled.form`
 `
 
 const StyledButton = styled(DashedButton)`
-  margin: 16px auto 0;
+  margin: 28px auto 0;
   width: 160px;
 
   @media screen and (max-width: 768px) {

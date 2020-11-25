@@ -1,17 +1,16 @@
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
-import { trimString } from "@/lib/validators"
-import {
-  $userData,
-  clientDataChanged,
-  REGISTER_SAVE_KEY,
-  signUpPageMounted,
-} from "@/pages/auth/pages/signup/signup.model"
+import { emailValidator, trimString } from "@/lib/validators"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
+import { $isSocialSignupInProgress } from "@/feature/user/user.model"
+import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
+import { $userData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
 
+
+export const step3FormSubmitted = createEvent()
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
   imageUploaded,
@@ -42,6 +41,16 @@ export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorFi
   },
   eventMapper: event => event.map(trimString),
 })
+
+export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<
+  string,
+  { isSocialSignupInProgress: UnpackedStoreObjectType<typeof $isSocialSignupInProgress>; value: string }
+  >({
+    defaultValue: "",
+    validatorEnhancer: $store => combine($isSocialSignupInProgress, $store, (isSocialSignupInProgress, value) => ({ isSocialSignupInProgress, value })),
+    validator: obj => obj.isSocialSignupInProgress ? emailValidator(obj.value) : null,
+    eventMapper: event => event.map(trimString),
+  })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",
@@ -88,6 +97,7 @@ export const $step3Form = combine({
   lastName: $lastName,
   birthday: $birthday,
   sex: $sex,
+  email: $email,
 })
 
 sample({
@@ -99,6 +109,7 @@ sample({
     firstName: data.name,
     lastName: data.lastName,
     sex: data.sex,
+    email: data.email,
   }),
   target: clientDataChanged,
 })
@@ -123,6 +134,7 @@ spread({
   targets: {
     firstName: nameChanged,
     lastName: lastNameChanged,
+    email: emailChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
       date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
     ),
@@ -136,6 +148,7 @@ export const $step3FormErrors = combine({
   lastName: $lastNameError,
   birthday: $birthdayError,
   sex: $sexError,
+  email: $emailError,
 })
 
 export const $isStep3FormValid = combine(
@@ -144,5 +157,6 @@ export const $isStep3FormValid = combine(
   $isBirthdayCorrect,
   $isSexCorrect,
   $isImageCorrect,
+  $isEmailCorrect,
   (...args) => args.every(val => val)
 )
