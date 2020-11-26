@@ -66,12 +66,12 @@ sample({
       url = routeNames.signup("2")
     } else if (data.user.coach?.isForeverRejected) {
       url = routeNames.client()
-    } else if (dashboard === "client") {
-      url = routeNames.client()
     } else if (dashboard === "coach" && data.user.coach) {
       url = routeNames.coach()
     } else if (data.user.coach) {
       url = routeNames.coach()
+    } else if (dashboard === "client") {
+      url = routeNames.client()
     } else {
       url = routeNames.client()
     }

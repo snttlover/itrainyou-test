@@ -1,6 +1,6 @@
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { MediaRange } from "@/lib/responsive/media"
-import { uploadImage } from "@/pages/auth/pages/signup/content/step-3/upload-modal.model"
+import { uploadImage, uploadOriginalAvatar } from "@/pages/auth/pages/signup/content/step-3/upload-modal.model"
 import { useEvent } from "effector-react"
 import { useState } from "react"
 import * as React from "react"
@@ -118,7 +118,7 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop): Promise<Blob> 
 
 let imageRef: HTMLImageElement | null = null
 
-const processFile = (crop: Crop, uploadImage: Function) => async () => {
+const processFile = (crop: Crop, uploadImage: Function, uploadOriginalAvatar: Function) => async () => {
   if (!imageRef) return
   const file = await cropAndUploadImage(imageRef, crop)
   uploadImage(file)
@@ -157,8 +157,9 @@ type CropState = {
 }
 
 export const ProcessingImage = ({ image, setImage }: ProcessingImageProps) => {
-  const [crop, setCrop] = useState<CropState>({ aspect: 1, unit: "%", width: 50, height: 50, x: 25, y: 25 })
+  const [crop, setCrop] = useState<CropState>({ aspect: 1, unit: "%", width: 50, x: 25, y: 25 })
   const _uploadImage = useEvent(uploadImage)
+  const _uploadOriginalAvatar = useEvent(uploadOriginalAvatar)
   return (
     <>
       <ControllersContainer>
@@ -178,7 +179,7 @@ export const ProcessingImage = ({ image, setImage }: ProcessingImageProps) => {
           </Rotate>
         </div>
       </ControllersContainer>
-      <UploadButton onClick={processFile(crop as any, _uploadImage)}>Загрузить фотографию</UploadButton>
+      <UploadButton onClick={processFile(crop as any, _uploadImage, _uploadOriginalAvatar)}>Загрузить фотографию</UploadButton>
     </>
   )
 }

@@ -157,7 +157,7 @@ type CropState = {
 }
 
 export const ProcessingImage = ({ image, setImage }: ProcessingImageProps) => {
-  const [crop, setCrop] = useState<CropState>({ aspect: 1, unit: "%", width: 50, height: 50, x: 25, y: 25 })
+  const [crop, setCrop] = useState<CropState>({ aspect: 1, unit: "%", width: 50, x: 25, y: 25 })
   const _uploadImage = useEvent(uploadImage)
   return (
     <>

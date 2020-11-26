@@ -4,8 +4,10 @@ export type ClientData = {
   birthDate: string | null
   sex: "M" | "F" | ""
   avatar: string | null
+  originalAvatar: string | null
   email: string | null
 }
+
 export type CoachData = {
   workExperience: string
   education: string
@@ -14,12 +16,14 @@ export type CoachData = {
   photos: string[]
   videoInterview: string
 }
+
 export type UserData = {
   type: "coach" | "client"
   clientData: ClientData
   categories: number[]
   coachData: CoachData
 }
+
 export type RegisterUserType = "client" | "coach"
 
 export const REGISTER_SAVE_KEY = "__register-data__"
