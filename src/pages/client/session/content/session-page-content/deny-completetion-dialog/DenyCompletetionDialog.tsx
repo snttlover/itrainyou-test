@@ -52,14 +52,10 @@ export const DenyCompletetionDialog = () => {
           onChange={value => changeProblemType(value as DenySessionRequestProblems)}
           options={denyCompletationProblems}
         />
-
-        {problemType === "OTHER" && (
-          <>
-            <Label>Опишите проблему</Label>
-            <StyledTextarea value={problem} onChange={changeProblem} />
-          </>
-        )}
-
+        
+        <Label>Опишите проблему</Label>
+        <StyledTextarea value={problem} onChange={changeProblem} />
+            
         <Actions>
           <StyledButton
             disabled={!valid}

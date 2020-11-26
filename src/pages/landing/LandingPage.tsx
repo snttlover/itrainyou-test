@@ -133,18 +133,29 @@ const ContentWrapper = styled.div`
   flex: 1;
 `
 
+const OverflowHidden = styled.div`
+  overflow: auto;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
 const Dashboard = () => (
   <DashboardContainer>
     <DashboardContent>
       <HeroBackground />
       <LandingTopBar />
-      <DashboardPageWrapper>
-        <StyledPageContainer>
-          <ContentWrapper>
-            <LandingPageMarkup />
-          </ContentWrapper>
-        </StyledPageContainer>
-      </DashboardPageWrapper>
+      <OverflowHidden>
+        <DashboardPageWrapper>
+          <StyledPageContainer>
+            <ContentWrapper>
+              <LandingPageMarkup />
+            </ContentWrapper>
+          </StyledPageContainer>
+        </DashboardPageWrapper>
+      </OverflowHidden>
     </DashboardContent>
   </DashboardContainer>
 )
