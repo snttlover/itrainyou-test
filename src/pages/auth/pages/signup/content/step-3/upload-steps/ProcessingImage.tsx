@@ -89,26 +89,40 @@ function dataURItoFile(dataURI: string) {
 }
 type Crop = { x: number; y: number; width: number; height: number }
 
-const cropAndUploadImage = (image: HTMLImageElement, crop: Crop): Promise<Blob> => {
+const cropAndUploadImage = (image: HTMLImageElement, crop: Crop | null): Promise<Blob> => {
   const canvas = document.createElement("canvas")
   const scaleX = image.naturalWidth / image.width
   const scaleY = image.naturalHeight / image.height
-  canvas.width = crop.width
-  canvas.height = crop.height
+  if (crop === null) {
+    canvas.width = image.naturalWidth
+    canvas.height = image.naturalHeight
+  }
+  else {
+    canvas.width = crop.width
+    canvas.height = crop.height
+  }
   const ctx = canvas.getContext("2d")
 
-  ctx?.drawImage(
-    image,
-    crop.x * scaleX,
-    crop.y * scaleY,
-    crop.width * scaleX,
-    crop.height * scaleY,
-    0,
-    0,
-    crop.width,
-    crop.height
-  )
-
+  if (crop === null) {
+    ctx?.drawImage(
+      image,
+      0,
+      0,
+    )
+  }
+  else {
+    ctx?.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width,
+      crop.height
+    )
+  }
   return new Promise(resolve => {
     const dataUrl = canvas.toDataURL("image/jpeg")
     const blob = dataURItoFile(dataUrl)
@@ -121,7 +135,9 @@ let imageRef: HTMLImageElement | null = null
 const processFile = (crop: Crop, uploadImage: Function, uploadOriginalAvatar: Function) => async () => {
   if (!imageRef) return
   const file = await cropAndUploadImage(imageRef, crop)
+  const originalfile = await cropAndUploadImage(imageRef, null)
   uploadImage(file)
+  uploadOriginalAvatar(originalfile)
 }
 
 const rotateImage = (image: HTMLImageElement, degrees: number, setImage: (file: string | null) => void) => {
