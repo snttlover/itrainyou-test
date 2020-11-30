@@ -18,6 +18,7 @@ export interface CoachSelfData {
     D90: null | number
   }
   sex: Sex
+  originalAvatar: string
   avatar: string
   isForeverRejected: boolean
   isTemporarilyRejected: boolean

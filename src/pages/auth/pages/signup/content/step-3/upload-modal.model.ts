@@ -51,16 +51,6 @@ forward({
   to: uploadImageFx,
 })
 
-/*forward({
-  from: uploadImageFx.doneData,
-  to: imageUploaded,
-})
-
-forward({
-  from: uploadOriginalAvatarFx.doneData,
-  to: originalAvatarUploaded,
-})*/
-
 sample({
   source: uploadImageFx.doneData,
   clock: waitAllEvents,

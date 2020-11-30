@@ -10,8 +10,13 @@ import { combine, createEvent, createStore, sample, Event } from "effector-root"
 import { every, spread } from "patronum"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
+export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
   imageUploaded,
+  (state, payload) => payload
+)
+export const $originalAvatar = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
+  originalAvatarUploaded,
   (state, payload) => payload
 )
 
@@ -59,6 +64,7 @@ export const $step3Form = combine({
   lastName: $lastName,
   birthday: $birthday,
   sex: $sex,
+  originalAvatar: $originalAvatar,
 })
 
 export const userProfileGate = createGate()
@@ -73,6 +79,7 @@ spread({
       birthDate: data.coach!.birthDate,
       sex: data.coach!.sex,
       avatar: data.coach!.avatar,
+      originalAvatar: data.coach!.originalAvatar,
     }),
   }) as unknown) as Event<any>,
   targets: {
@@ -83,6 +90,7 @@ spread({
     ),
     sex: sexChanged,
     avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
+    originalAvatar: originalAvatarUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
   },
 })
 
