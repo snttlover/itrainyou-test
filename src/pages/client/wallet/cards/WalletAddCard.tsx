@@ -3,16 +3,12 @@ import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { $cardsListForView, $isLoading } from "./cards.model"
 import { useList, useStore, useEvent } from "effector-react"
-import { WalletCard, WalletCardContainer } from "./WalletCard"
-import { WalletAddCard } from "./WalletAddCard"
+import { WalletCard } from "./WalletCard"
 import React from "react"
 import styled from "styled-components"
-
-const AddWalletContainer = styled(WalletCardContainer)`
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`
+import {
+  addCard
+} from "@/feature/client-funds-up/dialog/fund-up.model.ts"
 
 const PlusIcon = styled(Icon).attrs({ name: "plus" })`
   width: 28px;
@@ -76,6 +72,19 @@ const Placeholder = styled.p`
   color: #9aa0a6;
 `
 
+const WalletCardContainer = styled.div`
+  background: #ffffff;
+  border: 1px solid #dbdee0;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 12px;
+  width: 240px;
+  height: 144px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+
 const Center = styled.div`
   width: 100%;
   height: 300px;
@@ -84,22 +93,14 @@ const Center = styled.div`
   align-items: center;
 `
 
-export const WalletsCardsTab = () => {
+export const WalletAddCard = () => {
   const isLoading = useStore($isLoading)
   const $cards = useStore($cardsListForView)
+  const _addCard = useEvent(addCard)
 
   return (
-    <CardsContainer>
-      {useList($cardsListForView, card => (
-        <StyledWalletCard {...card} />
-      ))}
-      {$cards.length === 0 && !isLoading && (
-        <Center>
-          <Placeholder>Нет привязанных карт</Placeholder>
-        </Center>
-      )}
-      <WalletAddCard></WalletAddCard>
-      {isLoading && <Spinner />}
-    </CardsContainer>
+  <WalletCardContainer>
+    <div onClick={_addCard}>Удалить карту</div>
+  </WalletCardContainer>
   )
 }

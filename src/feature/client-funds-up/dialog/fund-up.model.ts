@@ -15,6 +15,7 @@ import { every } from "patronum"
 export const FundUpModalGate = createGate()
 export const resetFundUpModal = createEvent()
 export const submitFundUp = createEvent()
+export const addCard = createEvent()
 
 export const changeShowFundUpDialog = createEvent<boolean>()
 export const setRedirectUrl = createEvent<string>()
@@ -139,6 +140,18 @@ forward({
     loadCardsFx.prepend(() => {}),
   ],
 })
+
+/*forward({
+  from: addCard.prepend(():InferStoreType<typeof $fundUpForm> => {
+    const form = {
+    payment_id: <str>,
+    confirmation_url: <url>
+    }
+  } ),
+  to: startWithdrawFx,
+})
+startWithdrawFx from src/pages/coach/wallet/withdraw-dialog/withdraw.model.ts
+*/
 
 sample({
   clock: guard({ source: submitFundUp, filter: $canSubmit }),
