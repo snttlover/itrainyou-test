@@ -10,97 +10,69 @@ import {
   addCard
 } from "@/feature/client-funds-up/dialog/fund-up.model.ts"
 
+
 const PlusIcon = styled(Icon).attrs({ name: "plus" })`
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   fill: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 20px;
 `
 
 const AddCardText = styled.p`
-  margin-top: 16px;
   font-family: Roboto;
+  font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  font-size: 14px;
   line-height: 18px;
-  color: #3746b0;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #3746B0;
 `
 
-const StyledWalletCard = styled(WalletCard)``
-
-const CardsContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 12px 60px 52px;
-
-  ${StyledWalletCard} {
-    margin-top: 24px;
-
-    &:nth-child(2n) {
-      margin-left: 24px;
-    }
-  }
-
-  ${MediaRange.lessThan("mobile")`
-    padding: 12px 32px 12px;
-    align-items: center;
-    justify-content: center;
-    
-    ${StyledWalletCard} {
-      margin-top: 4px;
-  
-      &:nth-child(2n) {
-        margin-left: unset;
-      }
-    }
-  `}
-`
-
-const Placeholder = styled.p`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 26px;
-  /* identical to box height, or 130% */
-
-  text-align: center;
-
-  /* средне-серый */
-
-  color: #9aa0a6;
-`
-
-const WalletCardContainer = styled.div`
+const AddCardContainer = styled.div`
   background: #ffffff;
   border: 1px solid #dbdee0;
   box-sizing: border-box;
   border-radius: 12px;
-  padding: 12px;
   width: 240px;
   height: 144px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 24px;
+  margin-left: ${props => (props.marginLeft % 2) > 0 ? "24px" : ""};
 `
 
 const Center = styled.div`
   width: 100%;
-  height: 300px;
+  height: 88px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+`
+
+const TextContainer = styled.div`
+  width: 100%;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 `
 
 export const WalletAddCard = () => {
-  const isLoading = useStore($isLoading)
   const $cards = useStore($cardsListForView)
   const _addCard = useEvent(addCard)
 
   return (
-  <WalletCardContainer>
-    <div onClick={_addCard}>Удалить карту</div>
-  </WalletCardContainer>
+    <AddCardContainer marginLeft={$cards.length} onClick={_addCard}>
+      <Center>
+        <PlusIcon />
+      </Center>
+      <TextContainer>
+        <AddCardText>Добавить карту</AddCardText>
+      </TextContainer>
+    </AddCardContainer>
   )
 }

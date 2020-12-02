@@ -32,6 +32,8 @@ const AddCardText = styled.p`
 
 const StyledWalletCard = styled(WalletCard)``
 
+const StyledAddCard = styled(WalletAddCard)``
+
 const CardsContainer = styled.div`
   position: relative;
   display: flex;
@@ -93,12 +95,12 @@ export const WalletsCardsTab = () => {
       {useList($cardsListForView, card => (
         <StyledWalletCard {...card} />
       ))}
-      {$cards.length === 0 && !isLoading && (
+      {/*$cards.length === 0 && !isLoading && (
         <Center>
           <Placeholder>Нет привязанных карт</Placeholder>
         </Center>
-      )}
-      <WalletAddCard></WalletAddCard>
+      )*/}
+      <StyledAddCard />
       {isLoading && <Spinner />}
     </CardsContainer>
   )

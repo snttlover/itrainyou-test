@@ -71,6 +71,7 @@ const SelectTimeContainer = styled.div`
 
 const Times = styled.div`
   display: flex;
+  flex-wrap: wrap;
   margin-top: 12px;
   padding-left: 12px;
   padding-bottom: 8px;
