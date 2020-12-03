@@ -42,7 +42,7 @@ export const Socials = () => {
     clientId: `${config.GOOGLE_CLIENT_ID}`,
     redirectUri: `${window.location.protocol}//${window.location.hostname}/auth/socials`,
     uxMode: "redirect",
-    scope: "https://spreadsheets.google.com/feeds profile email https://docs.google.com/feeds",
+    scope: "profile email",
     accessType: "online",
     responseType: "token",
   })
