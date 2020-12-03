@@ -2,7 +2,7 @@ import { Icon } from "@/components/icon/Icon"
 import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { $cardsListForView, $isLoading } from "./cards.model"
-import { useList, useStore, useEvent } from "effector-react"
+import { useList, useStore } from "effector-react"
 import { WalletCard, WalletCardContainer } from "./WalletCard"
 import { WalletAddCard } from "./WalletAddCard"
 import React from "react"
@@ -100,7 +100,9 @@ export const WalletsCardsTab = () => {
           <Placeholder>Нет привязанных карт</Placeholder>
         </Center>
       )*/}
-      <StyledAddCard />
+      {!isLoading && (
+        <StyledAddCard />
+      )}
       {isLoading && <Spinner />}
     </CardsContainer>
   )

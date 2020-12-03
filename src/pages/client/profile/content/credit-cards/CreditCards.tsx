@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 import { InterestsStats } from "@/pages/client/profile/content/interests/InterestsStats"
-import { InterestsCategories } from "@/pages/client/profile/content/interests/InterestsCategories"
+import { CreditCardsList } from "./CreditCardsList"
 import { MediaRange } from "@/lib/responsive/media"
 import arrowIcon from "@/components/coach-card/images/arrow.svg"
 import { useState } from "react"
@@ -27,7 +27,7 @@ const Container = styled.div`
   `}
 `
 
-const Interests = styled.div`
+const Cards = styled.div`
   max-width: 650px;
   width: 100%;
   border-radius: 2px;
@@ -35,11 +35,6 @@ const Interests = styled.div`
   padding: 24px;
 `
 type ArrowType = { reverse?: boolean }
-
-type CategoryIconTypes = {
-  color: string
-  selected: boolean
-}
 
 const Title = styled.div`
   font-family: Roboto Slab;
@@ -62,53 +57,28 @@ const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
   ${({ reverse }: ArrowType) => reverse && "transform: rotate(180deg)"}
 `
 
-const CategoryIcon = styled(Icon).attrs({ name: "tabletka" })<CategoryIconTypes>`
-  width: 16px;
-  height: 16px;
-  margin-left: 8px;
-  fill: ${props => props.color};
-  display: ${props => props.selected ? "" : "none"};
-  
-  @media screen and (max-width: 480px) {
-    width: 16px;
-    height: 16px;
-  }
-`
-
-const CategoriesIcons = styled.div`
-  display: flex;
-  @media screen and (max-width: 480px) {
-    order: 0;
-  }
-`
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
 `
 
-export const ProfileInterests = () => {
+export const ProfileCreditCards = () => {
   const [isShowed, changeisShow] = useState(false)
 
-  const toggleInterests = (e: React.SyntheticEvent) => {
+  const toggleCards = (e: React.SyntheticEvent) => {
     changeisShow(!isShowed)
   }
 
   return (
     <Container>
-      <InterestsStats />
-      <Interests>
+      <Cards>
         <TitleContainer>
-          <Title>Интересы</Title>
-          <CategoriesIcons>
-            {useList($profileCategories, category => (
-              <CategoryIcon color={getCategoryColorById(category.id)} selected={category.selected} />
-            ))}
-          </CategoriesIcons>
-          <Arrow reverse={isShowed} onClick={toggleInterests} />
+          <Title>Привязанные карты</Title>
+          <Arrow reverse={isShowed} onClick={toggleCards} />
         </TitleContainer>
-        {isShowed && (<InterestsCategories />)}
-      </Interests>
+        {isShowed && (<CreditCardsList />)}
+      </Cards>
     </Container>
   )
 }

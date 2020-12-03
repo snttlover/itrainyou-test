@@ -1,9 +1,7 @@
 import { Icon } from "@/components/icon/Icon"
-import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
-import { $cardsListForView, $isLoading } from "./cards.model"
-import { useList, useStore, useEvent } from "effector-react"
-import { WalletCard } from "./WalletCard"
+import { $cardsListForView } from "./cards.model"
+import { useStore, useEvent } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 import {
@@ -28,8 +26,9 @@ const AddCardText = styled.p`
   text-align: left;
   color: #3746B0;
 `
+type AddCardType = { marginLeft: number }
 
-const AddCardContainer = styled.div`
+const AddCardContainer = styled.div<AddCardType>`
   background: #ffffff;
   border: 1px solid #dbdee0;
   box-sizing: border-box;
@@ -43,6 +42,11 @@ const AddCardContainer = styled.div`
   cursor: pointer;
   margin-top: 24px;
   margin-left: ${props => (props.marginLeft % 2) > 0 ? "24px" : ""};
+  
+  ${MediaRange.lessThan("mobile")`
+    margin-top: 4px;
+    margin-left: ${props => (props.marginLeft % 2) > 0 ? "4px" : ""};
+  `}
 `
 
 const Center = styled.div`
@@ -65,8 +69,13 @@ export const WalletAddCard = () => {
   const $cards = useStore($cardsListForView)
   const _addCard = useEvent(addCard)
 
+  const handleAddCard = (e: React.SyntheticEvent) => {
+    console.log("ADDCARD")
+    _addCard()
+  }
+
   return (
-    <AddCardContainer marginLeft={$cards.length} onClick={_addCard}>
+    <AddCardContainer marginLeft={$cards.length} onClick={handleAddCard}>
       <Center>
         <PlusIcon />
       </Center>

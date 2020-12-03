@@ -4,6 +4,7 @@ import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards
 import styled from "styled-components"
 import { ProfileHeader } from "./content/profile-header/ProfileHeader"
 import { ProfileInterests } from "@/pages/client/profile/content/interests/Interests"
+import { ProfileCreditCards } from "@/pages/client/profile/content/credit-cards/CreditCards"
 import { IndividualSessions } from "@/pages/client/profile/content/sessions-list/IndividualSessions"
 import { $profilePageLoading, $profilePageSessionsCount, mounted } from "./profile-page.model"
 import { MediaRange } from "@/lib/responsive/media"
@@ -37,6 +38,7 @@ const ProfilePage = () => {
         <Container>
           <ProfileHeader />
           <ProfileInterests />
+          <ProfileCreditCards />
           {sessionsCount && <IndividualSessions />}
           <ProfileCoachButton />
         </Container>
