@@ -26,6 +26,7 @@ const Title = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
+  margin-right: 12px;
 `
 
 const ExpireDate = styled.div`
@@ -56,7 +57,23 @@ const DeleteBtn = styled.div`
 
 const TypeImg = styled.img`
   width: 32px;
-  height: 24px;
+  height: 22px;
+`
+
+const Item = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #efefef;
+  padding: 12px 0;
+  padding-right: 16px;
+`
+
+const LogosContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 `
 
 type WalletCardProps = {
@@ -68,6 +85,32 @@ type WalletCardProps = {
 }
 
 export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate, className }) => {
+  const deleteCard = useEvent(deletedCard)
+  let cardTypeImg: string | null = null
+
+  if (type === "MasterCard") cardTypeImg = MasterCard
+  else if (type === "Visa") cardTypeImg = Visa
+
+  return (
+    <Item>
+      <BottomRow>
+        <LogosContainer>
+          <Title>
+            {type} •••• {cardEnd}
+          </Title>
+          {cardTypeImg && ( <TypeImg src={cardTypeImg} />)}
+        </LogosContainer>
+        <DeleteBtn>Сделать основной</DeleteBtn>
+      </BottomRow>
+      <BottomRow>
+        <ExpireDate>{expireDate}</ExpireDate>
+        <DeleteBtn onClick={() => deleteCard(id)}>Удалить</DeleteBtn>
+      </BottomRow>
+    </Item>
+  )
+}
+
+/*export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate, className }) => {
   const deleteCard = useEvent(deletedCard)
   let cardTypeImg: string | null = null
 
@@ -88,4 +131,4 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
       </BottomRow>
     </WalletCardContainer>
   )
-}
+}*/

@@ -4,8 +4,10 @@ import { createGate } from "@/scope"
 import { createEffect, createEvent, forward, restore, split } from "effector-root"
 import { deleteCard } from "@/lib/api/wallet/client/delete-card"
 import { some } from "patronum"
+import { DenySessionRequestProblems } from "@/lib/api/coach/deny-session-request"
 
 class DeleteCardCancelError extends Error {}
+const reset = createEvent()
 
 export const CardsTabGate = createGate()
 
@@ -66,3 +68,21 @@ export const $cardsListForView = $cards.map(cards =>
     expireDate: `${card.expiryMonth}/${card.expiryYear}`,
   }))
 )
+
+export const $cardsListForViewInModal = $cards.map(cards =>
+  cards.map(card => ({
+    id: card.id,
+    type: card.cardType,
+    cardEnd: card.lastFourDigits,
+    value: `ХХХХ ХХХХ ХХХХ ${card.lastFourDigits} (${card.expiryMonth}/${card.expiryYear})`,
+    label: `ХХХХ ХХХХ ХХХХ ${card.lastFourDigits} (${card.expiryMonth}/${card.expiryYear})`,
+  }))
+)
+
+export const changeCurrentCard = createEvent<string | number>()
+export const $currentCard = restore<string | number>(
+  changeCurrentCard,
+  ""
+).reset(reset)
+
+$currentCard.watch(res => console.log("currentCard",res))

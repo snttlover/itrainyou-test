@@ -25,6 +25,11 @@ export const removeFromFavouriteFx = createEffect({
 
 export const coachByIdGate = createGate()
 export const mounted = createEvent<{ id: number }>()
+export const showCreditCardsModal = createEvent<void>()
+
+export const $creditCardsModal = createStore<boolean>(false)
+  .on(showCreditCardsModal, (state,payload) => !state)
+  .reset([mounted, coachByIdGate.close])
 
 export const $coach = createStore<Coach | null>(null)
   .on(loadCoachFx.doneData, (state, payload) => payload)

@@ -1,14 +1,10 @@
 import * as React from "react"
 import styled from "styled-components"
-import { InterestsStats } from "@/pages/client/profile/content/interests/InterestsStats"
 import { CreditCardsList } from "./CreditCardsList"
 import { MediaRange } from "@/lib/responsive/media"
 import arrowIcon from "@/components/coach-card/images/arrow.svg"
 import { useState } from "react"
-import { getCategoryColorById } from "@/feature/categories/categories.store"
-import { Icon } from "@/components/icon/Icon"
-import { useList } from "effector-react"
-import { $profileCategories } from "@/pages/client/profile/profile-page.model"
+
 
 const Container = styled.div`
   padding-right: 140px;

@@ -10,6 +10,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
+import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
 import { useGate, useStore } from "effector-react"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
 import { NotFound } from "@/feature/not-found/components/NotFound"
@@ -103,6 +104,15 @@ const Datepicker = () => {
   return null
 }
 
+const CardPicker = () => {
+  const coach = useStore($coach)
+
+  if (coach) {
+    return <SelectCreditCardDialog coach={coach} sessionsData={$sessionsPickerStore} />
+  }
+  return null
+}
+
 export const CoachByIdPage = () => {
   const coach = useStore($coach)
   const pending = useStore(loadCoachFx.pending)
@@ -130,6 +140,7 @@ export const CoachByIdPage = () => {
             <BuySidebar>
               <Datepicker />
             </BuySidebar>
+            <CardPicker />
           </InfoWithSidebar>
         )}
       </ContentContainer>
