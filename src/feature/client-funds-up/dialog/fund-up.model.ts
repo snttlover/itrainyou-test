@@ -1,5 +1,7 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { startTopUp } from "@/lib/api/wallet/client/start-top-up"
+import { startSaveCard, StartSaveCardParams, StartSaveCardResponse } from "@/lib/api/wallet/client/start-save-card"
+import { finishSaveCard, FinishSaveCardRequest, FinishSaveCardResponse } from "@/lib/api/wallet/client/finish-save-card"
 import { startTopUpWithCard } from "@/lib/api/wallet/client/start-top-up-with-saved-card"
 import { transferToClientWallet } from "@/lib/api/wallet/coach/transfer-to-client-wallet"
 import { createEffectorField } from "@/lib/generators/efffector"
@@ -67,6 +69,19 @@ export const $fundUpErrors = combine({
 })
 
 export const $canSubmit = every({ predicate: true, stores: [$isAmountCorrect] })
+
+const startSaveCardFx = createEffect({
+  handler: ( {returnUrl}:StartSaveCardParams ) => startSaveCard({returnUrl})
+})
+
+const finishSaveCardFx = createEffect({
+  handler: async () => {
+    const paymentId = localStorage.getItem("saved_payment_id")!
+    const response:FinishSaveCardResponse = await finishSaveCard({paymentId})
+    localStorage.setItem("test",1)
+    return response
+  }
+})
 
 const startTopUpFx = createEffect({
   handler: async (form: InferStoreType<typeof $fundUpForm>) => {
@@ -141,17 +156,28 @@ forward({
   ],
 })
 
-/*forward({
-  from: addCard.prepend(():InferStoreType<typeof $fundUpForm> => {
-    const form = {
-    payment_id: <str>,
-    confirmation_url: <url>
-    }
-  } ),
-  to: startWithdrawFx,
+const successfullAddedCard: Toast = { text: "Карта добвалена", type: "info" }
+forward({
+  from: finishSaveCardFx.doneData.map(_ => successfullAddedCard),
+  to: [
+    toasts.remove,
+    toasts.add,
+    loadInfoFx.prepend(() => {}),
+    loadCardsFx.prepend(() => {}),
+  ],
 })
-startWithdrawFx from src/pages/coach/wallet/withdraw-dialog/withdraw.model.ts
-*/
+
+startSaveCardFx.doneData.watch((response) => {
+  localStorage.setItem("saved_payment_id", response.paymentId)
+  window.location.href = response.confirmationUrl
+  return
+})
+
+sample({
+  clock: addCard,
+  source: $redirectUrl,
+  target: startSaveCardFx,
+})
 
 sample({
   clock: guard({ source: submitFundUp, filter: $canSubmit }),
