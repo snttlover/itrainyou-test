@@ -11,10 +11,11 @@ import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profi
 import { loadCardsFx } from "@/pages/client/wallet/cards/cards.model"
 import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
 import { createGate } from "@/scope"
-import { combine, createEffect, createEvent, forward, guard, restore, sample, split } from "effector-root"
+import { combine, createEffect, createEvent, forward, guard, restore, sample, split, attach } from "effector-root"
 import { every } from "patronum"
 
 export const FundUpModalGate = createGate()
+export const ClientProfileGate = createGate()
 export const resetFundUpModal = createEvent()
 export const submitFundUp = createEvent()
 export const addCard = createEvent()
@@ -71,14 +72,27 @@ export const $fundUpErrors = combine({
 export const $canSubmit = every({ predicate: true, stores: [$isAmountCorrect] })
 
 const startSaveCardFx = createEffect({
-  handler: ( {returnUrl}:StartSaveCardParams ) => startSaveCard({returnUrl})
+  handler: (returnUrl:string ) =>
+    startSaveCard({returnUrl: `${window.location.protocol}//${window.location.hostname}${returnUrl}`})
 })
 
-const finishSaveCardFx = createEffect({
+const getPaymentIdFx = createEffect({
+  handler: () => {
+    const paymentId = localStorage.getItem("payment_id")
+    return paymentId
+  }
+})
+
+const deletePaymentIdFx = createEffect({
+  handler: () => {
+    localStorage.removeItem("payment_id")
+  }
+})
+
+export const finishSaveCardFx = createEffect({
   handler: async () => {
-    const paymentId = localStorage.getItem("saved_payment_id")!
+    const paymentId = localStorage.getItem("payment_id")!
     const response:FinishSaveCardResponse = await finishSaveCard({paymentId})
-    localStorage.setItem("test",1)
     return response
   }
 })
@@ -156,7 +170,17 @@ forward({
   ],
 })
 
-const successfullAddedCard: Toast = { text: "Карта добвалена", type: "info" }
+const unsuccessfullAddedCard: Toast  = { text: "Не удалось привязать карту", type: "error" }
+forward({
+  from: finishSaveCardFx.fail.map(({params,error}) => unsuccessfullAddedCard),
+  to: [
+    toasts.remove,
+    toasts.add,
+    deletePaymentIdFx.prepend(() => {}),
+  ],
+})
+
+const successfullAddedCard: Toast = { text: "Карта добавлена", type: "info" }
 forward({
   from: finishSaveCardFx.doneData.map(_ => successfullAddedCard),
   to: [
@@ -164,18 +188,32 @@ forward({
     toasts.add,
     loadInfoFx.prepend(() => {}),
     loadCardsFx.prepend(() => {}),
+    deletePaymentIdFx.prepend(() => {}),
   ],
 })
 
 startSaveCardFx.doneData.watch((response) => {
-  localStorage.setItem("saved_payment_id", response.paymentId)
+  localStorage.setItem("payment_id", response.paymentId)
   window.location.href = response.confirmationUrl
   return
 })
 
+forward({
+  from: ClientProfileGate.open,
+  to: getPaymentIdFx,
+})
+
+guard({
+  source: getPaymentIdFx.doneData,
+  filter: paymentId => paymentId !== null,
+  target: finishSaveCardFx,
+})
+
 sample({
   clock: addCard,
-  source: $redirectUrl,
+  source: combine($redirectUrl,(redirecturl) => {
+    return "/client/profile"
+  }),
   target: startSaveCardFx,
 })
 

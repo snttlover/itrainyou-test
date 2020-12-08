@@ -4,6 +4,9 @@ import { CreditCardsList } from "./CreditCardsList"
 import { MediaRange } from "@/lib/responsive/media"
 import arrowIcon from "@/components/coach-card/images/arrow.svg"
 import { useState } from "react"
+import { useStore } from "effector-react"
+import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/fund-up.model"
+import { Spinner } from "@/components/spinner/Spinner"
 
 
 const Container = styled.div`
@@ -61,6 +64,7 @@ const TitleContainer = styled.div`
 
 export const ProfileCreditCards = () => {
   const [isShowed, changeisShow] = useState(false)
+  const isLoading = useStore(finishSaveCardFx.pending)
 
   const toggleCards = (e: React.SyntheticEvent) => {
     changeisShow(!isShowed)
@@ -73,7 +77,7 @@ export const ProfileCreditCards = () => {
           <Title>Привязанные карты</Title>
           <Arrow reverse={isShowed} onClick={toggleCards} />
         </TitleContainer>
-        {isShowed && (<CreditCardsList />)}
+        {isShowed && (!isLoading ? <CreditCardsList /> : <Spinner />)}
       </Cards>
     </Container>
   )

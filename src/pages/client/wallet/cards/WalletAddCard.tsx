@@ -1,7 +1,6 @@
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import { $cardsListForView } from "./cards.model"
-import { useStore, useEvent } from "effector-react"
+import { useEvent } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 import {
@@ -17,28 +16,6 @@ const PlusIcon = styled(Icon).attrs({ name: "plus" })`
   height: 10px;
   fill: ${({ theme }) => theme.colors.primary};
 `
-
-/*const AddCardContainer = styled.div<AddCardType>`
-  background: #ffffff;
-  border: 1px solid #dbdee0;
-  box-sizing: border-box;
-  border-radius: 12px;
-  width: 240px;
-  height: 144px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  margin-top: 24px;
-  margin-left: ${props => (props.marginLeft % 2) > 0 ? "24px" : ""};
-  
-  ${MediaRange.lessThan("mobile")`
-    margin-top: 4px;
-    margin-left: ${props => (props.marginLeft % 2) > 0 ? "4px" : ""};
-  `}
-`
-*/
 
 const LogosContainer = styled.div`
   display: flex;
@@ -92,11 +69,9 @@ const StyledButton = styled(Button)`
 `
 
 export const WalletAddCard = () => {
-  const $cards = useStore($cardsListForView)
   const _addCard = useEvent(addCard)
 
   const handleAddCard = (e: React.SyntheticEvent) => {
-    console.log("ADDCARD")
     _addCard()
   }
 
@@ -113,25 +88,3 @@ export const WalletAddCard = () => {
     </Item>
   )
 }
-
-
-/*export const WalletAddCard = () => {
-  const $cards = useStore($cardsListForView)
-  const _addCard = useEvent(addCard)
-
-  const handleAddCard = (e: React.SyntheticEvent) => {
-    console.log("ADDCARD")
-    _addCard()
-  }
-
-  return (
-    <AddCardContainer marginLeft={$cards.length} onClick={handleAddCard}>
-      <Center>
-        <PlusIcon />
-      </Center>
-      <TextContainer>
-        <AddCardText>Добавить карту</AddCardText>
-      </TextContainer>
-    </AddCardContainer>
-  )
-}*/

@@ -1,9 +1,9 @@
 import { config } from "@/config"
-import { keysToCamel } from "@/lib/network/casing"
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
-import { Pagination } from "@/lib/api/interfaces/utils.interface"
 
-export type CardResponse = {
+
+export type MakeCardPrimaryResponse = {
   id: number
   client: number
   firstSixDigits: string
@@ -16,7 +16,7 @@ export type CardResponse = {
   isPrimary: boolean
 }
 
-export const getCardsList = () =>
-  get<Pagination<CardResponse>>(`${config.BACKEND_URL}/api/v1/web/client/cards/`)
+export const makeCardPrimary = (id: number): Promise<MakeCardPrimaryResponse> =>
+  get(`${config.BACKEND_URL}/api/v1/web/client/cards/${id}/`)
     .then(response => response.data)
     .then(keysToCamel)

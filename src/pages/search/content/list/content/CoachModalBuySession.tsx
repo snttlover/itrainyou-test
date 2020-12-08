@@ -16,10 +16,6 @@ import { $creditCardsModal, showCreditCardsModal } from "@/pages/search/coach-by
 import { Dialog } from "@/components/dialog/Dialog"
 import styled from "styled-components"
 import { useEvent } from "effector-react"
-import { Textarea } from "@/components/textarea/Textarea"
-import { Avatar } from "@/components/avatar/Avatar"
-import { SelectInput } from "@/components/select-input/SelectInput"
-import { DenySessionRequestProblems } from "@/lib/api/coach/deny-session-request"
 import { genSessionTabs, SelectDatetimeTypes } from "@/components/coach-card/select-date/SelectDatetime"
 import { date } from "@/lib/formatting/date"
 import { Icon } from "@/components/icon/Icon"
@@ -27,9 +23,9 @@ import { Button } from "@/components/button/normal/Button"
 import { SelectInputCard } from "@/components/select-input/SelectInputCard"
 import {
   $cardsListForView,
-  $cardsListForViewInModal,
   changeCurrentCard,
   $currentCard,
+  $primaryCard,
 } from "@/pages/client/wallet/cards/cards.model"
 
 
@@ -42,7 +38,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const cards = useStore($cardsListForView)
   const currentCard = useStore($currentCard)
   const changeCard = useEvent(changeCurrentCard)
-  const cardsListForViewInModal = useStore($cardsListForViewInModal)
+  const primaryCard = useStore($primaryCard)
 
   const user = useStore($denyDialogRequestUser)
   const send = useEvent(sendDenyCompletationDialog)
@@ -105,7 +101,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
         <Label>Выберите карту</Label>
         <StyledSelectInput
           placeholder='Выберите карту'
-          value={currentCard}
+          value={currentCard!.id}
           onChange={value => changeCard(value)}
           options={cards}
         />

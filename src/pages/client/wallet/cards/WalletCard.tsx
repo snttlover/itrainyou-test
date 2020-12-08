@@ -1,4 +1,4 @@
-import { deletedCard } from "@/pages/client/wallet/cards/cards.model"
+import { deletedCard, madeCardPrimary } from "@/pages/client/wallet/cards/cards.model"
 import { useEvent } from "effector-react"
 import styled from "styled-components"
 import React from "react"
@@ -81,11 +81,13 @@ type WalletCardProps = {
   type: string
   cardEnd: string
   expireDate: string
+  isPrimary: boolean
   className?: string
 }
 
-export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate, className }) => {
+export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate,isPrimary, className }) => {
   const deleteCard = useEvent(deletedCard)
+  const makeCardPrimary = useEvent(madeCardPrimary)
   let cardTypeImg: string | null = null
 
   if (type === "MasterCard") cardTypeImg = MasterCard
@@ -100,7 +102,7 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
           </Title>
           {cardTypeImg && ( <TypeImg src={cardTypeImg} />)}
         </LogosContainer>
-        <DeleteBtn>Сделать основной</DeleteBtn>
+        <DeleteBtn onClick={() => makeCardPrimary(id)}>Сделать основной</DeleteBtn>
       </BottomRow>
       <BottomRow>
         <ExpireDate>{expireDate}</ExpireDate>

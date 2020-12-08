@@ -81,10 +81,21 @@ const Label = styled.div`
   overflow: hidden;
 `
 
-type Value = string | number
+type Value = {
+  id: number
+  client: number
+  firstSixDigits: string
+  lastFourDigits: string
+  expiryMonth: string
+  expiryYear: string
+  cardType: string
+  issuerCountry: string
+  issuerName: string
+  isPrimary: boolean
+}
 
 export type SelectInputProps<T extends Value> = {
-  value: T | null
+  value: number
   placeholder?: string
   onChange: (value: T) => void
   options: {
@@ -92,6 +103,7 @@ export type SelectInputProps<T extends Value> = {
     type: string
     cardEnd: string
     expireDate: string
+    isPrimary: boolean
   }[]
   error?: boolean
   onBlur?: () => void
@@ -126,7 +138,7 @@ export const SelectInputCard = <T extends Value = Value>({
 
   const dropdownItems = options.map(item => {
     return (
-      <DropdownItem key={item.id} onClick={() => onChange(item.id)}>
+      <DropdownItem key={item.id} onClick={() => onChange(item)}>
         <LabelContainer>
           <div>{`ХХХХ ХХХХ ХХХХ ${item.cardEnd} (${item.expireDate})`}</div>
           {item.type && <CardIcon cardtype={item.type} />}

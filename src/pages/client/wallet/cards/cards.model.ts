@@ -1,11 +1,11 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CardResponse, getCardsList } from "@/lib/api/wallet/client/get-cards-list"
 import { createGate } from "@/scope"
-import { createEffect, createEvent, forward, restore, split } from "effector-root"
+import { createEffect, createEvent, forward, restore, split, combine } from "effector-root"
 import { deleteCard } from "@/lib/api/wallet/client/delete-card"
+import { makeCardPrimary, MakeCardPrimaryResponse } from "@/lib/api/wallet/client/make-card-primary"
 import { some } from "patronum"
-import { DenySessionRequestProblems } from "@/lib/api/coach/deny-session-request"
-
+import { coachByIdGate } from "@/pages/search/coach-by-id/coach-by-id.model"
 class DeleteCardCancelError extends Error {}
 const reset = createEvent()
 
@@ -20,6 +20,11 @@ forward({
   to: loadCardsFx,
 })
 
+/*forward({
+  from: coachByIdGate.open,
+  to: loadCardsFx,
+})*/
+
 const deleteCardFx = createEffect({
   handler: (id: number) => {
     if (confirm("Вы уверены что хотите удалить карту?")) {
@@ -30,11 +35,37 @@ const deleteCardFx = createEffect({
   },
 })
 
+const madeCardPrimaryFx = createEffect({
+  handler: (id: number) => makeCardPrimary(id)
+})
+
+export const changeCurrentCard = createEvent<CardResponse>()
+/*export const $currentCard = restore<string | number>(
+  changeCurrentCard,
+  ""
+).reset(reset)*/
+
 export const deletedCard = createEvent<number>()
+export const madeCardPrimary = createEvent<number>()
+
+forward({
+  from: madeCardPrimary,
+  to: madeCardPrimaryFx,
+})
 
 forward({
   from: deletedCard,
   to: deleteCardFx,
+})
+
+forward({
+  from: madeCardPrimaryFx.done,
+  to: loadCardsFx,
+})
+
+forward({
+  from: loadCardsFx,
+  to: changeCurrentCard.map(() => console.log("loadcardsFx"))
 })
 
 const { canceledCardDelete, __: cardDeleteError } = split(deleteCardFx.fail, {
@@ -66,23 +97,22 @@ export const $cardsListForView = $cards.map(cards =>
     type: card.cardType,
     cardEnd: card.lastFourDigits,
     expireDate: `${card.expiryMonth}/${card.expiryYear}`,
+    isPrimary: card.isPrimary,
   }))
 )
 
-export const $cardsListForViewInModal = $cards.map(cards =>
-  cards.map(card => ({
-    id: card.id,
-    type: card.cardType,
-    cardEnd: card.lastFourDigits,
-    value: `ХХХХ ХХХХ ХХХХ ${card.lastFourDigits} (${card.expiryMonth}/${card.expiryYear})`,
-    label: `ХХХХ ХХХХ ХХХХ ${card.lastFourDigits} (${card.expiryMonth}/${card.expiryYear})`,
-  }))
-)
+export const $primaryCard = combine($cards, (cards)=> {
+  const primaryCard = cards.find(card => card.isPrimary)
+  return primaryCard
+})
 
-export const changeCurrentCard = createEvent<string | number>()
-export const $currentCard = restore<string | number>(
-  changeCurrentCard,
-  ""
-).reset(reset)
+export const $currentCard = $cards.map(cards => {
+  const primaryCard = cards.find(card => card.isPrimary)
+  return primaryCard
+})
 
+$currentCard.on(changeCurrentCard,(state,payload) => payload)
+
+$cards.watch(res => console.log("cards",res))
+$primaryCard.watch(res => console.log("primaryCard",res))
 $currentCard.watch(res => console.log("currentCard",res))
