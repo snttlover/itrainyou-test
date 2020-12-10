@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useStore } from "effector-react"
 import {
   $currentDenyCompletationProblem,
@@ -21,12 +21,8 @@ import { date } from "@/lib/formatting/date"
 import { Icon } from "@/components/icon/Icon"
 import { Button } from "@/components/button/normal/Button"
 import { SelectInputCard } from "@/components/select-input/SelectInputCard"
-import {
-  $cardsListForView,
-  changeCurrentCard,
-  $currentCard,
-  $primaryCard,
-} from "@/pages/client/wallet/cards/cards.model"
+import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
+import { addCard } from "@/feature/client-funds-up/dialog/fund-up.model"
 
 
 const equalDateFormat = "DDMMYYYY"
@@ -36,9 +32,10 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const visibility = useStore($creditCardsModal)
   const hide = useEvent(showCreditCardsModal)
   const cards = useStore($cardsListForView)
-  const currentCard = useStore($currentCard)
-  const changeCard = useEvent(changeCurrentCard)
-  const primaryCard = useStore($primaryCard)
+
+  const [options, setOptions] = useState([{id: "other"}])
+  const [value, setValue] = useState({id: "other"})
+  const _addCard = useEvent(addCard)
 
   const user = useStore($denyDialogRequestUser)
   const send = useEvent(sendDenyCompletationDialog)
@@ -51,9 +48,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
 
   const valid = useStore($validDenyCompletationForm)
 
-  const cardsListForView = useStore($cardsListForView)
-
-  const sessions = useStore(props.sessionsData.sessionsList)
+  const allSessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
@@ -64,7 +59,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const [currentDate, changeCurrentDate] = useState<Date | null>()
-  const enabledDates = sessions.map(session => session.startDatetime)
+  const enabledDates = allSessions.map(session => session.startDatetime)
 
   const headerDate = currentDate ? currentDate : new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
@@ -74,7 +69,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
     changeActiveTab(tabs[0].key)
   }
 
-  const times = sessions
+  const times = allSessions
     .filter(session => {
       return date(session.startDatetime).format(equalDateFormat) === currentDateEqual
     })
@@ -82,7 +77,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
       ...session,
       start_datetime: date(session.startDatetime).format(equalTimeFormat),
     }))
-  const selected = sessions
+  const selected = allSessions
     .filter(session => session.selected)
     .map(session => ({
       ...session,
@@ -92,6 +87,22 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
 
+  useEffect(() => {
+    const primaryCard = cards.find(card => card.isPrimary) || {id: "other"}
+    setOptions([...options,...cards])
+    setValue(primaryCard)
+  }, [])
+
+  const handleBulk = () => {
+    const sessions = selected.map(item => item.id)
+    const card = value.id
+    if(card !== "other") {
+      buySessionBulk({ sessions, card })
+    }
+    else {
+      _addCard()
+    }
+  }
   return (
     <StyledDialog value={visibility} onChange={() => hide()}>
       <Container>
@@ -101,12 +112,12 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
         <Label>Выберите карту</Label>
         <StyledSelectInput
           placeholder='Выберите карту'
-          value={currentCard!.id}
-          onChange={value => changeCard(value)}
-          options={cards}
+          value={value}
+          onChange={value => setValue(value)}
+          options={options}
         />
 
-        <Description>*Эта карта будет привязана к сервису</Description>
+        {value.id === "other" && (<Description>*Эта карта будет привязана к сервису</Description>)}
 
         <SummaryContainer>
           <Summary>
@@ -117,9 +128,8 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
 
         <Actions>
           <StyledButton
-            onClick={() => {
-              hide()
-            }}
+            disabled={buyLoading || selected.length === 0}
+            onClick={handleBulk}
           >
                   Забронировать
           </StyledButton>

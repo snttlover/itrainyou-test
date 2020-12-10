@@ -40,11 +40,6 @@ const madeCardPrimaryFx = createEffect({
 })
 
 export const changeCurrentCard = createEvent<CardResponse>()
-/*export const $currentCard = restore<string | number>(
-  changeCurrentCard,
-  ""
-).reset(reset)*/
-
 export const deletedCard = createEvent<number>()
 export const madeCardPrimary = createEvent<number>()
 
@@ -61,11 +56,6 @@ forward({
 forward({
   from: madeCardPrimaryFx.done,
   to: loadCardsFx,
-})
-
-forward({
-  from: loadCardsFx,
-  to: changeCurrentCard.map(() => console.log("loadcardsFx"))
 })
 
 const { canceledCardDelete, __: cardDeleteError } = split(deleteCardFx.fail, {
@@ -100,19 +90,3 @@ export const $cardsListForView = $cards.map(cards =>
     isPrimary: card.isPrimary,
   }))
 )
-
-export const $primaryCard = combine($cards, (cards)=> {
-  const primaryCard = cards.find(card => card.isPrimary)
-  return primaryCard
-})
-
-export const $currentCard = $cards.map(cards => {
-  const primaryCard = cards.find(card => card.isPrimary)
-  return primaryCard
-})
-
-$currentCard.on(changeCurrentCard,(state,payload) => payload)
-
-$cards.watch(res => console.log("cards",res))
-$primaryCard.watch(res => console.log("primaryCard",res))
-$currentCard.watch(res => console.log("currentCard",res))

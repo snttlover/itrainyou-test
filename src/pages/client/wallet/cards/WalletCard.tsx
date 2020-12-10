@@ -55,6 +55,16 @@ const DeleteBtn = styled.div`
   cursor: pointer;
 `
 
+const PrimaryBtn = styled.div<{ isPrimary: boolean }>`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ isPrimary }) => isPrimary ? "#4858CC" : "#E1E6EA"};
+  cursor: pointer;
+`
+
 const TypeImg = styled.img`
   width: 32px;
   height: 22px;
@@ -102,7 +112,7 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
           </Title>
           {cardTypeImg && ( <TypeImg src={cardTypeImg} />)}
         </LogosContainer>
-        <DeleteBtn onClick={() => makeCardPrimary(id)}>Сделать основной</DeleteBtn>
+        <PrimaryBtn isPrimary={isPrimary} onClick={() => makeCardPrimary(id)}>{isPrimary ? "Основная" : "Сделать основной"}</PrimaryBtn>
       </BottomRow>
       <BottomRow>
         <ExpireDate>{expireDate}</ExpireDate>
@@ -111,26 +121,3 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
     </Item>
   )
 }
-
-/*export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate, className }) => {
-  const deleteCard = useEvent(deletedCard)
-  let cardTypeImg: string | null = null
-
-  if (type === "MasterCard") cardTypeImg = MasterCard
-  else if (type === "Visa") cardTypeImg = Visa
-
-  return (
-    <WalletCardContainer className={className}>
-      <div>
-        <Title>
-          {type} •••• {cardEnd}
-        </Title>
-        <ExpireDate>{expireDate}</ExpireDate>
-      </div>
-      <BottomRow>
-        <DeleteBtn onClick={() => deleteCard(id)}>Удалить</DeleteBtn>
-        {cardTypeImg && <TypeImg src={cardTypeImg} />}
-      </BottomRow>
-    </WalletCardContainer>
-  )
-}*/

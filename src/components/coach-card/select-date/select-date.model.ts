@@ -1,7 +1,7 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { changeShowFundUpDialog, setRedirectUrl } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
-import { bulkBookSessions } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
+import { bulkBookSessions,BulkBookSessionsRequest } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { isAxiosError } from "@/lib/network/network"
 import { routeNames } from "@/pages/route-names"
 import { runInScope } from "@/scope"
@@ -67,14 +67,14 @@ export const genCoachSessions = (id = 0) => {
     target: fetchCoachSessionsListFx,
   })
 
-  const buySessionBulk = createEvent<number[]>()
+  const buySessionBulk = createEvent<BulkBookSessionsRequest>()
 
   const buySessionsFx = createEffect({
-    handler: bulkBookSessions,
+    handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
   })
 
   forward({
-    from: buySessionBulk.map(sessions => ({ sessions })),
+    from: buySessionBulk,
     to: buySessionsFx,
   })
 

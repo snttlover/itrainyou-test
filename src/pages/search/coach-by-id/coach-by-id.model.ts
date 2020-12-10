@@ -51,6 +51,12 @@ const changeCoachSessionDurationTab = $sessionsPickerStore.tabs.changeDurationTa
   coach => Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
 )
 
+guard({
+  source: $sessionsPickerStore.buySessionsLoading.updates,
+  filter: $sessionsPickerStore.buySessionsLoading,
+  target: showCreditCardsModal,
+})
+
 forward({
   from: loadCoachFx.doneData,
   to: [changeCoachSessionCoachId, changeCoachSessionDurationTab],

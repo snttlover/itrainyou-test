@@ -4,6 +4,7 @@ import { post } from "@/lib/network/network"
 
 export interface BulkBookSessionsRequest {
   sessions: number[]
+  card: number
 }
 export interface BulkBookSessionsResponse {}
 

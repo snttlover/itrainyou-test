@@ -540,10 +540,3 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     </Container>
   )
 }
-
-/*<StyledBuyButton
-                disabled={buyLoading || selected.length === 0}
-                onClick={() => buySessionBulk(selected.map(item => item.id))}
-              >
-                Забронировать
-              </StyledBuyButton>*/

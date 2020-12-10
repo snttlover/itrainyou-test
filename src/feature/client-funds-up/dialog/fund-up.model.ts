@@ -13,6 +13,8 @@ import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, forward, guard, restore, sample, split, attach } from "effector-root"
 import { every } from "patronum"
+import { mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { routeNames } from "@/pages/route-names"
 
 export const FundUpModalGate = createGate()
 export const ClientProfileGate = createGate()
@@ -199,8 +201,14 @@ startSaveCardFx.doneData.watch((response) => {
 })
 
 forward({
-  from: ClientProfileGate.open,
+  from: [ClientProfileGate.open, mounted],
   to: getPaymentIdFx,
+})
+
+forward({
+  from: [ClientProfileGate.open.map(() => routeNames.clientProfile()),
+    mounted.map((id)=> routeNames.searchCoachPage(id.id.toString()))],
+  to: setRedirectUrl,
 })
 
 guard({
@@ -211,9 +219,7 @@ guard({
 
 sample({
   clock: addCard,
-  source: combine($redirectUrl,(redirecturl) => {
-    return "/client/profile"
-  }),
+  source: $redirectUrl,
   target: startSaveCardFx,
 })
 

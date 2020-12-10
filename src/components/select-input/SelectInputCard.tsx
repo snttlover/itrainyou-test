@@ -92,18 +92,20 @@ type Value = {
   issuerCountry: string
   issuerName: string
   isPrimary: boolean
+} | {
+  id: string
 }
 
 export type SelectInputProps<T extends Value> = {
-  value: number
+  value: Value
   placeholder?: string
   onChange: (value: T) => void
   options: {
-    id: number
-    type: string
-    cardEnd: string
-    expireDate: string
-    isPrimary: boolean
+    id: number | string
+    type: string | undefined
+    cardEnd: string | undefined
+    expireDate: string | undefined
+    isPrimary: boolean | undefined
   }[]
   error?: boolean
   onBlur?: () => void
@@ -137,17 +139,27 @@ export const SelectInputCard = <T extends Value = Value>({
   const [isOpen, changeOpen] = useState(false)
 
   const dropdownItems = options.map(item => {
-    return (
-      <DropdownItem key={item.id} onClick={() => onChange(item)}>
-        <LabelContainer>
-          <div>{`ХХХХ ХХХХ ХХХХ ${item.cardEnd} (${item.expireDate})`}</div>
-          {item.type && <CardIcon cardtype={item.type} />}
-        </LabelContainer>
-      </DropdownItem>
-    )
+    if ( item.id !== "other") {
+      return (
+        <DropdownItem key={item.id} onClick={() => onChange(item)}>
+          <LabelContainer>
+            <div>{`ХХХХ ХХХХ ХХХХ ${item.cardEnd} (${item.expireDate})`}</div>
+            {item.type && <CardIcon cardtype={item.type} />}
+          </LabelContainer>
+        </DropdownItem>
+      )}
+    else {
+      return (
+        <DropdownItem key={"other"} onClick={() => onChange(item)}>
+          <LabelContainer>
+            <div>Другая</div>
+          </LabelContainer>
+        </DropdownItem>
+      )
+    }
   })
 
-  const selectedItem = options.find(item => item.id === value)
+  const selectedItem = options.find(item => item.id === value.id)
 
   const selectBoxRef = useRef<HTMLDivElement>(null)
 
@@ -172,12 +184,13 @@ export const SelectInputCard = <T extends Value = Value>({
       }}
       withoutBorder={withoutBorder}
     >
-      {selectedItem ? 
-        <LabelContainer>
-          <Label>{`ХХХХ ХХХХ ХХХХ ${selectedItem.cardEnd} (${selectedItem.expireDate})`}</Label>
-          {selectedItem.type && <CardIcon cardtype={selectedItem.type} />}
-        </LabelContainer>
-        : <Placeholder>{placeholder}</Placeholder>}
+      {<LabelContainer>
+        <Label>{selectedItem?.id !== "other" ?
+          `ХХХХ ХХХХ ХХХХ ${selectedItem?.cardEnd} (${selectedItem?.expireDate})`
+          : "Другая"}
+        </Label>
+        {selectedItem?.id !== "other" && (selectedItem?.type && <CardIcon cardtype={selectedItem?.type} />)}
+      </LabelContainer>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
     </SelectBox>
