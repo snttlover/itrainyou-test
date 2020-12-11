@@ -23,7 +23,7 @@ const MainInfoContainer = styled.div`
 
   &:hover {
     border: 2px solid #dbdee0;
-  }
+  /
 
   ${MediaRange.greaterThan("tablet")`
     padding: 8px 12px 12px;

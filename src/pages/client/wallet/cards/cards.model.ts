@@ -1,13 +1,17 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CardResponse, getCardsList } from "@/lib/api/wallet/client/get-cards-list"
 import { createGate } from "@/scope"
-import { createEffect, createEvent, forward, restore, split, combine } from "effector-root"
+import { createEffect, createEvent, forward, restore, split, guard } from "effector-root"
 import { deleteCard } from "@/lib/api/wallet/client/delete-card"
-import { makeCardPrimary, MakeCardPrimaryResponse } from "@/lib/api/wallet/client/make-card-primary"
+import { makeCardPrimary } from "@/lib/api/wallet/client/make-card-primary"
 import { some } from "patronum"
-import { coachByIdGate } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { getCardSessions, getCardSessionsResponse } from "@/lib/api/wallet/client/get-card-sessions"
+import { toggleDeleteCardModalDialog } from "@/pages/client/profile/profile-page.model"
+
 class DeleteCardCancelError extends Error {}
 const reset = createEvent()
+export const deletedCard = createEvent<number>()
+export const confirmDeleteCard = createEvent<number>()
 
 export const CardsTabGate = createGate()
 
@@ -15,32 +19,23 @@ export const loadCardsFx = createEffect({
   handler: getCardsList,
 })
 
+export const getCardSessionsFx = createEffect({
+  handler: getCardSessions,
+})
+
 forward({
   from: CardsTabGate.open,
   to: loadCardsFx,
 })
 
-/*forward({
-  from: coachByIdGate.open,
-  to: loadCardsFx,
-})*/
-
-const deleteCardFx = createEffect({
-  handler: (id: number) => {
-    if (confirm("Вы уверены что хотите удалить карту?")) {
-      return deleteCard(id)
-    } else {
-      throw new DeleteCardCancelError()
-    }
-  },
+export const deleteCardFx = createEffect({
+  handler: (id: number) => deleteCard(id)
 })
 
 const madeCardPrimaryFx = createEffect({
   handler: (id: number) => makeCardPrimary(id)
 })
 
-export const changeCurrentCard = createEvent<CardResponse>()
-export const deletedCard = createEvent<number>()
 export const madeCardPrimary = createEvent<number>()
 
 forward({
@@ -49,13 +44,28 @@ forward({
 })
 
 forward({
+  from: madeCardPrimaryFx.done,
+  to: loadCardsFx,
+})
+
+forward({
   from: deletedCard,
+  to: getCardSessionsFx,
+})
+
+forward({
+  from: getCardSessionsFx.done,
+  to: toggleDeleteCardModalDialog,
+})
+
+forward({
+  from: confirmDeleteCard,
   to: deleteCardFx,
 })
 
 forward({
-  from: madeCardPrimaryFx.done,
-  to: loadCardsFx,
+  from: deleteCardFx.done,
+  to: toggleDeleteCardModalDialog,
 })
 
 const { canceledCardDelete, __: cardDeleteError } = split(deleteCardFx.fail, {
@@ -90,3 +100,27 @@ export const $cardsListForView = $cards.map(cards =>
     isPrimary: card.isPrimary,
   }))
 )
+
+const $cardSessions = restore<getCardSessionsResponse[]>(
+  getCardSessionsFx.doneData.map(data => data.results),
+  []
+)
+
+export const $cardsSessionsForView = $cardSessions.map(sessions =>
+  sessions.map(session => ({
+    id: session.id,
+    startDateTime: session.startDatetime,
+    duration: session.duration,
+    coach: session.coach,
+  }))
+)
+
+export const cardIdForDelete = restore<number>(
+  deletedCard,
+  null
+)
+
+/*
+avatar: session.coach.avatar,
+    name: session.coach.name,
+ */

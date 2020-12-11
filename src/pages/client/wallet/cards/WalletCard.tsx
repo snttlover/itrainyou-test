@@ -112,7 +112,11 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
           </Title>
           {cardTypeImg && ( <TypeImg src={cardTypeImg} />)}
         </LogosContainer>
-        <PrimaryBtn isPrimary={isPrimary} onClick={() => makeCardPrimary(id)}>{isPrimary ? "Основная" : "Сделать основной"}</PrimaryBtn>
+        <PrimaryBtn 
+          isPrimary={isPrimary} 
+          onClick={() => makeCardPrimary(id)}>
+          {isPrimary ? "Основная" : "Сделать основной"}
+        </PrimaryBtn>
       </BottomRow>
       <BottomRow>
         <ExpireDate>{expireDate}</ExpireDate>

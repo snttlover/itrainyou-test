@@ -1,17 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useStore } from "effector-react"
-import {
-  $currentDenyCompletationProblem,
-  $denyCompletationDialogVisibility,
-  $denyCompletationProblem,
-  $denyDialogRequestUser,
-  $validDenyCompletationForm,
-  changeCurrentDenyCompletationProblem,
-  changeDenyCompletationProblem,
-  denyCompletationProblems,
-  hideDenyCompletetionDialogVisibility,
-  sendDenyCompletationDialog,
-} from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
 import { $creditCardsModal, showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { Dialog } from "@/components/dialog/Dialog"
 import styled from "styled-components"
@@ -36,17 +24,6 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const [options, setOptions] = useState([{id: "other"}])
   const [value, setValue] = useState({id: "other"})
   const _addCard = useEvent(addCard)
-
-  const user = useStore($denyDialogRequestUser)
-  const send = useEvent(sendDenyCompletationDialog)
-
-  const problem = useStore($denyCompletationProblem)
-  const changeProblem = useEvent(changeDenyCompletationProblem)
-
-  const problemType = useStore($currentDenyCompletationProblem)
-  const changeProblemType = useEvent(changeCurrentDenyCompletationProblem)
-
-  const valid = useStore($validDenyCompletationForm)
 
   const allSessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
@@ -91,7 +68,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
     const primaryCard = cards.find(card => card.isPrimary) || {id: "other"}
     setOptions([...options,...cards])
     setValue(primaryCard)
-  }, [])
+  },[cards])
 
   const handleBulk = () => {
     const sessions = selected.map(item => item.id)

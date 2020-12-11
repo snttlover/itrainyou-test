@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { ProfileHeader } from "./content/profile-header/ProfileHeader"
 import { ProfileInterests } from "@/pages/client/profile/content/interests/Interests"
 import { ProfileCreditCards } from "@/pages/client/profile/content/credit-cards/CreditCards"
+import { DeleteModalDialog } from "@/pages/client/profile/content/profile-delete-modal/DeleteModalDialog"
 import { IndividualSessions } from "@/pages/client/profile/content/sessions-list/IndividualSessions"
 import { $profilePageLoading, $profilePageSessionsCount, mounted } from "./profile-page.model"
 import { MediaRange } from "@/lib/responsive/media"
@@ -44,6 +45,7 @@ const ProfilePage = () => {
           <ProfileCreditCards />
           {sessionsCount && <IndividualSessions />}
           <ProfileCoachButton />
+          <DeleteModalDialog />
         </Container>
       ) : (
         <Loader />

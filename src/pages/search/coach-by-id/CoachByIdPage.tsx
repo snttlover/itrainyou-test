@@ -2,7 +2,7 @@ import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { Loader } from "@/components/spinner/Spinner"
 import { ServerParams, START } from "@/lib/effector"
 import { MediaRange } from "@/lib/responsive/media"
-import { $coach, loadCoachFx, coachByIdGate, mounted, $isNotFound } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { $coach, loadCoachFx, mounted, $isNotFound } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { AboutCoach } from "@/pages/search/coach-by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/pages/search/coach-by-id/components/BaseCoachInfo"
 import { Reviews } from "@/pages/search/coach-by-id/components/Reviews"
@@ -118,7 +118,6 @@ export const CoachByIdPage = () => {
   const pending = useStore(loadCoachFx.pending)
   const isNotFound = useStore($isNotFound)
 
-  useGate(coachByIdGate)
 
   return (
     <UserLayout>

@@ -1,6 +1,6 @@
-import { getMyClient, ClientSelfData } from "@/lib/api/client/clientInfo"
+import { ClientSelfData, getMyClient } from "@/lib/api/client/clientInfo"
 import { date } from "@/lib/formatting/date"
-import { combine, createEffect, createEvent, createStore, forward, sample, guard } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard, restore, sample } from "effector-root"
 import { $categoriesList, fetchCategoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import { getMyTransactions, SessionTransaction } from "@/lib/api/transactions/client/list-transaction"
 import { UpdateClientRequest, updateMyClient } from "@/lib/api/client/update"
@@ -11,8 +11,12 @@ export const loadProfileFx = createEffect({
 })
 
 export const mounted = createEvent()
-
 export const toggleInterestCategory = createEvent<number>()
+export const toggleDeleteCardModalDialog = createEvent<void>()
+
+export const $showDeleteCardModalDialog = createStore(false)
+  .on(toggleDeleteCardModalDialog, (state, payload) => !state)
+  .reset(mounted)
 
 const updateProfile = createEffect<UpdateClientRequest, ClientSelfData>({
   handler: updateMyClient,
@@ -116,7 +120,7 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
       price: `${+session.clientPrice > 0 ? `+` : `-`} ${session.clientPrice}`,
       time: date(session.startDatetime).format(`hh:mm`),
       date: date(session.startDatetime).format(`DD.MM.YYYY`),
-      isCanceled: transaction.type === `SESSION_CANCELLATION`,
+      status: transaction.status,
     }
   })
 )

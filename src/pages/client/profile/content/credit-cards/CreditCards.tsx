@@ -6,7 +6,7 @@ import arrowIcon from "@/components/coach-card/images/arrow.svg"
 import { useState } from "react"
 import { useStore } from "effector-react"
 import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/fund-up.model"
-import { Spinner } from "@/components/spinner/Spinner"
+import { Loader } from "@/components/spinner/Spinner"
 
 
 const Container = styled.div`
@@ -72,13 +72,15 @@ export const ProfileCreditCards = () => {
 
   return (
     <Container>
-      <Cards>
-        <TitleContainer>
-          <Title>Привязанные карты</Title>
-          <Arrow reverse={isShowed} onClick={toggleCards} />
-        </TitleContainer>
-        {isShowed && (!isLoading ? <CreditCardsList /> : <Spinner />)}
-      </Cards>
+      {!isLoading ?
+        <Cards>
+          <TitleContainer>
+            <Title>Привязанные карты</Title>
+            <Arrow reverse={isShowed} onClick={toggleCards} />
+          </TitleContainer>
+          {isShowed && (<CreditCardsList /> )}
+        </Cards>
+        : <Loader /> }
     </Container>
   )
 }

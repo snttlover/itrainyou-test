@@ -14,6 +14,7 @@ import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, forward, guard, restore, sample, split, attach } from "effector-root"
 import { every } from "patronum"
 import { mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { mounted as homeMounted } from "@/pages/client/home/home.model.ts"
 import { routeNames } from "@/pages/route-names"
 
 export const FundUpModalGate = createGate()
@@ -201,13 +202,15 @@ startSaveCardFx.doneData.watch((response) => {
 })
 
 forward({
-  from: [ClientProfileGate.open, mounted],
+  from: [ClientProfileGate.open, mounted, homeMounted],
   to: getPaymentIdFx,
 })
 
 forward({
   from: [ClientProfileGate.open.map(() => routeNames.clientProfile()),
-    mounted.map((id)=> routeNames.searchCoachPage(id.id.toString()))],
+    mounted.map((id)=> routeNames.searchCoachPage(id.id.toString())),
+    homeMounted.map(() => routeNames.client()),
+  ],
   to: setRedirectUrl,
 })
 
