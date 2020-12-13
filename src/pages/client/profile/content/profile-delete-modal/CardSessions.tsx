@@ -15,16 +15,19 @@ type CardSessions = {
     name: string
   }
 }
-const StyledSessionItem: React.FC<CardSessions> = ({ id,startDateTime, duration, coach }) => {
+
+const StyledSessionItem: React.FC<CardSessions> = ({ id,startDateTime, duration, coach, endDateTime }) => {
 
   return (
     <Item>
-      <RightMobileGroup>
-        <Time>{startDateTime}</Time>
-        <Date>{duration}</Date>
-      </RightMobileGroup>
-      <Name>{coach.name}</Name>
+      <TopMobileGroup>
+        <Date>{date(startDateTime).format("D MMMM YYYY")}</Date>
+        <Time>{date(startDateTime).format("hh:mm")}-{date(endDateTime).format("hh:mm")}</Time>
+      </TopMobileGroup>
+        <BottomMobileGroup>
+      <Name>coach.name</Name>
       <StyledAvatar src={coach.avatar} />
+        </BottomMobileGroup>
     </Item>
   )
 }
@@ -44,7 +47,6 @@ export const CardSessions = () => (
     </Actions>
   </>
 )
-
 
 const Header = styled.div`
   font-family: Roboto Slab;
@@ -88,9 +90,8 @@ const Date = styled.div`
   font-size: 14px;
   line-height: 18px;
   color: #424242;
-  margin-left: 8px;
+    
   ${MediaRange.lessThan("mobile")`
-    margin-top: 8px;
     font-size: 12px;
     line-height: 16px;
   `}
@@ -101,8 +102,11 @@ const Time = styled.div`
   font-size: 14px;
   line-height: 18px;
   color: #9aa0a6;
+    margin-left: 8px;
+    
   ${MediaRange.lessThan("mobile")`
-    display: none;
+    font-size: 12px;
+    line-height: 16px;
   `}
 `
 
@@ -110,8 +114,14 @@ const Item = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+    justify-content: space-between;
   border-bottom: 1px solid #efefef;
   padding: 12px 0;
+    
+    ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+    align-items: center; 
+  `}
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -138,15 +148,28 @@ const Name = styled.div`
   ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
-    margin-left: 4px;
   `}
 `
 
-const RightMobileGroup = styled.div`
+const TopMobileGroup = styled.div`
   display: flex;
   align-items: center;
+    
   ${MediaRange.lessThan("mobile")`
-    flex-direction: column;
-    align-items: flex-end;  
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;   
+  `}
+`
+
+const BottomMobileGroup = styled.div`
+    display: flex;
+    align-items: center; 
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;   
   `}
 `

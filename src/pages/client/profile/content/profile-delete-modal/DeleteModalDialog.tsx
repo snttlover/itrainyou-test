@@ -7,7 +7,7 @@ import { $cardsSessionsForView } from "@/pages/client/wallet/cards/cards.model"
 import { CardSessions } from "./CardSessions"
 import { ConfirmDelete } from "./ConfirmDelete"
 import { toggleDeleteCardModalDialog, $showDeleteCardModalDialog} from "@/pages/client/profile/profile-page.model"
-
+import { MediaRange } from "@/lib/responsive/media"
 
 export const DeleteModalDialog = () => {
   const visibility = useStore($showDeleteCardModalDialog)
@@ -33,4 +33,6 @@ const StyledDialog = styled(Dialog)<{isSessions: boolean}>`
   width: 100%;
   max-width: ${({ isSessions }) => (isSessions ? "600px" : "480px")};
   padding: ${({ isSessions }) => (isSessions ? "24px 40px" : "24x 16px")};
+    ${MediaRange.lessThan("mobile")`
+  `}
 `

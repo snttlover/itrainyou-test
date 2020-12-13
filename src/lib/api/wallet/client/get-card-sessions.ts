@@ -9,7 +9,8 @@ export type getCardSessionsResponse = {
   clientPrice: string
   coachPrice: string
   startDatetime: string
-  duration: string
+    endDatetime: string
+  durationType: string
   translationUrl: string
   recordingUrl: string
   materials: number[]

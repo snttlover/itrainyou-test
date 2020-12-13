@@ -17,12 +17,11 @@ const Container = styled.div`
   position: relative;
   max-width: 790px;
   ${MediaRange.lessThan("tablet")`
-    padding-right: 70px;
+    padding-right: unset;
   `}
 
   ${MediaRange.lessThan("mobile")`
     padding-right: 0;
-    padding-top: 100px;
     margin-top: 16px;
   `}
 `
@@ -33,6 +32,10 @@ const Cards = styled.div`
   border-radius: 2px;
   background: #fff;
   padding: 24px;
+    
+    ${MediaRange.lessThan("mobile")`
+    padding: 12px;
+  `}
 `
 type ArrowType = { reverse?: boolean }
 
@@ -43,7 +46,6 @@ const Title = styled.div`
   color: #424242;
 
   ${MediaRange.lessThan("mobile")`
-     padding-top: 30px;
      font-size: 16px;
      line-height: 26px;
   `}

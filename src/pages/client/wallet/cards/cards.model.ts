@@ -110,7 +110,8 @@ export const $cardsSessionsForView = $cardSessions.map(sessions =>
   sessions.map(session => ({
     id: session.id,
     startDateTime: session.startDatetime,
-    duration: session.duration,
+    endDateTime: session.endDatetime,
+    duration: session.durationType,
     coach: session.coach,
   }))
 )
