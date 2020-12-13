@@ -3,10 +3,11 @@ import styled from "styled-components"
 import { CreditCardsList } from "./CreditCardsList"
 import { MediaRange } from "@/lib/responsive/media"
 import arrowIcon from "@/components/coach-card/images/arrow.svg"
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { useStore } from "effector-react"
 import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { Loader } from "@/components/spinner/Spinner"
+import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
 
 
 const Container = styled.div`
@@ -63,13 +64,27 @@ const TitleContainer = styled.div`
 `
 
 export const ProfileCreditCards = () => {
-  const [isShowed, changeisShow] = useState(false)
+  const cards = useStore($cardsListForView)
+  const [isShowed, changeIsShow] = useState(false)
+  const [cardList, setCardList] = useState([])
   const isLoading = useStore(finishSaveCardFx.pending)
 
   const toggleCards = (e: React.SyntheticEvent) => {
-    changeisShow(!isShowed)
+    if (isShowed) {
+      const primaryCard = cards.find(card => card.isPrimary) || {}
+      setCardList([primaryCard])
+    }
+    else {
+      setCardList(cards)
+    }
+    changeIsShow(!isShowed)
   }
 
+  useEffect(() => {
+    const primaryCard = cards.find(card => card.isPrimary) || {}
+    setCardList([primaryCard])
+    changeIsShow(false)
+  },[cards])
   return (
     <Container>
       {!isLoading ?
@@ -78,7 +93,7 @@ export const ProfileCreditCards = () => {
             <Title>Привязанные карты</Title>
             <Arrow reverse={isShowed} onClick={toggleCards} />
           </TitleContainer>
-          {isShowed && (<CreditCardsList /> )}
+          <CreditCardsList list={cardList} show={isShowed} />
         </Cards>
         : <Loader /> }
     </Container>

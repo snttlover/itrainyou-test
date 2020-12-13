@@ -1,9 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import { useList } from "effector-react"
-import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
 import { WalletCard } from "@/pages/client/wallet/cards/WalletCard"
 import { WalletAddCard } from "@/pages/client/wallet/cards/WalletAddCard"
+import { CardResponse } from "@/lib/api/wallet/client/get-cards-list"
 
 const CardsContainer = styled.div`
   display: flex;
@@ -15,16 +14,21 @@ const CardsContainer = styled.div`
 
 const StyledWalletCard = styled(WalletCard)``
 
-export const CreditCardsList = () => {
+type CreditCardsProps = {
+    list : CardResponse[]
+    show: boolean
+}
+
+export const CreditCardsList = (props: CreditCardsProps) => {
 
   return (
     <>
       <CardsContainer>
-        {useList($cardsListForView, card => (
+        {props.list.map(card => (
           <StyledWalletCard {...card} />
         ))}
       </CardsContainer>
-      <WalletAddCard />
+      {props.show || props.list.length === 0 ? <WalletAddCard /> : null}
     </>
   )
 }
