@@ -15,9 +15,16 @@ import { Spinner } from "@/components/spinner/Spinner"
 import { Button } from "@/components/button/normal/Button"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
+import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
+}
+
+type BulkBookSessionsRequest = {
+  sessions: number[]
+  card: number
 }
 
 const Block = styled.div<StyledTabTypes>`
@@ -75,8 +82,8 @@ const Tag = styled.div<{ active?: boolean }>`
   display: flex;
   flex-direction: row;
   padding: 2px 8px;
-  background: ${({ active }) => (active ? `#4858CC` : `#fff`)};
-  color: ${({ active }) => (active ? `#fff` : `#5B6670`)};
+  background: ${({ active }) => (active ? "#4858CC" : "#fff")};
+  color: ${({ active }) => (active ? "#fff" : "#5B6670")};
   box-sizing: border-box;
   border-radius: 24px;
   font-size: 12px;
@@ -198,8 +205,8 @@ export const genSessionTabs = (coach: Coach) => {
     }))
 }
 
-const equalDateFormat = `DDMMYYYY`
-const equalTimeFormat = `HH:mm`
+const equalDateFormat = "DDMMYYYY"
+const equalTimeFormat = "HH:mm"
 
 export type SelectDatetimeTypes = {
   coach: Coach
@@ -213,11 +220,12 @@ export type SelectDatetimeTypes = {
       changeDurationTab: Event<DurationType>
     }
     buySessionsLoading: Store<boolean>
-    buySessionBulk: Event<number[]>
+    buySessionBulk: Event<BulkBookSessionsRequest>
   }
 }
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
+  const _showCreditCardsModal = useEvent(showCreditCardsModal)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const sessions = useStore(props.sessionsData.sessionsList)
@@ -254,7 +262,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     .filter(session => session.selected)
     .map(session => ({
       ...session,
-      date: date(session.startDatetime).format(`DD.MM.YY`),
+      date: date(session.startDatetime).format("DD.MM.YY"),
       time: date(session.startDatetime).format(equalTimeFormat),
     }))
 
@@ -262,6 +270,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
 
   return (
     <>
+      <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
       <StyledTabs value={activeTab} onChange={changeActiveTab}>
         {tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
@@ -307,7 +316,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
               <IsAuthed>
                 <Button
                   disabled={buyLoading || selected.length === 0}
-                  onClick={() => buySessionBulk(selected.map(item => item.id))}
+                  onClick={() => _showCreditCardsModal()}
                 >
                   Забронировать
                 </Button>

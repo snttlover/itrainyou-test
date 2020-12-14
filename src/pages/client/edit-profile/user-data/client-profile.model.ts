@@ -12,8 +12,13 @@ import { updateMyClient } from "@/lib/api/client/update"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
+export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
   imageUploaded,
+  (state, payload) => payload
+)
+export const $originalAvatar = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
+  originalAvatarUploaded,
   (state, payload) => payload
 )
 
@@ -61,6 +66,7 @@ export const $clientProfileForm = combine({
   lastName: $lastName,
   birthday: $birthday,
   sex: $sex,
+  originalAvatar: $originalAvatar,
 })
 
 export const userProfileGate = createGate()
@@ -75,6 +81,7 @@ spread({
       birthDate: data.client!.birthDate,
       sex: data.client!.sex,
       avatar: data.client!.avatar,
+      originalAvatar: data.client!.originalAvatar,
     }),
   }) as unknown) as Event<any>,
   targets: {
@@ -85,6 +92,7 @@ spread({
     ),
     sex: sexChanged,
     avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
+    originalAvatar: originalAvatarUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
   },
 })
 
@@ -119,11 +127,12 @@ export const $clientProfileSaving = saveClientUserDataFx.pending
 
 sample({
   // @ts-ignore
-  source: combine($userData, $clientProfileForm, $image, (userData, form, lastImage) => ({
+  source: combine($userData, $clientProfileForm, $image, $originalAvatar, (userData, form, lastImage, originalAvatar) => ({
     firstName: form.name,
     lastName: form.lastName,
     birthDate: dayjs(form.birthday).format("YYYY-MM-DD"),
     avatar: lastImage.file || form.image,
+    originalAvatar: originalAvatar.file || form.originalAvatar,
     categories: (userData.client?.categories || []).map(category => category.id),
     sex: userData.client?.sex || form.sex,
   })),

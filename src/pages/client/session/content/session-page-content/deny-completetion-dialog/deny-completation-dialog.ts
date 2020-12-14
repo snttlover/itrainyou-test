@@ -82,6 +82,6 @@ export const $validDenyCompletationForm = combine(
   $currentDenyCompletationProblem,
   $denyCompletationProblem,
   (problemType, problem) => {
-    return (problemType !== null && problemType !== "OTHER") || (problemType === "OTHER" && !!problem)
+    return (!!problemType  && problemType !== "OTHER") || (problemType === "OTHER" && !!problem)
   }
 )

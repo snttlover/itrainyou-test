@@ -32,6 +32,7 @@ export type SocialsDataNotFound = {
   sex: "M" | "F" | ""
   birthDate: string | null
   avatar: string | null
+  originalAvatar: string | null
 }
 
 export interface RegisterAsUserFromSocialsResponseNotFound {

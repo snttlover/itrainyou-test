@@ -19,6 +19,7 @@ const Container = styled.div`
   ${MediaRange.lessThan(`mobile`)`
     padding-left: 8px;
     padding-right: 8px;
+    margin-top: 24px;
   `}
 `
 
@@ -37,6 +38,10 @@ const Age = styled.div`
   line-height: 26px;
   color: #9aa0a6;
 
+    ${MediaRange.lessThan(`tablet`)`
+    margin-left: 80px;
+  `}
+    
   ${MediaRange.lessThan(`mobile`)`
     margin-left: 30px;
     text-align: right;

@@ -5,7 +5,7 @@ import { Pagination } from "@/lib/api/interfaces/utils.interface"
 
 export type CardResponse = {
   id: number
-  wallet: number
+  client: number
   firstSixDigits: string
   lastFourDigits: string
   expiryMonth: string
@@ -13,6 +13,7 @@ export type CardResponse = {
   cardType: string
   issuerCountry: string
   issuerName: string
+  isPrimary: boolean
 }
 
 export const getCardsList = () =>

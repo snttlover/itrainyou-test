@@ -14,6 +14,7 @@ export interface ClientSelfData {
   birthDate: Day
   sex: Sex
   avatar: string
+  originalAvatar: string
   favouriteCoaches: []
   categories: SessionCategory[]
   creationDatetime: ISODate

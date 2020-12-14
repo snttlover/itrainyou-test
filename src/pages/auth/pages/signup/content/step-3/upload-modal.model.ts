@@ -1,6 +1,6 @@
 import { uploadMedia } from "@/lib/api/media"
-import { imageUploaded } from "@/pages/auth/pages/signup/content/step-3/step3.model"
-import { createEffect, createEvent, createStore, forward } from "effector-root"
+import { imageUploaded, originalAvatarUploaded } from "@/pages/auth/pages/signup/content/step-3/step3.model"
+import { createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents } from "patronum"
 
 export const uploadImage = createEvent<File | Blob>()
@@ -34,7 +34,8 @@ export const uploadOriginalAvatarFx = createEffect({
     )
   },
 })
-const waitAllEvents = combineEvents({ events: [uploadImageFx.doneData, uploadOriginalAvatarFx.doneData] })
+
+const waitAllEvents = combineEvents({ events: [uploadImageFx.done, uploadOriginalAvatarFx.done] })
 
 export const $uploadPercent = createStore(0)
   .on(uploadPercentChanged, (state, payload) => payload)
@@ -50,7 +51,14 @@ forward({
   to: uploadImageFx,
 })
 
-forward({
-  from: uploadImageFx.doneData,
-  to: imageUploaded,
+sample({
+  source: uploadImageFx.doneData,
+  clock: waitAllEvents,
+  target: imageUploaded,
+})
+
+sample({
+  source: uploadOriginalAvatarFx.doneData,
+  clock: waitAllEvents,
+  target: originalAvatarUploaded,
 })

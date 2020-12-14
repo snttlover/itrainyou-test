@@ -14,11 +14,20 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${MediaRange.lessThan(`mobile`)`
-    right: unset;
-    top: 30px;
-    left: 0;
+    ${MediaRange.lessThan(`tablet`)`
+    position: relative;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    max-width: 650px;
+  `}
+    
+  ${MediaRange.lessThan(`mobile`)`
+    position: relative;
+    flex-direction: column;
+    margin-top: 32px;
+    margin-bottom: 16px;
     height: auto;
     width: 100%;
   `}
@@ -37,16 +46,25 @@ const Tab = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
-
+    
+    ${MediaRange.lessThan(`tablet`)`
+    margin-bottom: unset;
+    margin-right: unset;
+    width: 48%;
+    height: 84px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  `}
+    
   ${MediaRange.lessThan(`mobile`)`
     margin-bottom: unset;
-    margin-right: 16px;
-    width: 100px;
-    height: 100px;
-    
+    width: 100%;
+    height: 44px;
+    justify-content: space-between;
     &:last-child {
-      margin-right: 0;
-    }
+    margin-top: 8px;
+  }
   `}
 `
 
@@ -59,10 +77,19 @@ const Title = styled.div`
   margin-bottom: 16px;
   color: #ffffff;
   width: 91px;
-
+    
+    ${MediaRange.lessThan(`tablet`)`
+    margin-bottom: unset;
+    width: 150px;
+  `}
+    
   ${MediaRange.lessThan(`mobile`)`
-    width: 74px;
-    margin-bottom: 10px;
+    margin-left: 12px;
+    width: 120px;
+    line-height: 18px;
+    weight: 400;
+    font-size: 14px;
+    text-align: left;
   `}
 `
 
@@ -75,6 +102,7 @@ const Counter = styled.div`
   ${MediaRange.lessThan(`mobile`)`
      font-size: 28px;
      line-height: 26px;
+     margin-right: 12px;
   `}
 `
 

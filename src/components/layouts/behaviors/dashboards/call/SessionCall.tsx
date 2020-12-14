@@ -98,7 +98,7 @@ const Tooltip = styled.div`
   text-align: center;
   width: 100%;
   justify-content: center;
-  z-index: 5;
+  z-index: 3;
 `
 
 const WasNotConnected = styled(Tooltip)``

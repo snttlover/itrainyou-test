@@ -1,4 +1,4 @@
-import { deletedCard } from "@/pages/client/wallet/cards/cards.model"
+import { deletedCard, madeCardPrimary } from "@/pages/client/wallet/cards/cards.model"
 import { useEvent } from "effector-react"
 import styled from "styled-components"
 import React from "react"
@@ -26,6 +26,7 @@ const Title = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
+  margin-right: 12px;
 `
 
 const ExpireDate = styled.div`
@@ -54,9 +55,35 @@ const DeleteBtn = styled.div`
   cursor: pointer;
 `
 
+const PrimaryBtn = styled.div<{ isPrimary: boolean }>`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ isPrimary }) => isPrimary ? "#4858CC" : "#E1E6EA"};
+  cursor: pointer;
+`
+
 const TypeImg = styled.img`
   width: 32px;
-  height: 24px;
+  height: 22px;
+`
+
+const Item = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #efefef;
+  padding: 12px 0;
+  padding-right: 16px;
+`
+
+const LogosContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 `
 
 type WalletCardProps = {
@@ -64,28 +91,37 @@ type WalletCardProps = {
   type: string
   cardEnd: string
   expireDate: string
+  isPrimary: boolean
   className?: string
 }
 
-export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate, className }) => {
+export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate,isPrimary, className }) => {
   const deleteCard = useEvent(deletedCard)
+  const makeCardPrimary = useEvent(madeCardPrimary)
   let cardTypeImg: string | null = null
 
   if (type === "MasterCard") cardTypeImg = MasterCard
   else if (type === "Visa") cardTypeImg = Visa
 
   return (
-    <WalletCardContainer className={className}>
-      <div>
-        <Title>
-          {type} •••• {cardEnd}
-        </Title>
-        <ExpireDate>{expireDate}</ExpireDate>
-      </div>
+    <Item>
       <BottomRow>
-        <DeleteBtn onClick={() => deleteCard(id)}>Удалить</DeleteBtn>
-        {cardTypeImg && <TypeImg src={cardTypeImg} />}
+        <LogosContainer>
+          <Title>
+            {type} •••• {cardEnd}
+          </Title>
+          {cardTypeImg && ( <TypeImg src={cardTypeImg} />)}
+        </LogosContainer>
+        <PrimaryBtn 
+          isPrimary={isPrimary} 
+          onClick={() => makeCardPrimary(id)}>
+          {isPrimary ? "Основная" : "Сделать основной"}
+        </PrimaryBtn>
       </BottomRow>
-    </WalletCardContainer>
+      <BottomRow>
+        <ExpireDate>{expireDate}</ExpireDate>
+        <DeleteBtn onClick={() => deleteCard(id)}>Удалить</DeleteBtn>
+      </BottomRow>
+    </Item>
   )
 }

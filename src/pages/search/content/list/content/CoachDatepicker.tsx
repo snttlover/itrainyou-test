@@ -15,6 +15,7 @@ import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
+import { $creditCardsModal, showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -71,6 +72,7 @@ const SelectTimeContainer = styled.div`
 
 const Times = styled.div`
   display: flex;
+  flex-wrap: wrap;
   margin-top: 12px;
   padding-left: 12px;
   padding-bottom: 8px;
@@ -415,6 +417,7 @@ const equalDateFormat = `DDMMYYYY`
 const equalTimeFormat = `HH:mm`
 
 export const CoachDatepicker = (props: SelectDatetimeTypes) => {
+  const _showCreditCardsModal = useEvent(showCreditCardsModal)
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
@@ -520,9 +523,9 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
             <IsAuthed>
               <StyledBuyButton
                 disabled={buyLoading || selected.length === 0}
-                onClick={() => buySessionBulk(selected.map(item => item.id))}
+                onClick={() => _showCreditCardsModal()}
               >
-                Купить
+                Забронировать
               </StyledBuyButton>
             </IsAuthed>
             <IsGuest>

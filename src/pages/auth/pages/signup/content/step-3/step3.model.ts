@@ -12,8 +12,13 @@ import { $userData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pa
 
 export const step3FormSubmitted = createEvent()
 export const imageUploaded = createEvent<UploadMediaResponse>()
+export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
   imageUploaded,
+  (state, payload) => payload
+)
+export const $originalAvatar = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
+  originalAvatarUploaded,
   (state, payload) => payload
 )
 
@@ -98,6 +103,7 @@ export const $step3Form = combine({
   birthday: $birthday,
   sex: $sex,
   email: $email,
+  originalAvatar: $originalAvatar,
 })
 
 sample({
@@ -110,6 +116,7 @@ sample({
     lastName: data.lastName,
     sex: data.sex,
     email: data.email,
+    originalAvatar: data.originalAvatar.file || null,
   }),
   target: clientDataChanged,
 })
@@ -140,6 +147,7 @@ spread({
     ),
     sex: sexChanged,
     avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
+    originalAvatar: originalAvatarUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
   },
 })
 

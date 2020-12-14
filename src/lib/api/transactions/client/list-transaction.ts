@@ -2,48 +2,37 @@ import { config } from "@/config"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
 import { ISODate, Pagination, Sex, Day } from "@/lib/api/interfaces/utils.interface"
-import { CoachSession } from "@/lib/api/coach-sessions"
 
-type TransactionType = "SESSION_ENROLLMENT" | "SESSION_CANCELLATION" | "TOP_UP" | "WITHDRAW" | "CLIENT_ENROLLED_SESSION"
+type TransactionType = "SESSION_ENROLLMENT" | "SESSION_CANCELATION" | "TOP_UP" | "WITHDRAW" | "CLIENT_ENROLLED_SESSION" | "TRANSFER_TO_CLIENT_WALLET"
 
 export type SessionTransaction = {
   id: number
   type: TransactionType
+  status: "WAITING_FOR_HOLD" | "IS_HELD" | "SESSION_CANCELLED" | "SUCCEEDED" | "REFUNDED"
   isHeld: boolean
-  amount: string // decimal
-  wallet: number // wallet id
-  creationDatetime: ISODate // iso
-  enrolledClient: {
-    avatar: string
-    birthDate: Day
-    creationDatetime: ISODate
-    firstName: string
-    id: number
-    lastName: string
-    sex: Sex
-  } | null
-  session: CoachSession & {
+  amount: string
+  session: {
+  id: number
     coach: {
-      id: number
-      firstName: string
-      lastName: string
-      birthDate: Day
-      sex: Sex
-      avatar: string
-      isTopCoach: boolean
-      creationDatetime: ISODate
-    }
-    client: {
-      id: string
+    id: number
       firstName: string
       lastName: string
       birthDate: string
-      sex: Sex
+      sex: "M" | "F"
       avatar: string
       isTopCoach: boolean
-      creationDatetime: ISODate
-    }
-  }
+      creationDatetime: string
+  },
+  clientPrice: string
+    coachPrice: string
+    startDatetime: string
+    endDatetime: string
+    durationType: string
+    translationUrl: string
+    recordingUrl: string
+    materials: string[]
+},
+  creationDatetime: string
 }
 
 type PaginationParams = {

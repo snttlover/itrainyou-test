@@ -2,7 +2,7 @@ import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { Loader } from "@/components/spinner/Spinner"
 import { ServerParams, START } from "@/lib/effector"
 import { MediaRange } from "@/lib/responsive/media"
-import { $coach, loadCoachFx, coachByIdGate, mounted, $isNotFound } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { $coach, loadCoachFx, mounted, $isNotFound } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { AboutCoach } from "@/pages/search/coach-by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/pages/search/coach-by-id/components/BaseCoachInfo"
 import { Reviews } from "@/pages/search/coach-by-id/components/Reviews"
@@ -10,6 +10,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
+import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
 import { useGate, useStore } from "effector-react"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
 import { NotFound } from "@/feature/not-found/components/NotFound"
@@ -103,12 +104,20 @@ const Datepicker = () => {
   return null
 }
 
+const CardPicker = () => {
+  const coach = useStore($coach)
+
+  if (coach) {
+    return <SelectCreditCardDialog coach={coach} sessionsData={$sessionsPickerStore} />
+  }
+  return null
+}
+
 export const CoachByIdPage = () => {
   const coach = useStore($coach)
   const pending = useStore(loadCoachFx.pending)
   const isNotFound = useStore($isNotFound)
 
-  useGate(coachByIdGate)
 
   return (
     <UserLayout>
@@ -130,6 +139,7 @@ export const CoachByIdPage = () => {
             <BuySidebar>
               <Datepicker />
             </BuySidebar>
+            <CardPicker />
           </InfoWithSidebar>
         )}
       </ContentContainer>

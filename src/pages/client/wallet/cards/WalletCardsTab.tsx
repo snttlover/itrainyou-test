@@ -2,8 +2,9 @@ import { Icon } from "@/components/icon/Icon"
 import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { $cardsListForView, $isLoading } from "./cards.model"
-import { useList, useStore, useEvent } from "effector-react"
+import { useList, useStore } from "effector-react"
 import { WalletCard, WalletCardContainer } from "./WalletCard"
+import { WalletAddCard } from "./WalletAddCard"
 import React from "react"
 import styled from "styled-components"
 
@@ -30,6 +31,8 @@ const AddCardText = styled.p`
 `
 
 const StyledWalletCard = styled(WalletCard)``
+
+const StyledAddCard = styled(WalletAddCard)``
 
 const CardsContainer = styled.div`
   position: relative;
@@ -92,10 +95,13 @@ export const WalletsCardsTab = () => {
       {useList($cardsListForView, card => (
         <StyledWalletCard {...card} />
       ))}
-      {$cards.length === 0 && !isLoading && (
+      {/*$cards.length === 0 && !isLoading && (
         <Center>
           <Placeholder>Нет привязанных карт</Placeholder>
         </Center>
+      )*/}
+      {!isLoading && (
+        <StyledAddCard />
       )}
       {isLoading && <Spinner />}
     </CardsContainer>
