@@ -120,8 +120,3 @@ export const cardIdForDelete = restore<number>(
   deletedCard,
   null
 )
-
-/*
-avatar: session.coach.avatar,
-    name: session.coach.name,
- */

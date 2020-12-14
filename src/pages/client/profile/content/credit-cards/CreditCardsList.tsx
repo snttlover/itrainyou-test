@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { WalletCard } from "@/pages/client/wallet/cards/WalletCard"
 import { WalletAddCard } from "@/pages/client/wallet/cards/WalletAddCard"
-import { CardResponse } from "@/lib/api/wallet/client/get-cards-list"
+import { SetCardList} from "@/pages/client/profile/content/credit-cards/CreditCards"
 
 const CardsContainer = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ const CardsContainer = styled.div`
 const StyledWalletCard = styled(WalletCard)``
 
 type CreditCardsProps = {
-    list : CardResponse[]
+    list : SetCardList[]
     show: boolean
 }
 
@@ -24,8 +24,8 @@ export const CreditCardsList = (props: CreditCardsProps) => {
   return (
     <>
       <CardsContainer>
-        {props.list.map(card => (
-          <StyledWalletCard key={card.id} {...card} />
+        {props.list.map((card, index) => (
+          <StyledWalletCard key={`${index}`} {...card} />
         ))}
       </CardsContainer>
       {props.show || props.list.length === 0 ? <WalletAddCard /> : null}

@@ -82,31 +82,18 @@ const Label = styled.div`
 `
 
 type Value = {
-  id: number
-  client: number
-  firstSixDigits: string
-  lastFourDigits: string
-  expiryMonth: string
-  expiryYear: string
-  cardType: string
-  issuerCountry: string
-  issuerName: string
-  isPrimary: boolean
-} | {
-  id: string
+    id: number | string
+    type: string | null
+    cardEnd: string | null
+    expireDate: string | null
+    isPrimary: boolean | null
 }
 
 export type SelectInputProps<T extends Value> = {
   value: Value
   placeholder?: string
   onChange: (value: T) => void
-  options: {
-    id: number | string
-    type: string | undefined
-    cardEnd: string | undefined
-    expireDate: string | undefined
-    isPrimary: boolean | undefined
-  }[]
+  options: T[]
   error?: boolean
   onBlur?: () => void
   className?: string
@@ -115,11 +102,12 @@ export type SelectInputProps<T extends Value> = {
 }
 
 type CardIconTypes = {
-  cardtype: "MasterCard" | "Visa"
+  cardType: "MasterCard" | "Visa"
 }
 
-const CardIcon = styled(Icon).attrs((props: CardIconTypes) => ({
-  name: props.cardtype,
+const CardIcon = styled(Icon).attrs((props: any) => ({
+  name: props.cardType,
+  ...props
 }))`
     width: 32px;
     height: 22px;
@@ -144,7 +132,7 @@ export const SelectInputCard = <T extends Value = Value>({
         <DropdownItem key={item.id} onClick={() => onChange(item)}>
           <LabelContainer>
             <div>{`ХХХХ ХХХХ ХХХХ ${item.cardEnd} (${item.expireDate})`}</div>
-            {item.type && <CardIcon cardtype={item.type} />}
+            {item.type && <CardIcon cardType={item.type} />}
           </LabelContainer>
         </DropdownItem>
       )}
@@ -189,7 +177,7 @@ export const SelectInputCard = <T extends Value = Value>({
           `ХХХХ ХХХХ ХХХХ ${selectedItem?.cardEnd} (${selectedItem?.expireDate})`
           : "Другая"}
         </Label>
-        {selectedItem?.id !== "other" && (selectedItem?.type && <CardIcon cardtype={selectedItem?.type} />)}
+        {selectedItem?.id !== "other" && (selectedItem?.type && <CardIcon cardType={selectedItem.type} />)}
       </LabelContainer>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}

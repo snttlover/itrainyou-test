@@ -90,7 +90,7 @@ const Name = styled.div`
   `}
 `
 
-const Cancel = styled.div`
+const Title = styled.div`
   font-size: 14px;
   line-height: 18px;
   color: #9aa0a6;
@@ -135,15 +135,15 @@ export const IndividualSessionItem = (props: IndividualSessionItemType) => {
   const Status = () => {
     switch (props.data.status) {
     case "WAITING_FOR_HOLD":
-      return <Cancel>ожидание заморозки</Cancel>
+      return <Title>ожидание заморозки</Title>
     case "IS_HELD":
-      return <Cancel>сессия проводится</Cancel>
+      return <Title>средства заморожены</Title>
     case "SESSION_CANCELLED":
-      return <Cancel>сессия отменена</Cancel>
+      return <Title>сессия отменена</Title>
     case "SUCCEEDED":
-      return <Cancel>средства списаны</Cancel>
+      return <Title>средства списаны</Title>
     case "REFUNDED":
-      return <Cancel>средства возвращены</Cancel>
+      return <Title>средства возвращены</Title>
     default:
       return null
     }
@@ -153,7 +153,7 @@ export const IndividualSessionItem = (props: IndividualSessionItemType) => {
       <StyledAvatar src={props.data.avatar} />
       <Name>{props.data.name}</Name>
       <Status />
-      <RightMobileGroup canceled={props.data.status === "IS_HELD"}>
+      <RightMobileGroup canceled={props.data.status === "SESSION_CANCELLED"}>
         <Price>
           {props.data.price}
           <Ruble />

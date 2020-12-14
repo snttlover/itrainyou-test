@@ -104,7 +104,7 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
   else if (type === "Visa") cardTypeImg = Visa
 
   return (
-    <Item>
+    <Item key={id}>
       <BottomRow>
         <LogosContainer>
           <Title>

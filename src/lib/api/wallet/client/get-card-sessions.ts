@@ -3,17 +3,36 @@ import { keysToCamel } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
 import { Pagination } from "@/lib/api/interfaces/utils.interface"
 
+type CoachCategoryListItemType = {
+    id: number
+    name: string
+    icon: string
+    description: string
+}
+
+export type CoachItemType = {
+    firstName: string
+    lastName: string
+    birthDate: string
+    sex: string
+    avatar: string
+    rating: string
+    isTopCoach: boolean
+    categories: CoachCategoryListItemType[]
+    creationDatetime: string
+}
+
 export type getCardSessionsResponse = {
-  id: number
-  coach: number
-  clientPrice: string
-  coachPrice: string
-  startDatetime: string
+    id: number
+    coach: CoachItemType
+    clientPrice: string
+    coachPrice: string
+    startDatetime: string
     endDatetime: string
-  durationType: string
-  translationUrl: string
-  recordingUrl: string
-  materials: number[]
+    durationType: string
+    translationUrl: string
+    recordingUrl: string
+    materials: number[]
 }
 
 export const getCardSessions = (id: number) =>

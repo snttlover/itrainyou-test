@@ -10,6 +10,14 @@ import { Loader } from "@/components/spinner/Spinner"
 import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
 
 
+export type SetCardList = {
+    id: number
+    type: string
+    cardEnd: string
+    expireDate: string
+    isPrimary: boolean
+}
+
 const Container = styled.div`
   padding-right: 140px;
   width: 100%;
@@ -68,13 +76,13 @@ const TitleContainer = styled.div`
 export const ProfileCreditCards = () => {
   const cards = useStore($cardsListForView)
   const [isShowed, changeIsShow] = useState(false)
-  const [cardList, setCardList] = useState([])
+  const [cardList, setCardList] = useState<SetCardList[]>([])
   const isLoading = useStore(finishSaveCardFx.pending)
 
   const toggleCards = (e: React.SyntheticEvent) => {
     if (isShowed) {
-      const primaryCard = cards.find(card => card.isPrimary) || {}
-      setCardList([primaryCard])
+      const primaryCard = cards.find(card => card.isPrimary)
+      primaryCard ? setCardList([primaryCard]) : setCardList([])
     }
     else {
       setCardList(cards)
@@ -83,8 +91,8 @@ export const ProfileCreditCards = () => {
   }
 
   useEffect(() => {
-    const primaryCard = cards.find(card => card.isPrimary) || {}
-    setCardList([primaryCard])
+    const primaryCard = cards.find(card => card.isPrimary)
+    primaryCard ? setCardList([primaryCard]) : setCardList([])
     changeIsShow(false)
   },[cards])
   return (

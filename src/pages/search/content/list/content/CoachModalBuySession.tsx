@@ -12,6 +12,13 @@ import { SelectInputCard } from "@/components/select-input/SelectInputCard"
 import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
 import { addCard } from "@/feature/client-funds-up/dialog/fund-up.model"
 
+type SetValue = {
+    id: number | string
+    type: string | null
+    cardEnd: string | null
+    expireDate: string | null
+    isPrimary: boolean | null
+}
 
 const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
@@ -21,8 +28,20 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const hide = useEvent(showCreditCardsModal)
   const cards = useStore($cardsListForView)
 
-  const [options, setOptions] = useState([{id: "other"}])
-  const [value, setValue] = useState({id: "other"})
+  const [options, setOptions] = useState<SetValue[]>([{
+    id: "other",
+    type: null,
+    cardEnd: null,
+    expireDate: null,
+    isPrimary: null
+  }])
+  const [value, setValue] = useState<SetValue>({
+    id: "other",
+    type: null,
+    cardEnd: null,
+    expireDate: null,
+    isPrimary: null
+  })
   const _addCard = useEvent(addCard)
 
   const allSessions = useStore(props.sessionsData.sessionsList)
@@ -65,7 +84,13 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
 
   useEffect(() => {
-    const primaryCard = cards.find(card => card.isPrimary) || {id: "other"}
+    const primaryCard = cards.find(card => card.isPrimary) || {
+      id: "other",
+      type: null,
+      cardEnd: null,
+      expireDate: null,
+      isPrimary: null,
+    }
     setOptions([...options,...cards])
     setValue(primaryCard)
   },[cards])
@@ -74,6 +99,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
     const sessions = selected.map(item => item.id)
     const card = value.id
     if(card !== "other") {
+      // @ts-ignore
       buySessionBulk({ sessions, card })
     }
     else {
@@ -141,7 +167,7 @@ const Header = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #4858CC;
-  text-align: flex-start;
+  text-align: left;
 `
 
 const Description = styled.div`
@@ -151,7 +177,7 @@ const Description = styled.div`
   font-size: 14px;
   line-height: 18px;
   color: #9AA0A6;
-  text-align: flex-start;
+  text-align: left;
   margin-top: 8px;
 `
 
