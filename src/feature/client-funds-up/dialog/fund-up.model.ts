@@ -13,7 +13,10 @@ import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, forward, guard, restore, sample, split, attach } from "effector-root"
 import { every } from "patronum"
-import { mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
+import {
+  mounted as CoachByIdMounted,
+  $sessionsPickerStore,
+} from "@/pages/search/coach-by-id/coach-by-id.model"
 import { mounted as homeMounted } from "@/pages/client/home/home.model.ts"
 import { routeNames } from "@/pages/route-names"
 
@@ -73,6 +76,15 @@ export const $fundUpErrors = combine({
 })
 
 export const $canSubmit = every({ predicate: true, stores: [$isAmountCorrect] })
+
+const loadSessionsIdFx = createEffect({
+  handler: (cardId: number) => {
+    const sessionsId = localStorage.getItem("sessions")
+    if (!sessionsId) return {sessions: null, card: cardId}
+    return {sessions: JSON.parse(sessionsId), card: cardId}
+  }
+})
+const SessionsId = restore(loadSessionsIdFx.doneData, null)
 
 const startSaveCardFx = createEffect({
   handler: (returnUrl:string ) =>
@@ -202,13 +214,14 @@ startSaveCardFx.doneData.watch((response) => {
 })
 
 forward({
-  from: [ClientProfileGate.open, mounted, homeMounted],
+  from: [ClientProfileGate.open, CoachByIdMounted, homeMounted],
   to: getPaymentIdFx,
 })
 
 forward({
-  from: [ClientProfileGate.open.map(() => routeNames.clientProfile()),
-    mounted.map((id)=> routeNames.searchCoachPage(id.id.toString())),
+  from: [
+    ClientProfileGate.open.map(() => routeNames.clientProfile()),
+    CoachByIdMounted.map((id)=> routeNames.searchCoachPage(id.id.toString())),
     homeMounted.map(() => routeNames.client()),
   ],
   to: setRedirectUrl,
@@ -230,6 +243,30 @@ sample({
   clock: guard({ source: submitFundUp, filter: $canSubmit }),
   source: $fundUpForm,
   target: startTopUpFx,
+})
+
+forward({
+  from: finishSaveCardFx.doneData,
+  to: attach({
+    effect: loadSessionsIdFx,
+    mapParams: response => {
+      return  response.id
+    },
+  }),
+})
+
+guard({
+  source: loadSessionsIdFx.doneData,
+  filter: (response) => {
+    if (response.sessions === null) return false
+    return true
+  },
+  target: $sessionsPickerStore.buySessionBulk.prepend((response: {
+      sessions: number[]
+      card: number
+  }) => {
+    return response
+  }),
 })
 
 forward({

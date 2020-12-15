@@ -102,11 +102,11 @@ export type SelectInputProps<T extends Value> = {
 }
 
 type CardIconTypes = {
-  cardType: "MasterCard" | "Visa"
+  cardtype: "MasterCard" | "Visa"
 }
 
 const CardIcon = styled(Icon).attrs((props: any) => ({
-  name: props.cardType,
+  name: props.cardtype,
   ...props
 }))`
     width: 32px;
@@ -132,7 +132,7 @@ export const SelectInputCard = <T extends Value = Value>({
         <DropdownItem key={item.id} onClick={() => onChange(item)}>
           <LabelContainer>
             <div>{`ХХХХ ХХХХ ХХХХ ${item.cardEnd} (${item.expireDate})`}</div>
-            {item.type && <CardIcon cardType={item.type} />}
+            {item.type && <CardIcon cardtype={item.type} />}
           </LabelContainer>
         </DropdownItem>
       )}
@@ -177,7 +177,7 @@ export const SelectInputCard = <T extends Value = Value>({
           `ХХХХ ХХХХ ХХХХ ${selectedItem?.cardEnd} (${selectedItem?.expireDate})`
           : "Другая"}
         </Label>
-        {selectedItem?.id !== "other" && (selectedItem?.type && <CardIcon cardType={selectedItem.type} />)}
+        {selectedItem?.id !== "other" && (selectedItem?.type && <CardIcon cardtype={selectedItem.type} />)}
       </LabelContainer>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}

@@ -6,7 +6,18 @@ export type FinishSaveCardRequest = {
   paymentId: string
 }
 
-export type FinishSaveCardResponse = void
+export type FinishSaveCardResponse = {
+    id: number
+    client: number
+    firstSixDigits: string
+    lastFourDigits: string
+    expiryMonth: string
+    expiryYear: string
+    cardType: string
+    issuerCountry: string
+    issuerName: string
+    isPrimary: boolean
+}
 
 export const finishSaveCard = (params: FinishSaveCardRequest): Promise<FinishSaveCardResponse> =>
   post(`${config.BACKEND_URL}/api/v1/web/client/wallet/finish-save-card/`, keysToSnake(params))

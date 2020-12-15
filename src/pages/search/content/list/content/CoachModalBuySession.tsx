@@ -103,6 +103,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
       buySessionBulk({ sessions, card })
     }
     else {
+      localStorage.setItem("sessions", JSON.stringify(sessions))
       _addCard()
     }
   }

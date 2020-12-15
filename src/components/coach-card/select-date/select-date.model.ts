@@ -74,7 +74,10 @@ export const genCoachSessions = (id = 0) => {
   })
 
   forward({
-    from: buySessionBulk,
+    from: buySessionBulk.map((params) => {
+        localStorage.removeItem("sessions")
+        return params
+    }),
     to: buySessionsFx,
   })
 
