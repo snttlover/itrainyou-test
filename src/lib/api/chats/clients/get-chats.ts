@@ -31,6 +31,7 @@ export type TransActionProperties= {
     } | null
     session: {
         id: number
+        isReviewed: boolean
         coach: {
             id: number
             firstName: string
@@ -41,15 +42,22 @@ export type TransActionProperties= {
             isTopCoach: boolean
             creationDatetime: ISODate
         }
-        clientPrice: string[]
-        coachPrice: string[]
-        startDatetime: string[]
-        endDatetime: string[]
-        durationType: string[]
-        translationUrl: string[]
-        recordingUrl: string[]
+        clientPrice: string
+        coachPrice: string
+        startDatetime: string
+        endDatetime: string
+        durationType: string
+        translationUrl: string
+        recordingUrl: string
         materials: string[]
     }
+
+    rescheduleSession: null
+    initiatorClient?: Client
+    initiatorCoach?: CoachUser
+    receiverClient?: Client
+    receiverCoach?: CoachUser
+    resultDatetime: ISODate
 }
 
 export type ChatMessage = {

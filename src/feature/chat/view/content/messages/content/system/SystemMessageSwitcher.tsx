@@ -2,7 +2,12 @@ import React, { useState } from "react"
 import { ChatSystemMessage } from "@/feature/chat/modules/chat-messages"
 import styled from "styled-components"
 import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
-import { ConflictStatus, MessageSessionRequestStatuses, TransActionsStatus } from "@/lib/api/chats/clients/get-chats"
+import {
+  ConflictStatus,
+  MessageSessionRequestStatuses,
+  TransActionProperties,
+  TransActionsStatus
+} from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { MediaRange } from "@/lib/responsive/media"
@@ -35,7 +40,7 @@ const formatSessionDate = (start?: ISODate, end?: ISODate) => {
 }
 
 const getText = (
-  request: SessionRequest,
+  request: SessionRequest | TransActionProperties,
   status: MessageSessionRequestStatuses | ConflictStatus | TransActionsStatus,
   chatType: "coach" | "client",
   commonSystemMessages?: boolean
@@ -511,7 +516,7 @@ const Message = styled.div`
 type User = { name: string; avatar: string }
 
 const getSystemButtons = (
-  request: SessionRequest,
+  request: SessionRequest | TransActionProperties,
   chatType: "coach" | "client",
   showButtons: boolean,
   status: MessageSessionRequestStatuses | ConflictStatus | TransActionsStatus,
@@ -559,8 +564,7 @@ const getSystemButtons = (
 
   if (
     chatType === "client" &&
-    is("CONFIRMATION_COMPLETION", "APPROVED") &&
-    request.session.isReviewed === false &&
+          is("CONFIRMATION_COMPLETION", "APPROVED") && !request.session.isReviewed &&
     status === "COMPLETED"
   ) {
     return <RevocationButton coach={user} sessionId={request.session.id} />
@@ -571,7 +575,7 @@ const getSystemButtons = (
 
 type ConfirmationCompletationTypes = {
   approve: () => void
-  request: SessionRequest
+  request: SessionRequest | TransActionProperties
 }
 
 const ConfirmationCompletation = ({ approve, request }: ConfirmationCompletationTypes) => {
@@ -694,7 +698,7 @@ const Button = styled.div`
 `
 
 type SessionRequestActionProps = {
-  request: SessionRequest
+  request: SessionRequest | TransActionProperties
   requestsModule: ReturnType<typeof createSessionRequestsModule>
 }
 

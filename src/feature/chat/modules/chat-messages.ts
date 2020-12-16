@@ -88,13 +88,13 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
     const reqs = messages
       .filter(message => message.sessionRequest)
-      .map(message => message.sessionRequest.id)
+      .map(message => message.sessionRequest!.id)
       .filter(onlyUniqueRequests)
       .map(id => messages.find(message => message.sessionRequest?.id === id)?.sessionRequest as SessionRequest)
 
     const transactions = messages
       .filter(message => message.transaction)
-      .map(message => message.transaction.id)
+      .map(message => message.transaction!.id)
       .filter(onlyUniqueRequests)
       .map(id => messages.find(message => message.transaction?.id === id)?.transaction as TransActionProperties)
 
@@ -149,11 +149,11 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 type: message.type as "SYSTEM",
                 id: message.id,
                 chatType: config.type,
-                request: getTrans(message.transaction.id),
+                request: getTrans(message.transaction!.id),
                 userName: `${user?.firstName} ${user?.lastName}`,
                 userAvatar: user?.avatar || null,
                 showButtons: false,
-                status: message?.transactionType,
+                status: message.transactionType,
                 date: message.creationDatetime,
               }
             }
