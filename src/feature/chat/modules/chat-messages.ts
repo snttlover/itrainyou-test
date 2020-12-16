@@ -5,7 +5,9 @@ import {
   ChatMessage,
   ConflictStatus,
   MessageSessionRequestStatuses,
-  SupportTicketType,
+  SupportTicketType, 
+  TransActionsStatus,
+  TransActionProperties
 } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
@@ -36,10 +38,10 @@ export type ChatSystemMessage = {
   type: "SYSTEM"
   id: number
   chatType: "coach" | "client"
-  request: SessionRequest
+  request: SessionRequest | TransActionProperties
   userName: string
   userAvatar: string | null
-  status: ConflictStatus | MessageSessionRequestStatuses
+  status: ConflictStatus | MessageSessionRequestStatuses | TransActionsStatus
   showButtons: boolean
   date: string
 }
@@ -81,8 +83,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   const $messages = pagination.data.$list.map(messages => {
     const completedStatusesIds = messages
-      .filter(message => message.sessionRequestStatus === `COMPLETED` && message.sessionRequest)
-      .map(message => message.sessionRequest.id)
+      .filter(message => message.sessionRequestStatus === "COMPLETED" && message.sessionRequest)
+      .map(message => message.sessionRequest?.id)
 
     const reqs = messages
       .filter(message => message.sessionRequest)
@@ -90,7 +92,14 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       .filter(onlyUniqueRequests)
       .map(id => messages.find(message => message.sessionRequest?.id === id)?.sessionRequest as SessionRequest)
 
+    const transactions = messages
+      .filter(message => message.transaction)
+      .map(message => message.transaction.id)
+      .filter(onlyUniqueRequests)
+      .map(id => messages.find(message => message.transaction?.id === id)?.transaction as TransActionProperties)
+
     const getReq = (id: number) => reqs.find(req => req.id === id) as SessionRequest
+    const getTrans = (id: number) => transactions.find(trans => trans.id === id) as TransActionProperties
     let imageIndex = messages.filter(message => !!message.image).length - 1
 
     return messages
@@ -99,7 +108,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       .map(
         (message): ChatMessagesTypes => {
           let isMine =
-            (config.type === `client` && !!message.senderClient) || (config.type === `coach` && !!message.senderCoach)
+            (config.type === "client" && !!message.senderClient) || (config.type === "coach" && !!message.senderCoach)
 
           if (config.supportIsMe) {
             isMine = !!message.senderSupport
@@ -118,38 +127,60 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             }
           }
 
-          if ([`SYSTEM`, `SUPPORT`].includes(message.type)) {
-            if (config.type === `coach`) {
+          if (["SYSTEM", "SUPPORT"].includes(message.type)) {
+            if (config.type === "coach") {
               user = message.sessionRequest?.initiatorClient || message.sessionRequest?.receiverClient || null
             } else {
-              user =
-                message.sessionRequest.session.coach ||
-                message.sessionRequest.initiatorCoach ||
-                message.sessionRequest.receiverCoach ||
-                null
+              if (!message.sessionRequest) {
+                user =
+                    message.transaction?.session.coach ||
+                    null
+              }
+              else {
+                user =
+                      message.sessionRequest?.session.coach ||
+                      message.sessionRequest?.initiatorCoach ||
+                      message.sessionRequest?.receiverCoach ||
+                      null
+              }
             }
-            return {
-              type: message.type as "SYSTEM",
-              id: message.id,
-              chatType: config.type,
-              request: getReq(message.sessionRequest.id),
-              userName: `${user?.firstName} ${user?.lastName}`,
-              userAvatar: user?.avatar || null,
-              showButtons: !completedStatusesIds.includes(message.sessionRequest.id),
-              status: message?.conflict?.status || message.sessionRequestStatus,
-              date: message.creationDatetime
+            if (!message.sessionRequest) {
+              return {
+                type: message.type as "SYSTEM",
+                id: message.id,
+                chatType: config.type,
+                request: getTrans(message.transaction.id),
+                userName: `${user?.firstName} ${user?.lastName}`,
+                userAvatar: user?.avatar || null,
+                showButtons: false,
+                status: message?.transactionType,
+                date: message.creationDatetime,
+              }
+            }
+            else {
+              return {
+                type: message.type as "SYSTEM",
+                id: message.id,
+                chatType: config.type,
+                request: getReq(message.sessionRequest.id),
+                userName: `${user?.firstName} ${user?.lastName}`,
+                userAvatar: user?.avatar || null,
+                showButtons: !completedStatusesIds.includes(message.sessionRequest.id),
+                status: message?.conflict?.status || message.sessionRequestStatus,
+                date: message.creationDatetime
+              }
             }
           }
 
           user = message.senderCoach || message.senderClient || message.senderSupport
 
           return {
-            type: `TEXT`,
+            type: "TEXT",
             id: message.id,
             isMine,
             text: message.text,
             image: message.image,
-            time: date(message.creationDatetime).format(`HH:mm`),
+            time: date(message.creationDatetime).format("HH:mm"),
             imageIndex: message.image ? imageIndex-- : imageIndex,
             user
           }
@@ -166,9 +197,9 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       source: config.socket.events.onMessage,
       filter: message => {
         return (
-          (`SYSTEM` === message.data.type ||
-            (config.type === `client` && !!message.data.senderCoach) ||
-            (config.type === `coach` && !!message.data.senderClient)) &&
+          ("SYSTEM" === message.data.type ||
+            (config.type === "client" && !!message.data.senderCoach) ||
+            (config.type === "coach" && !!message.data.senderClient)) &&
           chatId === message.data.chat
         )
       },

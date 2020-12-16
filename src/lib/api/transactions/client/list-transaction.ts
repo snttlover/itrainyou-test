@@ -3,7 +3,7 @@ import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
 import { ISODate, Pagination, Sex, Day } from "@/lib/api/interfaces/utils.interface"
 
-type TransactionType = "SESSION_ENROLLMENT" | "SESSION_CANCELATION" | "TOP_UP" | "WITHDRAW" | "CLIENT_ENROLLED_SESSION" | "TRANSFER_TO_CLIENT_WALLET"
+type TransactionType = "SESSION_ENROLLMENT" | "SESSION_CANCELLATION" | "CLIENT_ENROLLED_SESSION"
 
 export type SessionTransaction = {
   id: number
@@ -11,6 +11,15 @@ export type SessionTransaction = {
   status: "WAITING_FOR_HOLD" | "IS_HELD" | "SESSION_CANCELLED" | "SUCCEEDED" | "REFUNDED"
   isHeld: boolean
   amount: string
+    enrolledClient: {
+        avatar: string
+        birthDate: string
+        creationDatetime: string
+        firstName: string
+        id: number
+        lastName: string
+        sex: "M" | "F"
+    }
   session: {
   id: number
     coach: {

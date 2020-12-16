@@ -1,7 +1,7 @@
 import { config } from "@/config"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
-import { ISODate, Pagination } from "@/lib/api/interfaces/utils.interface"
+import { Day, ISODate, Pagination, Sex } from "@/lib/api/interfaces/utils.interface"
 import { CoachUser } from "../../coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { CoachSession } from "@/lib/api/coach-sessions"
@@ -13,25 +13,66 @@ export type SupportTicketType = 'SUPPORT_AGENT_FOUND' | 'PROBLEM_SOLVED' | 'LOOK
 
 export type ConflictStatus = 'SOLVED_IN_COACH_FAVOUR' | 'SOLVED_IN_CLIENT_FAVOUR'
 
+export type TransActionsStatus = "MONEY_SUCCESSFULLY_HELD" | "MONEY_HOLD_UNSUCCESSFUL" | ""
+
+export type TransActionProperties= {
+    id: number
+    type: "SESSION_ENROLLMENT" | "SESSION_CANCELATION" | "CLIENT_ENROLLED_SESSION"
+    status: "WAITING_FOR_HOLD" | "IS_HELD" | "SESSION_CANCELLED" | "SUCCEEDED" | "REFUNDED"
+    amount: string
+    enrolledClient: {
+        avatar: string
+        birthDate: Day
+        creationDatetime: ISODate
+        firstName: string
+        id: number
+        lastName: string
+        sex: Sex
+    } | null
+    session: {
+        id: number
+        coach: {
+            id: number
+            firstName: string
+            lastName: string
+            birthDate: string
+            sex: Sex
+            avatar: string
+            isTopCoach: boolean
+            creationDatetime: ISODate
+        }
+        clientPrice: string[]
+        coachPrice: string[]
+        startDatetime: string[]
+        endDatetime: string[]
+        durationType: string[]
+        translationUrl: string[]
+        recordingUrl: string[]
+        materials: string[]
+    }
+}
+
 export type ChatMessage = {
-  id: number
-  type: MessageTypes
-  text: string
-  image: string
-  chat: number
-  senderCoach: CoachUser | null
-  senderClient: Client | null
-  senderSupport: Client | null
-  sessionRequest: SessionRequest
-  supportTicket: {
-    support: Client
-  } | null
-  conflict: null | {
-    status: ConflictStatus
-  }
-  sessionRequestStatus: MessageSessionRequestStatuses
-  creationDatetime: ISODate
-  systemTicketType: SupportTicketType
+    id: number
+    type: MessageTypes
+    text: string
+    image: string
+    chat: number
+    transaction: TransActionProperties | null
+    transactionType: TransActionsStatus
+    senderCoach: CoachUser | null
+    senderClient: Client | null
+    senderSupport: Client | null
+    sessionRequest: SessionRequest | null
+    supportTicket: {
+        support: Client
+    } | null
+    conflict: null | {
+        status: ConflictStatus
+    }
+    sessionRequestStatus: MessageSessionRequestStatuses
+    creationDatetime: ISODate
+    systemTicketType: SupportTicketType
 }
 
 
