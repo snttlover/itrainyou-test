@@ -57,6 +57,9 @@ const Label = styled.div`
   font-size: 14px;
   line-height: 18px;
   white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
   ${MediaRange.lessThan(`tablet`)`
     font-size: 20px;

@@ -11,6 +11,7 @@ import { Button } from "@/components/button/normal/Button"
 import { SelectInputCard } from "@/components/select-input/SelectInputCard"
 import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
 import { addCard } from "@/feature/client-funds-up/dialog/fund-up.model"
+import { MediaRange } from "@/lib/responsive/media"
 
 type SetValue = {
     id: number | string
@@ -159,6 +160,10 @@ const Container = styled.div`
 const StyledDialog = styled(Dialog)`
   width: 100%;
   max-width: 400px;
+  
+  ${MediaRange.lessThan("mobile")`
+    max-width: 320px;
+  `}
 `
 
 const Header = styled.div`

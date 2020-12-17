@@ -4,15 +4,15 @@ import { useRef, useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import { keysToSnake } from "@/lib/network/casing"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Arrow = styled(Icon).attrs({ name: "arrow" })`
   fill: #919be0;
 `
-
-const Placeholder = styled.p`
-  color: #b3b3b3;
-  font-size: 16px;
-  line-height: 22px;
+const NoShowMobile = styled.div`
+  ${MediaRange.lessThan("mobile")`
+    display: none;
+  `}
 `
 
 export const DropdownItem = styled.div`
@@ -177,7 +177,11 @@ export const SelectInputCard = <T extends Value = Value>({
           `ХХХХ ХХХХ ХХХХ ${selectedItem?.cardEnd} (${selectedItem?.expireDate})`
           : "Другая"}
         </Label>
-        {selectedItem?.id !== "other" && (selectedItem?.type && <CardIcon cardtype={selectedItem.type} />)}
+        {selectedItem?.id !== "other" && (selectedItem?.type &&
+                (<NoShowMobile>
+          <CardIcon cardtype={selectedItem.type} />
+                  </NoShowMobile>
+        ))}
       </LabelContainer>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}

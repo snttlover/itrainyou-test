@@ -60,9 +60,9 @@ export const CoachMenuItems = () => {
     <DashboardMenuItem link='/coach/group-sessions' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-      <DashboardMenuItem link={routeNames.coachWallet()} icon='my-purse'>
+      {/*<DashboardMenuItem link={routeNames.coachWallet()} icon='my-purse'>
         Кошелек
-      </DashboardMenuItem>
+      </DashboardMenuItem>/*}
       {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}

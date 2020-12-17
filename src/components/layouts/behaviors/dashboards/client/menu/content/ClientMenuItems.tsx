@@ -27,6 +27,17 @@ const ItemsWrapper = styled.div`
   `}
 `
 
+const Badge= styled.div`
+  margin-left: 6px;
+  background: #FF6B00;
+  border-radius: 50%;
+  width: 20px;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 20px;
+  font-size: 10px;
+`
+
 export const ClientMenuItems = () => {
   const chatsCount = useStore(clientChatsSocket.data.$chatsCount)
   return (
@@ -35,7 +46,7 @@ export const ClientMenuItems = () => {
         Главная страница
       </DashboardMenuItem>
       <DashboardMenuItem link={routeNames.clientChatsList()} icon='my-coaches'>
-        Мои коучи {chatsCount ? `+${chatsCount}` : ``}
+        Мои коучи {chatsCount ? <Badge>{chatsCount}</Badge> : ""}
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/client/' icon='hand'>
       Здесь и сейчас
@@ -43,9 +54,9 @@ export const ClientMenuItems = () => {
     <DashboardMenuItem link='/client/' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-      <DashboardMenuItem link={routeNames.clientWallet()} icon='my-purse'>
+      {/*<DashboardMenuItem link={routeNames.clientWallet()} icon='my-purse'>
         Кошелек
-      </DashboardMenuItem>
+      </DashboardMenuItem>*/}
       {/*<DashboardMenuItem link='/client/' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}

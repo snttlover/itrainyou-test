@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+import { MediaRange } from "@/lib/responsive/media"
 
 type DialogOverlayTypes = {
   children: React.ReactChild | React.ReactChild[]
@@ -36,4 +37,8 @@ export const DialogOverlayContainer = styled.div`
   display: block;
   overflow: auto;
   padding: 20px;
+  
+  ${MediaRange.lessThan("mobile")`
+    padding: 0;
+  `}
 `

@@ -81,8 +81,13 @@ export const ProfileCreditCards = () => {
 
   const toggleCards = (e: React.SyntheticEvent) => {
     if (isShowed) {
-      const primaryCard = cards.find(card => card.isPrimary)
-      primaryCard ? setCardList([primaryCard]) : setCardList([])
+      if (cards.length > 0) {
+        const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+        setCardList([primaryCard])
+      }
+      else {
+        setCardList(cards)
+      }
     }
     else {
       setCardList(cards)
@@ -91,9 +96,14 @@ export const ProfileCreditCards = () => {
   }
 
   useEffect(() => {
-    const primaryCard = cards.find(card => card.isPrimary)
-    primaryCard ? setCardList([primaryCard]) : setCardList([])
-    changeIsShow(false)
+    if (cards.length > 0) {
+      const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+      isShowed ? setCardList(cards) : setCardList([primaryCard])
+    }
+    else {
+      setCardList(cards)
+    }
+    changeIsShow(isShowed)
   },[cards])
   return (
     <Container>
