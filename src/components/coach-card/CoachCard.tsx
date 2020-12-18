@@ -12,6 +12,7 @@ import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { Icon } from "@/components/icon/Icon"
 import { GrayTooltip } from "@/components/gray-tooltip/GrayTooltip"
 import { useHistory } from "react-router-dom"
+import { parseFloatToString } from "@/lib/formatting/parsenumbers"
 
 const MainInfoContainer = styled.div`
   position: relative;
@@ -20,13 +21,6 @@ const MainInfoContainer = styled.div`
   background: #fff;
   align-items: center;
   transition: border 300ms;
-
-  &:hover {
-    border: 2px solid #dbdee0;
-
-  ${MediaRange.greaterThan("tablet")`
-    padding: 8px 12px 12px;
-  `}
 `
 
 const Avatar = styled.div<{ image: string | null }>`
@@ -144,9 +138,6 @@ const Block = styled.div<BlockTypes>`
 
   ${MainInfoContainer} {
     border: 2px solid #fff;
-    &:hover {
-      border: 2px solid #dbdee0;
-    }
   }
   ${PriceContainer} {
     background: ${props => (props.isTopCoach ? `#F6C435` : `#9AA0A6`)};
@@ -350,8 +341,8 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
   const price =
     filledPrices > 1
-      ? `от ${minimumPrice.price}₽ за ${minimumPrice.text}`
-      : `${minimumPrice.text} / ${minimumPrice.price}₽`
+      ? `от ${parseFloatToString(minimumPrice.price)}₽ за ${minimumPrice.text}`
+      : `${minimumPrice.text} / ${parseFloatToString(minimumPrice.price)}₽`
 
   return (
     <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
