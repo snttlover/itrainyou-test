@@ -272,6 +272,15 @@ const getText = (
   }
 
   if (chatType === "coach") {
+      
+    if (status === "MONEY_HOLD_UNSUCCESSFUL") {
+      return `${request.enrolledClient?.firstName} отменил${request.enrolledClient?.sex === "F" ? "a" : ""} сессию.`
+    }
+
+    if (status === "MONEY_SUCCESSFULLY_HELD") {
+      return "Сессия была подтверждена платформой."
+    }
+      
     if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {
       return "Клиент указал, что с сессий возникли проблемы. С Вами свяжется администратор в поддержке для уточнения"
     }

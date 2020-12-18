@@ -131,20 +131,14 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             if (config.type === "coach") {
               user = message.sessionRequest?.initiatorClient || message.sessionRequest?.receiverClient || null
             } else {
-              if (!message.sessionRequest) {
-                user =
-                    message.transaction?.session.coach ||
-                    null
-              }
-              else {
-                user =
+              user =
                       message.sessionRequest?.session.coach ||
                       message.sessionRequest?.initiatorCoach ||
                       message.sessionRequest?.receiverCoach ||
                       null
-              }
             }
             if (!message.sessionRequest) {
+              user = message.transaction?.enrolledClient || null
               return {
                 type: message.type as "SYSTEM",
                 id: message.id,

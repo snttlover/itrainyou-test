@@ -118,7 +118,7 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
       avatar: session.coach.avatar,
       name: `${session.coach.firstName} ${session.coach.lastName}`,
       price: `${+session.clientPrice > 0 ? `+` : `-`} ${session.clientPrice}`,
-      time: date(session.startDatetime).format(`hh:mm`),
+      time: date(session.startDatetime).format(`HH:mm`),
       date: date(session.startDatetime).format(`DD.MM.YYYY`),
       status: transaction.status,
     }

@@ -3,8 +3,6 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import React from "react"
-import { Step4Client } from "@/pages/auth/pages/signup/content/step-4/Step4Client"
-import { Step4Coach } from "@/pages/auth/pages/signup/content/step-4/Step4Coach"
 
 const Price = styled.div`
   font-weight: 500;
