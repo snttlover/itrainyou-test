@@ -117,6 +117,10 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
   if (type === "MasterCard") cardTypeImg = MasterCard
   else if (type === "Visa") cardTypeImg = Visa
 
+  const handleOnClick = () => {
+    if (isPrimary) return
+    makeCardPrimary(id)
+  }
   return (
     <Item key={id}>
       <BottomRow>
@@ -128,7 +132,7 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
         </LogosContainer>
         <PrimaryBtn 
           isPrimary={isPrimary} 
-          onClick={() => makeCardPrimary(id)}>
+          onClick={handleOnClick}>
           {isPrimary ? "Основная" : "Сделать основной"}
         </PrimaryBtn>
       </BottomRow>

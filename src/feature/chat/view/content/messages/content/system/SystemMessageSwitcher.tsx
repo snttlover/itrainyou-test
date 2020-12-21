@@ -63,7 +63,7 @@ const getText = (
 
   if (commonSystemMessages) {
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии`
+      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
@@ -184,7 +184,7 @@ const getText = (
     }
 
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии`
+      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
@@ -221,7 +221,7 @@ const getText = (
     }
 
     if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
-      return "Вы хотите отменить сессию. До сессии меньше 24 часов, поэтому ждем подтверждения коуча."
+      return "Вы запросили отмену сессии."
     }
 
     if (is("CANCEL", "CANCELLED", "COMPLETED")) {
@@ -246,7 +246,7 @@ const getText = (
     }
 
     if (is("CONFIRMATION_COMPLETION", "APPROVED", "COMPLETED")) {
-      return "Сессия прошла успешно. Оставьте отзыв!"
+      return "Сессия прошла успешно. Средства были списаны с карты. Оставьте отзыв!"
     }
 
     if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {

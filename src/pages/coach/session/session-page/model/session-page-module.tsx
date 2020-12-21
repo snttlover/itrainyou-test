@@ -29,6 +29,10 @@ export const createSessionPage = (config: CreateSessionPageConfig) => {
     $sessionId,
   })
 
+  const canceled = createStore(false)
+    .on(sessionInfo.events.sessionNotCanceled,(state,payload) => true)
+    .reset(reset)
+
   forward({
     from: reset,
     to: [sessionInfo.methods.reset, sessionRequests.methods.reset],
@@ -45,6 +49,9 @@ export const createSessionPage = (config: CreateSessionPageConfig) => {
   })
 
   return {
+    data: {
+      canceled,
+    },
     modules: {
       sessionInfo,
       sessionRequests,

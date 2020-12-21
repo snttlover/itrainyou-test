@@ -90,7 +90,16 @@ export const ProfileCreditCards = () => {
       }
     }
     else {
-      setCardList(cards)
+      const primaryCard = cards.find(card => card.isPrimary)
+      if (primaryCard) {
+        const changedArrayOfCards = cards
+        changedArrayOfCards.splice(cards.indexOf(primaryCard), 1)
+        changedArrayOfCards.unshift(primaryCard)
+        setCardList(changedArrayOfCards)
+      }
+      else {
+        setCardList(cards)
+      }
     }
     changeIsShow(!isShowed)
   }
@@ -105,6 +114,7 @@ export const ProfileCreditCards = () => {
     }
     changeIsShow(isShowed)
   },[cards])
+
   return (
     <Container>
       {!isLoading ?
