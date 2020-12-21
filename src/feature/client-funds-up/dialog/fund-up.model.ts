@@ -93,8 +93,7 @@ const startSaveCardFx = createEffect({
 
 const getPaymentIdFx = createEffect({
   handler: () => {
-    const paymentId = localStorage.getItem("payment_id")
-    return paymentId
+    return localStorage.getItem("payment_id")
   }
 })
 
@@ -107,8 +106,7 @@ const deletePaymentIdFx = createEffect({
 export const finishSaveCardFx = createEffect({
   handler: async () => {
     const paymentId = localStorage.getItem("payment_id")!
-    const response:FinishSaveCardResponse = await finishSaveCard({paymentId})
-    return response
+    return await finishSaveCard({paymentId})
   }
 })
 
@@ -185,9 +183,9 @@ forward({
   ],
 })
 
-const unsuccessfullAddedCard: Toast  = { text: "Не удалось привязать карту", type: "error" }
+const unsuccessfulAddedCard: Toast  = { text: "Не удалось привязать карту", type: "error" }
 forward({
-  from: finishSaveCardFx.fail.map(({params,error}) => unsuccessfullAddedCard),
+  from: finishSaveCardFx.fail.map(({params,error}) => unsuccessfulAddedCard),
   to: [
     toasts.remove,
     toasts.add,
@@ -195,9 +193,9 @@ forward({
   ],
 })
 
-const successfullAddedCard: Toast = { text: "Карта добавлена", type: "info" }
+const successfulAddedCard: Toast = { text: "Карта добавлена", type: "info" }
 forward({
-  from: finishSaveCardFx.doneData.map(_ => successfullAddedCard),
+  from: finishSaveCardFx.doneData.map(_ => successfulAddedCard),
   to: [
     toasts.remove,
     toasts.add,
@@ -258,8 +256,7 @@ forward({
 guard({
   source: loadSessionsIdFx.doneData,
   filter: (response) => {
-    if (response.sessions === null) return false
-    return true
+    return response.sessions !== null;
   },
   target: $sessionsPickerStore.buySessionBulk.prepend((response: {
       sessions: number[]

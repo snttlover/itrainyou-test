@@ -22,7 +22,7 @@ export type CoachItemType = {
     creationDatetime: string
 }
 
-export type getCardSessionsResponse = {
+export type CardSessionsResponse = {
     id: number
     coach: CoachItemType
     clientPrice: string
@@ -36,6 +36,6 @@ export type getCardSessionsResponse = {
 }
 
 export const getCardSessions = (id: number) =>
-  get<Pagination<getCardSessionsResponse>>(`${config.BACKEND_URL}/api/v1/web/client/cards/${id}/sessions/`)
+  get<Pagination<CardSessionsResponse>>(`${config.BACKEND_URL}/api/v1/web/client/cards/${id}/sessions/`)
     .then(response => response.data)
     .then(keysToCamel)
