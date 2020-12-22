@@ -44,6 +44,17 @@ const Delimiter = styled.div`
   `}
 `
 
+const Badge= styled.div`
+  margin-left: 6px;
+  background: #FF6B00;
+  border-radius: 50%;
+  width: 20px;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 20px;
+  font-size: 10px;
+`
+
 export const CoachMenuItems = () => {
   const chatsCount = useStore(coachChatsSocket.data.$chatsCount)
   return (
@@ -52,7 +63,7 @@ export const CoachMenuItems = () => {
         Главная страница
       </DashboardMenuItem>
       <DashboardMenuItem link={routeNames.coachClients()} icon='my-coaches'>
-        Мои клиенты {chatsCount ? `+${chatsCount}` : ``}
+        Мои клиенты {chatsCount ? <Badge>{chatsCount}</Badge> : ""}
       </DashboardMenuItem>
       {/*<DashboardMenuItem link='/coach/now' icon='hand'>
       Здесь и сейчас
@@ -60,9 +71,9 @@ export const CoachMenuItems = () => {
     <DashboardMenuItem link='/coach/group-sessions' icon='user'>
       Групповые сессии
     </DashboardMenuItem>*/}
-      <DashboardMenuItem link={routeNames.coachWallet()} icon='my-purse'>
+      {/*<DashboardMenuItem link={routeNames.coachWallet()} icon='my-purse'>
         Кошелек
-      </DashboardMenuItem>
+      </DashboardMenuItem>/*}
       {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
       Календарь
     </DashboardMenuItem>*/}

@@ -4,15 +4,15 @@ import { useRef, useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
 import { keysToSnake } from "@/lib/network/casing"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Arrow = styled(Icon).attrs({ name: "arrow" })`
   fill: #919be0;
 `
-
-const Placeholder = styled.p`
-  color: #b3b3b3;
-  font-size: 16px;
-  line-height: 22px;
+const NoShowMobile = styled.div`
+  ${MediaRange.lessThan("mobile")`
+    display: none;
+  `}
 `
 
 export const DropdownItem = styled.div`
@@ -82,31 +82,18 @@ const Label = styled.div`
 `
 
 type Value = {
-  id: number
-  client: number
-  firstSixDigits: string
-  lastFourDigits: string
-  expiryMonth: string
-  expiryYear: string
-  cardType: string
-  issuerCountry: string
-  issuerName: string
-  isPrimary: boolean
-} | {
-  id: string
+    id: number | string
+    type: string | null
+    cardEnd: string | null
+    expireDate: string | null
+    isPrimary: boolean | null
 }
 
 export type SelectInputProps<T extends Value> = {
   value: Value
   placeholder?: string
   onChange: (value: T) => void
-  options: {
-    id: number | string
-    type: string | undefined
-    cardEnd: string | undefined
-    expireDate: string | undefined
-    isPrimary: boolean | undefined
-  }[]
+  options: T[]
   error?: boolean
   onBlur?: () => void
   className?: string
@@ -118,8 +105,9 @@ type CardIconTypes = {
   cardtype: "MasterCard" | "Visa"
 }
 
-const CardIcon = styled(Icon).attrs((props: CardIconTypes) => ({
+const CardIcon = styled(Icon).attrs((props: any) => ({
   name: props.cardtype,
+  ...props
 }))`
     width: 32px;
     height: 22px;
@@ -189,7 +177,11 @@ export const SelectInputCard = <T extends Value = Value>({
           `ХХХХ ХХХХ ХХХХ ${selectedItem?.cardEnd} (${selectedItem?.expireDate})`
           : "Другая"}
         </Label>
-        {selectedItem?.id !== "other" && (selectedItem?.type && <CardIcon cardtype={selectedItem?.type} />)}
+        {selectedItem?.id !== "other" && (selectedItem?.type &&
+                (<NoShowMobile>
+          <CardIcon cardtype={selectedItem.type} />
+                  </NoShowMobile>
+        ))}
       </LabelContainer>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}

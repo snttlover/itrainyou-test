@@ -9,10 +9,10 @@ import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 
 const durations = {
-  D30: `30мин`,
-  D45: `45мин`,
-  D60: `60мин`,
-  D90: `90мин`,
+  D30: "30мин",
+  D45: "45мин",
+  D60: "60мин",
+  D90: "90мин",
 }
 
 type CreateSessionInfoModuleConfig = {
@@ -29,7 +29,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
   const cancelSessionFx = createEffect({
     handler: (session: number) =>
       config.createSessionRequest({
-        type: `CANCEL`,
+        type: "CANCEL",
         session,
       }),
   })
@@ -55,7 +55,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
   const loadSession = createEvent<number>()
 
   const $info = $session.map(session => {
-    const user = config.type === `client` ? session?.coach : session?.clients[0]
+    const user = config.type === "client" ? session?.coach : session?.clients[0]
 
     return {
       id: session?.id,
@@ -64,12 +64,12 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
       userAvatar: user?.avatar || null,
       userName: `${user?.firstName} ${user?.lastName}`,
       userLink: config.type === "coach" ? routeNames.coachClientProfile(`${user?.id}`) : routeNames.searchCoachPage(`${user?.id}`),
-      rating: user?.rating ? (user?.rating).toString().replace(/\./gm, `,`) : null,
+      rating: user?.rating ? (user?.rating).toString().replace(/\./gm, ",") : null,
       sessionsCount: 0,
 
-      duration: durations[session?.durationType || `D30`],
+      duration: durations[session?.durationType || "D30"],
       cost: session?.clientPrice || 0,
-      date: date(session?.startDatetime).format(`DD MMM в HH:mm`),
+      date: date(session?.startDatetime).format("DD MMM в HH:mm"),
       isOver: date().isAfter(date(session?.startDatetime)),
 
       sessionStartDatetime: session?.startDatetime,
@@ -99,14 +99,27 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
   const successCancelFx = createEffect({
     handler: () =>
       toasts.add({
-        type: `info`,
-        text: `Запрос на отмену сессии успешно отправлен`,
+        type: "info",
+        text: "Запрос на отмену сессии успешно отправлен",
+      }),
+  })
+    
+  const failureCancelFx = createEffect({
+    handler: () =>
+      toasts.add({
+        type: "error",
+        text: "Запрос на отмену сессии не отправлен",
       }),
   })
 
   const changeCancelVisibility = createEvent<boolean>()
   const $showCancelButton = restore(changeCancelVisibility, true).reset(reset)
-
+    
+  forward({
+    from: cancelSessionFx.failData,
+    to: failureCancelFx,
+  })
+    
   forward({
     from: cancelSessionFx.done,
     to: [successCancelFx, changeCancelVisibility.prepend(() => false)],
@@ -136,6 +149,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     events: {
       sessionLoaded: loadSessionFx.doneData,
       sessionCanceled: cancelSessionFx.doneData,
+      sessionNotCanceled: cancelSessionFx.failData,
     },
   }
 }

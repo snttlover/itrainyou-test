@@ -10,6 +10,14 @@ import { Loader } from "@/components/spinner/Spinner"
 import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
 
 
+export type SetCardList = {
+    id: number
+    type: string
+    cardEnd: string
+    expireDate: string
+    isPrimary: boolean
+}
+
 const Container = styled.div`
   padding-right: 140px;
   width: 100%;
@@ -60,33 +68,63 @@ const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
 `
 
 const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
 `
 
 export const ProfileCreditCards = () => {
   const cards = useStore($cardsListForView)
   const [isShowed, changeIsShow] = useState(false)
-  const [cardList, setCardList] = useState([])
+  const [cardList, setCardList] = useState<SetCardList[]>([])
   const isLoading = useStore(finishSaveCardFx.pending)
 
   const toggleCards = (e: React.SyntheticEvent) => {
     if (isShowed) {
-      const primaryCard = cards.find(card => card.isPrimary) || {}
-      setCardList([primaryCard])
+      if (cards.length > 0) {
+        const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+        setCardList([primaryCard])
+      }
+      else {
+        setCardList(cards)
+      }
     }
     else {
-      setCardList(cards)
+      const primaryCard = cards.find(card => card.isPrimary)
+      if (primaryCard) {
+        const changedArrayOfCards = cards
+        changedArrayOfCards.splice(cards.indexOf(primaryCard), 1)
+        changedArrayOfCards.unshift(primaryCard)
+        setCardList(changedArrayOfCards)
+      }
+      else {
+        setCardList(cards)
+      }
     }
     changeIsShow(!isShowed)
   }
 
   useEffect(() => {
-    const primaryCard = cards.find(card => card.isPrimary) || {}
-    setCardList([primaryCard])
-    changeIsShow(false)
+    if (cards.length > 0) {
+      if (cards.length === cardList.length) {
+        const primaryCard = cards.find(card => card.isPrimary)
+        const newCardList = cardList.map(card => (primaryCard && card.id === primaryCard.id ? {
+          ...card,
+          isPrimary: true
+        } : {...card, isPrimary: false}))
+        isShowed ? setCardList(newCardList) : (primaryCard ? setCardList([primaryCard]) : setCardList([cards[0]]))
+      } else {
+        const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+        isShowed ? setCardList(cards) : setCardList([primaryCard])
+      }
+    }
+    else {
+      setCardList(cards)
+    }
+    changeIsShow(isShowed)
   },[cards])
+
   return (
     <Container>
       {!isLoading ?

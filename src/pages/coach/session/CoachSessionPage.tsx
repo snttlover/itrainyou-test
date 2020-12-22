@@ -26,6 +26,9 @@ export const CoachSessionPage = () => {
   const sessionInfo = useStore(coachSessionPage.modules.sessionInfo.data.$info)
   const fetching = useStore(coachSessionPage.modules.sessionInfo.data.isFetching)
   const notFound = useStore(coachSessionPage.modules.sessionInfo.data.$notFound)
+
+  const canceled = useStore(coachSessionPage.data.canceled)
+    
   const sessionsRequests = useStore(coachSessionPage.modules.sessionRequests.data.$sessions)
 
   const cancelVisibility = useStore(coachSessionPage.modules.sessionInfo.data.$cancelButtonVisibility)
@@ -56,6 +59,7 @@ export const CoachSessionPage = () => {
               <TabletCancelSession
                 sessionStartDatetime={sessionInfo.sessionStartDatetime}
                 onCancel={() => cancelSession()}
+                canceled={canceled}
               />
             )}
 
@@ -69,7 +73,7 @@ export const CoachSessionPage = () => {
           <InfoWrapper>
             <SessionInfo {...sessionInfo} />
             {!sessionInfo.isOver && cancelVisibility && (
-              <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} />
+              <CancelSession sessionStartDatetime={sessionInfo.sessionStartDatetime} onCancel={() => cancelSession()} canceled={canceled} />
             )}
           </InfoWrapper>
         </Container>

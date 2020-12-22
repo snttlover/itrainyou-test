@@ -62,15 +62,11 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
       name = `${transaction.enrolledClient.firstName} ${transaction.enrolledClient.lastName}`
     } else if (transaction.type === "SESSION_CANCELLATION") {
       name = `Сессия отменена`
-    } else if (transaction.session?.client) {
-      name = `${transaction.session.client.firstName} ${transaction.session.client.lastName}`
     }
 
     let avatar = null
     if (transaction.enrolledClient?.avatar) {
       avatar = transaction.enrolledClient?.avatar
-    } else if (transaction.session?.client?.avatar) {
-      avatar = transaction.session?.client.avatar
     }
 
     return {
@@ -79,7 +75,7 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
       price: price,
       time: date(session.startDatetime).format(`HH:mm`),
       date: date(session.startDatetime).format(`DD.MM.YYYY`),
-      isCanceled: transaction.type === `SESSION_CANCELLATION`,
+      status: transaction.status,
     }
   })
 )

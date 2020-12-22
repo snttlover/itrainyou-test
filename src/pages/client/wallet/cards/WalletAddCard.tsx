@@ -21,6 +21,10 @@ const LogosContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+
+  ${MediaRange.lessThan("mobile")`
+    
+  `}
 `
 
 const Item = styled.div`
@@ -30,12 +34,21 @@ const Item = styled.div`
   justify-content: space-between;
   padding: 12px 0;
   padding-right: 16px;
+
+  ${MediaRange.lessThan("mobile")`
+    padding-right: 0;
+  `}
 `
 
 const BottomRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+    align-items: flex-start;
+  `}
 `
 
 const TypeImg = styled.img`
@@ -62,7 +75,14 @@ const Text = styled.div`
   text-align: center;
   color: #4858CC;
 `
+const MobileGroup = styled.div`
 
+  ${MediaRange.lessThan("mobile")`
+    display:flex;
+    width: 100%;
+    justify-content: flex-end;
+  `}
+`
 const StyledButton = styled(Button)`
   background: #ffffff;
   border: 1px solid #4858CC;
@@ -83,7 +103,9 @@ export const WalletAddCard = () => {
           <TypeImg src={MasterCard} />
           <TypeImg src={Visa} />
         </LogosContainer>
-        <StyledButton onClick={handleAddCard}><Text>Добавить карту <PlusIcon /></Text></StyledButton>
+        <MobileGroup>
+          <StyledButton onClick={handleAddCard}><Text>Добавить карту <PlusIcon /></Text></StyledButton>
+        </MobileGroup>
       </BottomRow>
     </Item>
   )

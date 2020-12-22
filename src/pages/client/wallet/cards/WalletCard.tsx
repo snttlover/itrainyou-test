@@ -2,6 +2,7 @@ import { deletedCard, madeCardPrimary } from "@/pages/client/wallet/cards/cards.
 import { useEvent } from "effector-react"
 import styled from "styled-components"
 import React from "react"
+import { MediaRange } from "@/lib/responsive/media"
 
 import MasterCard from "../img/MasterCard.svg"
 import Visa from "../img/Visa.svg"
@@ -27,6 +28,11 @@ const Title = styled.div`
   line-height: 22px;
   color: #424242;
   margin-right: 12px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-right: 4px;
+    font-size: 14px;
+  `}
 `
 
 const ExpireDate = styled.div`
@@ -42,7 +48,7 @@ const ExpireDate = styled.div`
 const BottomRow = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 `
 
 const DeleteBtn = styled.div`
@@ -63,6 +69,10 @@ const PrimaryBtn = styled.div<{ isPrimary: boolean }>`
   line-height: 16px;
   color: ${({ isPrimary }) => isPrimary ? "#4858CC" : "#E1E6EA"};
   cursor: pointer;
+
+  ${MediaRange.lessThan("mobile")`
+    text-align: right;
+  `}
 `
 
 const TypeImg = styled.img`
@@ -70,14 +80,18 @@ const TypeImg = styled.img`
   height: 22px;
 `
 
-const Item = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-bottom: 1px solid #efefef;
-  padding: 12px 0;
-  padding-right: 16px;
+const Item = styled.div<{ showed: boolean }>`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-bottom: ${({ showed }) => showed ? "1px solid #efefef" : "none"};
+    padding: 12px 0;
+    padding-right: 16px;
+
+    ${MediaRange.lessThan("mobile")`
+        padding-right: 8px;
+    `}
 `
 
 const LogosContainer = styled.div`
@@ -87,15 +101,18 @@ const LogosContainer = styled.div`
 `
 
 type WalletCardProps = {
-  id: number
-  type: string
-  cardEnd: string
-  expireDate: string
-  isPrimary: boolean
-  className?: string
+    id: number
+    type: string
+    cardEnd: string
+    expireDate: string
+    isPrimary: boolean
+    key: string
+    showed: boolean
+    className?: string
 }
 
-export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate,isPrimary, className }) => {
+
+export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate,isPrimary, className, key, showed }) => {
   const deleteCard = useEvent(deletedCard)
   const makeCardPrimary = useEvent(madeCardPrimary)
   let cardTypeImg: string | null = null
@@ -103,8 +120,12 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
   if (type === "MasterCard") cardTypeImg = MasterCard
   else if (type === "Visa") cardTypeImg = Visa
 
+  const handleOnClick = () => {
+    if (isPrimary) return
+    makeCardPrimary(id)
+  }
   return (
-    <Item>
+    <Item key={key} showed={showed}>
       <BottomRow>
         <LogosContainer>
           <Title>
@@ -114,7 +135,7 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
         </LogosContainer>
         <PrimaryBtn 
           isPrimary={isPrimary} 
-          onClick={() => makeCardPrimary(id)}>
+          onClick={handleOnClick}>
           {isPrimary ? "Основная" : "Сделать основной"}
         </PrimaryBtn>
       </BottomRow>

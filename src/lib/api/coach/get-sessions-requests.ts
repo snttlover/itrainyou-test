@@ -36,6 +36,7 @@ export type SessionRequest = {
   }
   creationDatetime: ISODate
   resultDatetime: ISODate
+    enrolledClient: null
 }
 
 export const getCoachSessionRequests = (params: GetCoachSessionRequestsQuery) =>

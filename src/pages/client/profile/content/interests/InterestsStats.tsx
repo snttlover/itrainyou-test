@@ -8,13 +8,17 @@ const Container = styled.div`
   z-index: 1;
   position: absolute;
   right: 0;
-  height: 100%;
+  left: 87%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 5%;
 
     ${MediaRange.lessThan(`tablet`)`
+    left: 0;
+    margin-top: 0;
     position: relative;
     flex-direction: row;
     align-items: center;
@@ -24,6 +28,7 @@ const Container = styled.div`
   `}
     
   ${MediaRange.lessThan(`mobile`)`
+    left: 0;
     position: relative;
     flex-direction: column;
     margin-top: 32px;

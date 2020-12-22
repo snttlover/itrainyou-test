@@ -5,15 +5,14 @@ import { date } from "@/lib/formatting/date"
 import { $cardsSessionsForView } from "@/pages/client/wallet/cards/cards.model"
 import { MediaRange } from "@/lib/responsive/media"
 import { Avatar } from "@/components/avatar/Avatar"
+import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions";
 
 type CardSessions = {
-  id: number
-  startDateTime: string
-  duration: string
-  coach: {
-    avatar: string
-    name: string
-  }
+    id: number
+    startDateTime: string
+    endDateTime: string
+    duration: string
+    coach: CoachItemType
 }
 
 const StyledSessionItem: React.FC<CardSessions> = ({ id,startDateTime, duration, coach, endDateTime }) => {
@@ -24,10 +23,10 @@ const StyledSessionItem: React.FC<CardSessions> = ({ id,startDateTime, duration,
         <Date>{date(startDateTime).format("D MMMM YYYY")}</Date>
         <Time>{date(startDateTime).format("hh:mm")}-{date(endDateTime).format("hh:mm")}</Time>
       </TopMobileGroup>
-        <BottomMobileGroup>
-      <Name>coach.name</Name>
-      <StyledAvatar src={coach.avatar} />
-        </BottomMobileGroup>
+      <BottomMobileGroup>
+        <Name>{coach.firstName} {coach.lastName}</Name>
+        <StyledAvatar src={coach.avatar} />
+      </BottomMobileGroup>
     </Item>
   )
 }

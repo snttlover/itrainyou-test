@@ -3,11 +3,12 @@ import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { Coach } from "@/lib/api/coach"
 import { clientSessionRequests } from "@/feature/session-request/createSessionRequestsModule"
 import { DenySessionRequestProblems } from "@/lib/api/coach/deny-session-request"
+import { TransActionProperties } from "@/lib/api/chats/clients/get-chats"
 
 const reset = createEvent()
 
-export const changeCurrentDenyCompletationRequest = createEvent<null | SessionRequest>()
-const $currentDenyCompletationRequest = restore<null | SessionRequest>(
+export const changeCurrentDenyCompletationRequest = createEvent<null | SessionRequest | TransActionProperties>()
+const $currentDenyCompletationRequest = restore<null | SessionRequest | TransActionProperties>(
   changeCurrentDenyCompletationRequest,
   null
 ).reset(reset)

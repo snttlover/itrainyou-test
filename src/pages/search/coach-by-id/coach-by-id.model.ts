@@ -3,7 +3,7 @@ import { addCoachToFavourites } from "@/lib/api/coach/add-coach-to-favourites"
 import { removeCoachFromFavourites } from "@/lib/api/coach/remove-coach-from-favourites"
 import { CoachReviewResponse, getCoachReviews } from "@/lib/api/reviews"
 import { createGate, runInScope } from "@/scope"
-import { createEffect, createEvent, createStore, forward, sample, guard, merge, restore } from "effector-root"
+import { createEffect, createEvent, createStore, forward, sample, guard, merge, restore, combine } from "effector-root"
 import { genCoachSessions } from "@/components/coach-card/select-date/select-date.model"
 import { DurationType } from "@/lib/api/coach-sessions"
 
@@ -52,7 +52,10 @@ const changeCoachSessionDurationTab = $sessionsPickerStore.tabs.changeDurationTa
 
 guard({
   source: $sessionsPickerStore.buySessionsLoading.updates,
-  filter: $sessionsPickerStore.buySessionsLoading,
+  filter: combine($sessionsPickerStore.buySessionsLoading, $creditCardsModal, (loading, showed) => {
+    if ( !loading && showed) return true
+    return false
+  }),
   target: showCreditCardsModal,
 })
 

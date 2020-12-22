@@ -1,7 +1,7 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { startTopUp } from "@/lib/api/wallet/client/start-top-up"
-import { startSaveCard, StartSaveCardParams, StartSaveCardResponse } from "@/lib/api/wallet/client/start-save-card"
-import { finishSaveCard, FinishSaveCardRequest, FinishSaveCardResponse } from "@/lib/api/wallet/client/finish-save-card"
+import { startSaveCard } from "@/lib/api/wallet/client/start-save-card"
+import { finishSaveCard } from "@/lib/api/wallet/client/finish-save-card"
 import { startTopUpWithCard } from "@/lib/api/wallet/client/start-top-up-with-saved-card"
 import { transferToClientWallet } from "@/lib/api/wallet/coach/transfer-to-client-wallet"
 import { createEffectorField } from "@/lib/generators/efffector"
@@ -11,14 +11,14 @@ import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profi
 import { loadCardsFx } from "@/pages/client/wallet/cards/cards.model"
 import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
 import { createGate } from "@/scope"
-import { combine, createEffect, createEvent, forward, guard, restore, sample, split, attach } from "effector-root"
+import { attach, combine, createEffect, createEvent, forward, guard, restore, sample, split } from "effector-root"
 import { every } from "patronum"
-import { mounted } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { $sessionsPickerStore, mounted as CoachByIdMounted, } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { mounted as homeMounted } from "@/pages/client/home/home.model.ts"
 import { routeNames } from "@/pages/route-names"
+import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
 
 export const FundUpModalGate = createGate()
-export const ClientProfileGate = createGate()
 export const resetFundUpModal = createEvent()
 export const submitFundUp = createEvent()
 export const addCard = createEvent()
@@ -74,6 +74,15 @@ export const $fundUpErrors = combine({
 
 export const $canSubmit = every({ predicate: true, stores: [$isAmountCorrect] })
 
+const loadSessionsIdFx = createEffect({
+  handler: (cardId: number) => {
+    const sessionsId = localStorage.getItem("sessions")
+    if (!sessionsId) return {sessions: null, card: cardId}
+    return {sessions: JSON.parse(sessionsId), card: cardId}
+  }
+})
+const SessionsId = restore(loadSessionsIdFx.doneData, null)
+
 const startSaveCardFx = createEffect({
   handler: (returnUrl:string ) =>
     startSaveCard({returnUrl: `${window.location.protocol}//${window.location.hostname}${returnUrl}`})
@@ -81,8 +90,7 @@ const startSaveCardFx = createEffect({
 
 const getPaymentIdFx = createEffect({
   handler: () => {
-    const paymentId = localStorage.getItem("payment_id")
-    return paymentId
+    return localStorage.getItem("payment_id")
   }
 })
 
@@ -95,8 +103,7 @@ const deletePaymentIdFx = createEffect({
 export const finishSaveCardFx = createEffect({
   handler: async () => {
     const paymentId = localStorage.getItem("payment_id")!
-    const response:FinishSaveCardResponse = await finishSaveCard({paymentId})
-    return response
+    return await finishSaveCard({paymentId})
   }
 })
 
@@ -173,9 +180,9 @@ forward({
   ],
 })
 
-const unsuccessfullAddedCard: Toast  = { text: "Не удалось привязать карту", type: "error" }
+const unsuccessfulAddedCard: Toast  = { text: "Не удалось привязать карту", type: "error" }
 forward({
-  from: finishSaveCardFx.fail.map(({params,error}) => unsuccessfullAddedCard),
+  from: finishSaveCardFx.fail.map(({params,error}) => unsuccessfulAddedCard),
   to: [
     toasts.remove,
     toasts.add,
@@ -183,9 +190,9 @@ forward({
   ],
 })
 
-const successfullAddedCard: Toast = { text: "Карта добавлена", type: "info" }
+const successfulAddedCard: Toast = { text: "Карта добавлена", type: "info" }
 forward({
-  from: finishSaveCardFx.doneData.map(_ => successfullAddedCard),
+  from: finishSaveCardFx.doneData.map(_ => successfulAddedCard),
   to: [
     toasts.remove,
     toasts.add,
@@ -202,13 +209,14 @@ startSaveCardFx.doneData.watch((response) => {
 })
 
 forward({
-  from: [ClientProfileGate.open, mounted, homeMounted],
+  from: [ClientProfileGate.open, CoachByIdMounted, homeMounted],
   to: getPaymentIdFx,
 })
 
 forward({
-  from: [ClientProfileGate.open.map(() => routeNames.clientProfile()),
-    mounted.map((id)=> routeNames.searchCoachPage(id.id.toString())),
+  from: [
+    ClientProfileGate.open.map(() => routeNames.clientProfile()),
+    CoachByIdMounted.map((id)=> routeNames.searchCoachPage(id.id.toString())),
     homeMounted.map(() => routeNames.client()),
   ],
   to: setRedirectUrl,
@@ -230,6 +238,29 @@ sample({
   clock: guard({ source: submitFundUp, filter: $canSubmit }),
   source: $fundUpForm,
   target: startTopUpFx,
+})
+
+forward({
+  from: finishSaveCardFx.doneData,
+  to: attach({
+    effect: loadSessionsIdFx,
+    mapParams: response => {
+      return  response.id
+    },
+  }),
+})
+
+guard({
+  source: loadSessionsIdFx.doneData,
+  filter: (response) => {
+    return response.sessions !== null;
+  },
+  target: $sessionsPickerStore.buySessionBulk.prepend((response: {
+      sessions: number[]
+      card: number
+  }) => {
+    return response
+  }),
 })
 
 forward({

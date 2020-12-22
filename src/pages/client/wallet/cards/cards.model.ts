@@ -5,7 +5,7 @@ import { createEffect, createEvent, forward, restore, split, guard } from "effec
 import { deleteCard } from "@/lib/api/wallet/client/delete-card"
 import { makeCardPrimary } from "@/lib/api/wallet/client/make-card-primary"
 import { some } from "patronum"
-import { getCardSessions, getCardSessionsResponse } from "@/lib/api/wallet/client/get-card-sessions"
+import { getCardSessions, CardSessionsResponse } from "@/lib/api/wallet/client/get-card-sessions"
 import { toggleDeleteCardModalDialog } from "@/pages/client/profile/profile-page.model"
 
 class DeleteCardCancelError extends Error {}
@@ -101,7 +101,7 @@ export const $cardsListForView = $cards.map(cards =>
   }))
 )
 
-const $cardSessions = restore<getCardSessionsResponse[]>(
+const $cardSessions = restore<CardSessionsResponse[]>(
   getCardSessionsFx.doneData.map(data => data.results),
   []
 )
@@ -120,8 +120,3 @@ export const cardIdForDelete = restore<number>(
   deletedCard,
   null
 )
-
-/*
-avatar: session.coach.avatar,
-    name: session.coach.name,
- */

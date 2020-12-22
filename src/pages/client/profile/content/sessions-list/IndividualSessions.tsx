@@ -24,20 +24,22 @@ const Container = styled.div`
 
   ${MediaRange.lessThan(`mobile`)`
     margin-top: 16px;
+    padding: 11px 8px;
   `}
 `
 
 const Title = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #5b6670;
-  text-align: center;
-  margin-bottom: 10px;
-  ${MediaRange.lessThan(`mobile`)`
-    font-size: 12px;
-    line-height: 16px;
-  `}
+    font-family: Roboto Slab;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+    color: #424242;
+    text-align: left;
+    margin-bottom: 10px;
+    ${MediaRange.lessThan(`mobile`)`
+        font-size: 16px;
+        line-height: 26px;
+    `}
 `
 
 const ListContainer = styled.div`
@@ -82,7 +84,7 @@ export const IndividualSessions = () => {
 
   return (
     <Container>
-      <Title>Индивидуальные сессии</Title>
+      <Title>История сессий</Title>
       <ListContainer>
         <InfiniteScroll
           loader={<Loader />}
