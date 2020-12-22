@@ -1,7 +1,7 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { startTopUp } from "@/lib/api/wallet/client/start-top-up"
-import { startSaveCard, StartSaveCardParams, StartSaveCardResponse } from "@/lib/api/wallet/client/start-save-card"
-import { finishSaveCard, FinishSaveCardRequest, FinishSaveCardResponse } from "@/lib/api/wallet/client/finish-save-card"
+import { startSaveCard } from "@/lib/api/wallet/client/start-save-card"
+import { finishSaveCard } from "@/lib/api/wallet/client/finish-save-card"
 import { startTopUpWithCard } from "@/lib/api/wallet/client/start-top-up-with-saved-card"
 import { transferToClientWallet } from "@/lib/api/wallet/coach/transfer-to-client-wallet"
 import { createEffectorField } from "@/lib/generators/efffector"
@@ -11,17 +11,14 @@ import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profi
 import { loadCardsFx } from "@/pages/client/wallet/cards/cards.model"
 import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
 import { createGate } from "@/scope"
-import { combine, createEffect, createEvent, forward, guard, restore, sample, split, attach } from "effector-root"
+import { attach, combine, createEffect, createEvent, forward, guard, restore, sample, split } from "effector-root"
 import { every } from "patronum"
-import {
-  mounted as CoachByIdMounted,
-  $sessionsPickerStore,
-} from "@/pages/search/coach-by-id/coach-by-id.model"
+import { $sessionsPickerStore, mounted as CoachByIdMounted, } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { mounted as homeMounted } from "@/pages/client/home/home.model.ts"
 import { routeNames } from "@/pages/route-names"
+import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
 
 export const FundUpModalGate = createGate()
-export const ClientProfileGate = createGate()
 export const resetFundUpModal = createEvent()
 export const submitFundUp = createEvent()
 export const addCard = createEvent()

@@ -80,18 +80,18 @@ const TypeImg = styled.img`
   height: 22px;
 `
 
-const Item = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-bottom: 1px solid #efefef;
-  padding: 12px 0;
-  padding-right: 16px;
+const Item = styled.div<{ showed: boolean }>`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-bottom: ${({ showed }) => showed ? "1px solid #efefef" : "none"};
+    padding: 12px 0;
+    padding-right: 16px;
 
-  ${MediaRange.lessThan("mobile")`
-    padding-right: 8px;
-  `}
+    ${MediaRange.lessThan("mobile")`
+        padding-right: 8px;
+    `}
 `
 
 const LogosContainer = styled.div`
@@ -101,15 +101,18 @@ const LogosContainer = styled.div`
 `
 
 type WalletCardProps = {
-  id: number
-  type: string
-  cardEnd: string
-  expireDate: string
-  isPrimary: boolean
-  className?: string
+    id: number
+    type: string
+    cardEnd: string
+    expireDate: string
+    isPrimary: boolean
+    key: string
+    showed: boolean
+    className?: string
 }
 
-export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate,isPrimary, className }) => {
+
+export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expireDate,isPrimary, className, key, showed }) => {
   const deleteCard = useEvent(deletedCard)
   const makeCardPrimary = useEvent(madeCardPrimary)
   let cardTypeImg: string | null = null
@@ -122,7 +125,7 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
     makeCardPrimary(id)
   }
   return (
-    <Item key={id}>
+    <Item key={key} showed={showed}>
       <BottomRow>
         <LogosContainer>
           <Title>

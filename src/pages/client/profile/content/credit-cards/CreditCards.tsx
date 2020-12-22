@@ -68,9 +68,10 @@ const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
 `
 
 const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
 `
 
 export const ProfileCreditCards = () => {
@@ -106,8 +107,17 @@ export const ProfileCreditCards = () => {
 
   useEffect(() => {
     if (cards.length > 0) {
-      const primaryCard = cards.find(card => card.isPrimary) || cards[0]
-      isShowed ? setCardList(cards) : setCardList([primaryCard])
+      if (cards.length === cardList.length) {
+        const primaryCard = cards.find(card => card.isPrimary)
+        const newCardList = cardList.map(card => (primaryCard && card.id === primaryCard.id ? {
+          ...card,
+          isPrimary: true
+        } : {...card, isPrimary: false}))
+        isShowed ? setCardList(newCardList) : (primaryCard ? setCardList([primaryCard]) : setCardList([cards[0]]))
+      } else {
+        const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+        isShowed ? setCardList(cards) : setCardList([primaryCard])
+      }
     }
     else {
       setCardList(cards)

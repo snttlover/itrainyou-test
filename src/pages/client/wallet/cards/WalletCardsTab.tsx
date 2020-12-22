@@ -92,18 +92,15 @@ export const WalletsCardsTab = () => {
 
   return (
     <CardsContainer>
-      {useList($cardsListForView, card => (
+      {/*
+        {useList($cardsListForView, card => (
         <StyledWalletCard {...card} />
       ))}
-      {/*$cards.length === 0 && !isLoading && (
-        <Center>
-          <Placeholder>Нет привязанных карт</Placeholder>
-        </Center>
-      )*/}
       {!isLoading && (
         <StyledAddCard />
       )}
       {isLoading && <Spinner />}
+      */}
     </CardsContainer>
   )
 }

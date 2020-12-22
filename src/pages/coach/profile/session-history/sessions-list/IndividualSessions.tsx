@@ -92,7 +92,7 @@ export const IndividualSessions = () => {
 
   return (
     <Container>
-      <Title>Индивидуальные сессии</Title>
+      <Title>История сессий</Title>
       <ListContainer>
         {sessions.length === 0 && !pending && <SessionsEmpty>Нет сессий</SessionsEmpty>}
         <InfiniteScroll

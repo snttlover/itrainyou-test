@@ -58,6 +58,10 @@ const Item = styled.div`
   border-bottom: 1px solid #efefef;
   padding: 12px 0;
   padding-right: 16px;
+    
+    ${MediaRange.lessThan("mobile")`
+    padding-right: 0;
+  `}
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -70,6 +74,8 @@ const StyledAvatar = styled(Avatar)`
     width: 24px;
     min-width: 24px;
     height: 24px;
+    margin-left: 0;
+    align-self: start;
   `}
 `
 
@@ -84,7 +90,8 @@ const Name = styled.div`
   ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
-    margin-left: 4px;
+    align-self: start;
+    margin-top: 2px;
   `}
 `
 
@@ -98,6 +105,7 @@ const Title = styled.div`
     align-self: flex-end;
     font-size: 12px;
     line-height: 16px;
+    text-align: right;
   `}
 `
 
@@ -114,7 +122,7 @@ const RightMobileGroup = styled.div<{ canceled: boolean }>`
   ${({ canceled }) => canceled && canceledStyles}
   ${MediaRange.lessThan("mobile")`
     flex-direction: column;
-    align-items: flex-end;  
+    align-items: flex-end;
   `}
 `
 
