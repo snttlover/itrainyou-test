@@ -14,6 +14,7 @@ import { createEffect, createEvent, forward, Event } from "effector-root"
 import { combineEvents, spread } from "patronum"
 import { CoachData, REGISTER_SAVE_KEY, UserData } from "@/pages/auth/pages/signup/models/types"
 import { categoriesChanged, coachDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
+import { loadSystemInfoFx } from "@/feature/coach-get-access/coach-get-access.model"
 
 export const step4CoachMounted = createEvent()
 const waitAllEvents = combineEvents({ events: [step4CoachMounted, signUpPageMounted] })
@@ -55,4 +56,9 @@ forward({
 forward({
   from: $selectedCategories.updates,
   to: categoriesChanged,
+})
+
+forward({
+    from: step4CoachMounted,
+    to: loadSystemInfoFx,
 })

@@ -23,6 +23,7 @@ import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { userDataReset } from "@/pages/auth/pages/signup/models/units"
+import { Checkbox } from "@/components/checkbox/Checkbox"
 
 const Container = styled.div`
   min-width: 320px;
@@ -126,13 +127,13 @@ const AcceptionText = styled.div`
   font-size: 12px;
   line-height: 18px;
   text-align: center;
-  color: #ffffff;
+  color: #424242;
 
   max-width: 460px;
   margin: 20px auto;
 
   & a {
-    color: #fff;
+    color: #424242;;
     font-weight: 500;
     text-decoration: underline;
   }
@@ -191,6 +192,10 @@ export const Step1 = () => {
               </PasswordHint>
             )}
           </FormItem>
+            <Checkbox><AcceptionText>
+                Регистрируясь вы принимаете условия <a href='/privacy_policy.pdf'>Политики конфиденциальности</a>,{" "}
+                <a href='/user_agreement.pdf'>Пользовательского соглашения</a>
+            </AcceptionText></Checkbox>
           <NextButton disabled={!isFormValid || isFetching} />
         </Form>
       </Container>
@@ -198,10 +203,6 @@ export const Step1 = () => {
         <StyledLink to='/auth/login'>
           Уже есть аккаунт? <SignIn>Войдите</SignIn>
         </StyledLink>
-        <AcceptionText>
-          Регистрируясь вы принимаете условия <a href='/privacy_policy.pdf'>Политики конфиденциальности</a>,{" "}
-          <a href='/user_agreement.pdf'>Пользовательского соглашения</a>
-        </AcceptionText>
       </Footer>
     </AuthLayout>
   )

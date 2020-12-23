@@ -14,12 +14,13 @@ import { CategoryCard } from "@/feature/coach-get-access/components/CategoryCard
 import { CheckStep } from "@/feature/coach-get-access/components/check-step/CheckStep"
 import { Form } from "@/feature/coach-get-access/components/Form"
 import { UploadVideo } from "@/feature/coach-get-access/components/UploadVideo"
-import { useEvent, useStore } from "effector-react"
+import { useEvent, useStore, useList } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import study from "./check-step/study.svg"
 import approve from "./check-step/approve.svg"
 import peoples from "./check-step/peoples.svg"
+import { DashedButton } from "@/components/button/dashed/DashedButton"
 
 const Container = styled.div`
   display: flex;
@@ -48,29 +49,19 @@ const CategoriesContainer = styled.div`
     }
   `}
   ${MediaRange.greaterThan("tablet")`
-    max-width: 600px;
+    max-width: 640px;
     margin: 0 auto;
   `}
 `
 
-const CategoriesTitle = styled.h3`
+const Title = styled.div`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
-  line-height: 26px;
-  margin: 0 8px;
-  color: #424242;
-  ${MediaRange.greaterThan("mobile")`
-    margin: 0 auto;
-    max-width: 600px;
-    font-size: 20px;
-    line-height: 26px;
-  `}
-  ${MediaRange.greaterThan("tablet")` 
-    font-size: 24px;
-    line-height: 26px;
-  `}
+  font-size: 20px;
+  line-height: 28px;
+  color: #783D9D;
+  text-align: left;
 `
 
 const CheckStepsContainer = styled.div`
@@ -122,8 +113,50 @@ const StyledRegisterSteps = styled(RegisterSteps)`
   `}
 `
 
+const SkipRegistration = styled.div`
+  border-radius: 2px;
+  background: #E1E6EA;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;  
+    ${MediaRange.lessThan("mobile")`
+    padding: 12px;
+  `}
+`
+
+const StyledCategories = styled.div`
+  background: #fff;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+    ${MediaRange.lessThan("mobile")`
+    padding: 12px;
+  `}
+`
+
+const Description = styled.div`
+    font-family: Roboto;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #424242;
+`
+
+const StyledButton = styled(Button)`
+    align-self: flex-end;    
+`
+
+const ListContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+`
+
 type CoachInformationProps = {
   onRegisterClick: () => void
+  onSkip: () => void
   loading: boolean
   withoutCheckStep?: boolean
   className?: string
@@ -131,6 +164,7 @@ type CoachInformationProps = {
 
 export const CoachInformation = ({
   onRegisterClick,
+  onSkip,
   loading,
   withoutCheckStep = false,
   className,
@@ -143,26 +177,43 @@ export const CoachInformation = ({
 
   const _toggleCategory = useEvent(toggleCategory)
 
-  const categories = useStore($categoriesList).map(category => (
-    <CategoryCard
-      key={category.id}
-      category={category}
-      selected={selectedCategories.includes(category.id)}
-      disabled={selectedCategories.length >= 3}
-      onSelect={id => _toggleCategory(id)}
-    />
-  ))
+  const Categories =  () => {
+
+    return (
+      <StyledCategories>
+        <Title>Выберите направления, в которых Вы проводите сессии:</Title>
+        <ListContainer>
+          {useList($categoriesList, category => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              selected={selectedCategories.includes(category.id)}
+              disabled={selectedCategories.length >= 3}
+              onSelect={id => _toggleCategory(id)}
+            />
+          ))}
+        </ListContainer>
+      </StyledCategories>
+    )
+
+  }
 
   return (
     <Container className={className}>
+
+
       <CategoriesContainer>
-        <CategoriesTitle>Выберите направления, в которых Вы проводите сессии:</CategoriesTitle>
+        <SkipRegistration>
+          <Title>Пропустить заполнение</Title>
+          <Description>Вы сможете заполнить эту информацию позже</Description>
+          <StyledButton data-secondary onClick={onSkip}>Пропустить</StyledButton>
+        </SkipRegistration>
         {categoriesLoading ? (
           <LoaderContainer>
             <Loader />
           </LoaderContainer>
         ) : (
-          categories
+          <Categories />
         )}
       </CategoriesContainer>
       <Form />
@@ -173,7 +224,9 @@ export const CoachInformation = ({
           <CheckStepArrow />
           <CheckStep description='Супервизор одобрит вашу заявку' img={approve} />
           <CheckStepArrow />
-          <CheckStep description='Эта анкета будет видна клиентам<br /> (кроме контактов)' img={peoples} />
+          <CheckStep description='Вы зарегистрируете свой расчетный счет в ЮKassa' img={peoples} />
+          <CheckStepArrow />
+          <CheckStep description='Вы получите доступ к платформе' img={peoples} />
         </CheckStepsContainer>
       )}
       {withoutCheckStep && <StyledRegisterSteps />}

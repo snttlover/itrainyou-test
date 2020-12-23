@@ -23,3 +23,5 @@ export const phoneValidator = (value: string) => {
 
   return null
 }
+
+export const innValidator = (value: string) => value.length > 10 ? "Убедитесь, что в поле не больше 10 символов" : null
