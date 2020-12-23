@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { InterestsStats } from "@/pages/client/profile/content/interests/InterestsStats"
+import { SessionStats } from "@/pages/client/profile/content/interests/SessionStats"
 import { InterestsCategories } from "@/pages/client/profile/content/interests/InterestsCategories"
 import { MediaRange } from "@/lib/responsive/media"
 import arrowIcon from "@/components/coach-card/images/arrow.svg"
@@ -97,7 +97,7 @@ export const ProfileInterests = () => {
 
   return (
     <Container>
-      <InterestsStats />
+      <SessionStats />
       <Interests>
         <TitleContainer>
           <Title>Интересы</Title>

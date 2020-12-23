@@ -1,11 +1,10 @@
-import { $coachAccess } from "@/feature/user/user.model"
 import { routeNames } from "@/pages/route-names"
 import { useStore } from "effector-react"
 import styled from "styled-components"
 import * as React from "react"
 import { DashboardMenuItem } from "@/components/layouts/behaviors/dashboards/common/menu/content/DashboardMenuItem"
 import { MediaRange } from "@/lib/responsive/media"
-import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-socket"
+import { coachChatsSocket } from "@/feature/socket/chats-socket"
 
 const ItemsWrapper = styled.div`
   display: flex;
@@ -44,7 +43,7 @@ const Delimiter = styled.div`
   `}
 `
 
-const Badge= styled.div`
+const Badge = styled.div`
   margin-left: 6px;
   background: #FF6B00;
   border-radius: 50%;
@@ -65,18 +64,6 @@ export const CoachMenuItems = () => {
       <DashboardMenuItem link={routeNames.coachClients()} icon='my-coaches'>
         Мои клиенты {chatsCount ? <Badge>{chatsCount}</Badge> : ""}
       </DashboardMenuItem>
-      {/*<DashboardMenuItem link='/coach/now' icon='hand'>
-      Здесь и сейчас
-    </DashboardMenuItem>
-    <DashboardMenuItem link='/coach/group-sessions' icon='user'>
-      Групповые сессии
-    </DashboardMenuItem>*/}
-      {/*<DashboardMenuItem link={routeNames.coachWallet()} icon='my-purse'>
-        Кошелек
-      </DashboardMenuItem>/*}
-      {/*<DashboardMenuItem link='/coach/calendar' icon='calendar'>
-      Календарь
-    </DashboardMenuItem>*/}
       <DashboardMenuItem link={routeNames.coachSettings()} icon='settings'>
         Настройки
       </DashboardMenuItem>
@@ -87,9 +74,6 @@ export const CoachMenuItems = () => {
       <DashboardMenuItem link={routeNames.coachSchedule()} icon='calendar-with-clock'>
         Расписание
       </DashboardMenuItem>
-      {/*<DashboardMenuItem link='/coach/supervisor' icon='star-with-user'>
-      Супервизор
-    </DashboardMenuItem>*/}
       <DashboardMenuItem link={routeNames.coachBlocked()} icon='none'>
         Заблокированные
       </DashboardMenuItem>

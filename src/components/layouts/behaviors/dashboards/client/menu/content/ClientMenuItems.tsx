@@ -27,17 +27,6 @@ const ItemsWrapper = styled.div`
   `}
 `
 
-const Badge= styled.div`
-  margin-left: 6px;
-  background: #FF6B00;
-  border-radius: 50%;
-  width: 20px;
-  color: #FFFFFF;
-  text-align: center;
-  line-height: 20px;
-  font-size: 10px;
-`
-
 export const ClientMenuItems = () => {
   const chatsCount = useStore(clientChatsSocket.data.$chatsCount)
   return (
@@ -45,21 +34,9 @@ export const ClientMenuItems = () => {
       <DashboardMenuItem link={routeNames.client()} icon='home'>
         Главная страница
       </DashboardMenuItem>
-      <DashboardMenuItem link={routeNames.clientChatsList()} icon='my-coaches'>
-        Мои коучи {chatsCount ? <Badge>{chatsCount}</Badge> : ""}
+      <DashboardMenuItem link={routeNames.clientChatsList()} icon='my-coaches' badgeNumber={chatsCount}>
+        Мои коучи
       </DashboardMenuItem>
-      {/*<DashboardMenuItem link='/client/' icon='hand'>
-      Здесь и сейчас
-    </DashboardMenuItem>
-    <DashboardMenuItem link='/client/' icon='user'>
-      Групповые сессии
-    </DashboardMenuItem>*/}
-      {/*<DashboardMenuItem link={routeNames.clientWallet()} icon='my-purse'>
-        Кошелек
-      </DashboardMenuItem>*/}
-      {/*<DashboardMenuItem link='/client/' icon='calendar'>
-      Календарь
-    </DashboardMenuItem>*/}
       <DashboardMenuItem link={routeNames.clientSettings()} icon='settings'>
         Настройки
       </DashboardMenuItem>

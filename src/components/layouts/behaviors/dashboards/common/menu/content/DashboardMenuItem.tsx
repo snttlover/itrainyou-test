@@ -24,28 +24,50 @@ const MenuItemIcon = styled(Icon).attrs(props => ({
   `}
 `
 
+const Badge = styled.div`
+  background: #FF6B00;
+  border-radius: 16px;
+  width: 20px;
+  height: 24px;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 22px;
+  font-size: 14px;
+`
+
 const StyledMenuItem = styled(Link)<{ disabled?: boolean }>`
   display: flex;
+  position: relative;
   align-items: center;
   cursor: pointer;
   width: 100%;
   margin-bottom: 15px;
   padding: 8px 24px;
   opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
+  
   &:last-child {
     margin-bottom: 0;
   }
-  ${MediaRange.lessThan(`tablet`)`
+  
+  ${MediaRange.lessThan("tablet")`
     margin-bottom: 36px;
   `}
+  
   &[data-selected="true"] {
     background: #9ba9b4;
   }
-  ${MediaRange.lessThan(`tablet`)`
+  
+  ${MediaRange.lessThan("tablet")`
     &[data-selected="true"] {
       background: transparent;
     }
   `}
+  
+  & > ${Badge} {
+    position: absolute;
+    left: 122px;
+    padding: 1px 6px;
+  }
 `
 
 const Label = styled.div`
@@ -61,7 +83,7 @@ const Label = styled.div`
   flex-direction: row;
   align-items: center;
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     font-size: 20px;
      line-height: 26px;
      margin-left: 16px;
@@ -80,6 +102,7 @@ type MenuItemTypes = {
   link: string
   children: React.ReactChild | React.ReactChild[]
   disabled?: boolean
+  badgeNumber?: number
 }
 
 export const DashboardMenuItem = (props: MenuItemTypes) => {
@@ -102,6 +125,7 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
     <StyledMenuItem to={props.link} onClick={clickHandler} disabled={props.disabled} data-selected={isSelectedLink}>
       <MenuItemIcon name={props.icon} />
       <Label>{props.children}</Label>
+      { props.badgeNumber ? <Badge>{ props.badgeNumber }</Badge> : null }
     </StyledMenuItem>
   )
 }

@@ -111,7 +111,7 @@ const Counter = styled.div`
   `}
 `
 
-export const InterestsStats = () => {
+export const SessionStats = () => {
   const profile = useStore($pageProfile)
 
   return (
