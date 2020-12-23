@@ -27,7 +27,6 @@ const MenuItemIcon = styled(Icon).attrs(props => ({
 const Badge = styled.div`
   background: #FF6B00;
   border-radius: 16px;
-  width: 20px;
   height: 24px;
   color: #FFFFFF;
   text-align: center;
@@ -37,7 +36,6 @@ const Badge = styled.div`
 
 const StyledMenuItem = styled(Link)<{ disabled?: boolean }>`
   display: flex;
-  position: relative;
   align-items: center;
   cursor: pointer;
   width: 100%;
@@ -62,15 +60,10 @@ const StyledMenuItem = styled(Link)<{ disabled?: boolean }>`
       background: transparent;
     }
   `}
-  
-  & > ${Badge} {
-    position: absolute;
-    left: 122px;
-    padding: 1px 6px;
-  }
 `
 
 const Label = styled.div`
+  position: relative;
   color: #ffffff;
   margin-left: 8px;
 
@@ -93,6 +86,12 @@ const Label = styled.div`
     font-size: 16px;
     line-height: 22px; 
   `}
+  
+  & > ${Badge} {
+    position: absolute;
+    right: -40px;
+    padding: 1px 6px 1px 5px;
+  }
 `
 
 const prepareLink = (value: string) => value.replace(/\/$/g, ``) + `/`
@@ -124,8 +123,7 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
   return (
     <StyledMenuItem to={props.link} onClick={clickHandler} disabled={props.disabled} data-selected={isSelectedLink}>
       <MenuItemIcon name={props.icon} />
-      <Label>{props.children}</Label>
-      { props.badgeNumber ? <Badge>{ props.badgeNumber }</Badge> : null }
+      <Label>{props.children} { props.badgeNumber ? <Badge>{props.badgeNumber}</Badge> : null }</Label>
     </StyledMenuItem>
   )
 }

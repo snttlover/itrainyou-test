@@ -43,26 +43,16 @@ const Delimiter = styled.div`
   `}
 `
 
-const Badge = styled.div`
-  margin-left: 6px;
-  background: #FF6B00;
-  border-radius: 50%;
-  width: 20px;
-  color: #FFFFFF;
-  text-align: center;
-  line-height: 20px;
-  font-size: 10px;
-`
-
 export const CoachMenuItems = () => {
   const chatsCount = useStore(coachChatsSocket.data.$chatsCount)
+
   return (
     <ItemsWrapper>
       <DashboardMenuItem link={routeNames.coach()} icon='home'>
         Главная страница
       </DashboardMenuItem>
-      <DashboardMenuItem link={routeNames.coachClients()} icon='my-coaches'>
-        Мои клиенты {chatsCount ? <Badge>{chatsCount}</Badge> : ""}
+      <DashboardMenuItem link={routeNames.coachClients()} icon='my-coaches' badgeNumber={chatsCount}>
+        Мои клиенты
       </DashboardMenuItem>
       <DashboardMenuItem link={routeNames.coachSettings()} icon='settings'>
         Настройки
