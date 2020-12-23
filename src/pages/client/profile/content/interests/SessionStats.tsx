@@ -9,14 +9,14 @@ const Container = styled.div`
   position: absolute;
   right: 0;
   left: 87%;
-  height: 80%;
+  height: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 5%;
 
-    ${MediaRange.lessThan(`tablet`)`
+   ${MediaRange.lessThan("tablet")`
+    height: 80%;
     left: 0;
     margin-top: 0;
     position: relative;
@@ -27,7 +27,7 @@ const Container = styled.div`
     max-width: 650px;
   `}
     
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     left: 0;
     position: relative;
     flex-direction: column;
