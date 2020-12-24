@@ -7,7 +7,7 @@ import { DashedButton } from "@/components/button/dashed/DashedButton"
 import peoples from "@/pages/coach/home/approval-failing/images/peoples.svg"
 import { routeNames } from "@/pages/route-names"
 import { $userData } from "@/feature/user/user.model"
-
+import { yandexRegistrationCompletedFx } from "@/pages/coach/home/coach-home.model";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -135,6 +135,7 @@ const InstructionText = styled.div`
 export const YandexKassaInstructions = () => {
   const navigate = useEvent(navigatePush)
   const legalForm = useStore($userData)
+  const _sendYandexRegistration = useEvent(yandexRegistrationCompletedFx)
   return (
     <Container>
       <Title>Вашу анкету одобрили!</Title>
@@ -171,7 +172,7 @@ export const YandexKassaInstructions = () => {
             </div>
           </Question>
         </InterviewQuestions>}
-      <StyledButton onClick={() => navigate({ url: routeNames.coachSupport() })}>Я зарегистрировался</StyledButton>
+      <StyledButton onClick={() => _sendYandexRegistration()}>Я зарегистрировался</StyledButton>
     </Container>
   )
 }

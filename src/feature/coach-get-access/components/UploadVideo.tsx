@@ -29,7 +29,7 @@ const InterviewContainer = styled.div`
   `}
 
   ${MediaRange.greaterThan("tablet")`
-    width: 640px;
+    max-width: 640px;
   `}
 `
 
@@ -60,6 +60,7 @@ const InterviewDescription = styled.div`
     font-size: 16px;
     line-height: 24px;
     color: #5B6670;
+    margin-bottom: 16px;
 `
 
 const Question = styled.li`

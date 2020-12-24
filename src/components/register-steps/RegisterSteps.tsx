@@ -1,10 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import star from "./images/star.svg"
-import smile from "./images/smile.svg"
-import checkbox from "./images/checkbox.svg"
 import grayArrow from "./images/gray-arrow.svg"
 import { MediaRange } from "@/lib/responsive/media"
+import {Icon} from "@/components/icon/Icon"
 
 const Container = styled.div`
   width: 100%;
@@ -12,7 +10,7 @@ const Container = styled.div`
   display: flex;
   margin-top: 106px;
   margin-bottom: 162px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     flex-direction: column;
     margin-top: 16px;
     margin-bottom: 20px;
@@ -21,19 +19,14 @@ const Container = styled.div`
 `
 
 const Step = styled.div`
-  width: 164px;
-  height: 96px;
+  width: 190px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background: #ffffff;
 
-  border: 1px solid #dbdee0;
-  border-radius: 4px;
   flex: 1;
-  padding: 16px 12px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 164px;
     height: 96px;
     padding-bottom: 10px;
@@ -41,41 +34,33 @@ const Step = styled.div`
 `
 
 const StepTitle = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  color: #424242;
-  ${MediaRange.lessThan(`tablet`)`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+  ${MediaRange.lessThan("tablet")`
     font-size: 12px;
     line-height: 16px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 12px;
     line-height: 16px;
     margin-bottom: 10px;
   `}
 `
 
-const Star = styled.img.attrs({ src: star })`
-  width: 20px;
-  height: 20px;
-`
-
-const Checkbox = styled.img.attrs({ src: checkbox })`
-  width: 20px;
-  height: 20px;
-`
-
-const Smile = styled.img.attrs({ src: smile })`
-  width: 20px;
-  height: 20px;
+const NoLetterIcon = styled(Icon).attrs({ name: "noletter" })`
+    width: 64px;
+    height: 64px;
 `
 
 const ArrowDelimiter = styled.div`
    width: 54px;
    background: url('${grayArrow}') center no-repeat;
    background-size: 8px 14px;
-   ${MediaRange.lessThan(`mobile`)`
+   ${MediaRange.lessThan("mobile")`
      transform: rotate(90deg);
      width: unset;
      height: 40px;
@@ -86,17 +71,22 @@ export const RegisterSteps = styled(({ className }) => (
   <Container className={className}>
     <Step>
       <StepTitle>Эта заявка отправится супервизору</StepTitle>
-      <Star />
+      <NoLetterIcon />
     </Step>
     <ArrowDelimiter />
     <Step>
       <StepTitle>Супервизор одобрит вашу заявку</StepTitle>
-      <Checkbox />
+      <NoLetterIcon />
     </Step>
     <ArrowDelimiter />
     <Step>
-      <StepTitle>Эта анкета будет видна клиентам (кроме контактов) </StepTitle>
-      <Smile />
+      <StepTitle>Вы зарегистрируете свой расчетный счет в ЮKassa</StepTitle>
+      <NoLetterIcon />
+    </Step>
+    <ArrowDelimiter />
+    <Step>
+      <StepTitle>Вы получите доступ к платформе</StepTitle>
+      <NoLetterIcon />
     </Step>
   </Container>
 ))``

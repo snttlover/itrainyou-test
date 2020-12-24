@@ -17,9 +17,6 @@ import { UploadVideo } from "@/feature/coach-get-access/components/UploadVideo"
 import { useEvent, useStore, useList } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import study from "./check-step/study.svg"
-import approve from "./check-step/approve.svg"
-import peoples from "./check-step/peoples.svg"
 
 const Container = styled.div`
   display: flex;
@@ -74,6 +71,12 @@ const CheckStepsContainer = styled.div`
   ${MediaRange.greaterThan("laptop")`
     display: flex;    
   `}
+`
+
+const CheckStepIcon = styled(Icon).attrs({ name: "noletter" })`
+  width: 64px;
+  height: 64px;
+  margin: 0 auto;
 `
 
 const CheckStepArrow = styled(Icon).attrs({ name: "arrow" })`
@@ -219,13 +222,17 @@ export const CoachInformation = ({
       <UploadVideo />
       {!withoutCheckStep && (
         <CheckStepsContainer>
-          <CheckStep description='Эта заявка отправится супервизору' img={study} />
+          <CheckStep description='Эта заявка отправится супервизору' />
+          <CheckStepIcon />
           <CheckStepArrow />
-          <CheckStep description='Супервизор одобрит вашу заявку' img={approve} />
+          <CheckStep description='Супервизор одобрит вашу заявку' />
+          <CheckStepIcon />
           <CheckStepArrow />
-          <CheckStep description='Вы зарегистрируете свой расчетный счет в ЮKassa' img={peoples} />
+          <CheckStep description='Вы зарегистрируете свой расчетный счет в ЮKassa' />
+          <CheckStepIcon />
           <CheckStepArrow />
-          <CheckStep description='Вы получите доступ к платформе' img={peoples} />
+          <CheckStep description='Вы получите доступ к платформе' />
+          <CheckStepIcon />
         </CheckStepsContainer>
       )}
       {withoutCheckStep && <StyledRegisterSteps />}

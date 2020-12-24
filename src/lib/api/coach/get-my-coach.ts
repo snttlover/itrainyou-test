@@ -26,6 +26,8 @@ export interface CoachSelfData {
   isTopCoach: boolean
   isProfileFilled: boolean
   isYandexRegistrationApproved: boolean
+  isApplicationApproved: boolean
+  isYandexRegistrationCompleted: boolean
   legalForm: "SELF_EMPLOYMENT" | "IP_PROFESSIONAL_TAXES" | "IP_OTHER_TAXES" | ""
   photos: string[]
   description: string

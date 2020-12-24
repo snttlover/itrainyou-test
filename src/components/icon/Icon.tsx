@@ -75,8 +75,9 @@ export type IconName =
   | "vk-s-login"
   | "google-s-login"
   | "facebook-s-login"
-        | "MasterCard"
-        | "Visa"
+  | "MasterCard"
+  | "Visa"
+  | "noletter"
 
 type IconProps = {
   name: IconName

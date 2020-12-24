@@ -32,6 +32,8 @@ export const $coachAccess = $userData.map(userData => ({
   isTemporarilyRejected: userData.coach?.isTemporarilyRejected,
   lastRegistrationApplyDatetime: userData.coach?.lastRegistrationApplyDatetime,
   isYandexRegistrationApproved: userData.coach?.isYandexRegistrationApproved,
+  isApplicationApproved: userData.coach?.isApplicationApproved,
+  isYandexRegistrationCompleted: userData.coach?.isYandexRegistrationCompleted,
 }))
 
 export const $isSocialSignupInProgress = restore(setIsSocialSignupInProgress,false)

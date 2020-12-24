@@ -81,7 +81,7 @@ const CurrentState = () => {
       {state === "forever-rejected" && <ApprovalFailing />}
       {state === "temporary-rejected-wait" && <ApprovalTimer />}
       {state === "temporary-rejected-done" && <ApprovalTimerOver />}
-      {state === "yandex-kassa-approved" && <YandexKassaWaitingForApproval />}
+      {state === "yandex-kassa-completed" && <YandexKassaWaitingForApproval />}
       {state === "yandex-kassa-not-approved" && <YandexKassaInstructions />}
       {state === "approved" && <CoachSessionsPage />}
     </>

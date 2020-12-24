@@ -1,5 +1,6 @@
 import { $coachAccess, loadUserData } from "@/feature/user/user.model"
 import { updateRegistrationApplication } from "@/lib/api/coach/update-registration-application"
+import { yandexRegistrationCompleted } from "@/lib/api/coach/yandexRegistrationCompleted"
 import { date } from "@/lib/formatting/date"
 import { InferStoreType } from "@/lib/types/effector"
 import { combine, createEffect, createEvent, createStore, forward } from "effector-root"
@@ -12,7 +13,7 @@ type CoachState =
   | "temporary-rejected-done"
   | "profile-fill"
   | "yandex-kassa-not-approved"
-  | "yandex-kassa-approved"
+  | "yandex-kassa-completed"
 
 export const updateTime = createEvent()
 
@@ -38,13 +39,13 @@ const getCoachState = ({
   access: InferStoreType<typeof $coachAccess>
   datetimeLeft: InferStoreType<typeof $datetimeLeft>
 }): CoachState => {
-  if (access.isApproved && access.isYandexRegistrationApproved) return "approved"
-  if (access.isApproved && !access.isYandexRegistrationApproved) return "yandex-kassa-not-approved"
-  if (access.isYandexRegistrationApproved) return "yandex-kassa-approved"
+  if (access.isApproved) return "approved"
+  if (!access.isApproved && access.isApplicationApproved && access.isYandexRegistrationCompleted) return "yandex-kassa-completed"
+  if (!access.isApproved && access.isApplicationApproved && !access.isYandexRegistrationApproved) return "yandex-kassa-not-approved"
   if (access.isForeverRejected) return "forever-rejected"
   if (access.isTemporarilyRejected && datetimeLeft.days > 0) return "temporary-rejected-wait"
   if (access.isTemporarilyRejected && datetimeLeft.days <= 0) return "temporary-rejected-done"
-  if (access.isProfileFilled) return "approve-wait"
+  if (access.isProfileFilled && !access.isApplicationApproved) return "approve-wait"
 
   return "profile-fill"
 }
@@ -56,6 +57,10 @@ export const $coachHomeState = combine({
 
 export const updateRegistrationFx = createEffect({
   handler: updateRegistrationApplication,
+})
+
+export const yandexRegistrationCompletedFx = createEffect({
+  handler: yandexRegistrationCompleted,
 })
 
 forward({ from: updateRegistrationFx.done, to: loadUserData })
