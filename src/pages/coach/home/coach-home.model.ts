@@ -11,6 +11,8 @@ type CoachState =
   | "temporary-rejected-wait"
   | "temporary-rejected-done"
   | "profile-fill"
+  | "yandex-kassa-not-approved"
+  | "yandex-kassa-approved"
 
 export const updateTime = createEvent()
 
@@ -36,7 +38,9 @@ const getCoachState = ({
   access: InferStoreType<typeof $coachAccess>
   datetimeLeft: InferStoreType<typeof $datetimeLeft>
 }): CoachState => {
-  if (access.isApproved) return "approved"
+  if (access.isApproved && access.isYandexRegistrationApproved) return "approved"
+  if (access.isApproved && !access.isYandexRegistrationApproved) return "yandex-kassa-not-approved"
+  if (access.isYandexRegistrationApproved) return "yandex-kassa-approved"
   if (access.isForeverRejected) return "forever-rejected"
   if (access.isTemporarilyRejected && datetimeLeft.days > 0) return "temporary-rejected-wait"
   if (access.isTemporarilyRejected && datetimeLeft.days <= 0) return "temporary-rejected-done"

@@ -7,8 +7,8 @@ const CheckStepContainer = styled.div`
   width: 164px;
   height: auto;
 
-  background: #ffffff;
-  border: 1px solid #dbdee0;
+
+
   box-sizing: border-box;
   border-radius: 4px;
 
@@ -16,9 +16,11 @@ const CheckStepContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
-  font-size: 12px;
-  line-height: 16px;
+    
+  font-family: Roboto;  
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
   text-align: center;
   color: #424242;
 

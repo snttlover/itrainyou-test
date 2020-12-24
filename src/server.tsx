@@ -2,7 +2,9 @@ import { $lastUrlServerNavigation } from "@/feature/navigation"
 import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import { Provider } from "effector-react/ssr"
 import express from "express"
+import * as Sentry from "@sentry/node"
 import serialize from "serialize-javascript"
+import { performance } from "perf_hooks"
 
 import * as React from "react"
 import * as ReactDOMServer from "react-dom/server"
@@ -18,6 +20,13 @@ import { config } from "./config"
 import { getStart, START } from "./lib/effector"
 import { Application } from "./application"
 import { ROUTES } from "./pages/routes"
+
+Sentry.init({
+  dsn: `${config.SENTRY_SERVER_DSN}`,
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
 
 const serverStarted = root.createEvent<{
   req: express.Request
@@ -80,9 +89,11 @@ syncLoadAssets()
 
 export const server = express()
   .disable("x-powered-by")
+  .use(Sentry.Handlers.requestHandler())
   .use(cookieParser())
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get("/*", async (req: express.Request, res: express.Response) => {
+    const tStart = performance.now()
     const currentRoutes = matchRoutes(ROUTES, req.url.split("?")[0])
     const isSSR = currentRoutes.reduce((_, route) => route.route.ssr, false)
     const hasCookie = !!req.cookies[TOKEN_COOKIE_KEY]
@@ -91,10 +102,13 @@ export const server = express()
       const scope = fork(root)
 
       try {
+        const t1 = performance.now()
         await allSettled(serverStarted, {
           scope,
           params: { req, res, isSSR },
         })
+        const t2 = performance.now()
+        console.log(`Load data from backend: ${t2 - t1}ms`)
       } catch (error) {
         console.log(error)
       }
@@ -113,22 +127,25 @@ export const server = express()
         </StaticRouter>
       )
 
-      const stream = sheet.interleaveWithNodeStream(ReactDOMServer.renderToNodeStream(jsx))
       const storesValues = effectorSerialize(scope, { ignore: [$token], onlyChanges: true })
+      const html = ReactDOMServer.renderToString(jsx)
+      const css = sheet.getStyleTags()
 
-      res.write(htmlStart(assets.client.css, assets.client.js))
-      stream.pipe(res, { end: false })
-      stream.on("end", () => {
-        res.end(htmlEnd(storesValues))
-        sheet.seal()
-      })
+      res.write(htmlStart(assets.client.css, assets.client.js, css))
+      res.write(html)
+      res.end(htmlEnd(storesValues))
+
+      const tEnd = performance.now()
+      console.log(`Request done by ${tEnd - tStart}ms`)
+      sheet.seal()
     } else {
-      res.write(htmlStart(assets.client.css, assets.client.js))
+      res.write(htmlStart(assets.client.css, assets.client.js, ""))
       res.end(htmlEnd({}))
     }
   })
+  .use(Sentry.Handlers.errorHandler())
 
-function htmlStart(assetsCss: string, assetsJs: string) {
+function htmlStart(assetsCss: string, assetsJs: string, css: string) {
   return `<!doctype html>
     <html lang="">
     <head>
@@ -136,7 +153,31 @@ function htmlStart(assetsCss: string, assetsJs: string) {
         <meta charSet='utf-8' />
         <title>Itrainyou</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">     
-        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,600|Roboto:300,400,500,700,900&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">   
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,600|Roboto:300,400,500,700,900&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-B664BMTWRH"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-B664BMTWRH');
+        </script>
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript" >
+           (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+           m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+           (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+        
+           ym(68738200, "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true,
+                webvisor:true
+           });
+        </script>
+        <noscript><div><img src="https://mc.yandex.ru/watch/68738200" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->   
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ""}
         <script>window.env = ${serialize(config)};</script>
         ${
@@ -144,6 +185,7 @@ function htmlStart(assetsCss: string, assetsJs: string) {
             ? `<script src="${assetsJs}" defer></script>`
             : `<script src="${assetsJs}" defer crossorigin></script>`
         }
+        ${css}
     </head>
     <body>
         <div id="root">`

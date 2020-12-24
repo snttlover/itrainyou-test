@@ -302,14 +302,18 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   const [isActive, changeActive] = useState(false)
   const history = useHistory()
 
-  const sessionsListModel = useMemo(() => genCoachSessions(coach.id), [coach.id])
+  let sessionsListModel: ReturnType<typeof genCoachSessions> | null = null
 
-  if (isActive) {
-    sessionsListModel.loadData({
-      params: {
-        duration_type: "D30",
-      },
-    })
+  if (process.env.BUILD_TARGET === "client") {
+    sessionsListModel = useMemo(() => genCoachSessions(coach.id), [coach.id])
+
+    if (isActive) {
+      sessionsListModel.loadData({
+        params: {
+          duration_type: "D30",
+        },
+      })
+    }
   }
 
   const toggleCalendar = (e: React.SyntheticEvent) => {
@@ -381,7 +385,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Date>
         </RatingContainer>
       </MainInfoContainer>
-      {isActive && <SelectDatetime coach={coach} sessionsData={sessionsListModel} />}
+      {isActive && <SelectDatetime coach={coach} sessionsData={sessionsListModel!} />}
     </Block>
   )
 }

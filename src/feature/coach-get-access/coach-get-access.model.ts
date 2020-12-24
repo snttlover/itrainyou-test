@@ -1,7 +1,72 @@
 import { uploadMedia } from "@/lib/api/media"
 import { createEffectorField } from "@/lib/generators/efffector"
-import { phoneValidator, trimString } from "@/lib/validators"
+import { phoneValidator, trimString, innValidator } from "@/lib/validators"
 import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
+import { getSystemInfo } from "@/lib/api/system-info"
+
+export type Prices = {
+    d30Price?: number
+    d45Price?: number
+    d60Price?: number
+    d90Price?: number
+}
+
+type Price = {
+    name: keyof Prices
+    key: string
+    isLoading: boolean
+    value: number
+}
+
+type ChangePriceEvent = { name: keyof Prices; value: number }
+
+export const changePrice = createEvent<ChangePriceEvent>()
+
+export const loadSystemInfoFx = createEffect({
+  handler: getSystemInfo,
+})
+
+export const $feeRatio = createStore(0).on(loadSystemInfoFx.doneData, (_, data) => data.platformSessionFee)
+export const $prices = createStore<Price[]>([
+  {
+    name: "d30Price",
+    key: "D30",
+    isLoading: false,
+    value: 0,
+  },
+  {
+    name: "d45Price",
+    key: "D45",
+    isLoading: false,
+    value: 0,
+  },
+  {
+    name: "d60Price",
+    key: "D60",
+    isLoading: false,
+    value: 0,
+  },
+  {
+    name: "d90Price",
+    key: "D90",
+    isLoading: false,
+    value: 0,
+  },
+])
+  .on(changePrice, (state, { name, value }) =>
+    state.map(price => ({ ...price, value: price.name === name ? value : price.value }))
+  )
+
+export const $pricesWithFee = combine($prices, $feeRatio, (prices, feeRatio) =>
+  prices.map(price => ({ ...price, valueWithFee: price ? price.value + price.value * feeRatio : 0 }))
+)
+
+const $schedule = $pricesWithFee.map(state => {
+  const newState = state.reduce((a, key) => Object.assign(a, { [key.name]: key.valueWithFee }), {})
+  const emptyObjectForBackend = {isAvailable: false, weekdaySlots: []}
+  Object.assign(newState, emptyObjectForBackend)
+  return newState
+})
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -9,6 +74,28 @@ export const [$education, educationChanged, $educationError, $isEducationCorrect
     if (!value) return "Поле не должно быть пустым"
     return null
   },
+})
+
+type LegalDataType = {
+    id: number
+    selected: boolean
+    name: string
+    value: string
+}
+export const changeLegalDataCheckBox = createEvent<number>()
+
+export const $selectLegalForm = createStore<LegalDataType[]>([
+  {id: 1, selected: false, name: "Я — самозанятый", value: "SELF_EMPLOYMENT"},
+  {id: 2, selected: false, name: "У меня ИП, уплачивающие налог на профессиональный доход (ИП-самозанятые)", value: "IP_PROFESSIONAL_TAXES"},
+  {id: 3, selected: false, name: "ИП с любым другим налоговым режимом, кроме налога на профессиональный доход", value: "IP_OTHER_TAXES"},
+]).on(changeLegalDataCheckBox, (state, payload) => {
+  const newState = state.map(item => (payload === item.id ? {...item, selected: true } : {...item, selected: false }))
+  return newState
+})
+
+export const $legalForm = $selectLegalForm.map(state => {
+  const selectedItem = state.find(item => item.selected)
+  return selectedItem?.value
 })
 
 export const [
@@ -31,6 +118,34 @@ export const [$description, descriptionChanged, $descriptionError, $isDescriptio
       if (!value) return "Поле не должно быть пустым"
       return null
     },
+  }
+)
+
+export const [$socialNetworks, socialNetworkChanged, $socialNetworkError, $issocialNetworkCorrect] = createEffectorField<string>(
+  {
+    defaultValue: "",
+    validator: value => {
+      if (!value) return "Поле не должно быть пустым"
+      return null
+    },
+  }
+)
+
+export const [$supervisions, supervisionsChanged, $supervisionsError, $issupervisionsCorrect] = createEffectorField<string>(
+  {
+    defaultValue: "",
+    validator: value => {
+      if (!value) return "Поле не должно быть пустым"
+      return null
+    },
+  }
+)
+
+export const [$inn, innChanged, $innError, $isInnCorrect] = createEffectorField<string>(
+  {
+    defaultValue: "",
+    validator: innValidator,
+    eventMapper: event => event.map(trimString),
   }
 )
 
@@ -105,6 +220,11 @@ export const $form = combine({
   phone: $phone,
   photos: $photos,
   videoInterview: $videoInterview,
+  legalForm: $legalForm,
+  socialNetworks: $socialNetworks,
+  supervisions: $supervisions,
+  inn: $inn,
+  schedule: $schedule,
 })
 
 export const $formErrors = combine({
@@ -114,6 +234,9 @@ export const $formErrors = combine({
   description: $descriptionError,
   phone: $phoneError,
   video: $videoInterviewError,
+  socialNetworks: $socialNetworkError,
+  supervisions: $supervisionsError,
+  inn: $innError,
 })
 
 export const $formValid = combine(
@@ -121,6 +244,8 @@ export const $formValid = combine(
   $isWorkExperienceCorrect,
   $isDescriptionCorrect,
   $isPhoneCorrect,
+  $isInnCorrect,
+  $issupervisionsCorrect,
   $isCategoriesCorrect,
   $isVideoInterviewCorrect,
   (...args) => args.every(val => val)

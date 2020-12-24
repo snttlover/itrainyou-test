@@ -171,9 +171,9 @@ const SkipButton = styled(Button)`
   `}
 `
 
-type CoachHeaderProps = { avatar: string; fullName: string; years: number; sex: string; onSkip: () => any }
+type CoachHeaderProps = { avatar: string; fullName: string; years: number; sex: string; }
 
-export const CoachHeader = ({ avatar, fullName, sex, years, onSkip }: CoachHeaderProps) => (
+export const CoachHeader = ({ avatar, fullName, sex, years }: CoachHeaderProps) => (
   <HeaderContent>
     <Title>Заполните информацию о себе</Title>
     <Content>
@@ -186,9 +186,6 @@ export const CoachHeader = ({ avatar, fullName, sex, years, onSkip }: CoachHeade
           <Sex>Пол: {sex}</Sex>
         </FullNameSex>
       </UserData>
-      <ButtonContainer>
-        <SkipButton onClick={onSkip}>Пропустить</SkipButton>
-      </ButtonContainer>
     </Content>
   </HeaderContent>
 )

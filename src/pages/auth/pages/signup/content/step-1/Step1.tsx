@@ -6,7 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { Socials } from "@/pages/auth/pages/socials/components/Socials"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
-import { useEffect } from "react"
+import {useEffect, useState} from "react"
 import { Link } from "react-router-dom"
 import {
   $isFormValid,
@@ -23,6 +23,7 @@ import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { userDataReset } from "@/pages/auth/pages/signup/models/units"
+import { Checkbox } from "@/components/checkbox/Checkbox"
 
 const Container = styled.div`
   min-width: 320px;
@@ -125,14 +126,14 @@ const AcceptionText = styled.div`
   font-weight: normal;
   font-size: 12px;
   line-height: 18px;
-  text-align: center;
-  color: #ffffff;
+  text-align: left;
+  color: #424242;
 
   max-width: 460px;
-  margin: 20px auto;
+  margin: 20px 15px;
 
   & a {
-    color: #fff;
+    color: #424242;;
     font-weight: 500;
     text-decoration: underline;
   }
@@ -148,6 +149,8 @@ export const Step1 = () => {
   const _emailChanged = useEvent(emailChanged)
   const _passwordChanged = useEvent(passwordChanged)
   const _passwordRepeatChanged = useEvent(passwordRepeatChanged)
+
+  const [agreed,setAgree] = useState(false)
 
   useGate(step1Gate)
 
@@ -191,17 +194,19 @@ export const Step1 = () => {
               </PasswordHint>
             )}
           </FormItem>
-          <NextButton disabled={!isFormValid || isFetching} />
+          <Checkbox value={agreed} onChange={() => setAgree(!agreed)}>
+            <AcceptionText>
+                Я принимаю условия <a href='/privacy_policy.pdf'>Политики конфиденциальности</a>,{" "}
+              <a href='/user_agreement.pdf'>Политике по обработке персональных данных</a>
+            </AcceptionText>
+          </Checkbox>
+          <NextButton disabled={!isFormValid || isFetching || !agreed} />
         </Form>
       </Container>
       <Footer>
         <StyledLink to='/auth/login'>
           Уже есть аккаунт? <SignIn>Войдите</SignIn>
         </StyledLink>
-        <AcceptionText>
-          Регистрируясь вы принимаете условия <a href='/privacy_policy.pdf'>Политики конфиденциальности</a>,{" "}
-          <a href='/user_agreement.pdf'>Пользовательского соглашения</a>
-        </AcceptionText>
       </Footer>
     </AuthLayout>
   )

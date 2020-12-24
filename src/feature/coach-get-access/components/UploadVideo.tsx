@@ -24,45 +24,42 @@ const InterviewContainer = styled.div`
   margin: 44px 8px 0;
 
   ${MediaRange.greaterThan("mobile")`
-    max-width: 600px;
+    max-width: 640px;
     margin: 44px auto 0;
   `}
 
   ${MediaRange.greaterThan("tablet")`
-    width: 600px;
+    width: 640px;
   `}
 `
 
-const InterviewTitle = styled.h2`
-  font-family: Roboto Slab;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 26px;
-  color: #424242;
-  margin-left: 8px;
+const InterviewTitle = styled.div`
+    font-family: Roboto Slab;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+    margin: 0 8px;
+    color: #783D9D;
 
-  ${MediaRange.greaterThan("mobile")`    
-    font-size: 24px;
-    line-height: 26px;
-  `}
+    ${MediaRange.greaterThan("mobile")`
+        margin: 0 auto;
+        max-width: 640px;
+        font-size: 20px;
+        line-height: 26px;
+       `} 
+            ${MediaRange.greaterThan("tablet")` 
+                font-size: 24px;
+                line-height: 26px;
+            `}
 `
 
-const InterviewDescription = styled.h2`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  margin-left: 8px;
-  font-size: 14px;
-  line-height: 18px;
-  color: #5b6670;
-  margin-top: 4px;
-
-  ${MediaRange.greaterThan("mobile")`
-    margin-top: 12px;
+const InterviewDescription = styled.div`
+    font-family: Roboto;
+    font-weight: normal;
     font-size: 16px;
-    line-height: 22px;
-  `}
+    line-height: 24px;
+    color: #5B6670;
 `
 
 const Question = styled.li`
@@ -106,7 +103,6 @@ const InterviewQuestions = styled.ol`
   ${MediaRange.greaterThan("mobile")`
     font-size: 16px;
     line-height: 22px;
-    margin: 24px 8px 0;
     padding: 32px 32px 24px 32px;
     
     ${Question} {
@@ -139,9 +135,10 @@ export const UploadVideo = () => {
 
   return (
     <InterviewContainer>
-      <InterviewTitle>Видеоинтервью</InterviewTitle>
-      <InterviewDescription>Запишите ответы на наши вопросы на видео. Мы хотим лучше узнать Вас!</InterviewDescription>
+
       <InterviewQuestions {...getRootProps()}>
+        <InterviewTitle>Видеоинтервью</InterviewTitle>
+        <InterviewDescription>Запишите ответы на наши вопросы на видео. Мы хотим лучше узнать Вас!</InterviewDescription>
         <Question>
           <div>
             Что для Вас является наилучшим результатом коучинга? <br />

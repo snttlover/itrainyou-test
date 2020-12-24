@@ -10,6 +10,19 @@ import ReactDOM from "react-dom"
 import { Router } from "react-router-dom"
 import { history } from "@/feature/navigation"
 import { Application } from "./application"
+import * as Sentry from "@sentry/react"
+import { config } from "@/config"
+import { Integrations } from "@sentry/tracing"
+
+Sentry.init({
+  dsn: `${config.SENTRY_CLIENT_DSN}`,
+  integrations: [
+    new Integrations.BrowserTracing(),
+  ],
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
 
 const token = Cookies.get(TOKEN_COOKIE_KEY)
 runInScope(changeToken, Cookies.get(TOKEN_COOKIE_KEY))

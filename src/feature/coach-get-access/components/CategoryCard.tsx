@@ -5,26 +5,13 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
+import {CategoryDescription} from "@/pages/landing/content/top-bar/categories-picker/CategoryDescription"
 
 const Container = styled.div<{ disabled?: boolean }>`
   background: #ffffff;
   border-radius: 2px;
   padding: 8px;
-  user-select: none;
-  opacity: ${({ disabled }) => (disabled ? "0.6" : "1")};
-  ${MediaRange.greaterThan("mobile")`
-    padding: 20px;
-    margin: 0 auto;
-  `}
-  ${MediaRange.greaterThan("tablet")`
-    width: 100%;
-  `}
-`
-
-const Header = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
+  max-width: 280px;  
 `
 
 const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
@@ -33,25 +20,14 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   width: 16px;
   height: 16px;
   margin-left: 12px;
-
-  ${MediaRange.greaterThan("mobile")`
-    width: 24px;
-    height: 24px;
-  `}
 `
 
 const Title = styled.div`
   font-family: Roboto Slab;
   font-size: 16px;
-  line-height: 26px;
+  line-height: 24px;
   color: #424242;
-  margin-left: 8px;
-  padding-right: 20px;
-
-  ${MediaRange.greaterThan("mobile")`
-    font-size: 24px;
-    line-height: 26px;
-  `}
+  margin-left: 12px;  
 `
 
 type ArrowType = { reverse: boolean }
@@ -65,16 +41,15 @@ const Arrow = styled(Icon).attrs({ name: "arrow" })<ArrowType>`
   transition: transform 200ms ease;
 `
 
-const Description = styled.p`
-  font-size: 14px;
-  line-height: 18px;
-  margin-top: 12px;
-  color: #424242;
+const Category = styled.div`
+  display: flex;
+  align-items: center;  
+  margin-bottom: 18px;
+`
 
-  ${MediaRange.greaterThan("mobile")`
-    font-size: 16px;
-    line-height: 22px;
-  `}
+const StyledCategoriesDescription = styled(CategoryDescription)`
+  margin-left: 10px;
+  margin-top: 3px;
 `
 
 type CategoryCardProps = {
@@ -86,13 +61,12 @@ type CategoryCardProps = {
 }
 
 export const CategoryCard = styled(({ category, selected, onSelect, className, disabled }: CategoryCardProps) => {
-  const [isOpen, setOpen] = useState(false)
 
   const realDisabled = !selected && disabled
 
   return (
-    <Container className={className} onClick={() => setOpen(!isOpen)} disabled={realDisabled}>
-      <Header>
+    <Container className={className} disabled={realDisabled}>
+      <Category>
         <Checkbox
           value={selected}
           color={category.color}
@@ -101,11 +75,10 @@ export const CategoryCard = styled(({ category, selected, onSelect, className, d
             onSelect(category.id)
           }}
         />
-        <Tabletka color={category.color} />
         <Title>{category.name}</Title>
-        <Arrow reverse={isOpen} />
-      </Header>
-      {isOpen && <Description>{category.description}</Description>}
+        <Tabletka color={category.color} />
+        <StyledCategoriesDescription>{category.description}</StyledCategoriesDescription>
+      </Category>
     </Container>
   )
 })``
