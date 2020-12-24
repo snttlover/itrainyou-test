@@ -20,7 +20,6 @@ import styled from "styled-components"
 import study from "./check-step/study.svg"
 import approve from "./check-step/approve.svg"
 import peoples from "./check-step/peoples.svg"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
 
 const Container = styled.div`
   display: flex;
@@ -156,7 +155,7 @@ const ListContainer = styled.div`
 
 type CoachInformationProps = {
   onRegisterClick: () => void
-  onSkip: () => void
+  onSkip?: () => void
   loading: boolean
   withoutCheckStep?: boolean
   className?: string
@@ -203,11 +202,11 @@ export const CoachInformation = ({
 
 
       <CategoriesContainer>
-        <SkipRegistration>
+        { onSkip ? <SkipRegistration>
           <Title>Пропустить заполнение</Title>
           <Description>Вы сможете заполнить эту информацию позже</Description>
           <StyledButton data-secondary onClick={onSkip}>Пропустить</StyledButton>
-        </SkipRegistration>
+        </SkipRegistration> : null}
         {categoriesLoading ? (
           <LoaderContainer>
             <Loader />

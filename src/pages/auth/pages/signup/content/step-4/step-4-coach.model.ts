@@ -59,6 +59,6 @@ forward({
 })
 
 forward({
-    from: step4CoachMounted,
-    to: loadSystemInfoFx,
+  from: step4CoachMounted,
+  to: loadSystemInfoFx,
 })

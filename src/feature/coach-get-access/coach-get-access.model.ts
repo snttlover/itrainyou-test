@@ -63,9 +63,10 @@ export const $pricesWithFee = combine($prices, $feeRatio, (prices, feeRatio) =>
 
 const $schedule = $pricesWithFee.map(state => {
   const newState = state.reduce((a, key) => Object.assign(a, { [key.name]: key.valueWithFee }), {})
+  const emptyObjectForBackend = {isAvailable: false, weekdaySlots: []}
+  Object.assign(newState, emptyObjectForBackend)
   return newState
 })
-$schedule.watch(response => console.log(response))
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -223,7 +224,7 @@ export const $form = combine({
   socialNetworks: $socialNetworks,
   supervisions: $supervisions,
   inn: $inn,
-  schedule: {$schedule, isAvailable: false, weekdaySlots: [] },
+  schedule: $schedule,
 })
 
 export const $formErrors = combine({

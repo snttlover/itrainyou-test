@@ -6,7 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { Socials } from "@/pages/auth/pages/socials/components/Socials"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
-import { useEffect } from "react"
+import {useEffect, useState} from "react"
 import { Link } from "react-router-dom"
 import {
   $isFormValid,
@@ -126,11 +126,11 @@ const AcceptionText = styled.div`
   font-weight: normal;
   font-size: 12px;
   line-height: 18px;
-  text-align: center;
+  text-align: left;
   color: #424242;
 
   max-width: 460px;
-  margin: 20px auto;
+  margin: 20px 15px;
 
   & a {
     color: #424242;;
@@ -149,6 +149,8 @@ export const Step1 = () => {
   const _emailChanged = useEvent(emailChanged)
   const _passwordChanged = useEvent(passwordChanged)
   const _passwordRepeatChanged = useEvent(passwordRepeatChanged)
+
+  const [agreed,setAgree] = useState(false)
 
   useGate(step1Gate)
 
@@ -192,11 +194,13 @@ export const Step1 = () => {
               </PasswordHint>
             )}
           </FormItem>
-            <Checkbox><AcceptionText>
-                Регистрируясь вы принимаете условия <a href='/privacy_policy.pdf'>Политики конфиденциальности</a>,{" "}
-                <a href='/user_agreement.pdf'>Пользовательского соглашения</a>
-            </AcceptionText></Checkbox>
-          <NextButton disabled={!isFormValid || isFetching} />
+          <Checkbox value={agreed} onChange={() => setAgree(!agreed)}>
+            <AcceptionText>
+                Я принимаю условия <a href='/privacy_policy.pdf'>Политики конфиденциальности</a>,{" "}
+              <a href='/user_agreement.pdf'>Политике по обработке персональных данных</a>
+            </AcceptionText>
+          </Checkbox>
+          <NextButton disabled={!isFormValid || isFetching || !agreed} />
         </Form>
       </Container>
       <Footer>
