@@ -223,7 +223,7 @@ export const $form = combine({
   socialNetworks: $socialNetworks,
   supervisions: $supervisions,
   inn: $inn,
-  schedule: {...$schedule, isAvailable: false, weekdaySlots: [] },
+  schedule: {$schedule, isAvailable: false, weekdaySlots: [] },
 })
 
 export const $formErrors = combine({
