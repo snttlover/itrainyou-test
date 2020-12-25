@@ -6,16 +6,17 @@ import React from "react"
 import styled from "styled-components"
 
 const Container = styled.div`
-  display: flex;
+    display: flex;
+    max-width: 360px;
 `
 
 const StyledPriceInput = styled(PriceInput)`
-  width: 100%;
+    width: 100%;
+    border: 1px solid #D3D7F3;
 `
 
 const SummaryPriceFormItem = styled(FormItem)`
   margin-left: 8px;
-  flex-shrink: 1.5;
 `
 
 type PriceInputGroupType = {

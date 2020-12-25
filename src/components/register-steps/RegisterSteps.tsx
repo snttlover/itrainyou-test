@@ -24,12 +24,10 @@ const Step = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
   flex: 1;
   ${MediaRange.lessThan("mobile")`
     width: 164px;
-    height: 96px;
-    padding-bottom: 10px;
+    height: 118px;
   `}
 `
 
@@ -80,7 +78,7 @@ export const RegisterSteps = styled(({ className }) => (
     </Step>
     <ArrowDelimiter />
     <Step>
-      <StepTitle>Вы зарегистрируете свой расчетный счет в ЮKassa</StepTitle>
+      <StepTitle>Вы зарегистрируетесь в ЮKassa</StepTitle>
       <NoLetterIcon />
     </Step>
     <ArrowDelimiter />

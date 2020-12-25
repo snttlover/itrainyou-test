@@ -28,14 +28,14 @@ const Container = styled.div`
 `
 
 const CategoriesContainer = styled.div`
-  margin: 0 8px;
+  margin: 0 16px;
 
   ${CategoryCard} {
     margin-top: 16px;
   }
 
   ${MediaRange.greaterThan("mobile")`
-    margin: 0;
+    margin: 0 16px;
     ${CategoryCard} {
       margin-top: 24px;
       
@@ -58,6 +58,11 @@ const Title = styled.div`
   line-height: 28px;
   color: #783D9D;
   text-align: left;
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 16px;
+    line-height: 24px;
+  `}
 `
 
 const CheckStepsContainer = styled.div`
@@ -143,6 +148,13 @@ const Description = styled.div`
     font-size: 16px;
     line-height: 24px;
     color: #424242;
+    margin-bottom: 16px;
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+    line-height: 22px;
+  `}
+    
 `
 
 const StyledButton = styled(Button)`
@@ -202,8 +214,6 @@ export const CoachInformation = ({
 
   return (
     <Container className={className}>
-
-
       <CategoriesContainer>
         { onSkip ? <SkipRegistration>
           <Title>Пропустить заполнение</Title>
@@ -228,7 +238,7 @@ export const CoachInformation = ({
           <CheckStep description='Супервизор одобрит вашу заявку' />
           <CheckStepIcon />
           <CheckStepArrow />
-          <CheckStep description='Вы зарегистрируете свой расчетный счет в ЮKassa' />
+          <CheckStep description='Вы зарегистрируетесь в ЮKassa' />
           <CheckStepIcon />
           <CheckStepArrow />
           <CheckStep description='Вы получите доступ к платформе' />
@@ -242,7 +252,7 @@ export const CoachInformation = ({
           disabled={loading || isVideoUploading || !isFormValid}
           onClick={onRegisterClick}
         >
-          Отправить заявку
+          Зарегистрироваться
         </SendRequestButton>
       </ButtonContainer>
     </Container>

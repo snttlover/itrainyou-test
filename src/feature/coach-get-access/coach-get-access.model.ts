@@ -86,7 +86,7 @@ export const changeLegalDataCheckBox = createEvent<number>()
 
 export const $selectLegalForm = createStore<LegalDataType[]>([
   {id: 1, selected: false, name: "Я — самозанятый", value: "SELF_EMPLOYMENT"},
-  {id: 2, selected: false, name: "У меня ИП, уплачивающие налог на профессиональный доход (ИП-самозанятые)", value: "IP_PROFESSIONAL_TAXES"},
+  {id: 2, selected: false, name: "Я ИП и уплачиваю налог на профессиональный доход (ИП-самозанятый", value: "IP_PROFESSIONAL_TAXES"},
   {id: 3, selected: false, name: "ИП с любым другим налоговым режимом, кроме налога на профессиональный доход", value: "IP_OTHER_TAXES"},
 ]).on(changeLegalDataCheckBox, (state, payload) => {
   const newState = state.map(item => (payload === item.id ? {...item, selected: true } : {...item, selected: false }))

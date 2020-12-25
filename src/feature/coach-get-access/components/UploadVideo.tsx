@@ -21,11 +21,11 @@ const Video = styled.video`
 `
 
 const InterviewContainer = styled.div`
-  margin: 44px 8px 0;
+    margin: 24px 16px 0;
 
   ${MediaRange.greaterThan("mobile")`
     max-width: 640px;
-    margin: 44px auto 0;
+    margin: 0 auto 0;
   `}
 
   ${MediaRange.greaterThan("tablet")`
@@ -39,18 +39,20 @@ const InterviewTitle = styled.div`
     font-weight: normal;
     font-size: 20px;
     line-height: 28px;
-    margin: 0 8px;
     color: #783D9D;
+    margin-bottom: 8px;
 
     ${MediaRange.greaterThan("mobile")`
         margin: 0 auto;
         max-width: 640px;
         font-size: 20px;
         line-height: 26px;
+        margin-bottom: 8px;
        `} 
             ${MediaRange.greaterThan("tablet")` 
                 font-size: 24px;
                 line-height: 26px;
+                margin-bottom: 8px;
             `}
 `
 
@@ -61,6 +63,11 @@ const InterviewDescription = styled.div`
     line-height: 24px;
     color: #5B6670;
     margin-bottom: 16px;
+    
+    ${MediaRange.lessThan("mobile")` 
+    font-size: 14px;
+    line-height: 22px;
+    `}
 `
 
 const Question = styled.li`

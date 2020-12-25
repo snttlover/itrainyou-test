@@ -63,4 +63,9 @@ export const yandexRegistrationCompletedFx = createEffect({
   handler: yandexRegistrationCompleted,
 })
 
+forward({
+  from: yandexRegistrationCompletedFx.done,
+  to: loadUserData,
+})
+
 forward({ from: updateRegistrationFx.done, to: loadUserData })

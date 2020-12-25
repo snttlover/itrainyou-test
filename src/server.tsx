@@ -51,9 +51,9 @@ for (const { component } of ROUTES) {
 
     return filteredRoutes.length > 0
       ? {
-          route: filteredRoutes[0],
-          query,
-        }
+        route: filteredRoutes[0],
+        query,
+      }
       : undefined
   })
 
@@ -154,7 +154,8 @@ function htmlStart(assetsCss: string, assetsJs: string, css: string) {
         <title>Itrainyou</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">     
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,600|Roboto:300,400,500,700,900&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
-        <!-- Global site tag (gtag.js) - Google Analytics -->
+        ${ process.env.NODE_ENV === "production" ?
+    `<!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-B664BMTWRH"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
@@ -177,14 +178,15 @@ function htmlStart(assetsCss: string, assetsJs: string, css: string) {
            });
         </script>
         <noscript><div><img src="https://mc.yandex.ru/watch/68738200" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-        <!-- /Yandex.Metrika counter -->   
+        <!-- /Yandex.Metrika counter -->`
+    : ""}  
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ""}
         <script>window.env = ${serialize(config)};</script>
         ${
-          process.env.NODE_ENV === "production"
-            ? `<script src="${assetsJs}" defer></script>`
-            : `<script src="${assetsJs}" defer crossorigin></script>`
-        }
+  process.env.NODE_ENV === "production"
+    ? `<script src="${assetsJs}" defer></script>`
+    : `<script src="${assetsJs}" defer crossorigin></script>`
+}
         ${css}
     </head>
     <body>

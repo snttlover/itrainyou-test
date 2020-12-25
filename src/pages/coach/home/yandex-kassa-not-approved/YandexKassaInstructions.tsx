@@ -1,13 +1,11 @@
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useStore } from "effector-react"
-import { navigatePush } from "@/feature/navigation"
 import * as React from "react"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import peoples from "@/pages/coach/home/approval-failing/images/peoples.svg"
-import { routeNames } from "@/pages/route-names"
 import { $userData } from "@/feature/user/user.model"
-import { yandexRegistrationCompletedFx } from "@/pages/coach/home/coach-home.model";
+import { yandexRegistrationCompletedFx } from "@/pages/coach/home/coach-home.model"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -30,6 +28,7 @@ const Title = styled.div`
 const StyledButton = styled(DashedButton)`
   width: 200px;
   margin-top: 28px;
+    padding: 6px 24px;
   ${MediaRange.lessThan("tablet")`
     margin-top: 24px;
   `}
@@ -133,7 +132,6 @@ const InstructionText = styled.div`
 `
 
 export const YandexKassaInstructions = () => {
-  const navigate = useEvent(navigatePush)
   const legalForm = useStore($userData)
   const _sendYandexRegistration = useEvent(yandexRegistrationCompletedFx)
   return (
@@ -141,21 +139,14 @@ export const YandexKassaInstructions = () => {
       <Title>Вашу анкету одобрили!</Title>
       <Peoples />
 
-      {legalForm.coach?.legalForm === "SELF_EMPLOYMENT" ?
-        <>
-          <SubTitle>Для этого следуйте инструкции во вложении.</SubTitle>
-          <InstructionText>
-            <a href='/privacy_policy.pdf'>Инструкция</a>
-          </InstructionText>
-        </>
-        :
+      {legalForm.coach?.legalForm === "IP_OTHER_TAXES" ?
         <InterviewQuestions>
           <InterviewTitle>Зарегистрируйтесь в ЮKassa</InterviewTitle>
           <Question>
             <div>
-                            На e-mail, который Вы использовали при регистрации на https://itrainyou.ru/, Вам будет направлено приглашение присоединиться к ЮКассе, пройдите
-                            по ссылке в этом приглашении (кнопка “Подключить Кассу”)
-                            и зарегистрируйтесь в ЮКассе
+                          На e-mail, который Вы использовали при регистрации на https://itrainyou.ru/, Вам будет направлено приглашение присоединиться к ЮКассе, пройдите
+                          по ссылке в этом приглашении (кнопка “Подключить Кассу”)
+                          и зарегистрируйтесь в ЮКассе
             </div>
           </Question>
           <Question>
@@ -166,12 +157,21 @@ export const YandexKassaInstructions = () => {
           </Question>
           <Question>
             <div>
-                            После завершения регистрации Вы получите e-mail от ЮKassa.
-                            Нажмите кнопку “Зарегистрировался в Кассе” в своем Личном кабинете
-                            на https://itrainyou.ru/
+                После завершения регистрации Вы получите e-mail от ЮKassa.
+                Нажмите кнопку “Зарегистрировался в Кассе” ниже
             </div>
           </Question>
-        </InterviewQuestions>}
+        </InterviewQuestions>
+
+        :
+        <>
+          <InterviewTitle>Зарегистрируйтесь в ЮKassa</InterviewTitle>
+          <SubTitle>Для этого следуйте инструкции во вложении.</SubTitle>
+          <InstructionText>
+            <a href='/instructions_ykassa.pdf' target='_blank'>Инструкция</a>
+          </InstructionText>
+        </>
+      }
       <StyledButton onClick={() => _sendYandexRegistration()}>Я зарегистрировался</StyledButton>
     </Container>
   )

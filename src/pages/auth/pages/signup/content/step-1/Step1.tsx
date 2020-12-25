@@ -196,8 +196,8 @@ export const Step1 = () => {
           </FormItem>
           <Checkbox value={agreed} onChange={() => setAgree(!agreed)}>
             <AcceptionText>
-                Я принимаю условия <a href='/privacy_policy.pdf'>Политики конфиденциальности</a>,{" "}
-              <a href='/user_agreement.pdf'>Политике по обработке персональных данных</a>
+                Я принимаю условия <a href='/privacy_policy.pdf' target='_blank'>Политики конфиденциальности</a>,{" "}
+              <a href='/user_agreement.pdf' target='_blank'>Политике по обработке персональных данных</a>
             </AcceptionText>
           </Checkbox>
           <NextButton disabled={!isFormValid || isFetching || !agreed} />

@@ -20,6 +20,7 @@ const Title = styled.div`
     line-height: 30px;
     text-align: center;
     color: #75309E;
+    margin-bottom: 16px;
 `
 
 const Peoples = styled.img.attrs({ src: peoples })`

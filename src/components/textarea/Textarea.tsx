@@ -11,6 +11,7 @@ const StyledTextarea = styled.textarea<{ error?: boolean; withoutBorder?: boolea
   font-size: 16px;
   line-height: 22px;
   caret-color: #3746b0;
+    resize: vertical;
 
   &:hover {
     border: 1px solid #919be0;

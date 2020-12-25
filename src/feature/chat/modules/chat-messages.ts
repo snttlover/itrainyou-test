@@ -138,7 +138,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                       null
             }
             if (!message.sessionRequest) {
-              user = message.transaction?.enrolledClient || null
+              user = message.transaction?.session.coach || null
               return {
                 type: message.type as "SYSTEM",
                 id: message.id,

@@ -31,7 +31,7 @@ import { Checkbox } from "@/components/checkbox/Checkbox"
 import { PriceWithCommisionInput } from "@/feature/coach-get-access/components/PriceWithCommisionInputGroup"
 
 const InformationContainer = styled.div`
-  margin: 24px 16px 0;
+  margin: 10px 16px 0;
   ${FormItem} {
     margin-top: 24px;
     margin-bottom: 0;
@@ -39,7 +39,7 @@ const InformationContainer = styled.div`
 
   ${MediaRange.greaterThan("mobile")`
     max-width: 640px;
-    margin: 24px auto 0;
+    margin: 10px auto 0;
     width: 100%;
   `}
 `
@@ -48,20 +48,22 @@ const InformationTitle = styled.div`
     font-family: Roboto Slab;
     font-style: normal;
     font-weight: normal;
-    font-size: 20px;
-    line-height: 28px;
-    margin: 0 8px;
+    font-size: 16px;
+    line-height: 24px;
     color: #783D9D;
+    margin-bottom: 8px;
     
     ${MediaRange.greaterThan("mobile")`
         margin: 0 auto;
         max-width: 640px;
         font-size: 20px;
         line-height: 26px;
+        margin-bottom: 8px;
        `}
             ${MediaRange.greaterThan("tablet")` 
                 font-size: 24px;
                 line-height: 26px;
+                margin-bottom: 8px;
             `}
 `
 
@@ -71,6 +73,11 @@ const Description = styled.div`
     font-size: 16px;
     line-height: 24px;
     color: #5B6670;
+
+    ${MediaRange.lessThan("mobile")` 
+    font-size: 14px;
+    line-height: 22px;
+    `}
 `
 
 const ButtonContainer = styled.div`
@@ -172,6 +179,25 @@ export const Form = () => {
       </FormSection>
 
       <FormSection>
+        <InformationTitle>Юридические данные</InformationTitle>
+        <Description>Эти данные нужны нам для проверки, они не будут видны клиентам</Description>
+        <FormItem label='ИНН' error={errors.inn}>
+          <Input value={values.inn} onChange={_innChanged} type='number' />
+        </FormItem>
+        <FormItem label='Кем вы являетесь'>
+          {legalForm.map(item => (
+            <LegalForm
+              key={item.id}
+              id={item.id}
+              onSelect={id => _changeLegalDataCheckBox(id)}
+              selected={item.selected}
+              name={item.name}
+            />
+          ))}
+        </FormItem>
+      </FormSection>
+        
+      <FormSection>
         <InformationTitle>Дополнительная информация</InformationTitle>
         <Description>Телефон будет виден только администраторам и супервизорам</Description>
         <FormItem label='Телефон' error={errors.phone}>
@@ -190,29 +216,10 @@ export const Form = () => {
           <Textarea value={values.supervisions} onChange={_supervisionsChanged} rows={8} />
         </FormItem>
       </FormSection>
-
-      <FormSection>
-        <InformationTitle>Юридические данные</InformationTitle>
-        <Description>Эти данные нужны нам для проверки, они не будут видны клиентам</Description>
-        <FormItem label='ИНН' error={errors.inn}>
-          <Input value={values.inn} onChange={_innChanged} />
-        </FormItem>
-        <FormItem label='Кем вы являетесь'>
-          {legalForm.map(item => (
-            <LegalForm
-              key={item.id}
-              id={item.id}
-              onSelect={id => _changeLegalDataCheckBox(id)}
-              selected={item.selected}
-              name={item.name}
-            />
-          ))}
-        </FormItem>
-      </FormSection>
-
+        
       <FormSection>
         <InformationTitle>Цена за сессию</InformationTitle>
-        <Description>Укажите стоимость вашей сессии для каждого времени. Цена для клиента — цена вашей сессии с учетом комиссии платформы ({feeRatio}%).</Description>
+        <Description>Укажите стоимость вашей сессии для каждого времени. Цена для клиента — цена вашей сессии с учетом комиссии платформы ({feeRatio*100}%).</Description>
         <PriceWithCommisionInput title='30 минут' name='d30Price' />
         <PriceWithCommisionInput title='45 минут' name='d45Price' />
         <PriceWithCommisionInput title='60 минут' name='d60Price' />
