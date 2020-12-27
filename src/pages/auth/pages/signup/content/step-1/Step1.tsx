@@ -23,7 +23,7 @@ import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { userDataReset } from "@/pages/auth/pages/signup/models/units"
-import { Checkbox } from "@/components/checkbox/Checkbox"
+import { Checkbox,StyledCheckbox } from "@/components/checkbox/Checkbox"
 
 const Container = styled.div`
   min-width: 320px;
@@ -120,6 +120,14 @@ const SignIn = styled.span`
   font-weight: 500;
 `
 
+const StyledCheckBox = styled(Checkbox)`
+    ${MediaRange.lessThan("mobile")`
+    
+    ${StyledCheckbox} {
+        fill: #FFFFFF;
+    }
+  `}
+`
 const AcceptionText = styled.div`
   font-family: Roboto;
   font-style: normal;
@@ -133,10 +141,22 @@ const AcceptionText = styled.div`
   margin: 20px 15px;
 
   & a {
-    color: #424242;;
+    color: #424242;
     font-weight: 500;
     text-decoration: underline;
   }
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 12px;
+    line-height: 18px;
+    color: #FFFFFF;
+    
+    & a {
+    color: #FFFFFF;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+  `}
 `
 
 export const Step1 = () => {
@@ -194,12 +214,12 @@ export const Step1 = () => {
               </PasswordHint>
             )}
           </FormItem>
-          <Checkbox value={agreed} onChange={() => setAgree(!agreed)}>
+          <StyledCheckBox value={agreed} onChange={() => setAgree(!agreed)}>
             <AcceptionText>
                 Я принимаю условия <a href='/privacy_policy.pdf' target='_blank'>Политики конфиденциальности</a>,{" "}
               <a href='/user_agreement.pdf' target='_blank'>Политике по обработке персональных данных</a>
             </AcceptionText>
-          </Checkbox>
+          </StyledCheckBox>
           <NextButton disabled={!isFormValid || isFetching || !agreed} />
         </Form>
       </Container>
