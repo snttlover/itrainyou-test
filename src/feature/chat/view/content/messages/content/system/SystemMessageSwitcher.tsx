@@ -239,13 +239,13 @@ const getText = (
     }
 
     if (
-      is("CONFIRMATION_COMPLETION", "APPROVED", "COMPLETED") &&
+      is("CONFIRMATION_COMPLETION", ["APPROVED", "AUTOMATICALLY_APPROVED"], "COMPLETED") &&
       (request.session.isReviewed || $revocated.getState().indexOf(request.session.id) !== -1)
     ) {
       return "Сессия прошла успешно."
     }
 
-    if (is("CONFIRMATION_COMPLETION", "APPROVED", "COMPLETED")) {
+    if (is("CONFIRMATION_COMPLETION", ["APPROVED", "AUTOMATICALLY_APPROVED"], "COMPLETED")) {
       return "Сессия прошла успешно. Средства были списаны с карты. Оставьте отзыв!"
     }
 
@@ -293,11 +293,11 @@ const getText = (
       return "Администратор решил спорную ситуацию в пользу клиента. Клиенту были возвращены деньги за сессию"
     }
 
-    if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
       return "Ожидаем, пока клиент подтвердит завершение сессии"
     }
 
-    if (is("CONFIRMATION_COMPLETION", "APPROVED", "COMPLETED")) {
+    if (is("CONFIRMATION_COMPLETION", ["APPROVED", "AUTOMATICALLY_APPROVED"], "COMPLETED")) {
       return "Клиент подтвердил, что сессия прошла успешно! Вам будут переведена оплата"
     }
 
@@ -573,7 +573,7 @@ const getSystemButtons = (
 
   if (
     chatType === "client" &&
-          is("CONFIRMATION_COMPLETION", "APPROVED") && !request.session.isReviewed &&
+          is("CONFIRMATION_COMPLETION", ["AUTOMATICALLY_APPROVED", "APPROVED"]) && !request.session.isReviewed &&
     status === "COMPLETED"
   ) {
     return <RevocationButton coach={user} sessionId={request.session.id} />
