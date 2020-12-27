@@ -80,7 +80,7 @@ type LegalDataType = {
     id: number
     selected: boolean
     name: string
-    value: string
+    value: "SELF_EMPLOYMENT" | "IP_PROFESSIONAL_TAXES" | "IP_OTHER_TAXES"
 }
 export const changeLegalDataCheckBox = createEvent<number>()
 
@@ -94,7 +94,7 @@ export const $selectLegalForm = createStore<LegalDataType[]>([
 })
 
 export const $legalForm = $selectLegalForm.map(state => {
-  const selectedItem = state.find(item => item.selected)
+  const selectedItem = state.find(item => item.selected) || { id: null, name: null, selected: false, value: "" }
   return selectedItem?.value
 })
 

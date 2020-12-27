@@ -29,6 +29,7 @@ export type SocialsDataNotFound = {
   email: string | null
   firstName: string
   lastName: string
+  middleName: string
   sex: "M" | "F" | ""
   birthDate: string | null
   avatar: string | null

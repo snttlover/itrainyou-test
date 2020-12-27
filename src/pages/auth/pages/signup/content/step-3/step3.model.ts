@@ -66,6 +66,22 @@ export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = 
   eventMapper: event => event.map(trimString),
 })
 
+export const [$middleName, middleNameChanged, $middleNameError, $isMiddleNameCorrect] = createEffectorField<
+  string,
+  { userData: UnpackedStoreObjectType<typeof $userData>; value: string }
+  >({
+    defaultValue: "",
+    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validator: obj => {
+      const type = obj.userData.type
+      const value = obj.value
+
+      if (type === "coach" && !value) return "Поле обязательно к заполнению"
+      return null
+    },
+    eventMapper: event => event.map(trimString),
+  })
+
 export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<
   Dayjs | null,
   { userData: UnpackedStoreObjectType<typeof $userData>; value: Dayjs | null }
@@ -101,6 +117,7 @@ export const $step3Form = combine({
   name: $name,
   lastName: $lastName,
   birthday: $birthday,
+  middleName: $middleName,
   sex: $sex,
   email: $email,
   originalAvatar: $originalAvatar,
@@ -114,6 +131,7 @@ sample({
     birthDate: data.birthday ? data.birthday.format("YYYY-MM-DD") : null,
     firstName: data.name,
     lastName: data.lastName,
+    middleName: data.middleName,
     sex: data.sex,
     email: data.email,
     originalAvatar: data.originalAvatar.file || null,
@@ -141,6 +159,7 @@ spread({
   targets: {
     firstName: nameChanged,
     lastName: lastNameChanged,
+    patronymic: middleNameChanged,
     email: emailChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
       date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
@@ -157,6 +176,7 @@ export const $step3FormErrors = combine({
   birthday: $birthdayError,
   sex: $sexError,
   email: $emailError,
+  middleName: $middleNameError,
 })
 
 export const $isStep3FormValid = combine(
@@ -166,5 +186,6 @@ export const $isStep3FormValid = combine(
   $isSexCorrect,
   $isImageCorrect,
   $isEmailCorrect,
+  $isMiddleNameCorrect,
   (...args) => args.every(val => val)
 )

@@ -56,6 +56,10 @@ export interface RegisterAsCoachRequest {
   firstName: string
   lastName: string
   birthDate: string | null
+  middleName: string
+  legalForm: "SELF_EMPLOYMENT" | "IP_PROFESSIONAL_TAXES" | "IP_OTHER_TAXES" | ""
+  socialNetworks: string
+  supervisions: string
   sex: "M" | "F" | ""
   avatar: string | null
   categories: number[]

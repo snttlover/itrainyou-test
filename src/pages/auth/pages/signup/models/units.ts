@@ -20,8 +20,12 @@ export const userDataSetWithSocials = createEvent<UserData>()
 
 export const $userData = createStore<UserData>({
   type: "client",
-  clientData: { avatar: null, originalAvatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null },
-  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [] },
+  clientData: { avatar: null, originalAvatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null, middleName: "", },
+  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [],
+    inn: "",
+    legalForm: "",
+    socialNetworks: "",
+    supervisions: "" },
   categories: []
 })
 

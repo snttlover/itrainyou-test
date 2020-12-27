@@ -16,17 +16,17 @@ export const CoachSupportPage = () => {
   const isUserDataLoading = useStore(getMyUserFx.pending)
   const state = useStore($coachHomeState)
 
-  const showPlaceholder = !isUserDataLoading && state !== "approved"
+  const showPlaceholder = !isUserDataLoading
 
   return (
     <CoachDashboardLayout>
       {isUserDataLoading && <Loader />}
-      {!showPlaceholder && <CoachSupportChat />}
-      {showPlaceholder && (
+      {!isUserDataLoading && <CoachSupportChat />}
+      {/*showPlaceholder && (
         <ContentContainer>
           <CoachSectionPlaceholder features={features} renderImage={() => <PhoneWithGirl />} />
         </ContentContainer>
-      )}
+      )*/}
     </CoachDashboardLayout>
   )
 }

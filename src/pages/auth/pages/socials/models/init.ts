@@ -88,7 +88,11 @@ sample({
         description: "",
         phone: "",
         photos: [],
-        videoInterview: ""
+        videoInterview: "",
+        inn: "",
+        legalForm: "",
+        socialNetworks: "",
+        supervisions: ""
       }
     }
   },

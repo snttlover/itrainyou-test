@@ -12,6 +12,7 @@ import {
   $step3Form,
   $step3FormErrors,
   emailChanged,
+  middleNameChanged,
   lastNameChanged,
   nameChanged, step3FormSubmitted,
   step3Mounted,
@@ -148,6 +149,7 @@ export const Step3 = () => {
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
   const _step3FormSubmitted = useEvent(step3FormSubmitted)
+  const _middleNameChanged = useEvent(middleNameChanged)
   const [nextDisabled, setNextDisabled] = useState(false)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -189,6 +191,9 @@ export const Step3 = () => {
           <FormItem label='Фамилия' error={errors.lastName} required>
             <Input value={values.lastName} onChange={_lastNameChanged} />
           </FormItem>
+          { userType === "coach" ? <FormItem label='Отчество' error={errors.middleName} required>
+            <Input value={values.middleName} onChange={_middleNameChanged} />
+          </FormItem> : null }
           {isSocialSignupInProgress && (
             <FormItem label='Почта' error={errors.email} required>
               <Input value={values.email} onChange={_emailChanged} />
