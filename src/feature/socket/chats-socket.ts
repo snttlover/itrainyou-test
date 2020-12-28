@@ -27,12 +27,12 @@ type ChatCounter = {
 }
 
 type InitMessage = {
-  type: `INIT`
+  type: "INIT"
   data: { unreadChats: ChatCounter[]; newNotificationsCount: number }
 }
 
 type MessagesReadDone = {
-  type: `READ_MESSAGES_DONE`
+  type: "READ_MESSAGES_DONE"
   data: { messages: ChatMessage[] }
 }
 
@@ -47,7 +47,7 @@ export type ReadNotificationsDone = {
 }
 
 export type WriteChatMessageDone = {
-  type: `WRITE_MESSAGE_DONE`
+  type: "WRITE_MESSAGE_DONE"
   data: ChatMessage
 }
 
@@ -56,12 +56,12 @@ type PongMessage = {
 }
 
 export type SessionStarted = {
-  type: `SESSION_STARTED`
+  type: "SESSION_STARTED"
   data: DashboardSession
 }
 
 export type OnChatCreated = {
-  type: `NEW_CHAT_CREATED`
+  type: "NEW_CHAT_CREATED"
   data: PersonalChat
 }
 
@@ -90,15 +90,20 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   const onMessagesReadDone = createEvent<MessagesReadDone>()
   const onSessionStarted = createEvent<SessionStarted>()
 
-  const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: `WRITE_MESSAGE`, data }))
-  const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: `READ_MESSAGES`, data }))
+  const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: "WRITE_MESSAGE", data }))
+  const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: "READ_MESSAGES", data }))
 
-  const $needConnect = combine(
+  /*const $needConnect = combine(
     $isLoggedIn,
     $isClient,
     $userData,
     $isFullRegistered,
     (l, c, user, full) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved) && full
+  )*/
+
+  const $needConnect = combine(
+    $isLoggedIn,
+    (l) => l
   )
 
   const connect = guard({
@@ -128,7 +133,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   $chatsCounters
     .on(onIntercMessage, (counters, message) => {
       const currentCounter = counters.find(counter => counter.id === message.data.chat)
-      let counter = {
+      const counter = {
         id: message.data.chat,
         newMessagesCount: 1 + (!currentCounter ? 0 : currentCounter.newMessagesCount),
       }
@@ -138,9 +143,9 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       const chats = message.data.messages
         .filter(
           message =>
-            (userType === `client` && !!message.senderCoach) ||
-            (userType === `coach` && !!message.senderClient) ||
-            message.type === `SYSTEM`
+            (userType === "client" && !!message.senderCoach) ||
+            (userType === "coach" && !!message.senderClient) ||
+            message.type === "SYSTEM"
         )
         .map(message => message.chat)
       counters = counters.slice()
@@ -160,15 +165,15 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   guard({
     source: onMessage,
     filter: message =>
-      (userType === `client` && !!message.data.senderCoach) ||
-      (userType === `coach` && !!message.data.senderClient) ||
-      message.data.type === `SYSTEM`,
+      (userType === "client" && !!message.data.senderCoach) ||
+      (userType === "coach" && !!message.data.senderClient) ||
+      message.data.type === "SYSTEM",
     target: onIntercMessage,
   })
 
   guard({
     source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === `NEW_CHAT_CREATED`,
+    filter: (payload: SocketMessageReceive) => payload.type === "NEW_CHAT_CREATED",
     target: onChatCreated,
   })
 
@@ -186,19 +191,19 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   guard({
     source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === `WRITE_MESSAGE_DONE`,
+    filter: (payload: SocketMessageReceive) => payload.type === "WRITE_MESSAGE_DONE",
     target: onMessage,
   })
 
   guard({
     source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === `READ_MESSAGES_DONE`,
+    filter: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
     target: onMessagesReadDone,
   })
 
   guard({
     source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === `INIT`,
+    filter: (payload: SocketMessageReceive) => payload.type === "INIT",
     target: changeCountersFromInit,
   })
 
@@ -230,7 +235,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     to: socket.methods.disconnect,
   })
 
-  const ping = socket.methods.send.prepend(() => ({ type: `PING` }))
+  const ping = socket.methods.send.prepend(() => ({ type: "PING" }))
 
   let pingPongInterval: any = null
 
@@ -294,5 +299,5 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   }
 }
 
-export const clientChatsSocket = createChatsSocket(`client`)
-export const coachChatsSocket = createChatsSocket(`coach`)
+export const clientChatsSocket = createChatsSocket("client")
+export const coachChatsSocket = createChatsSocket("coach")

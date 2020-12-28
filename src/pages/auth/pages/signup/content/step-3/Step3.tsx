@@ -1,4 +1,4 @@
-import { Avatar } from "@/components/avatar/Avatar"
+import { Avatar, AvatarPlaceholder } from "@/components/avatar/Avatar"
 import { FormItem } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
 import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
@@ -73,6 +73,13 @@ const UserAvatar = styled(Avatar)`
   width: 60px;
   height: 60px;
   cursor: pointer;
+
+    ${MediaRange.lessThan("mobile")`
+    
+    ${AvatarPlaceholder} {
+        fill: #FFFFFF;
+    }
+  `}
 `
 
 const Form = styled.form`
@@ -177,7 +184,7 @@ export const Step3 = () => {
         <Form onSubmit={handleSubmit}>
           <AvatarWrapper>
             <FormItem
-              label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />}
+              label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()}  />}
               required={userType === "coach"}
             />
             <AvatarHint>

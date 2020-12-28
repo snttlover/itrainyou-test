@@ -64,11 +64,10 @@ const Cards = styled.div`
   ${MediaRange.lessThan("mobile")`
     margin: 0 auto;
     flex-direction: column;
-    width: 100%;
         ${UserTypeCard} {
         margin: 24px auto 0;
-        width: 400px;
         height: 160px;
+        width: 288px;
         }
   `}
     
