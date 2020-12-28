@@ -67,7 +67,9 @@ const LearnHere = styled.div`
   color: #424242;
   margin-bottom: 16px;
   ${MediaRange.lessThan(`mobile`)`
-    display: none;
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 6px;
   `}
 `
 

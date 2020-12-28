@@ -7,7 +7,7 @@ export const emailValidator = (value: string) => {
 const passwordRegexp = /^[a-zA-Z0-9]+$/
 export const passwordValidator = (value: string) => {
   if (value.length < 8) {
-    return `Пароль должен состоять как минимум из 8 символов`
+    return "Пароль должен состоять как минимум из 8 символов"
   }
 
   if (!passwordRegexp.test(value)) return "Пароль должен состоять только из латинских букв или цифр"

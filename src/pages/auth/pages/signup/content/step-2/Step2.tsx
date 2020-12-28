@@ -40,38 +40,38 @@ const Container = styled.div`
 `
 
 const Cards = styled.div`
-  margin: 0 auto;
   display: flex;
-  flex-direction: column;
-  width: 100%;
-
-  ${UserTypeCard} {
-    margin: 12px auto 0;
-    height: 124px;
-    width: 288px;
-
-    &:first-of-type {
-      margin-top: 0;
+  justify-content: center;
+  flex-direction: row;
+    
+    ${UserTypeCard} {
+        margin: 0 auto;
+        width: 400px;
+        height: 160px;
     }
-  }
 
-  ${MediaRange.greaterThan("mobile")`
+    
+  ${MediaRange.lessThan("tablet")`
+  margin: 0 auto;
+  flex-direction: column;
     ${UserTypeCard} {
       margin: 24px auto 0;
       width: 400px;
       height: 160px;
     }
   `}
-
-  ${MediaRange.greaterThan("tablet")`
-    justify-content: center;
-    flex-direction: row;
-    ${UserTypeCard} {
-      margin: 0 auto;
-      width: 400px;
-      height: 160px;
-    }
+    
+  ${MediaRange.lessThan("mobile")`
+    margin: 0 auto;
+    flex-direction: column;
+    width: 100%;
+        ${UserTypeCard} {
+        margin: 24px auto 0;
+        width: 400px;
+        height: 160px;
+        }
   `}
+    
 `
 
 const Title = styled.h1`

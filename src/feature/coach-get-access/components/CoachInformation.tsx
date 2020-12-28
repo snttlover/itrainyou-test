@@ -31,16 +31,17 @@ const CategoriesContainer = styled.div`
   margin: 0 16px;
 
   ${CategoryCard} {
-    margin-top: 16px;
+    margin-top: 10px;
   }
 
   ${MediaRange.greaterThan("mobile")`
-    margin: 0 16px;
+    margin: 0 auto;
+    max-width: 640px;
     ${CategoryCard} {
-      margin-top: 24px;
+      margin-top: 10px;
       
       &:first-of-type {
-        margin-top: 28px;
+        margin-top: 10px;
       }
     }
   `}
@@ -58,6 +59,7 @@ const Title = styled.div`
   line-height: 28px;
   color: #783D9D;
   text-align: left;
+  margin-bottom: 8px;  
 
     ${MediaRange.lessThan("mobile")`
     font-size: 16px;
@@ -78,7 +80,10 @@ const CheckStepsContainer = styled.div`
   `}
 `
 
-const CheckStepIcon = styled(Icon).attrs({ name: "noletter" })`
+const CheckStepIcon = styled(Icon).attrs((props: any) => ({
+  name: props.checkstep,
+  ...props
+}))`
   width: 64px;
   height: 64px;
   margin: 0 auto;
@@ -128,7 +133,7 @@ const SkipRegistration = styled.div`
   flex-direction: column;
   margin-bottom: 24px;  
     ${MediaRange.lessThan("mobile")`
-    padding: 12px;
+    padding: 8px;
   `}
 `
 
@@ -158,7 +163,14 @@ const Description = styled.div`
 `
 
 const StyledButton = styled(Button)`
-    align-self: flex-end;    
+    align-self: flex-end;
+    width: 200px;
+    padding: 9px 24px;
+    
+   ${MediaRange.lessThan(`mobile`)`
+    padding: 5px 24px;
+    width: 120px;
+  `}
 `
 
 const ListContainer = styled.div`
@@ -166,6 +178,7 @@ const ListContainer = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
 `
 
 type CoachInformationProps = {
@@ -233,16 +246,16 @@ export const CoachInformation = ({
       {!withoutCheckStep && (
         <CheckStepsContainer>
           <CheckStep description='Эта заявка отправится супервизору' />
-          <CheckStepIcon />
+          <CheckStepIcon checkstep={"checkstep1"} />
           <CheckStepArrow />
           <CheckStep description='Супервизор одобрит вашу заявку' />
-          <CheckStepIcon />
+          <CheckStepIcon checkstep={"checkstep2"} />
           <CheckStepArrow />
           <CheckStep description='Вы зарегистрируетесь в ЮKassa' />
-          <CheckStepIcon />
+          <CheckStepIcon checkstep={"checkstep3"} />
           <CheckStepArrow />
           <CheckStep description='Вы получите доступ к платформе' />
-          <CheckStepIcon />
+          <CheckStepIcon checkstep={"checkstep4"} />
         </CheckStepsContainer>
       )}
       {withoutCheckStep && <StyledRegisterSteps />}
@@ -252,7 +265,7 @@ export const CoachInformation = ({
           disabled={loading || isVideoUploading || !isFormValid}
           onClick={onRegisterClick}
         >
-          Зарегистрироваться
+          {withoutCheckStep ? "Отправить заявку" : "Зарегистрироваться"}
         </SendRequestButton>
       </ButtonContainer>
     </Container>

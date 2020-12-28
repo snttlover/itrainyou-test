@@ -159,7 +159,7 @@ spread({
   targets: {
     firstName: nameChanged,
     lastName: lastNameChanged,
-    patronymic: middleNameChanged,
+    middleName: middleNameChanged,
     email: emailChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
       date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null

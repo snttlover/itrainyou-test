@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import * as React from "react"
-import peoples from "@/pages/coach/home/approval-failing/images/peoples.svg"
+import { Icon } from "@/components/icon/Icon"
+import { MediaRange } from "@/lib/responsive/media"
 
 
 const Container = styled.div`
@@ -21,12 +22,21 @@ const Title = styled.div`
     text-align: center;
     color: #75309E;
     margin-bottom: 16px;
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 20px;
+    line-height: 28px;
+  `}
 `
 
-const Peoples = styled.img.attrs({ src: peoples })`
-  width: 109.08px;
-  height: 144.37px;
-  margin-bottom: 40px;
+const LikeWithLaptopIcon = styled(Icon).attrs({ name: "ykassa-approved" })`
+    width: 120px;
+    height: 120px;
+    margin-top: 72px;
+    
+    ${MediaRange.lessThan("mobile")`
+    margin-top: 16px;
+  `}
 `
 
 const SubTitle = styled.div`
@@ -37,6 +47,11 @@ const SubTitle = styled.div`
     line-height: 24px;
     text-align: center;
     color: #5B6670;
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+    line-height: 22px;
+  `}
 `
 
 
@@ -45,7 +60,7 @@ export const YandexKassaWaitingForApproval = () => {
     <Container>
       <Title>Ваша заявка ждет одобрения!</Title>
       <SubTitle>Мы получим уведомление от ЮKassa о Вашей регистрации и авторизуем Вас на платформе в течение 24 часов</SubTitle>
-      <Peoples />
+      <LikeWithLaptopIcon />
     </Container>
   )
 }

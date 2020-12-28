@@ -57,12 +57,12 @@ const InformationTitle = styled.div`
         margin: 0 auto;
         max-width: 640px;
         font-size: 20px;
-        line-height: 26px;
+        line-height: 28px;
         margin-bottom: 8px;
        `}
             ${MediaRange.greaterThan("tablet")` 
-                font-size: 24px;
-                line-height: 26px;
+                font-size: 20px;
+                line-height: 28px;
                 margin-bottom: 8px;
             `}
 `
@@ -94,7 +94,7 @@ const FormSection = styled.div`
   padding: 24px;
   margin: 12px 0px;  
     ${MediaRange.lessThan("mobile")`
-    padding: 12px;
+    padding: 8px;
   `}
 `
 
@@ -111,8 +111,22 @@ const Title = styled.div`
 const LegalItem = styled.div`
   display: flex;
   align-items: flex-start;  
-  margin-bottom: 20px;
+  margin-top: 15px;
 `
+
+const LegalForm = ({ id, onSelect, selected, name }: LegalDataProps) => {
+
+  return (
+    <LegalItem key={id}>
+      <Checkbox
+        value={selected}
+        color={"#783D9D"}
+        onChange={() => onSelect(id)}
+      />
+      <Title>{name}</Title>
+    </LegalItem>
+  )
+}
 
 type LegalDataProps = {
     id: number
@@ -148,19 +162,7 @@ export const Form = () => {
     maxSize: 2097152,
     accept: ["image/gif", "image/png", "image/jpg", "image/jpeg"],
   })
-    
-  const LegalForm = ({ id, onSelect, selected, name }: LegalDataProps) => {
-
-    return (
-      <LegalItem>
-        <Checkbox
-          value={selected}
-          onChange={() => onSelect(id)}
-        />
-        <Title>{name}</Title>
-      </LegalItem>
-    )
-  }
+  
 
   return (
     <InformationContainer>
@@ -171,7 +173,7 @@ export const Form = () => {
           <Input value={values.education} onChange={_educationChanged} />
         </FormItem>
         <FormItem label='Опыт работы' error={errors.workExperience}>
-          <Textarea value={values.workExperience} onChange={_workExperienceChanged} />
+          <Textarea value={values.workExperience} onChange={_workExperienceChanged} rows={1} />
         </FormItem>
         <FormItem label='О себе' error={errors.description}>
           <Textarea value={values.description} onChange={_descriptionChanged} rows={8} />

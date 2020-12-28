@@ -78,6 +78,12 @@ export type IconName =
   | "MasterCard"
   | "Visa"
   | "noletter"
+  | "checkstep1"
+  | "checkstep2"
+  | "checkstep3"
+  | "checkstep4"
+  | "ykassa-approved"
+  | "ykassa-not-approved"
 
 type IconProps = {
   name: IconName

@@ -12,10 +12,11 @@ import { Loader } from "@/components/spinner/Spinner"
 import { $hasNewestParticipantsList } from "@/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
 import { EmptySessions } from "@/pages/coach/home/sessions/content/empty-sessions/EmptySessions"
 
-const Container = styled.div`
+const Container = styled.div<{ nosessions: boolean }>`
   width: 100%;
-  max-width: 672px;
+  max-width: ${({nosessions}) => nosessions ? "" : "672px"}; 
   margin-top: 36px;
+    
   ${MediaRange.lessThan(`tablet`)`
     margin: 0 auto;
     margin-top: 40px;
@@ -46,9 +47,14 @@ export const CoachSessionsPage = () => {
   const pageLoading = useStore($coachSessionsPageLoading)
   const _mounted = useEvent(mounted)
 
+  const hasToday = useStore($hasTodaySessions)
+  const hasStarted = useStore($hasStartedSessions)
+  const hasNewest = useStore($hasNewestParticipantsList)
+  const noHasSessions = !hasToday && !hasStarted && !hasNewest
+
   useEffect(() => {
     _mounted()
   }, [])
 
-  return <Container>{pageLoading ? <Loader /> : <Sessions />}</Container>
+  return <Container nosessions={noHasSessions}>{pageLoading ? <Loader /> : <Sessions />}</Container>
 }

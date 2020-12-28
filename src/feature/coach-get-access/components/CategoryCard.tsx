@@ -13,7 +13,9 @@ const Container = styled.div<{ disabled?: boolean }>`
   padding: 8px;
   max-width: 280px;
   justify-contert: center;
-    width: 100%;
+  width: 100%;
+  user-select: none;
+  opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
 `
 
 const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
@@ -54,7 +56,7 @@ const Arrow = styled(Icon).attrs({ name: "arrow" })<ArrowType>`
 const Category = styled.div`
   display: flex;
   align-items: center;  
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 `
 
 const StyledCategoriesDescription = styled(CategoryDescription)`
@@ -78,7 +80,7 @@ export const CategoryCard = styled(({ category, selected, onSelect, className, d
       <Category>
         <Checkbox
           value={selected}
-          color={category.color}
+          color={"#783D9D"}
           onChange={() => {
             if (realDisabled) return
             onSelect(category.id)

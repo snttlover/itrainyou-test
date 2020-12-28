@@ -3,9 +3,9 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import peoples from "@/pages/coach/home/approval-failing/images/peoples.svg"
 import { $userData } from "@/feature/user/user.model"
 import { yandexRegistrationCompletedFx } from "@/pages/coach/home/coach-home.model"
+import { Icon } from "@/components/icon/Icon"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -23,16 +23,24 @@ const Title = styled.div`
     text-align: center;
     color: #75309E;
     margin-bottom: 24px;
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 16px;
+    line-height: 24px;
+  `}
 `
 
 const StyledButton = styled(DashedButton)`
   width: 200px;
   margin-top: 28px;
-    padding: 6px 24px;
+  padding: 6px 24px;
+    
   ${MediaRange.lessThan("tablet")`
     margin-top: 24px;
   `}
   ${MediaRange.lessThan("mobile")`
+    width: 165px;
+    padding: 4px 10px;
     margin-top: 8px;
   `}
 `
@@ -51,7 +59,7 @@ const Question = styled.li`
   }
 
   ${MediaRange.greaterThan("mobile")`
-    font-size: 16px;
+    font-size: 14px;
     line-height: 22px;
   `}
 `
@@ -90,12 +98,22 @@ const InterviewTitle = styled.div`
     color: #424242;
     text-align: center;
     margin-bottom: 24px;
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 20px;
+    line-height: 28px;
+  `}
 `
 
-const Peoples = styled.img.attrs({ src: peoples })`
-  width: 109.08px;
-  height: 144.37px;
-  margin-bottom: 40px;
+const LetterIcon = styled(Icon).attrs({ name: "ykassa-not-approved" })`
+    width: 240px;
+    height: 108px;
+    margin-bottom: 40px;
+    
+    ${MediaRange.lessThan("mobile")`
+    width: 200px;
+    height: 90px;
+  `}
 `
 
 const SubTitle = styled.div`
@@ -106,6 +124,11 @@ const SubTitle = styled.div`
     line-height: 24px;
     text-align: center;
     color: #5B6670;
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+    line-height: 22px;
+  `}
 `
 
 const InstructionText = styled.div`
@@ -129,6 +152,19 @@ const InstructionText = styled.div`
       text-align: center;
       color: #783D9D;
   }
+
+    ${MediaRange.lessThan("mobile")`
+
+    & a {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 22px;
+      text-align: center;
+      color: #783D9D;
+  }
+  `}
 `
 
 export const YandexKassaInstructions = () => {
@@ -137,7 +173,7 @@ export const YandexKassaInstructions = () => {
   return (
     <Container>
       <Title>Вашу анкету одобрили!</Title>
-      <Peoples />
+      <LetterIcon />
 
       {legalForm.coach?.legalForm === "IP_OTHER_TAXES" ?
         <InterviewQuestions>

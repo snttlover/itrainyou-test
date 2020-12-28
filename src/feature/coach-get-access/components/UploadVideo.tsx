@@ -37,8 +37,8 @@ const InterviewTitle = styled.div`
     font-family: Roboto Slab;
     font-style: normal;
     font-weight: normal;
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 16px;
+    line-height: 24px;
     color: #783D9D;
     margin-bottom: 8px;
 
@@ -46,12 +46,12 @@ const InterviewTitle = styled.div`
         margin: 0 auto;
         max-width: 640px;
         font-size: 20px;
-        line-height: 26px;
+        line-height: 28px;
         margin-bottom: 8px;
        `} 
             ${MediaRange.greaterThan("tablet")` 
-                font-size: 24px;
-                line-height: 26px;
+                font-size: 20px;
+                line-height: 28px;
                 margin-bottom: 8px;
             `}
 `
@@ -222,4 +222,11 @@ const AddVideo = styled(DashedButton).attrs({ "data-secondary": true })`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 200px;
+  padding: 8px 24px;
+
+  ${MediaRange.lessThan("mobile")`
+    width: 180px;
+    padding: 4px 24px;
+  `}
 `

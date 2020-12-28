@@ -44,9 +44,10 @@ const StyledBottomSubtitle = styled(StyledSubTitle)`
 `
 
 const StyledButton = styled(Button)`
-  width: 160px;
+  width: 136px;
   margin-top: 28px;
-    padding: 6px 24px;
+  padding: 9px 24px;
+  
   ${MediaRange.lessThan(`tablet`)`
     margin-top: 24px;
   `}

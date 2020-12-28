@@ -2,11 +2,11 @@ import * as React from "react"
 import styled from "styled-components"
 import grayArrow from "./images/gray-arrow.svg"
 import { MediaRange } from "@/lib/responsive/media"
-import {Icon} from "@/components/icon/Icon"
+import { Icon } from "@/components/icon/Icon"
 
 const Container = styled.div`
   width: 100%;
-  max-width: 600px;
+  max-width: 784px;
   display: flex;
   margin-top: 106px;
   margin-bottom: 162px;
@@ -19,10 +19,10 @@ const Container = styled.div`
 `
 
 const Step = styled.div`
-  width: 190px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   flex: 1;
   ${MediaRange.lessThan("mobile")`
@@ -49,13 +49,16 @@ const StepTitle = styled.div`
   `}
 `
 
-const NoLetterIcon = styled(Icon).attrs({ name: "noletter" })`
+const CheckStepIcon = styled(Icon).attrs((props: any) => ({
+  name: props.checkstep,
+  ...props
+}))`
     width: 64px;
     height: 64px;
 `
 
 const ArrowDelimiter = styled.div`
-   width: 54px;
+   width: 34px;
    background: url('${grayArrow}') center no-repeat;
    background-size: 8px 14px;
    ${MediaRange.lessThan("mobile")`
@@ -69,22 +72,22 @@ export const RegisterSteps = styled(({ className }) => (
   <Container className={className}>
     <Step>
       <StepTitle>Эта заявка отправится супервизору</StepTitle>
-      <NoLetterIcon />
+      <CheckStepIcon checkstep={"checkstep1"} />
     </Step>
     <ArrowDelimiter />
     <Step>
       <StepTitle>Супервизор одобрит вашу заявку</StepTitle>
-      <NoLetterIcon />
+      <CheckStepIcon checkstep={"checkstep2"} />
     </Step>
     <ArrowDelimiter />
     <Step>
       <StepTitle>Вы зарегистрируетесь в ЮKassa</StepTitle>
-      <NoLetterIcon />
+      <CheckStepIcon checkstep={"checkstep3"} />
     </Step>
     <ArrowDelimiter />
     <Step>
       <StepTitle>Вы получите доступ к платформе</StepTitle>
-      <NoLetterIcon />
+      <CheckStepIcon checkstep={"checkstep4"} />
     </Step>
   </Container>
 ))``
