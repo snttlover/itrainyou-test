@@ -6,9 +6,7 @@ import { runInScope } from "@/scope"
 
 export type NetworkError = AxiosError
 
-const axios = Axios.create({
-  timeout: 1000 * 5,
-})
+const axios = Axios.create()
 
 const requestFx = createEffect({
   handler: (params: AxiosRequestConfig) => axios.request(params),
