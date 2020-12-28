@@ -20,6 +20,7 @@ const StyledContainer = styled(LandingPageContainer)`
   align-items: center;
   z-index: 2;
   position: relative;
+  height: 480px;
 
   @media screen and (max-width: 768px) {
     padding: 21px 36px;
