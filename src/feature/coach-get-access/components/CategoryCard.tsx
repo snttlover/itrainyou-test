@@ -21,15 +21,17 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   min-width: 16px;
   width: 16px;
   height: 16px;
-  margin-left: 12px;
+  margin-left: 8px;  
 `
 
 const Title = styled.div`
-  font-family: Roboto Slab;
-  font-size: 16px;
-  line-height: 24px;
-  color: #424242;
-  margin-left: 12px;
+    font-family: Roboto Slab;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #424242;
+    margin-left: 12px;
     
     ${MediaRange.lessThan("mobile")`
     font-size: 14px;
@@ -56,7 +58,7 @@ const Category = styled.div`
 `
 
 const StyledCategoriesDescription = styled(CategoryDescription)`
-  margin-left: 10px;
+  margin-left: 5px;
 `
 
 type CategoryCardProps = {
