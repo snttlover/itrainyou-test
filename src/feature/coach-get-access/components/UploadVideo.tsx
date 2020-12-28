@@ -138,7 +138,7 @@ export const UploadVideo = () => {
     onDropAccepted,
     multiple: false,
     noClick: true,
-    accept: ["video/mp4", "video/mpeg", "video/ogg", "video/webm"],
+    accept: ["video/mp4", "video/mpeg", "video/ogg", "video/webm", "video/mov"],
   })
 
   return (
