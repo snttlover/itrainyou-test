@@ -1,4 +1,4 @@
-import { attach, createEffect, createEvent, createStore, merge, sample, split } from "effector-root"
+import { attach, createEffect, createEvent, createStore, guard, merge, sample, split } from "effector-root"
 import {
   ClientData,
   CoachData,
@@ -8,6 +8,8 @@ import {
 } from "@/pages/auth/pages/signup/models/types"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { coachChat } from "@/pages/coach/chats/chat/coach-chat.model"
+import { toggleClientBan } from "@/feature/chat/modules/ban-client"
 
 export const signUpPageMounted = createEvent()
 export const userTypeChanged = createEvent<RegisterUserType>()
@@ -17,6 +19,7 @@ export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
 export const userDataSetWithSocials = createEvent<UserData>()
+export const ifIsLoggedIn = createEvent<UserData>()
 
 export const $userData = createStore<UserData>({
   type: "client",

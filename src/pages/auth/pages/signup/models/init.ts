@@ -12,7 +12,7 @@ import {
   registerUserFx,
   saveDataFx,
   signUpPageMounted, userDataChanged, userDataReset, userDataSetWithSocials,
-  userType, userTypeChanged
+  userType, userTypeChanged, ifIsLoggedIn
 } from "@/pages/auth/pages/signup/models/units"
 
 $userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
@@ -70,4 +70,18 @@ sample({
   source: $userData,
   clock: $isLoggedIn.updates,
   target: registerUserFx,
+})
+
+sample({
+  source: $userData,
+  clock: guard({
+    source: registerStep4Merged,
+    filter: $isLoggedIn.map(loggedIn => loggedIn),
+  }),
+  target: ifIsLoggedIn,
+})
+
+forward({
+  from: ifIsLoggedIn.map((userData) => userData.type === "client" ? ({ url: routeNames.client() }) : ({ url: routeNames.coach() }) ),
+  to: navigatePush,
 })
