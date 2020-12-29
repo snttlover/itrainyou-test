@@ -2,6 +2,7 @@ import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
+import { declOfNum } from "@/lib/formatting/numerals"
 
 const HeaderContent = styled.div`
   margin-top: 30px;
@@ -181,7 +182,7 @@ export const CoachHeader = ({ avatar, fullName, sex, years }: CoachHeaderProps) 
         <Avatar src={avatar} />
         <FullNameSex>
           <FullName>
-            {fullName}&nbsp;<Year>{years} лет</Year>
+            {fullName}&nbsp;<Year>{years} {declOfNum(years,["год", "года", "лет"])}</Year>
           </FullName>
           <Sex>Пол: {sex}</Sex>
         </FullNameSex>

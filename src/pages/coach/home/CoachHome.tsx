@@ -17,19 +17,18 @@ import * as React from "react"
 import styled from "styled-components"
 
 const Container = styled.div`
-  max-width: 600px;
+  max-width: 640px;
   margin: 36px 0 0;
   position: relative;
   ${MediaRange.greaterThan("mobile")`
-    width: 80%;
   `}
   ${MediaRange.greaterThan("tablet")`
     padding: 0;
-    width: 80%;
   `}  
   ${MediaRange.greaterThan("laptop")`
     padding: 0;
-    width: 600px;
+    width: 80%;
+    max-width: 640px;
   `}
 `
 
