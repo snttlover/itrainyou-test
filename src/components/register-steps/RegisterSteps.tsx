@@ -22,7 +22,7 @@ const Step = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
   flex: 1;
   ${MediaRange.lessThan("mobile")`
