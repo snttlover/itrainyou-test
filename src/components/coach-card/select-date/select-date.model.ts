@@ -84,7 +84,7 @@ export const genCoachSessions = (id = 0) => {
 
   forward({
     from: buySessionsFx.done,
-    to: showCreditCardsModal,
+    to: showCreditCardsModal.prepend(() => true),
   })
 
   const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }

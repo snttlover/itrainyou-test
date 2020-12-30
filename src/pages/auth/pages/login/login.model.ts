@@ -10,6 +10,7 @@ import { combine, createEffect, createEvent, createStoreObject, forward, sample,
 import { userFound } from "@/pages/auth/pages/socials/models/units"
 
 export const loginFormSent = createEvent()
+export const navigateToDashboard = createEvent()
 
 export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, LoginResponse, AxiosError>({
   handler: ({ email, password }) => login({ email, password }),
@@ -24,7 +25,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   reset: resetLoginForm,
 })
 
-$emailError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => `Неверные данные`)
+$emailError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => "Неверные данные")
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -69,6 +70,25 @@ sample({
     } else if (dashboard === "coach" && data.user.coach) {
       url = routeNames.coach()
     } else if (data.user.coach) {
+      url = routeNames.coach()
+    } else if (dashboard === "client") {
+      url = routeNames.client()
+    } else {
+      url = routeNames.client()
+    }
+    return {
+      url,
+    }
+  },
+  target: navigateReplace,
+})
+
+sample({
+  source: $dashboard,
+  clock: navigateToDashboard,
+  fn: (dashboard, data) => {
+    let url
+    if (dashboard === "coach") {
       url = routeNames.coach()
     } else if (dashboard === "client") {
       url = routeNames.client()

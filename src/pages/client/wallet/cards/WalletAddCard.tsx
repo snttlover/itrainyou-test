@@ -92,7 +92,6 @@ export const WalletAddCard = () => {
   const _addCard = useEvent(addCard)
 
   const handleAddCard = (e: React.SyntheticEvent) => {
-    _addCard()
   }
 
   return (

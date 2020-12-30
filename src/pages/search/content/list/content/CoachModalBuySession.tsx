@@ -105,7 +105,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
     }
     else {
       localStorage.setItem("sessions", JSON.stringify(sessions))
-      _addCard()
+      _addCard(props.coach.id)
     }
   }
   return (

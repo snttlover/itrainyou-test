@@ -12,6 +12,7 @@ import { Step3 } from "@/pages/auth/pages/signup/content/step-3/Step3"
 import { Step4 } from "@/pages/auth/pages/signup/content/step-4/Step4"
 import { useParams } from "react-router-dom"
 import { signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
+import { navigateToDashboard } from "@/pages/auth/pages/login/login.model"
 
 const ProtectedStep2 = withProtect({ to: routeNames.signup("1") })(Step2)
 const ProtectedStep3 = withProtect({ to: routeNames.signup("1") })(Step3)
@@ -23,6 +24,7 @@ export const SignUpPage = () => {
   const isLoggedInWithSocials = useStore($isSocialSignupInProgress)
   const navigate = useEvent(navigateReplace)
   const _pageMounted = useEvent(signUpPageMounted)
+  const _navigateToDashboard = useEvent(navigateToDashboard)
   const params = useParams<{ step: string }>()
   const currentStep = params.step ? +params.step : null
 
@@ -31,20 +33,21 @@ export const SignUpPage = () => {
     _pageMounted()
   }, [])
 
+  if (isFullRegistered) _navigateToDashboard()
   switch (currentStep) {
-    case 1:
-      if ((isLoggedIn && !isFullRegistered) || isLoggedInWithSocials) {
-        navigate({ url: routeNames.signup("2") })
-      }
-      return <Step1 />
-    case 2:
-      return <ProtectedStep2 />
-    case 3:
-      return <ProtectedStep3 />
-    case 4:
-      return <ProtectedStep4 />
-    default:
-      navigate({ url: routeNames.signup("1") })
+  case 1:
+    if ((isLoggedIn && !isFullRegistered) || isLoggedInWithSocials) {
+      navigate({ url: routeNames.signup("2") })
+    }
+    return <Step1 />
+  case 2:
+    return <ProtectedStep2 />
+  case 3:
+    return <ProtectedStep3 />
+  case 4:
+    return <ProtectedStep4 />
+  default:
+    navigate({ url: routeNames.signup("1") })
   }
   return null
 }
