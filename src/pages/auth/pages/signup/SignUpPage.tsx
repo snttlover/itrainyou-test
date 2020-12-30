@@ -12,7 +12,7 @@ import { Step3 } from "@/pages/auth/pages/signup/content/step-3/Step3"
 import { Step4 } from "@/pages/auth/pages/signup/content/step-4/Step4"
 import { useParams } from "react-router-dom"
 import { signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
-import { navigateToDashboard } from "@/pages/auth/pages/login/login.model"
+import { $dashboard } from "@/feature/dashboard/dashboard"
 
 const ProtectedStep2 = withProtect({ to: routeNames.signup("1") })(Step2)
 const ProtectedStep3 = withProtect({ to: routeNames.signup("1") })(Step3)
@@ -21,10 +21,10 @@ const ProtectedStep4 = withProtect({ to: routeNames.signup("1") })(Step4)
 export const SignUpPage = () => {
   const isLoggedIn = useStore($isLoggedIn)
   const isFullRegistered = useStore($isFullRegistered)
+  const dashboard = useStore($dashboard)  
   const isLoggedInWithSocials = useStore($isSocialSignupInProgress)
   const navigate = useEvent(navigateReplace)
   const _pageMounted = useEvent(signUpPageMounted)
-  const _navigateToDashboard = useEvent(navigateToDashboard)
   const params = useParams<{ step: string }>()
   const currentStep = params.step ? +params.step : null
 
@@ -33,7 +33,17 @@ export const SignUpPage = () => {
     _pageMounted()
   }, [])
 
-  if (isFullRegistered) _navigateToDashboard()
+  if (isFullRegistered) {
+    let url
+    if (dashboard === "coach") {
+      url = routeNames.coach()
+    } else if (dashboard === "client") {
+      url = routeNames.client()
+    } else {
+      url = routeNames.client()
+    }
+    navigate({ url: url})
+  }
   switch (currentStep) {
   case 1:
     if ((isLoggedIn && !isFullRegistered) || isLoggedInWithSocials) {
