@@ -12,7 +12,7 @@ import {
   registerUserFx,
   saveDataFx,
   signUpPageMounted, userDataChanged, userDataReset, userDataSetWithSocials,
-  userType, userTypeChanged
+  userType, userTypeChanged,
 } from "@/pages/auth/pages/signup/models/units"
 
 $userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))

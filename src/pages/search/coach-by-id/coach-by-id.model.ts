@@ -24,10 +24,12 @@ export const removeFromFavouriteFx = createEffect({
 })
 
 export const mounted = createEvent<{ id: number }>()
-export const showCreditCardsModal = createEvent<void>()
+export const showCreditCardsModal = createEvent<void | boolean>()
 
 export const $creditCardsModal = createStore<boolean>(false)
-  .on(showCreditCardsModal, (state,payload) => !state)
+  .on(showCreditCardsModal, (state,payload) => {
+    if (payload) return false
+    return !state})
   .reset([mounted])
 
 export const $coach = createStore<Coach | null>(null)

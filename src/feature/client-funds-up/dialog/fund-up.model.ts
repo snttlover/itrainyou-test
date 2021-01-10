@@ -1,6 +1,6 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { startTopUp } from "@/lib/api/wallet/client/start-top-up"
-import { startSaveCard } from "@/lib/api/wallet/client/start-save-card"
+import { startSaveCard, StartSaveCardParams } from "@/lib/api/wallet/client/start-save-card"
 import { finishSaveCard } from "@/lib/api/wallet/client/finish-save-card"
 import { startTopUpWithCard } from "@/lib/api/wallet/client/start-top-up-with-saved-card"
 import { transferToClientWallet } from "@/lib/api/wallet/coach/transfer-to-client-wallet"
@@ -21,7 +21,7 @@ import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
 export const FundUpModalGate = createGate()
 export const resetFundUpModal = createEvent()
 export const submitFundUp = createEvent()
-export const addCard = createEvent()
+export const addCard = createEvent<number>()
 
 export const changeShowFundUpDialog = createEvent<boolean>()
 export const setRedirectUrl = createEvent<string>()
@@ -84,8 +84,8 @@ const loadSessionsIdFx = createEffect({
 const SessionsId = restore(loadSessionsIdFx.doneData, null)
 
 const startSaveCardFx = createEffect({
-  handler: (returnUrl:string ) =>
-    startSaveCard({returnUrl: `${window.location.protocol}//${window.location.hostname}${returnUrl}`})
+  handler: (params: StartSaveCardParams) =>
+    startSaveCard(params)
 })
 
 const getPaymentIdFx = createEffect({
@@ -231,6 +231,7 @@ guard({
 sample({
   clock: addCard,
   source: $redirectUrl,
+  fn: (url, id) => ({returnUrl: `${window.location.protocol}//${window.location.hostname}${url}`, coach: id}),
   target: startSaveCardFx,
 })
 

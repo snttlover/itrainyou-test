@@ -4,6 +4,7 @@ import { post } from "@/lib/network/network"
 
 export type StartSaveCardParams = {
   returnUrl: string
+  coach: number
 }
 
 export type StartSaveCardResponse = {

@@ -1,4 +1,4 @@
-import { attach, createEffect, createEvent, createStore, merge, sample, split } from "effector-root"
+import { attach, createEffect, createEvent, createStore, guard, merge, sample, split } from "effector-root"
 import {
   ClientData,
   CoachData,

@@ -24,7 +24,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   reset: resetLoginForm,
 })
 
-$emailError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => `Неверные данные`)
+$emailError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => "Неверные данные")
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
   defaultValue: "",
