@@ -7,11 +7,11 @@ import { Client } from "@/lib/api/client/clientInfo"
 import { CoachSession } from "@/lib/api/coach-sessions"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 
-export type MessageSessionRequestStatuses = 'INITIATED' | 'COMPLETED'
-export type MessageTypes = 'USER' | 'SYSTEM' | 'SUPPORT'
-export type SupportTicketType = 'SUPPORT_AGENT_FOUND' | 'PROBLEM_SOLVED' | 'LOOKING_FOR_SUPPORT_AGENT'
+export type MessageSessionRequestStatuses = "INITIATED" | "COMPLETED"
+export type MessageTypes = "USER" | "SYSTEM" | "SUPPORT"
+export type SupportTicketType = "SUPPORT_AGENT_FOUND" | "PROBLEM_SOLVED" | "LOOKING_FOR_SUPPORT_AGENT"
 
-export type ConflictStatus = 'SOLVED_IN_COACH_FAVOUR' | 'SOLVED_IN_CLIENT_FAVOUR'
+export type ConflictStatus = "SOLVED_IN_COACH_FAVOUR" | "SOLVED_IN_CLIENT_FAVOUR"
 
 export type TransActionsStatus = "MONEY_SUCCESSFULLY_HELD" | "MONEY_HOLD_UNSUCCESSFUL" | ""
 
@@ -84,9 +84,9 @@ export type ChatMessage = {
 }
 
 
-export type SystemChatType = 'SYSTEM'
-export type PersonalChatType = 'PERSONAL'
-export type SupportChatType = 'SUPPORT'
+export type SystemChatType = "SYSTEM"
+export type PersonalChatType = "PERSONAL"
+export type SupportChatType = "SUPPORT"
 export type ChatTypes = SystemChatType | PersonalChatType
 
 type CommonChatFields = {

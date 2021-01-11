@@ -9,7 +9,7 @@ export const StyledCheckbox = styled(Icon)<{ color?: string }>`
   fill: ${({ color, theme }) => color || theme.colors.primary};
 `
 
-const CheckboxInput = styled.input.attrs({ type: `checkbox` })`
+const CheckboxInput = styled.input.attrs({ type: "checkbox" })`
   width: 0;
   height: 0;
   position: absolute;
@@ -49,7 +49,7 @@ export const Checkbox = styled(({ value, onChange, color, ...props }: CheckboxPr
   return (
     <Label className={props.className}>
       <CheckboxInput checked={value} onChange={change} />
-      <StyledCheckbox color={color} name={value ? `checkbox-active` : `checkbox-border`} />
+      <StyledCheckbox color={color} name={value ? "checkbox-active" : "checkbox-border"} />
       <CheckboxContent>{props.children}</CheckboxContent>
     </Label>
   )

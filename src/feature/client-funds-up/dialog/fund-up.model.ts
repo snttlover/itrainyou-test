@@ -254,7 +254,7 @@ forward({
 guard({
   source: loadSessionsIdFx.doneData,
   filter: (response) => {
-    return response.sessions !== null;
+    return response.sessions !== null
   },
   target: $sessionsPickerStore.buySessionBulk.prepend((response: {
       sessions: number[]

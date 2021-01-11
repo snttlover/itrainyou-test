@@ -22,14 +22,14 @@ type TransformedNotification = {
 
 export const NotificationSwitcher = (props: TransformedNotification) => {
   switch (props.notification.type) {
-    case "NEW_COACH":
-      return <NewCoachNotification {...(props as NewCoachNotificationProps)} />
-    case "SESSION_REMINDER":
-      return <SessionsRemindNotification {...(props as SessionsRemindNotificationProps)} />
-    case "NEW_REVIEW":
-      return <ReviewNotification {...(props as ReviewNotificationProps)} />
-    default:
-      return null
+  case "NEW_COACH":
+    return <NewCoachNotification {...(props as NewCoachNotificationProps)} />
+  case "SESSION_REMINDER":
+    return <SessionsRemindNotification {...(props as SessionsRemindNotificationProps)} />
+  case "NEW_REVIEW":
+    return <ReviewNotification {...(props as ReviewNotificationProps)} />
+  default:
+    return null
   }
 }
 

@@ -32,7 +32,7 @@ const Picture = styled.div<PictureTypes>`
   background-position: center;
   background-size: cover;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 100%;
   `}
 `

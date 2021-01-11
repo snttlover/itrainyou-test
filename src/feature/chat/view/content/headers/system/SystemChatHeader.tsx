@@ -15,13 +15,13 @@ export const SystemChatHeader = ({ backLink }: { backLink: string }) => (
   </ChatHeaderContainer>
 )
 
-const SystemChatIcon = styled(Icon).attrs({ name: `bell` })`
+const SystemChatIcon = styled(Icon).attrs({ name: "bell" })`
   fill: ${props => props.theme.colors.primary};
 
   width: 40px;
   height: 40px;
   margin-right: 8px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 24px;
     height: 24px;
     margin-right: 4px;

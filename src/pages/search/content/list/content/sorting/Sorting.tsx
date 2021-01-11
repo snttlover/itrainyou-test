@@ -53,7 +53,7 @@ const TabletFiltersButton = styled.div<{ pin?: boolean }>`
   position: relative;
   display: none;
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     display: flex;
   `}
 
@@ -113,14 +113,14 @@ const SortingItemsWrapper = styled.div`
   flex: 1;
 `
 
-const coaches: DeclOfNumListType = [`коуч отсортирован`, `коуча отсортированы`, `коучей отсортированы`]
+const coaches: DeclOfNumListType = ["коуч отсортирован", "коуча отсортированы", "коучей отсортированы"]
 
 export const Sorting = () => {
   const list = useStore($coachesList)
   const query = useStore($searchPageQuery)
   const current = query.ordering || "popularity"
 
-  const currentItem = sortingItems.find(item => item.value === current)?.value || `popularity`
+  const currentItem = sortingItems.find(item => item.value === current)?.value || "popularity"
 
   const navigate = (sort: CoachSortingType) => {
     addSearchPageQuery({

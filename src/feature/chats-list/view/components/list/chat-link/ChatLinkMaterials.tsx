@@ -14,7 +14,7 @@ const Container = styled.div`
   }
 `
 
-const Clip = styled(Icon).attrs({ name: `clip` })`
+const Clip = styled(Icon).attrs({ name: "clip" })`
   fill: ${props => props.theme.colors.primary};
   margin-right: 8px;
   @media screen and (max-width: 560px) {

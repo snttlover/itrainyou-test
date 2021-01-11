@@ -5,7 +5,7 @@ import { getClientSessionRequests } from "@/lib/api/client/get-client-session-re
 import { getClientSession } from "@/lib/api/client/get-client-session"
 
 export const clientSessionPage = createSessionPage({
-  type: `client`,
+  type: "client",
   fetchSession: getClientSession,
   fetchHistory: getClientSessionRequests,
   writeToUser: writeToCoach,

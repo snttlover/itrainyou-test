@@ -6,7 +6,7 @@ import { getClientChatSessions } from "@/lib/api/chats/clients/get-chat-sessions
 import { getClientChatImages } from "@/lib/api/chats/clients/get-images"
 
 export const clientChat = createChatModule({
-  type: `client`,
+  type: "client",
   fetchChat: getClientChat,
   socket: clientChatsSocket,
   fetchMessages: getClientChatMessages,

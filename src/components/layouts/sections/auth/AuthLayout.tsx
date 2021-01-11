@@ -1,9 +1,9 @@
 import * as React from "react"
 import styled from "styled-components"
 import { AuthLayoutLogo } from "./AuthLayoutLogo"
-import desktopBackgroundImage from './images/desktop-background.svg'
-import tabletBackgroundImage from './images/tablet-background.svg'
-import mobileBackgroundImage from './images/mobile-background.svg'
+import desktopBackgroundImage from "./images/desktop-background.svg"
+import tabletBackgroundImage from "./images/tablet-background.svg"
+import mobileBackgroundImage from "./images/mobile-background.svg"
 import { ClientTheme } from "@/components/layouts/themes"
 
 const StyledLayout = styled.div`

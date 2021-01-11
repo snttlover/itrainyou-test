@@ -26,7 +26,7 @@ export const normal = () => {
 
   return (
     <>
-      <p>has{focused ? `` : `n\`t`} focus</p>
+      <p>has{focused ? "" : "n`t"} focus</p>
       {button}
       {focused && <ClickOutside onClickOutside={() => change(false)}>
         <Container onClick={() => change(!focused)}>

@@ -13,12 +13,12 @@ const MenuItemIcon = styled(Icon).attrs(props => ({
   width: 16px;
   height: 16px;
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     width: 32px;
     height: 32px;
   `}
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 24px;
     height: 24px;
   `}
@@ -94,7 +94,7 @@ const Label = styled.div`
   }
 `
 
-const prepareLink = (value: string) => value.replace(/\/$/g, ``) + `/`
+const prepareLink = (value: string) => value.replace(/\/$/g, "") + "/"
 
 type MenuItemTypes = {
   icon: IconName

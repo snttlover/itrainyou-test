@@ -25,7 +25,7 @@ export const changeRevocationSessionId = createEvent<number>()
 const $revocationSessionId = restore(changeRevocationSessionId, 0)
 
 export const changeRevocationResume = createEvent<string>()
-export const $resume = restore(changeRevocationResume, ``).reset(resetRevocation)
+export const $resume = restore(changeRevocationResume, "").reset(resetRevocation)
 
 export const changeRevocationVisibility = createEvent<boolean>()
 export const $revocationVisibility = restore(changeRevocationVisibility, false).reset(resetRevocation)

@@ -29,7 +29,7 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   max-width: 546px;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     max-width: 100%;
   `}
 `
@@ -37,12 +37,12 @@ const Container = styled.div`
 const StyledInput = styled(Input)`
   width: 100%;
   padding: 7px 20px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 7px 8px;
   `}
 `
 
-const SearchIcon = styled(Icon).attrs({ name: `search` })`
+const SearchIcon = styled(Icon).attrs({ name: "search" })`
   position: absolute;
   top: 50%;
   right: 10px;

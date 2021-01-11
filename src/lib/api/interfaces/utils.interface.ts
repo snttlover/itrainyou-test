@@ -16,7 +16,7 @@ export interface Pagination<T> {
   results: T[]
 }
 
-export type Sex = 'M' | 'F'
+export type Sex = "M" | "F"
 
 export type ISODate = string
 

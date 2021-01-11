@@ -4,7 +4,7 @@ import { MediaRange } from "@/lib/responsive/media"
 
 export const SessionPageInfoWrapper = styled.div`
   width: 268px;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     display: none;
   `}
 `

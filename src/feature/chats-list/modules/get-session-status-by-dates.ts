@@ -2,9 +2,9 @@ import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { date } from "@/lib/formatting/date"
 
 const sessionStatuses = {
-  started: `Сессия началась`,
-  finished: `Сессия прошла`,
-  doesNotExist: `Нет ближайших сессий`
+  started: "Сессия началась",
+  finished: "Сессия прошла",
+  doesNotExist: "Нет ближайших сессий"
 }
 
 export const getSessionStatusByDates = (start?: ISODate, end?: ISODate) => {
@@ -20,5 +20,5 @@ export const getSessionStatusByDates = (start?: ISODate, end?: ISODate) => {
     return sessionStatuses.started
   }
 
-  return date(start).format(`DD MMMM HH:mm`)
+  return date(start).format("DD MMMM HH:mm")
 }

@@ -42,7 +42,7 @@ const Button = styled.div`
     opacity: 0.8;
   }
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
     margin-top: 12px;
@@ -52,7 +52,7 @@ const Button = styled.div`
 
 export const TabletRescheduleSession = styled(RescheduleSession)`
   display: none;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     display: flex;
   `}
 `

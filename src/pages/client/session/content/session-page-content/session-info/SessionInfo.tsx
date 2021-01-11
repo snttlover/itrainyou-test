@@ -43,10 +43,10 @@ const Container = styled.div`
   position: relative;
   background: #ffffff;
   border-radius: 2px;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     margin-top: 24px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 12px;
   `}
 `
@@ -59,7 +59,7 @@ const Date = styled.div`
   border-bottom: 1px solid #dbdee0;
   padding-bottom: 24px;
   text-align: center;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 22px;
     padding-bottom: 20px;
@@ -71,7 +71,7 @@ const Label = styled.div`
   line-height: 22px;
   color: ${props => props.theme.colors.primary};
   flex: 1;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
   `}
@@ -82,7 +82,7 @@ const Value = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #9aa0a6;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-weight: 500;
     font-size: 14px;
   `}
@@ -100,7 +100,7 @@ const Status = styled.div`
   color: #9aa0a6;
 
   border-top: 1px solid #dbdee0;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
     padding-top: 16px;
@@ -110,7 +110,7 @@ const Status = styled.div`
 
 export const TabletSessionInfo = styled(SessionInfo)`
   display: none;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     display: flex;
   `}
 `

@@ -68,12 +68,12 @@ const MenuItem = styled.div`
   white-space: nowrap;
 `
 
-const SessionIcon = styled(Icon).attrs({ name: `video2` })`
+const SessionIcon = styled(Icon).attrs({ name: "video2" })`
   fill: ${props => props.theme.colors.primary};
   margin-right: 10px;
 `
 
-const MaterialsIcon = styled(Icon).attrs({ name: `chat-files` })`
+const MaterialsIcon = styled(Icon).attrs({ name: "chat-files" })`
   fill: ${props => props.theme.colors.primary};
   margin-right: 10px;
 `
@@ -83,13 +83,13 @@ const StyledMobileMoreButton = styled.div`
   cursor: pointer;
   margin-left: 15px;
   position: relative;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
      display: flex;
      align-items: center;
      justify-content: center;
    `}
 `
 
-const MobileMoreIcon = styled(Icon).attrs({ name: `more` })`
+const MobileMoreIcon = styled(Icon).attrs({ name: "more" })`
   fill: ${props => props.theme.colors.primary};
 `

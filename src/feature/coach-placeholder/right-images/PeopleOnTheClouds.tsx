@@ -5,7 +5,7 @@ import { MediaRange } from "@/lib/responsive/media"
 export const PeopleOnTheClouds = styled.img.attrs({ src: peopleOnTheClouds })`
   width: 277.31px;
   height: 220px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 194.12px;
     height: 154px;
   `}

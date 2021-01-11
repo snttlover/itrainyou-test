@@ -119,7 +119,7 @@ forward({
 })
 
 forward({
-  from: saveClientUserDataFx.doneData.map((): Toast => ({ text: `Данные успешно обновлены`, type: `info` })),
+  from: saveClientUserDataFx.doneData.map((): Toast => ({ text: "Данные успешно обновлены", type: "info" })),
   to: toasts.add,
 })
 

@@ -7,7 +7,7 @@ export const SubTitle = styled.div`
   line-height: 22px;
   text-align: center;
   color: #5B6670;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
   `}

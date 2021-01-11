@@ -20,9 +20,9 @@ export const BanTooltip = (props: BanTooltipTypes) => {
   const [banDialogVisibility, changeBanDialogVisibility] = useState(false)
 
   const restrictedText = props.restricted
-    ? `Включить сообщения до покупки сессии`
-    : `Ограничить сообщения до покупки сессии`
-  const banText = props.blocked ? `Разблокировать клиента` : `Заблокировать клиента`
+    ? "Включить сообщения до покупки сессии"
+    : "Ограничить сообщения до покупки сессии"
+  const banText = props.blocked ? "Разблокировать клиента" : "Заблокировать клиента"
 
   const ban = useEvent(toggleClientBan)
   const restrict = useEvent(toggleClientRestrict)
@@ -94,7 +94,7 @@ const Container = styled.div`
   margin-left: 10px;
 `
 
-const BanIcon = styled(Icon).attrs({ name: `none` })`
+const BanIcon = styled(Icon).attrs({ name: "none" })`
   height: 16px;
   fill: ${props => props.theme.colors.primary};
 `

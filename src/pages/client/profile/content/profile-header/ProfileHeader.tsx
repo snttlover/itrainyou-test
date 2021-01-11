@@ -16,7 +16,7 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   width: 100%;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding-left: 8px;
     padding-right: 8px;
     margin-top: 24px;
@@ -27,7 +27,7 @@ const StyledAvatar = styled(Avatar)`
   width: 80px;
   height: 80px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 60px;
     height: 60px;
   `}
@@ -38,11 +38,11 @@ const Age = styled.div`
   line-height: 26px;
   color: #9aa0a6;
 
-    ${MediaRange.lessThan(`tablet`)`
+    ${MediaRange.lessThan("tablet")`
     margin-left: 80px;
   `}
     
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-left: 30px;
     text-align: right;
   `}
@@ -56,7 +56,7 @@ const Name = styled.div`
   margin-left: 16px;
   flex-basis: calc(50% - 100px);
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 26px;
     margin-left: 12px;
@@ -65,7 +65,7 @@ const Name = styled.div`
   `}
 `
 
-const Edit = styled(Icon).attrs({ name: 'edit' })`
+const Edit = styled(Icon).attrs({ name: "edit" })`
   width: 15px;
   height: 15px;
   cursor: pointer;

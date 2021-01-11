@@ -8,7 +8,7 @@ import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-c
 export const getCoachChatSessions = (params: GetChatSessionsQuery) =>
   get<Pagination<ChatSession>, {}>(
     `${config.BACKEND_URL}/api/v1/web/coach/chats/${params.id}/sessions/`,
-    keysToSnake(excludeKeys(params, [`id`]))
+    keysToSnake(excludeKeys(params, ["id"]))
   )
     .then(response => response.data)
     .then(keysToCamel)

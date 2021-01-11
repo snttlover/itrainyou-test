@@ -47,7 +47,7 @@ const VideoItem = styled.div`
   margin-bottom: 4px;
   height: 145px;
   
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 100%;
     margin-right: 0;
     margin-bottom: 8px;
@@ -72,7 +72,7 @@ const Preview = styled.img`
   height: 100%;
 `
 
-const Play = styled(Icon).attrs({ name: `play` })`
+const Play = styled(Icon).attrs({ name: "play" })`
   width: 36px;
   height: 36px;
   position: absolute;

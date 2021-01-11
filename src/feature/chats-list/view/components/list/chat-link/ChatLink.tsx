@@ -45,8 +45,8 @@ export const ChatLink = (props: ChatLinkTypes) => {
         <MessageContent>
           <UserName>{props.name}</UserName>
           <LastMessage data-is-mine={props.lastMessage}>
-            {props.lastMessageIsMine && `Вы: `}
-            {props.isImage && `Фотография`}
+            {props.lastMessageIsMine && "Вы: "}
+            {props.isImage && "Фотография"}
             {props.lastMessage}
           </LastMessage>
         </MessageContent>
@@ -233,7 +233,7 @@ const Counter = styled.div`
   }
 `
 
-const VideoIcon = styled(Icon).attrs({ name: `video` })`
+const VideoIcon = styled(Icon).attrs({ name: "video" })`
   fill: ${props => props.theme.colors.primary};
   width: 24px;
   height: 24px;

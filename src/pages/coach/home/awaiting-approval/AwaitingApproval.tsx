@@ -16,29 +16,29 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     padding-top: 132px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding-top: 36px;
   `}
 `
 
 const StyledTitle = styled(Title)`
   margin-bottom: 12px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-bottom: 8px;
   `}
 `
 
 const StyledSubTitle = styled(SubTitle)`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 246px;
   `}
 `
 
 const StyledBottomSubtitle = styled(StyledSubTitle)`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 248px;
   `}
 `
@@ -48,10 +48,10 @@ const StyledButton = styled(Button)`
   margin-top: 28px;
   padding: 9px 24px;
   
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     margin-top: 24px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 8px;
   `}
 `

@@ -8,8 +8,8 @@ export default {
 }
 
 export const normal = () => {
-  const [value, change] = useState(``)
-  const placeholder = `Type some text...`
+  const [value, change] = useState("")
+  const placeholder = "Type some text..."
 
   return (
     <Input value={value} placeholder={placeholder} onChange={change} />
@@ -17,8 +17,8 @@ export const normal = () => {
 }
 
 export const errored = () => {
-  const [value, change] = useState(`123`)
-  const placeholder = `Type some text...`
+  const [value, change] = useState("123")
+  const placeholder = "Type some text..."
 
   return (
     <Input value={value} placeholder={placeholder} onChange={change} error />

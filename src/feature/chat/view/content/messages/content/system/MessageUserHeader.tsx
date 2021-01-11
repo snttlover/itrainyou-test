@@ -24,7 +24,7 @@ export const MessageUserHeader = (props: UserHeaderProps) => {
           </UserData>
         )
       }
-      { !props.hideDate && <Time>{date(props.date).format('HH:mm')}</Time> }
+      { !props.hideDate && <Time>{date(props.date).format("HH:mm")}</Time> }
     </StyledUserHeader>
   )
 }
@@ -36,7 +36,7 @@ const Time = styled.div`
   
   flex: 1;
   text-align: right;
-  ${MediaRange.lessThan(`mobile`)`  
+  ${MediaRange.lessThan("mobile")`  
     font-size: 12px;
     line-height: 16px;
   `}
@@ -68,7 +68,7 @@ const UserHeaderTitle = styled.div`
   font-size: 14px;
   line-height: 18px;
   color: #424242;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 12px;
     line-height: 16px;
   `}

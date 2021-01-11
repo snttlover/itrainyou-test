@@ -27,12 +27,12 @@ const iconStyles = css`
   z-index: 1;
 `
 
-const SearchIcon = styled(Icon).attrs({ name: `search` })<SearchIconTypes>`
-  fill: ${props => (props.focused ? `#4858CC` : `#5B6670`)};
+const SearchIcon = styled(Icon).attrs({ name: "search" })<SearchIconTypes>`
+  fill: ${props => (props.focused ? "#4858CC" : "#5B6670")};
   ${iconStyles}
 `
 
-const CloseIcon = styled(Icon).attrs({ name: `close` })`
+const CloseIcon = styled(Icon).attrs({ name: "close" })`
   fill: #4858cc;
   ${iconStyles}
 `
@@ -108,9 +108,9 @@ export const Search = (props: SearchProps) => {
 
   const getIcon = () => {
     if (!searchValue) {
-      return <SearchIcon focused={focused} onClick={() => searchHandler('')} />
+      return <SearchIcon focused={focused} onClick={() => searchHandler("")} />
     }
-    return <CloseIcon onClick={() => searchHandler(``)} />
+    return <CloseIcon onClick={() => searchHandler("")} />
   }
 
   return (

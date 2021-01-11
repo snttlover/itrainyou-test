@@ -22,7 +22,7 @@ export const DashboardMenuContainer = styled.div<StyledMenuWrapperTypes>`
   padding: 0;
 
   ${MediaRange.lessThan<StyledMenuWrapperTypes>("tablet")`
-     display: ${({ showOnMobile }) => (showOnMobile ? `flex` : `none`)};
+     display: ${({ showOnMobile }) => (showOnMobile ? "flex" : "none")};
      width: 100vw;
      padding: 14px 16px;
   `}

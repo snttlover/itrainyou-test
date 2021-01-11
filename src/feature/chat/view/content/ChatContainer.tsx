@@ -10,7 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   flex: 1;
   
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     position: fixed;
     left: 0;
     top: 0;

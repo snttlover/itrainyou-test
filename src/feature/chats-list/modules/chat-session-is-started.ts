@@ -7,7 +7,7 @@ export const chatSessionIsStarted = (chat: PersonalChat) => {
   }
 
   // если до сессии осталось 5 мин она считается начатой
-  const startDate = date(chat.nearestSession.startDatetime).subtract(5, `minute`)
+  const startDate = date(chat.nearestSession.startDatetime).subtract(5, "minute")
   const endDate = date(chat.nearestSession.endDatetime)
 
   return date().isBetween(startDate, endDate)

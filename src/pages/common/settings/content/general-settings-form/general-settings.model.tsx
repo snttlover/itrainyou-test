@@ -22,8 +22,8 @@ export const changeGeneralSettingsFx = createEffect({
 export const mounted = createEvent()
 
 const successToast: Toast = {
-  type: `info`,
-  text: `Данные профиля сохранены`,
+  type: "info",
+  text: "Данные профиля сохранены",
 }
 
 forward({
@@ -37,8 +37,8 @@ forward({
 })
 
 const errorToast: Toast = {
-  type: `error`,
-  text: `Произошла ошибка при изменении профиля`,
+  type: "error",
+  text: "Произошла ошибка при изменении профиля",
 }
 
 forward({
@@ -61,7 +61,7 @@ export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = 
   defaultValue: "",
   validator: v => {
     if (!v || !v.trim()) {
-      return `Это поле обязательно для заполнения`
+      return "Это поле обязательно для заполнения"
     }
     return null
   },

@@ -16,11 +16,11 @@ export const ChatMessageSwitcher = ({
   commonSystemMessages?: boolean
   imageClick?: (index: number) => void
 }) => {
-  if (message.type === `SUPPORT`) {
+  if (message.type === "SUPPORT") {
     return <SupportMessageSwitcher {...message} />
   }
 
-  if (message.type === `TEXT`) {
+  if (message.type === "TEXT") {
     return (
       <ChatMessage
         user={message.user}

@@ -29,13 +29,13 @@ type CoachTooltipRowTypes = {
   className?: string
 }
 
-const NotificationIcon = styled(Icon).attrs({ name: `notification` })`
+const NotificationIcon = styled(Icon).attrs({ name: "notification" })`
   fill: #fff;
   width: 16px;
   margin-right: 6px;
 `
 
-const PeopleNotificationIcon = styled(Icon).attrs({ name: `people-notification` })`
+const PeopleNotificationIcon = styled(Icon).attrs({ name: "people-notification" })`
   fill: #fff;
   width: 16px;
   margin-right: 6px;

@@ -56,7 +56,7 @@ export const $transactionsList = $transactions.map(transactions =>
     if (transaction.type === "TOP_UP" || transaction.type === "TRANSFER_TO_CLIENT_WALLET") price = `+${price}`
     else price = `${price}`
 
-    let name = `Пополнение кошелька`
+    let name = "Пополнение кошелька"
     if (transaction.type === "TRANSFER_TO_CLIENT_WALLET") name = "Перевод с кошелька коуча"
     else if (session) name = `${session.coach.firstName} ${session.coach.lastName}`
 
@@ -71,9 +71,9 @@ export const $transactionsList = $transactions.map(transactions =>
       avatar: avatar,
       name: name,
       price: price,
-      time: date(transaction.creationDatetime).format(`HH:mm`),
-      date: date(transaction.creationDatetime).format(`DD.MM.YYYY`),
-      isCanceled: transaction.type === `SESSION_CANCELLATION`,
+      time: date(transaction.creationDatetime).format("HH:mm"),
+      date: date(transaction.creationDatetime).format("DD.MM.YYYY"),
+      isCanceled: transaction.type === "SESSION_CANCELLATION",
     }
   })
 )

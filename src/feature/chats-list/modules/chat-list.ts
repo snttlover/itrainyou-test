@@ -27,18 +27,18 @@ const getChatDate = (chat: PersonalChat) => {
   return dayjs(chat.lastMessage?.creationDatetime || chat.creationDatetime).toDate()
 }
 
-export type ChatListTabs = `unread` | `chosen` | `all`
+export type ChatListTabs = "unread" | "chosen" | "all"
 
 export const createChatListModule = (config: ChatListModuleConfig) => {
   const reset = createEvent()
 
   const changeSearch = createEvent<string>()
-  const $search = createStore<string>(``)
+  const $search = createStore<string>("")
     .on(changeSearch, (_, value) => value)
     .reset(reset)
 
   const changeTab = createEvent<ChatListTabs>()
-  const $tab = createStore<ChatListTabs>(`all`)
+  const $tab = createStore<ChatListTabs>("all")
     .on(changeTab, (_, tab) => tab)
     .reset(reset)
 
@@ -48,12 +48,12 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     fetchMethod: config.fetchChatsListMethod,
     $query: combine($tab, $search, (tab, search) => {
       const query: any = {}
-      if (tab === `unread`) {
-        query.unread = `True`
+      if (tab === "unread") {
+        query.unread = "True"
       }
 
-      if (tab === `chosen`) {
-        query.starred = `True`
+      if (tab === "chosen") {
+        query.starred = "True"
       }
 
       if (search.trim()) {
@@ -162,8 +162,8 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
             : chat.lastMessage?.senderCoach)
 
           const startTime = chat.lastMessage?.creationDatetime
-            ? date(chat.lastMessage?.creationDatetime).format(`HH:mm`)
-            : ``
+            ? date(chat.lastMessage?.creationDatetime).format("HH:mm")
+            : ""
 
           return {
             id: chat.id,
@@ -178,7 +178,7 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
             isStarted: chatSessionIsStarted(chat),
             startSession: config.sessionCallModule.methods.connectToSession,
             isImage: !!chat.lastMessage?.image,
-            lastMessage: chat.lastMessage?.text || ``,
+            lastMessage: chat.lastMessage?.text || "",
             lastMessageIsMine,
             highlightMessages: !!newMessagesCounter,
             sessionTextStatus: getSessionStatusByDates(

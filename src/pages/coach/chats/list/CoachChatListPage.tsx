@@ -8,7 +8,7 @@ import { MediaRange } from "@/lib/responsive/media"
 const ChatsList = createChatList(coachChatsList)
 
 const StyledContentContainer = styled.div`
-   ${MediaRange.lessThan(`mobile`)`
+   ${MediaRange.lessThan("mobile")`
      padding: 0;
    `}
 `

@@ -12,10 +12,10 @@ const searchDomain = createDomain()
 
 export const updateSearch = searchDomain.createEvent<string>()
 export const $search = searchDomain
-  .createStore(``)
+  .createStore("")
   .on(updateSearch, (_, search) => search)
-  .on(setSearchPageQuery, (_, query) => query.search || ``)
-  .on(resetSearchQuery, () => ``)
+  .on(setSearchPageQuery, (_, query) => query.search || "")
+  .on(resetSearchQuery, () => "")
 
 export const find = searchDomain.createEvent<string>()
 
@@ -30,7 +30,7 @@ forward({
 })
 
 forward({
-  from: remove.map<["search"]>(_ => [`search`]),
+  from: remove.map<["search"]>(_ => ["search"]),
   to: removeSearchPageQuery,
 })
 

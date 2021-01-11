@@ -20,7 +20,7 @@ const StyledProfileHeader = styled(ProfileHeader)`
     margin-left: 64px;
   `}
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     max-width: 260px;
   `}
 `

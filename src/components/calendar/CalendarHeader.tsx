@@ -16,22 +16,22 @@ type LeftButtonTypes = {
   disabled?: boolean
 }
 
-export const LeftIcon = styled(Icon).attrs({ name: `left-icon` })<LeftButtonTypes>`
+export const LeftIcon = styled(Icon).attrs({ name: "left-icon" })<LeftButtonTypes>`
   width: 5px;
   height: 9px;
   fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
-  pointer-events: ${props => (props.disabled ? `none` : `auto`)};
+  pointer-events: ${props => (props.disabled ? "none" : "auto")};
 `
 
-export const RightIcon = styled(Icon).attrs({ name: `right-icon` })<LeftButtonTypes>`
+export const RightIcon = styled(Icon).attrs({ name: "right-icon" })<LeftButtonTypes>`
   width: 5px;
   height: 9px;
   fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
-  pointer-events: ${props => (props.disabled ? `none` : `auto`)};
+  pointer-events: ${props => (props.disabled ? "none" : "auto")};
 `
 
 export const MonthContainer = styled.div`
@@ -74,9 +74,9 @@ export const CalendarHeader: React.FC<CalendarHeaderTypes> = ({
   <Header>
     <MonthContainer>
       <LeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
-      <MonthName>{date(currentDate).format(`MMMM`)}</MonthName>
+      <MonthName>{date(currentDate).format("MMMM")}</MonthName>
       <RightIcon onClick={nextMonth} />
     </MonthContainer>
-    <Year>{date(currentDate).format(`YYYY`)}</Year>
+    <Year>{date(currentDate).format("YYYY")}</Year>
   </Header>
 )

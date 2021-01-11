@@ -2,9 +2,9 @@ import { createDomain, forward, sample, split } from "effector-root"
 import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
 import { DurationType } from "@/lib/api/coach-sessions"
 
-const priceFilterDomain = createDomain(`price-filter`)
+const priceFilterDomain = createDomain("price-filter")
 
-const minutes: DurationType[] = [`D30`, `D45`, `D60`, `D90`]
+const minutes: DurationType[] = ["D30", "D45", "D60", "D90"]
 
 type PriceFilter = {
   key: DurationType
@@ -15,7 +15,7 @@ type PriceFilter = {
 const getDefault = (): PriceFilter[] =>
   minutes.map(key => ({
     key: key,
-    text: `${+key.replace(/[A-Z]/gim, ``)} мин`,
+    text: `${+key.replace(/[A-Z]/gim, "")} мин`,
     selected: false,
   }))
 
@@ -25,7 +25,7 @@ export const toggleFilter = priceFilterDomain.createEvent<DurationType>()
 export const $priceFilters = priceFilterDomain
   .createStore<PriceFilter[]>(getDefault())
   .on(setPricesFromQueryString, (state, payload) => {
-    const selected = payload.split(`,`) as DurationType[]
+    const selected = payload.split(",") as DurationType[]
 
     return state.map(filter => ({
       ...filter,
@@ -51,16 +51,16 @@ const { add, remove } = split(filterChanged, {
 })
 
 forward({
-  from: add.map(filters => ({ session_duration_types: filters.map(filter => filter.key).join(`,`) })),
+  from: add.map(filters => ({ session_duration_types: filters.map(filter => filter.key).join(",") })),
   to: addSearchPageQuery,
 })
 
 forward({
-  from: remove.map<["session_duration_types"]>(_ => [`session_duration_types`]),
+  from: remove.map<["session_duration_types"]>(_ => ["session_duration_types"]),
   to: removeSearchPageQuery,
 })
 
 forward({
-  from: $searchPageQuery.map(value => value.session_duration_types || ``),
+  from: $searchPageQuery.map(value => value.session_duration_types || ""),
   to: setPricesFromQueryString,
 })

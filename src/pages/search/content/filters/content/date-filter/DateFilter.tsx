@@ -51,23 +51,23 @@ const Arrow = styled.img.attrs({ src: arrowImage })<ArrowTypes>`
   cursor: pointer;
   right: 0;
   top: 0;
-  transform: rotate(${props => (props.opened ? `180deg` : `0`)});
+  transform: rotate(${props => (props.opened ? "180deg" : "0")});
 `
 
 export const DateFilter = () => {
   const q = useStore($searchPageQuery)
 
-  let start = q.nearest_session_date__gte ? formatedDate(q.nearest_session_date__lte).valueOf() : null
-  let end = q.nearest_session_date__lte ? formatedDate(q.nearest_session_date__gte).valueOf() : null
+  const start = q.nearest_session_date__gte ? formatedDate(q.nearest_session_date__lte).valueOf() : null
+  const end = q.nearest_session_date__lte ? formatedDate(q.nearest_session_date__gte).valueOf() : null
 
   const getRangeType = () => {
     if (!!start && !!end) {
-      return `range`
+      return "range"
     }
-    if (!!end) {
-      return `to`
+    if (end) {
+      return "to"
     }
-    return `from`
+    return "from"
   }
 
   const [rangeType, changeRangeType] = useState(getRangeType())
@@ -76,12 +76,12 @@ export const DateFilter = () => {
     const currentRangeType = rangeType
     changeRangeType(newType)
 
-    if (newType === `range`) {
+    if (newType === "range") {
       return navigateWithDate([date as Date, date as Date], newType)
     }
 
-    if ([`to`, `from`].includes(newType)) {
-      if (currentRangeType === `range`) {
+    if (["to", "from"].includes(newType)) {
+      if (currentRangeType === "range") {
         // @ts-ignore
         return navigateWithDate(date[0], newType)
       }
@@ -90,11 +90,11 @@ export const DateFilter = () => {
   }
 
   const getCalendarValue = (): CalendarDateType => {
-    if (rangeType === `range`) {
+    if (rangeType === "range") {
       // @ts-ignore
       return [new Date(formatedDate(start).valueOf()), new Date(formatedDate(end).valueOf())]
     }
-    if (rangeType === `to`) {
+    if (rangeType === "to") {
       // @ts-ignore
       return new Date(formatedDate(end).valueOf())
     }
@@ -110,28 +110,28 @@ export const DateFilter = () => {
   const removeQuery = useEvent(removeSearchPageQuery)
 
   const startText = () => {
-    if (date && [`from`, `range`].includes(rangeType)) {
+    if (date && ["from", "range"].includes(rangeType)) {
       // @ts-ignore
       const currentDate: Date = date.length ? date[0] : date
-      return `c ${formatedDate(currentDate).format(`D MMM`)}`
+      return `c ${formatedDate(currentDate).format("D MMM")}`
     }
-    return ``
+    return ""
   }
   const endText = () => {
-    if (date && [`to`, `range`].includes(rangeType)) {
+    if (date && ["to", "range"].includes(rangeType)) {
       // @ts-ignore
       const currentDate: Date = date.length ? date[1] : date
-      return `до ${formatedDate(currentDate).format(`D MMM`)}`
+      return `до ${formatedDate(currentDate).format("D MMM")}`
     }
-    return ``
+    return ""
   }
 
-  const formatDateToBackend = (date: Date) => formatedDate(date).format(`YYYY-MM-DD`)
+  const formatDateToBackend = (date: Date) => formatedDate(date).format("YYYY-MM-DD")
 
   const navigateWithDate = (date: CalendarDateType, range?: string | undefined) => {
     range = range || rangeType
 
-    if (range === `range`) {
+    if (range === "range") {
       changeDate(date)
       addQuery({
         // @ts-ignore
@@ -142,14 +142,14 @@ export const DateFilter = () => {
       return
     }
 
-    if (range === `to`) {
+    if (range === "to") {
       removeQuery(["nearest_session_date__gte"])
       addQuery({
         nearest_session_date__lte: formatDateToBackend(date as Date),
       })
     }
 
-    if (range === `from`) {
+    if (range === "from") {
       removeQuery(["nearest_session_date__lte"])
       addQuery({
         nearest_session_date__gte: formatDateToBackend(date as Date),
@@ -162,7 +162,7 @@ export const DateFilter = () => {
   const toggleCalendarVisibility = () => {
     changeCalendarVisibility(!calendarVisibility)
     if (!calendarVisibility) {
-      changeRangeType(`from`)
+      changeRangeType("from")
       changeDate(new Date())
     } else {
       removeQuery(["nearest_session_date__gte", "nearest_session_date__lte"])
@@ -171,18 +171,18 @@ export const DateFilter = () => {
 
   const selectDateText = () => {
     if (!calendarVisibility) {
-      return `Выбрать промежуток`
+      return "Выбрать промежуток"
     }
-    return ``
+    return ""
   }
 
   let pinTo: null | Date = null
-  if (rangeType === `to`) {
-    pinTo = formatedDate(formatedDate().format(`YYYY-MM-DD`)).toDate()
+  if (rangeType === "to") {
+    pinTo = formatedDate(formatedDate().format("YYYY-MM-DD")).toDate()
   }
-  if (rangeType === `from`) {
+  if (rangeType === "from") {
     pinTo = formatedDate(date as Date)
-      .add(10, `year`)
+      .add(10, "year")
       .toDate()
   }
 
@@ -197,7 +197,7 @@ export const DateFilter = () => {
           <StyledRadioOption value='to'>До</StyledRadioOption>
           <StyledRadioOption value='range'>Промежуток</StyledRadioOption>
         </RadioGroup>
-        <Calendar value={date} selectRange={rangeType === `range`} pinTo={pinTo} onChange={navigateWithDate} />
+        <Calendar value={date} selectRange={rangeType === "range"} pinTo={pinTo} onChange={navigateWithDate} />
       </RadioContainer>
     </>
   )

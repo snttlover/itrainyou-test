@@ -10,7 +10,7 @@ const Container = styled.div`
   padding-bottom: 36px;
 `
 
-const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+const TopCoachIcon = styled(Icon).attrs({ name: "top-coach" })`
   width: 16px;
   height: 16px;
   margin-right: 4px;
@@ -34,7 +34,7 @@ export const OnlyTopCoachCheckbox = () => {
     if (value) {
       _addSearchPageQuery({ is_top_coach: value })
     } else {
-      _removeSearchPageQuery([`is_top_coach`])
+      _removeSearchPageQuery(["is_top_coach"])
     }
   }
 

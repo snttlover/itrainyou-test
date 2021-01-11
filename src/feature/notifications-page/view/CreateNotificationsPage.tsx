@@ -52,7 +52,7 @@ const Title = styled.div`
   color: #424242;
   margin-top: 36px;
   margin-bottom: 24px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 20px;
     line-height: 26px;
   `}

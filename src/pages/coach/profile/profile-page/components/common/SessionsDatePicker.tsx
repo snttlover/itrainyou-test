@@ -24,7 +24,7 @@ const Container = styled.div`
   margin-bottom: 20px;
   position: relative;
 
-  ${MediaRange.lessThan(`laptop`)`
+  ${MediaRange.lessThan("laptop")`
      width: 100%;
      margin-bottom: 0;
   `}
@@ -35,7 +35,7 @@ const Block = styled.div<StyledTabTypes>`
   flex-direction: column;
   background: #fff;
   padding: 24px 8px;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     flex-direction: row;   
   `}
 `
@@ -43,14 +43,14 @@ const Block = styled.div<StyledTabTypes>`
 const Datepicker = styled.div`
   border-bottom: 1px solid #dbdee0;
   padding-bottom: 4px;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
      width: 50%;
      padding-right: 20px;
      padding-left: 20px;
      border-right: 1px solid #DBDEE0;
      border-bottom: none;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-right: 26px;
     margin-left: 26px;
     padding-bottom: 12px;
@@ -62,7 +62,7 @@ const SelectTimeContainer = styled.div`
   margin: 0 auto;
   width: 100%;
 
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     margin: 0 auto;
     width: 252px;
   `}
@@ -111,7 +111,7 @@ const StyledDateHeader = styled.div`
   padding-left: 12px;
   padding-top: 16px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     border-top: 1px solid #DBDEE0;
     padding-top: 24px;
   `}
@@ -127,7 +127,7 @@ const StyledTab = styled(Tab)<StyledTabTypes>`
   display: flex;
   flex-direction: column;
   padding: 8px 13px;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     flex-direction: row;
   `}
 `
@@ -139,7 +139,7 @@ const TabTime = styled.div`
   line-height: 16px;
   text-align: center;
   color: #5b6670;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     font-size: 16px;
     line-height: 22px;
   `}
@@ -161,11 +161,11 @@ const SessionPackagesStatWrapper = styled.div`
   width: 216px;
   margin: 0 auto;
 
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     border-top: none;
  `}
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -191,7 +191,7 @@ const SessionPackage = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 252px;
   `}
 `
@@ -211,7 +211,7 @@ const SessionPackagesDescription = styled.div`
   color: #5b6670;
   margin-top: 16px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 212px;
   `}
 `
@@ -224,7 +224,7 @@ const SessionsPackagesTitle = styled.div`
   color: #424242;
   margin-bottom: 7px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 252px;
   `}
 `
@@ -242,7 +242,7 @@ const Footer = ({ className }: { className?: string }) => (
 
 const TabletFooter = styled(Footer)`
   display: none;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     display: block;
     
     ${SessionPackagesDescription} {
@@ -254,13 +254,13 @@ const TabletFooter = styled(Footer)`
 const DesktopFooter = styled(Footer)`
   display: flex;
   margin-top: 24px;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     display: none;
  `}
 `
 
 const StyledCalendar = styled(Calendar)`
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     max-width: 252px;
     margin: 0 auto;
  `}
@@ -268,7 +268,7 @@ const StyledCalendar = styled(Calendar)`
 
 const Delemiter = styled.div`
   display: none;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     display: flex;
   `}
 `
@@ -277,15 +277,15 @@ const FooterWrapper = styled.div`
   display: none;
   width: 100%;
   border-top: 1px solid #dbdee0;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     display: flex;
     justify-content: center;
     margin-top: 10px;
  `}
 `
 
-const equalDateFormat = `DDMMYYYY`
-const equalTimeFormat = `HH:mm`
+const equalDateFormat = "DDMMYYYY"
+const equalTimeFormat = "HH:mm"
 
 export const SessionsDatePicker = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsData.sessionsList)

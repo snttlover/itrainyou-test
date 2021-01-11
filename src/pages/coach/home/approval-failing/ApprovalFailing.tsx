@@ -16,17 +16,17 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     padding-top: 132px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding-top: 36px;
   `}
 `
 
 const StyledTitle = styled(Title)`
   margin-bottom: 12px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-bottom: 8px;
     width: 288px;
   `}
@@ -35,20 +35,20 @@ const StyledTitle = styled(Title)`
 const StyledSubTitle = styled(SubTitle)`
   width: 100%;
   max-width: 362px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     max-width: 246px;
   `}
 `
 
 const StyledBottomSubtitle = styled(SubTitle)`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: none;
   `}
 `
 
 const StyledBottomMobileSubtitle = styled(SubTitle)`
   display: none;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: block;
     width: 248px;
   `}
@@ -57,10 +57,10 @@ const StyledBottomMobileSubtitle = styled(SubTitle)`
 const StyledButton = styled(Button)`
   width: 160px;
   margin-top: 28px;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     margin-top: 24px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 8px;
   `}
 `
@@ -70,7 +70,7 @@ const Peoples = styled.img.attrs({ src: peoples })`
   height: 144.37px;
   margin-top: 76px;
   margin-bottom: 109px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 69px;
     margin-bottom: 106px;
   `}
@@ -83,7 +83,7 @@ const But = styled.div`
   text-align: center;
   color: #424242;
   margin-bottom: 16px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: none;
   `}
 `

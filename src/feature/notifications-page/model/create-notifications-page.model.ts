@@ -19,14 +19,14 @@ export const createNotificationsPageModel = (config: CreateNotificationsPageMode
   const $notifications = pagination.data.$list.map(notifications => notifications.map(notification => {
 
     const day = date(notification.creationDatetime)
-    let notificationTime = day.format('DD.MM.YYYY')
+    let notificationTime = day.format("DD.MM.YYYY")
 
-    if (day.isAfter(date().subtract(1, "day").startOf('day'))) {
-      notificationTime = 'вчера'
+    if (day.isAfter(date().subtract(1, "day").startOf("day"))) {
+      notificationTime = "вчера"
     }
 
-    if (day.isAfter(date().startOf('day'))) {
-      notificationTime = 'сегодня'
+    if (day.isAfter(date().startOf("day"))) {
+      notificationTime = "сегодня"
     }
 
     return {

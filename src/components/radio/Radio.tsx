@@ -58,7 +58,7 @@ const CustomRadio = styled.div`
   }
 `
 
-const RadioInput = styled.input.attrs({ type: `radio` })`
+const RadioInput = styled.input.attrs({ type: "radio" })`
   width: 0;
   height: 0;
   position: absolute;

@@ -34,7 +34,7 @@ export const createChatModule = (config: ChatModuleConfig) => {
 
   const chatSessions = createChatSessionsModule({
     socket: config.socket,
-    $withAvatars: chat.$chat.map(chat => chat.chatType === `SYSTEM`),
+    $withAvatars: chat.$chat.map(chat => chat.chatType === "SYSTEM"),
     $chatId,
     fetch: config.fetchSessions,
     chatUserType: config.type

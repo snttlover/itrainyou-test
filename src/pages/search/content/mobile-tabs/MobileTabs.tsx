@@ -86,7 +86,7 @@ export const hasFilters = (params: GetCoachesParamsTypes) => {
 export const MobileTabs = () => {
   const params = useStore($searchPageQuery)
 
-  const current = params.ordering || `popularity`
+  const current = params.ordering || "popularity"
 
   const navigate = (sort: CoachSortingType) => {
     addSearchPageQuery({
@@ -98,7 +98,7 @@ export const MobileTabs = () => {
 
   const getFilterName = () => {
     const filter = currentFilter
-    return filter ? filter.text : `Сортировка`
+    return filter ? filter.text : "Сортировка"
   }
 
   return (

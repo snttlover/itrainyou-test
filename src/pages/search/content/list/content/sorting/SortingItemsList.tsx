@@ -28,7 +28,7 @@ export const SortingItemsList = (props: PropsTypes) => {
         <StyledSortingItem
           key={item.value}
           onClick={() => props.onClick(item)}
-          className={item.value === props.current ? `active` : ``}
+          className={item.value === props.current ? "active" : ""}
         >
           {item.text}
           <SortingItemIcon src={item.icon} />

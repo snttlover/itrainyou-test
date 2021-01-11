@@ -60,7 +60,7 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
 
 const Wrapper = styled.div`
   ${DialogOverlayContainer} {
-    ${MediaRange.lessThan(`mobile`)`
+    ${MediaRange.lessThan("mobile")`
         padding: 0;
         flex-direction: column;
     `}
@@ -87,7 +87,7 @@ const Empty = styled.div`
 const StyledDialog = styled(Dialog)`
   max-width: 800px;
   width: 100%;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       width: 100%;
       height: 100vh;
       padding: 12px;
@@ -110,7 +110,7 @@ const Header = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #424242;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       margin-bottom: 34px;
       margin-top: 10px;
   `}
@@ -135,7 +135,7 @@ const Image = styled.div<ImageType>`
   background: url("${props => props.image}");
   background-size: cover;
   position: relative;
-  ${MediaRange.lessThan(`mobile`)`  
+  ${MediaRange.lessThan("mobile")`  
     width: calc(33% - 8px);
     height: 72px;
   `}

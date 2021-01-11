@@ -37,7 +37,7 @@ export const ImagesLimitDialog = (props: ImagesLimitDialogProps) => (
 
 const Wrapper = styled.div`
   ${DialogOverlayContainer} {
-    ${MediaRange.lessThan(`mobile`)`
+    ${MediaRange.lessThan("mobile")`
         padding: 0;
         flex-direction: column;
     `}
@@ -48,7 +48,7 @@ const StyledDialog = styled(Dialog)`
   width: 100%;
   max-width: 560px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     min-width: 100%;
     min-height: 100%;
     width: auto;
@@ -71,7 +71,7 @@ const Header = styled.div`
   line-height: 26px;
   text-align: center;
   color: #424242;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       padding-top: 40px;
   `}
 `
@@ -92,7 +92,7 @@ const Images = styled.div`
   grid-template-rows: 1fr 1fr;
   gap: 8px 8px;
   width: 100%;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
@@ -110,7 +110,7 @@ const Actions = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       margin-top: 40px;
   `}
 `
@@ -118,7 +118,7 @@ const Actions = styled.div`
 const Cancel = styled(DashedButton)`
   width: 160px;
   margin-right: 16px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       width: 144px;
       margin-right: 8px;
   `}
@@ -126,7 +126,7 @@ const Cancel = styled(DashedButton)`
 
 const Confirm = styled(Button)`
   width: 160px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       width: 144px;
   `}
 `

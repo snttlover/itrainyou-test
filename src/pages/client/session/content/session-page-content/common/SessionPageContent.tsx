@@ -7,7 +7,7 @@ export const SessionPageContent = styled.div`
   flex-direction: column;
   margin-right: 24px;
   flex: 1;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     margin-right: 0;
   `}
 `

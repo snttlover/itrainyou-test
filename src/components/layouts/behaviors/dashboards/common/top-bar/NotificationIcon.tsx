@@ -4,16 +4,16 @@ import { MediaRange } from "@/lib/responsive/media"
 import { Link } from "react-router-dom"
 import * as React from "react"
 
-const NotificationButton = styled(Icon).attrs({ name: `notification` })`
+const NotificationButton = styled(Icon).attrs({ name: "notification" })`
   width: 27px;
   height: auto;
   fill: ${props => props.theme.colors.primary};
   cursor: pointer;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     width: 31px;
     fill: #fff;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 25px;
   `}
 `

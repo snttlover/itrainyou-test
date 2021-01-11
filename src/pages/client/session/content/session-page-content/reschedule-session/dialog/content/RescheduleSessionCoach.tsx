@@ -28,10 +28,10 @@ export const RescheduleSessionCoach = (props: RescheduleSessionCoach) => {
         return acc
       }
     },
-    { price: Infinity, text: `0 минут` }
+    { price: Infinity, text: "0 минут" }
   )
 
-// @ts-ignore
+  // @ts-ignore
   const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
   const price =
     filledPrices > 1
@@ -113,7 +113,7 @@ const Name = styled.span`
   margin-top: 10px;
   color: #424242;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-family: Roboto Slab;
     font-size: 16px;
     line-height: 26px;
@@ -155,7 +155,7 @@ const PriceContainer = styled.div`
 `
 
 const Price = styled.span`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 8px;
     line-height: 16px;
   `}
@@ -170,7 +170,7 @@ const RatingContainer = styled.div`
   right: 12px;
   top: 12px;
   height: calc(100% - 24px);
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: none;
   `}
 `
@@ -226,7 +226,7 @@ const CategoriesIcons = styled.div`
   }
 `
 
-const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+const TopCoachIcon = styled(Icon).attrs({ name: "top-coach" })`
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -241,7 +241,7 @@ type CategoryIconTypes = {
   color: string
 }
 
-const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>`
+const CategoryIcon = styled(Icon).attrs({ name: "tabletka" })<CategoryIconTypes>`
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -255,14 +255,14 @@ const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>
 
 const MobileRatingColumn = styled.div`
   display: none;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: flex;
     align-items: center;
     margin-top: 7px;
   `}
 `
 
-const MobileRangeIcon = styled(Icon).attrs({ name: `star` })`
+const MobileRangeIcon = styled(Icon).attrs({ name: "star" })`
   fill: ${props => props.theme.colors.primary};
   margin-right: 6px;
   width: 15px;
@@ -288,11 +288,11 @@ const MainInfoContainer = styled.div<MainInfoContainerTypes>`
   transition: border 300ms;
 
   ${Avatar} {
-    border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
+    border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
   }
 
   ${PriceContainer} {
-    background: ${props => (props.isTopCoach ? `#F6C435` : `#9AA0A6`)};
+    background: ${props => (props.isTopCoach ? "#F6C435" : "#9AA0A6")};
   }
 
   &:hover {
@@ -302,7 +302,7 @@ const MainInfoContainer = styled.div<MainInfoContainerTypes>`
   ${MediaRange.greaterThan("tablet")`
     padding: 8px 12px 12px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     align-items: center;
     display: flex;
   `}

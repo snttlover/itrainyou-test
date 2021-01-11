@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 
 const AvatarLink = styled(Link)`
   margin-left: 36px;
-  ${MediaRange.lessThan(`tablet`)`  
+  ${MediaRange.lessThan("tablet")`  
     display: none;
   `}
 `
@@ -32,7 +32,7 @@ const StyledAvatar = styled(Avatar)`
   height: 40px;
   cursor: pointer;
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     display: none;
   `}
 `
@@ -43,13 +43,13 @@ const StyledMobileMenu = styled(MobileMenu)`
   }
 `
 
-const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
+const DropdownButton = styled(Icon).attrs({ name: "arrow" })`
   fill: ${props => props.theme.colors.primary};
   margin-left: 37px;
   cursor: pointer;
   height: auto;
   width: 25px;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     display: none;
   `}
 `

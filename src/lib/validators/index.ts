@@ -42,7 +42,7 @@ export const innValidator = (inn: string) => {
       for (const i in coefficients) {
         n += coefficients[i] * inn[i]
       }
-        // @ts-ignore
+      // @ts-ignore
       return parseInt(n % 11 % 10)
     }
     switch (inn.length) {

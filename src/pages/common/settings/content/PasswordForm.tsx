@@ -30,7 +30,7 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 20px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 22px;
   `}
@@ -45,7 +45,7 @@ const StyledSpinner = styled(Spinner)`
 `
 
 const Actions = styled.div`
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
      display: flex;
      justify-content: center;
    `}

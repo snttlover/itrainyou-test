@@ -14,7 +14,7 @@ const Title = styled.div`
   font-size: 24px;
   line-height: 26px;
   color: #424242;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 20px;
     line-height: 26px;
   `}

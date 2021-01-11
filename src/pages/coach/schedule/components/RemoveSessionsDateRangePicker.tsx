@@ -69,7 +69,7 @@ export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePick
             <Calendar
               value={from}
               disabledFrom={to}
-              onChange={picked => rangeChanged([date(picked), date(to || dayjs(picked).add(1, `day`))])}
+              onChange={picked => rangeChanged([date(picked), date(to || dayjs(picked).add(1, "day"))])}
             />
           </LeftDropdown>
         )}
@@ -77,7 +77,7 @@ export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePick
           <RightDropdown>
             <Calendar
               value={to}
-              onChange={picked => rangeChanged([date(from || dayjs(picked).subtract(1, `day`)), date(picked)])}
+              onChange={picked => rangeChanged([date(from || dayjs(picked).subtract(1, "day")), date(picked)])}
             />
           </RightDropdown>
         )}

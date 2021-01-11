@@ -31,8 +31,8 @@ export const createInfinityScroll = ($paginationModel: CreateInfinityScrollType<
       loader={<Loader />}
       next={loadMore as any}
       hasMore={hasMore}
-      scrollableTarget={props.scrollableTarget || 'page-wrapper'}
-      style={{ overflow: `hidden` }}
+      scrollableTarget={props.scrollableTarget || "page-wrapper"}
+      style={{ overflow: "hidden" }}
       dataLength={items.length}
     >
       {props.children}

@@ -13,7 +13,7 @@ import styled from "styled-components"
 import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
-  border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
+  border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
   
   width: 80px;
   min-width: 80px;
@@ -105,7 +105,7 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   `}
 `
 
-const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+const TopCoachIcon = styled(Icon).attrs({ name: "top-coach" })`
   width: 16px;
   height: 16px;
   margin-right: 8px;

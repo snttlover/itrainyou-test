@@ -29,11 +29,11 @@ const ReverseInfiniteScroll = (props: ReverseInfiniteScrollTypes) => {
     }
 
     if (el) {
-      el.addEventListener(`scroll`, scrollHandler)
+      el.addEventListener("scroll", scrollHandler)
     }
     return () => {
       if (el) {
-        el.removeEventListener(`scroll`, scrollHandler)
+        el.removeEventListener("scroll", scrollHandler)
       }
     }
   })
@@ -57,7 +57,7 @@ export const createReverseInfinityScroll = ($paginationModel: CreateInfinityScro
       loader={<Loader />}
       next={loadMore as any}
       hasMore={hasMore}
-      scrollableTarget={props.scrollableTarget || 'page-wrapper'}
+      scrollableTarget={props.scrollableTarget || "page-wrapper"}
     >
       {props.children}
     </ReverseInfiniteScroll>

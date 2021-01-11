@@ -167,7 +167,7 @@ const StyledButton = styled(Button)`
     width: 200px;
     padding: 9px 24px;
     
-   ${MediaRange.lessThan(`mobile`)`
+   ${MediaRange.lessThan("mobile")`
     padding: 5px 24px;
     width: 120px;
   `}

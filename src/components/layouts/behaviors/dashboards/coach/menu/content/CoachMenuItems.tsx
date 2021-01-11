@@ -35,7 +35,7 @@ const Delimiter = styled.div`
   border-top: 1px solid rgb(177, 134, 203);
   margin: 0 8px 21px 12px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-left: 0;
     margin-right: 0;
     margin-top: -20px;

@@ -17,7 +17,7 @@ export const ClientChat = () => (
     <ChatContainer>
       <ChatHeader />
       <ChatMessages />
-      <ChatMessageBox value={``} onChange={(value) => {}} />
+      <ChatMessageBox value={""} onChange={(value) => {}} />
     </ChatContainer>
   </Container>
 )

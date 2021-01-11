@@ -4,7 +4,7 @@ import { useEvent } from "effector-react"
 import { toggleBlueLayoutMobileMenuVisibility } from "@/components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
 import { Icon } from "@/components/icon/Icon"
 
-export const StyledBurger = styled(Icon).attrs({ name: `burger` })`
+export const StyledBurger = styled(Icon).attrs({ name: "burger" })`
   margin-left: 24px;
   display: none;
   @media screen and (max-width: 768px) {

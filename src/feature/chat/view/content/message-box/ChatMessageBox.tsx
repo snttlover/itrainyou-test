@@ -31,7 +31,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
       send(value)
-      change(``)
+      change("")
     }
   }
 
@@ -92,7 +92,7 @@ const StyledInput = styled.input`
     color: #ff6b00;
   }
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 7px 15px;
   `}
 `

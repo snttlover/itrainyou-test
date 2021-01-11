@@ -19,7 +19,7 @@ const Tooltip = styled.div`
   top: 0;
   display: none;
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
      top: 20px;
   `}
 `
@@ -54,7 +54,7 @@ const InfoContainer = styled.div`
   }
 `
 
-const InfoIcon = styled(Icon).attrs({ name: `info` })`
+const InfoIcon = styled(Icon).attrs({ name: "info" })`
   margin-left: 7px;
   fill: #dbdee0;
   width: 19px;

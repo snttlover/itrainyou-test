@@ -1,6 +1,6 @@
 import { createEvent, Event, restore } from "effector-root"
 
-export const START = `☄️/start-event`
+export const START = "☄️/start-event"
 export type ServerParams = {
   query: Record<string, string>
   params: Record<string, string>

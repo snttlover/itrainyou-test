@@ -40,7 +40,7 @@ const Container = styled.div<ContainerTypes>`
     }
   }
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 22px;
     ${Time} {

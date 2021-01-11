@@ -71,7 +71,7 @@ const startWithdrawFx = createEffect({
 
 export const $isTopUpLoading = startWithdrawFx.pending
 
-const failMessage: Toast = { text: '', type: "error" }
+const failMessage: Toast = { text: "", type: "error" }
 forward({
   from: startWithdrawFx.failData.map(error => {
     failMessage.text = (error as any)?.response.data.non_field_errors.toString() || "Не удалось вывести деньги"

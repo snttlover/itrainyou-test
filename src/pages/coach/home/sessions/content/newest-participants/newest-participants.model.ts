@@ -10,7 +10,7 @@ export const $newestParticipantsList = newestParticipants.data.$list.map(partici
       avatar: client.avatar,
       name: `${client.firstName} ${client.lastName}`,
       duration: `${session.durationType.slice(1, session.durationType.length)} мин`,
-      time: date(session.startDatetime).format(`DD MMM HH:mm`),
+      time: date(session.startDatetime).format("DD MMM HH:mm"),
     }
   })
 )

@@ -8,11 +8,11 @@ export const SessionPageContainer = styled.div`
   width: 100%;
   max-width: 892px;
   margin: 0 auto;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     max-width: 600px;
   `}
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       padding: 24px 16px;
   `}
 `

@@ -60,7 +60,7 @@ const StyledAvatar = styled(Avatar)`
   }
 `
 
-const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
+const DropdownButton = styled(Icon).attrs({ name: "arrow" })`
   fill: #fff;
   margin-left: 31px;
   margin-right: 31px;
@@ -68,7 +68,7 @@ const DropdownButton = styled(Icon).attrs({ name: `arrow` })`
   height: auto;
   width: 40px;
   align-self: center;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-left: 16px;
     margin-right: 16px;
     width: 20px;

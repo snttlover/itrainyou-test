@@ -43,7 +43,7 @@ const Block = styled.div`
   flex-direction: column;
   align-items: center;
 
-  ${MediaRange.greaterThan(`mobile`)`
+  ${MediaRange.greaterThan("mobile")`
     width: 400px;
   `}
 `
@@ -64,7 +64,7 @@ const Title = styled.h2`
   text-align: center;
   color: #424242;
 
-  ${MediaRange.greaterThan(`mobile`)`
+  ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
     line-height: 26px;
   `}
@@ -81,7 +81,7 @@ const StyledSelectInput = styled(SelectInput)`
 const StyledDashedButton = styled(DashedButton)`
   margin-top: 16px;
 
-  ${MediaRange.greaterThan(`mobile`)`
+  ${MediaRange.greaterThan("mobile")`
     height: 26px;
     padding-top: 0;
     padding-bottom: 0;

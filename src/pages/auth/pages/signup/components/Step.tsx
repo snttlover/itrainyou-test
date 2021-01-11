@@ -18,14 +18,14 @@ const Arrow = styled(Icon).attrs({ name: "arrow" })`
 const Container = styled.div<{active?: boolean}>`
   display: flex;
   align-items: center;
-  color: ${({active}) => active ? '#919BE0' : '#fff'};
+  color: ${({active}) => active ? "#919BE0" : "#fff"};
   font-family: Roboto Slab;
   font-weight: bold;
   font-size: 12px;
   line-height: 16px;
   margin-left: 5px;
   ${Arrow} {
-    fill: ${({active}) => active ? '#919BE0' : '#fff'};
+    fill: ${({active}) => active ? "#919BE0" : "#fff"};
   }
   
   ${MediaRange.greaterThan("mobile")`  

@@ -25,7 +25,7 @@ const StyledInput = styled.input`
     color: #9aa0a6;
   }
   
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 7px 15px;
   `}
 `

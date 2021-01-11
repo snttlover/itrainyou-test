@@ -15,7 +15,7 @@ type CreateStartSessionToolbarModelConfig = {
 }
 
 const formatDates = (start: ISODate, end: ISODate) => {
-  return `${date(start).format(`HH:mm`)} - ${date(end).format(`HH:mm`)}`
+  return `${date(start).format("HH:mm")} - ${date(end).format("HH:mm")}`
 }
 
 const isStartedSession = (session: DashboardSession) =>
@@ -42,7 +42,7 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
       .filter(session => session.id !== currentSessionCall)
       .filter(isStartedSession)
       .map(session => {
-        const user = config.type === `coach` ? session.clients[0] : session.coach
+        const user = config.type === "coach" ? session.clients[0] : session.coach
 
         return {
           id: session.id,

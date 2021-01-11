@@ -53,12 +53,12 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
   const imagesRef = useRef<any>(null)
 
   const getScrollLeft = () => {
-    return imagesRef.current.getScrollElement('x').scrollLeft
+    return imagesRef.current.getScrollElement("x").scrollLeft
   }
 
   const scroll = (to: number) => {
     if (imagesRef.current?.el) {
-      imagesRef.current.getScrollElement('x').scrollLeft = to
+      imagesRef.current.getScrollElement("x").scrollLeft = to
     }
   }
 
@@ -134,7 +134,7 @@ const StyledSimpleBar = styled(SimpleBar)`
 
 const Container = styled.div``
 
-const UploadIcon = styled(Icon).attrs({ name: `clip` })`
+const UploadIcon = styled(Icon).attrs({ name: "clip" })`
   fill: ${props => props.theme.colors.primary};
   cursor: pointer;
   width: 20px;
@@ -209,7 +209,7 @@ const ImagesWrapper = styled.div`
   justify-content: center;
 `
 
-const RemoveImageIcon = styled(Icon).attrs({ name: `cross` })`
+const RemoveImageIcon = styled(Icon).attrs({ name: "cross" })`
   width: 10px;
   height: 10px;
   position: absolute;
@@ -230,7 +230,7 @@ const Progress = styled.div<ProgressProps>`
   bottom: 0;
   &:after {
     content: "";
-    display: ${props => (props.value === 0 ? `none` : `block`)};
+    display: ${props => (props.value === 0 ? "none" : "block")};
     position: absolute;
     height: 100%;
     width: ${props => props.value}%;
@@ -240,14 +240,14 @@ const Progress = styled.div<ProgressProps>`
 `
 
 
-const LeftArrow = styled(Icon).attrs({ name: `left-icon` })`
+const LeftArrow = styled(Icon).attrs({ name: "left-icon" })`
   fill: ${props => props.theme.colors.primary};
   cursor: pointer;
   margin-right: 13px;
   height: 14px;
 `
 
-const RightArrow = styled(Icon).attrs({ name: `right-icon` })`
+const RightArrow = styled(Icon).attrs({ name: "right-icon" })`
   fill: ${props => props.theme.colors.primary};
   cursor: pointer;
   margin-left: 10px;
@@ -255,7 +255,7 @@ const RightArrow = styled(Icon).attrs({ name: `right-icon` })`
   height: 14px;
 `
 
-const Send = styled(Icon).attrs({ name: `send` })`
+const Send = styled(Icon).attrs({ name: "send" })`
   fill: ${props => props.theme.colors.primary};
   cursor: pointer;
   height: 17px;

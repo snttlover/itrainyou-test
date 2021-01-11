@@ -19,8 +19,8 @@ export const changePasswordFx = createEffect<ResetRType, ChangePasswordResponse,
 })
 
 const successToast: Toast = {
-  type: `info`,
-  text: `Пароль изменен`,
+  type: "info",
+  text: "Пароль изменен",
 }
 
 forward({
@@ -34,8 +34,8 @@ forward({
 })
 
 const errorToast: Toast = {
-  type: `error`,
-  text: `Произошла ошибка при изменении пароля`,
+  type: "error",
+  text: "Произошла ошибка при изменении пароля",
 }
 
 forward({
@@ -55,7 +55,7 @@ export const [$oldPassword, oldPasswordChanged, $oldPasswordError, $isOldPasswor
     defaultValue: "",
     validator: v => {
       if (!v) {
-        return `Это поле обязательно для заполнения`
+        return "Это поле обязательно для заполнения"
       }
       return null
     },
@@ -65,10 +65,10 @@ export const [$oldPassword, oldPasswordChanged, $oldPasswordError, $isOldPasswor
 )
 
 $oldPasswordError
-  .on(changePasswordFx, () => ``)
+  .on(changePasswordFx, () => "")
   .on(changePasswordFx.fail, (state, { error }) => {
     if (error.response?.data.old_password) {
-      return `Вы указали неверный пароль`
+      return "Вы указали неверный пароль"
     }
 
     return state

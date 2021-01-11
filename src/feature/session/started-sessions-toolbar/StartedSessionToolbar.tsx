@@ -45,7 +45,7 @@ const Toolbar = styled.div`
   width: 100%;
   padding: 0 40px;
   align-items: center;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
       padding: 0;
   `}
 `
@@ -56,7 +56,7 @@ const Container = styled.div`
   color: #ffffff;
   display: flex;
   justify-content: center;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       padding: 10px;
   `}
 `
@@ -64,7 +64,7 @@ const Container = styled.div`
 const StartedText = styled.div`
   font-size: 16px;
   line-height: 22px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       display: none;
   `}
 `
@@ -82,7 +82,7 @@ const Name = styled.div`
 
   font-size: 16px;
   line-height: 22px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       display: none;
   `}
 `
@@ -95,7 +95,7 @@ const Time = styled.div`
   font-size: 20px;
   line-height: 26px;
   margin-right: 20px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-weight: 500;
     font-size: 16px;
     line-height: 22px;

@@ -5,7 +5,7 @@ import { MediaRange } from "@/lib/responsive/media"
 export const PhoneWithGirl = styled.img.attrs({ src: phoneWithGirl })`
   width: 240px;
   height: 236.81px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 156px;
     height: 154px;
   `}

@@ -15,7 +15,7 @@ const Container = styled.div`
   display: block;
   position: relative;
   overflow: auto;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 12px 8px;
   `}
 `

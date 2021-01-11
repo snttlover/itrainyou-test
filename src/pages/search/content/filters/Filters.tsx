@@ -20,7 +20,7 @@ type ModalTypes = {
   showOnMobile: boolean
 }
 
-const Modal = styled.div.attrs({ id: `filters-container` })<ModalTypes>`
+const Modal = styled.div.attrs({ id: "filters-container" })<ModalTypes>`
   width: 220px;
   border-left: 1px solid #efefef;
   position: relative;
@@ -37,7 +37,7 @@ const Modal = styled.div.attrs({ id: `filters-container` })<ModalTypes>`
     top: 0;
     z-index: 300;
     transition: left 300ms;
-    right: ${props => (props.showOnMobile ? 0 : `-276px`)};
+    right: ${props => (props.showOnMobile ? 0 : "-276px")};
     background: #fff;
   }
 `
@@ -100,7 +100,7 @@ export const Filters = () => {
       changeFiltersMargin(0)
       return
     }
-    const scrollingElement = document.getElementById(`page-wrapper`) as HTMLElement
+    const scrollingElement = document.getElementById("page-wrapper") as HTMLElement
     const filters = modalRef.current as HTMLElement
 
     const offset = filters.clientHeight - scrollingElement.clientHeight
@@ -127,13 +127,13 @@ export const Filters = () => {
   }
 
   useEffect(() => {
-    const scrollingElement = document.getElementById(`page-wrapper`) as HTMLElement
-    scrollingElement.addEventListener(`scroll`, computeSticky)
-    window.addEventListener(`resize`, computeSticky)
+    const scrollingElement = document.getElementById("page-wrapper") as HTMLElement
+    scrollingElement.addEventListener("scroll", computeSticky)
+    window.addEventListener("resize", computeSticky)
     computeSticky()
     return () => {
-      scrollingElement.removeEventListener(`scroll`, computeSticky)
-      window.removeEventListener(`resize`, computeSticky)
+      scrollingElement.removeEventListener("scroll", computeSticky)
+      window.removeEventListener("resize", computeSticky)
     }
   }, [])
 

@@ -24,7 +24,7 @@ const Name = styled.div`
   margin-left: 15px;
   display: flex;
   align-items: center;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
   `}

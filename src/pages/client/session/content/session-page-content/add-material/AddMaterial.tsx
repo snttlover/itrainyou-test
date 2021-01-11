@@ -30,7 +30,7 @@ const Button = styled.div`
     opacity: 0.8;
   }
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
     margin-top: 12px;
@@ -38,10 +38,10 @@ const Button = styled.div`
   `}
 `
 
-const AddIcon = styled(Icon).attrs({ name: `plus` })`
+const AddIcon = styled(Icon).attrs({ name: "plus" })`
   fill: #7d36a8;
   height: 14px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     height: 12px;
   `}
 `

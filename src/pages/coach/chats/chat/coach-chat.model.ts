@@ -6,7 +6,7 @@ import { getCoachChatSessions } from "@/lib/api/chats/coach/get-chat-sessions"
 import { getCoachChatImages } from "@/lib/api/chats/coach/get-images"
 
 export const coachChat = createChatModule({
-  type: `coach`,
+  type: "coach",
   fetchChat: getCoachChat,
   socket: coachChatsSocket,
   fetchMessages: getCoachChatMessages,

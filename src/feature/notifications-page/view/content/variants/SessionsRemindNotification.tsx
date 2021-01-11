@@ -119,7 +119,7 @@ const SessionIconWrapper = styled.div`
   border-radius: 50%;
 `
 
-const SessionIcon = styled(Icon).attrs({ name: `video` })`
+const SessionIcon = styled(Icon).attrs({ name: "video" })`
   fill: ${props => props.theme.colors.primary};
 `
 

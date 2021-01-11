@@ -5,13 +5,13 @@ import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 
 const Container = styled.div`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-left: -10px;
   `}
 `
 
 const StyledTitle = styled(Title)`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
      width: 200px;
   `}
 `
@@ -20,7 +20,7 @@ const Image = styled.img.attrs({ src: emptyImage })`
   width: 100px;
   height: 171.81px;
   margin-bottom: 40px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-bottom: 36px;
   `}
 `
@@ -31,7 +31,7 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
   padding-top: 80px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding-top: 36px;
   `}
 `
@@ -41,7 +41,7 @@ const Text = styled.div`
   line-height: 22px;
   text-align: center;
   color: #9aa0a6;
-  ${MediaRange.lessThan(`mobile`)` 
+  ${MediaRange.lessThan("mobile")` 
     font-size: 14px;
     line-height: 18px;
   `}

@@ -179,9 +179,9 @@ export const SelectInputCard = <T extends Value = Value>({
         </Label>
         {selectedItem?.id !== "other" && (selectedItem?.type &&
                 (<NoShowMobile>
-          <CardIcon cardtype={selectedItem.type} />
-                  </NoShowMobile>
-        ))}
+                  <CardIcon cardtype={selectedItem.type} />
+                </NoShowMobile>
+                ))}
       </LabelContainer>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}

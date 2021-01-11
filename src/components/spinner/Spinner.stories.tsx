@@ -1,6 +1,6 @@
 import { Spinner } from "./Spinner"
 import styled from "styled-components"
-import * as React from 'react'
+import * as React from "react"
 
 export default {
   component: Spinner,

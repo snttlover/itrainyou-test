@@ -21,8 +21,8 @@ export const Dialog = (props: DialogProps) => {
   }
 
   useEffect(() => {
-    document.addEventListener(`keydown`, documentKeypressHandler)
-    return () => document.removeEventListener(`keydown`, documentKeypressHandler)
+    document.addEventListener("keydown", documentKeypressHandler)
+    return () => document.removeEventListener("keydown", documentKeypressHandler)
   }, [])
 
   return (
@@ -39,7 +39,7 @@ export const Dialog = (props: DialogProps) => {
   )
 }
 
-export const Close = styled(Icon).attrs({ name: `close` })`
+export const Close = styled(Icon).attrs({ name: "close" })`
   width: 20px;
   cursor: pointer;
   position: absolute;

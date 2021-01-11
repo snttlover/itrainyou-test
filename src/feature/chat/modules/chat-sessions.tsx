@@ -22,7 +22,7 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
   const resetPagination = createEvent()
 
   const changeTab = createEvent<ChatSessionsTabs>()
-  const $tab = createStore<ChatSessionsTabs>(`future`)
+  const $tab = createStore<ChatSessionsTabs>("future")
     .on(changeTab, (_, tab) => tab)
     .reset(reset)
 
@@ -31,12 +31,12 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
     $query: combine(config.$chatId, $tab, (id, tab) => {
       const query: any = { id: +id }
 
-      if (tab === `past`) {
-        query.past = `True`
+      if (tab === "past") {
+        query.past = "True"
       }
 
-      if (tab === `future`) {
-        query.excludePast = `True`
+      if (tab === "future") {
+        query.excludePast = "True"
       }
 
       return query
@@ -55,25 +55,25 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
     const formatted = sessions.map(s => {
       const session: any = {
         link: `/${config.chatUserType}/sessions/${s.id}`,
-        time: date(s.startDatetime).format(`HH:mm`),
-        date: date(s.startDatetime).format(`DD MMM YYYYг`),
+        time: date(s.startDatetime).format("HH:mm"),
+        date: date(s.startDatetime).format("DD MMM YYYYг"),
         startDatetime: date(s.startDatetime)
       }
 
-      if (tab === `future`) {
+      if (tab === "future") {
         session.tick = date(s.startDatetime)
-          .subtract(+tick, `millisecond`)
-          .format(`HH.MM.SS`)
+          .subtract(+tick, "millisecond")
+          .format("HH.MM.SS")
       }
 
-      if (date().format(`DDMMYY`) === date(s.startDatetime).format(`DDMMYY`)) {
-        session.date = `Сегодня`
+      if (date().format("DDMMYY") === date(s.startDatetime).format("DDMMYY")) {
+        session.date = "Сегодня"
       }
 
       return session
     })
 
-    if (tab === `future`) {
+    if (tab === "future") {
       return formatted.filter(session => date().isBefore(session.startDatetime))
     }
 

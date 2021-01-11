@@ -10,14 +10,14 @@ export const ChatHeaderMobileBackButton = ({ to }: { to: string }) => (
   </Link>
 )
 
-const Button = styled(Icon).attrs({ name: `left-icon` })`
+const Button = styled(Icon).attrs({ name: "left-icon" })`
   width: 18px;
   height: 18px;
   cursor: pointer;
   fill: ${props => props.theme.colors.primary};
   margin-right: 12px;
   display: none;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: flex;
   `}
 `
