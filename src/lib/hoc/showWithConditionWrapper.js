@@ -1,5 +1,5 @@
 import * as React from "react"
 
-export const showWrapperWidthCondition = (condition) => {
+export const showWithConditionWrapper = (condition) => {
   return ({children}) => condition ? children : <></>
 }

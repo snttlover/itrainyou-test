@@ -16,7 +16,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { $creditCardsModal, showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
-import { showWrapperWidthCondition } from "@/lib/hoc/showWrapperWidthCondition"
+import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -465,7 +465,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   }
 
 
-  const WidthAmountConditionWrapper = showWrapperWidthCondition(!!amount)
+  const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   
 
   return (

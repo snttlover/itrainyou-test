@@ -17,7 +17,7 @@ import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
 import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
-import { showWrapperWidthCondition } from "@/lib/hoc/showWrapperWidthCondition"
+import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -269,7 +269,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
   
-  const WidthAmountConditionWrapper = showWrapperWidthCondition(!!amount)
+  const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   
   return (
     <>
