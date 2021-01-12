@@ -16,6 +16,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { $creditCardsModal, showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { showWrapperWidthCondition } from "@/lib/hoc/showWrapperWidthCondition"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -463,6 +464,10 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     changeCurrentDate(null)
   }
 
+
+  const WidthAmountConditionWrapper = showWrapperWidthCondition(!!amount)
+  
+
   return (
     <Container>
       <StyledTabs value={activeTab} onChange={changeTabHandler}>
@@ -500,25 +505,27 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               </Tag>
             ))}
           </Times>
-          <SelectedSessions>
-            {selected.map(session => (
-              <SelectedSession key={session.id}>
-                <SessionDate>{session.date}</SessionDate>
-                <SessionTime>{session.time}</SessionTime>
-                <SessionPrice>
-                  {session.clientPrice}
-                  <RubleIcon />
-                </SessionPrice>
-                <DeleteIcon onClick={() => deleteSession(session.id)} />
-              </SelectedSession>
-            ))}
-          </SelectedSessions>
-          <Amount>
-            <AmountText>Итого:</AmountText>
-            <Summary>
-              {amount} <SummaryRuble />
-            </Summary>
-          </Amount>
+          <WidthAmountConditionWrapper>
+            <SelectedSessions>
+              {selected.map(session => (
+                <SelectedSession key={session.id}>
+                  <SessionDate>{session.date}</SessionDate>
+                  <SessionTime>{session.time}</SessionTime>
+                  <SessionPrice>
+                    {session.clientPrice}
+                    <RubleIcon />
+                  </SessionPrice>
+                  <DeleteIcon onClick={() => deleteSession(session.id)} />
+                </SelectedSession>
+              ))}
+            </SelectedSessions>
+            <Amount>
+              <AmountText>Итого:</AmountText>
+              <Summary>
+                {amount} <SummaryRuble />
+              </Summary>
+            </Amount>
+          </WidthAmountConditionWrapper>
           <ButtonContainer>
             <IsAuthed>
               <StyledBuyButton

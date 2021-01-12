@@ -17,6 +17,7 @@ import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
 import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
+import { showWrapperWidthCondition } from "@/lib/hoc/showWrapperWidthCondition"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -267,7 +268,9 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     }))
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
-
+  
+  const WidthAmountConditionWrapper = showWrapperWidthCondition(!!amount)
+  
   return (
     <>
       <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
@@ -300,17 +303,19 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
             ))}
           </Times>
           <Divider />
-          <SelectedDatetimeTable>
-            <tbody>
-              {selected.map(session => (
-                <tr key={session.id}>
-                  <td>{session.date}</td>
-                  <TimeColumn>{session.time}</TimeColumn>
-                </tr>
-              ))}
-            </tbody>
-          </SelectedDatetimeTable>
-          <Text>Итог: {amount} ₽</Text>
+          <WidthAmountConditionWrapper>
+            <SelectedDatetimeTable>
+              <tbody>
+                {selected.map(session => (
+                  <tr key={session.id}>
+                    <td>{session.date}</td>
+                    <TimeColumn>{session.time}</TimeColumn>
+                  </tr>
+                ))}
+              </tbody>
+            </SelectedDatetimeTable>
+            <Text>Итог: {amount} ₽</Text>
+          </WidthAmountConditionWrapper>
           <ButtonContainer>
             <ButtonWrapper>
               <IsAuthed>
