@@ -185,7 +185,7 @@ sample({
     avatar: lastImage.file === null ? null : lastImage.file || form.image,
     originalAvatar: originalAvatar.file === null ? null : originalAvatar.file || form.originalAvatar,
     categories: (userData.client?.categories || []).map(category => category.id),
-    sex: userData.client?.sex || form.sex,
+    sex: form.sex || userData.client?.sex,
   })),
   clock: saveClientUserData,
   target: saveClientUserDataFx,

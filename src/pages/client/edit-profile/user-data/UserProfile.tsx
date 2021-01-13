@@ -25,7 +25,7 @@ import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { Spinner } from "@/components/spinner/Spinner"
 import { useHistory, useLocation } from "react-router-dom"
 import {
-  $userHasCoach
+  $userHasCoach, becomeCoach
 } from "@/pages/client/profile/content/coach-button/profile-coach-button"
 
 export const UserProfile = () => {
@@ -40,6 +40,7 @@ export const UserProfile = () => {
   const _middleNameChanged = useEvent(middleNameChanged)
   const canSendForm = useStore($isClientProfileFormValid)
   const _userHasCoach = useStore($userHasCoach)
+  const _becomeCoach = useEvent(becomeCoach)
   const save = useEvent(saveClientUserData)
   const loading = useStore($clientProfileSaving)
 
@@ -47,6 +48,7 @@ export const UserProfile = () => {
   const location = useLocation()
   const submitChanges = () => {
     save()
+    if (location.state !== undefined) _becomeCoach()
   }
 
   return (
