@@ -62,7 +62,7 @@ export const innValidator = (inn: string) => {
     }
     if (!result) {
       error.code = 4
-      error.message = "Неправильное контрольное число"
+      error.message = "Неправильный ИНН"
     }
   }
   return error.message
