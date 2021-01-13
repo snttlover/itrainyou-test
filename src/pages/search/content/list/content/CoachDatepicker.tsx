@@ -2,7 +2,7 @@ import { IsAuthed } from "@/feature/user/IsAuthed"
 import { IsGuest } from "@/feature/user/IsGuest"
 import { date } from "@/lib/formatting/date"
 import { routeNames } from "@/pages/route-names"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
 import { Calendar } from "@/components/calendar/Calendar"
@@ -431,6 +431,10 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const [currentDate, changeCurrentDate] = useState<Date | null>()
   const enabledDates = sessions.map(session => session.startDatetime)
+
+  useEffect(() => {
+    changeCurrentDate(date(enabledDates[0]).toDate())
+  }, [enabledDates[0]])
 
   const headerDate = currentDate ? currentDate : new Date()
   const formattedDate = date(headerDate).format("DD MMMM")

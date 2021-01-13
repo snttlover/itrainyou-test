@@ -165,6 +165,7 @@ export const Calendar = (props: CalendarTypes) => {
   const equalFormat = "DDMMYYYY"
   const [startDate, changeActiveStartDate] = useState(new Date())
 
+
   useEffect(() => {
     if (props.startFrom && date().format(equalFormat) === date(startDate).format(equalFormat)) {
       changeActiveStartDate(props.startFrom)
@@ -257,7 +258,6 @@ export const Calendar = (props: CalendarTypes) => {
 
   const formatter = "YYYYMM"
   const lessThanTheCurrentMonth = +date(startDate).format(formatter) <= +date(new Date()).format(formatter)
-
   return (
     <CalendarWrapper className={props.className} isBig={props.isBig}>
       <CalendarHeader

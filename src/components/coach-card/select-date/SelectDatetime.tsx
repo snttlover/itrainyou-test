@@ -236,12 +236,12 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
 
-  const [currentDate, changeCurrentDate] = useState<Date | null>(null)
   const enabledDates = sessions.map(session => session.startDatetime)
+  const [currentDate, changeCurrentDate] = useState<Date | null>(null)
 
   useEffect(() => {
-    changeCurrentDate(null)
-  }, [activeTab])
+    changeCurrentDate(date(enabledDates[0]).toDate())
+  }, [activeTab, enabledDates[0]])
 
   const formattedDate = date(currentDate || date()).format("DD MMMM")
   const currentDateEqual = date(currentDate || date()).format(equalDateFormat)
@@ -270,7 +270,6 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
   
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
-  
   return (
     <>
       <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
