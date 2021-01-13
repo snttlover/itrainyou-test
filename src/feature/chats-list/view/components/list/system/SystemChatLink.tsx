@@ -6,7 +6,7 @@ import { Icon } from "@/components/icon/Icon"
 export const SystemChatLink = ({ link, newMessagesCount }: { link: string, newMessagesCount: number }) => (
   <Container to={link} data-has-messages={!!newMessagesCount}>
     <BellIcon />
-    <Header>Системный чат</Header>
+    <Header>Уведомления о сессиях</Header>
   </Container>
 )
 
