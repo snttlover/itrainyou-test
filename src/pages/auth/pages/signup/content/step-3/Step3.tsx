@@ -198,9 +198,9 @@ export const Step3 = () => {
           <FormItem label='Фамилия' error={errors.lastName} required>
             <Input value={values.lastName} onChange={_lastNameChanged} />
           </FormItem>
-          { userType === "coach" ? <FormItem label='Отчество' error={errors.middleName} required>
+          <FormItem label='Отчество' error={errors.middleName} required={userType === "coach"}>
             <Input value={values.middleName} onChange={_middleNameChanged} />
-          </FormItem> : null }
+          </FormItem>
           {isSocialSignupInProgress && (
             <FormItem label='Почта' error={errors.email} required>
               <Input value={values.email} onChange={_emailChanged} />

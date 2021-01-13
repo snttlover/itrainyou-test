@@ -51,12 +51,6 @@ export const [$description, descriptionChanged, $descriptionError, $isDescriptio
   }
 )
 
-export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
-  defaultValue: "",
-  validator: phoneValidator,
-  eventMapper: event => event.map(trimString),
-})
-
 export const photoUploadFx = createEffect({
   handler: (file: File) => {
     return uploadMedia({ file, type: "IMAGE" })
@@ -94,7 +88,6 @@ export const $form = createStoreObject({
   education: $education,
   workExperience: $workExperience,
   description: $description,
-  phone: $phone,
   photos: $photos,
 })
 
@@ -103,7 +96,6 @@ export const $formErrors = combine({
   education: $educationError,
   workExperience: $workExperienceError,
   description: $descriptionError,
-  phone: $phoneError,
   photos: $photosError,
 })
 
@@ -113,7 +105,6 @@ export const $formValid = every({
     $isEducationCorrect,
     $isWorkExperienceCorrect,
     $isDescriptionCorrect,
-    $isPhoneCorrect,
     $isCategoriesCorrect,
     $isPhotosCorrect,
   ],
@@ -129,7 +120,6 @@ spread({
   targets: {
     description: descriptionChanged,
     education: educationChanged,
-    phone: phoneChanged,
     photos: restorePhotos,
     videoInterview: videoInterviewChanged,
     workExperience: workExperienceChanged,

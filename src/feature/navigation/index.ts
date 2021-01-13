@@ -9,6 +9,7 @@ type QueryParams = {
 type Navigate = {
   url: string
   query?: QueryParams
+  state?: {}
 }
 
 export const history = process.env.BUILD_TARGET === "client" ? createBrowserHistory() : null
@@ -19,8 +20,8 @@ export const navigateReplace = createEvent<Navigate>()
 export const $lastUrlServerNavigation = createStore("")
 
 if (process.env.BUILD_TARGET === "client") {
-  navigatePush.watch(navigate => history!.push(`${navigate.url}${createQueryString(navigate.query)}`))
-  navigateReplace.watch(navigate => history!.replace(`${navigate.url}${createQueryString(navigate.query)}`))
+  navigatePush.watch(navigate => history!.push(`${navigate.url}${createQueryString(navigate.query)}`, navigate.state ))
+  navigateReplace.watch(navigate => history!.replace(`${navigate.url}${createQueryString(navigate.query)}`, navigate.state))
 } else {
   $lastUrlServerNavigation.on(
     [navigatePush, navigateReplace],

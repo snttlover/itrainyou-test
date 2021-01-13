@@ -11,6 +11,7 @@ export interface ClientSelfData {
   user: UserSelfData
   firstName: string
   lastName: string
+  middleName: string
   birthDate: Day
   sex: Sex
   avatar: string

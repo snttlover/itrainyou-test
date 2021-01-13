@@ -2,7 +2,7 @@ import { combine, createEffect, createEvent, forward, guard, restore } from "eff
 import { getCoachSessionVideoToken, VideoTokenData } from "@/lib/api/coach/get-session-video-token"
 import { getCoachSession, SessionInfo } from "@/lib/api/coach/get-session"
 import { Client } from "@/lib/api/client/clientInfo"
-import { Client as AgoraClient, Stream } from "agora-rtc-sdk"
+import { Client as AgoraClient, Stream, VideoEncoderConfiguration } from "agora-rtc-sdk"
 import { createSessionCall } from "@/components/layouts/behaviors/dashboards/call/SessionCall"
 import { config as appConfig } from "@/config"
 import { $isClient } from "@/lib/effector"
@@ -25,6 +25,21 @@ type Agora = {
 
 const agoraHandleFail = (e: any, payload?: any) => {
   console.error(e, payload)
+}
+
+const videoConfig: VideoEncoderConfiguration = {
+  resolution: {
+    width: 1280,
+    height: 720
+  },
+  frameRate: {
+    min: 15,
+    max: 30
+  },
+  bitrate: {
+    min: 900,
+    max: 2000
+  }
 }
 
 let agoraLib: any = null
@@ -154,6 +169,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
               video: true,
               screen: false,
             }) as Stream
+
+            agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
 
             agoraData.localStream.init(() => {
               if (agoraData.localStream) {

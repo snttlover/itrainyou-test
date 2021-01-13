@@ -7,9 +7,11 @@ import { Day, Sex } from "@/lib/api/interfaces/utils.interface"
 export type UpdateClientRequest = {
   firstName: string
   lastName: string
+  middleName: string
   birthDate: Day
   sex: Sex
   avatar: null | string
+  originalAvatar: null | string
   categories: number[]
 }
 
