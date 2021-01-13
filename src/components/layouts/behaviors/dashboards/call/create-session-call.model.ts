@@ -28,7 +28,7 @@ const agoraHandleFail = (e: any, payload?: any) => {
 }
 
 let agoraLib: any = null
-if (process.env.BUILD_TARGET === 'client') {
+if (process.env.BUILD_TARGET === "client") {
   agoraLib = require("agora-rtc-sdk")
 }
 
@@ -54,21 +54,21 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         if (agoraData.remoteStream.isPlaying()) {
           agoraData.remoteStream.stop()
         }
-        const player = document.getElementById(`InterlocutorVideo`)
+        const player = document.getElementById("InterlocutorVideo")
         if (player) {
           player.innerHTML = ""
         }
-        agoraData.remoteStream.play(`InterlocutorVideo`, { fit: "cover" })
+        agoraData.remoteStream.play("InterlocutorVideo", { fit: "cover" })
       }
       if (agoraData.localStream) {
         if (agoraData.localStream.isPlaying()) {
           agoraData.localStream.stop()
         }
-        const player = document.getElementById(`MyUserVideo`)
+        const player = document.getElementById("MyUserVideo")
         if (player) {
           player.innerHTML = ""
         }
-        agoraData.localStream.play(`MyUserVideo`, { fit: `cover` })
+        agoraData.localStream.play("MyUserVideo", { fit: "cover" })
       }
     },
   })
@@ -86,33 +86,33 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     handler: () => {
       if (agoraLib) {
         agoraData.client = agoraLib.createClient({
-          mode: `live`,
-          codec: `h264`,
+          mode: "live",
+          codec: "h264",
         }) as AgoraClient
         const appId = appConfig.AGORA_ID as string
         agoraData.client.init(appId, () => {}, agoraHandleFail)
 
-        agoraData.client.on(`stream-added`, e => {
+        agoraData.client.on("stream-added", e => {
           agoraData.client && agoraData.client.subscribe(e.stream)
         })
 
-        agoraData.client.on(`peer-leave`, (e) => {
+        agoraData.client.on("peer-leave", (e) => {
           if (e.uid === agoraData.remoteStream?.getId()) {
             runInScope(changeInterculatorIsConnected, false)
             agoraData.remoteStream = null
-            const player = document.getElementById(`InterlocutorVideo`)
+            const player = document.getElementById("InterlocutorVideo")
             if (player) {
               player.innerHTML = ""
             }
           }
         })
 
-        agoraData.client.on('mute-audio', () => runInScope(changeInterlocutorMicrophoneStatus, false))
-        agoraData.client.on('unmute-audio', () => runInScope(changeInterlocutorMicrophoneStatus,true))
-        agoraData.client.on('mute-video', () => runInScope(changeInterlocutorVideoStatus,false))
-        agoraData.client.on('unmute-video', () => runInScope(changeInterlocutorVideoStatus, true))
+        agoraData.client.on("mute-audio", () => runInScope(changeInterlocutorMicrophoneStatus, false))
+        agoraData.client.on("unmute-audio", () => runInScope(changeInterlocutorMicrophoneStatus,true))
+        agoraData.client.on("mute-video", () => runInScope(changeInterlocutorVideoStatus,false))
+        agoraData.client.on("unmute-video", () => runInScope(changeInterlocutorVideoStatus, true))
 
-        agoraData.client.on(`stream-subscribed`, e => {
+        agoraData.client.on("stream-subscribed", e => {
           agoraData.remoteStream = e.stream
           play()
           agoraData.remoteStream?.on("player-status-change", (event) => {

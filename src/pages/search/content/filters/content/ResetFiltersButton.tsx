@@ -19,7 +19,7 @@ type ResetFiltersButtonTypes = {
 export const ResetFiltersButton = (props: ResetFiltersButtonTypes) => {
   const history = useHistory()
   const clickHandler = () => {
-    history.replace(`/search`)
+    history.replace("/search")
   }
 
   return (

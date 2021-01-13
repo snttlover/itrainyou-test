@@ -84,7 +84,7 @@ export const TransactionsList = () => {
           loader={<Loader />}
           next={loadMore as any}
           scrollableTarget='page-wrapper'
-          style={{ overflow: `hidden` }}
+          style={{ overflow: "hidden" }}
           hasMore={hasMore}
           dataLength={sessions.length}
         >

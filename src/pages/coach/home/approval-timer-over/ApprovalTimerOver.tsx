@@ -16,17 +16,17 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     padding-top: 132px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding-top: 36px;
   `}
 `
 
 const StyledTitle = styled(Title)`
   margin-bottom: 12px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-bottom: 8px;
     width: 288px;
   `}
@@ -35,13 +35,13 @@ const StyledTitle = styled(Title)`
 const StyledSubTitle = styled(SubTitle)`
   width: 100%;
   max-width: 600px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     max-width: 296px;
   `}
 `
 
 const StyledBottomSubtitle = styled(SubTitle)`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 100%;
     max-width: 248px;
   `}
@@ -50,10 +50,10 @@ const StyledBottomSubtitle = styled(SubTitle)`
 const StyledButton = styled(Button)`
   width: 160px;
   margin-top: 28px;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     margin-top: 24px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 16px;
   `}
 `
@@ -90,7 +90,7 @@ const TryLink = styled.div`
   text-align: center;
   color: #7d36a8;
   margin-top: 4px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
      margin-top: 16px;
   `}
 `

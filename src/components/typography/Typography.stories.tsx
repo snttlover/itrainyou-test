@@ -1,10 +1,10 @@
-import * as React from 'react';
+import * as React from "react"
 import {Text} from "./Text"
 
 export default {
-    component: Text,
-    title: 'Typography'
-};
+  component: Text,
+  title: "Typography"
+}
 
 export const example = () => (
   <>

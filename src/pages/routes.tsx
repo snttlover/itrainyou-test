@@ -69,7 +69,7 @@ export const ROUTES: RouteConfig[] = [
   },
 
   {
-    path: routeNames.clientSession(`:id`),
+    path: routeNames.clientSession(":id"),
     component: ClientSessionPage,
   },
   {
@@ -185,7 +185,7 @@ export const ROUTES: RouteConfig[] = [
   },
 
   {
-    path: routeNames.coachSession(`:id`),
+    path: routeNames.coachSession(":id"),
     component: CoachSessionPage,
   },
   {

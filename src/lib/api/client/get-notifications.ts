@@ -20,12 +20,12 @@ type NotificationCommon = {
 }
 
 export type SessionsRemindNotificationType = {
-  type: 'SESSION_REMINDER'
+  type: "SESSION_REMINDER"
   sessions: DashboardSession[]
 }
 
 export type ReviewNotificationType = {
-  type: 'NEW_REVIEW'
+  type: "NEW_REVIEW"
   review: {
     id: number
     session: number
@@ -37,7 +37,7 @@ export type ReviewNotificationType = {
 }
 
 export type NewCoachNotificationType = {
-  type: 'NEW_COACH'
+  type: "NEW_COACH"
   newCoach: CoachUser
 }
 

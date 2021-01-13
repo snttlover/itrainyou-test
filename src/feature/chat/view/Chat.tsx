@@ -49,7 +49,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
       }
     }, [])
 
-    const isSystemChat = chat.chatType === `SYSTEM`
+    const isSystemChat = chat.chatType === "SYSTEM"
     const Header = isSystemChat ? (
       <SystemChatHeader {...chat} />
     ) : (
@@ -65,7 +65,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
             <MaterialsDialog />
             <ChatContainer>
               {Header}
-              <Messages isSystem={chat.chatType === `SYSTEM`} imageClick={openImage} />
+              <Messages isSystem={chat.chatType === "SYSTEM"} imageClick={openImage} />
               {!isSystemChat && <MessageBox blockedText={blockedText} />}
             </ChatContainer>
             <Sessions />

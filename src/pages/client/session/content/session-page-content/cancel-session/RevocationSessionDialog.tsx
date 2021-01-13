@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Dialog } from "@/components/dialog/Dialog"
 import { Textarea } from "@/components/textarea/Textarea"
@@ -24,12 +24,25 @@ export const RevocationSessionDialog = () => {
   const rating = useStore($rating)
   const resume = useStore($resume)
 
-  const changeRating = useEvent(changeRation)
   const changeResume = useEvent(changeRevocationResume)
+
+  const [noRatingError, setNoRatingError] = useState(false)
+
+  const changeRating = (props: number) => {
+    useEvent(changeRation)(props)
+    setNoRatingError(false)
+  }
 
   const chat = useStore(clientChat.chat.$chat)
 
-  const submit = useEvent(sendReview)
+  const submit = () => {
+    if(rating){
+      useEvent(sendReview)()
+    } else{
+      console.log("error")
+      setNoRatingError(true)
+    }
+  }
 
   const changeVisibility = useEvent(changeRevocationVisibility)
   const visibility = useStore($revocationVisibility)
@@ -37,7 +50,6 @@ export const RevocationSessionDialog = () => {
   const pending = useStore(revocationFx.pending)
 
   const user = useStore($revocationUser)
-
   return (
     <StyledDialog value={visibility} onChange={changeVisibility}>
       <Container>
@@ -51,12 +63,12 @@ export const RevocationSessionDialog = () => {
           <StyledAvatar src={user?.avatar || null} />
           <UserName>{user?.name}</UserName>
         </UserInfo>
-        <RatingPicker value={rating} onChange={changeRating} />
+        <RatingPicker value={rating} error={noRatingError} onChange={changeRating} />
         <Form>
           <Description>Напишите отзыв о сессии</Description>
           <StyledTextarea value={resume} placeholder='' onChange={changeResume} />
         </Form>
-        <StyledButton disabled={pending} onClick={() => submit()}>
+        <StyledButton disabled={pending} onClick={submit}>
           Оценить
         </StyledButton>
       </Container>

@@ -39,7 +39,7 @@ export const WithdrawDialog = () => {
       label: `XXXX XXXX XXXX ${card.cardEnd} (${card.expireDate})`,
       value: card.id,
     }))
-    .concat({ label: `Другая`, value: -2 })
+    .concat({ label: "Добавить карту", value: -2 })
 
   return (
     <StyledDialog value={isShowed} onChange={_changeShowFundUpDialog}>

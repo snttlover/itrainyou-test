@@ -12,7 +12,7 @@ const Button = styled.button<ButtonTypes>`
   width: 100%;
   border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0);
-  border-color: ${props => (props.opened ? `#bbc2f1` : `transparent`)};
+  border-color: ${props => (props.opened ? "#bbc2f1" : "transparent")};
   padding: 7px 12px;
   padding-left: 20px;
   display: flex;

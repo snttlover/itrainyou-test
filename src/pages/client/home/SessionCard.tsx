@@ -30,7 +30,7 @@ const CoachAvatar = styled(Avatar)<{ isTopCoach?: boolean }>`
   width: 60px;
   height: 60px;
 
-  border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
+  border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
 
   ${MediaRange.greaterThan("mobile")`
     width: 80px;
@@ -68,7 +68,7 @@ const CategoriesContainer = styled.div`
 
 type CategoryIconTypes = { color: string }
 
-const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>`
+const CategoryIcon = styled(Icon).attrs({ name: "tabletka" })<CategoryIconTypes>`
   width: 16px;
   height: 16px;
   margin-right: 8px;
@@ -80,7 +80,7 @@ const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>
   `}
 `
 
-const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+const TopCoachIcon = styled(Icon).attrs({ name: "top-coach" })`
   width: 16px;
   height: 16px;
   margin-right: 8px;
@@ -96,7 +96,7 @@ const SessionInfo = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     position: absolute;
     right: 10px;
     top: 5px;

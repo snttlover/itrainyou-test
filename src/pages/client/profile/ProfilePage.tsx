@@ -19,7 +19,7 @@ const Container = styled(ContentContainer)`
   align-items: flex-start;
   padding: 0 24px;
   position: relative;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 0 8px;
   `}
 `

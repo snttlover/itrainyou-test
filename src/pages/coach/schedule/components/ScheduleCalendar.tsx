@@ -178,7 +178,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
     }
   }
 
-  const formatter = `YYYYMM`
+  const formatter = "YYYYMM"
   const lessThanTheCurrentMonth = +currentMonth.format(formatter) <= +date().format(formatter)
 
   return (
@@ -186,10 +186,10 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
       <StyledHeader>
         <StyledMonthContainer>
           <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={() => prevMonth(currentMonth)} />
-          <StyledMonthName>{currentMonth.format(`MMMM`)}</StyledMonthName>
+          <StyledMonthName>{currentMonth.format("MMMM")}</StyledMonthName>
           <StyledRightIcon onClick={() => nextMonth(currentMonth)} />
         </StyledMonthContainer>
-        <StyledYear>{currentMonth.format(`YYYY`)}</StyledYear>
+        <StyledYear>{currentMonth.format("YYYY")}</StyledYear>
       </StyledHeader>
       <HorizontalOverflowScrollContainer>
         <CalendarTable>

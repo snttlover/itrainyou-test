@@ -7,7 +7,7 @@ export const ChatHeaderTitle = styled.div`
   line-height: 26px;
   color: #424242;
   flex: 1;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-family: Roboto;
     font-size: 16px;
     line-height: 22px;

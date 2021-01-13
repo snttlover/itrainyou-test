@@ -52,7 +52,7 @@ const Tab = styled.div`
     margin-bottom: 0;
   }
     
-    ${MediaRange.lessThan(`tablet`)`
+    ${MediaRange.lessThan("tablet")`
     margin-bottom: unset;
     margin-right: unset;
     width: 48%;
@@ -62,7 +62,7 @@ const Tab = styled.div`
     justify-content: space-evenly;
   `}
     
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-bottom: unset;
     width: 100%;
     height: 44px;
@@ -83,12 +83,12 @@ const Title = styled.div`
   color: #ffffff;
   width: 91px;
     
-    ${MediaRange.lessThan(`tablet`)`
+    ${MediaRange.lessThan("tablet")`
     margin-bottom: unset;
     width: 150px;
   `}
     
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-left: 12px;
     width: 120px;
     line-height: 18px;
@@ -104,7 +104,7 @@ const Counter = styled.div`
   line-height: 44px;
   text-align: center;
   color: #ffffff;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
      font-size: 28px;
      line-height: 26px;
      margin-right: 12px;

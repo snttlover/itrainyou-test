@@ -53,7 +53,7 @@ const SelectBox = styled.div<{ isOpen: boolean; error?: boolean; withoutBorder?:
   background: #fff;
   border: 1px solid
     ${({ error, isOpen, withoutBorder }) =>
-      withoutBorder ? "transparent" : error ? "#D5584D" : isOpen ? "#919BE0" : "#D3D7F3"};
+    withoutBorder ? "transparent" : error ? "#D5584D" : isOpen ? "#919BE0" : "#D3D7F3"};
   box-sizing: border-box;
   border-radius: ${({ isOpen }) => (isOpen ? "2px 2px 0px 0px" : "2px")};
   display: flex;

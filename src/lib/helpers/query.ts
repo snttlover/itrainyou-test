@@ -14,7 +14,7 @@ const parseQueryStringFactory = (URLSearch: URLSearchClass) => <T = {}>(string: 
 }
 
 const createQueryStringFactory = (URLSearch: URLSearchClass) => <T extends {}>(obj?: T): string => {
-  if (!obj) return ``
+  if (!obj) return ""
   const searchParams = new URLSearch(obj)
   const searchParamsString = searchParams.toString()
 

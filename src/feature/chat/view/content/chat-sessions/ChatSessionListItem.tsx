@@ -87,17 +87,17 @@ const CounterText = styled.div`
   margin-right: 9px;
 `
 
-const ImageIcon = styled(Icon).attrs({ name: `image` })`
+const ImageIcon = styled(Icon).attrs({ name: "image" })`
   fill: ${props => props.theme.colors.primary};
   height: 12px;
 `
 
-const CameraIcon = styled(Icon).attrs({ name: `camera` })`
+const CameraIcon = styled(Icon).attrs({ name: "camera" })`
   fill: ${props => props.theme.colors.primary};
   height: 12px;
 `
 
-const DocumentIcon = styled(Icon).attrs({ name: `document` })`
+const DocumentIcon = styled(Icon).attrs({ name: "document" })`
   fill: ${props => props.theme.colors.primary};
   height: 12px;
 `

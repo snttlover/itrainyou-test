@@ -49,7 +49,7 @@ export const $coachesList = createStore<Coach[]>([])
       const prices = coach.prices
 
       if (query.session_duration_types) {
-        const durationTypes = decodeURI(query.session_duration_types).split(`,`) as DurationType[]
+        const durationTypes = decodeURI(query.session_duration_types).split(",") as DurationType[]
         Object.keys(prices).map(key => {
           // @ts-ignore
           if (!durationTypes.includes(key)) {

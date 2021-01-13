@@ -138,7 +138,7 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
           <div>
             <Prefix>Начало</Prefix>
             <Value>{session.startTime}</Value>
-            <Prefix style={{ marginLeft: `10px` }}>Тип</Prefix>
+            <Prefix style={{ marginLeft: "10px" }}>Тип</Prefix>
             <Value>{session.duration} мин</Value>
           </div>
           <MinusIcon onClick={() => deleteSlot({ weekday, slotId: session.id })} />

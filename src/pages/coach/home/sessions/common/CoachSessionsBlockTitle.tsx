@@ -8,7 +8,7 @@ const StyledTitle = styled.div`
   line-height: 26px;
   color: #424242;
   margin-bottom: 24px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 20px;
     line-height: 26px;
     margin-bottom: 12px;

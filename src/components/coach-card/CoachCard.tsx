@@ -133,14 +133,14 @@ const Block = styled.div<BlockTypes>`
   cursor: pointer;
 
   ${Avatar} {
-    border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
+    border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
   }
 
   ${MainInfoContainer} {
     border: 2px solid #fff;
   }
   ${PriceContainer} {
-    background: ${props => (props.isTopCoach ? `#F6C435` : `#9AA0A6`)};
+    background: ${props => (props.isTopCoach ? "#F6C435" : "#9AA0A6")};
   }
 
   @media screen and (max-width: 600px) {
@@ -179,7 +179,7 @@ const RatingContainer = styled.div`
   right: 12px;
   top: 12px;
   height: calc(100% - 24px);
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     right: 8px;
     top: 8px;
     height: calc(100% - 8px);
@@ -262,7 +262,7 @@ const CategoriesIcons = styled.div`
   }
 `
 
-const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+const TopCoachIcon = styled(Icon).attrs({ name: "top-coach" })`
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -273,7 +273,7 @@ const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
   }
 `
 
-const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>`
+const CategoryIcon = styled(Icon).attrs({ name: "tabletka" })<CategoryIconTypes>`
   width: 24px;
   height: 24px;
   margin-right: 8px;

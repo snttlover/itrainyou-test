@@ -35,7 +35,7 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
             value={tab}
             onChange={changeTab}
             find={find}
-            showChosen={$chatListModule.data.type === `client`}
+            showChosen={$chatListModule.data.type === "client"}
           />
           {listIsEmpty && <ListIsEmpty />}
           <ChatLinksContainer>
@@ -68,7 +68,7 @@ const ChatLinksContainer = styled.div`
   margin-top: 22px;
   display: block;
   width: 100%;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 14px;
   `}
 `
@@ -85,7 +85,7 @@ const Empty = styled.div`
   text-align: center;
   color: #9aa0a6;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 22px;
   `}

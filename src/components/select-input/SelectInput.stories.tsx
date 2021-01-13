@@ -14,14 +14,14 @@ const Container = styled.div`
 `
 
 export const normal = () => {
-  const [value, change] = useState(``)
+  const [value, change] = useState("")
 
   return (
     <Container>
       <SelectInput
         placeholder='placeholder'
         value={value}
-        options={[{ label: "Male", value: "male" }, { label: 'Female', value: 'female' }]}
+        options={[{ label: "Male", value: "male" }, { label: "Female", value: "female" }]}
         onChange={change}
       />
     </Container>
@@ -29,7 +29,7 @@ export const normal = () => {
 }
 
 export const asFormItem = () => {
-  const [value, change] = useState(``)
+  const [value, change] = useState("")
 
   return (
     <Container>
@@ -37,7 +37,7 @@ export const asFormItem = () => {
         <SelectInput
           placeholder='placeholder'
           value={value}
-          options={[{ label: "Male", value: "male" }, { label: 'Female', value: 'female' }]}
+          options={[{ label: "Male", value: "male" }, { label: "Female", value: "female" }]}
           onChange={change}
         />
       </FormItem>

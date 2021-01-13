@@ -24,13 +24,13 @@ type CategoryIconTypes = {
   color: string
 }
 
-const CategoryIcon = styled(Icon).attrs({ name: `tabletka` })<CategoryIconTypes>`
+const CategoryIcon = styled(Icon).attrs({ name: "tabletka" })<CategoryIconTypes>`
   width: 12px;
   height: 12px;
   margin-left: 10px;
   fill: ${props => props.color};
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     width: 16px;
     height: 16px;
   `}

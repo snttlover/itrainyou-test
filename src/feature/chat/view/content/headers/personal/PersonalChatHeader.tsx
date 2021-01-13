@@ -14,7 +14,7 @@ const StyledAvatar = styled(Avatar)`
   width: 40px;
   height: 40px;
   margin-right: 8px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 24px;
     height: 24px;
     margin-right: 4px;
@@ -36,7 +36,7 @@ const MaterialsIcon = styled(Icon).attrs({ name: "chat-files" })`
   fill: #9aa0a6;
   margin-right: 21px;
   cursor: pointer;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       display: none;
   `}
 `
@@ -66,7 +66,7 @@ export const PersonalChatHeader = (props: ChatHeaderTypes) => {
       </Title>
       <MobileChatHeaderMenu openMaterials={props.openMaterials} />
       <MaterialsIcon onClick={props.openMaterials} />
-      {props.type === `coach` && (
+      {props.type === "coach" && (
         <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />
       )}
     </Container>

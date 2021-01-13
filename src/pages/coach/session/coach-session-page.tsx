@@ -5,7 +5,7 @@ import { writeToClient } from "@/feature/chat/modules/write-to-coach"
 import { createCoachSessionRequest } from "@/lib/api/coach/create-session-request"
 
 export const coachSessionPage = createSessionPage({
-  type: `coach`,
+  type: "coach",
   fetchSession: getCoachSession,
   fetchHistory: getCoachSessionRequests,
   writeToUser: writeToClient,

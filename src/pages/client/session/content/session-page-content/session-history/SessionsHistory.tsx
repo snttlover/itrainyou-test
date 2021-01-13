@@ -46,7 +46,7 @@ const Header = styled.div`
   line-height: 26px;
   color: #424242;
   margin-top: 24px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 26px;
     margin-top: 12px;
@@ -61,7 +61,7 @@ const Items = styled.div`
   background: #ffffff;
   border-radius: 2px;
   margin-top: 16px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 8px;
     padding: 10px;
   `}
@@ -110,7 +110,7 @@ const StyledSessionItem = styled.div`
     background: ${props => props.theme.colors.primary};
   }
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     flex-direction: column;
     &:not(:last-child) {
       padding-bottom: 12px;
@@ -124,7 +124,7 @@ const Text = styled.div`
   line-height: 22px;
   color: #5b6670;
   margin-left: 20px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 18px;
     margin-left: 14px;
@@ -136,7 +136,7 @@ const Date = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #9aa0a6;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-left: 14px;
   `}
 `

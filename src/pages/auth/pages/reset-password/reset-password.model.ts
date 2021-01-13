@@ -46,10 +46,10 @@ export const $commonError = createStore<string | null>(null)
   .on(resetFx, () => null)
   .on(resetFx.fail, (state, { error }) => {
     if (error.response?.data.token) {
-      return `Ссылка больше недействительна`
+      return "Ссылка больше недействительна"
     }
 
-    return `Произошла ошибка при изменении пароля`
+    return "Произошла ошибка при изменении пароля"
   })
 
 export const $resetForm = createStoreObject({

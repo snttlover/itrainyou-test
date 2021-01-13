@@ -12,10 +12,10 @@ export function useClickOutside<T>(ref: React.MutableRefObject<T>, callback: () 
     }
 
     // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
       // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [ref])
 }

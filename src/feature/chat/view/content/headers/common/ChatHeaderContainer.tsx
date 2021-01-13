@@ -8,7 +8,7 @@ export const ChatHeaderContainer = styled.div`
   padding: 8px 12px;
   border-bottom: 1px solid #e5e5e5;
   align-items: center;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 14px 8px;
   `}
 `

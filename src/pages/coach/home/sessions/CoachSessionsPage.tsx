@@ -17,7 +17,7 @@ const Container = styled.div<{ nosessions: boolean }>`
   max-width: ${({nosessions}) => nosessions ? "" : "672px"}; 
   margin-top: 36px;
     
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     margin: 0 auto;
     margin-top: 40px;
   `}

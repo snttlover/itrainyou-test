@@ -19,9 +19,9 @@ export const SessionMaterials = () => {
           <StyledTab value='videos'>видео</StyledTab>
         </Tabs>
         <FilesContainer>
-          {tab === `documents` && <Documents />}
-          {tab === `pictures` && <Pictures />}
-          {tab === `videos` && <Videos />}
+          {tab === "documents" && <Documents />}
+          {tab === "pictures" && <Pictures />}
+          {tab === "videos" && <Videos />}
         </FilesContainer>
       </FilesPicker>
     </Container>
@@ -29,7 +29,7 @@ export const SessionMaterials = () => {
 }
 
 const StyledTab = styled(Tab)`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-weight: 500;
     font-size: 12px;
     line-height: 16px;
@@ -41,7 +41,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 24px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 12px;
   `}
 `
@@ -52,7 +52,7 @@ const Header = styled.div`
   line-height: 26px;
   color: #424242;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 26px;
   `}
@@ -60,7 +60,7 @@ const Header = styled.div`
 
 const FilesPicker = styled.div`
   margin-top: 16px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 8px;
   `}
 `

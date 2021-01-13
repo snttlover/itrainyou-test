@@ -36,7 +36,7 @@ const Header = styled.div`
   ${MediaRange.greaterThan("mobile")`
     justify-content: flex-start;
   `}
-  ${MediaRange.greaterThan(`tablet`)`
+  ${MediaRange.greaterThan("tablet")`
     font-size: 20px;
   `}
 `

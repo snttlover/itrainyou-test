@@ -13,11 +13,11 @@ const Container = styled.div`
   width: 500px;
 `
 
-const items = [`Item1`, `Item2`, `Item3`]
+const items = ["Item1", "Item2", "Item3"]
 
 export const normal = () => {
-  const [value, change] = useState(``)
-  const placeholder = `Type some text...`
+  const [value, change] = useState("")
+  const placeholder = "Type some text..."
 
   return (
     <Container>

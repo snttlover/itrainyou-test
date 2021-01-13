@@ -39,8 +39,8 @@ type AdvantageTypes = {
 const Advantage = styled.div<AdvantageTypes>`
   cursor: pointer;
   margin-bottom: 26px;
-  color: ${props => (props.isActive ? `#544274` : `#3B8AC3`)};
-  text-decoration: ${props => (props.isActive ? `underline` : `none`)};
+  color: ${props => (props.isActive ? "#544274" : "#3B8AC3")};
+  text-decoration: ${props => (props.isActive ? "underline" : "none")};
   position: relative;
 
   @media screen and (max-width: 638px) {

@@ -42,7 +42,7 @@ export const innValidator = (inn: string) => {
       for (const i in coefficients) {
         n += coefficients[i] * inn[i]
       }
-        // @ts-ignore
+      // @ts-ignore
       return parseInt(n % 11 % 10)
     }
     switch (inn.length) {
@@ -62,7 +62,7 @@ export const innValidator = (inn: string) => {
     }
     if (!result) {
       error.code = 4
-      error.message = "Неправильное контрольное число"
+      error.message = "Неправильный ИНН"
     }
   }
   return error.message

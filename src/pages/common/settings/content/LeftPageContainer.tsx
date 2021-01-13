@@ -7,7 +7,7 @@ export const LeftPageContainer = styled.div`
   margin-top: 36px;
   padding: 0 24px 20px 0;
   position: relative;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     margin: 40px auto 0;
   `}
 `

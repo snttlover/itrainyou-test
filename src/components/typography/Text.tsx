@@ -11,7 +11,7 @@ type TextPropsTypes = {
   children?: React.ReactNode | React.ReactNode[]
 }
 
-const defaultTag = `p`
+const defaultTag = "p"
 
 const small = css`
   font-size: 10px;

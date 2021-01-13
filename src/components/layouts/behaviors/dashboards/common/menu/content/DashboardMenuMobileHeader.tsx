@@ -11,7 +11,7 @@ const Logo = styled.img.attrs({ src: logoImage })`
   height: 36px;
 `
 
-const CloseIcon = styled(Icon).attrs({ name: `close` })`
+const CloseIcon = styled(Icon).attrs({ name: "close" })`
   width: 36px;
   height: 36px;
   display: none;
@@ -32,7 +32,7 @@ const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
      display: flex;
   `}
 `

@@ -17,7 +17,7 @@ const Container = styled.div`
 const Toast = styled.div<{ type: ToastType }>`
   margin-top: 10px;
   padding: 12px;
-  background: ${({ type, theme }) => (type === `info` ? theme.colors.primary : `#FF6000`)};
+  background: ${({ type, theme }) => (type === "info" ? theme.colors.primary : "#FF6000")};
   border-radius: 2px;
   color: #fff;
   display: flex;
@@ -25,7 +25,7 @@ const Toast = styled.div<{ type: ToastType }>`
   justify-content: space-between;
 `
 
-const Close = styled(Icon).attrs({ name: `close` })`
+const Close = styled(Icon).attrs({ name: "close" })`
   width: 17px;
   height: 17px;
   fill: #fff;

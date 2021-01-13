@@ -11,7 +11,7 @@ const Title = styled.h2<{ color: string }>`
   text-align: center;
   color: ${({color}) => color};
   
-  ${MediaRange.greaterThan('mobile')`
+  ${MediaRange.greaterThan("mobile")`
     font-size: 24px;
     line-height: 32px;
     font-weight: bold;
@@ -36,7 +36,7 @@ const Block = styled.div<{ hoverColor: string }>`
     margin-top: 15px;
   }
   
-  ${MediaRange.greaterThan('mobile')`
+  ${MediaRange.greaterThan("mobile")`
     ${Checkbox} {
       margin-top: 21px;
       & svg {

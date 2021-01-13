@@ -50,7 +50,7 @@ const Extension = styled.div`
   line-height: 16px;
   color: #9aa0a6;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
      display: flex;
      margin-right: 8px;
    `}
@@ -69,17 +69,17 @@ const File = styled.div`
   padding: 11px;
   border-bottom: 1px solid #eceff1;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 10px 0;
     border-bottom: 0px;
   `}
 `
 
-const FileIcon = styled(Icon).attrs({ name: `document` })`
+const FileIcon = styled(Icon).attrs({ name: "document" })`
   width: 14px;
   fill: ${({ theme }) => theme.colors.primary};
   margin-right: 10px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     align-self: flex-start;
   `}
 `
@@ -91,7 +91,7 @@ const Name = styled.div`
   color: #5b6670;
   flex: 1;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
      width: 100%;
      flex-basis: 100%;
   `}
@@ -101,7 +101,7 @@ const Size = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #9aa0a6;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 12px;
     line-height: 16px;
   `}

@@ -17,17 +17,17 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     padding-top: 132px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding-top: 36px;
   `}
 `
 
 const StyledTitle = styled(Title)`
   margin-bottom: 12px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-bottom: 8px;
     width: 288px;
   `}
@@ -36,13 +36,13 @@ const StyledTitle = styled(Title)`
 const StyledSubTitle = styled(SubTitle)`
   width: 100%;
   max-width: 600px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     max-width: 296px;
   `}
 `
 
 const StyledBottomSubtitle = styled(SubTitle)`
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 100%;
     max-width: 248px;
   `}
@@ -51,10 +51,10 @@ const StyledBottomSubtitle = styled(SubTitle)`
 const StyledButton = styled(Button)`
   width: 160px;
   margin-top: 28px;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     margin-top: 24px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 8px;
   `}
 `
@@ -66,7 +66,7 @@ const LearnHere = styled.div`
   text-align: center;
   color: #424242;
   margin-bottom: 16px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 20px;
     line-height: 28px;
     margin-bottom: 6px;

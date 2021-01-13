@@ -7,7 +7,7 @@ export const Card = styled.div`
   border-radius: 2px;
   padding: 14px 16px;
   margin-bottom: 26px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       padding: 16px 12px;
       margin-bottom: 16px;
   `}
@@ -16,7 +16,7 @@ export const Card = styled.div`
 export const NotificationAvatar = styled(Avatar)`
   width: 60px;
   height: 60px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
       width: 40px;
       height: 40px;
   `}
@@ -30,7 +30,7 @@ export const Title = styled.div`
   margin-left: 13px;
   margin-top: 20px;
   flex: 1;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-left: 8px;  
     font-size: 14px;
     line-height: 18px;
@@ -52,7 +52,7 @@ export const Time = styled.span`
   color: #9aa0a6;
   font-size: 14px;
   line-height: 18px;
-  ${MediaRange.lessThan(`mobile`)`  
+  ${MediaRange.lessThan("mobile")`  
     font-size: 12px;
     line-height: 16px;
   `}

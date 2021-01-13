@@ -14,7 +14,7 @@ import styled from "styled-components"
 import { declOfNum } from "@/lib/formatting/numerals"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
-  border: 2px solid ${props => (props.isTopCoach ? `#F6C435` : `#fff`)};
+  border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
   min-width: 80px;
   ${MediaRange.greaterThan("mobile")`        
     width: 120px;
@@ -101,7 +101,7 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   `}
 `
 
-const TopCoachIcon = styled(Icon).attrs({ name: `top-coach` })`
+const TopCoachIcon = styled(Icon).attrs({ name: "top-coach" })`
   width: 16px;
   height: 16px;
   margin-right: 8px;

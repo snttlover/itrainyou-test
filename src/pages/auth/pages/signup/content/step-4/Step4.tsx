@@ -19,11 +19,11 @@ export const Step4 = () => {
   }, [])
 
   switch (userData.type) {
-    case "client":
-      return <Step4Client />
-    case "coach":
-      return <Step4Coach />
-    default:
-      return throwCompileTimeError(userData.type)
+  case "client":
+    return <Step4Client />
+  case "coach":
+    return <Step4Coach />
+  default:
+    return throwCompileTimeError(userData.type)
   }
 }

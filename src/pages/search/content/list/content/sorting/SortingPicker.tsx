@@ -50,7 +50,7 @@ export const SortingPicker = (props: PickerTypes) => {
   return (
     <ClickOutside onClickOutside={() => changeVisibility(false)}>
       <StyledPicker className={props.className}>
-        <PickerContainer className={isVisible ? `opened` : ``} onClick={() => changeVisibility(!isVisible)}>
+        <PickerContainer className={isVisible ? "opened" : ""} onClick={() => changeVisibility(!isVisible)}>
           {props.children}
         </PickerContainer>
         {isVisible && (

@@ -18,7 +18,7 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
 
 export const $commonError = createStore<string | null>(null)
   .on(recoveryFx, () => null)
-  .on(recoveryFx.fail, (state, { error }) => `Почта не найдена`)
+  .on(recoveryFx.fail, (state, { error }) => "Почта не найдена")
 
 export const $recoveryForm = createStoreObject({
   email: $email,

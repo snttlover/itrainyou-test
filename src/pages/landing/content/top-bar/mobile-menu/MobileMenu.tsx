@@ -13,7 +13,7 @@ import {
   changeMobileMenuVisibility
 } from "@/pages/landing/content/top-bar/mobile-menu/mobile-menu.model"
 
-export const MobileSearchButton = styled(Icon).attrs({ name: `search` })`
+export const MobileSearchButton = styled(Icon).attrs({ name: "search" })`
   width: 36px;
   height: 36px;
   fill: #4858cc;
@@ -51,7 +51,7 @@ const StyledSearch = styled(Search)`
     border-radius: 2px !important;
     padding: 14px 16px;
   }
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 3px;
     ${Input} {
       padding: 8px;
@@ -59,14 +59,14 @@ const StyledSearch = styled(Search)`
   `}
 `
 
-const tabletCloseIconSize = `36px`
-const mobileCloseIconSize = `24px`
-const Close = styled(Icon).attrs({ name: `close` })`
+const tabletCloseIconSize = "36px"
+const mobileCloseIconSize = "24px"
+const Close = styled(Icon).attrs({ name: "close" })`
   fill: #4858cc;
   width: ${tabletCloseIconSize};
   height: ${tabletCloseIconSize};
   align-self: flex-end;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: ${mobileCloseIconSize};
     height: ${mobileCloseIconSize};
   `}
@@ -80,7 +80,7 @@ const CategoriesWrapper = styled.div`
     padding: 12px 16px;
     border-radius: 2px;
   }
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 24px;
   `}
 `

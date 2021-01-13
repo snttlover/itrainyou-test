@@ -11,25 +11,25 @@ export type SortingItemType = {
 
 export const sortingItems: SortingItemType[] = [
   {
-    text: `По популярности`,
-    value: `popularity`,
+    text: "По популярности",
+    value: "popularity",
     icon: upArrow,
     hideIconOnDesktop: true
   },
   {
-    text: `По дате`,
-    value: `nearest_session_datetime`,
+    text: "По дате",
+    value: "nearest_session_datetime",
     icon: downArrow,
     hideIconOnDesktop: true
   },
   {
-    text: `По цене`,
-    value: `-price`,
+    text: "По цене",
+    value: "-price",
     icon: downArrow
   },
   {
-    text: `По цене`,
-    value: `price`,
+    text: "По цене",
+    value: "price",
     icon: upArrow
   }
 ]

@@ -11,7 +11,7 @@ const StyledAvatar = styled(Avatar)`
   width: 40px;
   height: 40px;
   margin-right: 8px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 24px;
     height: 24px;
     margin-right: 4px;
@@ -38,7 +38,7 @@ const SupportIcon = styled(Icon).attrs({ name: "support" })`
   width: 40px;
   height: 40px;
   margin-right: 8px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 24px;
     height: 24px;
     margin-right: 4px;

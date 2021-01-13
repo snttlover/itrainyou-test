@@ -17,6 +17,7 @@ import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
 import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
+import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -235,12 +236,12 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
 
-  const [currentDate, changeCurrentDate] = useState<Date | null>(null)
   const enabledDates = sessions.map(session => session.startDatetime)
+  const [currentDate, changeCurrentDate] = useState<Date | null>(null)
 
   useEffect(() => {
-    changeCurrentDate(null)
-  }, [activeTab])
+    changeCurrentDate(date(enabledDates[0]).toDate())
+  }, [activeTab, enabledDates[0]])
 
   const formattedDate = date(currentDate || date()).format("DD MMMM")
   const currentDateEqual = date(currentDate || date()).format(equalDateFormat)
@@ -267,7 +268,8 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     }))
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
-
+  
+  const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   return (
     <>
       <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
@@ -300,17 +302,19 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
             ))}
           </Times>
           <Divider />
-          <SelectedDatetimeTable>
-            <tbody>
-              {selected.map(session => (
-                <tr key={session.id}>
-                  <td>{session.date}</td>
-                  <TimeColumn>{session.time}</TimeColumn>
-                </tr>
-              ))}
-            </tbody>
-          </SelectedDatetimeTable>
-          <Text>Итог: {amount} ₽</Text>
+          <WidthAmountConditionWrapper>
+            <SelectedDatetimeTable>
+              <tbody>
+                {selected.map(session => (
+                  <tr key={session.id}>
+                    <td>{session.date}</td>
+                    <TimeColumn>{session.time}</TimeColumn>
+                  </tr>
+                ))}
+              </tbody>
+            </SelectedDatetimeTable>
+            <Text>Итог: {amount} ₽</Text>
+          </WidthAmountConditionWrapper>
           <ButtonContainer>
             <ButtonWrapper>
               <IsAuthed>

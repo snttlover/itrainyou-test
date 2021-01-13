@@ -13,13 +13,13 @@ const Container = styled.div`
   position: relative;
   max-width: 600px;
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     padding-right: 0;
     padding-top: 80px;
     margin-top: 0;
   `}
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding-right: 0;
     padding-top: 80px;
     margin-top: 0;
@@ -36,7 +36,7 @@ const Coaches = styled.div`
   padding: 24px;
   min-height: 350px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 12px;
   `}
 `
@@ -47,7 +47,7 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
      padding-top: 0;
      font-size: 16px;
      line-height: 26px;

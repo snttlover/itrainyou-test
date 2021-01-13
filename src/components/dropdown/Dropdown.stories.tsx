@@ -18,13 +18,13 @@ type ItemTypes = {
 }
 
 const Item = styled(SearchInputItem)<ItemTypes>`
-  background: ${props => (props.active ? `#daebf7` : `#fff`)};
+  background: ${props => (props.active ? "#daebf7" : "#fff")};
 `
 
-const items = [`Item1`, `Item2`, `Item3`]
+const items = ["Item1", "Item2", "Item3"]
 
 export const normal = () => {
-  const [value, change] = useState(``)
+  const [value, change] = useState("")
 
   return (
     <Container>

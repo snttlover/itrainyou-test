@@ -33,7 +33,7 @@ export const Button = styled.button<ButtonTypes>`
 
   transition: all 200ms ease;
   
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
     padding: 7px 24px;
     &[data-slim="true"] {
       padding: 4px 24px;

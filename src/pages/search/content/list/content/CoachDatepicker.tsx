@@ -2,7 +2,7 @@ import { IsAuthed } from "@/feature/user/IsAuthed"
 import { IsGuest } from "@/feature/user/IsGuest"
 import { date } from "@/lib/formatting/date"
 import { routeNames } from "@/pages/route-names"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
 import { Calendar } from "@/components/calendar/Calendar"
@@ -16,6 +16,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { $creditCardsModal, showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -26,7 +27,7 @@ const Container = styled.div`
   margin-bottom: 20px;
   position: relative;
 
-  ${MediaRange.lessThan(`laptop`)`
+  ${MediaRange.lessThan("laptop")`
      width: 100%;
      margin-bottom: 0;
   `}
@@ -37,7 +38,7 @@ const Block = styled.div<StyledTabTypes>`
   flex-direction: column;
   background: #fff;
   padding: 24px 8px;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     flex-direction: row;   
   `}
 `
@@ -45,14 +46,14 @@ const Block = styled.div<StyledTabTypes>`
 const Datepicker = styled.div`
   border-bottom: 1px solid #dbdee0;
   padding-bottom: 4px;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
      width: 50%;
      padding-right: 20px;
      padding-left: 20px;
      border-right: 1px solid #DBDEE0;
      border-bottom: none;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-right: 26px;
     margin-left: 26px;
     padding-bottom: 12px;
@@ -64,7 +65,7 @@ const SelectTimeContainer = styled.div`
   margin: 0 auto;
   width: 100%;
 
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     margin: 0 auto;
     width: 252px;
   `}
@@ -86,8 +87,8 @@ const Tag = styled.div<{ active?: boolean }>`
   display: flex;
   flex-direction: row;
   padding: 2px 8px;
-  background: ${({ active }) => (active ? `#4858CC` : `#fff`)};
-  color: ${({ active }) => (active ? `#fff` : `#5B6670`)};
+  background: ${({ active }) => (active ? "#4858CC" : "#fff")};
+  color: ${({ active }) => (active ? "#fff" : "#5B6670")};
   box-sizing: border-box;
   border-radius: 24px;
   font-size: 12px;
@@ -100,14 +101,14 @@ const Tag = styled.div<{ active?: boolean }>`
   `}
 `
 
-const DeleteIcon = styled(Icon).attrs({ name: `delete` })`
+const DeleteIcon = styled(Icon).attrs({ name: "delete" })`
   fill: #4858cc;
   width: 15px;
   height: 15px;
   cursor: pointer;
 `
 
-const RubleIcon = styled(Icon).attrs({ name: `ruble` })`
+const RubleIcon = styled(Icon).attrs({ name: "ruble" })`
   width: 15px;
   height: 15px;
   fill: #4858cc;
@@ -149,7 +150,7 @@ const StyledDateHeader = styled.div`
   padding-left: 12px;
   padding-top: 16px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     border-top: 1px solid #DBDEE0;
     padding-top: 24px;
   `}
@@ -165,7 +166,7 @@ const StyledTab = styled(Tab)<StyledTabTypes>`
   display: flex;
   flex-direction: column;
   padding: 8px 13px;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     flex-direction: row;
   `}
 `
@@ -177,7 +178,7 @@ const TabTime = styled.div`
   line-height: 16px;
   text-align: center;
   color: #5b6670;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     font-size: 16px;
     line-height: 22px;
   `}
@@ -212,7 +213,7 @@ const SelectedSession = styled.div`
     margin-top: 0;
   }
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 252px;
   `}
 `
@@ -271,7 +272,7 @@ const Amount = styled.div`
   align-items: center;
   width: 216px;
   margin: 0 auto;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 252px;
   `}
 `
@@ -290,11 +291,11 @@ const SessionPackagesStatWrapper = styled.div`
   width: 216px;
   margin: 0 auto;
 
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     border-top: none;
  `}
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -320,7 +321,7 @@ const SessionPackage = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 252px;
   `}
 `
@@ -340,7 +341,7 @@ const SessionPackagesDescription = styled.div`
   color: #5b6670;
   margin-top: 16px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 212px;
   `}
 `
@@ -353,7 +354,7 @@ const SessionsPackagesTitle = styled.div`
   color: #424242;
   margin-bottom: 7px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 252px;
   `}
 `
@@ -371,7 +372,7 @@ const Footer = ({ className }: { className?: string }) => (
 
 const TabletFooter = styled(Footer)`
   display: none;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     display: block;
     
     ${SessionPackagesDescription} {
@@ -383,13 +384,13 @@ const TabletFooter = styled(Footer)`
 const DesktopFooter = styled(Footer)`
   display: flex;
   margin-top: 24px;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     display: none;
  `}
 `
 
 const StyledCalendar = styled(Calendar)`
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     max-width: 252px;
     margin: 0 auto;
  `}
@@ -397,7 +398,7 @@ const StyledCalendar = styled(Calendar)`
 
 const Delemiter = styled.div`
   display: none;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     display: flex;
   `}
 `
@@ -406,15 +407,15 @@ const FooterWrapper = styled.div`
   display: none;
   width: 100%;
   border-top: 1px solid #dbdee0;
-  ${MediaRange.between(`mobile`, `laptop`)`
+  ${MediaRange.between("mobile", "laptop")`
     display: flex;
     justify-content: center;
     margin-top: 10px;
  `}
 `
 
-const equalDateFormat = `DDMMYYYY`
-const equalTimeFormat = `HH:mm`
+const equalDateFormat = "DDMMYYYY"
+const equalTimeFormat = "HH:mm"
 
 export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const _showCreditCardsModal = useEvent(showCreditCardsModal)
@@ -430,6 +431,10 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const [currentDate, changeCurrentDate] = useState<Date | null>()
   const enabledDates = sessions.map(session => session.startDatetime)
+
+  useEffect(() => {
+    changeCurrentDate(date(enabledDates[0]).toDate())
+  }, [enabledDates[0]])
 
   const headerDate = currentDate ? currentDate : new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
@@ -452,7 +457,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     .filter(session => session.selected)
     .map(session => ({
       ...session,
-      date: date(session.startDatetime).format(`DD.MM.YY`),
+      date: date(session.startDatetime).format("DD.MM.YY"),
       time: date(session.startDatetime).format(equalTimeFormat),
     }))
 
@@ -462,6 +467,10 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     changeActiveTab(durationType)
     changeCurrentDate(null)
   }
+
+
+  const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
+  
 
   return (
     <Container>
@@ -500,25 +509,27 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               </Tag>
             ))}
           </Times>
-          <SelectedSessions>
-            {selected.map(session => (
-              <SelectedSession key={session.id}>
-                <SessionDate>{session.date}</SessionDate>
-                <SessionTime>{session.time}</SessionTime>
-                <SessionPrice>
-                  {session.clientPrice}
-                  <RubleIcon />
-                </SessionPrice>
-                <DeleteIcon onClick={() => deleteSession(session.id)} />
-              </SelectedSession>
-            ))}
-          </SelectedSessions>
-          <Amount>
-            <AmountText>Итого:</AmountText>
-            <Summary>
-              {amount} <SummaryRuble />
-            </Summary>
-          </Amount>
+          <WidthAmountConditionWrapper>
+            <SelectedSessions>
+              {selected.map(session => (
+                <SelectedSession key={session.id}>
+                  <SessionDate>{session.date}</SessionDate>
+                  <SessionTime>{session.time}</SessionTime>
+                  <SessionPrice>
+                    {session.clientPrice}
+                    <RubleIcon />
+                  </SessionPrice>
+                  <DeleteIcon onClick={() => deleteSession(session.id)} />
+                </SelectedSession>
+              ))}
+            </SelectedSessions>
+            <Amount>
+              <AmountText>Итого:</AmountText>
+              <Summary>
+                {amount} <SummaryRuble />
+              </Summary>
+            </Amount>
+          </WidthAmountConditionWrapper>
           <ButtonContainer>
             <IsAuthed>
               <StyledBuyButton

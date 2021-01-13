@@ -32,7 +32,7 @@ const StyledButton = styled(DashedButton)`
   @media screen and (max-width: 768px) {
     margin-top: 35px;
   }
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     background: #fff !important;
   `}
 `

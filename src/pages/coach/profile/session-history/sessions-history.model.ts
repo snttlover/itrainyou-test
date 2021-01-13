@@ -56,12 +56,12 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
     if (["WITHDRAW", "TRANSFER_TO_CLIENT_WALLET", "SESSION_CANCELLATION"].includes(transaction.type)) price = `${price}`
     else price = `+${price}`
 
-    let name = `Пополнение кошелька`
+    let name = "Пополнение кошелька"
 
     if (transaction.enrolledClient) {
       name = `${transaction.enrolledClient.firstName} ${transaction.enrolledClient.lastName}`
     } else if (transaction.type === "SESSION_CANCELLATION") {
-      name = `Сессия отменена`
+      name = "Сессия отменена"
     }
 
     let avatar = null
@@ -73,8 +73,8 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
       avatar: avatar,
       name: name,
       price: price,
-      time: date(session.startDatetime).format(`HH:mm`),
-      date: date(session.startDatetime).format(`DD.MM.YYYY`),
+      time: date(session.startDatetime).format("HH:mm"),
+      date: date(session.startDatetime).format("DD.MM.YYYY"),
       status: transaction.status,
     }
   })

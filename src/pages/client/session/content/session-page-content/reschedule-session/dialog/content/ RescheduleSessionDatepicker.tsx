@@ -38,7 +38,7 @@ export const RescheduleSessionDatepicker = () => {
       </Column>
       <Column>
         <SelectSessionContainer>
-          <PickedDate>{date ? dayjs(date).format(`DD MMMM`) : `Выберите дату`}</PickedDate>
+          <PickedDate>{date ? dayjs(date).format("DD MMMM") : "Выберите дату"}</PickedDate>
           {!!date && (
             <Tags>
               {tags.map(session => (
@@ -70,7 +70,7 @@ const Container = styled.div`
   padding: 24px;
   background: #fff;
   margin-top: 4px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     flex-direction: column;
     padding: 0 24px;
     padding-top: 10px;
@@ -86,7 +86,7 @@ const Column = styled.div`
   &:last-child {
     border-right: none;
   }
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 100%;
     flex-basis: 100%;
     border-right: none;
@@ -96,7 +96,7 @@ const Column = styled.div`
 const StyledCalendar = styled(Calendar)`
   width: 100%;
   max-width: 252px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     max-width: unset;
   `}
 `
@@ -106,7 +106,7 @@ const SelectSessionContainer = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 252px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     max-width: unset;
     border-top: 1px solid #dbdee0;
     padding-top: 20px;
@@ -121,7 +121,7 @@ const PickedDate = styled.div`
   color: #5b6670;
   padding: 8px 16px;
   margin-bottom: 16px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 8px 0;
   `}
 `
@@ -160,7 +160,7 @@ const SelectedSession = styled.div`
   border-top: 1px solid #dbdee0;
   display: flex;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     border-top: 1px solid #dbdee0;
     margin-top: 20px;
     padding: 8px 0;
@@ -186,7 +186,7 @@ const Actions = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 60px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 24px;
   `}
 `

@@ -31,7 +31,7 @@ const StyledTabs = styled(Tabs)`
   display: flex;
   margin-top: 36px;
   justify-content: flex-start;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 20px;
     justify-content: space-between;
   `}
@@ -52,7 +52,7 @@ const StyledTab = styled(Tab)`
     border-bottom: 2px solid ${props => props.theme.colors.primary};
     background: transparent;
   }
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-right: 0;
   `}
 `

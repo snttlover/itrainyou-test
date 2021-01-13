@@ -158,12 +158,13 @@ function firsDayOfMonth(month: number, year: number) {
   return new Date(date(`${year}-${month}-01`).valueOf())
 }
 
-const isEqualDates = (first: Date, second: Date, format: string = `DDMMYYYY`) =>
+const isEqualDates = (first: Date, second: Date, format = "DDMMYYYY") =>
   date(first).format(format) === date(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
-  const equalFormat = `DDMMYYYY`
+  const equalFormat = "DDMMYYYY"
   const [startDate, changeActiveStartDate] = useState(new Date())
+
 
   useEffect(() => {
     if (props.startFrom && date().format(equalFormat) === date(startDate).format(equalFormat)) {
@@ -196,48 +197,48 @@ export const Calendar = (props: CalendarTypes) => {
       }
 
       if (date(dat).isBetween(range[0], range[1])) {
-        classes.push(`react-calendar__tile--active`)
+        classes.push("react-calendar__tile--active")
       }
       if (isEqualDates(range[0], dat)) {
-        classes.push(`rangeStart`)
+        classes.push("rangeStart")
       }
       if (isEqualDates(range[1], dat)) {
-        classes.push(`rangeEnd`)
+        classes.push("rangeEnd")
       }
     }
 
     if (pinnedDefined) {
       if (pinnedDates.includes(date(dat).format(equalFormat))) {
-        classes.push(`pinned`)
+        classes.push("pinned")
       }
     }
 
     if (props.disabledFrom) {
       if (date(props.disabledFrom).isBefore(date(dat))) {
-        classes.push(`disabled`)
+        classes.push("disabled")
       }
     }
 
     if (enabledDefined) {
       if (enabledDates.includes(date(dat).format(equalFormat))) {
-        classes.push(`enabled`)
+        classes.push("enabled")
       } else {
-        classes.push(`disabled`)
+        classes.push("disabled")
       }
     }
 
     const day = dat.getDay()
     const isWeekend = day === 6 || day === 0
     if (isWeekend) {
-      classes.push(`day--weekend`)
+      classes.push("day--weekend")
     }
 
-    if (!isEqualDates(dat, startDate, `MMYYYY`)) {
-      classes.push(`not-current-month`)
+    if (!isEqualDates(dat, startDate, "MMYYYY")) {
+      classes.push("not-current-month")
     }
 
-    if (dat.valueOf() < date().subtract(1, `day`).valueOf()) {
-      classes.push(`is-past`)
+    if (dat.valueOf() < date().subtract(1, "day").valueOf()) {
+      classes.push("is-past")
     }
 
     return classes
@@ -255,9 +256,8 @@ export const Calendar = (props: CalendarTypes) => {
     props.onNextMonth?.(nextMonthDate)
   }
 
-  const formatter = `YYYYMM`
+  const formatter = "YYYYMM"
   const lessThanTheCurrentMonth = +date(startDate).format(formatter) <= +date(new Date()).format(formatter)
-
   return (
     <CalendarWrapper className={props.className} isBig={props.isBig}>
       <CalendarHeader

@@ -23,7 +23,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
   const FileId = (i => () => i++)(0)
 
   const changeMessage = createEvent<string>()
-  const $message = restore(changeMessage, ``)
+  const $message = restore(changeMessage, "")
 
   const sendTextMessage = createEvent<string>()
 
@@ -49,7 +49,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
         preview: null,
         id: FileId(),
         percent: 0,
-        serverUrl: '',
+        serverUrl: "",
       },
     ])
     .on(changeImage, (images, payload) => {
@@ -125,7 +125,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
       return new Promise((res) => {
         images
           .forEach(image => {
-            if (!!image.serverUrl) {
+            if (image.serverUrl) {
               runInScope(config.socket.methods.send, {
                 chat: chat,
                 image: image.serverUrl,

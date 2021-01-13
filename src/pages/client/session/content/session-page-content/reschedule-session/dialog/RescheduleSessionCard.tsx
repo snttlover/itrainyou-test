@@ -55,7 +55,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 640px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     width: 100%;
     height: 100%;
     position: relative;
@@ -65,7 +65,7 @@ const Container = styled.div`
   `}
 `
 
-const MobileClose = styled(Icon).attrs({ name: `close` })`
+const MobileClose = styled(Icon).attrs({ name: "close" })`
   fill: ${props => props.theme.colors.primary};
   width: 25px;
   height: 25px;
@@ -73,7 +73,7 @@ const MobileClose = styled(Icon).attrs({ name: `close` })`
   cursor: pointer;
   display: none;
   align-self: flex-end;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: block;
     flex: none;
   `}
@@ -88,7 +88,7 @@ const MobileHeader = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #424242;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: flex;
   `}
 `

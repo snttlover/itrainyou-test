@@ -22,7 +22,7 @@ const Container = styled.div`
   padding: 11px 20px;
   margin-bottom: 30px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 16px;
     padding: 11px 8px;
   `}
@@ -36,7 +36,7 @@ const Title = styled.div`
     color: #424242;
     text-align: left;
     margin-bottom: 10px;
-    ${MediaRange.lessThan(`mobile`)`
+    ${MediaRange.lessThan("mobile")`
         font-size: 16px;
         line-height: 26px;
     `}
@@ -90,7 +90,7 @@ export const IndividualSessions = () => {
           loader={<Loader />}
           next={loadMore as any}
           scrollableTarget='page-wrapper'
-          style={{overflow: `hidden`}}
+          style={{overflow: "hidden"}}
           hasMore={hasMore}
           dataLength={sessions.length}
         >

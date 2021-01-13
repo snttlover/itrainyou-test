@@ -25,7 +25,7 @@ export const UserHeader = (props: UserHeaderProps) => (
         <StyledAvatar src={props.userAvatar} />
       </Link>
       <Info>
-        <Name to={props.userLink}>{props.hasUser ? props.userName : `Клиентов нет`}</Name>
+        <Name to={props.userLink}>{props.hasUser ? props.userName : "Клиентов нет"}</Name>
         {!!props.rating && (
           <Rating>
             <RatingIcon />
@@ -54,7 +54,7 @@ const Container = styled.div`
   background: #fff;
   border-radius: 2px;
   display: flex;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     flex-direction: column;
   `}
 `
@@ -77,7 +77,7 @@ const Name = styled(Link)`
   font-size: 20px;
   line-height: 26px;
   color: #424242;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 26px;
   `}
@@ -93,14 +93,14 @@ const Rating = styled.div`
   color: ${props => props.theme.colors.primary};
   margin-top: 8px;
 
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;
   `}
 `
 
-const RatingIcon = styled(Icon).attrs({ name: `star` })`
+const RatingIcon = styled(Icon).attrs({ name: "star" })`
   width: 24px;
   height: 24px;
   margin-right: 4px;
@@ -111,14 +111,14 @@ const SessionsCounter = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #5b6670;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: none;
   `}
 `
 
 const MobileSessionsCounter = styled.div`
   display: none;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
      display: flex;
      font-size: 14px;
      line-height: 18px;
@@ -130,7 +130,7 @@ const MobileSessionsCounter = styled.div`
 const Write = styled(Button)`
   width: 160px;
   align-self: flex-end;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     align-self: center;
     margin-top: 12px;
   `}

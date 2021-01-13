@@ -12,7 +12,7 @@ const DesktopIcon = styled(Icon).attrs({ name: "not-found-desktop" })`
   display: block;
   height: auto;
   fill: ${props => props.theme.colors.primary};
-  ${MediaRange.lessThan(`laptop`)`
+  ${MediaRange.lessThan("laptop")`
     display: none;
   `}
 `
@@ -24,10 +24,10 @@ const TabletIcon = styled(Icon).attrs({ name: "not-found-tablet" })`
   display: block;
   height: auto;
   fill: ${props => props.theme.colors.primary};
-  ${MediaRange.greaterThan(`laptop`)`
+  ${MediaRange.greaterThan("laptop")`
     display: none;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: none;
   `}
 `
@@ -40,7 +40,7 @@ const MobileIcon = styled(Icon).attrs({ name: "not-found-mobile" })`
   display: none;
   height: auto;
   fill: ${props => props.theme.colors.primary};
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: block;
   `}
 `

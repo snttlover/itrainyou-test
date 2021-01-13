@@ -24,14 +24,14 @@ export type GetChatSessionsQuery = {
   id: number
   page: number
   pageSize: number
-  excludePast?: 'True'
-  past?: 'True'
+  excludePast?: "True"
+  past?: "True"
 }
 
 export const getClientChatSessions = (params: GetChatSessionsQuery) =>
   get<Pagination<ChatSession>, {}>(
     `${config.BACKEND_URL}/api/v1/web/client/chats/${params.id}/sessions/`,
-    keysToSnake(excludeKeys(params, [`id`]))
+    keysToSnake(excludeKeys(params, ["id"]))
   )
     .then(response => response.data)
     .then(keysToCamel)

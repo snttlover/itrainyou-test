@@ -5,7 +5,7 @@ import { date } from "@/lib/formatting/date"
 import { $cardsSessionsForView } from "@/pages/client/wallet/cards/cards.model"
 import { MediaRange } from "@/lib/responsive/media"
 import { Avatar } from "@/components/avatar/Avatar"
-import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions";
+import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 
 type CardSessions = {
     id: number

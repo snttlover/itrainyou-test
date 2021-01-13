@@ -15,7 +15,6 @@ const StyledHeader = styled.div`
 `
 
 
-
 const StyledCategoriesPicker = styled(CategoriesPicker)`
   @media screen and (max-width: 480px) {
     margin-bottom: 8px;

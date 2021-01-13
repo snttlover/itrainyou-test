@@ -10,7 +10,7 @@ const Container = styled.div`
   flex: 1;
   padding: 16px 24px;
   align-items: flex-start;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     padding: 12px 8px;
   `}
 `

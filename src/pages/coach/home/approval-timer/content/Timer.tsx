@@ -12,7 +12,7 @@ const Container = styled.div`
   max-width: 458px;
   margin-top: 114px;
   margin-bottom: 152px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 52px;
     margin-bottom: 114px;
   `}
@@ -25,7 +25,7 @@ const Title = styled.div`
   text-align: center;
   color: #424242;
   margin-bottom: 12px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 26px;
     margin-bottom: 16px;
@@ -44,7 +44,7 @@ const Section = styled.div`
   &:last-child {
     margin-right: 0;
   }
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: flex;
     flex-direction: column;
     margin-right: 16px;
@@ -58,7 +58,7 @@ const Numeric = styled.div`
   line-height: 26px;
   text-align: center;
   color: #7d36a8;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-size: 24px;
     line-height: 26px;
   `}
@@ -70,7 +70,7 @@ const SectionDescription = styled.div`
   line-height: 22px;
   color: #424242;
   margin-left: 8px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-left: 0;
     margin-top: 8px;
     font-size: 14px;

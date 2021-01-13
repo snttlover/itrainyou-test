@@ -141,7 +141,7 @@ const InterlocutorVideo = styled.div`
   top: 0;
 `
 
-const InterlocutorIcon = styled(Icon).attrs({ name: `user` })`
+const InterlocutorIcon = styled(Icon).attrs({ name: "user" })`
   width: 34px;
   height: 34px;
   fill: ${props => props.theme.colors.invert.primary};
@@ -169,7 +169,7 @@ const MyUserVideo = styled.div`
   z-index: 2;
 `
 
-const MyUserVideoPlaceholderIcon = styled(Icon).attrs({ name: `user` })`
+const MyUserVideoPlaceholderIcon = styled(Icon).attrs({ name: "user" })`
   width: 50px;
   height: 50px;
   fill: ${props => props.theme.colors.primary};
@@ -183,7 +183,7 @@ const MyUserVideoPlaceholder = styled.div`
   background: #dbdee0;
 `
 
-const DisabledInterlocutorMicro = styled(Icon).attrs({ name: `disabled-interlocutor-micro` })`
+const DisabledInterlocutorMicro = styled(Icon).attrs({ name: "disabled-interlocutor-micro" })`
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -238,7 +238,7 @@ const Name = styled.div`
   margin-left: 4px;
 `
 
-const Close = styled(Icon).attrs({ name: `close` })`
+const Close = styled(Icon).attrs({ name: "close" })`
   width: 36px;
   height: 36px;
   display: none;
@@ -306,7 +306,7 @@ const fullscreenCSS = css`
     height: 52px;
   }
 
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
       ${MyUserVideoPlaceholder},
       ${MyUserVideo} {
         top: 76px;
@@ -339,7 +339,7 @@ const Container = styled.div`
   &[data-fullscreen="true"] {
     ${fullscreenCSS}
   }
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     ${fullscreenCSS}
     
     ${ToggleFullscreen} {

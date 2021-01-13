@@ -43,7 +43,7 @@ export const $rescheduleSessionsDates = combine(
   }
 )
 
-const dateFormatter = `DDMMYYYY`
+const dateFormatter = "DDMMYYYY"
 
 export const changePickedRescheduleSession = createEvent<number>()
 export const $pickedRescheduleSession = restore(changePickedRescheduleSession, 0).reset(resetRescheduleDialog)
@@ -56,7 +56,7 @@ export const $rescheduleSelectedSessions = combine(
     return sessions
       .filter(session => !!day && date(session.startDatetime).format(dateFormatter) === date(day).format(dateFormatter))
       .map(session => ({
-        time: date(session.startDatetime).format(`HH:mm`),
+        time: date(session.startDatetime).format("HH:mm"),
         id: session.id,
         active: pickedId === session.id,
       }))
@@ -68,8 +68,8 @@ export const $formattedPickedRescheduleSession = combine($sessions, $pickedResch
 
   if (session) {
     return {
-      date: date(session.startDatetime).format(`DD.MM.YY`),
-      time: date(session.startDatetime).format(`HH:mm`),
+      date: date(session.startDatetime).format("DD.MM.YY"),
+      time: date(session.startDatetime).format("HH:mm"),
     }
   }
 
@@ -90,7 +90,7 @@ sample({
     $pickedRescheduleSession,
     clientSessionPage.modules.sessionInfo.data.$info,
     (pickedSession, currentSession) => ({
-      type: `RESCHEDULE`,
+      type: "RESCHEDULE",
       session: currentSession.id,
       rescheduleSession: pickedSession,
     })

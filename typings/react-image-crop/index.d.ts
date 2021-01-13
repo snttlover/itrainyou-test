@@ -1,4 +1,4 @@
-declare module 'react-image-crop' {
+declare module "react-image-crop" {
   const Component: any
   export default Component
 }

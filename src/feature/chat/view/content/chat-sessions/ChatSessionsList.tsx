@@ -49,11 +49,11 @@ export const createChatSessions = (sessionsModule: ReturnType<typeof createChatS
   }
 }
 
-const MobileBackButton = styled(Icon).attrs({ name: `left-icon` })`
+const MobileBackButton = styled(Icon).attrs({ name: "left-icon" })`
   display: none;
   width: 24px;
   height: 24px;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: flex;
     fill:  ${props => props.theme.colors.primary};
     margin-right: 12px;
@@ -68,11 +68,11 @@ const Container = styled.div`
   background: #fff;
   border-radius: 2px;
   height: 100%;
-  ${MediaRange.lessThan(`tablet`)`
+  ${MediaRange.lessThan("tablet")`
      margin-left: 12px;
      width: 232px;
   `}
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     display: none;
     
     &[data-show-on-mobile="true"] {
@@ -132,7 +132,7 @@ const Header = styled.div`
   padding: 17px 12px 14px;
   display: flex;
   align-items: center;
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     font-family: Roboto Slab;
     font-size: 20px;
     line-height: 26px;
@@ -145,7 +145,7 @@ const Sessions = styled.div`
   position: relative;
   overflow: auto;
   height: calc(100% - 77px);
-  ${MediaRange.lessThan(`mobile`)`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 12px;
   `}
 `

@@ -9,8 +9,8 @@ export function extractError(e: Error): string {
     if (e.response) {
       return Object.values(e.response!.data as Array<string>)[0]
     } else {
-      return `Отсутствует интернет соединение`
+      return "Отсутствует интернет соединение"
     }
   }
-  return `Произошла неизвестная ошибка, обратитесь к администратору.`
+  return "Произошла неизвестная ошибка, обратитесь к администратору."
 }
