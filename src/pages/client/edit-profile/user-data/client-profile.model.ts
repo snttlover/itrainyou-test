@@ -2,14 +2,15 @@ import { $userData, loadUserData } from "@/feature/user/user.model"
 import { Sex } from "@/lib/api/interfaces/utils.interface"
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
-import { createEffectorField } from "@/lib/generators/efffector"
+import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, restore, sample, Event } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, restore, sample, Event, guard } from "effector-root"
 import { every, spread } from "patronum"
 import { updateMyClient } from "@/lib/api/client/update"
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { becomeCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
@@ -22,7 +23,15 @@ export const $originalAvatar = createStore<UploadMediaResponse>({ id: -1, type: 
   (state, payload) => payload
 )
 
-const $isImageError = $image.map(img => (!img.file && "Изображение обязательно к загрузке") || null)
+const $isImageError = combine(
+  $image,
+  $userData.map(userData => userData.coach),
+  (img, coach) => {
+    if (coach !== null && !img.file) return "Изображение обязательно к загрузке"
+
+    return null
+  }
+)
 const $isImageCorrect = $isImageError.map(error => !error)
 
 export const toggleUploadModal = createEvent()
@@ -50,20 +59,57 @@ export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = 
   eventMapper: event => event.map(trimString),
 })
 
-export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<Dayjs>({
-  defaultValue: date(),
-  validator: value => (!value ? "Поле обязательно к заполнению" : null),
-})
+export const [$middleName, middleNameChanged, $middleNameError, $isMiddleNameCorrect] = createEffectorField<
+  string,
+  { userData: UnpackedStoreObjectType<typeof $userData>; value: string }
+  >({
+    defaultValue: "",
+    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validator: obj => {
+      const coach = obj.userData.coach
+      const value = obj.value
 
-export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<Sex>({
-  defaultValue: "M",
-  validator: value => (!value ? "Поле обязательно к заполнению" : null),
-})
+      if (coach !== null && !value) return "Поле обязательно к заполнению"
+      return null
+    },
+    eventMapper: event => event.map(trimString),
+  })
+
+export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<
+  Dayjs | "",
+  { userData: UnpackedStoreObjectType<typeof $userData>; value: Dayjs | "" }
+  >({
+    defaultValue: "",
+    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validator: obj => {
+      const coach = obj.userData.coach
+      const value = obj.value
+
+      if (coach !== null && !value) return "Поле обязательно к заполнению"
+      return null
+    },
+  })
+
+export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
+  "M" | "F" | "",
+  { userData: UnpackedStoreObjectType<typeof $userData>; value: "M" | "F" | "" }
+  >({
+    defaultValue: "",
+    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validator: obj => {
+      const coach = obj.userData.coach
+      const value = obj.value
+
+      if (coach !== null && !value) return "Поле обязательно к заполнению"
+      return null
+    },
+  })
 
 export const $clientProfileForm = combine({
   image: $image,
   name: $name,
   lastName: $lastName,
+  middleName: $middleName,
   birthday: $birthday,
   sex: $sex,
   originalAvatar: $originalAvatar,
@@ -78,6 +124,7 @@ spread({
     fn: data => ({
       firstName: data.client!.firstName,
       lastName: data.client!.lastName,
+      middleName: data.client!.middleName,
       birthDate: data.client!.birthDate,
       sex: data.client!.sex,
       avatar: data.client!.avatar,
@@ -87,12 +134,13 @@ spread({
   targets: {
     firstName: nameChanged,
     lastName: lastNameChanged,
+    middleName: middleNameChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
-      date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : date()
+      date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : ""
     ),
     sex: sexChanged,
     avatar: imageUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
-    originalAvatar: originalAvatarUploaded.prepend((avatar: string) => ({ id: -1, type: "IMAGE", file: avatar })),
+    originalAvatar: originalAvatarUploaded.prepend((originalAvatar: string) => ({ id: -1, type: "IMAGE", file: originalAvatar })),
   },
 })
 
@@ -100,12 +148,13 @@ export const $clientProfileFormErrors = combine({
   name: $nameError,
   lastName: $lastNameError,
   birthday: $birthdayError,
+  middleName: $middleNameError,
   sex: $sexError,
 })
 
 export const $isClientProfileFormValid = every({
   predicate: true,
-  stores: [$isNameCorrect, $isLastNameCorrect, $isBirthdayCorrect, $isSexCorrect, $isImageCorrect],
+  stores: [$isNameCorrect, $isLastNameCorrect, $isBirthdayCorrect, $isSexCorrect, $isImageCorrect, $isMiddleNameCorrect],
 })
 
 export const saveClientUserData = createEvent()
@@ -119,20 +168,22 @@ forward({
 })
 
 forward({
-  from: saveClientUserDataFx.doneData.map((): Toast => ({ text: `Данные успешно обновлены`, type: `info` })),
+  from: saveClientUserDataFx.doneData.map((): Toast => ({ text: "Данные успешно обновлены", type: "info" })),
   to: toasts.add,
 })
 
 export const $clientProfileSaving = saveClientUserDataFx.pending
+
 
 sample({
   // @ts-ignore
   source: combine($userData, $clientProfileForm, $image, $originalAvatar, (userData, form, lastImage, originalAvatar) => ({
     firstName: form.name,
     lastName: form.lastName,
-    birthDate: dayjs(form.birthday).format("YYYY-MM-DD"),
-    avatar: lastImage.file || form.image,
-    originalAvatar: originalAvatar.file || form.originalAvatar,
+    middleName: form.middleName,
+    birthDate: form.birthday ? dayjs(form.birthday).format("YYYY-MM-DD") : undefined,
+    avatar: lastImage.file === null ? null : lastImage.file || form.image,
+    originalAvatar: originalAvatar.file === null ? null : originalAvatar.file || form.originalAvatar,
     categories: (userData.client?.categories || []).map(category => category.id),
     sex: userData.client?.sex || form.sex,
   })),

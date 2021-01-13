@@ -8,7 +8,6 @@ import {
   educationChanged,
   descriptionChanged,
   workExperienceChanged,
-  phoneChanged,
   $photos,
   photoRemoved,
 } from "./coach-data.model"
@@ -19,6 +18,9 @@ import * as React from "react"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
+import { DashedButton } from "@/components/button/dashed/DashedButton"
+import ReactIdSwiper from "react-id-swiper"
+import { SwiperOptions } from "swiper"
 
 const InformationContainer = styled.div`
   margin: 32px 0 0;
@@ -28,20 +30,20 @@ const InformationContainer = styled.div`
   }
 
   ${MediaRange.greaterThan("mobile")`
-    max-width: 600px;
-    margin: 52px auto 0;
+    max-width: 640px;
+    margin: 0 auto 0;
     width: 100%;
   `}
 `
 
-const InformationTitle = styled.h2`
+const InformationTitle = styled.div`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 26px;
-  color: #424242;
-
+  color: #783D9D;
+  
   ${MediaRange.greaterThan("mobile")`    
     font-size: 20px;
     line-height: 26px;
@@ -55,21 +57,44 @@ const InformationTitle = styled.h2`
   }
 `
 
-const PhoneHint = styled.p`
-  margin-top: 4px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 16px;
-`
-
 const PhotoError = styled.p`
   font-family: Roboto;
   color: #ff6b00;
   font-size: 12px;
   line-height: 16px;
   margin-top: 4px;
+`
+
+const FormSection = styled.div`
+  border-radius: 2px;
+  background: #fff;
+  padding: 24px;
+  margin: 24px 0px;  
+    ${MediaRange.lessThan("mobile")`
+    padding: 8px;
+  `}
+`
+
+const Description = styled.div`
+    font-family: Roboto;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #5B6670;
+
+    ${MediaRange.lessThan("mobile")` 
+    font-size: 14px;
+    line-height: 22px;
+    `}
+`
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+const AddPhotosButton = styled(DashedButton)`
+  margin: 24px auto 0;
 `
 
 export const CoachAdditionalInformationForm: React.FC = () => {
@@ -80,7 +105,6 @@ export const CoachAdditionalInformationForm: React.FC = () => {
   const _educationChanged = useEvent(educationChanged)
   const _workExperienceChanged = useEvent(workExperienceChanged)
   const _descriptionChanged = useEvent(descriptionChanged)
-  const _phoneChanged = useEvent(phoneChanged)
 
   const onDropAccepted = useCallback(acceptedFiles => {
     acceptedFiles.forEach(_photoUploadFx)
@@ -96,31 +120,33 @@ export const CoachAdditionalInformationForm: React.FC = () => {
 
   return (
     <InformationContainer>
-      <InformationTitle>Дополнительная информация</InformationTitle>
-      <FormItem label='Место обучения' error={errors.education}>
-        <Input withoutBorder value={values.education} onChange={_educationChanged} />
-      </FormItem>
-      <FormItem label='Опыт работы' error={errors.workExperience}>
-        <Textarea withoutBorder value={values.workExperience} onChange={_workExperienceChanged} rows={8} />
-      </FormItem>
-      <FormItem label='О себе' error={errors.description}>
-        <Textarea withoutBorder value={values.description} onChange={_descriptionChanged} rows={8} />
-      </FormItem>
-      <FormItem label='Телефон' error={errors.phone}>
-        <Input
-          mask='+1 111 111-11-11'
-          placeholder='+7 900 000-00-00'
-          value={values.phone}
-          onChange={(value: any) => _phoneChanged(value)}
-          withoutBorder
-          type='tel'
-        />
-      </FormItem>
-      <PhoneHint>Телефон будет виден только администраторам и супервизорам</PhoneHint>
-      <InformationTitle className='photo'>Фотографии</InformationTitle>
-      {errors.photos && <PhotoError>{errors.photos}</PhotoError>}
-      <Photos open={open} />
-      <input {...getInputProps()} />
+
+      <FormSection>
+        <InformationTitle>Личная данные</InformationTitle>
+        <FormItem label='Место обучения' error={errors.education}>
+          <Input value={values.education} onChange={_educationChanged} />
+        </FormItem>
+        <FormItem label='Опыт работы' error={errors.workExperience}>
+          <Textarea value={values.workExperience} onChange={_workExperienceChanged} rows={8} />
+        </FormItem>
+        <FormItem label='О себе' error={errors.description}>
+          <Textarea value={values.description} onChange={_descriptionChanged} rows={8} />
+        </FormItem>
+      </FormSection>
+
+      <FormSection>
+        <InformationTitle>Фотографии</InformationTitle>
+        {errors.photos && <PhotoError>{errors.photos}</PhotoError>}
+        <Description>Сюда вы можете добавить фотографии своих сертификатов, дипломов и т.д</Description>
+        <Photos />
+        <ButtonContainer>
+          <AddPhotosButton data-secondary onClick={() => open()}>
+            Добавить фотографии
+          </AddPhotosButton>
+        </ButtonContainer>
+        <input {...getInputProps()} />
+      </FormSection>
+      
     </InformationContainer>
   )
 }
@@ -183,12 +209,20 @@ const PhotoCross = styled.div`
 `
 
 const Other = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: none;
+
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+    flex-wrap: wrap;
+  `}
 `
 
-type PhotosProps = {
-  open: () => void
+const swiperOptions: SwiperOptions = {
+  navigation: {
+    nextEl: ".photos__next-button",
+    prevEl: ".photos__prev-button",
+  },
+  slidesPerView: "auto",
 }
 
 const PinkPhotoBlock = styled.div`
@@ -212,17 +246,22 @@ const PinkPhotoBlock = styled.div`
   `}
 `
 
-const PlusIcon = styled(Icon).attrs({ name: "plus" })`
-  fill: ${({ theme }) => theme.colors.primary};
+const Slider320 = styled.div`
+  width: 100vw;
+  margin-left: -16px;
+  margin-right: -16px;
+  ${MediaRange.greaterThan("mobile")`
+    display: none;
+  `}
+
+  ${Photo} {
+    &:first-of-type {
+      margin-left: 16px;
+    }
+  }
 `
 
-const AddPhoto = ({ onClick }: { onClick: () => void }) => (
-  <PinkPhotoBlock onClick={onClick}>
-    <PlusIcon name='plus' />
-  </PinkPhotoBlock>
-)
-
-const Photos: React.FC<PhotosProps> = ({ open }) => {
+const Photos = () => {
   const _photoRemoved = useEvent(photoRemoved)
   const photos = useStore($photos).map((src, index) => (
     <Photo key={src} src={src} onClick={() => _photoRemoved(index)}>
@@ -235,8 +274,10 @@ const Photos: React.FC<PhotosProps> = ({ open }) => {
 
   return (
     <PhotoList>
+      <Slider320>
+        <ReactIdSwiper {...swiperOptions}>{photos}</ReactIdSwiper>
+      </Slider320>
       <Other>
-        <AddPhoto onClick={open} />
         {photos}
       </Other>
     </PhotoList>

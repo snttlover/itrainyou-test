@@ -6,7 +6,7 @@ import { ContentContainer } from "@/components/layouts/ContentContainer"
 import styled from "styled-components"
 
 const Wrapper = styled.div`
-  max-width: 600px;
+  max-width: 640px;
 `
 
 export const CoachProfileEditPage = () => (

@@ -10,6 +10,7 @@ export interface CoachSelfData {
   user: UserSelfData
   firstName: string
   lastName: string
+  middleName: string
   birthDate: Day
   prices: {
     D30: null | number

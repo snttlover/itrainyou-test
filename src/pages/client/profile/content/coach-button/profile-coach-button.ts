@@ -27,21 +27,22 @@ const reloadUserDataFx = attach({
 
 guard({
   source: becomeCoach,
-  filter: $userData.map(user => !!(user.client?.birthDate && user.client?.sex && user.client?.avatar)),
+  filter: $userData.map(user => !!(user.client?.birthDate && user.client?.sex && user.client?.avatar && !!user.client?.middleName)),
   target: becomeCoachFx
 })
 
 guard({
   source: becomeCoach,
-  filter: $userData.map(user => !(user.client?.birthDate && user.client?.sex && user.client?.avatar)),
+  filter: $userData.map(user => !(user.client?.birthDate && user.client?.sex && user.client?.avatar && !!user.client?.middleName)),
   // @ts-ignore
-  target: [navigatePush.prepend(() => ({ url: routeNames.clientProfileEdit()})), showClientProfileCoachDialog]
+  target: [navigatePush.prepend(() => ({ url: routeNames.clientProfileEdit(), state: { to: routeNames.coachProfileEdit() }})), showClientProfileCoachDialog]
 })
 
 forward({
   from: becomeCoachFx.doneData,
   to: reloadUserDataFx
 })
+
 forward({
   from: reloadUserDataFx,
   to: navigatePush.prepend(() => ({ url: routeNames.coach() }))

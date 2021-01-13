@@ -12,6 +12,7 @@ import {
   $step3Form,
   $step3FormErrors,
   lastNameChanged,
+  middleNameChanged,
   nameChanged,
   userProfileGate,
   toggleUploadModal,
@@ -28,17 +29,17 @@ const Title = styled.h1`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 26px;
   color: #424242;
-
+  
   ${Button} {
     margin-top: 16px;
   }
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 24px;
-    line-height: 26px;
+    line-height: 30px;
     justify-content: space-between;
     
     ${Button} {
@@ -54,7 +55,7 @@ const UserAvatar = styled(Avatar)`
 `
 
 const AvatarWrapper = styled.div`
-  margin-top: 24px;
+  margin-top: 16px;
   display: flex;
   align-items: center;
   margin-bottom: 16px;
@@ -63,10 +64,6 @@ const AvatarWrapper = styled.div`
     margin-bottom: 0;
     width: auto;
   }
-
-  ${MediaRange.greaterThan("mobile")`
-    margin-top: 36px;
-  `}
 `
 
 const AvatarHint = styled.div`
@@ -96,6 +93,31 @@ const AvatarHint = styled.div`
   }
 `
 
+const Container = styled.div`
+  border-radius: 2px;
+  background: #fff;
+  padding: 24px;
+  margin: 24px 0px;
+  ${MediaRange.lessThan("mobile")`
+    padding: 8px;
+  `}
+`
+
+const InformationTitle = styled.div`
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 26px;
+  color: #783D9D;
+  
+  ${MediaRange.greaterThan("mobile")`    
+    font-size: 20px;
+    line-height: 26px;
+  `}
+`
+
+
 const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault()
 }
@@ -110,32 +132,39 @@ export const UserProfile = () => {
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
+  const _middleNameChanged = useEvent(middleNameChanged)
   const canSendForm = useStore($canSendForm)
   const _saveCoachData = useEvent(saveCoachData)
 
   return (
     <>
       <Title>
-        Редактирование профиля
+            Редактирование профиля
         <Button onClick={() => _saveCoachData()} disabled={!canSendForm}>
-          Сохранить изменения
+              Сохранить изменения
         </Button>
       </Title>
-      <AvatarWrapper>
-        <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required />
-        <AvatarHint>
-          <h4>Добавить фото</h4>
-          <p>Формат: jpg, png. Максимальный размер файла: 2Mb. Рекомендованный размер: 200х200 px.</p>
-        </AvatarHint>
-      </AvatarWrapper>
-      <FormItem label='Имя' error={errors.name} required>
-        <Input withoutBorder value={values.name} onChange={_nameChanged} />
-      </FormItem>
-      <FormItem label='Фамилия' error={errors.lastName} required>
-        <Input withoutBorder value={values.lastName} onChange={_lastNameChanged} />
-      </FormItem>
-      <BirthdayFormGroup />
-      {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
+      <Container>
+        <InformationTitle>Паспортные данные</InformationTitle>
+        <AvatarWrapper>
+          <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required />
+          <AvatarHint>
+            <h4>Добавить фото</h4>
+            <p>Формат: jpg, png. Максимальный размер файла: 2Mb. Рекомендованный размер: 200х200 px.</p>
+          </AvatarHint>
+        </AvatarWrapper>
+        <FormItem label='Имя' error={errors.name} required>
+          <Input value={values.name} onChange={_nameChanged} />
+        </FormItem>
+        <FormItem label='Фамилия' error={errors.lastName} required>
+          <Input value={values.lastName} onChange={_lastNameChanged} />
+        </FormItem>
+        <FormItem label='Отчество' error={errors.middleName} required>
+          <Input value={values.middleName} onChange={_middleNameChanged} />
+        </FormItem>
+        <BirthdayFormGroup />
+        {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
+      </Container>
     </>
   )
 }
