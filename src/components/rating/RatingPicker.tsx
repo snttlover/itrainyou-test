@@ -14,7 +14,7 @@ type StarProps = {
   onClick: ()=>void
 }
 
-const Star: StarProps = styled(Icon)`
+const Star = styled(Icon)`
   width: 16px;
   height: 16px;
   cursor: pointer;

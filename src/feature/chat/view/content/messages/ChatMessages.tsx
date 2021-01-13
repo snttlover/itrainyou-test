@@ -28,7 +28,6 @@ const MessagesWrapper = styled.div`
 
 export const createChatMessages = ($chatMessagesModule: ReturnType<typeof createChatMessagesModule>) => {
   const InfScroll = createReverseInfinityScroll($chatMessagesModule.pagination)
-
   return ({
     isSystem,
     showUser,

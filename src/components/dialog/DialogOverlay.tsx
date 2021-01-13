@@ -34,7 +34,8 @@ const StyledDialogOverlay = styled.div`
 export const DialogOverlayContainer = styled.div`
   max-height: 100%;
   width: 100%;
-  display: block;
+  display: flex;
+  justify-content: center;
   overflow: auto;
   padding: 20px;
   

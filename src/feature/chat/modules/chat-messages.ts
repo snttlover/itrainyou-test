@@ -86,6 +86,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       .filter(message => message.sessionRequestStatus === "COMPLETED" && message.sessionRequest)
       .map(message => message.sessionRequest?.id)
 
+
     const reqs = messages
       .filter(message => message.sessionRequest)
       .map(message => message.sessionRequest!.id)
