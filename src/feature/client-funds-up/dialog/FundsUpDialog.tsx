@@ -49,7 +49,7 @@ export const FundsUpDialog = () => {
       label: `XXXX XXXX XXXX ${card.cardEnd} (${card.expireDate})`,
       value: card.id,
     }))
-    .concat({ label: "Другая", value: -1 })
+    .concat({ label: "Добавить карту", value: -1 })
 
   return (
     <StyledDialog value={isShowed} onChange={_changeShowFundUpDialog}>
