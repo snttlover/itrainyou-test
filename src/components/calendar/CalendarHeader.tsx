@@ -65,18 +65,13 @@ type CalendarHeaderTypes = {
   nextMonth?: () => void
 }
 
-export const CalendarHeader: React.FC<CalendarHeaderTypes> = ({
-  lessThanTheCurrentMonth,
-  prevMonth,
-  currentDate,
-  nextMonth,
-}) => (
+export const CalendarHeader: React.FC<CalendarHeaderTypes> = (props: CalendarHeaderTypes) => (
   <Header>
     <MonthContainer>
-      <LeftIcon disabled={lessThanTheCurrentMonth} onClick={prevMonth} />
-      <MonthName>{date(currentDate).format("MMMM")}</MonthName>
-      <RightIcon onClick={nextMonth} />
+      <LeftIcon disabled={props.lessThanTheCurrentMonth} onClick={props.prevMonth} />
+      <MonthName>{date(props.currentDate).format("MMMM")}</MonthName>
+      <RightIcon onClick={props.nextMonth} />
     </MonthContainer>
-    <Year>{date(currentDate).format("YYYY")}</Year>
+    <Year>{date(props.currentDate).format("YYYY")}</Year>
   </Header>
 )
