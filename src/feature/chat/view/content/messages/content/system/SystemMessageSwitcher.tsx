@@ -164,7 +164,11 @@ const getText = (
     }
       
     if (status === "MONEY_SUCCESSFULLY_HELD") {
-      return "Завтра у вас сессия! Деньги за сессию на карте заморожены."
+      const isToday = date(request.rescheduleSession?.startDatetime).format("DD MMMM HH:mm")
+              === date(new Date()).format("DD MMMM HH:mm")
+      const whichDayText = date(request.rescheduleSession?.startDatetime).format(isToday ? "Сегодня в HH:mm" : "DD MMMM HH:mm")
+
+      return `${whichDayText} у вас сессия! Деньги за сессию на карте заморожены.`
     }
       
     if (status === "SOLVED_IN_COACH_FAVOUR") {
