@@ -136,7 +136,6 @@ export const CoachAdditionalInformationForm: React.FC = () => {
 
       <FormSection>
         <InformationTitle>Фотографии</InformationTitle>
-        {errors.photos && <PhotoError>{errors.photos}</PhotoError>}
         <Description>Сюда вы можете добавить фотографии своих сертификатов, дипломов и т.д</Description>
         <Photos />
         <ButtonContainer>

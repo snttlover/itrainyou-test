@@ -105,6 +105,22 @@ const InterviewTitle = styled.div`
   `}
 `
 
+const Description = styled.div`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    color: #9AA0A6;
+    text-align: center;
+    margin-top: 16px;
+
+    ${MediaRange.lessThan("mobile")`
+    font-size: 12px;
+    line-height: 18px;
+  `}
+`
+
 const LetterIcon = styled(Icon).attrs({ name: "ykassa-not-approved" })`
     width: 240px;
     height: 108px;
@@ -209,6 +225,8 @@ export const YandexKassaInstructions = () => {
         </>
       }
       <StyledButton onClick={() => _sendYandexRegistration()}>Я зарегистрировался</StyledButton>
+      <Description>С помощью сервиса  «ЮКасса и «ЮMoney» с клиента будет автоматически списываться плата за 24 часа до сессии, а Вы будете автоматически получать оплату на карту/расчетный счет, который укажете при регистрации в ЮКасса, в течение
+        2 рабочих дней после проведения сессии.</Description>
     </Container>
   )
 }

@@ -33,12 +33,12 @@ const videoConfig: VideoEncoderConfiguration = {
     height: 720
   },
   frameRate: {
-    min: 15,
+    min: 10,
     max: 30
   },
   bitrate: {
     min: 900,
-    max: 2000
+    max: 3500
   }
 }
 

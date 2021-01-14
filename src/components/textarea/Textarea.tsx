@@ -11,13 +11,15 @@ const StyledTextarea = styled.textarea<{ error?: boolean; withoutBorder?: boolea
   font-size: 16px;
   line-height: 22px;
   caret-color: #3746b0;
-    resize: vertical;
+  resize: vertical;
 
   &:hover {
     border: 1px solid #919be0;
   }
   &::placeholder {
-    color: #b3b3b3;
+    color: #9AA0A6;
+    font-size: 16px;
+    line-height: 24px;
   }
   &:focus {
     border: 1px solid #919be0;

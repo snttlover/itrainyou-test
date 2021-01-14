@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { CancelSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/CancelSessionDialog"
@@ -26,9 +26,15 @@ const getText = (type: DashboardType, sessionStartDatetime?: ISODate) => {
 export const CancelSession = (props: CancelSessionProps) => {
   const dashboardType = useStore($dashboard)
   const [cancelDialogVisibility, changeCancelDialogVisibility] = useState(false)
-  const [cantcancelDialogVisibility, changeCantCancelDialogVisibility] = useState(true)
+  const [cantcancelDialogVisibility, changeCantCancelDialogVisibility] = useState(false)
 
   const dialogText = getText(dashboardType, props.sessionStartDatetime)
+
+  useEffect(() => {
+    if (!cancelDialogVisibility && props.canceled && dashboardType === "coach" && date().isAfter(date(props.sessionStartDatetime).subtract(24, "hour"))) {
+      changeCantCancelDialogVisibility(true)
+    }
+  }, [props.canceled])
 
   return (
     <>
@@ -36,19 +42,19 @@ export const CancelSession = (props: CancelSessionProps) => {
         Отменить сессию
       </Button>
 
-      { !cancelDialogVisibility && props.canceled && dashboardType === "coach" && date().isAfter(date(props.sessionStartDatetime).subtract(24, "hour")) ?
-        <CantCancelSessionDialog
-          text={dialogText}
-          visibility={cantcancelDialogVisibility}
-          onChangeVisibility={changeCantCancelDialogVisibility}
-        />
-        : <CancelSessionDialog
-          text={dialogText}
-          visibility={cancelDialogVisibility}
-          onChangeVisibility={changeCancelDialogVisibility}
-          onCancel={props.onCancel}
-        />
-      }
+
+      <CantCancelSessionDialog
+        text={dialogText}
+        visibility={cantcancelDialogVisibility}
+        onChangeVisibility={changeCantCancelDialogVisibility}
+      />
+      <CancelSessionDialog
+        text={dialogText}
+        visibility={cancelDialogVisibility}
+        onChangeVisibility={changeCancelDialogVisibility}
+        onCancel={props.onCancel}
+      />
+
     </>
   )
 }
