@@ -120,7 +120,8 @@ export const HomePage = () => {
             {activeSessionsPending && <Loader />}
           </Block>
         )}
-        {!(todaySessions.length > 0) ? (
+
+        {todaySessions.length > 0 && (
           <Block>
             <Title>Ближайшие сессии</Title>
             {todaySessions.map(session => (
@@ -128,7 +129,8 @@ export const HomePage = () => {
             ))}
             {todaySessionsPending && <Loader />}
           </Block>
-        ) : <Onboarding/>}
+        )}
+
         <Block>
           <Title>Рекомендации</Title>
           <InfiniteScroll
