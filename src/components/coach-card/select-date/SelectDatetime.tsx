@@ -313,7 +313,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
                 ))}
               </tbody>
             </SelectedDatetimeTable>
-            <Text>Итог: {amount} ₽</Text>
+            <Text>Итого: {amount} ₽</Text>
           </WidthAmountConditionWrapper>
           <ButtonContainer>
             <ButtonWrapper>
