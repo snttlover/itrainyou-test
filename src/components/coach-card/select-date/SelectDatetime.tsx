@@ -270,6 +270,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
   
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
+
   return (
     <>
       <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
