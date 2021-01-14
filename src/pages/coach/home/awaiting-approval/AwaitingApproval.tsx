@@ -61,7 +61,7 @@ export const AwaitingApproval = () => {
   return (
     <Container>
       <StyledTitle>Ваша заявка ждет одобрения!</StyledTitle>
-      <StyledSubTitle>В среднем заявка обрабатывается около 2 дней</StyledSubTitle>
+      <StyledSubTitle>В среднем заявка обрабатывается около суток</StyledSubTitle>
       <RegisterSteps />
       <StyledBottomSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomSubtitle>
       <StyledButton onClick={() => navigate({ url: routeNames.client() })}>Попробовать</StyledButton>

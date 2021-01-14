@@ -47,8 +47,11 @@ const sexItems: { label: string; value: "M" | "F" }[] = [
     value: "F",
   },
 ]
+type GroupProps = {
+  required?: boolean
+}
 
-export const BirthdayFormGroup = () => {
+export const BirthdayFormGroup = (props: GroupProps) => {
   let birthday = date(useStore($clientProfileForm).birthday)
   const values = useStore($clientProfileForm)
   const errors = useStore($clientProfileFormErrors)
@@ -91,7 +94,7 @@ export const BirthdayFormGroup = () => {
   return (
     <>
       <FormGroup>
-        <StyledFormItem label='Дата рождения' required>
+        <StyledFormItem label='Дата рождения' required={props.required}>
           <SelectInput
             withoutBorder
             placeholder='День'
@@ -121,7 +124,7 @@ export const BirthdayFormGroup = () => {
         </StyledFormItem>
       </FormGroup>
       <FormGroup>
-        <StyledFormItem label='Пол' error={errors.sex} required>
+        <StyledFormItem label='Пол' error={errors.sex} required={props.required}>
           <SelectInput withoutBorder value={values.sex} onChange={_sexChanged} options={sexItems} />
         </StyledFormItem>
       </FormGroup>

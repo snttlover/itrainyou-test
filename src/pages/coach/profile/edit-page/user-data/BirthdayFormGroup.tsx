@@ -93,7 +93,6 @@ export const BirthdayFormGroup = () => {
       <FormGroup>
         <StyledFormItem label='Дата рождения' required>
           <SelectInput
-            withoutBorder
             placeholder='День'
             value={birthday ? birthday.date() : -1}
             onChange={changeDay}
@@ -102,7 +101,6 @@ export const BirthdayFormGroup = () => {
         </StyledFormItem>
         <StyledFormItem label=''>
           <SelectInput
-            withoutBorder
             placeholder='Месяц'
             value={birthday ? birthday.month() : -1}
             onChange={changeMonth}
@@ -111,7 +109,6 @@ export const BirthdayFormGroup = () => {
         </StyledFormItem>
         <StyledFormItem label=''>
           <SelectInput
-            withoutBorder
             className='year'
             placeholder='Год'
             value={birthday ? birthday.year() : -1}
@@ -122,7 +119,7 @@ export const BirthdayFormGroup = () => {
       </FormGroup>
       <FormGroup>
         <StyledFormItem label='Пол' error={errors.sex} required>
-          <SelectInput withoutBorder value={values.sex} onChange={_sexChanged} options={sexItems} />
+          <SelectInput  value={values.sex} onChange={_sexChanged} options={sexItems} />
         </StyledFormItem>
       </FormGroup>
     </>

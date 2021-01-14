@@ -14,7 +14,6 @@ export type UpdateMyCoachRequest = {
   education: string
   description: string
   photos: string[]
-  phone: string
   videoInterview?: string
 }
 

@@ -20,6 +20,7 @@ sample({
   fn: ({ user, coach, categories }) => ({
     firstName: user.name,
     lastName: user.lastName,
+    middleName: user.middleName,
     birthDate: user.birthday.format("YYYY-MM-DD"),
     sex: user.sex,
     avatar: user.image.file,
@@ -28,7 +29,6 @@ sample({
     education: coach.education,
     description: coach.description,
     photos: coach.photos,
-    phone: coach.phone,
   }),
   target: editDataFx,
 })

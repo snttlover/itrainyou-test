@@ -11,6 +11,7 @@ import {
   $clientProfileForm,
   $clientProfileFormErrors,
   lastNameChanged,
+  middleNameChanged,
   nameChanged,
   userProfileGate,
   toggleUploadModal,
@@ -22,6 +23,10 @@ import * as React from "react"
 import styled from "styled-components"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { Spinner } from "@/components/spinner/Spinner"
+import { useHistory, useLocation } from "react-router-dom"
+import {
+  $userHasCoach, becomeCoach
+} from "@/pages/client/profile/content/coach-button/profile-coach-button"
 
 export const UserProfile = () => {
   useGate(userProfileGate)
@@ -32,16 +37,26 @@ export const UserProfile = () => {
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
+  const _middleNameChanged = useEvent(middleNameChanged)
   const canSendForm = useStore($isClientProfileFormValid)
+  const _userHasCoach = useStore($userHasCoach)
+  const _becomeCoach = useEvent(becomeCoach)
   const save = useEvent(saveClientUserData)
   const loading = useStore($clientProfileSaving)
+
+  const history = useHistory()
+  const location = useLocation()
+  const submitChanges = () => {
+    save()
+    if (location.state !== undefined) _becomeCoach()
+  }
 
   return (
     <Form>
       {loading && <StyledSpinner />}
       <Title>Редактирование профиля</Title>
       <AvatarWrapper>
-        <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required />
+        <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required={_userHasCoach || location.state !== undefined} />
         <AvatarHint>
           <h4>Добавить фото</h4>
           <p>Формат: jpg, png. Максимальный размер файла: 2Mb. Рекомендованный размер: 200х200 px.</p>
@@ -53,10 +68,13 @@ export const UserProfile = () => {
       <FormItem label='Фамилия' error={errors.lastName} required>
         <Input withoutBorder value={values.lastName} onChange={_lastNameChanged} />
       </FormItem>
-      <BirthdayFormGroup />
+      <FormItem label='Отчество' error={errors.middleName} required={_userHasCoach || location.state !== undefined}>
+        <Input withoutBorder value={values.middleName} onChange={_middleNameChanged} />
+      </FormItem>
+      <BirthdayFormGroup required={_userHasCoach || location.state !== undefined} />
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
       <StyledFormItem>
-        <StyledSubmit onClick={() => save()} disabled={!canSendForm}>
+        <StyledSubmit onClick={submitChanges} disabled={!canSendForm}>
           Сохранить изменения
         </StyledSubmit>
       </StyledFormItem>
