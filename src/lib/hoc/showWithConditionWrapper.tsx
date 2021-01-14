@@ -5,5 +5,5 @@ type ChildrenTypes = {
 }
 
 export const showWithConditionWrapper = (condition: boolean) => {
-  return ({children}: ChildrenTypes) => condition ? children : <></>
+  return ({children}: any) => condition ? children : <></>
 }

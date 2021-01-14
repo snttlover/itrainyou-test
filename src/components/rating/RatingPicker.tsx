@@ -8,17 +8,17 @@ const StarsContainer = styled.div``
 
 type StarProps = {
   error?: boolean,
-  key: string,
+  key: string | number,
   name: string,
   onMouseEnter: ()=>void,
   onClick: ()=>void
 }
 
-const Star = styled(Icon)`
+const Star = styled(Icon)<StarProps>`
   width: 16px;
   height: 16px;
   cursor: pointer;
-  fill: ${props => props.error ? "#FF6B00" : props.theme.colors.primary};
+  fill: ${props => props.error ? "#FF6B00" : props.theme.colors.primary };
 
   ${MediaRange.greaterThan("mobile")`
     width: 24px;
@@ -28,7 +28,7 @@ const Star = styled(Icon)`
 
 type RatingProps = {
   value: number,
-  error: boolean,
+  error?: boolean,
   onChange?: (value: number) => void
 }
 
