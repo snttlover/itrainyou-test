@@ -65,8 +65,6 @@ export const $photos = createStore<string[]>([])
   .on(restorePhotos, (_, payload) => payload)
   .on(photoRemoved, (state, index) => [...state.slice(0, index), ...state.slice(index + 1)])
 
-export const $photosError = $photos.map(photos => (photos.length === 0 ? "Должна быть хоть одна фотография" : null))
-export const $isPhotosCorrect = $photosError.map(error => !error)
 
 export const toggleCategory = createEvent<number>()
 export const setCategories = createEvent<number[]>()
@@ -96,7 +94,6 @@ export const $formErrors = combine({
   education: $educationError,
   workExperience: $workExperienceError,
   description: $descriptionError,
-  photos: $photosError,
 })
 
 export const $formValid = every({
@@ -106,7 +103,6 @@ export const $formValid = every({
     $isWorkExperienceCorrect,
     $isDescriptionCorrect,
     $isCategoriesCorrect,
-    $isPhotosCorrect,
   ],
 })
 

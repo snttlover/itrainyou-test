@@ -176,7 +176,7 @@ export const Form = () => {
           <Textarea value={values.workExperience} onChange={_workExperienceChanged} rows={1} />
         </FormItem>
         <FormItem label='О себе' error={errors.description}>
-          <Textarea value={values.description} onChange={_descriptionChanged} rows={8} />
+          <Textarea value={values.description} placeholder={"Сюда вы можете добавить свои статьи в журналах и т.д."} onChange={_descriptionChanged} rows={8} />
         </FormItem>
       </FormSection>
 
