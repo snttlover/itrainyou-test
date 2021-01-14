@@ -217,7 +217,9 @@ const getText = (
     }
 
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], "COMPLETED")) {
-      return "Вы отменили сессию"
+      return `${request.receiverCoach?.firstName} отменил${
+        request.receiverCoach?.sex === "F" ? "a" : ""
+      } сессию. Деньги на карте разморожены.`
     }
 
     if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
