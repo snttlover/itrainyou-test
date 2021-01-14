@@ -45,7 +45,7 @@ export const denyCompletationProblems: Problems = [
   },
   {
     value: "COACH_INADEQUATE",
-    label: "Неадекватный тренер",
+    label: "Некорректное поведение коуча",
   },
   {
     value: "OTHER",
