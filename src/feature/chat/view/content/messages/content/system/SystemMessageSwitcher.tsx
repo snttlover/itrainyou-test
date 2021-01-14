@@ -164,11 +164,18 @@ const getText = (
     }
       
     if (status === "MONEY_SUCCESSFULLY_HELD") {
-      const isToday = date(request.rescheduleSession?.startDatetime).format("DD MMMM HH:mm")
-              === date(new Date()).format("DD MMMM HH:mm")
-      const whichDayText = date(request.rescheduleSession?.startDatetime).format(isToday ? "Сегодня в HH:mm" : "DD MMMM HH:mm")
+      const DATEFORMAT = "DD MMMM YYYY"
+      const today = new Date()
+      const formattedToday = date(today).format(DATEFORMAT)
+      const classDay = date(request.rescheduleSession?.startDatetime).format(DATEFORMAT)
+      const isToday = classDay === formattedToday
+      const tomorrow =  date(new Date(today.getTime() + (24 * 60 * 60 * 1000))).format(DATEFORMAT)
+      const isTomorrow = classDay === tomorrow
+      const whichDayText = isToday ? "" : isTomorrow ? "Завтра у вас сессия!" : `${classDay} У вас сессия!`
 
-      return `${whichDayText} у вас сессия! Деньги за сессию на карте заморожены.`
+      console.log(formattedToday, classDay, tomorrow)
+
+      return `${whichDayText}Деньги за сессию на карте заморожены.`
     }
       
     if (status === "SOLVED_IN_COACH_FAVOUR") {

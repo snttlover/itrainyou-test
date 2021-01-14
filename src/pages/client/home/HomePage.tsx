@@ -21,6 +21,7 @@ import {
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { clientCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { Onboarding } from "@/pages/client/home/Onboarding"
 
 const Block = styled.div`
   position: relative;
@@ -119,7 +120,7 @@ export const HomePage = () => {
             {activeSessionsPending && <Loader />}
           </Block>
         )}
-        {todaySessions.length > 0 && (
+        {!(todaySessions.length > 0) ? (
           <Block>
             <Title>Ближайшие сессии</Title>
             {todaySessions.map(session => (
@@ -127,7 +128,7 @@ export const HomePage = () => {
             ))}
             {todaySessionsPending && <Loader />}
           </Block>
-        )}
+        ) : <Onboarding/>}
         <Block>
           <Title>Рекомендации</Title>
           <InfiniteScroll
