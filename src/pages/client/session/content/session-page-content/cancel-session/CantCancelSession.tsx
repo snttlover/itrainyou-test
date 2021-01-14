@@ -2,7 +2,6 @@ import React from "react"
 import styled from "styled-components"
 import { Dialog } from "@/components/dialog/Dialog"
 import { Button } from "@/components/button/normal/Button"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { MediaRange } from "@/lib/responsive/media"
 import {useHistory} from "react-router-dom"
 
