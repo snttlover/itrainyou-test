@@ -15,6 +15,8 @@ import { updateMyCoach } from "@/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/lib/types/effector"
 import { combine, createEffect, createEvent, forward, sample, Event } from "effector-root"
 import { spread } from "patronum"
+import { isLiteralObject } from "@/lib/helpers/utils"
+import { isArray } from "@/lib/network/casing"
 
 const calculateProgress = ({
   form,
@@ -29,6 +31,12 @@ const calculateProgress = ({
   let filledValues = values
     .map(value => {
       if (Array.isArray(value)) return value.length > 0
+
+      // @ts-ignore
+      // Проверка заполненность цен в расписании (schedule)
+      if (isLiteralObject(value) && "d30Price" in value) {
+        return Object.values(value).some((_value) => !isArray(_value) && Boolean(_value))
+      }
       return Boolean(value)
     })
     .reduce((acc, value) => acc + Number(value), 0)

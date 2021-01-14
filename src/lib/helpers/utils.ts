@@ -1,0 +1,1 @@
+export const isLiteralObject = (value: any) => value?.constructor === Object
