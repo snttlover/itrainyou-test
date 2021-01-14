@@ -164,18 +164,7 @@ const getText = (
     }
       
     if (status === "MONEY_SUCCESSFULLY_HELD") {
-      const DATEFORMAT = "DD MMMM YYYY"
-      const today = new Date()
-      const formattedToday = date(today).format(DATEFORMAT)
-      const classDay = date(request.rescheduleSession?.startDatetime).format(DATEFORMAT)
-      const isToday = classDay === formattedToday
-      const tomorrow =  date(new Date(today.getTime() + (24 * 60 * 60 * 1000))).format(DATEFORMAT)
-      const isTomorrow = classDay === tomorrow
-      const whichDayText = isToday ? "" : isTomorrow ? "Завтра у вас сессия!" : `${classDay} У вас сессия!`
-
-      console.log(formattedToday, classDay, tomorrow)
-
-      return `${whichDayText}Деньги за сессию на карте заморожены.`
+      return "Деньги за сессию на карте были списаны."
     }
       
     if (status === "SOLVED_IN_COACH_FAVOUR") {
@@ -183,7 +172,7 @@ const getText = (
     }
 
     if (status === "SOLVED_IN_CLIENT_FAVOUR") {
-      return "Администратор решил спор в вашу пользу. Деньги на карте за сессию разморожены"
+      return "Администратор решил спор в вашу пользу. Деньги на карте за сессию были возвращены"
     }
 
     if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
@@ -195,7 +184,7 @@ const getText = (
     }
 
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
+      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
@@ -230,7 +219,7 @@ const getText = (
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], "COMPLETED")) {
       return `${request.receiverCoach?.firstName} отменил${
         request.receiverCoach?.sex === "F" ? "a" : ""
-      } сессию. Деньги на карте разморожены.`
+      } сессию. Деньги были возвращены на карту.`
     }
 
     if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
