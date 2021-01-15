@@ -3,6 +3,7 @@ import { createEffectorField } from "@/lib/generators/efffector"
 import { phoneValidator, trimString, innValidator } from "@/lib/validators"
 import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
 import { getSystemInfo } from "@/lib/api/system-info"
+import { isArray } from "@/lib/network/casing"
 
 export type Prices = {
     d30Price?: number
@@ -67,6 +68,10 @@ const $schedule = $pricesWithFee.map(state => {
   Object.assign(newState, emptyObjectForBackend)
   return newState
 })
+
+const $isScheduleFilled = $schedule.map(
+  schedule => Object.values(schedule).some((value) => !isArray(value) && Boolean(value))
+)
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -246,6 +251,7 @@ export const $formValid = combine(
   $isPhoneCorrect,
   $isInnCorrect,
   $issupervisionsCorrect,
+  $isScheduleFilled,
   $isCategoriesCorrect,
   $isVideoInterviewCorrect,
   (...args) => args.every(val => val)
