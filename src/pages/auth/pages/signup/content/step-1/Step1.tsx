@@ -217,7 +217,7 @@ export const Step1 = () => {
           <StyledCheckBox value={agreed} onChange={() => setAgree(!agreed)}>
             <AcceptionText>
                 Я принимаю условия <a href='/privacy_policy.pdf' target='_blank'>Политики конфиденциальности</a>,{" "}
-              <a href='/user_agreement.pdf' target='_blank'>Политике по обработке персональных данных</a>
+              <a href='/user_agreement.pdf' target='_blank'>Пользовательского соглашения</a>
             </AcceptionText>
           </StyledCheckBox>
           <NextButton disabled={!isFormValid || isFetching || !agreed} />
