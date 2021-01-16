@@ -14,6 +14,9 @@ import { EmptySessions } from "@/pages/coach/home/sessions/content/empty-session
 import { FillOutSchedule } from "@/pages/coach/home/sessions/content/empty-sessions/FillOutSchedule"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { FilledOutNoResponses } from "@/pages/coach/home/sessions/content/empty-sessions/FilledOutNoResponses"
+import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { createStore } from "effector-root"
 
 const Container = styled.div<{ nosessions: boolean }>`
   width: 100%;
@@ -31,23 +34,31 @@ const Container = styled.div<{ nosessions: boolean }>`
 `
 
 const Sessions = () => {
+  const $coachStore = createStore(false).on(getMyUserFx.doneData, (state, {data}: any) => {
+    return !!data?.coach?.schedule?.weekday_slots
+  })
+
   const hasToday = useStore($hasTodaySessions)
   const hasStarted = useStore($hasStartedSessions)
   const hasNewest = useStore($hasNewestParticipantsList)
+  const isFilledSchedule = useStore($coachStore)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
+  const isFilledScheduleNoHasSessions = noHasSessions && !isFilledSchedule
 
-  
+  console.log(isFilledSchedule, isFilledScheduleNoHasSessions)
+
   const EmptySessionsWith = () => {
     return (
       <>
-        <FillOutSchedule/>
+        {isFilledSchedule && <FillOutSchedule/>}
+        {isFilledScheduleNoHasSessions && <FilledOutNoResponses/>}
         <ContentContainer>
           <EmptySessions/>
         </ContentContainer>
       </>
     )
   }
-  
+
   return (
     <>
       {noHasSessions && <EmptySessionsWith />}

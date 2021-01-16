@@ -1,28 +1,34 @@
 import React from "react"
 import styled from "styled-components"
+import { Text } from "@/components/typography/Text"
+import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { useEvent } from "effector-react"
+import { navigatePush } from "@/feature/navigation"
+import { MediaRange } from "@/lib/responsive/media"
 import waveImg from "./images/wave.svg"
 import pushImg from "./images/push.svg"
 import fillOutImg from "./images/fill.svg"
-import { Text } from "@/components/typography/Text"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import waveMobileImg from "./images/waveMobile.svg"
 
 export function FillOutSchedule(){
+  const navigate = useEvent(navigatePush)
+  const goToFillScheduleHandler = () => navigate({url: "/coach/schedule"})
+  const goToClientsHandler = () => navigate({url: "/coach/clients"})
   return (
     <>
       <FirstStep>
         <RowContainer>
           <FirstStepTextPart>
             <Title>Заполните расписание!</Title>
-            <Description>
+            <FirstStepDescription>
               Составьте свое расписание сессий, чтобы
               ваш профиль стал виден клиентам
               и они смогли записываться на ваши сессии
-            </Description>
+            </FirstStepDescription>
+            <GoToFillButton onClick={goToFillScheduleHandler}>Заполнить</GoToFillButton>
           </FirstStepTextPart>
           <PushImg src={pushImg}/>
         </RowContainer>
-        <GoToFillButton>Заполнить</GoToFillButton>
       </FirstStep>
 
       <SecondStep>
@@ -36,7 +42,7 @@ export function FillOutSchedule(){
             Вы получите оплату за сессию автоматически на карту/счет, который вы указали при регистрации в ЮКассе, в течение 2 рабочих дней после проведения сессии.
             </SecondStepDescriptionText>
             <div>
-              <CheckButton>Проверить запросы</CheckButton>
+              <CheckButton onClick={goToClientsHandler}>Проверить запросы</CheckButton>
             </div>
           </SecondStepTextPart>
         </SecondStepContentContainer>
@@ -49,6 +55,9 @@ const SecondStepTextPart = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 0 0 80px;
+  ${MediaRange.lessThan("mobile")`
+    padding: 0;
+  `}
 `
 
 const SecondStepDescriptionText = styled(Text)`
@@ -62,9 +71,10 @@ const Title = styled.div`
   margin-bottom: 16px;
 `
 
-const Description = styled.div`
-  font-size: 16px;
+const FirstStepDescription = styled.div`
   font-family: "Roboto";
+  font-size: 16px;
+  margin-bottom: 36px;
 `
 
 const FirstStep = styled(ContentContainer)`
@@ -73,15 +83,20 @@ const FirstStep = styled(ContentContainer)`
   align-items: flex-start;
   margin-bottom: 32px;
   justify-content: flex-start;
-  padding: 0;
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+    margin-bottom: -20px;
+  `}
 `
 
 const RowContainer = styled.div`
   display: flex;
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+  `}
 `
 
 const Button = styled.button`
-  background-color: #fff;
   padding: 6px 70px;
   background-color: #783D9D;
   border: none;
@@ -94,6 +109,10 @@ const Button = styled.button`
 
 const GoToFillButton = styled(Button)`
   padding: 6px 70px;
+  ${MediaRange.lessThan("mobile")`
+    padding: 5px 25px;
+    margin-bottom: 7px;
+  `}
 `
 
 const CheckButton = styled(Button)`
@@ -103,18 +122,25 @@ const CheckButton = styled(Button)`
 const FirstStepTextPart = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   width: 50%;
   padding: 0 60px 0 0;
   line-height: 24px;
+  ${MediaRange.lessThan("mobile")`
+    width: 100%;
+    padding: 0;
+  `}
 `
 
 const PushImg = styled.img`
   width: 50%;
+  ${MediaRange.lessThan("mobile")`
+    width: 100%;
+  `}
 `
 
 const FillOutImg = styled.img`
   margin-top: 32px;
-  width: 2/5;
 `
 
 const SecondStep = styled.div`
@@ -124,10 +150,19 @@ const SecondStep = styled.div`
   background-image: url(${waveImg});
   padding: 150px 0 50px 0;
   margin-bottom: 73px;
+  ${MediaRange.lessThan("mobile")`
+    background-size: cover;
+    padding: 80px 0;
+    background-image: url(${waveMobileImg});
+    margin-bottom: 0px;
+  `}
 `
 
 const SecondStepContentContainer = styled(ContentContainer)`
   display: flex;
   width: 100%;
   align-items: flex-start;
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column-reverse
+  `}
 `
