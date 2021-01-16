@@ -29,6 +29,8 @@ const ItemsWrapper = styled.div`
 
 export const ClientMenuItems = () => {
   const chatsCount = useStore(clientChatsSocket.data.$chatsCount)
+  const supportChatsCount = useStore(clientChatsSocket.data.$supportUnreadMessagesCounter)
+
   return (
     <ItemsWrapper>
       <DashboardMenuItem link={routeNames.client()} icon='home'>
@@ -40,7 +42,7 @@ export const ClientMenuItems = () => {
       <DashboardMenuItem link={routeNames.clientSettings()} icon='settings'>
         Настройки
       </DashboardMenuItem>
-      <DashboardMenuItem link={routeNames.clientSupport()} icon='help'>
+      <DashboardMenuItem link={routeNames.clientSupport()} icon='help' badgeNumber={supportChatsCount}>
         Поддержка
       </DashboardMenuItem>
     </ItemsWrapper>
