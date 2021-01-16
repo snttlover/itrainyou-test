@@ -19,6 +19,7 @@ export interface DashboardSession {
   recordingUrl: string
   hasAwaitingRescheduleRequests: boolean
   materials: []
+  mutualSessionsCount: number
 }
 
 type getDashboardSessionsParams = {
