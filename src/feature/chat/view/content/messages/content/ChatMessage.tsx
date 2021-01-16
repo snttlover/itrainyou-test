@@ -17,7 +17,6 @@ const Time = styled.div`
 
 const Container = styled.div<ContainerTypes>`
   padding: 5px 8px;
-
   background: #eceff1;
   border-radius: 12px 12px 12px 0px;
   width: auto;
@@ -29,9 +28,9 @@ const Container = styled.div<ContainerTypes>`
   line-height: 22px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   position: relative;
-
+  
   &[data-self="true"] {
     background: ${props => props.theme.colors.primary};
     border-radius: 12px 12px 0px 12px;
@@ -45,9 +44,19 @@ const Container = styled.div<ContainerTypes>`
   ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 22px;
+    white-space: pre-wrap;
     ${Time} {
       font-size: 12px;
     }
+  `}
+`
+const MessageText = styled.div`
+  font-size: 16px;
+  line-height: 22px;
+  white-space: nowrap;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 16px;
+    line-height: 22px;
   `}
 `
 
@@ -88,7 +97,7 @@ export const ChatMessage = (props: ChatMessageTypes) => (
           onClick={() => props.imageClick && props.imageClick(props.imageIndex)}
         />
       )}
-      {props.text}
+      <MessageText>{props.text}</MessageText>
       <Time>{props.time}</Time>
     </Container>
   </>

@@ -21,7 +21,7 @@ export const CantCancelSessionDialog = (props: CantCancelSessionDialogTypes) => 
     <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
       <Container>
         <Header>Невозможно отменить сессию</Header>
-        <Description>Сессия начинается меньше, чем за 24 часа. И у клиенты были уже заморожены средства на карте. Если хотите отменить сессию — обратитесь в поддержку</Description>
+        <Description>До сессии менее 24 часов и у клиента уже были списаны деньги. Если хотите отменить сессию, обратитесь в поддержку</Description>
         <Actions>
           <Yes onClick={redirectToSupport}>Написать в поддержку</Yes>
         </Actions>

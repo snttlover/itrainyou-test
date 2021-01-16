@@ -10,14 +10,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   flex: 1;
-  padding: 16px 24px;
   align-items: flex-start;
   display: block;
   position: relative;
   overflow: auto;
-  ${MediaRange.lessThan("mobile")`
-    padding: 12px 8px;
-  `}
 `
 
 const MessagesWrapper = styled.div`

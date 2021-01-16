@@ -32,6 +32,7 @@ export type ChatSupportMessage = {
   userName: string
   userAvatar: string | null
   ticketStatus: SupportTicketType
+  isReadByYou: boolean
 }
 
 export type ChatSystemMessage = {
@@ -44,6 +45,7 @@ export type ChatSystemMessage = {
   status: ConflictStatus | MessageSessionRequestStatuses | TransActionsStatus
   showButtons: boolean
   date: string
+  isReadByYou: boolean
 }
 
 export type PersonalChatMessage = {
@@ -55,6 +57,7 @@ export type PersonalChatMessage = {
   time: string
   user: CoachUser | Client | null
   imageIndex: number
+  isReadByYou: boolean
 }
 
 const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
@@ -112,7 +115,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             (config.type === "client" && !!message.senderClient) || (config.type === "coach" && !!message.senderCoach)
 
           if (config.supportIsMe) {
-            isMine = !!message.senderSupport
+            isMine = !message.senderSupport
           }
 
           let user: CoachUser | Client | null = null
@@ -124,7 +127,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               id: message.id,
               userName: `${user?.firstName} ${user?.lastName}`,
               userAvatar: user?.avatar || null,
-              ticketStatus: message.systemTicketType
+              ticketStatus: message.systemTicketType,
+              isReadByYou: message.isReadByYou
             }
           }
 
@@ -150,6 +154,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 showButtons: false,
                 status: message.transactionType,
                 date: message.creationDatetime,
+                isReadByYou: message.isReadByYou,
               }
             }
             else {
@@ -162,7 +167,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 userAvatar: user?.avatar || null,
                 showButtons: !completedStatusesIds.includes(message.sessionRequest.id),
                 status: message?.conflict?.status || message.sessionRequestStatus,
-                date: message.creationDatetime
+                date: message.creationDatetime,
+                isReadByYou: message.isReadByYou,
               }
             }
           }
@@ -173,6 +179,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             type: "TEXT",
             id: message.id,
             isMine,
+            isReadByYou: message.isReadByYou,
             text: message.text,
             image: message.image,
             time: date(message.creationDatetime).format("HH:mm"),
