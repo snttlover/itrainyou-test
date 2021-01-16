@@ -25,7 +25,7 @@ export const Button = styled.button<ButtonTypes>`
   }
 
   &[data-secondary="true"] {
-    background: #7d36a8;
+    background: #783D9D;
     &:active {
       background: #75309e;
     }

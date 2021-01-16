@@ -41,7 +41,7 @@ const Header = styled.div`
   font-family: Roboto Slab;
   font-size: 20px;
   line-height: 26px;
-  color: #7d36a8;
+  color: #783D9D;
   margin-bottom: 12px;
   ${MediaRange.lessThan("mobile")`
     margin-top: 30px;

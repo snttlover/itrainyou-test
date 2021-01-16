@@ -22,7 +22,7 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })`
   height: 12px;
   min-height: 12px;
   margin-right: 4px;
-  fill: #7d36a8;
+  fill: #783D9D;
 `
 
 const Text = styled.div`

@@ -11,6 +11,9 @@ import { $hasStartedSessions } from "@/pages/coach/home/sessions/content/started
 import { Loader } from "@/components/spinner/Spinner"
 import { $hasNewestParticipantsList } from "@/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
 import { EmptySessions } from "@/pages/coach/home/sessions/content/empty-sessions/EmptySessions"
+import { FillOutSchedule } from "@/pages/coach/home/sessions/content/empty-sessions/FillOutSchedule"
+import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 const Container = styled.div<{ nosessions: boolean }>`
   width: 100%;
@@ -23,7 +26,7 @@ const Container = styled.div<{ nosessions: boolean }>`
   `}
 
   ${MediaRange.greaterThan("tablet")`
-    padding: 0 16px;
+    // padding: 0 16px;
   `}
 `
 
@@ -33,9 +36,21 @@ const Sessions = () => {
   const hasNewest = useStore($hasNewestParticipantsList)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
 
+  
+  const EmptySessionsWith = () => {
+    return (
+      <>
+        <FillOutSchedule/>
+        <ContentContainer>
+          <EmptySessions/>
+        </ContentContainer>
+      </>
+    )
+  }
+  
   return (
     <>
-      {noHasSessions && <EmptySessions />}
+      {noHasSessions && <EmptySessionsWith />}
       {hasStarted && <StartedSessions />}
       {hasToday && <TodaySessions />}
       {hasNewest && <NewestParticipants />}
