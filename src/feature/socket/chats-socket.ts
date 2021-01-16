@@ -119,7 +119,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     changeCountersFromInit,
     (_, message) => message.data.unreadChats
   )
-
+  //unread.type = SUPPORT
   //доставать id суппорт чата из массива message.data.unreadChats и добавить его в state
   const $supportUnreadMessagesCounter = createStore<ChatCounter[]>([]).on(
     changeCountersFromInit,
