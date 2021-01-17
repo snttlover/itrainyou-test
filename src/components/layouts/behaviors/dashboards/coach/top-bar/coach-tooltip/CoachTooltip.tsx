@@ -29,7 +29,7 @@ type CoachTooltipTypes = {
 }
 
 const CoachRow = styled(CoachTooltipRow)`
-  background: #7d36a8;
+  background: #783D9D;
   margin-bottom: 1px;
   cursor: pointer;
   &:hover {

@@ -106,7 +106,7 @@ export const HomePage = () => {
   return (
     <ClientDashboardLayout>
       <ContentContainer>
-        {activeSessions.length > 0 && (
+        {activeSessions.length > 0 &&(
           <Block>
             <Title>Сессия уже началась!</Title>
             {activeSessions.map(session => (
@@ -120,8 +120,10 @@ export const HomePage = () => {
             {activeSessionsPending && <Loader />}
           </Block>
         )}
+      </ContentContainer>
 
-        {todaySessions.length > 0 && (
+      {todaySessions.length > 0 ? (
+        <ContentContainer>
           <Block>
             <Title>Ближайшие сессии</Title>
             {todaySessions.map(session => (
@@ -129,8 +131,11 @@ export const HomePage = () => {
             ))}
             {todaySessionsPending && <Loader />}
           </Block>
-        )}
+        </ContentContainer>
 
+      ) : <Onboarding/>}
+
+      <ContentContainer>
         <Block>
           <Title>Рекомендации</Title>
           <InfiniteScroll
@@ -146,6 +151,7 @@ export const HomePage = () => {
           </InfiniteScroll>
         </Block>
       </ContentContainer>
+
     </ClientDashboardLayout>
   )
 }

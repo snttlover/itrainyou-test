@@ -7,16 +7,16 @@ export const clientTheme = {
     primary: "#4858CC",
     primaryDarker: "#3746B0",
     invert: {
-      primary: "#7D36A8",
+      primary: "#783D9D",
     }
   },
 }
 
 const coachTheme: typeof clientTheme = {
   colors: {
-    primaryBackground: "#E0CFEA",
-    primary: "#7D36A8",
-    primaryDarker: "#7D36A8",
+    primaryBackground: "#DFD0E7",
+    primary: "#783D9D",
+    primaryDarker: "#783D9D",
     invert: {
       primary: "#4858CC",
     }

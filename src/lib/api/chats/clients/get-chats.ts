@@ -81,6 +81,7 @@ export type ChatMessage = {
     sessionRequestStatus: MessageSessionRequestStatuses
     creationDatetime: ISODate
     systemTicketType: SupportTicketType
+    isReadByYou: boolean
 }
 
 

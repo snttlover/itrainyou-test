@@ -1,10 +1,9 @@
 import { createSocket } from "@/feature/socket/create-socket"
-import { PersonalChat, ChatMessage } from "@/lib/api/chats/clients/get-chats"
+import { ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
-import { combine, createEvent, createStore, forward, guard, sample, merge, createEffect, restore } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard, merge, restore, sample } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
-import { $isFullRegistered, $isLoggedIn, $userData } from "@/feature/user/user.model"
-import { $isClient } from "@/lib/effector"
+import { $isLoggedIn } from "@/feature/user/user.model"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { condition } from "patronum"
@@ -24,6 +23,7 @@ type ReadChatMessages = {
 type ChatCounter = {
   id: number
   newMessagesCount: number
+  type?: "SUPPORT" | "PERSONAL" | "SYSTEM"
 }
 
 type InitMessage = {
@@ -114,17 +114,18 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   const changeCountersFromInit = createEvent<InitMessage>()
 
-  //доставать id суппорт чата из массива message.data.unreadChats и не добавлять его в state
   const $chatsCounters = createStore<ChatCounter[]>([]).on(
     changeCountersFromInit,
-    (_, message) => message.data.unreadChats
+    (_, message) => message.data.unreadChats.filter(chat => chat.type !== "SUPPORT")
   )
-  //unread.type = SUPPORT
-  //доставать id суппорт чата из массива message.data.unreadChats и добавить его в state
-  const $supportUnreadMessagesCounter = createStore<ChatCounter[]>([]).on(
+
+  const onSupportMessage = createEvent<WriteChatMessageDone>()
+
+  const $supportUnreadMessagesCounter = createStore<number>(0).on(
     changeCountersFromInit,
-    (_, message) => message.data.unreadChats
-  )
+    (_, message) => message.data.unreadChats.filter(chat => chat.type === "SUPPORT")[0]?.newMessagesCount)
+    .on(onSupportMessage, (counters, message) => counters + 1)
+    .reset(onMessagesReadDone)
 
   const changeNotificationsCounter = createEvent<number>()
   const $notificationsCounter = restore(changeNotificationsCounter, 0)
@@ -136,7 +137,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     to: changeNotificationsCounter,
   })
 
-  const onSupportMessage = createEvent<WriteChatMessageDone>()
 
   const onIntercMessage = createEvent<WriteChatMessageDone>()
 
@@ -156,33 +156,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
             (userType === "client" && !!message.senderCoach) ||
             (userType === "coach" && !!message.senderClient) ||
             message.type === "SYSTEM"
-        )
-        .map(message => message.chat)
-      counters = counters.slice()
-
-      chats.forEach(id => {
-        const counter = counters.find(counter => counter.id === id)
-        if (counter) {
-          counter.newMessagesCount--
-        }
-      })
-
-      return counters.filter(counter => counter.newMessagesCount > 0)
-    })
-
-  $supportUnreadMessagesCounter
-    .on(onSupportMessage, (counters, message) => {
-      const currentCounter = counters.find(counter => counter.id === message.data.chat)
-      const counter = {
-        id: message.data.chat,
-        newMessagesCount: 1 + (!currentCounter ? 0 : currentCounter.newMessagesCount),
-      }
-      return [counter, ...counters.filter(c => c.id !== counter.id)]
-    })
-    .on(onMessagesReadDone, (counters, message) => {
-      const chats = message.data.messages
-        .filter(
-          message => !!message.senderSupport
         )
         .map(message => message.chat)
       counters = counters.slice()
@@ -328,6 +301,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       $chatsCount,
       $chatsCounters,
       $notificationsCounter,
+      $supportUnreadMessagesCounter
     },
     events: {
       ...socket.events,
@@ -344,9 +318,3 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
 export const clientChatsSocket = createChatsSocket("client")
 export const coachChatsSocket = createChatsSocket("coach")
-//сделать data.$supportChatMessageCounter и убрать добавление в $chatsCount сообщение
-// если ChatMessage senderSupport && supportTicket null
-// WRITE_MESSAGE_DONE тип сообщения когда нужно поставить badge
-// И КОГДА ТИП СООБЩЕНИЯ type: "INIT" в changeCountersFromInit то смотреть в unread_chats и пробежаться по массиву и найти id суппорт чата
-// и дальше увеличить counter++
-// если тип сообщения READ_MESSAGES_DONE то смотрим если ли есть суппорт чат и уменьшаем counter--

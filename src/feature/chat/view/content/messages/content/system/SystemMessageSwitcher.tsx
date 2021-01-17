@@ -164,7 +164,7 @@ const getText = (
     }
       
     if (status === "MONEY_SUCCESSFULLY_HELD") {
-      return "Деньги за сессию на карте были списаны."
+      return "Деньги за сессию были списаны с карты."
     }
       
     if (status === "SOLVED_IN_COACH_FAVOUR") {
