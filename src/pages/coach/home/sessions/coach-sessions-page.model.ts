@@ -51,5 +51,7 @@ forward({
 })
 
 export const $isCoachScheduleFilled = createStore(false).on(getMyUserFx.doneData, (state, {data}: any) => {
-  return !!data?.coach?.schedule?.weekday_slots
+  console.log(data.coach.schedule.weekday_slots)
+  return !!data?.coach?.schedule?.weekday_slots?.length
 })
+

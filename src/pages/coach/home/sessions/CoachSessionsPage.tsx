@@ -37,12 +37,14 @@ const Sessions = () => {
   const hasNewest = useStore($hasNewestParticipantsList)
   const isFilledSchedule = useStore($isCoachScheduleFilled)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
-  const isFilledScheduleNoHasSessions = noHasSessions && !isFilledSchedule
+  const isFilledScheduleNoHasSessions = noHasSessions && isFilledSchedule
 
   const EmptySessionsWith = () => {
+    console.log(isFilledSchedule)
+
     return (
       <>
-        {isFilledSchedule && <FillOutSchedule/>}
+        {!isFilledSchedule && <FillOutSchedule/>}
         {isFilledScheduleNoHasSessions && <FilledOutNoResponses/>}
         <ContentContainer>
           <EmptySessions/>
