@@ -88,7 +88,7 @@ const TryLink = styled.div`
   font-size: 16px;
   line-height: 22px;
   text-align: center;
-  color: #7d36a8;
+  color: #783D9D;
   margin-top: 4px;
   ${MediaRange.lessThan("mobile")`
      margin-top: 16px;

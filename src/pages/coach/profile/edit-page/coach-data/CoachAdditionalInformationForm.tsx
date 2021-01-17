@@ -229,7 +229,7 @@ const PinkPhotoBlock = styled.div`
   width: 64px;
   height: 64px;
   display: flex;
-  background-color: #e0cfea;
+  background-color: #DFD0E7;
   align-items: center;
   justify-content: center;
   border-radius: 2px;

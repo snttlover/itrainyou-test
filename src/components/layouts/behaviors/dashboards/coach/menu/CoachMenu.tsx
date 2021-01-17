@@ -13,7 +13,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { $userData } from "@/feature/user/user.model"
 
 const StyledProfileHeader = styled(ProfileHeader)`
-  border-bottom: 1px solid #b186cb;
+  border-bottom: 1px solid #AE8BC4;
 
   ${MediaRange.lessThan("tablet")`
     min-width: calc(100% - 64px);

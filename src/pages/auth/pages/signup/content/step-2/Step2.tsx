@@ -117,8 +117,8 @@ export const Step2 = () => {
           />
           <UserTypeCard
             title='коучем'
-            color='#7D36A8'
-            hoverColor='#F5EFF8'
+            color='#783D9D'
+            hoverColor='#F4EFF7'
             selected={type === "coach"}
             onClick={() => changeType("coach")}
           />

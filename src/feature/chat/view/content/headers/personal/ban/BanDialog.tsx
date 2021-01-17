@@ -62,7 +62,7 @@ const Header = styled.div`
   font-size: 20px;
   line-height: 26px;
   text-align: center;
-  color: #7d36a8;
+  color: #783D9D;
   margin-bottom: 16px;
   width: 100%;
   max-width: 432px;

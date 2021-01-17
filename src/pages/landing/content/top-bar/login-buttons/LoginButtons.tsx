@@ -9,7 +9,7 @@ const LoginLink = styled(Link)`
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
-  color: #7d36a8;
+  color: #783D9D;
 `
 
 const RegistrationButton = styled(Button)`
