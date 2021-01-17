@@ -40,7 +40,6 @@ const Sessions = () => {
   const isFilledScheduleNoHasSessions = noHasSessions && isFilledSchedule
 
   const EmptySessionsWith = () => {
-    console.log(isFilledSchedule)
 
     return (
       <>

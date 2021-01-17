@@ -13,7 +13,7 @@ export function Onboarding (){
       <ContentContainer>
         <StartContainer>
           <TitlesContainer>
-            <TextTitle>Начните менить свою жизнь!</TextTitle>
+            <TextTitle>Начните менять свою жизнь!</TextTitle>
             <SearchCoachSubtitle>Найдите себе коуча, который поможет <br/> вам справиться с трудностями</SearchCoachSubtitle>
             <SearchButton>Найти коуча</SearchButton>
           </TitlesContainer>
