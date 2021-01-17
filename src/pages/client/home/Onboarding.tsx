@@ -5,9 +5,13 @@ import topImg from "./goToTopImg.svg"
 import waveImg from "./wave.svg"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { MediaRange } from "@/lib/responsive/media"
+import { useEvent } from "effector-react"
+import { navigatePush } from "@/feature/navigation"
 
 
 export function Onboarding (){
+  const navigate = useEvent(navigatePush)
+  const goToSearchHandler = () => navigate({url: "/search"})
   return (
     <Container>
       <ContentContainer>
@@ -15,7 +19,7 @@ export function Onboarding (){
           <TitlesContainer>
             <TextTitle>Начните менять свою жизнь!</TextTitle>
             <SearchCoachSubtitle>Найдите себе коуча, который поможет <br/> вам справиться с трудностями</SearchCoachSubtitle>
-            <SearchButton>Найти коуча</SearchButton>
+            <SearchButton onClick={goToSearchHandler}>Найти коуча</SearchButton>
           </TitlesContainer>
           <DifficultiesImg src={difImg}/>
         </StartContainer>
