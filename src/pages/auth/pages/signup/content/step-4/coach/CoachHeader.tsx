@@ -161,7 +161,7 @@ const ButtonContainer = styled.div`
 const SkipButton = styled(Button)`
   margin: 0 auto;
   width: 160px;
-  background: #f5eff8;
+  background: #F4EFF7;
   color: #424242;
 
   ${MediaRange.greaterThan("mobile")`

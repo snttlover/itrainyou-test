@@ -10,8 +10,8 @@ export const DashedButton = styled(Button)`
 
   &[data-secondary="true"] {
     background: transparent;
-    color: #7d36a8;
-    border: 1px solid #7d36a8;
+    color: #783D9D;
+    border: 1px solid #783D9D;
 
     &:active {
       background: transparent;

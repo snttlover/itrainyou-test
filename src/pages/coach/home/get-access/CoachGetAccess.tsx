@@ -72,7 +72,7 @@ const CircleProgressBar = styled(
         <ProgressText>{progress.toFixed()}%</ProgressText>
         <svg width={radius * 2} height={radius * 2} transform='rotate(-90)'>
           <circle
-            stroke='#E0CFEA'
+            stroke='#DFD0E7'
             fill='transparent'
             strokeDasharray={0 + " " + 0}
             style={{ strokeDashoffset: 0 }}
@@ -82,7 +82,7 @@ const CircleProgressBar = styled(
             cy={radius}
           />
           <circle
-            stroke='#7D36A8'
+            stroke='#783D9D'
             fill='transparent'
             strokeDasharray={circumference + " " + circumference}
             style={{ strokeDashoffset }}
@@ -145,7 +145,7 @@ const FilledDescription = styled.p`
   ${MediaRange.greaterThan("laptop")`
     font-size: 14px;
     line-height: 18px;
-    color: #7D36A8;
+    color: #783D9D;
     width: 160px;
   `}
 `
