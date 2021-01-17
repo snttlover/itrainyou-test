@@ -13,10 +13,8 @@ import { $hasNewestParticipantsList } from "@/pages/coach/home/sessions/content/
 import { EmptySessions } from "@/pages/coach/home/sessions/content/empty-sessions/EmptySessions"
 import { FillOutSchedule } from "@/pages/coach/home/sessions/content/empty-sessions/FillOutSchedule"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { FilledOutNoResponses } from "@/pages/coach/home/sessions/content/empty-sessions/FilledOutNoResponses"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
-import { createStore } from "effector-root"
+import { $coachStore } from "@/pages/coach/home/sessions/content/empty-sessions/empty-sessions.model"
 
 const Container = styled.div<{ nosessions: boolean }>`
   width: 100%;
@@ -34,9 +32,6 @@ const Container = styled.div<{ nosessions: boolean }>`
 `
 
 const Sessions = () => {
-  const $coachStore = createStore(false).on(getMyUserFx.doneData, (state, {data}: any) => {
-    return !!data?.coach?.schedule?.weekday_slots
-  })
 
   const hasToday = useStore($hasTodaySessions)
   const hasStarted = useStore($hasStartedSessions)
@@ -44,8 +39,6 @@ const Sessions = () => {
   const isFilledSchedule = useStore($coachStore)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
   const isFilledScheduleNoHasSessions = noHasSessions && !isFilledSchedule
-
-  console.log(isFilledSchedule, isFilledScheduleNoHasSessions)
 
   const EmptySessionsWith = () => {
     return (
