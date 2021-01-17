@@ -50,6 +50,6 @@ forward({
   to: [loadTodaySessionsFx, newestParticipants.methods.loadMore],
 })
 
-export const $coachStore = createStore(false).on(getMyUserFx.doneData, (state, {data}: any) => {
+export const $isCoachScheduleFilled = createStore(false).on(getMyUserFx.doneData, (state, {data}: any) => {
   return !!data?.coach?.schedule?.weekday_slots
 })
