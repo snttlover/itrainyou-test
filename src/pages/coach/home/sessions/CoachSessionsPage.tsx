@@ -3,7 +3,7 @@ import { StartedSessions } from "@/pages/coach/home/sessions/content/started/Sta
 import { NewestParticipants } from "@/pages/coach/home/sessions/content/newest-participants/NewestParticipants"
 import { MediaRange } from "@/lib/responsive/media"
 import React, { useEffect } from "react"
-import { $coachSessionsPageLoading, mounted } from "./coach-sessions-page.model"
+import { $coachSessionsPageLoading, $coachStore, mounted } from "./coach-sessions-page.model"
 import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySessions"
 import { useEvent, useStore } from "effector-react"
 import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
@@ -14,7 +14,6 @@ import { EmptySessions } from "@/pages/coach/home/sessions/content/empty-session
 import { FillOutSchedule } from "@/pages/coach/home/sessions/content/empty-sessions/FillOutSchedule"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
 import { FilledOutNoResponses } from "@/pages/coach/home/sessions/content/empty-sessions/FilledOutNoResponses"
-import { $coachStore } from "@/pages/coach/home/sessions/content/empty-sessions/empty-sessions.model"
 
 const Container = styled.div<{ nosessions: boolean }>`
   width: 100%;

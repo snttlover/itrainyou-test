@@ -14,10 +14,8 @@ export function Onboarding (){
         <StartContainer>
           <TitlesContainer>
             <TextTitle>Начните менить свою жизнь!</TextTitle>
-            <TextSubtitle>Найдите себе коуча, который поможет <br/> вам справиться с трудностями</TextSubtitle>
-            <div>
-              <SearchButton>Найти коуча</SearchButton>
-            </div>
+            <SearchCoachSubtitle>Найдите себе коуча, который поможет <br/> вам справиться с трудностями</SearchCoachSubtitle>
+            <SearchButton>Найти коуча</SearchButton>
           </TitlesContainer>
           <DifficultiesImg src={difImg}/>
         </StartContainer>
@@ -27,13 +25,13 @@ export function Onboarding (){
         <ToTopImg src={topImg}/>
         <TitlesContainer>
           <TextTitle>Скоро все начнется!</TextTitle>
-          <TextSubtitle mb={"12px"}>
+          <OnThisPageSubtitle>
             На этой странице будут:
-          </TextSubtitle>
-          <Ul>
-            <Li>Сессии, которые уже начались</Li>
-            <Li>Анонс ваших сегодняшних сессий</Li>
-          </Ul>
+          </OnThisPageSubtitle>
+          <PageFeatureList>
+            <FeatureItem>Сессии, которые уже начались</FeatureItem>
+            <FeatureItem>Анонс ваших сегодняшних сессий</FeatureItem>
+          </PageFeatureList>
         </TitlesContainer>
       </TopBlockContainer>
 
@@ -41,7 +39,7 @@ export function Onboarding (){
   )
 }
 
-const Ul = styled.div`
+const PageFeatureList = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 4px;
@@ -50,7 +48,7 @@ const Ul = styled.div`
   `}
 `
 
-const Li = styled.div`
+const FeatureItem = styled.div`
   display: flex;
   align-items: center;
   margin-top: 8px;
@@ -112,10 +110,18 @@ const TextSubtitle = styled.div`
   font-size: 16px;
   width: 363px;
   line-height: 24px;
-  margin-bottom: ${({mb}) => mb || "36px"};
   ${MediaRange.lessThan("mobile")`
     width: auto;
   `}
+`
+
+const SearchCoachSubtitle = styled(TextSubtitle)`
+  margin-bottom: 36px;
+
+`
+
+const OnThisPageSubtitle = styled(TextSubtitle)`
+  margin-bottom: 12px;
 `
 
 const Container = styled.div`
@@ -139,6 +145,7 @@ const TitlesContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-right: 51px;
+  align-items: flex-start;
   ${MediaRange.lessThan("tablet")`
     padding-right: 0;
   `}
