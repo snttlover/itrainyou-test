@@ -3,9 +3,13 @@ import { StartedSessions } from "@/pages/coach/home/sessions/content/started/Sta
 import { NewestParticipants } from "@/pages/coach/home/sessions/content/newest-participants/NewestParticipants"
 import { MediaRange } from "@/lib/responsive/media"
 import React, { useEffect } from "react"
-import { $coachSessionsPageLoading, $isCoachScheduleFilled, mounted } from "./coach-sessions-page.model"
+import {
+  $coachSessionsPageLoading,
+  $isCoachScheduleFilled,
+  mounted
+} from "./coach-sessions-page.model"
 import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySessions"
-import { useEvent, useStore } from "effector-react"
+import { useEvent, useGate, useStore } from "effector-react"
 import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
 import { $hasStartedSessions } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
 import { Loader } from "@/components/spinner/Spinner"
@@ -38,7 +42,6 @@ const Sessions = () => {
   const isFilledSchedule = useStore($isCoachScheduleFilled)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
   const isFilledScheduleNoHasSessions = noHasSessions && isFilledSchedule
-
   const EmptySessionsWith = () => {
 
     return (
@@ -55,9 +58,11 @@ const Sessions = () => {
   return (
     <>
       {noHasSessions && <EmptySessionsWith />}
-      {hasStarted && <StartedSessions />}
-      {hasToday && <TodaySessions />}
-      {hasNewest && <NewestParticipants />}
+      <ContentContainer>
+        {hasStarted && <StartedSessions />}
+        {hasToday && <TodaySessions />}
+        {hasNewest && <NewestParticipants />}
+      </ContentContainer>
     </>
   )
 }

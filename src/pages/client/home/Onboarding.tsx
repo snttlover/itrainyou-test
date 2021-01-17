@@ -125,7 +125,7 @@ const OnThisPageSubtitle = styled(TextSubtitle)`
 `
 
 const Container = styled.div`
-  display: flex;
+  display: block;
   flex-direction: column;
   margin-top: 36px;
 `
@@ -133,6 +133,7 @@ const Container = styled.div`
 const StartContainer = styled.div`
   display: flex;
   margin-bottom: 51px;
+  position: relative;
   ${MediaRange.lessThan("tablet")`
   `}
   ${MediaRange.lessThan("mobile")`

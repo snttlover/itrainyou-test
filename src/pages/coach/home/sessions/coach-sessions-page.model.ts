@@ -8,6 +8,8 @@ import {
 } from "@/lib/api/coach/get-dashboard-newest-participants"
 import { createPagination } from "@/feature/pagination"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { $userData } from "@/feature/user/user.model"
+import { createGate } from "effector-react"
 
 const resetCoachSessionList =  createEvent()
 
@@ -50,8 +52,13 @@ forward({
   to: [loadTodaySessionsFx, newestParticipants.methods.loadMore],
 })
 
-export const $isCoachScheduleFilled = createStore(false).on(getMyUserFx.doneData, (state, {data}: any) => {
-  console.log(data.coach.schedule.weekday_slots)
-  return !!data?.coach?.schedule?.weekday_slots?.length
+// forward({
+//   from: mounted,
+//   to: getMyUserFx,
+// })
+
+export const $isCoachScheduleFilled = createStore(false).on($userData, (state, {coach}: any) => {
+  console.log("Coach")
+  return !!coach?.schedule?.weekdaySlots?.length
 })
 
