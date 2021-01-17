@@ -12,5 +12,6 @@ export const config = {
   SENTRY_SERVER_DSN: dataSource.env.SENTRY_SERVER_DSN,
   FACEBOOK_CLIENT_ID: dataSource.env.FACEBOOK_CLIENT_ID,
   VK_CLIENT_ID: dataSource.env.VK_CLIENT_ID,
-  GOOGLE_CLIENT_ID: dataSource.env.GOOGLE_CLIENT_ID
+  GOOGLE_CLIENT_ID: dataSource.env.GOOGLE_CLIENT_ID,
+  SERVER_TYPE: dataSource.env.SERVER_TYPE
 }

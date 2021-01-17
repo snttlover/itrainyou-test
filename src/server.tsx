@@ -154,7 +154,7 @@ function htmlStart(assetsCss: string, assetsJs: string, css: string) {
         <title>Itrainyou</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">     
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,600|Roboto:300,400,500,700,900&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
-        ${ process.env.NODE_ENV === "production" ?
+        ${ config.SERVER_TYPE === "production" ?
     `<!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-B664BMTWRH"></script>
         <script>

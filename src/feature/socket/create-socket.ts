@@ -2,6 +2,7 @@ import { createEffect, createEvent, forward, restore, sample } from "effector-ro
 import { runInScope } from "@/scope"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
+import { config } from "@/config"
 
 export const createSocket = () => {
   let socket: WebSocket | null = null
@@ -15,7 +16,10 @@ export const createSocket = () => {
       socket.onclose = () => runInScope(onClose)
       socket.onerror = () => runInScope(onError)
       socket.onmessage = e => {
-        const message = fixAvatarAndImageUrl(keysToCamel(JSON.parse(e.data)))
+        let message = fixAvatarAndImageUrl(keysToCamel(JSON.parse(e.data)))
+        if ( config.SERVER_TYPE === "production") {
+          message = keysToCamel(JSON.parse(e.data))
+        }
         runInScope(onMessage, message)
       }
     },
