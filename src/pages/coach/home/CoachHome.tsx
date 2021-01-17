@@ -12,9 +12,11 @@ import { CoachGetAccess } from "@/pages/coach/home/get-access/CoachGetAccess"
 import { CoachSessionsPage } from "@/pages/coach/home/sessions/CoachSessionsPage"
 import { YandexKassaInstructions } from "@/pages/coach/home/yandex-kassa-not-approved/YandexKassaInstructions"
 import { YandexKassaWaitingForApproval } from "@/pages/coach/home/yandex-kassa-not-approved/YandexKassaWaitingForApproval"
-import { useStore } from "effector-react"
+import { createGate, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
+import { forward } from "effector/compat"
+import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 
 const Container = styled.div`
   max-width: 640px;
@@ -91,6 +93,8 @@ const CurrentState = () => {
 
 export const CoachHome = () => {
   const isUserDataLoading = useStore(getMyUserFx.pending)
+
+  useGate(CoachHomeGate)
 
   return (
     <CoachDashboardLayout>

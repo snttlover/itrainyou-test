@@ -52,13 +52,11 @@ forward({
   to: [loadTodaySessionsFx, newestParticipants.methods.loadMore],
 })
 
-// forward({
-//   from: mounted,
-//   to: getMyUserFx,
-// })
+export const $isCoachScheduleFilled = $userData.map((data: any) => !!data?.coach?.schedule?.weekdaySlots?.length)
 
-export const $isCoachScheduleFilled = createStore(false).on($userData, (state, {coach}: any) => {
-  console.log("Coach")
-  return !!coach?.schedule?.weekdaySlots?.length
+export const CoachHomeGate = createGate()
+
+forward({
+  from: CoachHomeGate.open,
+  to: getMyUserFx
 })
-
