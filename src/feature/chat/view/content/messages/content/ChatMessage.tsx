@@ -19,13 +19,14 @@ const Container = styled.div<ContainerTypes>`
   padding: 5px 8px;
   background: #eceff1;
   border-radius: 12px 12px 12px 0px;
-  width: auto;
-  max-width: 472px;
+  max-width: 400px;
   color: #424242;
   margin-bottom: 8px;
-
-  font-size: 16px;
-  line-height: 22px;
+  
+  float:left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -35,6 +36,7 @@ const Container = styled.div<ContainerTypes>`
     background: ${props => props.theme.colors.primary};
     border-radius: 12px 12px 0px 12px;
     color: #ffffff;
+    float: right;
     align-self: flex-end;
     ${Time} {
       color: #9aa0a6;
@@ -42,9 +44,6 @@ const Container = styled.div<ContainerTypes>`
   }
 
   ${MediaRange.lessThan("mobile")`
-    font-size: 16px;
-    line-height: 22px;
-    white-space: pre-wrap;
     ${Time} {
       font-size: 12px;
     }
@@ -53,7 +52,8 @@ const Container = styled.div<ContainerTypes>`
 const MessageText = styled.div`
   font-size: 16px;
   line-height: 22px;
-  white-space: nowrap;
+  word-break: break-all;
+  
   ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 22px;
