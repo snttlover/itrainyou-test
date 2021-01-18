@@ -9,7 +9,7 @@ import {
 import { createPagination } from "@/feature/pagination"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { $userData } from "@/feature/user/user.model"
-import { createGate } from "effector-react"
+import { createGate } from "@/scope"
 
 const resetCoachSessionList =  createEvent()
 
