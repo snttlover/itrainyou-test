@@ -71,9 +71,9 @@ const getText = (
     }
 
     if (is("CANCEL", "DENIED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} не согласил${
-        request.receiverCoach?.sex === "F" ? "aсь" : "ся"
-      } на отмену сессии`
+      return `${request.receiverCoach?.firstName} не подтвердил${
+        request.receiverCoach?.sex === "F" ? "а" : ""
+      } отмену сессии. Сессия состоится`
     }
 
     if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
@@ -196,9 +196,9 @@ const getText = (
     }
 
     if (is("CANCEL", "DENIED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} не согласил${
-        request.receiverCoach?.sex === "F" ? "aсь" : "ся"
-      } на отмену сессии`
+      return `${request.receiverCoach?.firstName} не подтвердил${
+        request.receiverCoach?.sex === "F" ? "а" : ""
+      } отмену сессии. Сессия состоится`
     }
 
     if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {

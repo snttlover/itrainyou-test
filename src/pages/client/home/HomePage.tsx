@@ -103,7 +103,7 @@ export const HomePage = () => {
     e.preventDefault()
   }
 
-  console.log(todaySessionsPending)
+
   return (
     <ClientDashboardLayout>
       <ContentContainer>
