@@ -16,8 +16,8 @@ type CancelSessionProps = {
 }
 
 const getText = (type: DashboardType, sessionStartDatetime?: ISODate) => {
-  if (type === "client" && date().isAfter(date(sessionStartDatetime).subtract(48, "hour"))) {
-    return "Вы хотите отменить сессию позднее, чем за 24 часов. Коучу будет отправлен запрос на отмену сессии."
+  if (type === "client" && date().isAfter(date(sessionStartDatetime).subtract(24, "hour"))) {
+    return "Вы хотите отменить сессию позднее, чем за 24 часа. Коучу будет отправлен запрос на отмену сессии."
   }
 
   return "Сессия отменится автоматически"

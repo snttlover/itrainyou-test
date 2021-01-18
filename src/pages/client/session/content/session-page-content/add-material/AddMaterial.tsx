@@ -20,7 +20,7 @@ const Button = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
-  color: #7d36a8;
+  color: #783D9D;
   background: #fff;
   border-radius: 2px;
   margin-top: 24px;
@@ -39,7 +39,7 @@ const Button = styled.div`
 `
 
 const AddIcon = styled(Icon).attrs({ name: "plus" })`
-  fill: #7d36a8;
+  fill: #783D9D;
   height: 14px;
   ${MediaRange.lessThan("mobile")`
     height: 12px;

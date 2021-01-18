@@ -70,11 +70,13 @@ const CurrentState = () => {
   return (
     <>
       {state === "profile-fill" && (
-        <Container>
-          <Title>У вас пока закрыт доступ к функционалу коуча</Title>
-          <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
-          <CoachGetAccess />
-        </Container>
+        <ContentContainer>
+          <Container>
+            <Title>У вас пока закрыт доступ к функционалу коуча</Title>
+            <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
+            <CoachGetAccess />
+          </Container>
+        </ContentContainer>
       )}
       {state === "approve-wait" && <AwaitingApproval />}
       {state === "forever-rejected" && <ApprovalFailing />}
@@ -92,8 +94,9 @@ export const CoachHome = () => {
 
   return (
     <CoachDashboardLayout>
+      {!isUserDataLoading && <CurrentState />}
+
       <ContentContainer>
-        {!isUserDataLoading && <CurrentState />}
         {isUserDataLoading && <Loader />}
       </ContentContainer>
     </CoachDashboardLayout>

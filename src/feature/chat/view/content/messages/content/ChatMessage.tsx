@@ -17,25 +17,26 @@ const Time = styled.div`
 
 const Container = styled.div<ContainerTypes>`
   padding: 5px 8px;
-
   background: #eceff1;
   border-radius: 12px 12px 12px 0px;
-  width: auto;
-  max-width: 472px;
+  max-width: 400px;
   color: #424242;
   margin-bottom: 8px;
-
-  font-size: 16px;
-  line-height: 22px;
+  
+  float:left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   position: relative;
-
+  
   &[data-self="true"] {
     background: ${props => props.theme.colors.primary};
     border-radius: 12px 12px 0px 12px;
     color: #ffffff;
+    float: right;
     align-self: flex-end;
     ${Time} {
       color: #9aa0a6;
@@ -43,11 +44,19 @@ const Container = styled.div<ContainerTypes>`
   }
 
   ${MediaRange.lessThan("mobile")`
-    font-size: 16px;
-    line-height: 22px;
     ${Time} {
       font-size: 12px;
     }
+  `}
+`
+const MessageText = styled.div`
+  font-size: 16px;
+  line-height: 22px;
+  word-break: break-all;
+  
+  ${MediaRange.lessThan("mobile")`
+    font-size: 16px;
+    line-height: 22px;
   `}
 `
 
@@ -88,7 +97,7 @@ export const ChatMessage = (props: ChatMessageTypes) => (
           onClick={() => props.imageClick && props.imageClick(props.imageIndex)}
         />
       )}
-      {props.text}
+      <MessageText>{props.text}</MessageText>
       <Time>{props.time}</Time>
     </Container>
   </>

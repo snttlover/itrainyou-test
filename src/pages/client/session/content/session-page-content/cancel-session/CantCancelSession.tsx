@@ -21,7 +21,7 @@ export const CantCancelSessionDialog = (props: CantCancelSessionDialogTypes) => 
     <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
       <Container>
         <Header>Невозможно отменить сессию</Header>
-        <Description>Сессия начинается меньше, чем за 24 часа. И у клиенты были уже заморожены средства на карте. Если хотите отменить сессию — обратитесь в поддержку</Description>
+        <Description>До сессии менее 24 часов и у клиента уже были списаны деньги. Если хотите отменить сессию, обратитесь в поддержку</Description>
         <Actions>
           <Yes onClick={redirectToSupport}>Написать в поддержку</Yes>
         </Actions>
@@ -41,7 +41,7 @@ const Header = styled.div`
   font-family: Roboto Slab;
   font-size: 20px;
   line-height: 26px;
-  color: #7d36a8;
+  color: #783D9D;
   margin-bottom: 12px;
   ${MediaRange.lessThan("mobile")`
     margin-top: 30px;

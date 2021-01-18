@@ -81,7 +81,7 @@ const Time = styled.div`
   font-size: 20px;
   line-height: 26px;
   text-align: right;
-  color: #7d36a8;
+  color: #783D9D;
   margin-bottom: 23px;
   ${MediaRange.lessThan("mobile")`
     font-size: 16px;

@@ -12,7 +12,7 @@ type UserHeaderProps = {
   userAvatar: string | null
   userName: string
   rating: string | null
-  sessionsCount: number
+  sessionsCount?: number
   onWrite: (id: number | null) => void
   hasUser: boolean
   userLink: string

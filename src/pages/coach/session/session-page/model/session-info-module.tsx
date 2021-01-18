@@ -65,7 +65,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
       userName: `${user?.firstName} ${user?.lastName}`,
       userLink: config.type === "coach" ? routeNames.coachClientProfile(`${user?.id}`) : routeNames.searchCoachPage(`${user?.id}`),
       rating: user?.rating ? (user?.rating).toString().replace(/\./gm, ",") : null,
-      sessionsCount: 0,
+      sessionsCount: session?.mutualSessionsCount,
 
       duration: durations[session?.durationType || "D30"],
       cost: session?.clientPrice || 0,

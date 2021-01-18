@@ -6,7 +6,7 @@ import * as React from "react"
 
 const Container = styled.div`
   ${MediaRange.lessThan("mobile")`
-    margin-left: -10px;
+    // margin-left: -10px;
   `}
 `
 

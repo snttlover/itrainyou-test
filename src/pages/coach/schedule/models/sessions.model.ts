@@ -44,7 +44,10 @@ forward({
   to: [toasts.remove, toasts.add],
 })
 
-const removeFailedMessage: Toast = { type: "error", text: "Вы не можете удалить сессию" }
+const removeFailedMessage: Toast = {
+  type: "error",
+  text: "Сессия уже забронирована и до нее меньше 24 часов. Обратитесь в поддержку для отмены сессии"
+}
 forward({
   from: removeSessionFx.failData.map(_ => removeFailedMessage),
   to: [toasts.remove, toasts.add],
