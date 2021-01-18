@@ -72,8 +72,8 @@ const getText = (
 
     if (is("CANCEL", "DENIED", "COMPLETED")) {
       return `${request.receiverCoach?.firstName} не подтвердил${
-        request.receiverCoach?.sex === "F" ? "a" : ""
-      } запрос на бронирование сессии`
+        request.receiverCoach?.sex === "F" ? "а" : ""
+      } отмену сессии. Сессия состоится`
     }
 
     if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
@@ -197,8 +197,8 @@ const getText = (
 
     if (is("CANCEL", "DENIED", "COMPLETED")) {
       return `${request.receiverCoach?.firstName} не подтвердил${
-        request.receiverCoach?.sex === "F" ? "a" : ""
-      } запрос на бронирование сессии`
+        request.receiverCoach?.sex === "F" ? "а" : ""
+      } отмену сессии. Сессия состоится`
     }
 
     if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
@@ -217,9 +217,7 @@ const getText = (
     }
 
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} отменил${
-        request.receiverCoach?.sex === "F" ? "a" : ""
-      } сессию. Деньги были возвращены на карту.`
+      return "Сессия успешно отменена"
     }
 
     if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
@@ -253,10 +251,6 @@ const getText = (
 
     if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
       return "Сессия прошла успешно?"
-    }
-
-    if (is("CANCEL", "DENIED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} не согласился на отмену сессии`
     }
 
     if (is("CANCEL", "APPROVED", "COMPLETED")) {

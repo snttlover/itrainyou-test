@@ -34,12 +34,7 @@ const Container = styled.div<{ nosessions: boolean }>`
   `}
 `
 
-const ContentContainerWithoutCentering = styled(ContentContainer)`
-  margin-left: 0;
-`
-
-const Sessions = () => {
-
+const useSessions = () => {
   const hasToday = useStore($hasTodaySessions)
   const hasStarted = useStore($hasStartedSessions)
   const hasNewest = useStore($hasNewestParticipantsList)
@@ -47,29 +42,30 @@ const Sessions = () => {
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
   const isFilledScheduleNoHasSessions = noHasSessions && isFilledSchedule
   const EmptySessionsWith = () => {
-
     return (
       <>
         {!isFilledSchedule && <FillOutSchedule/>}
         {isFilledScheduleNoHasSessions && <FilledOutNoResponses/>}
-        <ContentContainerWithoutCentering>
+        <ContentContainer>
           <EmptySessions/>
-        </ContentContainerWithoutCentering>
+        </ContentContainer>
       </>
     )
   }
-
-
-  return (
-    <>
-      {noHasSessions && <EmptySessionsWith />}
-      <ContentContainerWithoutCentering>
+  return {
+    MainSessions: () => (
+      <>
         {hasStarted && <StartedSessions />}
         {hasToday && <TodaySessions />}
         {hasNewest && <NewestParticipants />}
-      </ContentContainerWithoutCentering>
-    </>
-  )
+      </>
+    ),
+    Onbordings: () => (
+      <>
+        {noHasSessions && <EmptySessionsWith />}
+      </>
+    )
+  }
 }
 
 export const CoachSessionsPage = () => {
@@ -80,9 +76,21 @@ export const CoachSessionsPage = () => {
   const hasStarted = useStore($hasStartedSessions)
   const hasNewest = useStore($hasNewestParticipantsList)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
+
+  const {MainSessions, Onbordings} = useSessions()
+
   useEffect(() => {
     _mounted()
   }, [])
 
-  return <Container nosessions={noHasSessions}>{pageLoading ? <Loader /> : <Sessions />}</Container>
+  return (
+    <>
+      <Onbordings/>
+      <ContentContainer>
+        <Container nosessions={noHasSessions}>
+          {pageLoading ? <Loader /> : <MainSessions />}
+        </Container>
+      </ContentContainer>
+    </>
+  )
 }

@@ -70,21 +70,21 @@ const CurrentState = () => {
   const state = useStore($coachHomeState)
   return (
     <>
-      {state === "profile-fill" && (
-        <ContentContainer>
+      <ContentContainer>
+        {state === "profile-fill" && (
           <Container>
             <Title>У вас пока закрыт доступ к функционалу коуча</Title>
             <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
             <CoachGetAccess />
           </Container>
-        </ContentContainer>
-      )}
-      {state === "approve-wait" && <AwaitingApproval />}
-      {state === "forever-rejected" && <ApprovalFailing />}
-      {state === "temporary-rejected-wait" && <ApprovalTimer />}
-      {state === "temporary-rejected-done" && <ApprovalTimerOver />}
-      {state === "yandex-kassa-completed" && <YandexKassaWaitingForApproval />}
-      {state === "yandex-kassa-not-approved" && <YandexKassaInstructions />}
+        )}
+        {state === "approve-wait" && <AwaitingApproval />}
+        {state === "forever-rejected" && <ApprovalFailing />}
+        {state === "temporary-rejected-wait" && <ApprovalTimer />}
+        {state === "temporary-rejected-done" && <ApprovalTimerOver />}
+        {state === "yandex-kassa-completed" && <YandexKassaWaitingForApproval />}
+        {state === "yandex-kassa-not-approved" && <YandexKassaInstructions />}
+      </ContentContainer>
       {state === "approved" && <CoachSessionsPage />}
     </>
   )
