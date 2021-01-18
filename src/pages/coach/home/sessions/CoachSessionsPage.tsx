@@ -9,7 +9,7 @@ import {
   mounted
 } from "./coach-sessions-page.model"
 import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySessions"
-import { useEvent, useGate, useStore } from "effector-react"
+import { useEvent, useStore } from "effector-react"
 import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
 import { $hasStartedSessions } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
 import { Loader } from "@/components/spinner/Spinner"
@@ -34,6 +34,10 @@ const Container = styled.div<{ nosessions: boolean }>`
   `}
 `
 
+const ContentContainerWithoutCentering = styled(ContentContainer)`
+  margin-left: 0;
+`
+
 const Sessions = () => {
 
   const hasToday = useStore($hasTodaySessions)
@@ -48,21 +52,22 @@ const Sessions = () => {
       <>
         {!isFilledSchedule && <FillOutSchedule/>}
         {isFilledScheduleNoHasSessions && <FilledOutNoResponses/>}
-        <ContentContainer>
+        <ContentContainerWithoutCentering>
           <EmptySessions/>
-        </ContentContainer>
+        </ContentContainerWithoutCentering>
       </>
     )
   }
 
+
   return (
     <>
       {noHasSessions && <EmptySessionsWith />}
-      <ContentContainer>
+      <ContentContainerWithoutCentering>
         {hasStarted && <StartedSessions />}
         {hasToday && <TodaySessions />}
         {hasNewest && <NewestParticipants />}
-      </ContentContainer>
+      </ContentContainerWithoutCentering>
     </>
   )
 }
@@ -75,7 +80,6 @@ export const CoachSessionsPage = () => {
   const hasStarted = useStore($hasStartedSessions)
   const hasNewest = useStore($hasNewestParticipantsList)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
-
   useEffect(() => {
     _mounted()
   }, [])
