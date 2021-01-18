@@ -94,7 +94,7 @@ const SecondStep = styled.div`
   align-items: flex-start;
   margin-bottom: 32px;
   justify-content: flex-start;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: repeat-x;
   background-image: url(${waveImg});
@@ -125,6 +125,7 @@ const SecondStepTextPart = styled.div`
 const SecondStepContentContainer = styled(ContentContainer)`
   display: flex;
   flex-direction: column;
+  margin-left: 0;
   ${MediaRange.lessThan("mobile")`
     align-items: flex-start;
     // padding: 0;
@@ -183,6 +184,7 @@ const FirstStep = styled(ContentContainer)`
   width: 100%;
   align-items: flex-start;
   margin-bottom: 73px;
+  margin-left: 0;
   ${MediaRange.lessThan("mobile")`
     flex-direction: column-reverse;
     margin-bottom: 0px;

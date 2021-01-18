@@ -133,7 +133,9 @@ export const HomePage = () => {
           </Block>
         </ContentContainer>
 
-      ) : <Onboarding/>}
+      ) : 
+        todaySessionsPending ? 
+          <Loader/> : <Onboarding/>}
 
       <ContentContainer>
         <Block>

@@ -3,7 +3,11 @@ import { StartedSessions } from "@/pages/coach/home/sessions/content/started/Sta
 import { NewestParticipants } from "@/pages/coach/home/sessions/content/newest-participants/NewestParticipants"
 import { MediaRange } from "@/lib/responsive/media"
 import React, { useEffect } from "react"
-import { $coachSessionsPageLoading, $isCoachScheduleFilled, mounted } from "./coach-sessions-page.model"
+import {
+  $coachSessionsPageLoading,
+  $isCoachScheduleFilled,
+  mounted
+} from "./coach-sessions-page.model"
 import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySessions"
 import { useEvent, useStore } from "effector-react"
 import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
@@ -30,6 +34,10 @@ const Container = styled.div<{ nosessions: boolean }>`
   `}
 `
 
+const ContentContainerWithoutCentering = styled(ContentContainer)`
+  margin-left: 0;
+`
+
 const Sessions = () => {
 
   const hasToday = useStore($hasTodaySessions)
@@ -38,26 +46,28 @@ const Sessions = () => {
   const isFilledSchedule = useStore($isCoachScheduleFilled)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
   const isFilledScheduleNoHasSessions = noHasSessions && isFilledSchedule
-
   const EmptySessionsWith = () => {
 
     return (
       <>
         {!isFilledSchedule && <FillOutSchedule/>}
         {isFilledScheduleNoHasSessions && <FilledOutNoResponses/>}
-        <ContentContainer>
+        <ContentContainerWithoutCentering>
           <EmptySessions/>
-        </ContentContainer>
+        </ContentContainerWithoutCentering>
       </>
     )
   }
 
+
   return (
     <>
       {noHasSessions && <EmptySessionsWith />}
-      {hasStarted && <StartedSessions />}
-      {hasToday && <TodaySessions />}
-      {hasNewest && <NewestParticipants />}
+      <ContentContainerWithoutCentering>
+        {hasStarted && <StartedSessions />}
+        {hasToday && <TodaySessions />}
+        {hasNewest && <NewestParticipants />}
+      </ContentContainerWithoutCentering>
     </>
   )
 }
@@ -70,7 +80,6 @@ export const CoachSessionsPage = () => {
   const hasStarted = useStore($hasStartedSessions)
   const hasNewest = useStore($hasNewestParticipantsList)
   const noHasSessions = !hasToday && !hasStarted && !hasNewest
-
   useEffect(() => {
     _mounted()
   }, [])
