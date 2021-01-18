@@ -12,10 +12,9 @@ import { CoachGetAccess } from "@/pages/coach/home/get-access/CoachGetAccess"
 import { CoachSessionsPage } from "@/pages/coach/home/sessions/CoachSessionsPage"
 import { YandexKassaInstructions } from "@/pages/coach/home/yandex-kassa-not-approved/YandexKassaInstructions"
 import { YandexKassaWaitingForApproval } from "@/pages/coach/home/yandex-kassa-not-approved/YandexKassaWaitingForApproval"
-import { createGate, useGate, useStore } from "effector-react"
+import { useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import { forward } from "effector/compat"
 import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 
 const Container = styled.div`
