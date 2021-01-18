@@ -103,6 +103,7 @@ export const HomePage = () => {
     e.preventDefault()
   }
 
+
   return (
     <ClientDashboardLayout>
       <ContentContainer>
@@ -133,7 +134,9 @@ export const HomePage = () => {
           </Block>
         </ContentContainer>
 
-      ) : <Onboarding/>}
+      ) : 
+        todaySessionsPending ? 
+          <Loader/> : <Onboarding/>}
 
       <ContentContainer>
         <Block>

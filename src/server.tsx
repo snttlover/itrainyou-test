@@ -169,7 +169,7 @@ function getAnalyticsTags() {
        });
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/68738200" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->\`
+    <!-- /Yandex.Metrika counter -->\
   `
 }
 
@@ -182,7 +182,7 @@ function htmlStart(assetsCss: string, assetsJs: string, css: string) {
         <title>Itrainyou</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">     
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,600|Roboto:300,400,500,700,900&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
-        ${ config.SERVER_TYPE === "production" ? getAnalyticsTags(): ""}  
+        ${ config.SERVER_TYPE === "production" ? getAnalyticsTags() : ""}  
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ""}
         <script>window.env = ${serialize(config)};</script>
         ${

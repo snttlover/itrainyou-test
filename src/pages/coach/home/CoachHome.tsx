@@ -12,9 +12,10 @@ import { CoachGetAccess } from "@/pages/coach/home/get-access/CoachGetAccess"
 import { CoachSessionsPage } from "@/pages/coach/home/sessions/CoachSessionsPage"
 import { YandexKassaInstructions } from "@/pages/coach/home/yandex-kassa-not-approved/YandexKassaInstructions"
 import { YandexKassaWaitingForApproval } from "@/pages/coach/home/yandex-kassa-not-approved/YandexKassaWaitingForApproval"
-import { useStore } from "effector-react"
+import { useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
+import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 
 const Container = styled.div`
   max-width: 640px;
@@ -69,21 +70,21 @@ const CurrentState = () => {
   const state = useStore($coachHomeState)
   return (
     <>
-      {state === "profile-fill" && (
-        <ContentContainer>
+      <ContentContainer>
+        {state === "profile-fill" && (
           <Container>
             <Title>У вас пока закрыт доступ к функционалу коуча</Title>
             <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
             <CoachGetAccess />
           </Container>
-        </ContentContainer>
-      )}
-      {state === "approve-wait" && <AwaitingApproval />}
-      {state === "forever-rejected" && <ApprovalFailing />}
-      {state === "temporary-rejected-wait" && <ApprovalTimer />}
-      {state === "temporary-rejected-done" && <ApprovalTimerOver />}
-      {state === "yandex-kassa-completed" && <YandexKassaWaitingForApproval />}
-      {state === "yandex-kassa-not-approved" && <YandexKassaInstructions />}
+        )}
+        {state === "approve-wait" && <AwaitingApproval />}
+        {state === "forever-rejected" && <ApprovalFailing />}
+        {state === "temporary-rejected-wait" && <ApprovalTimer />}
+        {state === "temporary-rejected-done" && <ApprovalTimerOver />}
+        {state === "yandex-kassa-completed" && <YandexKassaWaitingForApproval />}
+        {state === "yandex-kassa-not-approved" && <YandexKassaInstructions />}
+      </ContentContainer>
       {state === "approved" && <CoachSessionsPage />}
     </>
   )
@@ -91,6 +92,8 @@ const CurrentState = () => {
 
 export const CoachHome = () => {
   const isUserDataLoading = useStore(getMyUserFx.pending)
+
+  useGate(CoachHomeGate)
 
   return (
     <CoachDashboardLayout>
