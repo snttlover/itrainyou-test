@@ -236,6 +236,7 @@ const Star = styled.img.attrs({ src: starIcon })`
 
 const Date = styled.span`
   margin-top: auto;
+  padding: 25px 0 5px 10px;
   font-size: 10px;
   line-height: 12px;
   display: flex;
