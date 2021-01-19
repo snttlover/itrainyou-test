@@ -44,8 +44,13 @@ const useSessions = () => {
   const EmptySessionsWith = () => {
     return (
       <>
-        {!isFilledSchedule && <FillOutSchedule/>}
-        {isFilledScheduleNoHasSessions && <FilledOutNoResponses/>}
+        {
+          !isFilledSchedule && <FillOutSchedule/>
+        }
+        {
+          isFilledScheduleNoHasSessions && <FilledOutNoResponses/>
+        }
+
         <ContentContainer>
           <EmptySessions/>
         </ContentContainer>
