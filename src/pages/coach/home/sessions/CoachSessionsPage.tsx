@@ -85,6 +85,8 @@ export const CoachSessionsPage = () => {
 
   const {MainSessions, Onbordings} = useSessions()
 
+  const showComponentOrLoader = (Component: React.FC) => (pageLoading || isFirstRender) ? <Loader/> : <Component/>
+
   useEffect(() => {
     _mounted()
     setIsFirstRender(false)
@@ -92,10 +94,10 @@ export const CoachSessionsPage = () => {
 
   return (
     <>
-      {(pageLoading || isFirstRender) ? <Loader /> : <Onbordings/>}
+      {showComponentOrLoader(Onbordings)}
       <ContentContainer>
         <Container nosessions={noHasSessions}>
-          {(pageLoading || isFirstRender) ? <Loader /> : <MainSessions />}
+          {showComponentOrLoader(MainSessions)}
         </Container>
       </ContentContainer>
     </>
