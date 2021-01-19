@@ -92,7 +92,7 @@ export const CoachSessionsPage = () => {
 
   return (
     <>
-      <Onbordings/>
+      {(pageLoading || isFirstRender) ? <Loader /> : <Onbordings/>}
       <ContentContainer>
         <Container nosessions={noHasSessions}>
           {(pageLoading || isFirstRender) ? <Loader /> : <MainSessions />}
