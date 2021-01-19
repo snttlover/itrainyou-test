@@ -82,8 +82,8 @@ export const SelectImage = ({ open, error }: { open: () => void; error: "large-f
     {error === "large-file" && <ErrorText>Слишком большой файл</ErrorText>}
     {error === "mime-type" && <ErrorText>Файл не того типа</ErrorText>}
 
-    {!error && <Warning>*Максимальный размер 2 Мбайта</Warning>}
-    {error === "large-file" && <Warning>Максимальный размер 2 Мбайта</Warning>}
+    {!error && <Warning>*Максимальный размер 100 Мбайт</Warning>}
+    {error === "large-file" && <Warning>Максимальный размер 100 Мбайт</Warning>}
     {error === "mime-type" && <Warning>Вы можете загрузить фотографию в формате PNG, JPG или GIF</Warning>}
     <SelectPhotoButton onClick={open}>Выберите фотографию</SelectPhotoButton>
     <DragText>
