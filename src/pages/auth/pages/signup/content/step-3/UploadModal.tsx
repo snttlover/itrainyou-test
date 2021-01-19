@@ -118,6 +118,7 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
     reader.addEventListener("load", () => {
       setImage(reader.result as string)
     })
+
     reader.readAsDataURL(acceptedFiles[0])
   }, [])
 
