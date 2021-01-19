@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { StartedSessions } from "@/pages/coach/home/sessions/content/started/StartedSessions"
 import { NewestParticipants } from "@/pages/coach/home/sessions/content/newest-participants/NewestParticipants"
 import { MediaRange } from "@/lib/responsive/media"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import {
   $coachSessionsPageLoading,
   $isCoachScheduleFilled,
@@ -74,6 +74,7 @@ const useSessions = () => {
 }
 
 export const CoachSessionsPage = () => {
+  const [isFirstRender, setIsFirstRender] = useState(true)
   const pageLoading = useStore($coachSessionsPageLoading)
   const _mounted = useEvent(mounted)
 
@@ -86,6 +87,7 @@ export const CoachSessionsPage = () => {
 
   useEffect(() => {
     _mounted()
+    setIsFirstRender(false)
   }, [])
 
   return (
@@ -93,7 +95,7 @@ export const CoachSessionsPage = () => {
       <Onbordings/>
       <ContentContainer>
         <Container nosessions={noHasSessions}>
-          {pageLoading ? <Loader /> : <MainSessions />}
+          {(pageLoading || isFirstRender) ? <Loader /> : <MainSessions />}
         </Container>
       </ContentContainer>
     </>
