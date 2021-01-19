@@ -147,7 +147,7 @@ export const Filters = () => {
           <PriceFilter />
           <ReviewFilter />
           <DateFilter />
-          <OnlyTopCoachCheckbox />
+          {/*<OnlyTopCoachCheckbox />*/}
           <ResetFiltersButton />
         </Container>
       </StyledSimpleBar>
