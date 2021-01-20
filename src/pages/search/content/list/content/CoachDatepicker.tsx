@@ -418,7 +418,7 @@ const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
 export const CoachDatepicker = (props: SelectDatetimeTypes) => {
-  const [currentDate, changeCurrentDate] = useState<Date | null>(null)
+  const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
   const _showCreditCardsModal = (function(){
     return useEvent(showCreditCardsModal)
   })()
@@ -435,7 +435,10 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const enabledDates = sessions.map(session => session.startDatetime)
 
   useEffect(() => {
-    changeCurrentDate(date(enabledDates[0]).toDate())
+    changeCurrentDate((prevState) => {
+      if(prevState === undefined) return date(enabledDates[0]).toDate()
+      return prevState
+    })
   }, [enabledDates[0]])
 
   const payForTheSessionHandler = () => {
