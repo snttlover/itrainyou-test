@@ -290,11 +290,12 @@ const getText = (
     }
 
     if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
-      return "Ожидаем, пока клиент подтвердит завершение сессии"
+      return "Ожидаем, когда клиент подтвердит, что сессия завершена успешно, после чего вы получите оплату на следующий рабочий день.\n" +
+              "У клиента есть 24 часа на подтверждение. Если в течение 24 часов клиент не даст подтверждение, система сделает это автоматически."
     }
 
     if (is("CONFIRMATION_COMPLETION", ["APPROVED", "AUTOMATICALLY_APPROVED"], "COMPLETED")) {
-      return "Клиент подтвердил, что сессия прошла успешно! Вам будут переведена оплата"
+      return "Клиент подтвердил, что сессия прошла успешно! Вы получите оплату на следующий рабочий день"
     }
 
     if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {

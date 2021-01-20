@@ -15,6 +15,7 @@ import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { CoachUser } from "@/lib/api/coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { debounce } from "patronum"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
@@ -33,6 +34,7 @@ export type ChatSupportMessage = {
   userAvatar: string | null
   ticketStatus: SupportTicketType
   isReadByYou: boolean
+  needToBlink?: boolean
 }
 
 export type ChatSystemMessage = {
@@ -46,6 +48,7 @@ export type ChatSystemMessage = {
   showButtons: boolean
   date: string
   isReadByYou: boolean
+  needToBlink?: boolean
 }
 
 export type PersonalChatMessage = {
@@ -58,6 +61,7 @@ export type PersonalChatMessage = {
   user: CoachUser | Client | null
   imageIndex: number
   isReadByYou: boolean
+  needToBlink?: boolean
 }
 
 const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
@@ -128,7 +132,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               userName: `${user?.firstName} ${user?.lastName}`,
               userAvatar: user?.avatar || null,
               ticketStatus: message.systemTicketType,
-              isReadByYou: message.isReadByYou
+              isReadByYou: message.isReadByYou,
+              needToBlink: false,
             }
           }
 
@@ -155,6 +160,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 status: message.transactionType,
                 date: message.creationDatetime,
                 isReadByYou: message.isReadByYou,
+                needToBlink: false,
               }
             }
             else {
@@ -169,6 +175,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 status: message?.conflict?.status || message.sessionRequestStatus,
                 date: message.creationDatetime,
                 isReadByYou: message.isReadByYou,
+                needToBlink: false,
               }
             }
           }
@@ -180,6 +187,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             id: message.id,
             isMine,
             isReadByYou: message.isReadByYou,
+            needToBlink: false,
             text: message.text,
             image: message.image,
             time: date(message.creationDatetime).format("HH:mm"),
@@ -193,6 +201,39 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({
     messages: [message.data.id],
   }))
+
+  // @ts-ignore
+  $messages.on(config.socket.events.onMessagesReadDone, (messages, readMessagesId) => {
+    return messages
+      .map(message => {
+        readMessagesId.data.messages.map(readedId => {
+          if (message.id === readedId.id) {
+            message["needToBlink"] = true
+            return message
+          } else {
+            return message
+          }
+        })
+      })
+  })
+
+  /*debounce({
+    source: guard({
+      source: config.socket.events.onMessage,
+      filter: message => {
+        return (
+          ("SYSTEM" === message.data.type ||
+            (config.type === "client" && !!message.data.senderCoach) ||
+            (config.type === "coach" && !!message.data.senderClient)) &&
+          chatId === message.data.chat
+        )
+      },
+    }),
+    timeout: 5000,
+    target: config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({
+      messages: [message.data.id],
+    })),
+  })*/
 
   if (!config.dontRead) {
     guard({
