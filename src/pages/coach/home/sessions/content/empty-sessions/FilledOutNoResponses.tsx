@@ -15,11 +15,12 @@ export function FilledOutNoResponses(){
   const goToClientPageHandler = () => navigate({url: "/client"})
   return (
     <>
-      <FirstStep>
-        <FillOutImg src={fillOutImg}/>
-        <FirstStepTextPart>
-          <Title>Как увидеть, что клиент забронировал сессию?</Title>
-          <FirstStepDescriptionText>Когда клиент забронирует у вас сессию, вам придет запрос на бронирование
+      <ContentContainer>
+        <FirstStep>
+          <FillOutImg src={fillOutImg}/>
+          <FirstStepTextPart>
+            <Title>Как увидеть, что клиент забронировал сессию?</Title>
+            <FirstStepDescriptionText>Когда клиент забронирует у вас сессию, вам придет запрос на бронирование
             сессии во вкладку "Мои клиенты", а также уведомление на ваш e-mail. <br/>
             Обязательно подтвердите или отклоните бронирование. Предоплата спишется
             с клиента автоматически только после вашего подтверждения бронирования
@@ -28,31 +29,43 @@ export function FilledOutNoResponses(){
             Вы получите оплату за сессию автоматически на карту/счет, который
             вы указали при регистрации в ЮКассе,
             в течение 2 рабочих дней после проведения сессии.</FirstStepDescriptionText>
-          <CheckButton onClick={goToClientsHandler}>Проверить запросы</CheckButton>
-        </FirstStepTextPart>
-      </FirstStep>
+            <CheckButton onClick={goToClientsHandler}>Проверить запросы</CheckButton>
+          </FirstStepTextPart>
+        </FirstStep>
+      </ContentContainer>
 
-      <SecondStep>
-        <SecondStepContentContainer>
-          <RowContainer>
-            <SecondStepTextPart>
-              <Title>Проходите сессии, как клиент!</Title>
-              <SecondStepDescription>
-                Пока вы ожидаете запросов на бронирование, вы можете проходить сессии на платформе в качестве клиента <br/>
-              </SecondStepDescription>
-              <SecondStepDescriptionLight>
-                Переключаться с аккаунта коуча на аккаунт клиента вы можете, нажав на
-                стрелочку в правом верхнем углу (справа от фото вашего профиля)
-              </SecondStepDescriptionLight>
-              <GoToFillButton onClick={goToClientPageHandler}>Пройти</GoToFillButton>
-            </SecondStepTextPart>
-            <SwapLoveImg src={swapLoveImg}/>
-          </RowContainer>
-        </SecondStepContentContainer>
-      </SecondStep>
+      <BackgroundContainer>
+        <ContentContainer>
+          <SecondStep>
+            <SecondStepContentContainer>
+              <RowContainer>
+                <SecondStepTextPart>
+                  <Title>Проходите сессии, как клиент!</Title>
+                  <SecondStepDescription>
+                    Пока вы ожидаете запросов на бронирование, вы можете проходить сессии на платформе в качестве клиента <br/>
+                  </SecondStepDescription>
+                  <SecondStepDescriptionLight>
+                    Переключаться с аккаунта коуча на аккаунт клиента вы можете, нажав на
+                    стрелочку в правом верхнем углу (справа от фото вашего профиля)
+                  </SecondStepDescriptionLight>
+                  <GoToFillButton onClick={goToClientPageHandler}>Пройти</GoToFillButton>
+                </SecondStepTextPart>
+                <SwapLoveImg src={swapLoveImg}/>
+              </RowContainer>
+            </SecondStepContentContainer>
+          </SecondStep>
+        </ContentContainer>
+      </BackgroundContainer>
     </>
   )
 }
+
+const BackgroundContainer = styled.div`
+  background-size: contain;
+  background-position: center;
+  background-repeat: repeat-x;
+  background-image: url(${waveImg});
+`
 
 const FirstStepTextPart = styled.div`
   display: flex;
@@ -68,22 +81,29 @@ const FirstStepTextPart = styled.div`
 const FirstStepDescriptionText = styled(Text)`
   line-height: 24px;
   margin-bottom: 36px;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+  `}
 `
 
 const Title = styled.div`
   font-size: 24px;
   font-family: "Roboto Slab";
   margin-bottom: 16px;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 20px;
+  `}
 `
 
 const SecondStepDescription = styled.div`
   font-size: 16px;
   font-family: "Roboto";
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+  `}
 `
 
-const SecondStepDescriptionLight = styled.div`
-  font-size: 16px;
-  font-family: "Roboto";
+const SecondStepDescriptionLight = styled(SecondStepDescription)`
   color: #5B6670;
   margin-bottom: 36px;
 `
@@ -99,8 +119,6 @@ const SecondStep = styled.div`
   background-repeat: repeat-x;
   background-image: url(${waveImg});
   padding: 150px 0 100px 0;
-  ${MediaRange.lessThan("tablet")`
-  `}
   ${MediaRange.lessThan("mobile")`
     padding: 50px 0 60px 0;
     background-size: cover;
@@ -122,14 +140,10 @@ const SecondStepTextPart = styled.div`
   `}
 `
 
-const SecondStepContentContainer = styled(ContentContainer)`
+const SecondStepContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 0;
-  ${MediaRange.lessThan("mobile")`
-    align-items: flex-start;
-    // padding: 0;
-  `}
 `
 
 const RowContainer = styled.div`
@@ -150,6 +164,9 @@ const Button = styled.button`
   font-size: 16px;
   outline: none;
   cursor: pointer;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+  `}
 `
 
 const GoToFillButton = styled(Button)`
@@ -179,7 +196,7 @@ const FillOutImg = styled.img`
   `}
 `
 
-const FirstStep = styled(ContentContainer)`
+const FirstStep = styled.div`
   display: flex;
   width: 100%;
   align-items: flex-start;

@@ -118,11 +118,12 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
     reader.addEventListener("load", () => {
       setImage(reader.result as string)
     })
+
     reader.readAsDataURL(acceptedFiles[0])
   }, [])
 
   const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"]
-  const maxSize = 2097152
+  const maxSize = 104857600
 
   const onDropRejected = useCallback((files: FileRejection[]) => {
     if (files[0].file.size > maxSize) setError("large-file")

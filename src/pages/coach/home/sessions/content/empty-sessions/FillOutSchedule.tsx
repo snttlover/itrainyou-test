@@ -16,40 +16,53 @@ export function FillOutSchedule(){
   const goToClientsHandler = () => navigate({url: "/coach/clients"})
   return (
     <>
-      <FirstStep>
-        <RowContainer>
-          <FirstStepTextPart>
-            <Title>Заполните расписание!</Title>
-            <FirstStepDescription>
-              Составьте свое расписание сессий, чтобы
-              ваш профиль стал виден клиентам
-              и они смогли записываться на ваши сессии
-            </FirstStepDescription>
-            <GoToFillButton onClick={goToFillScheduleHandler}>Заполнить</GoToFillButton>
-          </FirstStepTextPart>
-          <PushImg src={pushImg}/>
-        </RowContainer>
-      </FirstStep>
+      <ContentContainer>
+        <FirstStep>
+          <RowContainer>
+            <FirstStepTextPart>
+              <Title>Заполните расписание!</Title>
+              <FirstStepDescription>
+                Составьте свое расписание сессий, чтобы
+                ваш профиль стал виден клиентам
+                и они смогли записываться на ваши сессии
+              </FirstStepDescription>
+              <GoToFillButton onClick={goToFillScheduleHandler}>Заполнить</GoToFillButton>
+            </FirstStepTextPart>
+            <PushImg src={pushImg}/>
+          </RowContainer>
+        </FirstStep>
+      </ContentContainer>
 
-      <SecondStep>
-        <SecondStepContentContainer>
-          <FillOutImg src={fillOutImg}/>
-          <SecondStepTextPart>
-            <Title>Как увидеть, что клиент
-            забронировал сессию?</Title>
-            <SecondStepDescriptionText>Когда клиент забронирует у вас сессию, вам придет запрос на бронирование сессии во вкладку "Мои клиенты", а также уведомление на ваш e-mail.
-            Обязательно подтвердите или отклоните бронирование. Предоплата спишется с клиента автоматически только после вашего подтверждения бронирования за 24 часа до сессии (или менее, если вы подтвердите бронь позже).
-            Вы получите оплату за сессию автоматически на карту/счет, который вы указали при регистрации в ЮКассе, в течение 2 рабочих дней после проведения сессии.
-            </SecondStepDescriptionText>
-            <div>
-              <CheckButton onClick={goToClientsHandler}>Проверить запросы</CheckButton>
-            </div>
-          </SecondStepTextPart>
-        </SecondStepContentContainer>
-      </SecondStep>
+      <BackgroundContainer>
+        <ContentContainer>
+          <SecondStep>
+            <SecondStepContentContainer>
+              <FillOutImg src={fillOutImg}/>
+              <SecondStepTextPart>
+                <Title>Как увидеть, что клиент
+                забронировал сессию?</Title>
+                <SecondStepDescriptionText>Когда клиент забронирует у вас сессию, вам придет запрос на бронирование сессии во вкладку "Мои клиенты", а также уведомление на ваш e-mail.
+                Обязательно подтвердите или отклоните бронирование. Предоплата спишется с клиента автоматически только после вашего подтверждения бронирования за 24 часа до сессии (или менее, если вы подтвердите бронь позже).
+                Вы получите оплату за сессию автоматически на карту/счет, который вы указали при регистрации в ЮКассе, в течение 2 рабочих дней после проведения сессии.
+                </SecondStepDescriptionText>
+                <div>
+                  <CheckButton onClick={goToClientsHandler}>Проверить запросы</CheckButton>
+                </div>
+              </SecondStepTextPart>
+            </SecondStepContentContainer>
+          </SecondStep>
+        </ContentContainer>
+      </BackgroundContainer>
     </>
   )
 }
+
+const BackgroundContainer = styled.div`
+  background-size: contain;
+  background-position: center;
+  background-repeat: repeat-x;
+  background-image: url(${waveImg});
+`
 
 const SecondStepTextPart = styled.div`
   display: flex;
@@ -63,21 +76,30 @@ const SecondStepTextPart = styled.div`
 const SecondStepDescriptionText = styled(Text)`
   line-height: 24px;
   margin-bottom: 36px;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+  `}
 `
 
 const Title = styled.div`
   font-size: 24px;
   font-family: "Roboto Slab";
   margin-bottom: 16px;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 20px;
+  `}
 `
 
 const FirstStepDescription = styled.div`
   font-family: "Roboto";
   font-size: 16px;
   margin-bottom: 36px;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+  `}
 `
 
-const FirstStep = styled(ContentContainer)`
+const FirstStep = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -105,6 +127,9 @@ const Button = styled.button`
   font-size: 16px;
   outline: none;
   cursor: pointer;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+  `}
 `
 
 const GoToFillButton = styled(Button)`
@@ -144,10 +169,6 @@ const FillOutImg = styled.img`
 `
 
 const SecondStep = styled.div`
-  background-size: contain;
-  background-position: center;
-  background-repeat: repeat-x;
-  background-image: url(${waveImg});
   padding: 150px 0 50px 0;
   margin-bottom: 73px;
   ${MediaRange.lessThan("mobile")`
@@ -158,7 +179,7 @@ const SecondStep = styled.div`
   `}
 `
 
-const SecondStepContentContainer = styled(ContentContainer)`
+const SecondStepContentContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: flex-start;
