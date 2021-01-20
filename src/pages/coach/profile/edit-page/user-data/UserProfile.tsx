@@ -150,7 +150,7 @@ export const UserProfile = () => {
           <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required />
           <AvatarHint>
             <h4>Добавить фото</h4>
-            <p>Формат: jpg, png. Максимальный размер файла: 2Mb. Рекомендованный размер: 200х200 px.</p>
+            <p>Формат: jpg, png. Максимальный размер файла: 100Mb. Рекомендованный размер: 200х200 px.</p>
           </AvatarHint>
         </AvatarWrapper>
         <FormItem label='Имя' error={errors.name} required>

@@ -1,14 +1,26 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
-import { combine, createEffect, createEvent, createStore, forward, guard, merge, restore, sample } from "effector-root"
+import {
+  combine,
+  createEffect,
+  createEvent,
+  createStore,
+  forward,
+  guard,
+  merge,
+  restore,
+  sample,
+  split
+} from "effector-root"
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn } from "@/feature/user/user.model"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
-import { condition } from "patronum"
+import { condition, debounce } from "patronum"
 import { runInScope } from "@/scope"
 import { registerUserFx } from "@/pages/auth/pages/signup/models/units"
+
 
 type SendSocketChatMessage = {
   chat: number
@@ -101,6 +113,10 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     (l, c, user, full) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved) && full
   )*/
 
+  const reportUnknownTypeFx = createEffect({
+    handler: (response: any) => console.log("reportUnknownType", response),
+  })
+
   const $needConnect = combine(
     $isLoggedIn,
     (l) => l
@@ -172,7 +188,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   const $chatsCount = $chatsCounters.map($counters => $counters.length)
 
-  guard({
+  /*guard({
     source: onMessage,
     filter: message =>
       (userType === "client" && !!message.data.senderCoach) ||
@@ -227,7 +243,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     source: socket.events.onMessage,
     filter: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
     target: onSessionStarted,
-  })
+  })*/
 
   sample({
     source: $token,
@@ -237,7 +253,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   })
 
   forward({
-    from: changePasswordFx.done,
+    from: [changePasswordFx.done, logout],
     to: socket.methods.disconnect,
   })
 
@@ -246,10 +262,10 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     to: connect,
   })
 
-  forward({
+  /*forward({
     from: logout,
     to: socket.methods.disconnect,
-  })
+  })*/
 
   const ping = socket.methods.send.prepend(() => ({ type: "PING" }))
 
@@ -273,10 +289,60 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   const changePonged = createEvent<boolean>()
   const $wasPonged = restore(changePonged, true)
 
-  guard({
+  /*guard({
     source: socket.events.onMessage,
     filter: (payload: PongMessage) => payload.type === "PONG",
     target: changePonged.prepend(() => true),
+  })*/
+
+  /*
+  debounce({
+    source: guard({
+      source: socket.events.onMessage,
+      filter: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
+    }),
+    timeout: 10000,
+    target: onMessagesReadDone
+  })*/
+
+  split({
+    source: socket.events.onMessage,
+    match: {
+      onChatCreated: (payload: SocketMessageReceive) => payload.type === "NEW_CHAT_CREATED",
+      onNotification: (payload: SocketMessageReceive) => payload.type === "NEW_NOTIFICATION",
+      onReadNotification: (payload: SocketMessageReceive) => payload.type === "READ_NOTIFICATIONS_DONE",
+      onMessage: (payload: SocketMessageReceive) => payload.type === "WRITE_MESSAGE_DONE",
+      onMessagesReadDone: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
+      changeCountersFromInit: (payload: SocketMessageReceive) => payload.type === "INIT",
+      onSessionStarted: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
+      onPong: (payload: PongMessage) => payload.type === "PONG",
+    },
+    cases: {
+      onChatCreated: onChatCreated,
+      onNotification: onNotification,
+      onReadNotification: onReadNotification,
+      onMessage: onMessage,
+      onMessagesReadDone: onMessagesReadDone,
+      changeCountersFromInit: changeCountersFromInit,
+      onSessionStarted: onSessionStarted,
+      onPong: changePonged.prepend(() => true),
+      __: reportUnknownTypeFx,
+    },
+  })
+
+  split({
+    source: onMessage,
+    match: {
+      onIntercMessage: message =>
+        (userType === "client" && !!message.data.senderCoach) ||
+        (userType === "coach" && !!message.data.senderClient) ||
+        message.data.type === "SYSTEM",
+      onSupportMessage: message => !!message.data.senderSupport,
+    },
+    cases: {
+      onIntercMessage: onIntercMessage,
+      onSupportMessage: onSupportMessage,
+    },
   })
 
   condition({
@@ -306,6 +372,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     events: {
       ...socket.events,
       onMessage,
+      onMessagesReadDone,
       onChatCreated,
       onSessionStarted,
     },
