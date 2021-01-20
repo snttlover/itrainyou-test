@@ -19,7 +19,7 @@ const formatDates = (start: ISODate, end: ISODate) => {
 }
 
 const isStartedSession = (session: DashboardSession) =>
-  date().isBetween(date(session.startDatetime).subtract(5, "minute"), date(session.endDatetime))
+  date().isBetween(date(session.startDatetime).subtract(5, "minute"), date(session.endDatetime).add(10, "minute"))
 
 export const createStartSessionToolbarModel = (config: CreateStartSessionToolbarModelConfig) => {
   const reset = createEvent()
