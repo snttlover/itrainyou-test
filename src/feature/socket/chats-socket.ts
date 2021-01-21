@@ -295,6 +295,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     events: {
       ...socket.events,
       onMessage,
+      onMessagesReadDone,
       onChatCreated,
       onSessionStarted,
     },

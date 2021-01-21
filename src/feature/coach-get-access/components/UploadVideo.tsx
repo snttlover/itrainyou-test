@@ -14,7 +14,9 @@ import { FileRejection, useDropzone } from "react-dropzone"
 import styled from "styled-components"
 import play from "../../../pages/auth/pages/signup/content/step-4/coach/play.svg"
 
-const Video = styled.video`
+const Video = styled.video.attrs({
+  preload:"metadata"
+})`
   max-width: 100%;
   max-height: 100%;
   outline: none;
@@ -193,9 +195,8 @@ export const UploadVideo = () => {
                     .catch(error => console.error(error))
                 }
               }}
-              onPause={() => setIsPlaying(false)}
             >
-              <source src={video} />
+              <source src={video + "#t=3.5"} />
             </Video>
           </VideoContainer>
         )}
