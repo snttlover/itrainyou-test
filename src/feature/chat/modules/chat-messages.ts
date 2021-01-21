@@ -15,6 +15,7 @@ import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { CoachUser } from "@/lib/api/coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
+import { debounce } from "patronum"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
@@ -25,6 +26,7 @@ type CreateChatMessagesModuleTypes = {
   isSupport?: true,
   supportIsMe?: true
 }
+
 
 export type ChatSupportMessage = {
   type: "SUPPORT"
@@ -68,8 +70,17 @@ export type ChatMessagesTypes = ChatSystemMessage | PersonalChatMessage | ChatSu
 
 export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) => {
   const changeId = createEvent<ChatId>()
-  let chatId: ChatId = 0
+  const updateMessages = createEvent<ChatMessage[]>()
   const reset = createEvent()
+  let chatId: ChatId = 0
+  const $readedMessages = createStore<ChatMessage[]>([])
+    .on(config.socket.events.onMessagesReadDone, (state, data) => {
+      const newState = data.data.messages
+      console.log("newState",newState)
+      return state.concat(newState)
+    }).reset(changeId)
+
+
   const $chatId = createStore<ChatId>(0)
     .on(changeId, (_, id) => id)
     .reset(reset)
@@ -83,23 +94,24 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   const addMessage = createEvent<WriteChatMessageDone>()
 
   pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
-
-  /*pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages]).on(config.socket.events.onMessage, (messages, readMessagesId) => {
-    if (readMessagesId.type === "READ_MESSAGES_DONE") {
-      return messages
-        .map(message => {
-          readMessagesId.data.messages.map(readedId => {
-            if (message.id === readedId.id) {
-              message["isReadByYou"] = true
-              return message
-            } else {
-              return message
-            }
-          })
+    .on(updateMessages,(messages,updateMessages) => {
+      const idS = updateMessages.map(upd => upd.id)
+      const newState = messages.map(message => {
+        let isTrue = false
+        idS.map(id => {
+          if (id === message.id) isTrue = true
         })
-    }
-    else { return messages}
-  })*/
+        if (isTrue) {
+          message["isReadByYou"] = true
+          return message
+        }
+        else {
+          return message
+        }
+      })
+
+      return newState
+    })
 
   const $messages = pagination.data.$list.map(messages => {
     const completedStatusesIds = messages
@@ -211,40 +223,11 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     messages: [message.data.id],
   }))
 
-  /*$messages.on(config.socket.events.onMessage, (messages, readMessagesId) => {
-  if (readMessagesId.type === "READ_MESSAGES_DONE") {
-    return messages
-      .map(message => {
-        readMessagesId.data.messages.map(readedId => {
-          if (message.id === readedId.id) {
-            message["isReadByYou"] = true
-            return message
-          } else {
-            return message
-          }
-        })
-      })
-  }
-  else { return messages}
-  })*/
-
-  /*debounce({
-    source: guard({
-      source: config.socket.events.onMessage,
-      filter: message => {
-        return (
-          ("SYSTEM" === message.data.type ||
-            (config.type === "client" && !!message.data.senderCoach) ||
-            (config.type === "coach" && !!message.data.senderClient)) &&
-          chatId === message.data.chat
-        )
-      },
-    }),
-    timeout: 5000,
-    target: config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({
-      messages: [message.data.id],
-    })),
-  })*/
+  debounce({
+    source: $readedMessages,
+    timeout: 500,
+    target: updateMessages,
+  })
 
   if (!config.dontRead) {
     guard({

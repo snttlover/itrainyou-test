@@ -78,23 +78,34 @@ export const $allSessions = combine(
 export const CalendarGate = createGate()
 const loadSessions = createEvent()
 
-/*export const loadSessionsWithParamsFx = attach({
+export const loadSessionsWithParamsFx = attach({
   effect: loadSessionsFx,
+  // @ts-ignore
   source: combine(
     {
       from: $monthStartDate,
       to: $monthEndDate,
     },
-    ({ from, to }) => ({
-      from: from.toISOString(),
-      to: to.toISOString(),
-    })
+    ({ from, to }) => {
+      // @ts-ignore
+      if( isNaN(from) || isNaN(to) ) {
+        return {
+          from: from,
+          to: to,
+        }
+      }
+      else {
+        return {
+          from: from.toISOString(),
+          to: to.toISOString(),
+        }
+      }}
   ),
   mapParams: (_, data) => ({ ...data }),
-})*/
+})
 
 
-export const loadSessionsWithParamsFx = attach({
+/*export const loadSessionsWithParamsFx = attach({
   effect: loadSessionsFx,
   // @ts-ignore
   source: combine(
@@ -110,7 +121,7 @@ export const loadSessionsWithParamsFx = attach({
       }}
   ),
   mapParams: (_, data) => ({ ...data }),
-})
+})*/
 
 forward({
   from: merge([loadSessions, setCurrentMonth, CalendarGate.open]),

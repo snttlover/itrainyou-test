@@ -26,20 +26,9 @@ export const ChatMessageSwitcher = ({
   imageClick?: (index: number) => void
 }) => {
 
-  const [readed, readMessages] = useState<boolean>(false)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      readMessages(true)
-    }, 500)
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [])
-
   if (message.type === "SUPPORT") {
     return (
-      <StyledUnreadMessage readed={readed || message.isReadByYou}>
+      <StyledUnreadMessage readed={message.isReadByYou}>
         <SupportMessageSwitcher {...message} />
       </StyledUnreadMessage>
     )
@@ -47,7 +36,7 @@ export const ChatMessageSwitcher = ({
 
   if (message.type === "TEXT") {
     return (
-      <StyledUnreadMessage readed={readed || message.isReadByYou}>
+      <StyledUnreadMessage readed={message.isReadByYou}>
         <ChatMessage
           user={message.user}
           showUser={showUser}
@@ -64,7 +53,7 @@ export const ChatMessageSwitcher = ({
   }
 
   return (
-    <StyledUnreadMessage readed={readed || message.isReadByYou}>
+    <StyledUnreadMessage readed={message.isReadByYou}>
       <SystemMessageSwitcher
         message={message}
         isSystemChat={isSystemChat}
