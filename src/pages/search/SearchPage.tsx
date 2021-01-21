@@ -15,7 +15,6 @@ import { useLocation } from "react-router-dom"
 
 const StyledPageContainer = styled(PageContainer)`
   display: flex;
-  margin-left: 0;
 `
 
 const ContentWrapper = styled.div`
