@@ -80,15 +80,26 @@ const loadSessions = createEvent()
 
 export const loadSessionsWithParamsFx = attach({
   effect: loadSessionsFx,
+  // @ts-ignore
   source: combine(
     {
       from: $monthStartDate,
       to: $monthEndDate,
     },
-    ({ from, to }) => ({
-      from: from.toISOString(),
-      to: to.toISOString(),
-    })
+    ({ from, to }) => {
+      // @ts-ignore
+      if( isNaN(from) || isNaN(to) ) {
+        return {
+          from: from,
+          to: to,
+        }
+      }
+      else {
+        return {
+          from: from.toISOString(),
+          to: to.toISOString(),
+        }
+      }}
   ),
   mapParams: (_, data) => ({ ...data }),
 })

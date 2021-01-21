@@ -78,7 +78,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       const newState = data.data.messages
       console.log("newState",newState)
       return state.concat(newState)
-    }).reset(reset)
+    }).reset(changeId)
 
 
   const $chatId = createStore<ChatId>(0)
@@ -112,23 +112,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
       return newState
     })
-
-  /*pagination.data.$list.on(readMessage, (messages, message) => [message.data, ...messages]).on(config.socket.events.onMessage, (messages, readMessagesId) => {
-    if (readMessagesId.type === "READ_MESSAGES_DONE") {
-      return messages
-        .map(message => {
-          readMessagesId.data.messages.map(readedId => {
-            if (message.id === readedId.id) {
-              message["isReadByYou"] = true
-              return message
-            } else {
-              return message
-            }
-          })
-        })
-    }
-    else { return messages}
-  })*/
 
   const $messages = pagination.data.$list.map(messages => {
     const completedStatusesIds = messages
@@ -240,62 +223,11 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     messages: [message.data.id],
   }))
 
-  /*pagination.data.$list.on(config.socket.events.onMessagesReadDone, (messages, readMessagesId) => {
-    console.log(messages)
-        return messages
-          .map(message => {
-            readMessagesId.data.messages.map(readedId => {
-              if (message.id === readedId.id) {
-                message["isReadByYou"] = true
-                return message
-              } else {
-                return message
-              }
-            })
-          })
-
-    })*/
-
-  /*pagination.data.$list.on(config.socket.events.onMessagesReadDone, (messages, readMessagesId) => {
-    return messages
-      .map(message => {
-        readMessagesId.data.messages.map(readedId => {
-          if (message.id === readedId.id) {
-            message["isReadByYou"] = true
-            return message
-          } else {
-            return message
-          }
-        })
-      })
-  })*/
-
-  config.socket.events.onMessagesReadDone.watch(messages => console.log("OnMessagesReadDone",messages))
-  pagination.data.$list.watch(messages => console.log("watcher",messages))
-  /*$messages.on(config.socket.events.onMessage, (messages, readMessagesId) => {
-  if (readMessagesId.type === "READ_MESSAGES_DONE") {
-    return messages
-      .map(message => {
-        readMessagesId.data.messages.map(readedId => {
-          if (message.id === readedId.id) {
-            message["isReadByYou"] = true
-            return message
-          } else {
-            return message
-          }
-        })
-      })
-  }
-  else { return messages}
-  })*/
-
   debounce({
     source: $readedMessages,
-    timeout: 5000,
+    timeout: 500,
     target: updateMessages,
   })
-
-  updateMessages.watch(resp => console.log("updateMessages",resp))
 
   if (!config.dontRead) {
     guard({
