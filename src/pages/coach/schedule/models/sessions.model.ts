@@ -78,7 +78,7 @@ export const $allSessions = combine(
 export const CalendarGate = createGate()
 const loadSessions = createEvent()
 
-export const loadSessionsWithParamsFx = attach({
+/*export const loadSessionsWithParamsFx = attach({
   effect: loadSessionsFx,
   source: combine(
     {
@@ -89,6 +89,25 @@ export const loadSessionsWithParamsFx = attach({
       from: from.toISOString(),
       to: to.toISOString(),
     })
+  ),
+  mapParams: (_, data) => ({ ...data }),
+})*/
+
+
+export const loadSessionsWithParamsFx = attach({
+  effect: loadSessionsFx,
+  // @ts-ignore
+  source: combine(
+    {
+      from: $monthStartDate,
+      to: $monthEndDate,
+    },
+    ({ from, to }) => {
+      console.log("from and to", from,to)
+      return {
+        from: from,
+        to: to,
+      }}
   ),
   mapParams: (_, data) => ({ ...data }),
 })

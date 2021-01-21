@@ -151,6 +151,8 @@ export const Form = () => {
   const _supervisionsChanged = useEvent(supervisionsChanged)
   const _socialNetworkChanged = useEvent(socialNetworkChanged)
 
+  const maxSize = 104857600
+
   const onDropAccepted = useCallback(acceptedFiles => {
     acceptedFiles.forEach(_photoUploadFx)
   }, [])
@@ -159,7 +161,7 @@ export const Form = () => {
     onDropAccepted,
     multiple: true,
     noClick: true,
-    maxSize: 2097152,
+    maxSize,
     accept: ["image/gif", "image/png", "image/jpg", "image/jpeg"],
   })
   

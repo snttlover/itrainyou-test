@@ -243,6 +243,11 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     changeCurrentDate(date(enabledDates[0]).toDate())
   }, [activeTab, enabledDates[0]])
 
+  const payForTheSessionHandler = () => {
+    _showCreditCardsModal()
+    changeCurrentDate(null)
+  }
+
   const formattedDate = date(currentDate || date()).format("DD MMMM")
   const currentDateEqual = date(currentDate || date()).format(equalDateFormat)
 
@@ -321,7 +326,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
               <IsAuthed>
                 <Button
                   disabled={buyLoading || selected.length === 0}
-                  onClick={() => _showCreditCardsModal()}
+                  onClick={payForTheSessionHandler}
                 >
                   Забронировать
                 </Button>

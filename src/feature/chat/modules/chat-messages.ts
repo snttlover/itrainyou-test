@@ -84,6 +84,23 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
 
+  /*pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages]).on(config.socket.events.onMessage, (messages, readMessagesId) => {
+    if (readMessagesId.type === "READ_MESSAGES_DONE") {
+      return messages
+        .map(message => {
+          readMessagesId.data.messages.map(readedId => {
+            if (message.id === readedId.id) {
+              message["isReadByYou"] = true
+              return message
+            } else {
+              return message
+            }
+          })
+        })
+    }
+    else { return messages}
+  })*/
+
   const $messages = pagination.data.$list.map(messages => {
     const completedStatusesIds = messages
       .filter(message => message.sessionRequestStatus === "COMPLETED" && message.sessionRequest)
@@ -128,7 +145,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               userName: `${user?.firstName} ${user?.lastName}`,
               userAvatar: user?.avatar || null,
               ticketStatus: message.systemTicketType,
-              isReadByYou: message.isReadByYou
+              isReadByYou: message.isReadByYou,
             }
           }
 
@@ -193,6 +210,41 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({
     messages: [message.data.id],
   }))
+
+  /*$messages.on(config.socket.events.onMessage, (messages, readMessagesId) => {
+  if (readMessagesId.type === "READ_MESSAGES_DONE") {
+    return messages
+      .map(message => {
+        readMessagesId.data.messages.map(readedId => {
+          if (message.id === readedId.id) {
+            message["isReadByYou"] = true
+            return message
+          } else {
+            return message
+          }
+        })
+      })
+  }
+  else { return messages}
+  })*/
+
+  /*debounce({
+    source: guard({
+      source: config.socket.events.onMessage,
+      filter: message => {
+        return (
+          ("SYSTEM" === message.data.type ||
+            (config.type === "client" && !!message.data.senderCoach) ||
+            (config.type === "coach" && !!message.data.senderClient)) &&
+          chatId === message.data.chat
+        )
+      },
+    }),
+    timeout: 5000,
+    target: config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({
+      messages: [message.data.id],
+    })),
+  })*/
 
   if (!config.dontRead) {
     guard({

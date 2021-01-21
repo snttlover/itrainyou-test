@@ -1,14 +1,27 @@
 import { createSocket } from "@/feature/socket/create-socket"
 import { ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { config } from "@/config"
-import { combine, createEffect, createEvent, createStore, forward, guard, merge, restore, sample } from "effector-root"
+import {
+  combine,
+  createEffect,
+  createEvent,
+  createStore,
+  forward,
+  guard,
+  merge,
+  restore,
+  sample,
+  split
+} from "effector-root"
 import { $token, logout } from "@/lib/network/token"
 import { $isLoggedIn } from "@/feature/user/user.model"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
-import { condition } from "patronum"
+import { condition, debounce } from "patronum"
 import { runInScope } from "@/scope"
 import { registerUserFx } from "@/pages/auth/pages/signup/models/units"
+
+
 
 type SendSocketChatMessage = {
   chat: number
@@ -28,7 +41,7 @@ type ChatCounter = {
 
 type InitMessage = {
   type: "INIT"
-  data: { unreadChats: ChatCounter[]; newNotificationsCount: number }
+  data: { unreadChats: ChatCounter[]; newNotificationsCount: number; activeSessions: DashboardSession }
 }
 
 type MessagesReadDone = {
@@ -101,6 +114,10 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     (l, c, user, full) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved) && full
   )*/
 
+  const reportUnknownTypeFx = createEffect({
+    handler: (response: any) => console.log("reportUnknownType", response),
+  })
+
   const $needConnect = combine(
     $isLoggedIn,
     (l) => l
@@ -172,63 +189,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   const $chatsCount = $chatsCounters.map($counters => $counters.length)
 
-  guard({
-    source: onMessage,
-    filter: message =>
-      (userType === "client" && !!message.data.senderCoach) ||
-      (userType === "coach" && !!message.data.senderClient) ||
-      message.data.type === "SYSTEM",
-    target: onIntercMessage,
-  })
-
-  guard({
-    source: onMessage,
-    filter: message => !!message.data.senderSupport,
-    target: onSupportMessage,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "NEW_CHAT_CREATED",
-    target: onChatCreated,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "NEW_NOTIFICATION",
-    target: onNotification,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "READ_NOTIFICATIONS_DONE",
-    target: onReadNotification,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "WRITE_MESSAGE_DONE",
-    target: onMessage,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
-    target: onMessagesReadDone,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "INIT",
-    target: changeCountersFromInit,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
-    target: onSessionStarted,
-  })
-
   sample({
     source: $token,
     clock: merge([$needConnect, registerUserFx.done]),
@@ -237,18 +197,13 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   })
 
   forward({
-    from: changePasswordFx.done,
+    from: [changePasswordFx.done, logout],
     to: socket.methods.disconnect,
   })
 
   forward({
     from: changePasswordFx.doneData.map(({ token }) => getChatSocketLink(userType, token)),
     to: connect,
-  })
-
-  forward({
-    from: logout,
-    to: socket.methods.disconnect,
   })
 
   const ping = socket.methods.send.prepend(() => ({ type: "PING" }))
@@ -273,10 +228,44 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   const changePonged = createEvent<boolean>()
   const $wasPonged = restore(changePonged, true)
 
-  guard({
+  split({
     source: socket.events.onMessage,
-    filter: (payload: PongMessage) => payload.type === "PONG",
-    target: changePonged.prepend(() => true),
+    match: {
+      onChatCreated: (payload: SocketMessageReceive) => payload.type === "NEW_CHAT_CREATED",
+      onNotification: (payload: SocketMessageReceive) => payload.type === "NEW_NOTIFICATION",
+      onReadNotification: (payload: SocketMessageReceive) => payload.type === "READ_NOTIFICATIONS_DONE",
+      onMessage: (payload: SocketMessageReceive) => payload.type === "WRITE_MESSAGE_DONE",
+      onMessagesReadDone: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
+      changeCountersFromInit: (payload: SocketMessageReceive) => payload.type === "INIT",
+      onSessionStarted: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
+      onPong: (payload: PongMessage) => payload.type === "PONG",
+    },
+    cases: {
+      onChatCreated: onChatCreated,
+      onNotification: onNotification,
+      onReadNotification: onReadNotification,
+      onMessage: onMessage,
+      onMessagesReadDone: onMessagesReadDone,
+      changeCountersFromInit: changeCountersFromInit,
+      onSessionStarted: onSessionStarted,
+      onPong: changePonged.prepend(() => true),
+      __: reportUnknownTypeFx,
+    },
+  })
+
+  split({
+    source: onMessage,
+    match: {
+      onIntercMessage: message =>
+        (userType === "client" && !!message.data.senderCoach) ||
+        (userType === "coach" && !!message.data.senderClient) ||
+        message.data.type === "SYSTEM",
+      onSupportMessage: message => !!message.data.senderSupport,
+    },
+    cases: {
+      onIntercMessage: onIntercMessage,
+      onSupportMessage: onSupportMessage,
+    },
   })
 
   condition({

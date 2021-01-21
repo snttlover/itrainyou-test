@@ -36,7 +36,9 @@ export const createSocket = () => {
 
   const sendSocketMessageFx = createEffect({
     handler: (message: any) => {
-      socket?.send(JSON.stringify(keysToSnake(message)))
+      if (socket?.readyState !== WebSocket.CLOSED && socket?.readyState !== WebSocket.CLOSING) {
+        socket?.send(JSON.stringify(keysToSnake(message)))
+      }
     },
   })
 

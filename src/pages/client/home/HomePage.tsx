@@ -18,7 +18,7 @@ import {
   loadTodaySessionsFx,
   mounted,
 } from "./home.model"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { clientCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Onboarding } from "@/pages/client/home/Onboarding"
@@ -82,6 +82,7 @@ const SessionEnterText = styled.p`
 `
 
 export const HomePage = () => {
+  const [isFirstRender, setIsFirstRender] = useState(true)
   const activeSessions = useStore($activeSessions)
   const todaySessions = useStore($todaySessions)
   const recommendations = useStore($recommendations)
@@ -94,6 +95,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     _mounted()
+    setIsFirstRender(false)
   }, [])
 
   const startSession = useEvent(clientCall.methods.connectToSession)
@@ -102,7 +104,6 @@ export const HomePage = () => {
     startSession(sessionId)
     e.preventDefault()
   }
-
 
   return (
     <ClientDashboardLayout>
@@ -123,7 +124,7 @@ export const HomePage = () => {
         )}
       </ContentContainer>
 
-      {todaySessions.length > 0 ? (
+      {todaySessions.length ? (
         <ContentContainer>
           <Block>
             <Title>Ближайшие сессии</Title>
@@ -135,7 +136,7 @@ export const HomePage = () => {
         </ContentContainer>
 
       ) : 
-        todaySessionsPending ? 
+        (todaySessionsPending || isFirstRender)? 
           <Loader/> : <Onboarding/>}
 
       <ContentContainer>

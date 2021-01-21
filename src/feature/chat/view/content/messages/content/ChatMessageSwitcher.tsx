@@ -26,12 +26,15 @@ export const ChatMessageSwitcher = ({
   imageClick?: (index: number) => void
 }) => {
 
-  const [readed, readAllMessages] = useState<boolean>(false)
+  const [readed, readMessages] = useState<boolean>(false)
 
   useEffect(() => {
-    setTimeout(() => {
-      readAllMessages(true)
-    }, 2000)
+    const timer = setTimeout(() => {
+      readMessages(true)
+    }, 500)
+    return () => {
+      clearTimeout(timer)
+    }
   }, [])
 
   if (message.type === "SUPPORT") {

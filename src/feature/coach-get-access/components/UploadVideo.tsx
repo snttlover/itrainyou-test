@@ -10,11 +10,13 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { useCallback, useState } from "react"
-import { useDropzone } from "react-dropzone"
+import { FileRejection, useDropzone } from "react-dropzone"
 import styled from "styled-components"
 import play from "../../../pages/auth/pages/signup/content/step-4/coach/play.svg"
 
-const Video = styled.video`
+const Video = styled.video.attrs({
+  preload:"metadata"
+})`
   max-width: 100%;
   max-height: 100%;
   outline: none;
@@ -122,6 +124,7 @@ const InterviewQuestions = styled.ol`
 const $videoInterview = $form.map(form => form.videoInterview)
 
 export const UploadVideo = () => {
+  const [error, setError] = useState<null | string>(null)
   const video = useStore($videoInterview)
   const isVideoUploading = useStore(videoUploadFx.pending)
   const videoUploadProgress = useStore($videoUploadProgress)
@@ -130,15 +133,25 @@ export const UploadVideo = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const videoRef = React.createRef<HTMLVideoElement>()
 
+  const maxSize = 3221225472
+
   const onDropAccepted = useCallback(acceptedFiles => {
+    setError(null)
     _videoUploaded(acceptedFiles[0])
+  }, [])
+  
+  const onDropRejected = useCallback((files: FileRejection[]) => {
+    if (files[0].file.size > maxSize) setError("Слишком большой размер видео — максимальный размер  3 Гб")
+    else setError("Вы можете загрузить видео в формате MP4, MPEG, OGG, WEBM или MOV")
   }, [])
 
   const { getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted,
+    onDropRejected,
     multiple: false,
     noClick: true,
     accept: ["video/mp4", "video/mpeg", "video/ogg", "video/webm", ".mov"],
+    maxSize,
   })
 
   return (
@@ -182,18 +195,32 @@ export const UploadVideo = () => {
                     .catch(error => console.error(error))
                 }
               }}
-              onPause={() => setIsPlaying(false)}
             >
-              <source src={video} />
+              <source src={video + "#t=3.5"} />
             </Video>
           </VideoContainer>
         )}
+        {error && <ErrorText>{error}</ErrorText>}
         {!isVideoUploading && <AddVideo onClick={open}>Загрузить видео</AddVideo>}
       </InterviewQuestions>
-      <input {...getInputProps()} />
+      <input 
+        {...getInputProps()}
+      />
     </InterviewContainer>
   )
 }
+
+const ErrorText = styled.div`
+  color: #FF6B00;
+  font-size: 14px;
+  font-family: 'Roboto';
+  margin-top: 24px;
+  text-align: center;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 12px;
+    margin-top: 8px;
+  `}
+`
 
 const PlayButton = styled.img.attrs({ src: play })`
   position: absolute;

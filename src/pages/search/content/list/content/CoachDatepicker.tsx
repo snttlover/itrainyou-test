@@ -418,7 +418,10 @@ const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
 export const CoachDatepicker = (props: SelectDatetimeTypes) => {
-  const _showCreditCardsModal = useEvent(showCreditCardsModal)
+  const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
+  const _showCreditCardsModal = (function(){
+    return useEvent(showCreditCardsModal)
+  })()
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
@@ -429,14 +432,21 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
-  const [currentDate, changeCurrentDate] = useState<Date | null>()
   const enabledDates = sessions.map(session => session.startDatetime)
 
   useEffect(() => {
-    changeCurrentDate(date(enabledDates[0]).toDate())
+    changeCurrentDate((prevState) => {
+      if(prevState === undefined) return date(enabledDates[0]).toDate()
+      return prevState
+    })
   }, [enabledDates[0]])
 
-  const headerDate = currentDate ? currentDate : new Date()
+  const payForTheSessionHandler = () => {
+    _showCreditCardsModal()
+    changeCurrentDate(null)
+  }
+
+  const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
   const currentDateEqual = date(currentDate as Date).format(equalDateFormat)
 
@@ -468,9 +478,8 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     changeCurrentDate(null)
   }
 
-
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
-  
+  const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
 
   return (
     <Container>
@@ -501,14 +510,16 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
           {/*</FooterWrapper>*/}
         </Datepicker>
         <SelectTimeContainer>
-          <StyledDateHeader>{formattedDate}</StyledDateHeader>
-          <Times>
-            {times.map(session => (
-              <Tag active={session.selected} key={session.id} onClick={() => toggleSession(session)}>
-                {session.start_datetime}
-              </Tag>
-            ))}
-          </Times>
+          <WidthCurrentDateConditionWrapper>
+            <StyledDateHeader>{formattedDate}</StyledDateHeader>
+            <Times>
+              {times.map(session => (
+                <Tag active={session.selected} key={session.id} onClick={() => toggleSession(session)}>
+                  {session.start_datetime}
+                </Tag>
+              ))}
+            </Times>
+          </WidthCurrentDateConditionWrapper>
           <WidthAmountConditionWrapper>
             <SelectedSessions>
               {selected.map(session => (
@@ -534,7 +545,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
             <IsAuthed>
               <StyledBuyButton
                 disabled={buyLoading || selected.length === 0}
-                onClick={() => _showCreditCardsModal()}
+                onClick={payForTheSessionHandler}
               >
                 Забронировать
               </StyledBuyButton>
