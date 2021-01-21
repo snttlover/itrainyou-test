@@ -78,7 +78,7 @@ export const $allSessions = combine(
 export const CalendarGate = createGate()
 const loadSessions = createEvent()
 
-/*export const loadSessionsWithParamsFx = attach({
+export const loadSessionsWithParamsFx = attach({
   effect: loadSessionsFx,
   source: combine(
     {
@@ -91,10 +91,10 @@ const loadSessions = createEvent()
     })
   ),
   mapParams: (_, data) => ({ ...data }),
-})*/
+})
 
 
-export const loadSessionsWithParamsFx = attach({
+/*export const loadSessionsWithParamsFx = attach({
   effect: loadSessionsFx,
   // @ts-ignore
   source: combine(
@@ -110,7 +110,7 @@ export const loadSessionsWithParamsFx = attach({
       }}
   ),
   mapParams: (_, data) => ({ ...data }),
-})
+})*/
 
 forward({
   from: merge([loadSessions, setCurrentMonth, CalendarGate.open]),
