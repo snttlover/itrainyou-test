@@ -100,7 +100,7 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     handler: () =>
       toasts.add({
         type: "info",
-        text: "Запрос на отмену сессии успешно отправлен",
+        text: "Сессия успешно отменена",
       }),
   })
     

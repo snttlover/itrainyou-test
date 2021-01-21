@@ -22,6 +22,7 @@ import { runInScope } from "@/scope"
 import { registerUserFx } from "@/pages/auth/pages/signup/models/units"
 
 
+
 type SendSocketChatMessage = {
   chat: number
   text?: string
@@ -40,7 +41,7 @@ type ChatCounter = {
 
 type InitMessage = {
   type: "INIT"
-  data: { unreadChats: ChatCounter[]; newNotificationsCount: number }
+  data: { unreadChats: ChatCounter[]; newNotificationsCount: number; activeSessions: DashboardSession }
 }
 
 type MessagesReadDone = {
@@ -188,63 +189,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   const $chatsCount = $chatsCounters.map($counters => $counters.length)
 
-  /*guard({
-    source: onMessage,
-    filter: message =>
-      (userType === "client" && !!message.data.senderCoach) ||
-      (userType === "coach" && !!message.data.senderClient) ||
-      message.data.type === "SYSTEM",
-    target: onIntercMessage,
-  })
-
-  guard({
-    source: onMessage,
-    filter: message => !!message.data.senderSupport,
-    target: onSupportMessage,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "NEW_CHAT_CREATED",
-    target: onChatCreated,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "NEW_NOTIFICATION",
-    target: onNotification,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "READ_NOTIFICATIONS_DONE",
-    target: onReadNotification,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "WRITE_MESSAGE_DONE",
-    target: onMessage,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
-    target: onMessagesReadDone,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "INIT",
-    target: changeCountersFromInit,
-  })
-
-  guard({
-    source: socket.events.onMessage,
-    filter: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
-    target: onSessionStarted,
-  })*/
-
   sample({
     source: $token,
     clock: merge([$needConnect, registerUserFx.done]),
@@ -261,11 +205,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     from: changePasswordFx.doneData.map(({ token }) => getChatSocketLink(userType, token)),
     to: connect,
   })
-
-  /*forward({
-    from: logout,
-    to: socket.methods.disconnect,
-  })*/
 
   const ping = socket.methods.send.prepend(() => ({ type: "PING" }))
 
@@ -288,22 +227,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   const changePonged = createEvent<boolean>()
   const $wasPonged = restore(changePonged, true)
-
-  /*guard({
-    source: socket.events.onMessage,
-    filter: (payload: PongMessage) => payload.type === "PONG",
-    target: changePonged.prepend(() => true),
-  })*/
-
-  /*
-  debounce({
-    source: guard({
-      source: socket.events.onMessage,
-      filter: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
-    }),
-    timeout: 10000,
-    target: onMessagesReadDone
-  })*/
 
   split({
     source: socket.events.onMessage,
@@ -372,7 +295,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     events: {
       ...socket.events,
       onMessage,
-      onMessagesReadDone,
       onChatCreated,
       onSessionStarted,
     },

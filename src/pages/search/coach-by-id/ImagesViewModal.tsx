@@ -204,7 +204,7 @@ export const ImagesViewModal = ({ photos, initialSlide, close, loadMore, count }
                 />
                 <ReactIdSwiper {...swiperOptions} initialSlide={initialSlide} ref={swiper}>
                   {photos.map((src, index) => (
-                    <PhotoWrapper>
+                    <PhotoWrapper key={index}>
                       <Photo key={index} src={src} />
                     </PhotoWrapper>
                   ))}

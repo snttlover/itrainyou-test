@@ -15,7 +15,6 @@ import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { CoachUser } from "@/lib/api/coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
-import { debounce } from "patronum"
 
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
@@ -34,7 +33,6 @@ export type ChatSupportMessage = {
   userAvatar: string | null
   ticketStatus: SupportTicketType
   isReadByYou: boolean
-  needToBlink?: boolean
 }
 
 export type ChatSystemMessage = {
@@ -48,7 +46,6 @@ export type ChatSystemMessage = {
   showButtons: boolean
   date: string
   isReadByYou: boolean
-  needToBlink?: boolean
 }
 
 export type PersonalChatMessage = {
@@ -61,7 +58,6 @@ export type PersonalChatMessage = {
   user: CoachUser | Client | null
   imageIndex: number
   isReadByYou: boolean
-  needToBlink?: boolean
 }
 
 const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
@@ -87,6 +83,23 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   const addMessage = createEvent<WriteChatMessageDone>()
 
   pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
+
+  /*pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages]).on(config.socket.events.onMessage, (messages, readMessagesId) => {
+    if (readMessagesId.type === "READ_MESSAGES_DONE") {
+      return messages
+        .map(message => {
+          readMessagesId.data.messages.map(readedId => {
+            if (message.id === readedId.id) {
+              message["isReadByYou"] = true
+              return message
+            } else {
+              return message
+            }
+          })
+        })
+    }
+    else { return messages}
+  })*/
 
   const $messages = pagination.data.$list.map(messages => {
     const completedStatusesIds = messages
@@ -133,7 +146,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               userAvatar: user?.avatar || null,
               ticketStatus: message.systemTicketType,
               isReadByYou: message.isReadByYou,
-              needToBlink: false,
             }
           }
 
@@ -160,7 +172,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 status: message.transactionType,
                 date: message.creationDatetime,
                 isReadByYou: message.isReadByYou,
-                needToBlink: false,
               }
             }
             else {
@@ -175,7 +186,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 status: message?.conflict?.status || message.sessionRequestStatus,
                 date: message.creationDatetime,
                 isReadByYou: message.isReadByYou,
-                needToBlink: false,
               }
             }
           }
@@ -187,7 +197,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             id: message.id,
             isMine,
             isReadByYou: message.isReadByYou,
-            needToBlink: false,
             text: message.text,
             image: message.image,
             time: date(message.creationDatetime).format("HH:mm"),
@@ -202,20 +211,22 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     messages: [message.data.id],
   }))
 
-  // @ts-ignore
-  $messages.on(config.socket.events.onMessagesReadDone, (messages, readMessagesId) => {
+  /*$messages.on(config.socket.events.onMessage, (messages, readMessagesId) => {
+  if (readMessagesId.type === "READ_MESSAGES_DONE") {
     return messages
       .map(message => {
         readMessagesId.data.messages.map(readedId => {
           if (message.id === readedId.id) {
-            message["needToBlink"] = true
+            message["isReadByYou"] = true
             return message
           } else {
             return message
           }
         })
       })
-  })
+  }
+  else { return messages}
+  })*/
 
   /*debounce({
     source: guard({

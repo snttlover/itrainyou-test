@@ -35,7 +35,7 @@ export const ChatMessageSwitcher = ({
     return () => {
       clearTimeout(timer)
     }
-  }, [message.needToBlink])
+  }, [])
 
   if (message.type === "SUPPORT") {
     return (
