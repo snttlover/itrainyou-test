@@ -25,7 +25,11 @@ const calculateProgress = ({
   form: InferStoreType<typeof $form>
   categories: InferStoreType<typeof $selectedCategories>
 }) => {
-  const values = Object.values(form)
+  const withRemovedKeys = form
+  delete withRemovedKeys["photos"]
+  delete withRemovedKeys["videoInterview"]
+
+  const values = Object.values(withRemovedKeys)
   let length = values.length
 
   let filledValues = values

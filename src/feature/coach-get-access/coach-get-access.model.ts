@@ -238,7 +238,6 @@ export const $formErrors = combine({
   workExperience: $workExperienceError,
   description: $descriptionError,
   phone: $phoneError,
-  video: $videoInterviewError,
   socialNetworks: $socialNetworkError,
   supervisions: $supervisionsError,
   inn: $innError,
@@ -253,7 +252,6 @@ export const $formValid = combine(
   $issupervisionsCorrect,
   $isScheduleFilled,
   $isCategoriesCorrect,
-  $isVideoInterviewCorrect,
   (...args) => args.every(val => val)
 )
 
