@@ -85,7 +85,7 @@ const Container = styled.div`
       z-index: 100;
       margin-left: 0 !important;
       padding: 17px;
-      background: #ECEFF1;
+      background: #F4F5F7;
     }
   `}
   
