@@ -101,7 +101,7 @@ const getRequestText = (req: SessionRequest) => {
   }
 
   if (req.type === "CANCEL" && req.status === "AUTOMATICALLY_APPROVED") {
-    return "Клиент отменил сессиию"
+    return "Клиент отменил сессию"
   }
 
   if (req.type === "CONFIRMATION_COMPLETION" && req.status === "AWAITING") {
