@@ -196,7 +196,7 @@ export const UploadVideo = () => {
                 }
               }}
             >
-              <source src={video + "#t=3.5"} />
+              <source src={video + "#t=0.5"} />
             </Video>
           </VideoContainer>
         )}

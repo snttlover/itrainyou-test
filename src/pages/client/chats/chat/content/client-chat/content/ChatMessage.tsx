@@ -15,7 +15,7 @@ const Time = styled.div`
 const Container = styled.div<ContainerTypes>`
   padding: 5px 8px;
 
-  background: #eceff1;
+  background: #F4F5F7;
   border-radius: 12px 12px 12px 0px;
   width: auto;
   max-width: 472px;

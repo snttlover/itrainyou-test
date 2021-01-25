@@ -15,7 +15,7 @@ const StyledLayout = styled.div`
   height: 100vh;
   position: relative;
   overflow: auto;
-  background: #eceff1;
+  background: #F4F5F7;
 `
 
 const AuthContainer = styled.div`

@@ -76,7 +76,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   const $readedMessages = createStore<ChatMessage[]>([])
     .on(config.socket.events.onMessagesReadDone, (state, data) => {
       const newState = data.data.messages
-      console.log("newState",newState)
+
       return state.concat(newState)
     }).reset(changeId)
 
