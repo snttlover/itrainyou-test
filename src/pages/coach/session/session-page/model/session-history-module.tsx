@@ -85,7 +85,7 @@ const getRequestText = (req: SessionRequest) => {
   }
 
   if (req.type === "CANCEL" && req.status === "AWAITING") {
-    return "Клиент запросил отмену сесии"
+    return "Клиент запросил отмену сессии"
   }
 
   if (req.type === "CANCEL" && req.status === "CANCELLED") {
