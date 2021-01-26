@@ -18,10 +18,18 @@ import { useEvent } from "effector-react"
 import { Textarea } from "@/components/textarea/Textarea"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { Avatar } from "@/components/avatar/Avatar"
-import { SelectInput } from "@/components/select-input/SelectInput"
+import { useSelectInput } from "@/components/select-input/SelectInput"
 import { DenySessionRequestProblems } from "@/lib/api/coach/deny-session-request"
 
 export const DenyCompletetionDialog = () => {
+  const { SelectInput } = useSelectInput()
+
+  const StyledSelectInput = styled(SelectInput)`
+    width: 100%;
+    max-width: 280px;
+    margin-top: 20px;
+  `
+
   const visibility = useStore($denyCompletationDialogVisibility)
   const hide = useEvent(hideDenyCompletetionDialogVisibility)
   const user = useStore($denyDialogRequestUser)
@@ -71,12 +79,6 @@ export const DenyCompletetionDialog = () => {
     </StyledDialog>
   )
 }
-
-const StyledSelectInput = styled(SelectInput)`
-  width: 100%;
-  max-width: 280px;
-  margin-top: 20px;
-`
 
 const Container = styled.div`
   width: 100%;

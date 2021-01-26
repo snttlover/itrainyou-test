@@ -1,7 +1,7 @@
 import { Button } from "@/components/button/normal/Button"
 import { Dialog } from "@/components/dialog/Dialog"
 import { FormItem } from "@/components/form-item/FormItem"
-import { SelectInput } from "@/components/select-input/SelectInput"
+import { useSelectInput } from "@/components/select-input/SelectInput"
 import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { $cardsListForView } from "../cards/cards.model"
@@ -22,6 +22,7 @@ import {
 import { useEvent, useStore } from "effector-react"
 
 export const WithdrawDialog = () => {
+  const {SelectInput} = useSelectInput()
   const _changeShowFundUpDialog = useEvent(changeShowWithdrawDialog)
   const isShowed = useStore($isWithdrawDialogShowed)
   const cards = useStore($cardsListForView)

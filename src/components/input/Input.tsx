@@ -61,6 +61,7 @@ export type InputTypes = {
   onKeyDown?: (e: React.KeyboardEvent) => void
   error?: boolean
   mask?: string
+  reff?: React.RefObject<any>
 }
 
 export const Input = styled((props: InputTypes) => {
@@ -69,6 +70,5 @@ export const Input = styled((props: InputTypes) => {
       props.onChange(e.target.value)
     }
   }
-
-  return <TextBox as={props.mask ? MaskedInput : "input"} {...props} onChange={change} />
+  return <TextBox as={props.mask ? MaskedInput : "input"} {...props} onChange={change} ref={props.reff}/>
 })``

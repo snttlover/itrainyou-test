@@ -15,7 +15,7 @@ import {
 } from "@/pages/common/settings/content/general-settings-form/general-settings.model"
 import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
-import { DropdownItem, SelectInput, SelectInputProps } from "@/components/select-input/SelectInput"
+import { DropdownItem, useSelectInput, SelectInputProps } from "@/components/select-input/SelectInput"
 import { timeZones } from "@/pages/common/settings/content/general-settings-form/time-zones"
 import { mounted } from "@/pages/common/settings/content/general-settings-form/general-settings.model"
 
@@ -51,7 +51,10 @@ const Actions = styled.div`
    `}
 `
 
-const StyledSelectInput = styled(SelectInput)<SelectInputProps<string>>`
+export const GeneralSettingsForm = () => {
+
+  const {SelectInput} = useSelectInput()
+  const StyledSelectInput = styled(SelectInput)<SelectInputProps<string>>`
   height: 36px;
   ${DropdownItem} {
     width: 100%;
@@ -62,7 +65,6 @@ const StyledSelectInput = styled(SelectInput)<SelectInputProps<string>>`
   }
 `
 
-export const GeneralSettingsForm = () => {
   const form = useStore($changeGeneralSettingsForm)
   const errors = useStore($changeGeneralSettingsFormErrors)
   const isFormValid = useStore($isGeneralSettingsFormFormValid)

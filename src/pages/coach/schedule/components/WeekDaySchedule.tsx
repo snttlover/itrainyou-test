@@ -1,5 +1,5 @@
 import { Icon } from "@/components/icon/Icon"
-import { SelectInput } from "@/components/select-input/SelectInput"
+import { useSelectInput } from "@/components/select-input/SelectInput"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { WeekDayName } from "@/lib/api/coaching-sessions/types"
 import { $durationOptions } from "@/pages/coach/schedule/models/add-session.model"
@@ -38,13 +38,6 @@ const Row = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 14px;
-`
-
-const StyledSelectInput = styled(SelectInput)`
-  &:not(:first-child) {
-    margin-left: 4px;
-    margin-right: 10px;
-  }
 `
 
 const SettingsContainer = styled.div`
@@ -98,6 +91,24 @@ type Props = {
 }
 
 export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => {
+
+  const {SelectInput: StartSelectInput} = useSelectInput()
+  const {SelectInput: TypeSelectInput} = useSelectInput()
+
+  const StyledStartSelectInput = styled(StartSelectInput)`
+    &:not(:first-child) {
+      margin-left: 4px;
+      margin-right: 10px;
+    }
+  `
+
+  const StyledTypeSelectInput = styled(TypeSelectInput)`
+    &:not(:first-child) {
+      margin-left: 4px;
+      margin-right: 10px;
+    }
+  `
+
   const [isAdd, setIsAdd] = useState(false)
   const [startTime, setStartTime] = useState("")
   const [duration, setDuration] = useState<DurationType>("D30")
@@ -151,13 +162,13 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
       )}
       {isAdd && (
         <SettingsContainer>
-          <StyledSelectInput
+          <StyledStartSelectInput
             value={startTime}
             onChange={value => setStartTime((value as unknown) as string)}
             options={freeTimes}
             placeholder='Начало'
           />
-          <StyledSelectInput
+          <StyledTypeSelectInput
             value={duration}
             onChange={value => setDuration((value as unknown) as DurationType)}
             options={durationOptions}

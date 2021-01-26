@@ -1,5 +1,5 @@
 import { FormItem } from "@/components/form-item/FormItem"
-import { SelectInput } from "@/components/select-input/SelectInput"
+import { useSelectInput } from "@/components/select-input/SelectInput"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { FormGroup } from "./FormGroup"
@@ -52,6 +52,11 @@ type GroupProps = {
 }
 
 export const BirthdayFormGroup = (props: GroupProps) => {
+  const {SelectInput: DaySelectInput} = useSelectInput()
+  const {SelectInput: MonthSelectInput} = useSelectInput()
+  const {SelectInput: YearSelectInput} = useSelectInput()
+  const {SelectInput: SexSelectInput} = useSelectInput()
+
   let birthday = date(useStore($clientProfileForm).birthday)
   const values = useStore($clientProfileForm)
   const errors = useStore($clientProfileFormErrors)
@@ -95,7 +100,7 @@ export const BirthdayFormGroup = (props: GroupProps) => {
     <>
       <FormGroup>
         <StyledFormItem label='Дата рождения' required={props.required}>
-          <SelectInput
+          <DaySelectInput
             withoutBorder
             placeholder='День'
             value={birthday ? birthday.date() : -1}
@@ -104,7 +109,7 @@ export const BirthdayFormGroup = (props: GroupProps) => {
           />
         </StyledFormItem>
         <StyledFormItem label=''>
-          <SelectInput
+          <MonthSelectInput
             withoutBorder
             placeholder='Месяц'
             value={birthday ? birthday.month() : -1}
@@ -113,7 +118,7 @@ export const BirthdayFormGroup = (props: GroupProps) => {
           />
         </StyledFormItem>
         <StyledFormItem label=''>
-          <SelectInput
+          <YearSelectInput
             withoutBorder
             className='year'
             placeholder='Год'
@@ -125,7 +130,7 @@ export const BirthdayFormGroup = (props: GroupProps) => {
       </FormGroup>
       <FormGroup>
         <StyledFormItem label='Пол' error={errors.sex} required={props.required}>
-          <SelectInput withoutBorder value={values.sex} onChange={_sexChanged} options={sexItems} />
+          <SexSelectInput withoutBorder value={values.sex} onChange={_sexChanged} options={sexItems} />
         </StyledFormItem>
       </FormGroup>
     </>
