@@ -98,8 +98,8 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
     elem && elem.focus()
   }
 
-  const dayRef = useRef()
-  const yearRef = useRef()
+  const dayRef = useRef<HTMLInputElement>()
+  const yearRef = useRef<HTMLInputElement>()
 
 
   return (
@@ -114,7 +114,7 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
               setIsDirty(true)
               if(`${value}`.length > 1){
                 openMonthSelect()
-                dayRef.current.blur()
+                dayRef.current?.blur()
               }
             }}
             reff={dayRef}
