@@ -1,19 +1,20 @@
 import { FormItem } from "../form-item/FormItem"
-import { SelectInput } from "./SelectInput"
+import { useSelectInput } from "./SelectInput"
 import * as React from "react"
 import { useState } from "react"
 import styled from "styled-components"
 
-export default {
-  component: SelectInput,
-  title: "SelectInput"
-}
+// export default {
+//   component: SelectInput,
+//   title: "SelectInput"
+// }
 
 const Container = styled.div`
   width: 500px;
 `
 
 export const normal = () => {
+  const { SelectInput } = useSelectInput()
   const [value, change] = useState("")
 
   return (
@@ -29,6 +30,7 @@ export const normal = () => {
 }
 
 export const asFormItem = () => {
+  const { SelectInput } = useSelectInput()
   const [value, change] = useState("")
 
   return (
