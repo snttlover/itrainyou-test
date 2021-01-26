@@ -32,7 +32,7 @@ const Container = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-  background: #eceff1;
+  background: #F4F5F7;
   z-index: 100;
   left: 0;
   top: 0;

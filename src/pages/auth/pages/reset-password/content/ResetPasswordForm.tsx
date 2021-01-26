@@ -41,7 +41,7 @@ const Error = styled.div`
 
 const StyledSpinner = styled(Spinner)`
   @media screen and (max-width: 480px) {
-    background: #eceff1;
+    background: #F4F5F7;
     opacity: 0.8;
   }
 `

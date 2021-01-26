@@ -11,7 +11,7 @@ export const WhiteMobileAuthLayout = styled(AuthLayout)`
     }
   }
   @media screen and (max-width: 480px) {
-    background: #ECEFF1;
+    background: #F4F5F7;
   }
 `
 

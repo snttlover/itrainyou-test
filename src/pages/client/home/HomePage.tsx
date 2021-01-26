@@ -131,7 +131,6 @@ export const HomePage = () => {
             {todaySessions.map(session => (
               <TodaySessionCard session={session} key={session.id} />
             ))}
-            {todaySessionsPending && <Loader />}
           </Block>
         </ContentContainer>
 
@@ -139,22 +138,25 @@ export const HomePage = () => {
         (todaySessionsPending || isFirstRender)? 
           <Loader/> : <Onboarding/>}
 
-      <ContentContainer>
-        <Block>
-          <Title>Рекомендации</Title>
-          <InfiniteScroll
-            loader={<Loader />}
-            next={_loadMore as any}
-            hasMore={isHasMoreRecommendations}
-            dataLength={recommendations.length}
-            style={{overflow: "hidden"}}
-          >
-            {recommendations.map(coach => (
-              <RecommendationCoachCard key={coach.id} coach={coach} />
-            ))}
-          </InfiniteScroll>
-        </Block>
-      </ContentContainer>
+      {
+        !(todaySessionsPending || isFirstRender) &&
+        <ContentContainer>
+          <Block>
+            <Title>Рекомендации</Title>
+            <InfiniteScroll
+              loader={<Loader />}
+              next={_loadMore as any}
+              hasMore={isHasMoreRecommendations}
+              dataLength={recommendations.length}
+              style={{overflow: "hidden"}}
+            >
+              {recommendations.map(coach => (
+                <RecommendationCoachCard key={coach.id} coach={coach} />
+              ))}
+            </InfiniteScroll>
+          </Block>
+        </ContentContainer>
+      }
 
     </ClientDashboardLayout>
   )
