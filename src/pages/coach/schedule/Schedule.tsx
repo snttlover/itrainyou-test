@@ -28,20 +28,6 @@ export const Description = styled.p`
   color: #5b6670;
 `
 
-const ScheduleSettingsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  ${MediaRange.greaterThan("mobile")`
-    flex-direction: row;
-  `}
-
-  ${MediaRange.greaterThan("tablet")`
-    flex-wrap: wrap;
-  `}
-`
 const PriceContainer = styled.div`
   max-width: 320px;
   ${MediaRange.greaterThan("mobile")`
@@ -54,6 +40,36 @@ const PriceContainer = styled.div`
 `
 const WeeklyScheduleContainer = styled.div`
   max-width: 320px;
+`
+
+const ScheduleSettingsContainerMobileStyles = `
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    & ${PriceContainer} {
+      margin-top: 32px;
+    }
+`
+
+const ScheduleSettingsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  flex-direction: row;
+  justify-content: space-between;
+  
+  @media (max-width: 640px) {
+    ${ScheduleSettingsContainerMobileStyles}  // Продублировал, чтобы сгладить промжуточные адаптивы
+  }
+  
+  ${MediaRange.lessThan("mobile")`
+    ${ScheduleSettingsContainerMobileStyles}
+  `}
+
+  ${MediaRange.greaterThan("tablet")`
+    flex-wrap: wrap;
+  `}
 `
 
 const PriceListContainer = styled.div`
