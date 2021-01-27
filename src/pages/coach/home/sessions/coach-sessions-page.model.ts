@@ -10,6 +10,7 @@ import { createPagination } from "@/feature/pagination"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { $userData } from "@/feature/user/user.model"
 import { createGate } from "@/scope"
+import weekday from "dayjs/plugin/weekday"
 
 const resetCoachSessionList =  createEvent()
 
@@ -53,6 +54,13 @@ forward({
 })
 
 export const $isCoachScheduleFilled = $userData.map((data: any) => !!data?.coach?.schedule?.weekdaySlots?.length)
+
+export const $numberOfSessions = $userData.map((data: any) => {
+  return data?.coach?.schedule?.weekdaySlots.reduce((acc: number, item: any)=>{
+    return acc + item?.slots?.length
+  }, 0)
+}
+)
 
 export const CoachHomeGate = createGate()
 

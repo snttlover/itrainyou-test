@@ -13,6 +13,7 @@ import { useEvent, useStore, useStoreMap } from "effector-react"
 import styled from "styled-components"
 import React, { useState } from "react"
 import { PricesDialog } from "@/pages/coach/schedule/components/PricesDialog"
+import { $numberOfSessions } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 
 const Container = styled.div`
   background: #ffffff;
@@ -72,9 +73,39 @@ const OpenCloseIcon = styled(Icon)<{ open?: boolean }>`
 `
 
 const MarkIcon = styled(Icon).attrs({ name: "mark" })`
-  width: 55px;
   fill: ${({ theme, disabled }) => disabled ? "#9AA0A6" : theme.colors.primary};
   cursor: pointer;
+  position: relative;
+`
+
+const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
+  position: relative;
+  &::before{
+    content: ${({active}) => active ? "" : null};
+    //content: "";
+    width: 20px;
+    height: 20px;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
+    transform: rotate(45deg) translateX(94%) translateY(-10px);
+  }
+  &::after{
+    content: ${({active}) => active ? "Для сохранения нажмите галочку" : null};
+    //content: "Для сохранения нажмите галочку" ;
+    font-size: 14px;
+    white-space: nowrap;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0;
+    top: -50%;
+    padding: 12px;
+    border-radius: 2px;
+    box-shadow: 0px 26px 18px rgba(0, 0, 0, 0.1);
+    transform: translateX(104%) translateY(23%);
+    z-index: 1;
+  }
 `
 
 const MinusIcon = styled(Icon).attrs({ name: "minus" })`
@@ -142,6 +173,10 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
     startTime && addedSlot({ weekday, startTime, sessionDurationType: duration }) && setStartTime("")
   }
 
+  const showTooltips = useStore($numberOfSessions) < 5
+  console.log(useStore($numberOfSessions))
+  console.log(showTooltips)
+
   return (
     <Container className={className}>
       <Title>
@@ -179,7 +214,9 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
             placeholder='Тип'
             onClick={checkPrices}
           />
-          <MarkIcon disabled={!startTime} onClick={saveSessionHandler} />
+          <MarkIconContainer active={showTooltips && !!startTime}>
+            <MarkIcon disabled={!startTime} onClick={saveSessionHandler} />
+          </MarkIconContainer>
         </SettingsContainer>
       )}
       <PricesDialog visibility={pricesDialogVisibility} onChangeVisibility={changePricesDialogVisibility} />
