@@ -87,7 +87,7 @@ const syncLoadAssets = () => {
 }
 syncLoadAssets()
 
-const userAgent = require("express-useragent")
+// const userAgent = require("express-useragent")
 
 
 export const server = express()
@@ -95,20 +95,20 @@ export const server = express()
   .use(Sentry.Handlers.requestHandler())
   .use(cookieParser())
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
-  .use(userAgent.express())
+  // .use(userAgent.express())
   .get("/*", async (req: express.Request, res: express.Response) => {
     const tStart = performance.now()
     const currentRoutes = matchRoutes(ROUTES, req.url.split("?")[0])
     const isSSR = currentRoutes.reduce((_, route) => route.route.ssr, false)
     const hasCookie = !!req.cookies[TOKEN_COOKIE_KEY]
 
-    const test = {
-      browser: req.useragent.browser,
-      version: req.useragent.version,
-      os: req.useragent.os,
-      platform: req.useragent.platform
-    }
-    console.log(JSON.stringify(test, null ,4))
+    // const test = {
+    //   browser: req.useragent.browser,
+    //   version: req.useragent.version,
+    //   os: req.useragent.os,
+    //   platform: req.useragent.platform
+    // }
+    // console.log(JSON.stringify(test, null ,4))
 
     if (isSSR && !hasCookie) {
       const scope = fork(root)
