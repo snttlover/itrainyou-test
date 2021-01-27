@@ -21,12 +21,17 @@ export const $recommendationsCount = createStore<number>(100).on(
   (state, payload) => payload.count
 )
 
+export const mounted = createEvent()
+export const loadMore = createEvent()
+
 export const $recommendations = createStore<Coach[]>([]).on(loadRecommendationsFx.doneData, (state, payload) => [
   ...state,
   ...payload.results,
-])
+]).reset(mounted)
+
 
 const $recommendationsLoadFailed = createStore(false).on(loadRecommendationsFx.fail, () => true)
+  .reset(mounted)
 
 export const $isHasMoreRecommendations = combine(
   { count: $recommendationsCount, recommendations: $recommendations, isFailed: $recommendationsLoadFailed },
@@ -39,20 +44,21 @@ export const $activeSessions = createStore<DashboardSession[]>([]).on(
   loadActiveSessionsFx.doneData,
   (state, payload) => payload.results
 )
+  .reset(mounted)
+
 export const $todaySessions = createStore<DashboardSession[]>([]).on(
   loadTodaySessionsFx.doneData,
   (state, payload) => payload.results
-)
-
-export const mounted = createEvent()
-export const loadMore = createEvent()
+).reset(mounted)
 
 const guardedLoadMore = guard({
   source: loadMore,
   filter: loadRecommendationsFx.pending.map(pending => !pending),
 })
 
-const $currentPage = createStore(0).on(loadRecommendationsFx.done, (_, payload) => payload.params.page)
+const $currentPage = createStore(0)
+  .on(loadRecommendationsFx.done, (_, payload) => payload.params.page)
+  .reset(mounted)
 
 sample({
   source: $currentPage,

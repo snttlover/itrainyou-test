@@ -93,12 +93,11 @@ export const HomePage = () => {
   const recommendationPending = useStore(loadRecommendationsFx.pending)
   const _mounted = useEvent(mounted)
   const _loadMore = useEvent(loadMore)
-  const userData = useStore($userData)
 
   useEffect(() => {
     _mounted()
     setIsFirstRender(false)
-  }, [userData])
+  }, [])
 
   const startSession = useEvent(clientCall.methods.connectToSession)
 
