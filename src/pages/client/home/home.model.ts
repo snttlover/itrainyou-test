@@ -2,6 +2,7 @@ import { getClientSessions } from "@/lib/api/client-session"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
+import { logout } from "@/lib/network/token"
 
 export const loadRecommendationsFx = createEffect({
   handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 5 }),
