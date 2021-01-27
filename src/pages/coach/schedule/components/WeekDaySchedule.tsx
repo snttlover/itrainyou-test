@@ -14,6 +14,7 @@ import styled from "styled-components"
 import React, { useState } from "react"
 import { PricesDialog } from "@/pages/coach/schedule/components/PricesDialog"
 import { $numberOfSessions } from "@/pages/coach/home/sessions/coach-sessions-page.model"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   background: #ffffff;
@@ -81,8 +82,8 @@ const MarkIcon = styled(Icon).attrs({ name: "mark" })`
 const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
   position: relative;
   &::before{
-    content: ${({active}) => active ? "" : null};
-    //content: "";
+    display: ${({active}) => active ? "block" : "none"};
+    content: "";
     width: 20px;
     height: 20px;
     background-color: #ffffff;
@@ -90,10 +91,20 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
     right: 0;
     box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
     transform: rotate(45deg) translateX(94%) translateY(-10px);
+    ${MediaRange.lessThan("mobile")`
+      width: 0;
+      height: 0;
+      top: 36px;
+      left: -100%;
+      box-shadow: none;
+      background-color: transparent;
+      border: 12px solid transparent; border-right: 12px solid #F7F7FF; border-bottom: 12px solid #F7F7FF;
+      transform: rotate(0deg) translateX(50%) translateY(-10px);
+    `}
   }
   &::after{
-    content: ${({active}) => active ? "Для сохранения нажмите галочку" : null};
-    //content: "Для сохранения нажмите галочку" ;
+    content: "Для сохранения нажмите галочку" ;
+    display: ${({active}) => active ? "block" : "none"};
     font-size: 14px;
     white-space: nowrap;
     background-color: #ffffff;
@@ -105,6 +116,9 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
     box-shadow: 0px 26px 18px rgba(0, 0, 0, 0.1);
     transform: translateX(104%) translateY(23%);
     z-index: 1;
+    ${MediaRange.lessThan("mobile")`
+      transform: translateX(0) translateY(150%);
+    `}
   }
 `
 
@@ -173,9 +187,7 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
     startTime && addedSlot({ weekday, startTime, sessionDurationType: duration }) && setStartTime("")
   }
 
-  const showTooltips = useStore($numberOfSessions) < 5
-  console.log(useStore($numberOfSessions))
-  console.log(showTooltips)
+  const showTooltips = useStore($numberOfSessions) < 4
 
   return (
     <Container className={className}>
