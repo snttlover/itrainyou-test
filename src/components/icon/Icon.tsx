@@ -86,7 +86,8 @@ export type IconName =
   | "ykassa-not-approved"
 
 type IconProps = {
-  name: IconName
+  name: IconName,
+  disabled?: boolean
 } & React.SVGProps<SVGSVGElement>
 
 export const Icon = styled(({ name, ...props }: IconProps) => {

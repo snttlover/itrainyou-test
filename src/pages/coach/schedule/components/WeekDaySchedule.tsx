@@ -73,7 +73,7 @@ const OpenCloseIcon = styled(Icon)<{ open?: boolean }>`
 
 const MarkIcon = styled(Icon).attrs({ name: "mark" })`
   width: 55px;
-  fill: ${({ theme }) => theme.colors.primary};
+  fill: ${({ theme, disabled }) => disabled ? "#9AA0A6" : theme.colors.primary};
   cursor: pointer;
 `
 
@@ -138,6 +138,10 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
     }
   }
 
+  const saveSessionHandler = () => {
+    startTime && addedSlot({ weekday, startTime, sessionDurationType: duration }) && setStartTime("")
+  }
+
   return (
     <Container className={className}>
       <Title>
@@ -175,7 +179,7 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
             placeholder='Тип'
             onClick={checkPrices}
           />
-          <MarkIcon onClick={() => addedSlot({ weekday, startTime, sessionDurationType: duration })} />
+          <MarkIcon disabled={!startTime} onClick={saveSessionHandler} />
         </SettingsContainer>
       )}
       <PricesDialog visibility={pricesDialogVisibility} onChangeVisibility={changePricesDialogVisibility} />
