@@ -90,6 +90,7 @@ const Label = styled.div`
   & > ${Badge} {
     position: absolute;
     right: -40px;
+    top: 0;
     padding: 1px 6px 1px 5px;
   }
 `

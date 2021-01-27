@@ -1,5 +1,5 @@
 import { FormItem } from "@/components/form-item/FormItem"
-import { SelectInput } from "@/components/select-input/SelectInput"
+import { useSelectInput } from "@/components/select-input/SelectInput"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { FormGroup } from "./FormGroup"
@@ -49,6 +49,11 @@ const sexItems: { label: string; value: "M" | "F" }[] = [
 ]
 
 export const BirthdayFormGroup = () => {
+  const {SelectInput: DaySelectInput} = useSelectInput()
+  const {SelectInput: MonthSelectInput} = useSelectInput()
+  const {SelectInput: YearSelectInput} = useSelectInput()
+  const {SelectInput: SexSelectInput} = useSelectInput()
+
   let birthday = date(useStore($step3Form).birthday)
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -92,7 +97,7 @@ export const BirthdayFormGroup = () => {
     <>
       <FormGroup>
         <StyledFormItem label='Дата рождения' required>
-          <SelectInput
+          <DaySelectInput
             placeholder='День'
             value={birthday ? birthday.date() : -1}
             onChange={changeDay}
@@ -100,7 +105,7 @@ export const BirthdayFormGroup = () => {
           />
         </StyledFormItem>
         <StyledFormItem label=''>
-          <SelectInput
+          <MonthSelectInput
             placeholder='Месяц'
             value={birthday ? birthday.month() : -1}
             onChange={changeMonth}
@@ -108,7 +113,7 @@ export const BirthdayFormGroup = () => {
           />
         </StyledFormItem>
         <StyledFormItem label=''>
-          <SelectInput
+          <YearSelectInput
             className='year'
             placeholder='Год'
             value={birthday ? birthday.year() : -1}
@@ -119,7 +124,7 @@ export const BirthdayFormGroup = () => {
       </FormGroup>
       <FormGroup>
         <StyledFormItem label='Пол' error={errors.sex} required>
-          <SelectInput  value={values.sex} onChange={_sexChanged} options={sexItems} />
+          <SexSelectInput  value={values.sex} onChange={_sexChanged} options={sexItems} />
         </StyledFormItem>
       </FormGroup>
     </>

@@ -22,6 +22,7 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { clientCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Onboarding } from "@/pages/client/home/Onboarding"
+import { $userData } from "@/feature/user/user.model"
 
 const Block = styled.div`
   position: relative;
@@ -89,14 +90,15 @@ export const HomePage = () => {
   const isHasMoreRecommendations = useStore($isHasMoreRecommendations)
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
   const todaySessionsPending = useStore(loadTodaySessionsFx.pending)
-  const recomendationPending = useStore(loadRecommendationsFx.pending)
+  const recommendationPending = useStore(loadRecommendationsFx.pending)
   const _mounted = useEvent(mounted)
   const _loadMore = useEvent(loadMore)
+  const userData = useStore($userData)
 
   useEffect(() => {
     _mounted()
     setIsFirstRender(false)
-  }, [])
+  }, [userData])
 
   const startSession = useEvent(clientCall.methods.connectToSession)
 

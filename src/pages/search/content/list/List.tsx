@@ -9,7 +9,7 @@ import { ResetFiltersButton } from "@/pages/search/content/filters/content/Reset
 const Container = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding-right: 80px;
+  padding-right: 40px;
   flex: 1;
   padding-left: 26px;
 
