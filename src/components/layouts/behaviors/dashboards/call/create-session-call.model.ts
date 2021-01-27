@@ -29,17 +29,18 @@ const agoraHandleFail = (e: any, payload?: any) => {
 
 const videoConfig: VideoEncoderConfiguration = {
   resolution: {
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   frameRate: {
     min: 15,
     max: 30
   },
   bitrate: {
-    min: 2000,
-    max: 3500
+    min: 900,
+    max: 2000
   }
+
 }
 
 let agoraLib: any = null
