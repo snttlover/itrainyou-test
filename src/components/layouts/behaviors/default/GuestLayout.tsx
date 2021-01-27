@@ -6,7 +6,7 @@ import { ClientTheme } from "@/components/layouts/themes"
 import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 
 const StyledLayout = styled(Layout)`
-  background: #eceff1;
+  background: #F4F5F7;
   height: 100vh;
   overflow: hidden;
   display: flex;

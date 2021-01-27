@@ -15,7 +15,7 @@ const Container = styled.div`
   display: flex;
   justify-content: flex-end;
   flex: 1;
-  margin-right: 220px;
+  //margin-right: 220px;
   padding: 0px 80px 20px 26px;
   width: 100%;
 

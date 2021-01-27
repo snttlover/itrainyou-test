@@ -117,7 +117,6 @@ const SecondStep = styled.div`
   background-size: contain;
   background-position: center;
   background-repeat: repeat-x;
-  background-image: url(${waveImg});
   padding: 150px 0 100px 0;
   ${MediaRange.lessThan("mobile")`
     padding: 50px 0 60px 0;

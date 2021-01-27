@@ -90,7 +90,8 @@ export const CoachSessionsPage = () => {
 
   return (
     <>
-      {showComponentOrLoader(Onbordings)}
+      {/*{showComponentOrLoader(Onbordings)}*/}
+      {!(pageLoading || isFirstRender) && <Onbordings/>}
       <ContentContainer>
         <Container nosessions={noHasSessions}>
           {showComponentOrLoader(MainSessions)}

@@ -112,7 +112,7 @@ export const SessionsRemindNotification = (props: SessionsRemindNotificationProp
 const SessionIconWrapper = styled.div`
   width: 60px;
   height: 60px;
-  background: #eceff1;
+  background: #F4F5F7;
   display: flex;
   align-items: center;
   justify-content: center;

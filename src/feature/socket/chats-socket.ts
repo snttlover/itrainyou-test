@@ -14,13 +14,13 @@ import {
   split
 } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
-import { $isLoggedIn } from "@/feature/user/user.model"
+import { $isFullRegistered, $isLoggedIn, $userData } from "@/feature/user/user.model"
+import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { condition, debounce } from "patronum"
 import { runInScope } from "@/scope"
 import { registerUserFx } from "@/pages/auth/pages/signup/models/units"
-
 
 
 type SendSocketChatMessage = {
@@ -106,22 +106,24 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: "WRITE_MESSAGE", data }))
   const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: "READ_MESSAGES", data }))
 
-  /*const $needConnect = combine(
+  const $needConnect = combine(
     $isLoggedIn,
     $isClient,
     $userData,
     $isFullRegistered,
-    (l, c, user, full) => l && c && !!user && (userType !== `coach` || !!user.coach?.isApproved) && full
-  )*/
+    (l, c, user, full) => l && c && !!user && (userType !== "coach" || !!user.coach) && full
+  )
 
   const reportUnknownTypeFx = createEffect({
     handler: (response: any) => console.log("reportUnknownType", response),
   })
 
-  const $needConnect = combine(
+  /*const $needConnect = combine(
     $isLoggedIn,
-    (l) => l
-  )
+    $userData,
+    $isFullRegistered,
+    (l,user) => l && !!user && (userType !== "coach" || !!user.coach)
+  )*/
 
   const connect = guard({
     source: $token,
@@ -190,7 +192,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   const $chatsCount = $chatsCounters.map($counters => $counters.length)
 
   sample({
-    source: $token,
+    source: guard({ source: $token, filter: token => !!token }),
     clock: merge([$needConnect, registerUserFx.done]),
     fn: token => getChatSocketLink(userType, token, query),
     target: connect,

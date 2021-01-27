@@ -22,6 +22,7 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { clientCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Onboarding } from "@/pages/client/home/Onboarding"
+import { $userData } from "@/feature/user/user.model"
 
 const Block = styled.div`
   position: relative;
@@ -89,7 +90,7 @@ export const HomePage = () => {
   const isHasMoreRecommendations = useStore($isHasMoreRecommendations)
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
   const todaySessionsPending = useStore(loadTodaySessionsFx.pending)
-  const recomendationPending = useStore(loadRecommendationsFx.pending)
+  const recommendationPending = useStore(loadRecommendationsFx.pending)
   const _mounted = useEvent(mounted)
   const _loadMore = useEvent(loadMore)
 
@@ -131,7 +132,6 @@ export const HomePage = () => {
             {todaySessions.map(session => (
               <TodaySessionCard session={session} key={session.id} />
             ))}
-            {todaySessionsPending && <Loader />}
           </Block>
         </ContentContainer>
 
@@ -139,22 +139,25 @@ export const HomePage = () => {
         (todaySessionsPending || isFirstRender)? 
           <Loader/> : <Onboarding/>}
 
-      <ContentContainer>
-        <Block>
-          <Title>Рекомендации</Title>
-          <InfiniteScroll
-            loader={<Loader />}
-            next={_loadMore as any}
-            hasMore={isHasMoreRecommendations}
-            dataLength={recommendations.length}
-            style={{overflow: "hidden"}}
-          >
-            {recommendations.map(coach => (
-              <RecommendationCoachCard key={coach.id} coach={coach} />
-            ))}
-          </InfiniteScroll>
-        </Block>
-      </ContentContainer>
+      {
+        !(todaySessionsPending || isFirstRender) &&
+        <ContentContainer>
+          <Block>
+            <Title>Рекомендации</Title>
+            <InfiniteScroll
+              loader={<Loader />}
+              next={_loadMore as any}
+              hasMore={isHasMoreRecommendations}
+              dataLength={recommendations.length}
+              style={{overflow: "hidden"}}
+            >
+              {recommendations.map(coach => (
+                <RecommendationCoachCard key={coach.id} coach={coach} />
+              ))}
+            </InfiniteScroll>
+          </Block>
+        </ContentContainer>
+      }
 
     </ClientDashboardLayout>
   )

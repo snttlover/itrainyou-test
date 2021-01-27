@@ -6,7 +6,7 @@ export const DashboardContent = styled.div`
   width: 100%;
   position: relative;
   overflow: hidden;
-  background: #eceff1;
+  background: #F4F5F7;
   display: flex;
   flex-direction: column;
 `

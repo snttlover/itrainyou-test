@@ -1,13 +1,13 @@
 import { createChatsSocket, WriteChatMessageDone } from "@/feature/socket/chats-socket"
-import { createEvent, createStore, guard  } from "effector-root"
+import { createEvent, createStore, guard } from "effector-root"
 import { createCursorPagination } from "@/feature/pagination/modules/cursor-pagination"
 import {
   ChatMessage,
   ConflictStatus,
   MessageSessionRequestStatuses,
-  SupportTicketType, 
-  TransActionsStatus,
-  TransActionProperties
+  SupportTicketType,
+  TransActionProperties,
+  TransActionsStatus
 } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
@@ -73,13 +73,13 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   const updateMessages = createEvent<ChatMessage[]>()
   const reset = createEvent()
   let chatId: ChatId = 0
+  let chatLoaded = false
   const $readedMessages = createStore<ChatMessage[]>([])
     .on(config.socket.events.onMessagesReadDone, (state, data) => {
       const newState = data.data.messages
 
       return state.concat(newState)
     }).reset(changeId)
-
 
   const $chatId = createStore<ChatId>(0)
     .on(changeId, (_, id) => id)
@@ -91,26 +91,35 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     fetchMethod: params => config.fetchMessages(chatId, params),
   })
 
+  const $loading = pagination.data.$loading
+
+  const $chatLoaded= createStore<boolean>(false)
+    .on($loading, (state, loading) => state ? true : !loading)
+    .reset([reset,changeId])
+
+  $chatLoaded.watch(loaded => (chatLoaded = loaded))
+
   const addMessage = createEvent<WriteChatMessageDone>()
 
-  pagination.data.$list.on(addMessage, (messages, message) => [message.data, ...messages])
+  pagination.data.$list.on(addMessage, (messages, message) => {
+    const arrayOfids = messages.map(message => message.id)
+    if (arrayOfids.includes(message.data.id)) return messages
+    return [message.data, ...messages]
+  })
     .on(updateMessages,(messages,updateMessages) => {
-      const idS = updateMessages.map(upd => upd.id)
-      const newState = messages.map(message => {
+      const arrayOfids = updateMessages.map(upd => upd.id)
+      return messages.map(message => {
         let isTrue = false
-        idS.map(id => {
+        arrayOfids.map(id => {
           if (id === message.id) isTrue = true
         })
         if (isTrue) {
           message["isReadByYou"] = true
           return message
-        }
-        else {
+        } else {
           return message
         }
       })
-
-      return newState
     })
 
   const $messages = pagination.data.$list.map(messages => {
@@ -246,12 +255,11 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   guard({
     source: config.socket.events.onMessage,
-    filter: message => message.data.chat === chatId,
+    filter: message => (message.data.chat === chatId && chatLoaded) || !!config.isSupport,
     target: addMessage,
   })
-
-  const $loading = pagination.data.$loading
-
+  
+  
   return {
     $chatId,
     pagination,

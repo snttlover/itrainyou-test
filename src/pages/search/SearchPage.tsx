@@ -12,14 +12,20 @@ import { Filters } from "@/pages/search/content/filters/Filters"
 import styled from "styled-components"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
 import { useLocation } from "react-router-dom"
+import { MediaRange } from "@/lib/responsive/media"
 
 const StyledPageContainer = styled(PageContainer)`
   display: flex;
-  //margin-left: 0;
+  
+  ${MediaRange.greaterThan("laptop")`
+    padding-left: 14px;
+  `}
 `
 
 const ContentWrapper = styled.div`
-  flex: 1;
+  ${MediaRange.lessThan("tablet")`
+    flex: 1;
+  `}
 `
 
 const FiltersWrapper = styled.div``

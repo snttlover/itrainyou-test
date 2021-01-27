@@ -83,7 +83,7 @@ export const UserProfile = () => {
 }
 
 const StyledSpinner = styled(Spinner)`
-  background: #eceff1;
+  background: #F4F5F7;
 `
 
 const Form = styled.div`

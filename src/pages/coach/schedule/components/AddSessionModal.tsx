@@ -2,7 +2,7 @@ import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { useClickOutside } from "@/components/click-outside/use-click-outside"
 import { Icon } from "@/components/icon/Icon"
 import { Modal } from "@/components/modal/Modal"
-import { SelectInput } from "@/components/select-input/SelectInput"
+import { useSelectInput } from "@/components/select-input/SelectInput"
 import { Spinner } from "@/components/spinner/Spinner"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
@@ -74,9 +74,6 @@ type AddSessionModalProps = {
   onCrossClick: () => void
 }
 
-const StyledSelectInput = styled(SelectInput)`
-  margin-top: 20px;
-`
 
 const StyledDashedButton = styled(DashedButton)`
   margin-top: 16px;
@@ -89,6 +86,17 @@ const StyledDashedButton = styled(DashedButton)`
 `
 
 export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }) => {
+  const { SelectInput: StartSelectInput } = useSelectInput()
+  const { SelectInput: TypeSelectInput } = useSelectInput()
+
+  const StyledStartSelectInput = styled(StartSelectInput)`
+    margin-top: 20px;
+  `
+
+  const StyledTypeSelectInput = styled(TypeSelectInput)`
+    margin-top: 20px;
+  `
+
   const formData = useStore($form)
   const durationOptions = useStore($durationOptions)
   const startDatetimeOptions = useStore($startDatetimeOptions)
@@ -108,13 +116,13 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }
         <Block ref={blockRef}>
           <CrossIcon onClick={onCrossClick} />
           <Title>Добавить сессию</Title>
-          <StyledSelectInput
+          <StyledStartSelectInput
             value={formData.startDatetime}
             onChange={value => _startDatetimeChanged(value as string)}
             options={startDatetimeOptions}
             placeholder='Начало'
           />
-          <StyledSelectInput
+          <StyledTypeSelectInput
             value={formData.durationType}
             onChange={value => _durationChanged(value as DurationType)}
             options={durationOptions}
