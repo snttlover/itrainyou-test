@@ -90,6 +90,7 @@ export const DateFilter = () => {
   }
 
   const getCalendarValue = (): CalendarDateType => {
+
     if (rangeType === "range") {
       // @ts-ignore
       return [new Date(formatedDate(start).valueOf()), new Date(formatedDate(end).valueOf())]

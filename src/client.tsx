@@ -16,9 +16,24 @@ import { Integrations } from "@sentry/tracing"
 
 Sentry.init({
   dsn: `${config.SENTRY_CLIENT_DSN}`,
+  beforeSend(event) {
+    // Check if it is an exception, and if so, show the report dialog
+    if (event.exception) {
+      Sentry.showReportDialog(event)
+    }
+    return event
+  },
   integrations: [
     new Integrations.BrowserTracing(),
   ],
+  ignoreErrors: [
+    // Random plugins/extensions
+    "Received `true` for a non-boolean attribute `active`",
+    "https://dev.itrainyou.heksray.com/api/v1/web/clients/",
+    "canvas.contentDocument",
+  ],
+  debug: true,
+  sampleRate: 1.0,
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,

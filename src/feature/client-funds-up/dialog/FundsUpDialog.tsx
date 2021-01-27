@@ -2,7 +2,7 @@ import { Button } from "@/components/button/normal/Button"
 import { Dialog } from "@/components/dialog/Dialog"
 import { FormItem } from "@/components/form-item/FormItem"
 import { RadioGroup, RadioOption } from "@/components/radio/Radio"
-import { SelectInput } from "@/components/select-input/SelectInput"
+import { useSelectInput } from "@/components/select-input/SelectInput"
 import { Spinner } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
@@ -27,6 +27,7 @@ import { useEvent, useGate, useStore } from "effector-react"
 import { Checkbox } from "@/components/checkbox/Checkbox"
 
 export const FundsUpDialog = () => {
+  const {SelectInput} = useSelectInput()
   useGate(CardsTabGate)
   const _changeShowFundUpDialog = useEvent(changeShowFundUpDialog)
   const isShowed = useStore($isFundUpDialogShowed)

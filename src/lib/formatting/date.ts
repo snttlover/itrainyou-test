@@ -13,6 +13,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.locale("ru")
 
+
 export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string): Dayjs => {
   let options: Exclude<dayjs.OptionType, string> = {}
 

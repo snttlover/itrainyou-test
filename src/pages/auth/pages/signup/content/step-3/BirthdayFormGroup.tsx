@@ -1,6 +1,6 @@
 import { FormItem, Label } from "@/components/form-item/FormItem"
 import { Input } from "@/components/input/Input"
-import { SelectInput } from "@/components/select-input/SelectInput"
+import { useSelectInput } from "@/components/select-input/SelectInput"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { FormGroup } from "@/pages/auth/pages/signup/content/step-3/FormGroup"
@@ -13,7 +13,7 @@ import {
 import dayjs from "dayjs"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { $userData } from "@/pages/auth/pages/signup/models/units"
 
@@ -58,6 +58,10 @@ const sexItems: { label: string; value: "M" | "F" }[] = [
 ]
 
 export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value: boolean) => void }) => {
+
+  const {SelectInput: MonthSelectInput, openSelect: openMonthSelect} = useSelectInput()
+  const {SelectInput: SexSelectInput, openSelect: openSexSelect} = useSelectInput()
+
   const userType = useStore($userData).type
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -79,7 +83,6 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
       "YYYY-MM-DD",
       true
     )
-
     if (date.format("YYYY-MM-DD") === dateStr && !date.isAfter(dayjs(), "day")) {
       _birthdayChanged(date)
       setBirthdayError(null)
@@ -91,6 +94,14 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
     }
   }, [day, month, year, isDirty])
 
+  const goToInput = (elem: HTMLInputElement | undefined) => {
+    elem && elem.focus()
+  }
+
+  const dayRef = useRef<HTMLInputElement>()
+  const yearRef = useRef<HTMLInputElement>()
+
+
   return (
     <React.Fragment>
       <FormGroup>
@@ -101,16 +112,22 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
             onChange={value => {
               setDay(value)
               setIsDirty(true)
+              if(`${value}`.length > 1){
+                openMonthSelect()
+                dayRef.current?.blur()
+              }
             }}
+            reff={dayRef}
           />
         </StyledFormItem>
         <StyledFormItem label='' error={birthdayError && ""}>
-          <SelectInput
+          <MonthSelectInput
             placeholder='Месяц'
             value={month}
             onChange={value => {
               setMonth(value)
               setIsDirty(true)
+              goToInput(yearRef.current)
             }}
             options={months}
           />
@@ -122,13 +139,18 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
             onChange={value => {
               setYear(value)
               setIsDirty(true)
+              if(`${value}`.length > 3){
+                openSexSelect()
+                yearRef.current?.blur()
+              }
             }}
+            reff={yearRef}
           />
         </StyledFormItem>
       </FormGroup>
       <FormGroup>
         <StyledFormItem label='Пол' error={errors.sex} required={userType === "coach"}>
-          <SelectInput value={values.sex} onChange={_sexChanged} options={sexItems} />
+          <SexSelectInput value={values.sex} onChange={_sexChanged} options={sexItems} />
         </StyledFormItem>
       </FormGroup>
     </React.Fragment>
