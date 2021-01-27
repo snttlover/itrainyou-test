@@ -13,6 +13,8 @@ import { useEvent, useStore, useStoreMap } from "effector-react"
 import styled from "styled-components"
 import React, { useState } from "react"
 import { PricesDialog } from "@/pages/coach/schedule/components/PricesDialog"
+import { $numberOfSessions } from "@/pages/coach/home/sessions/coach-sessions-page.model"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   background: #ffffff;
@@ -72,9 +74,52 @@ const OpenCloseIcon = styled(Icon)<{ open?: boolean }>`
 `
 
 const MarkIcon = styled(Icon).attrs({ name: "mark" })`
-  width: 55px;
-  fill: ${({ theme }) => theme.colors.primary};
+  fill: ${({ theme, disabled }) => disabled ? "#9AA0A6" : theme.colors.primary};
   cursor: pointer;
+  position: relative;
+`
+
+const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
+  position: relative;
+  &::before{
+    display: ${({active}) => active ? "block" : "none"};
+    content: "";
+    width: 20px;
+    height: 20px;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
+    transform: rotate(45deg) translateX(94%) translateY(-10px);
+    ${MediaRange.lessThan("mobile")`
+      width: 0;
+      height: 0;
+      top: 36px;
+      left: -100%;
+      box-shadow: none;
+      background-color: transparent;
+      border: 12px solid transparent; border-right: 12px solid #F7F7FF; border-bottom: 12px solid #F7F7FF;
+      transform: rotate(0deg) translateX(50%) translateY(-10px);
+    `}
+  }
+  &::after{
+    content: "Для сохранения нажмите галочку" ;
+    display: ${({active}) => active ? "block" : "none"};
+    font-size: 14px;
+    white-space: nowrap;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0;
+    top: -50%;
+    padding: 12px;
+    border-radius: 2px;
+    box-shadow: 0px 26px 18px rgba(0, 0, 0, 0.1);
+    transform: translateX(104%) translateY(23%);
+    z-index: 1;
+    ${MediaRange.lessThan("mobile")`
+      transform: translateX(0) translateY(150%);
+    `}
+  }
 `
 
 const MinusIcon = styled(Icon).attrs({ name: "minus" })`
@@ -138,6 +183,12 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
     }
   }
 
+  const saveSessionHandler = () => {
+    startTime && addedSlot({ weekday, startTime, sessionDurationType: duration }) && setStartTime("")
+  }
+
+  const showTooltips = useStore($numberOfSessions) < 4
+
   return (
     <Container className={className}>
       <Title>
@@ -175,7 +226,9 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
             placeholder='Тип'
             onClick={checkPrices}
           />
-          <MarkIcon onClick={() => addedSlot({ weekday, startTime, sessionDurationType: duration })} />
+          <MarkIconContainer active={showTooltips && !!startTime}>
+            <MarkIcon disabled={!startTime} onClick={saveSessionHandler} />
+          </MarkIconContainer>
         </SettingsContainer>
       )}
       <PricesDialog visibility={pricesDialogVisibility} onChangeVisibility={changePricesDialogVisibility} />

@@ -86,10 +86,17 @@ const StyledDashedButton = styled(DashedButton)`
 `
 
 export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }) => {
-  const { SelectInput } = useSelectInput()
-  const StyledSelectInput = styled(SelectInput)`
+  const { SelectInput: StartSelectInput } = useSelectInput()
+  const { SelectInput: TypeSelectInput } = useSelectInput()
+
+  const StyledStartSelectInput = styled(StartSelectInput)`
     margin-top: 20px;
   `
+
+  const StyledTypeSelectInput = styled(TypeSelectInput)`
+    margin-top: 20px;
+  `
+
   const formData = useStore($form)
   const durationOptions = useStore($durationOptions)
   const startDatetimeOptions = useStore($startDatetimeOptions)
@@ -109,13 +116,13 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }
         <Block ref={blockRef}>
           <CrossIcon onClick={onCrossClick} />
           <Title>Добавить сессию</Title>
-          <StyledSelectInput
+          <StyledStartSelectInput
             value={formData.startDatetime}
             onChange={value => _startDatetimeChanged(value as string)}
             options={startDatetimeOptions}
             placeholder='Начало'
           />
-          <StyledSelectInput
+          <StyledTypeSelectInput
             value={formData.durationType}
             onChange={value => _durationChanged(value as DurationType)}
             options={durationOptions}
