@@ -1,5 +1,5 @@
 import { ClientSelfData, getMyClient } from "@/lib/api/client/clientInfo"
-import { date } from "@/lib/formatting/date"
+import { date, getYearsCount } from "@/lib/formatting/date"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 import { $categoriesList, fetchCategoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import { getMyTransactions, SessionTransaction } from "@/lib/api/transactions/client/list-transaction"
@@ -61,9 +61,7 @@ sample({
 export const $pageProfile = $profile.map(profile => ({
   ...(profile as ClientSelfData),
   avatar: profile?.avatar || null,
-  age: date(+new Date())
-    .subtract(date(profile?.birthDate).get("year"), "year")
-    .get("year"),
+  age: getYearsCount(profile?.birthDate)
 }))
 
 export const $profileCategories = combine($categoriesList, $profile, (categories, profile) =>

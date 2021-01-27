@@ -33,7 +33,7 @@ export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?
 }
 date.utc = dayjs.utc
 
-export const getYearsCount = (birthday: string) => {
+export const getYearsCount = (birthday: string | undefined) => {
   !birthday && (birthday = date().toISOString())
   return date().diff(date(birthday, "YYYY-MM-DD"), "year")
 }
