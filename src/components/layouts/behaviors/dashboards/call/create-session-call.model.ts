@@ -171,6 +171,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
               screen: false,
             }) as Stream
 
+            console.log(agoraData.localStream)
+
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
 
             agoraData.localStream.init(() => {

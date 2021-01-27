@@ -1,4 +1,15 @@
-import { createEffect, createEvent, createStore, forward, Event, sample, combine, restore, guard } from "effector-root"
+import {
+  createEffect,
+  createEvent,
+  createStore,
+  forward,
+  Event,
+  sample,
+  combine,
+  restore,
+  guard,
+  split
+} from "effector-root"
 import { SessionInfo } from "@/lib/api/coach/get-session"
 import { date } from "@/lib/formatting/date"
 import { AxiosError } from "axios"
@@ -7,6 +18,8 @@ import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
+import { registerWithFacebookFx } from "@/pages/auth/pages/socials/models/units"
+import { SocialNetwork } from "@/pages/auth/pages/socials/models/types"
 
 const durations = {
   D30: "30мин",
@@ -96,11 +109,19 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     target: cancelSessionFx,
   })
 
-  const successCancelFx = createEffect({
+  const automaticallyCanceledToastFx = createEffect({
     handler: () =>
       toasts.add({
         type: "info",
         text: "Сессия отменена",
+      }),
+  })
+
+  const sessionRequestCreatedToastFx = createEffect({
+    handler: () =>
+      toasts.add({
+        type: "info",
+        text: "Коучу был отправлен запрос на отмену сессии",
       }),
   })
     
@@ -122,7 +143,19 @@ export const createSessionInfoModule = (config: CreateSessionInfoModuleConfig) =
     
   forward({
     from: cancelSessionFx.done,
-    to: [successCancelFx, changeCancelVisibility.prepend(() => false)],
+    to: changeCancelVisibility.prepend(() => false),
+  })
+
+  split({
+    source: cancelSessionFx.doneData,
+    match: {
+      automaticallyCanceled: (payload: SessionRequest) => payload.status === "AUTOMATICALLY_APPROVED",
+      sessionRequestCreated: (payload: SessionRequest) => payload.status === "AWAITING",
+    },
+    cases: {
+      automaticallyCanceled: automaticallyCanceledToastFx.prepend(() => true),
+      sessionRequestCreated: sessionRequestCreatedToastFx.prepend(() => true),
+    }
   })
 
   const $cancelVisibility = combine(
