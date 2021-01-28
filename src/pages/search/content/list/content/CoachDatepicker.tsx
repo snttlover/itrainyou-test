@@ -443,12 +443,12 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const payForTheSessionHandler = () => {
     _showCreditCardsModal()
-    changeCurrentDate(null)
+    changeCurrentDate(undefined)
   }
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
-  const currentDateEqual = date(currentDate as Date).format(equalDateFormat)
+  const currentDateEqual = date(headerDate as Date).format(equalDateFormat)
 
   if (!props.coach.prices[activeTab] && tabs.length) {
     changeActiveTab(tabs[0].key)
@@ -475,7 +475,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const changeTabHandler = (durationType: DurationType) => {
     changeActiveTab(durationType)
-    changeCurrentDate(null)
+    changeCurrentDate(undefined)
   }
 
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)

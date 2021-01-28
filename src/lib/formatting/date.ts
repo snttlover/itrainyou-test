@@ -15,6 +15,8 @@ dayjs.locale("ru")
 
 
 export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string): Dayjs => {
+  if (date === null) date = undefined
+
   let options: Exclude<dayjs.OptionType, string> = {}
 
   if (typeof option === "string") options.format = option
@@ -29,13 +31,13 @@ export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?
 
   if (timeZone === "Atlantic/Azores" || timeZone === "GMT") return dt.utc()
 
-  let forChromeV88 = dt.tz(timeZone)
-  if (isNaN(forChromeV88["$D"])) {
-
-    forChromeV88 = dayjs.tz(dt, timeZone)
+  let dateWithTimeZone = dt.tz(timeZone)
+  if (isNaN(dateWithTimeZone["$D"])) {
+    // В мобильно хроме после 88 версии поменялась работа с таймзонами
+    dateWithTimeZone = dayjs.tz(dt, timeZone)
   }
 
-  return forChromeV88
+  return dateWithTimeZone
 }
 date.utc = dayjs.utc
 
