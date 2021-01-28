@@ -25,7 +25,7 @@ const StyledLoaderWrapper = styled.div`
   height: 100%;
   z-index: 10;
   position: absolute;
-  background: #eee;
+  background: #F4F5F7;
   left: 0;
   top: 0;
 `
