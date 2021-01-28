@@ -1,7 +1,13 @@
 import { START } from "@/lib/effector"
 import { parseQueryString } from "@/lib/helpers/query"
-import { resetSearchQuery, pageLoaded, setSearchPageQuery, loadCoaches } from "@/pages/search/coaches-search.model"
-import { useEvent } from "effector-react"
+import {
+  resetSearchQuery,
+  pageLoaded,
+  setSearchPageQuery,
+  loadCoaches,
+  $coachesList
+} from "@/pages/search/coaches-search.model"
+import { useEvent, useStore } from "effector-react"
 import { useEffect } from "react"
 import * as React from "react"
 import { PageContainer } from "@/components/page-container/PageContainer"
@@ -23,8 +29,11 @@ const StyledPageContainer = styled(PageContainer)`
 `
 
 const ContentWrapper = styled.div`
+   width: 100%;
+  max-width: 700px;
   ${MediaRange.lessThan("tablet")`
     flex: 1;
+    max-width: 100%;
   `}
 `
 
@@ -35,6 +44,7 @@ export const SearchPage = () => {
   const setQueryParams = useEvent(setSearchPageQuery)
   const fetchCoaches = useEvent(loadCoaches)
   const location = useLocation()
+
   useEffect(() => {
     const query = parseQueryString(location.search)
 

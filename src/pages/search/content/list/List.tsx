@@ -11,7 +11,7 @@ const Container = styled.div`
   justify-content: flex-end;
   padding-right: 40px;
   flex: 1;
-  padding-left: 26px;
+  padding-left: 40px;
 
   @media screen and (max-width: 963px) {
     padding-right: 26px;
@@ -62,7 +62,9 @@ export const List = () => {
   return (
     <Container>
       <ListContainer>
-        <div>{notFound}</div>
+        <div>
+          {notFound}
+        </div>
         <div>
           {loading && (
             <SpinnerContainer>
