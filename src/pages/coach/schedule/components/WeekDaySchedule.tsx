@@ -46,6 +46,7 @@ const SettingsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 4px;
+  position: relative;
 `
 
 const Prefix = styled.span`
@@ -84,22 +85,18 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
   &::before{
     display: ${({active}) => active ? "block" : "none"};
     content: "";
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background-color: #ffffff;
     position: absolute;
-    right: 0;
-    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
-    transform: rotate(45deg) translateX(94%) translateY(-10px);
-    ${MediaRange.lessThan("mobile")`
-      width: 0;
-      height: 0;
-      top: 36px;
-      left: -100%;
-      box-shadow: none;
-      background-color: transparent;
-      border: 12px solid transparent; border-right: 12px solid #F7F7FF; border-bottom: 12px solid #F7F7FF;
-      transform: rotate(0deg) translateX(50%) translateY(-10px);
+    top: 9px;
+    right: -17px;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+    transform: rotate(45deg);
+    ${MediaRange.lessThan("tablet")`
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+      top: 29px;
+      left: 2px;
     `}
   }
   &::after{
@@ -113,11 +110,12 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
     top: -50%;
     padding: 12px;
     border-radius: 2px;
-    box-shadow: 0px 26px 18px rgba(0, 0, 0, 0.1);
+    box-shadow: 15px 0px 18px rgba(0, 0, 0, 0.1);
     transform: translateX(104%) translateY(23%);
     z-index: 1;
-    ${MediaRange.lessThan("mobile")`
-      transform: translateX(0) translateY(150%);
+    ${MediaRange.lessThan("tablet")`
+      box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      transform: translateX(-3px) translateY(124%);
     `}
   }
 `
@@ -229,6 +227,8 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
           <MarkIconContainer active={showTooltips && !!startTime}>
             <MarkIcon disabled={!startTime} onClick={saveSessionHandler} />
           </MarkIconContainer>
+
+          {/*<Tooltip active={true}/>*/}
         </SettingsContainer>
       )}
       <PricesDialog visibility={pricesDialogVisibility} onChangeVisibility={changePricesDialogVisibility} />
