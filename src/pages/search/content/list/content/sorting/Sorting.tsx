@@ -16,7 +16,7 @@ const Container = styled.div`
   justify-content: flex-end;
   flex: 1;
   //margin-right: 220px;
-  padding: 0px 80px 20px 26px;
+  padding: 0px 80px 20px 40px;
   width: 100%;
 
   @media screen and (max-width: 963px) {
