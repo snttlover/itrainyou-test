@@ -21,7 +21,7 @@ const StyledSessionItem: React.FC<CardSessions> = ({ id,startDateTime, duration,
     <Item>
       <TopMobileGroup>
         <Date>{date(startDateTime).format("D MMMM YYYY")}</Date>
-        <Time>{date(startDateTime).format("hh:mm")}-{date(endDateTime).format("hh:mm")}</Time>
+        <Time>{date(startDateTime).format("HH:mm")}-{date(endDateTime).format("HH:mm")}</Time>
       </TopMobileGroup>
       <BottomMobileGroup>
         <Name>{coach.firstName} {coach.lastName}</Name>
