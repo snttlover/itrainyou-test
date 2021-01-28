@@ -29,7 +29,13 @@ export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?
 
   if (timeZone === "Atlantic/Azores" || timeZone === "GMT") return dt.utc()
 
-  return dt.tz(timeZone)
+  const forChromeV88 = dt.tz(timeZone)
+  if (isNaN(forChromeV88["$D"])) {
+    return dayjs.tz(dt, timeZone)
+  }
+  else {
+    return dt.tz(timeZone)
+  }
 }
 date.utc = dayjs.utc
 
