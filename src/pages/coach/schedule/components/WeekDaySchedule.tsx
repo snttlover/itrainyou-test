@@ -115,44 +115,10 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
     z-index: 1;
     ${MediaRange.lessThan("tablet")`
       box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
-      transform: translateX(0) translateY(125%);
+      transform: translateX(-3px) translateY(124%);
     `}
   }
 `
-
-// const Tooltip = styled.div<{ active: boolean }>`
-//   position: absolute;
-//   right: 5px;
-//   top: -8px;
-//   width: 15px;
-//   height: 15px;
-//   background-color: #fff;
-//   box-shadow: 0 0 15px;
-//   transform: rotate(45deg);
-//
-//   &::before{
-//     content: "Чтобы сохранить нажмите на галочку";
-//     position: absolute;
-//     white-space: nowrap;
-//     padding: 12px;
-//     background-color: #fff;
-//     font-size: 14px;
-//     box-shadow: 0 0 15px;
-//     border-radius: 2px 0 2px 2px;
-//     transform: rotate(-45deg);
-//   }
-//
-//   &::after{
-//     content: "";
-//     position: absolute;
-//     right: 5px;
-//     top: -8px;
-//     width: 15px;
-//     height: 15px;
-//     background-color: #fff;
-//     transform: rotate(0) translateX(32px) translateY(23px);
-//   }
-// `
 
 const MinusIcon = styled(Icon).attrs({ name: "minus" })`
   width: 14px;
