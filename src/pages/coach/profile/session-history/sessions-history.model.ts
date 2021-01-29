@@ -7,7 +7,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, sample
 export const SessionsHistoryGate = createGate()
 
 export const loadProfileSessionsFx = createEffect({
-  handler: ({ page }: { page: number }) => getMyTransactionsCoach({ page, pageSize: 5 }),
+  handler: ({ page }: { page: number }) => getMyTransactionsCoach({ page, pageSize: 15 }),
 })
 
 export const $ProfileSessionsCount = createStore<number>(100)

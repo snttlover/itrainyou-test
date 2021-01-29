@@ -72,7 +72,7 @@ export const $profileCategories = combine($categoriesList, $profile, (categories
 )
 
 export const loadProfileSessionsFx = createEffect({
-  handler: ({ page }: { page: number }) => getMyTransactions({ page, pageSize: 5 }),
+  handler: ({ page }: { page: number }) => getMyTransactions({ page, pageSize: 15 }),
 })
 
 export const $ProfileSessionsCount = createStore<number>(100).on(

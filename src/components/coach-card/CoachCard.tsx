@@ -109,9 +109,9 @@ const PriceContainer = styled.div`
     line-height: 16px;
   `}
 
-  @media screen and (max-width: 480px) {
-    order: 2;
-  }
+  ${MediaRange.lessThan("mobile")`
+    order: 2;  
+  `}
 `
 
 type BlockTypes = {
@@ -207,7 +207,7 @@ const Rating = styled.span`
     line-height: 22px;
     font-weight: 600;
   }
-  ${MediaRange.greaterThan("tablet")`  
+  ${MediaRange.lessThan("tablet")`  
     font-size: 20px;
   `}
 `
@@ -340,7 +340,9 @@ const CoachCardLayout = ({ coach, className }: Props) => {
 
   const minimumPrice = { price: minimalTimeWithPrice[1], text: `${minimalTimeWithPrice[0].slice(1)} мин` }
 
-  const rating = (coach.rating || 0).toFixed(1).replace(".", ",")
+  const isThereRating = coach.rating !== null
+
+  const rating = !isThereRating || (coach.rating || 0).toFixed(1).replace(".", ",")
 
   // @ts-ignore
   const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
@@ -376,7 +378,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
         </NameContainer>
         <RatingContainer>
           <Meta>
-            <ReviewsCount>{coach.reviewsCount}</ReviewsCount>
+            <ReviewsCount>{coach.reviewsCount || "Пока нет оценок"}</ReviewsCount>
             <Star />
             <Rating>{rating}</Rating>
           </Meta>
