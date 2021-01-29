@@ -27,15 +27,13 @@ Sentry.init({
     new Integrations.BrowserTracing(),
   ],
   ignoreErrors: [
-    // Random plugins/extensions
     "Received `true` for a non-boolean attribute `active`",
-    "https://dev.itrainyou.heksray.com/api/v1/web/clients/",
+    "ResizeObserver loop limit exceeded",
+    `${config.BACKEND_URL}/api/v1/web/clients/`,
     "canvas.contentDocument",
   ],
   debug: true,
   sampleRate: 1.0,
-  // We recommend adjusting this value in production, or using tracesSampler
-  // for finer control
   tracesSampleRate: 1.0,
 })
 

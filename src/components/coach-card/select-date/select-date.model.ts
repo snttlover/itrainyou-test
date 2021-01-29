@@ -6,7 +6,7 @@ import { isAxiosError } from "@/lib/network/network"
 import { routeNames } from "@/pages/route-names"
 import { runInScope } from "@/scope"
 import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample, split } from "effector-root"
-import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
+
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -82,11 +82,6 @@ export const genCoachSessions = (id = 0) => {
     to: buySessionsFx,
   })
 
-  forward({
-    from: buySessionsFx.done,
-    to: showCreditCardsModal.prepend(() => true),
-  })
-
   const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
   buySessionsFx.done.watch(() => {
     runInScope(toasts.remove, sessionBookSuccessToast)
@@ -154,5 +149,6 @@ export const genCoachSessions = (id = 0) => {
     },
     buySessionsLoading: buySessionsFx.pending,
     buySessionBulk,
+    buySessionsFx,
   }
 }

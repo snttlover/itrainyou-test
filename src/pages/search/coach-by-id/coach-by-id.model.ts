@@ -6,6 +6,10 @@ import { createGate, runInScope } from "@/scope"
 import { createEffect, createEvent, createStore, forward, sample, guard, merge, restore, combine } from "effector-root"
 import { genCoachSessions } from "@/components/coach-card/select-date/select-date.model"
 import { DurationType } from "@/lib/api/coach-sessions"
+import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
+
+
+export const $sessionsPickerStore = genCoachSessions()
 
 export const loadCoachFx = createEffect({
   handler: getCoach,
@@ -26,10 +30,20 @@ export const removeFromFavouriteFx = createEffect({
 export const mounted = createEvent<{ id: number }>()
 export const showCreditCardsModal = createEvent<void | boolean>()
 
+export const showBulkedSessionsModal = createEvent<void | boolean>()
+
 export const $creditCardsModal = createStore<boolean>(false)
   .on(showCreditCardsModal, (state,payload) => {
     if (payload) return false
     return !state})
+  .on($sessionsPickerStore.buySessionBulk, (state,payload) => false)
+  .reset(mounted)
+
+export const $bulkedSessionsModal = createStore<boolean>(false)
+  .on(showBulkedSessionsModal, (state, payload) => {
+    if (payload) return true
+    return !state})
+  .on($sessionsPickerStore.buySessionBulk, (state,payload) => true)
   .reset([mounted])
 
 export const $coach = createStore<Coach | null>(null)
@@ -45,7 +59,27 @@ export const $reviews = createStore<CoachReviewResponse[]>([]).on(
   (state, payload) => payload.results
 )
 
-export const $sessionsPickerStore = genCoachSessions()
+export const $bulkedSessions = createStore([])
+  .on($sessionsPickerStore.buySessionsFx.doneData, (state, payload) => payload)
+  .reset([mounted])
+
+export const $bulkedSessionsForView = $bulkedSessions.map(sessions =>
+  sessions.map((session: {
+    id: number
+    startDatetime: string
+    endDatetime: string
+    durationType: string
+    coach: CoachItemType
+    coachPrice: string
+  }) => ({
+    id: session.id,
+    startDateTime: session.startDatetime,
+    endDateTime: session.endDatetime,
+    duration: session.durationType,
+    coach: session.coach,
+    price: session.coachPrice,
+  }))
+)
 
 const changeCoachSessionCoachId = $sessionsPickerStore.changeId.prepend<Coach>(coach => coach.id)
 const changeCoachSessionDurationTab = $sessionsPickerStore.tabs.changeDurationTab.prepend<Coach>(

@@ -10,10 +10,11 @@ import * as React from "react"
 import styled from "styled-components"
 import { $sessionsPickerStore } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
-import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
+import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
 import { useGate, useStore } from "effector-react"
 import { UserLayout } from "@/components/layouts/behaviors/user/UserLayout"
 import { NotFound } from "@/feature/not-found/components/NotFound"
+import { BulkedSessionsModalDialog } from "@/pages/search/content/list/content/modals/BulkedSessionsModal"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -139,6 +140,7 @@ export const CoachByIdPage = () => {
             <BuySidebar>
               <Datepicker />
             </BuySidebar>
+            <BulkedSessionsModalDialog />
             <CardPicker />
           </InfoWithSidebar>
         )}

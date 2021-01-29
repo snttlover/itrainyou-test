@@ -16,8 +16,9 @@ import { Button } from "@/components/button/normal/Button"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
 import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
-import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
+import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
+import { BulkedSessionsModalDialog } from "@/pages/search/content/list/content/modals/BulkedSessionsModal"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -279,6 +280,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   return (
     <>
       <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
+      <BulkedSessionsModalDialog />
       <StyledTabs value={activeTab} onChange={changeActiveTab}>
         {tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
