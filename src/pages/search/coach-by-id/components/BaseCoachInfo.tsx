@@ -174,9 +174,9 @@ export const BaseCoachInfo = styled(({ ...props }) => {
           <Name>
             {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
             <Year>{getYearsCount(coach?.birthDate!)} лет</Year>
-            <IsAuthed>
-              <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />
-            </IsAuthed>
+            {/*<IsAuthed>*/}
+            {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
+            {/*</IsAuthed>*/}
           </Name>
           <Rating>
             <StarIcon name='star' />

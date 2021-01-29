@@ -7,7 +7,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, sample
 export const WalletHistoryPageGate = createGate()
 
 export const loadTransactionsFx = createEffect({
-  handler: ({ page }: { page: number }) => getClientTransactionsList({ page, pageSize: 10 }),
+  handler: ({ page }: { page: number }) => getClientTransactionsList({ page, pageSize: 15 }),
 })
 
 export const $transactionsCount = createStore<number>(100)

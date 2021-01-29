@@ -438,6 +438,9 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     changeCurrentDate((prevState) => {
       return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
     })
+    return () => {
+      changeCurrentDate(undefined)
+    }
   }, [enabledDates[0]])
 
   const payForTheSessionHandler = () => {
@@ -479,6 +482,8 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
+
+  console.log(enabledDates[0])
 
   return (
     <Container>

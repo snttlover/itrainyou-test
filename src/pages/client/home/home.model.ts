@@ -5,7 +5,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, sample
 import { logout } from "@/lib/network/token"
 
 export const loadRecommendationsFx = createEffect({
-  handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 5 }),
+  handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 15 }),
 })
 
 export const loadActiveSessionsFx = createEffect({
