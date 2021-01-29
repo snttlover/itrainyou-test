@@ -94,9 +94,13 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
     transform: rotate(45deg);
     ${MediaRange.lessThan("tablet")`
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-      top: 29px;
-      left: 2px;
+      content: "◢";
+      color: #fff;
+      transform: unset;
+      box-shadow: unset;
+      text-shadow: 0 0 10px rgba(0, 0, 0, .2);
+      top: 22px;
+      left: -1px;
     `}
   }
   &::after{
@@ -109,13 +113,15 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
     right: 0;
     top: -50%;
     padding: 12px;
-    border-radius: 2px;
+    border-radius: 2px 0 2px 2px;
     box-shadow: 15px 0px 18px rgba(0, 0, 0, 0.1);
     transform: translateX(104%) translateY(23%);
     z-index: 1;
     ${MediaRange.lessThan("tablet")`
-      box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
-      transform: translateX(-3px) translateY(124%);
+      box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+      top: 37px;
+      right: 13px;
+      transform: unset;
     `}
   }
 `
