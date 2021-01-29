@@ -436,14 +436,13 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   useEffect(() => {
     changeCurrentDate((prevState) => {
-      if(prevState === undefined) return date(enabledDates[0]).toDate()
-      return prevState
+      return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
     })
   }, [enabledDates[0]])
 
   const payForTheSessionHandler = () => {
     _showCreditCardsModal()
-    changeCurrentDate(undefined)
+    changeCurrentDate(null)
   }
 
   const headerDate = currentDate || new Date()
@@ -475,7 +474,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const changeTabHandler = (durationType: DurationType) => {
     changeActiveTab(durationType)
-    changeCurrentDate(undefined)
+    changeCurrentDate(null)
   }
 
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
@@ -500,7 +499,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
           <StyledCalendar
             value={currentDate as Date}
             enabledDates={enabledDates}
-            startFrom={date(enabledDates[0]).toDate()}
             onChange={changeCurrentDate}
             isBig={true}
           />
