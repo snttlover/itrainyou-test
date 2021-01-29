@@ -14,8 +14,10 @@ dayjs.extend(timezone)
 dayjs.locale("ru")
 
 
-export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string): Dayjs => {
-  if (date === null) date = undefined
+export const date = (_date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string): Dayjs => {
+  if (!_date) {
+    _date = undefined
+  }
 
   let options: Exclude<dayjs.OptionType, string> = {}
 
@@ -27,7 +29,7 @@ export const date = (date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?
 
   const timeZone = userData?.client?.user?.timeZone || dayjs.tz.guess()
 
-  const dt = dayjs(date, options, locale)
+  const dt = dayjs(_date, options, locale)
 
   if (timeZone === "Atlantic/Azores" || timeZone === "GMT") return dt.utc()
 
