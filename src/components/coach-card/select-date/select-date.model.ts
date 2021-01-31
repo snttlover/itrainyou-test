@@ -1,5 +1,9 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { changeShowFundUpDialog, setRedirectUrl } from "@/feature/client-funds-up/dialog/fund-up.model"
+import {
+  changeShowFundUpDialog,
+  finishSaveCardFx,
+  setRedirectUrl
+} from "@/feature/client-funds-up/dialog/fund-up.model"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { bulkBookSessions,BulkBookSessionsRequest } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { isAxiosError } from "@/lib/network/network"
@@ -147,7 +151,7 @@ export const genCoachSessions = (id = 0) => {
       $durationTab,
       changeDurationTab,
     },
-    buySessionsLoading: buySessionsFx.pending,
+    buySessionsLoading: buySessionsFx.pending || finishSaveCardFx.pending,
     buySessionBulk,
     buySessionsFx,
   }

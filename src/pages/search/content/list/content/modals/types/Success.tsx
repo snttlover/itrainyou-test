@@ -5,7 +5,7 @@ import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { Avatar } from "@/components/avatar/Avatar"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
-import { $bulkedSessionsForView } from "@/pages/search/coach-by-id/coach-by-id.model"
+import { $bulkedSessionsForView } from "@/pages/search/coach-by-id/models/units"
 
 type Sessions = {
   id: number
@@ -32,7 +32,7 @@ const StyledSessionItem: React.FC<Sessions> = ({ id,startDateTime, duration, coa
 }
 
 
-export const SuccessfullyBulked = () => {
+export const SuccessfullyBookedModal = () => {
   const coachInfo = useStore($bulkedSessionsForView)
 
   return (

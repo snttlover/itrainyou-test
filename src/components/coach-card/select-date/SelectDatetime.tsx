@@ -15,10 +15,10 @@ import { Spinner } from "@/components/spinner/Spinner"
 import { Button } from "@/components/button/normal/Button"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
-import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
-import { BulkedSessionsModalDialog } from "@/pages/search/content/list/content/modals/BulkedSessionsModal"
+import { BookSessionsStatusModalDialog } from "@/pages/search/content/list/content/modals/BookSessionsStatusModalDialog"
+import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -227,7 +227,7 @@ export type SelectDatetimeTypes = {
 }
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
-  const _showCreditCardsModal = useEvent(showCreditCardsModal)
+  const _toggleCreditCardsModal = useEvent(toggleCreditCardsModal)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const sessions = useStore(props.sessionsData.sessionsList)
@@ -245,7 +245,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   }, [activeTab, enabledDates[0]])
 
   const payForTheSessionHandler = () => {
-    _showCreditCardsModal()
+    _toggleCreditCardsModal(true)
     changeCurrentDate(null)
   }
 
@@ -280,7 +280,6 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   return (
     <>
       <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
-      <BulkedSessionsModalDialog />
       <StyledTabs value={activeTab} onChange={changeActiveTab}>
         {tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>

@@ -5,12 +5,12 @@ import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { IsAuthed } from "@/feature/user/IsAuthed"
 import { getYearsCount } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
-import { $coach, $isFavourite, toggleFavourite } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
 import { useEvent, useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
 import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
+import { $coach, $isFavourite, toggleFavourite } from "@/pages/search/coach-by-id/models/units"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};

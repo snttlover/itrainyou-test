@@ -13,10 +13,10 @@ import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
 import { createGate } from "@/scope"
 import { attach, combine, createEffect, createEvent, forward, guard, restore, sample, split } from "effector-root"
 import { every } from "patronum"
-import { $sessionsPickerStore, mounted as CoachByIdMounted, } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { mounted as homeMounted } from "@/pages/client/home/home.model.ts"
 import { routeNames } from "@/pages/route-names"
 import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
+import { $sessionsPickerStore, mounted as CoachByIdMounted } from "@/pages/search/coach-by-id/models/units"
 
 export const FundUpModalGate = createGate()
 export const resetFundUpModal = createEvent()

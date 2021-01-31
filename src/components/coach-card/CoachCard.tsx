@@ -13,6 +13,7 @@ import { Icon } from "@/components/icon/Icon"
 import { GrayTooltip } from "@/components/gray-tooltip/GrayTooltip"
 import { useHistory } from "react-router-dom"
 import { parseFloatToString } from "@/lib/formatting/parsenumbers"
+import { BookSessionsStatusModalDialog } from "@/pages/search/content/list/content/modals/BookSessionsStatusModalDialog"
 
 const MainInfoContainer = styled.div`
   position: relative;
@@ -388,6 +389,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Date>
         </RatingContainer>
       </MainInfoContainer>
+      <BookSessionsStatusModalDialog />
       {isActive && <SelectDatetime coach={coach} sessionsData={sessionsListModel!} />}
     </Block>
   )

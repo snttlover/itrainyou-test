@@ -15,8 +15,8 @@ import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
-import { $creditCardsModal, showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
+import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -419,9 +419,11 @@ const equalTimeFormat = "HH:mm"
 
 export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
-  const _showCreditCardsModal = (function(){
-    return useEvent(showCreditCardsModal)
-  })()
+
+  const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
+
+  const _showCreditCardsModal = () => _toggleCreditCardModal(true)
+
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)

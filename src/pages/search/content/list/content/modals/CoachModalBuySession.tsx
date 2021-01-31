@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useStore } from "effector-react"
-import { $creditCardsModal, showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { Dialog } from "@/components/dialog/Dialog"
 import styled from "styled-components"
 import { useEvent } from "effector-react"
@@ -12,6 +11,7 @@ import { SelectInputCard } from "@/components/select-input/SelectInputCard"
 import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
 import { addCard } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { MediaRange } from "@/lib/responsive/media"
+import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 
 type SetValue = {
     id: number | string
@@ -25,8 +25,8 @@ const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
 export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
-  const visibility = useStore($creditCardsModal)
-  const hide = useEvent(showCreditCardsModal)
+  const visibility = useStore($creditCardsModalVisibility)
+  const _toggleCreditCardsModal = useEvent(toggleCreditCardsModal)
   const cards = useStore($cardsListForView)
 
   const [options, setOptions] = useState<SetValue[]>([{
@@ -108,8 +108,9 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
       _addCard(props.coach.id)
     }
   }
+
   return (
-    <StyledDialog value={visibility} onChange={() => hide()}>
+    <StyledDialog value={visibility} onChange={() => _toggleCreditCardsModal(false)}>
       <Container>
         <Header>Бронирование сессий</Header>
         <Description>Деньги на карте будут списаны автоматически за 24 часа до сессии.</Description>
