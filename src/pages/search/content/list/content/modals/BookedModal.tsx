@@ -42,15 +42,15 @@ const Success = () => {
     <Container>
       <Header>
         Коучу был{`${pluralize("и")}`} отправлен{`${pluralize("ы")}`} запрос{`${pluralize("ы")}`}
-        {" "}на бронировани{`${pluralize("я", "е")}`} сесси{`${pluralize("й", "и")}`}
+        {" "}на бронирование сесси{`${pluralize("й", "и")}`}
       </Header>
       <Description>
         При подтверждении или отклонения запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
       </Description>
-      <ListContainer>
+      <CoachContainer>
         <StyledAvatar src={bookedSessions[0].coach.avatar} />
         <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
-      </ListContainer>
+      </CoachContainer>
       {useList($bookedSessions, session => (
         <StyledSessionItem {...session} />
       ))}
@@ -68,11 +68,11 @@ const Failure = () => {
   return (
     <Container>
       <Header>
-                    Что-то пошло не так
+        Что-то пошло не так
       </Header>
       <Description>
-                    Не удалось произвести бронирование сессии.
-                    Пожалуйста, попробуйте еще раз позже.
+        Не удалось произвести бронирование сессии.
+        Пожалуйста, попробуйте еще раз позже.
       </Description>
     </Container>
   )
@@ -92,7 +92,13 @@ const Header = styled.div`
   color: #424242;
   text-align: center;
   margin-top: 10px;
-  max-width: 300px;
+  max-width: 500px;
+  
+  ${MediaRange.lessThan("mobile")`
+    font-size: 16px;
+    line-height: 24px;
+    max-width: 300px;
+  `}
 `
 
 const ListContainer = styled.div`
@@ -100,6 +106,10 @@ const ListContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+`
+
+const CoachContainer = styled(ListContainer)`
+  margin-bottom: 12px;
 `
 
 const Container = styled.div`
@@ -117,13 +127,15 @@ const Description = styled.div`
   line-height: 24px;
   color: #5B6670;
   text-align: center;
-  margin-top: 16px;
-  margin-bottom: 35px;
+  margin-top: 12px;
+  margin-bottom: 24px;
   max-width: 400px;
 
   ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 22px;
+    margin-top: 8px;
+    max-width: 300px;
   `}
 `
 
@@ -134,7 +146,7 @@ const WarningTitle = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: #5B6670;
-  margin-top: 85px;
+  margin-top: 32px;
   text-align: center;
   max-width: 400px;
 
@@ -172,8 +184,7 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #efefef;
-  padding: 12px 0;
+  margin-top: 12px;
 `
 
 const StyledAvatar = styled(Avatar)`
