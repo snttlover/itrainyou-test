@@ -52,6 +52,7 @@ const Container = styled.div<ContainerTypes>`
 const MessageText = styled.div`
   font-size: 16px;
   line-height: 22px;
+  max-width: 100%;
   
   ${MediaRange.lessThan("mobile")`
     font-size: 16px;
