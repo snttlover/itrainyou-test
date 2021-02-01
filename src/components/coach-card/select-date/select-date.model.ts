@@ -39,7 +39,8 @@ export type BookedSessionForViewType = {
 
 export type BookedSessionsForViewTypes = Store<BookedSessionForViewType[]>
 
-// Вынес из функции genCoachSessions, чтобы можно было цепляться на этот эффект из любого места проекта
+// Вынес из функции genCoachSessions, чтобы можно было цепляться на этот эффект из любого места проекта,
+// Не дожидаясь, пока genCoachSessions выполнится в нужном месте
 export const buySessionsFx = createEffect({
   handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
 })
