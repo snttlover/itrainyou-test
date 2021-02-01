@@ -33,13 +33,7 @@ export const date = (_date?: dayjs.ConfigType, option?: dayjs.OptionType, locale
 
   if (timeZone === "Atlantic/Azores" || timeZone === "GMT") return dt.utc()
 
-  let dateWithTimeZone = dt.tz(timeZone)
-  if (isNaN(dateWithTimeZone["$D"])) {
-    // В мобильно хроме после 88 версии поменялась работа с таймзонами
-    dateWithTimeZone = dayjs.tz(dt, timeZone)
-  }
-
-  return dateWithTimeZone
+  return dt.tz(timeZone)
 }
 date.utc = dayjs.utc
 
