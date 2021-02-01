@@ -4,18 +4,20 @@ import styled from "styled-components"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { Avatar } from "@/components/avatar/Avatar"
-import { BookedSessionForViewType } from "@/components/coach-card/select-date/select-date.model"
-import { $bookedSessionsForView } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
+import {
+  $bookedSessions,
+  BookedSessionForViewType
+} from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 
-const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDateTime, endDateTime , price}) => {
+const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, endDatetime, clientPrice}) => {
   return (
     <Item>
       <ListContainer>
         <TimeGroup>
-          <Date>{date(startDateTime).format("D MMMM YYYY")}</Date>
-          <Time>{date(startDateTime).format("HH:mm")}-{date(endDateTime).format("HH:mm")}</Time>
+          <Date>{date(startDatetime).format("D MMMM YYYY")}</Date>
+          <Time>{date(startDatetime).format("HH:mm")}-{date(endDatetime).format("HH:mm")}</Time>
         </TimeGroup>
-        <Price>{price} ₽</Price>
+        <Price>{clientPrice} ₽</Price>
       </ListContainer>
     </Item>
   )
@@ -23,7 +25,7 @@ const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDateTime, 
 
 
 export const SuccessfullyBookedModal = () => {
-  const bookedSessions = useStore($bookedSessionsForView)
+  const bookedSessions = useStore($bookedSessions)
 
   return (
     <Container>
@@ -43,7 +45,7 @@ export const SuccessfullyBookedModal = () => {
             <StyledAvatar src={bookedSessions[0].coach.avatar} />
             <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
           </ListContainer>
-          {useList($bookedSessionsForView, session => (
+          {useList($bookedSessions, session => (
             <StyledSessionItem {...session} />
           ))}
           <WarningTitle>
