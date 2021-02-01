@@ -483,8 +483,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
 
-  console.log(enabledDates[0])
-
   return (
     <Container>
       <StyledTabs value={activeTab} onChange={changeTabHandler}>
@@ -506,6 +504,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
             enabledDates={enabledDates}
             onChange={changeCurrentDate}
             isBig={true}
+            startFrom={new Date(date(currentDate || undefined).valueOf())}
           />
 
           {/*<FooterWrapper>*/}

@@ -294,7 +294,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
         <Datepicker>
           <StyledCalendar
             value={currentDate}
-            startFrom={date(enabledDates[0]).toDate()}
+            startFrom={new Date(date(currentDate || undefined).valueOf())}
             enabledDates={enabledDates}
             onChange={changeCurrentDate}
             isBig={true}
