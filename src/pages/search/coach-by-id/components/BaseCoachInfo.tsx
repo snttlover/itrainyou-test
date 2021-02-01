@@ -180,7 +180,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
           </Name>
           <Rating>
             <StarIcon name='star' />
-            {coach?.rating}
+            {coach?.rating?.toFixed(1)}
           </Rating>
           <CategoriesAndButtonContainer>
             <CategoriesContainer>
