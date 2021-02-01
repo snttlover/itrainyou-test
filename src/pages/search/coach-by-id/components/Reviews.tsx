@@ -2,11 +2,11 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { Rating } from "@/components/rating/Rating"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
-import { $reviews } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
 import { useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
+import { $reviews } from "@/pages/search/coach-by-id/models/units"
 
 const StyledBlock = styled(Block)`
   position: relative;

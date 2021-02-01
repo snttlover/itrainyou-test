@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
+import { Icon } from "@/components/icon/Icon"
 
 type SessionInfoProps = {
   duration: string
@@ -15,7 +16,8 @@ export const SessionInfo = (props: SessionInfoProps) => (
     <Date>{props.date}</Date>
     <Row>
       <Label>Стоимость</Label>
-      <Value>{props.cost}</Value>
+      <Value>{+props.cost}</Value>
+      <RubleIcon/>
     </Row>
     <Row>
       <Label>Длительность</Label>
@@ -86,6 +88,12 @@ const Value = styled.div`
     font-weight: 500;
     font-size: 14px;
   `}
+`
+
+const RubleIcon = styled(Icon).attrs({ name: "ruble" })`
+  width: 16px;
+  height: 20px;
+  fill: #9aa0a6;
 `
 
 const Status = styled.div`

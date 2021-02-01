@@ -16,6 +16,7 @@ import { DashboardPageWrapper } from "@/application/components/layouts/behaviors
 import { ClientStartedSessionsToolbar } from "@/feature/session/started-sessions-toolbar"
 import { ClientSessionCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { ClientStartedSessionDialog } from "@/feature/session/start-session-dialog"
+import { BookSessionsStatusModalDialog } from "@/pages/search/content/list/content/modals/BookSessionsStatusModalDialog"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -31,6 +32,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
   return (
     <DashboardContainer {...props}>
       <ClientSessionCall />
+      <BookSessionsStatusModalDialog />
       <ClientMenu />
       <ToastsContainer />
       <DashboardContent>

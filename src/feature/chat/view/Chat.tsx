@@ -40,7 +40,12 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const openImage = useEvent($chatModule.materials.modules.imagesDialog.openImageByIndex)
 
     useEffect(() => {
-      mounted(parseInt(params.id))
+      let chatId = params.id
+      if (isNaN(parseInt(chatId))) {
+        chatId = "system"
+      }
+
+      mounted(chatId)
       resetRev()
 
       return () => {

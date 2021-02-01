@@ -11,20 +11,19 @@ import { PriceInput } from "@/pages/coach/schedule/components/PriceInput"
 import React from "react"
 import styled from "styled-components"
 import {
-  $fundUpForm,
-  $isFundUpDialogShowed,
-  changeShowFundUpDialog,
-  cardChanged,
   amountChanged,
-  $fundUpErrors,
-  changeType,
-  submitFundUp,
-  $canSubmit,
   saveCardChanged,
-  $isTopUpLoading,
-} from "./fund-up.model"
+  cardChanged
+} from "./models/units"
 import { useEvent, useGate, useStore } from "effector-react"
 import { Checkbox } from "@/components/checkbox/Checkbox"
+import {
+  $canSubmit,
+  $fundUpErrors,
+  $fundUpForm, $isFundUpDialogShowed,
+  $isTopUpLoading, changeShowFundUpDialog,
+  changeType, submitFundUp
+} from "@/feature/client-funds-up/dialog/models/units"
 
 export const FundsUpDialog = () => {
   const {SelectInput} = useSelectInput()
@@ -50,7 +49,7 @@ export const FundsUpDialog = () => {
       label: `XXXX XXXX XXXX ${card.cardEnd} (${card.expireDate})`,
       value: card.id,
     }))
-    .concat({ label: "Добавить карту", value: -1 })
+    .concat({ label: "Новая карта", value: -1 })
 
   return (
     <StyledDialog value={isShowed} onChange={_changeShowFundUpDialog}>

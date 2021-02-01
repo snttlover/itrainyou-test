@@ -20,6 +20,9 @@ import { config } from "./config"
 import { getStart, START } from "./lib/effector"
 import { Application } from "./application"
 import { ROUTES } from "./pages/routes"
+import { fixChrome88timeZone } from "@/polyfills/chrome88-dayjs-timezone-fix"
+
+fixChrome88timeZone()
 
 Sentry.init({
   dsn: `${config.SENTRY_SERVER_DSN}`,

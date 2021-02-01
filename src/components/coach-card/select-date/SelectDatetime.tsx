@@ -1,23 +1,23 @@
 import { IsAuthed } from "@/feature/user/IsAuthed"
 import { IsGuest } from "@/feature/user/IsGuest"
 import { date } from "@/lib/formatting/date"
-import { useEffect, useMemo, useState } from "react"
 import * as React from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import { Calendar } from "@/components/calendar/Calendar"
-import { useEvent, useStore } from /* ITS RIGHT!!! don't use effector-react/ssr */ "effector-react"
+import { useEvent, useStore } from "effector-react"
 import { Event, Store } from "effector-root"
-import { Tabs, Tab } from "@/components/tabs/Tabs"
+import { Tab, Tabs } from "@/components/tabs/Tabs"
 import { CoachSessionWithSelect } from "@/components/coach-card/select-date/select-date.model"
 import { Coach } from "@/lib/api/coach"
 import { Spinner } from "@/components/spinner/Spinner"
 import { Button } from "@/components/button/normal/Button"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
-import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
-import { SelectCreditCardDialog } from "@/pages/search/content/list/content/CoachModalBuySession"
+import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
+import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -226,7 +226,7 @@ export type SelectDatetimeTypes = {
 }
 
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
-  const _showCreditCardsModal = useEvent(showCreditCardsModal)
+  const _toggleCreditCardsModal = useEvent(toggleCreditCardsModal)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const sessions = useStore(props.sessionsData.sessionsList)
@@ -234,7 +234,6 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
-  const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
 
   const enabledDates = sessions.map(session => session.startDatetime)
   const [currentDate, changeCurrentDate] = useState<Date | null>(null)
@@ -244,7 +243,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   }, [activeTab, enabledDates[0]])
 
   const payForTheSessionHandler = () => {
-    _showCreditCardsModal()
+    _toggleCreditCardsModal(true)
     changeCurrentDate(null)
   }
 
@@ -292,7 +291,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
         <Datepicker>
           <StyledCalendar
             value={currentDate}
-            startFrom={date(enabledDates[0]).toDate()}
+            startFrom={new Date(date(currentDate || undefined).valueOf())}
             enabledDates={enabledDates}
             onChange={changeCurrentDate}
             isBig={true}

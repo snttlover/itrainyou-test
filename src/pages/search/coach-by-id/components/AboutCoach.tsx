@@ -1,6 +1,5 @@
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import { $coach } from "@/pages/search/coach-by-id/coach-by-id.model"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
 import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
 import { useStore } from "effector-react"
@@ -8,6 +7,7 @@ import React, { useRef, useState } from "react"
 import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
+import { $coach } from "@/pages/search/coach-by-id/models/units"
 
 const StyledBlock = styled(Block)`
   ${MediaRange.between("mobile", "laptop")`

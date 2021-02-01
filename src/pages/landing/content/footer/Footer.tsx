@@ -9,8 +9,7 @@ import footerBg from "../../assets/footer-bg.svg"
 import footerBgTablet from "../../assets/footer-bg-tablet.svg"
 import footerBgMobile from "./images/mobile-background.svg"
 import instagram from "../../assets/instagram.svg"
-import youtube from "../../assets/youtube.svg"
-import facebook from "../../assets/facebook.svg"
+import telegram from "../../assets/telegram.svg"
 
 const StyledFooter = styled.div`
   background-color: #4858cc;
@@ -138,14 +137,11 @@ export const Footer = () => (
       <MetaContainer>
         <Copyright>Все права защищены I train you</Copyright>
         <Socials>
-          <SocialLink href='#'>
+          <SocialLink href='https://instagram.com/i_trainyou'>
             <img src={instagram} />
           </SocialLink>
-          <SocialLink href='#'>
-            <img src={youtube} />
-          </SocialLink>
-          <SocialLink href='#'>
-            <img src={facebook} />
+          <SocialLink href='https://t.me/i_trainyou'>
+            <img src={telegram} />
           </SocialLink>
         </Socials>
       </MetaContainer>

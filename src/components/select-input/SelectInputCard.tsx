@@ -140,7 +140,7 @@ export const SelectInputCard = <T extends Value = Value>({
       return (
         <DropdownItem key={"other"} onClick={() => onChange(item)}>
           <LabelContainer>
-            <div>Добавить карту</div>
+            <div>Новая карта</div>
           </LabelContainer>
         </DropdownItem>
       )
@@ -175,7 +175,7 @@ export const SelectInputCard = <T extends Value = Value>({
       {<LabelContainer>
         <Label>{selectedItem?.id !== "other" ?
           `ХХХХ ХХХХ ХХХХ ${selectedItem?.cardEnd} (${selectedItem?.expireDate})`
-          : "Добавить карту"}
+          : "Новая карта"}
         </Label>
         {selectedItem?.id !== "other" && (selectedItem?.type &&
                 (<NoShowMobile>

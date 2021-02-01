@@ -5,9 +5,9 @@ import { MediaRange } from "@/lib/responsive/media"
 import arrowIcon from "@/components/coach-card/images/arrow.svg"
 import {useEffect, useState} from "react"
 import { useStore } from "effector-react"
-import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { Loader } from "@/components/spinner/Spinner"
 import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
+import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/models/units"
 
 
 export type SetCardList = {

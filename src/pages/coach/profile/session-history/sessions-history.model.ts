@@ -7,7 +7,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, sample
 export const SessionsHistoryGate = createGate()
 
 export const loadProfileSessionsFx = createEffect({
-  handler: ({ page }: { page: number }) => getMyTransactionsCoach({ page, pageSize: 5 }),
+  handler: ({ page }: { page: number }) => getMyTransactionsCoach({ page, pageSize: 15 }),
 })
 
 export const $ProfileSessionsCount = createStore<number>(100)
@@ -53,8 +53,8 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
 
     let price = transaction.amount
 
-    if (["WITHDRAW", "TRANSFER_TO_CLIENT_WALLET", "SESSION_CANCELLATION"].includes(transaction.type)) price = `${price}`
-    else price = `+${price}`
+    if (["WITHDRAW", "TRANSFER_TO_CLIENT_WALLET", "SESSION_CANCELLATION"].includes(transaction.type)) price = `${+price}`
+    else price = `+${+price}`
 
     let name = "Пополнение кошелька"
 

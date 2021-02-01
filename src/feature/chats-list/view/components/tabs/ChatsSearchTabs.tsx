@@ -22,7 +22,7 @@ export const ChatsSearchTabs = (props: ChatsListTabsProps) => {
     <StyledTabs value={props.value} onChange={changeTab}>
       <StyledTab value='all'>Все</StyledTab>
       <StyledTab value='unread'>Непрочитанные</StyledTab>
-      {props.showChosen && <StyledTab value='chosen'>Избранные</StyledTab>}
+      {/*{props.showChosen && <StyledTab value='chosen'>Избранные</StyledTab>}*/}
     </StyledTabs>
   )
 }

@@ -1,12 +1,23 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { changeShowFundUpDialog, setRedirectUrl } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
-import { bulkBookSessions,BulkBookSessionsRequest } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
+import { bulkBookSessions, BulkBookSessionsRequest } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { isAxiosError } from "@/lib/network/network"
 import { routeNames } from "@/pages/route-names"
 import { runInScope } from "@/scope"
-import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample, split } from "effector-root"
-import { showCreditCardsModal } from "@/pages/search/coach-by-id/coach-by-id.model"
+import {
+  attach,
+  combine,
+  createEffect,
+  createEvent,
+  createStore,
+  forward,
+  restore,
+  sample,
+  split,
+  Store
+} from "effector-root"
+import { changeShowFundUpDialog, finishSaveCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
+import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -17,6 +28,20 @@ type RequestType = {
   params: GetCoachSessionsParamsTypes
 }
 
+// Вынес из функции genCoachSessions, чтобы можно было цепляться на этот эффект из любого места проекта,
+// Не дожидаясь, пока genCoachSessions выполнится в нужном месте
+export const buySessionsFx = createEffect({
+  handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
+})
+
+const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
+buySessionsFx.done.watch(() => {
+  runInScope(toasts.remove, sessionBookSuccessToast)
+  runInScope(toasts.add, sessionBookSuccessToast)
+  // runInScope(clientChatsList.methods.reset)
+})
+
+// ToDo: отрефакторить, слишком перегруженная функция с кучей связей из разных модулей
 export const genCoachSessions = (id = 0) => {
   const changeId = createEvent<number>()
   const $id = createStore<number>(id).on(changeId, (_, id) => id)
@@ -70,10 +95,6 @@ export const genCoachSessions = (id = 0) => {
 
   const buySessionBulk = createEvent<BulkBookSessionsRequest>()
 
-  const buySessionsFx = createEffect({
-    handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
-  })
-
   forward({
     from: buySessionBulk.map((params) => {
       localStorage.removeItem("sessions")
@@ -83,16 +104,8 @@ export const genCoachSessions = (id = 0) => {
   })
 
   forward({
-    from: buySessionsFx.done,
-    to: showCreditCardsModal.prepend(() => true),
-  })
-
-  const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
-  buySessionsFx.done.watch(() => {
-    runInScope(toasts.remove, sessionBookSuccessToast)
-    runInScope(toasts.add, sessionBookSuccessToast)
-    resetSelectedSessions()
-    // runInScope(clientChatsList.methods.reset)
+    from: buySessionsFx,
+    to: resetSelectedSessions
   })
 
   const { insufficientBalance, __: unknownError } = split(buySessionsFx.fail, {
@@ -152,7 +165,12 @@ export const genCoachSessions = (id = 0) => {
       $durationTab,
       changeDurationTab,
     },
-    buySessionsLoading: buySessionsFx.pending,
+    buySessionsLoading: combine(
+      buySessionsFx.pending,
+      finishSaveCardFx.pending,
+      (buySessionsPending, finishSaveCardPending) => buySessionsPending || finishSaveCardPending
+    ),
     buySessionBulk,
+    buySessionsFx
   }
 }
