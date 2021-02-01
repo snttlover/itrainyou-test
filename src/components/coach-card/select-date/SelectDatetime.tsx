@@ -234,7 +234,6 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
-  const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
 
   const enabledDates = sessions.map(session => session.startDatetime)
   const [currentDate, changeCurrentDate] = useState<Date | null>(null)

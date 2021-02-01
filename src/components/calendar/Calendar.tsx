@@ -165,7 +165,6 @@ export const Calendar = (props: CalendarTypes) => {
   const equalFormat = "DDMMYYYY"
   const [startDate, changeActiveStartDate] = useState(new Date())
 
-
   useEffect(() => {
     if (props.startFrom && date().format(equalFormat) === date(startDate).format(equalFormat)) {
       changeActiveStartDate(props.startFrom)
