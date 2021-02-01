@@ -91,7 +91,6 @@ const Header = styled.div`
   line-height: 28px;
   color: #424242;
   text-align: center;
-  margin-top: 10px;
   max-width: 500px;
   
   ${MediaRange.lessThan("mobile")`
