@@ -2,7 +2,7 @@ import React from "react"
 import { useEvent, useStore } from "effector-react"
 import { Dialog } from "@/components/dialog/Dialog"
 import styled from "styled-components"
-import { SuccessfullyBookedModal } from "./types/Success"
+import { BookedModal } from "./BookedModal"
 import { MediaRange } from "@/lib/responsive/media"
 import { Spinner } from "@/components/spinner/Spinner"
 import {
@@ -19,7 +19,7 @@ export const BookSessionsStatusModalDialog = () => {
   return (
     <StyledDialog isLoaded={!isLoading} value={visibility} onChange={() => toggle()}>
       <Container>
-        {isLoading ? <Spinner /> : <SuccessfullyBookedModal />}
+        {isLoading ? <Spinner /> : <BookedModal />}
       </Container>
     </StyledDialog>
   )

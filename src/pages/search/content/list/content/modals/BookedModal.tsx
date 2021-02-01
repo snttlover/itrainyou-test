@@ -6,9 +6,8 @@ import { MediaRange } from "@/lib/responsive/media"
 import { Avatar } from "@/components/avatar/Avatar"
 import {
   $bookedSessions,
-  BookedSessionForViewType
+  BookedSessionForViewType, toggleBookSessionsStatusModal
 } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
-import { Link } from "react-router-dom"
 import { routeNames } from "@/pages/route-names"
 import { navigatePush } from "@/feature/navigation"
 
@@ -26,39 +25,63 @@ const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, 
   )
 }
 
-
-export const SuccessfullyBookedModal = () => {
+const Success = () => {
   const bookedSessions = useStore($bookedSessions)
   const navigate = useEvent(navigatePush)
+  const toggle = useEvent(toggleBookSessionsStatusModal)
+
+  const handleOnClick = () => {
+    toggle()
+    navigate({ url: routeNames.clientChat("system")})
+  }
 
   return (
     <Container>
-      <Header>{bookedSessions.length > 0 ?
-        "Коучу был отправлен запрос на бронирование сессии" :
-        "Что-то пошло не так " }
-
+      <Header>
+                    Коучу был отправлен запрос на бронирование сессии
       </Header>
-      <Description>{bookedSessions.length > 0 ?
-        "При подтверждении или отклонения запроса коучем мы оповестим вас по email" :
-        "Не удалось произвести бронирование сессию.\n" +
-              " Пожалуйста, попробуйте еще раз позже." }
+      <Description>
+                    При подтверждении или отклонения запроса коучем мы оповестим вас по email
       </Description>
-      {bookedSessions.length > 0 ?
-        <>
-          <ListContainer>
-            <StyledAvatar src={bookedSessions[0].coach.avatar} />
-            <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
-          </ListContainer>
-          {useList($bookedSessions, session => (
-            <StyledSessionItem {...session} />
-          ))}
-          <WarningTitle>
-            Вы можете следить за статусом запросов в чате <StyledLink onClick={() => navigate({ url: routeNames.clientChat("system")})}>«Уведомления о сессиях» </StyledLink>
-          </WarningTitle>
-        </>
-        : null }
+      <ListContainer>
+        <StyledAvatar src={bookedSessions[0].coach.avatar} />
+        <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
+      </ListContainer>
+      {useList($bookedSessions, session => (
+        <StyledSessionItem {...session} />
+      ))}
+      <WarningTitle>
+                        Вы можете следить за статусом запросов в чате <StyledLink onClick={handleOnClick}>{`«Уведомлени${bookedSessions.length === 1 ? "е" : "я"} о сесси${bookedSessions.length === 1 ? "и" : "ях"}»`}</StyledLink>
+      </WarningTitle>
     </Container>
-  )}
+  )
+  
+}
+
+const Failure = () => {
+  
+  return (
+    <Container>
+      <Header>
+                    Что-то пошло не так
+      </Header>
+      <Description>
+                    Не удалось произвести бронирование сессии.
+                    Пожалуйста, попробуйте еще раз позже.
+      </Description>
+    </Container>
+  )
+}
+
+export const BookedModal = () => {
+  const bookedSessions = useStore($bookedSessions)
+
+  switch (bookedSessions.length>0) {
+  case true:
+    return <Success />
+  default:
+    return <Failure />
+  }}
 
 const Header = styled.div`
   font-family: Roboto Slab;
