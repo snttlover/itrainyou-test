@@ -10,6 +10,7 @@ import {
 } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 import { routeNames } from "@/pages/route-names"
 import { navigatePush } from "@/feature/navigation"
+import { parseFloatToString } from "@/lib/formatting/parsenumbers"
 
 const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, endDatetime, clientPrice}) => {
   return (
@@ -19,7 +20,7 @@ const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, 
           <Date>{date(startDatetime).format("D MMMM YYYY")}</Date>
           <Time>{date(startDatetime).format("HH:mm")}-{date(endDatetime).format("HH:mm")}</Time>
         </TimeGroup>
-        <Price>{clientPrice} ₽</Price>
+        <Price>{parseFloatToString(clientPrice)} ₽</Price>
       </ListContainer>
     </Item>
   )
@@ -30,6 +31,8 @@ const Success = () => {
   const navigate = useEvent(navigatePush)
   const toggle = useEvent(toggleBookSessionsStatusModal)
 
+  const pluralize = (plural: string, singular="") => bookedSessions.length > 1 ? plural: singular
+
   const handleOnClick = () => {
     toggle()
     navigate({ url: routeNames.clientChat("system")})
@@ -38,10 +41,11 @@ const Success = () => {
   return (
     <Container>
       <Header>
-                    Коучу был отправлен запрос на бронирование сессии
+        Коучу был{`${pluralize("и")}`} отправлен{`${pluralize("ы")}`} запрос{`${pluralize("ы")}`}
+        {" "}на бронировани{`${pluralize("я", "е")}`} сесси{`${pluralize("й", "и")}`}
       </Header>
       <Description>
-                    При подтверждении или отклонения запроса коучем мы оповестим вас по email
+        При подтверждении или отклонения запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
       </Description>
       <ListContainer>
         <StyledAvatar src={bookedSessions[0].coach.avatar} />
@@ -51,7 +55,8 @@ const Success = () => {
         <StyledSessionItem {...session} />
       ))}
       <WarningTitle>
-                        Вы можете следить за статусом запросов в чате <StyledLink onClick={handleOnClick}>{`«Уведомлени${bookedSessions.length === 1 ? "е" : "я"} о сесси${bookedSessions.length === 1 ? "и" : "ях"}»`}</StyledLink>
+        Вы можете следить за статусом запрос{`${pluralize("ов", "а")}`}
+        {" "}в чате <StyledLink onClick={handleOnClick}>«Уведомления о сессях»</StyledLink>
       </WarningTitle>
     </Container>
   )
@@ -75,13 +80,8 @@ const Failure = () => {
 
 export const BookedModal = () => {
   const bookedSessions = useStore($bookedSessions)
-
-  switch (bookedSessions.length>0) {
-  case true:
-    return <Success />
-  default:
-    return <Failure />
-  }}
+  return bookedSessions.length > 0 ? <Success /> : <Failure />
+}
 
 const Header = styled.div`
   font-family: Roboto Slab;
