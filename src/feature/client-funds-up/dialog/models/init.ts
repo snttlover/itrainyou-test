@@ -116,7 +116,7 @@ sample({
   clock: addCard,
   source: $redirectUrl,
   fn: (url, id) => ({
-    returnUrl: `${window.location.protocol}//${window.location.hostname}:${window.location.port}${url}`,
+    returnUrl: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ""}${url}`,
     coach: id
   }),
   target: startSaveCardFx,

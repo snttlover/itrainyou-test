@@ -110,7 +110,7 @@ export const startTopUpFx = createEffect({
         saveCard: form.saveCard,
         returnUrl: !form.redirectUrl
           ? undefined
-          : `${window.location.protocol}//${window.location.hostname}:${window.location.port}${form.redirectUrl}`,
+          : `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ""}${form.redirectUrl}`,
       })
       localStorage.setItem("saved_payment_id", response.paymentId)
       window.location.href = response.confirmationUrl
