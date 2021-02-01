@@ -122,7 +122,13 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
           options={options}
         />
 
-        {value.id === "other" && (<Description>*Эта карта будет привязана к сервису</Description>)}
+        {value.id === "other" && (
+          <>
+            <Description>
+                  Вы будете перенаправлены на страницу ЮKassa для добавления и привязки карты (будет списан и возвращен 1 рубль).
+            </Description>
+            <Description>После привязки карты коучу автоматически уйдет запрос на бронирование.</Description>
+          </>)}
 
         <SummaryContainer>
           <Summary>

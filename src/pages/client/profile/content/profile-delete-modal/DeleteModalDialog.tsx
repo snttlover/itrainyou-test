@@ -32,7 +32,7 @@ const Container = styled.div`
 const StyledDialog = styled(Dialog)<{isSessions: boolean}>`
   width: 100%;
   max-width: ${({ isSessions }) => (isSessions ? "600px" : "480px")};
-  padding: ${({ isSessions }) => (isSessions ? "24px 40px" : "24x 16px")};
+  padding: ${({ isSessions }) => (isSessions ? "24px 40px" : "24px 16px")};
     ${MediaRange.lessThan("mobile")`
   `}
 `
