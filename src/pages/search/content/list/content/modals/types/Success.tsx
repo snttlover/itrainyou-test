@@ -1,5 +1,5 @@
 import React from "react"
-import { useList, useStore } from "effector-react"
+import { useEvent, useList, useStore } from "effector-react"
 import styled from "styled-components"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
@@ -8,6 +8,9 @@ import {
   $bookedSessions,
   BookedSessionForViewType
 } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
+import { Link } from "react-router-dom"
+import { routeNames } from "@/pages/route-names"
+import { navigatePush } from "@/feature/navigation"
 
 const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, endDatetime, clientPrice}) => {
   return (
@@ -26,6 +29,7 @@ const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, 
 
 export const SuccessfullyBookedModal = () => {
   const bookedSessions = useStore($bookedSessions)
+  const navigate = useEvent(navigatePush)
 
   return (
     <Container>
@@ -49,7 +53,7 @@ export const SuccessfullyBookedModal = () => {
             <StyledSessionItem {...session} />
           ))}
           <WarningTitle>
-              Вы можете следить за статусом запросов в чате «Уведомления о сессиях»
+            Вы можете следить за статусом запросов в чате <StyledLink onClick={() => navigate({ url: routeNames.clientChat("system")})}>«Уведомления о сессиях» </StyledLink>
           </WarningTitle>
         </>
         : null }
@@ -61,10 +65,11 @@ const Header = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
-  line-height: 26px;
+  line-height: 28px;
   color: #424242;
   text-align: center;
   margin-top: 10px;
+  max-width: 300px;
 `
 
 const ListContainer = styled.div`
@@ -84,49 +89,58 @@ const Container = styled.div`
 const Description = styled.div`
   font-family: Roboto;
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 22px;
+  line-height: 24px;
   color: #5B6670;
   text-align: center;
   margin-top: 16px;
   margin-bottom: 35px;
+  max-width: 400px;
+
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+    line-height: 22px;
+  `}
 `
 
 const WarningTitle = styled.div`
   font-family: Roboto;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 22px;
+  line-height: 24px;
   color: #5B6670;
   margin-top: 85px;
   text-align: center;
+  max-width: 400px;
+
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+    line-height: 22px;
+  `}
+`
+
+const StyledLink = styled.div`
+  color: #424242;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
 `
 
 const Date = styled.div`
   font-weight: 500;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 22px;
   color: #424242;
-    
-  ${MediaRange.lessThan("mobile")`
-    font-size: 12px;
-    line-height: 16px;
-  `}
 `
 
 const Time = styled.div`
   font-weight: 500;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 22px;
   color: #9aa0a6;
   margin-left: 8px;
-    
-  ${MediaRange.lessThan("mobile")`
-    font-size: 12px;
-    line-height: 16px;
-  `}
 `
 
 const Item = styled.div`
@@ -144,12 +158,6 @@ const StyledAvatar = styled(Avatar)`
   height: 40px;
   min-width: 40px;
   margin-left: 16px;
-
-  ${MediaRange.lessThan("mobile")`
-    width: 24px;
-    min-width: 24px;
-    height: 24px;
-  `}
 `
 
 const Name = styled.div`
@@ -158,11 +166,6 @@ const Name = styled.div`
   color: #424242;
   margin-left: 12px;
   flex: 1;
-
-  ${MediaRange.lessThan("mobile")`
-    font-size: 14px;
-    line-height: 18px;
-  `}
 `
 
 const Price = styled.div`
@@ -171,25 +174,9 @@ const Price = styled.div`
   color: #424242;
   margin-left: 40px;
   flex: 1;
-
-  ${MediaRange.lessThan("mobile")`
-    font-size: 14px;
-    line-height: 18px;
-  `}
 `
 
 const TimeGroup = styled.div`
   display: flex;
   align-items: center;
-`
-
-const BottomMobileGroup = styled.div`
-    display: flex;
-    align-items: center; 
-  ${MediaRange.lessThan("mobile")`
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;   
-  `}
 `
