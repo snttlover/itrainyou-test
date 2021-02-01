@@ -246,7 +246,7 @@ const Date = styled.span`
 
   @media screen and (max-width: 600px) {
     display: none;
-  }
+  
   ${MediaRange.greaterThan("tablet")`  
     font-size: 12px;
     line-height: 16px;
