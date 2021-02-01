@@ -241,6 +241,7 @@ const Date = styled.span`
   font-size: 10px;
   line-height: 12px;
   display: flex;
+  align-items: center;
   color: #4858cc;
 
   @media screen and (max-width: 600px) {
