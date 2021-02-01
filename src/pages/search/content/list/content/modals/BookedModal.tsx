@@ -97,6 +97,7 @@ const Header = styled.div`
     font-size: 16px;
     line-height: 24px;
     max-width: 300px;
+    margin-top: 32px;
   `}
 `
 
