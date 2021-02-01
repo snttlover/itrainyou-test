@@ -90,8 +90,14 @@ const Label = styled.div`
   & > ${Badge} {
     position: absolute;
     right: -40px;
-    top: 0;
+    top: -3px;
     padding: 1px 6px 1px 5px;
+    ${MediaRange.lessThan("tablet")`
+      top: 1px;
+    `}
+    ${MediaRange.lessThan("mobile")`
+      top: -1px;
+    `}
   }
 `
 
@@ -124,7 +130,7 @@ export const DashboardMenuItem = (props: MenuItemTypes) => {
   return (
     <StyledMenuItem to={props.link} onClick={clickHandler} disabled={props.disabled} data-selected={isSelectedLink}>
       <MenuItemIcon name={props.icon} />
-      <Label>{props.children} { props.badgeNumber ? <Badge>{props.badgeNumber}</Badge> : null }</Label>
+      <Label>{props.children} { !!props.badgeNumber && <Badge>{props.badgeNumber}</Badge> }</Label>
     </StyledMenuItem>
   )
 }
