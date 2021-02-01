@@ -1,20 +1,19 @@
-import { combine, createEvent, createStore, forward } from "effector-root"
+import { combine, createEvent, createStore, forward, Store } from "effector-root"
 import { mounted, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
-import { BookedSessionForViewType, buySessionsFx } from "@/components/coach-card/select-date/select-date.model"
+import { buySessionsFx } from "@/components/coach-card/select-date/select-date.model"
 import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/models/units"
+import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 
-export const $bookedSessions = createStore([])
+export type BookedSessionForViewType = {
+  id: number
+  startDatetime: string
+  endDatetime: string
+  durationType: string
+  coach: CoachItemType
+  clientPrice: string
+}
 
-export const $bookedSessionsForView = $bookedSessions.map(sessions =>
-  sessions.map((session: BookedSessionForViewType) => ({
-    id: session.id,
-    startDateTime: session.startDatetime,
-    endDateTime: session.endDatetime,
-    duration: session.durationType,
-    coach: session.coach,
-    price: session.coachPrice,
-  }))
-)
+export const $bookedSessions = createStore<BookedSessionForViewType[]>([])
 
 $bookedSessions.on(
   buySessionsFx.doneData,

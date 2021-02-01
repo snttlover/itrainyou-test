@@ -28,17 +28,6 @@ type RequestType = {
   params: GetCoachSessionsParamsTypes
 }
 
-export type BookedSessionForViewType = {
-  id: number
-  startDatetime: string
-  endDatetime: string
-  durationType: string
-  coach: CoachItemType
-  coachPrice: string
-}
-
-export type BookedSessionsForViewTypes = Store<BookedSessionForViewType[]>
-
 // Вынес из функции genCoachSessions, чтобы можно было цепляться на этот эффект из любого места проекта,
 // Не дожидаясь, пока genCoachSessions выполнится в нужном месте
 export const buySessionsFx = createEffect({
