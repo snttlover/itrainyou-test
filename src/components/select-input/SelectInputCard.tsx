@@ -140,7 +140,7 @@ export const SelectInputCard = <T extends Value = Value>({
       return (
         <DropdownItem key={"other"} onClick={() => onChange(item)}>
           <LabelContainer>
-            <div>Добавить карту</div>
+            <div>Новая карта</div>
           </LabelContainer>
         </DropdownItem>
       )

@@ -389,7 +389,7 @@ const CoachCardLayout = ({ coach, className }: Props) => {
           </Date>
         </RatingContainer>
       </MainInfoContainer>
-      <BookSessionsStatusModalDialog />
+      <BookSessionsStatusModalDialog sessionsData={sessionsListModel!} />
       {isActive && <SelectDatetime coach={coach} sessionsData={sessionsListModel!} />}
     </Block>
   )

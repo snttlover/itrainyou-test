@@ -1,14 +1,11 @@
 import { forward, guard, sample } from "effector-root"
 import {
-  $bookSessionsStatusModalVisibility,
-  $bulkedSessions,
   $coach,
   $creditCardsModalVisibility,
   $id,
   $isFavourite,
   $isNotFound,
   $reviews,
-  $sessionsPickerStore,
   addToFavouriteFx,
   changeCoachSessionCoachId,
   changeCoachSessionDurationTab,
@@ -17,10 +14,8 @@ import {
   mounted,
   removeFromFavouriteFx,
   toggleCreditCardsModal,
-  toggleBookSessionsStatusModal,
   toggleFavourite
 } from "@/pages/search/coach-by-id/models/units"
-import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/fund-up.model"
 
 $creditCardsModalVisibility.on(
   toggleCreditCardsModal,
@@ -28,22 +23,7 @@ $creditCardsModalVisibility.on(
     if (payload !== undefined) return payload
     return !state
   })
-  .on($sessionsPickerStore.buySessionBulk, () => {
-    console.log("kek")
-    console.log("ale")
-    return false
-  })
   .reset(mounted)
-
-$bookSessionsStatusModalVisibility.on(
-  toggleBookSessionsStatusModal,
-  (state, payload) => {
-    if (payload !== undefined) return payload
-    return !state
-  })
-  .on($sessionsPickerStore.buySessionBulk, () => true)
-  .on(finishSaveCardFx, () => true)
-  .reset([mounted])
 
 $coach.on(
   loadCoachFx.doneData,
@@ -58,11 +38,6 @@ $reviews.on(
   loadReviewsFx.doneData,
   (state, payload) => payload.results
 )
-
-$bulkedSessions.on(
-  $sessionsPickerStore.buySessionsFx.doneData,
-  (state, payload) => payload
-).reset([mounted])
 
 $isFavourite.on(toggleFavourite, state => !state)
 

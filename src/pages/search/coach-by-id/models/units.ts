@@ -27,39 +27,15 @@ export const mounted = createEvent<{ id: number }>()
 
 export const toggleCreditCardsModal = createEvent<void | boolean>()
 
-export const toggleBookSessionsStatusModal = createEvent<void | boolean>()
-
 export const $sessionsPickerStore = genCoachSessions()
 
 export const $creditCardsModalVisibility = createStore<boolean>(false)
-
-export const $bookSessionsStatusModalVisibility = createStore<boolean>(false)
 
 export const $coach = createStore<Coach | null>(null)
 
 export const $isNotFound = createStore(false)
 
 export const $reviews = createStore<CoachReviewResponse[]>([])
-
-export const $bulkedSessions = createStore([])
-
-export const $bulkedSessionsForView = $bulkedSessions.map(sessions =>
-  sessions.map((session: {
-    id: number
-    startDatetime: string
-    endDatetime: string
-    durationType: string
-    coach: CoachItemType
-    coachPrice: string
-  }) => ({
-    id: session.id,
-    startDateTime: session.startDatetime,
-    endDateTime: session.endDatetime,
-    duration: session.durationType,
-    coach: session.coach,
-    price: session.coachPrice,
-  }))
-)
 
 export const changeCoachSessionCoachId = $sessionsPickerStore.changeId.prepend<Coach>(coach => coach.id)
 

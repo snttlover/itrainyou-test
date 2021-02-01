@@ -3,12 +3,10 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useEvent } from "effector-react"
 import React from "react"
 import styled from "styled-components"
-import {
-  addCard
-} from "@/feature/client-funds-up/dialog/fund-up.model.ts"
 import MasterCard from "@/pages/client/wallet/img/MasterCard.svg"
 import Visa from "@/pages/client/wallet/img/Visa.svg"
 import { Button } from "@/components/button/normal/Button"
+import { addCard } from "@/feature/client-funds-up/dialog/models/units"
 
 
 const PlusIcon = styled(Icon).attrs({ name: "plus" })`

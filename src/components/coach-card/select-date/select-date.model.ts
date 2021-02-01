@@ -1,16 +1,24 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import {
-  changeShowFundUpDialog,
-  finishSaveCardFx,
-  setRedirectUrl
-} from "@/feature/client-funds-up/dialog/fund-up.model"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
-import { bulkBookSessions,BulkBookSessionsRequest } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
+import { bulkBookSessions, BulkBookSessionsRequest } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { isAxiosError } from "@/lib/network/network"
 import { routeNames } from "@/pages/route-names"
 import { runInScope } from "@/scope"
-import { attach, combine, createEffect, createEvent, createStore, forward, restore, sample, split } from "effector-root"
-
+import {
+  attach,
+  combine,
+  createEffect,
+  createEvent,
+  createStore,
+  forward,
+  restore,
+  sample,
+  split,
+  Store
+} from "effector-root"
+import { mounted, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
+import { changeShowFundUpDialog, finishSaveCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
+import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -21,6 +29,18 @@ type RequestType = {
   params: GetCoachSessionsParamsTypes
 }
 
+export type BookedSessionForViewType = {
+  id: number
+  startDatetime: string
+  endDatetime: string
+  durationType: string
+  coach: CoachItemType
+  coachPrice: string
+}
+
+export type BookedSessionsForViewTypes = Store<BookedSessionForViewType[]>
+
+// ToDo: отрефакторить, слишком перегруженная функция с кучей связей из разных модулей
 export const genCoachSessions = (id = 0) => {
   const changeId = createEvent<number>()
   const $id = createStore<number>(id).on(changeId, (_, id) => id)
@@ -74,9 +94,28 @@ export const genCoachSessions = (id = 0) => {
 
   const buySessionBulk = createEvent<BulkBookSessionsRequest>()
 
+  const $bookedSessions = createStore([])
+
+  const $bookedSessionsForView = $bookedSessions.map(sessions =>
+    sessions.map((session: BookedSessionForViewType) => ({
+      id: session.id,
+      startDateTime: session.startDatetime,
+      endDateTime: session.endDatetime,
+      duration: session.durationType,
+      coach: session.coach,
+      price: session.coachPrice,
+    }))
+  )
+
   const buySessionsFx = createEffect({
     handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
   })
+
+  // ToDO: mounted берется из абсолютно другого модуля, genCoachSession не должен знать о других модулях. отерфакторить
+  $bookedSessions.on(
+    buySessionsFx.doneData,
+    (state, payload) => payload
+  ).reset([mounted])
 
   forward({
     from: buySessionBulk.map((params) => {
@@ -85,6 +124,28 @@ export const genCoachSessions = (id = 0) => {
     }),
     to: buySessionsFx,
   })
+
+  // Логика с модалкой результата покупки сессий
+  const $bookSessionsStatusModalVisibility = createStore<boolean>(false)
+  const toggleBookSessionsStatusModal = createEvent<void | boolean>()
+
+  $bookSessionsStatusModalVisibility.on(
+    toggleBookSessionsStatusModal,
+    (state, payload) => {
+      if (payload !== undefined) return payload
+      return !state
+    })
+    .on(finishSaveCardFx, () => true)
+    .reset([mounted])
+
+  forward({
+    from: buySessionsFx,
+    to: [
+      toggleCreditCardsModal.prepend(() => false),
+      toggleBookSessionsStatusModal.prepend(() => true)
+    ]
+  })
+
 
   const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
   buySessionsFx.done.watch(() => {
@@ -151,8 +212,19 @@ export const genCoachSessions = (id = 0) => {
       $durationTab,
       changeDurationTab,
     },
-    buySessionsLoading: buySessionsFx.pending || finishSaveCardFx.pending,
+    buySessionsLoading: combine(
+      buySessionsFx.pending,
+      finishSaveCardFx.pending,
+      (buySessionsPending, finishSaveCardPending) => {
+        console.log("nu che")
+        console.log(finishSaveCardPending)
+        return buySessionsPending || finishSaveCardPending
+      }
+    ),
     buySessionBulk,
     buySessionsFx,
+    $bookedSessionsForView,
+    $bookSessionsStatusModalVisibility,
+    toggleBookSessionsStatusModal
   }
 }

@@ -5,20 +5,27 @@ import styled from "styled-components"
 import { SuccessfullyBookedModal } from "./types/Success"
 import { MediaRange } from "@/lib/responsive/media"
 import { Spinner } from "@/components/spinner/Spinner"
-import {
-  $bookSessionsStatusModalVisibility, $sessionsPickerStore,
-  toggleBookSessionsStatusModal
-} from "@/pages/search/coach-by-id/models/units"
+import { Event, Store } from "effector-root"
+import { BookedSessionsForViewTypes } from "@/components/coach-card/select-date/select-date.model"
 
-export const BookSessionsStatusModalDialog = () => {
-  const visibility = useStore($bookSessionsStatusModalVisibility)
-  const toggle = useEvent(toggleBookSessionsStatusModal)
-  const isLoading = useStore($sessionsPickerStore.buySessionsLoading)
+export type BookSessionsStatusModalDialogTypes = {
+  sessionsData: {
+    buySessionsLoading: Store<boolean>,
+    $bookedSessionsForView: BookedSessionsForViewTypes,
+    $bookSessionsStatusModalVisibility: Store<boolean>,
+    toggleBookSessionsStatusModal: Event<void | boolean>
+  }
+}
+
+export const BookSessionsStatusModalDialog = (props: BookSessionsStatusModalDialogTypes) => {
+  const visibility = useStore(props.sessionsData.$bookSessionsStatusModalVisibility)
+  const toggle = useEvent(props.sessionsData.toggleBookSessionsStatusModal)
+  const isLoading = useStore(props.sessionsData.buySessionsLoading)
 
   return (
     <StyledDialog isLoaded={!isLoading} value={visibility} onChange={() => toggle()}>
       <Container>
-        {isLoading ? <Spinner /> : <SuccessfullyBookedModal />}
+        {isLoading ? <Spinner /> : <SuccessfullyBookedModal sessionsData={props.sessionsData} />}
       </Container>
     </StyledDialog>
   )

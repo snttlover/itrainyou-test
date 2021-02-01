@@ -4,20 +4,18 @@ import styled from "styled-components"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { Avatar } from "@/components/avatar/Avatar"
-import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
-import { $bulkedSessionsForView } from "@/pages/search/coach-by-id/models/units"
+import {
+  BookedSessionForViewType,
+  BookedSessionsForViewTypes
+} from "@/components/coach-card/select-date/select-date.model"
 
-type Sessions = {
-  id: number
-  startDateTime: string
-  endDateTime: string
-  duration: string
-  coach: CoachItemType
-  price: string
+export type SuccessfullyBookedModalTypes = {
+  sessionsData: {
+    $bookedSessionsForView: BookedSessionsForViewTypes
+  }
 }
 
-const StyledSessionItem: React.FC<Sessions> = ({ id,startDateTime, duration, coach, endDateTime , price}) => {
-
+const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDateTime, endDateTime , price}) => {
   return (
     <Item>
       <ListContainer>
@@ -32,28 +30,28 @@ const StyledSessionItem: React.FC<Sessions> = ({ id,startDateTime, duration, coa
 }
 
 
-export const SuccessfullyBookedModal = () => {
-  const coachInfo = useStore($bulkedSessionsForView)
+export const SuccessfullyBookedModal = (props: SuccessfullyBookedModalTypes) => {
+  const bookedSessions = useStore(props.sessionsData.$bookedSessionsForView)
 
   return (
     <Container>
-      <Header>{coachInfo.length > 0 ?
+      <Header>{bookedSessions.length > 0 ?
         "Коучу был отправлен запрос на бронирование сессии" :
         "Что-то пошло не так " }
 
       </Header>
-      <Description>{coachInfo.length > 0 ?
+      <Description>{bookedSessions.length > 0 ?
         "При подтверждении или отклонения запроса коучем мы оповестим вас по email" :
         "Не удалось произвести бронирование сессию.\n" +
               " Пожалуйста, попробуйте еще раз позже." }
       </Description>
-      {coachInfo.length > 0 ?
+      {bookedSessions.length > 0 ?
         <>
           <ListContainer>
-            <StyledAvatar src={coachInfo[0].coach.avatar} />
-            <Name>{coachInfo[0].coach.firstName} {coachInfo[0].coach.lastName}</Name>
+            <StyledAvatar src={bookedSessions[0].coach.avatar} />
+            <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
           </ListContainer>
-          {useList($bulkedSessionsForView, session => (
+          {useList(props.sessionsData.$bookedSessionsForView, session => (
             <StyledSessionItem {...session} />
           ))}
           <WarningTitle>

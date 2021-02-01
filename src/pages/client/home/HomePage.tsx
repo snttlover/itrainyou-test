@@ -2,7 +2,7 @@ import { Button } from "@/components/button/normal/Button"
 import { CoachCard } from "@/components/coach-card/CoachCard"
 import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
-import { Loader, Spinner } from "@/components/spinner/Spinner"
+import { Loader } from "@/components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { SessionCard } from "@/pages/client/home/SessionCard"
 import { useEvent, useStore } from "effector-react"
@@ -22,7 +22,6 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { clientCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Onboarding } from "@/pages/client/home/Onboarding"
-import { $userData } from "@/feature/user/user.model"
 
 const Block = styled.div`
   position: relative;

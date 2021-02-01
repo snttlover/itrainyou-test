@@ -1,12 +1,12 @@
 import { Button } from "@/components/button/normal/Button"
 import { Spinner } from "@/components/spinner/Spinner"
-import { changeShowFundUpDialog } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { MediaRange } from "@/lib/responsive/media"
 import { $amount, $frozenAmount, $isLoading, $totalAmount } from "./info.model"
 import { useEvent, useStore } from "effector-react"
 import { WalletAmount } from "./WalletAmount"
 import React from "react"
 import styled from "styled-components"
+import { changeShowFundUpDialog } from "@/feature/client-funds-up/dialog/models/units"
 
 const WalletInfoContainer = styled.div`
   position: relative;

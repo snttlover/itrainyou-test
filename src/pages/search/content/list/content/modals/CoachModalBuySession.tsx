@@ -9,9 +9,9 @@ import { Icon } from "@/components/icon/Icon"
 import { Button } from "@/components/button/normal/Button"
 import { SelectInputCard } from "@/components/select-input/SelectInputCard"
 import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
-import { addCard } from "@/feature/client-funds-up/dialog/fund-up.model"
 import { MediaRange } from "@/lib/responsive/media"
 import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
+import { addCard } from "@/feature/client-funds-up/dialog/models/units"
 
 type SetValue = {
     id: number | string
@@ -99,7 +99,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const handleBulk = () => {
     const sessions = selected.map(item => item.id)
     const card = value.id
-    if(card !== "other") {
+    if (card !== "other") {
       // @ts-ignore
       buySessionBulk({ sessions, card })
     }
