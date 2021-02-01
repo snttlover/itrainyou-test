@@ -145,7 +145,7 @@ export const CoachByIdPage = () => {
             <BuySidebar>
               <Datepicker />
             </BuySidebar>
-            <BookSessionsStatusModalDialog sessionsData={$sessionsPickerStore} />
+            <BookSessionsStatusModalDialog />
             <CardPicker />
           </InfoWithSidebar>
         )}

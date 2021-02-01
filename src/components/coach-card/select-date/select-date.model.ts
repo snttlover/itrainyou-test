@@ -16,7 +16,6 @@ import {
   split,
   Store
 } from "effector-root"
-import { mounted, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 import { changeShowFundUpDialog, finishSaveCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 
@@ -39,6 +38,18 @@ export type BookedSessionForViewType = {
 }
 
 export type BookedSessionsForViewTypes = Store<BookedSessionForViewType[]>
+
+// Вынес из функции genCoachSessions, чтобы можно было цепляться на этот эффект из любого места проекта
+export const buySessionsFx = createEffect({
+  handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
+})
+
+const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
+buySessionsFx.done.watch(() => {
+  runInScope(toasts.remove, sessionBookSuccessToast)
+  runInScope(toasts.add, sessionBookSuccessToast)
+  // runInScope(clientChatsList.methods.reset)
+})
 
 // ToDo: отрефакторить, слишком перегруженная функция с кучей связей из разных модулей
 export const genCoachSessions = (id = 0) => {
@@ -94,29 +105,6 @@ export const genCoachSessions = (id = 0) => {
 
   const buySessionBulk = createEvent<BulkBookSessionsRequest>()
 
-  const $bookedSessions = createStore([])
-
-  const $bookedSessionsForView = $bookedSessions.map(sessions =>
-    sessions.map((session: BookedSessionForViewType) => ({
-      id: session.id,
-      startDateTime: session.startDatetime,
-      endDateTime: session.endDatetime,
-      duration: session.durationType,
-      coach: session.coach,
-      price: session.coachPrice,
-    }))
-  )
-
-  const buySessionsFx = createEffect({
-    handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
-  })
-
-  // ToDO: mounted берется из абсолютно другого модуля, genCoachSession не должен знать о других модулях. отерфакторить
-  $bookedSessions.on(
-    buySessionsFx.doneData,
-    (state, payload) => payload
-  ).reset([mounted])
-
   forward({
     from: buySessionBulk.map((params) => {
       localStorage.removeItem("sessions")
@@ -125,34 +113,9 @@ export const genCoachSessions = (id = 0) => {
     to: buySessionsFx,
   })
 
-  // Логика с модалкой результата покупки сессий
-  const $bookSessionsStatusModalVisibility = createStore<boolean>(false)
-  const toggleBookSessionsStatusModal = createEvent<void | boolean>()
-
-  $bookSessionsStatusModalVisibility.on(
-    toggleBookSessionsStatusModal,
-    (state, payload) => {
-      if (payload !== undefined) return payload
-      return !state
-    })
-    .on(finishSaveCardFx, () => true)
-    .reset([mounted])
-
   forward({
     from: buySessionsFx,
-    to: [
-      toggleCreditCardsModal.prepend(() => false),
-      toggleBookSessionsStatusModal.prepend(() => true)
-    ]
-  })
-
-
-  const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
-  buySessionsFx.done.watch(() => {
-    runInScope(toasts.remove, sessionBookSuccessToast)
-    runInScope(toasts.add, sessionBookSuccessToast)
-    resetSelectedSessions()
-    // runInScope(clientChatsList.methods.reset)
+    to: resetSelectedSessions
   })
 
   const { insufficientBalance, __: unknownError } = split(buySessionsFx.fail, {
@@ -215,16 +178,9 @@ export const genCoachSessions = (id = 0) => {
     buySessionsLoading: combine(
       buySessionsFx.pending,
       finishSaveCardFx.pending,
-      (buySessionsPending, finishSaveCardPending) => {
-        console.log("nu che")
-        console.log(finishSaveCardPending)
-        return buySessionsPending || finishSaveCardPending
-      }
+      (buySessionsPending, finishSaveCardPending) => buySessionsPending || finishSaveCardPending
     ),
     buySessionBulk,
-    buySessionsFx,
-    $bookedSessionsForView,
-    $bookSessionsStatusModalVisibility,
-    toggleBookSessionsStatusModal
+    buySessionsFx
   }
 }

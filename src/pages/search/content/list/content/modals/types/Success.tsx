@@ -4,16 +4,8 @@ import styled from "styled-components"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { Avatar } from "@/components/avatar/Avatar"
-import {
-  BookedSessionForViewType,
-  BookedSessionsForViewTypes
-} from "@/components/coach-card/select-date/select-date.model"
-
-export type SuccessfullyBookedModalTypes = {
-  sessionsData: {
-    $bookedSessionsForView: BookedSessionsForViewTypes
-  }
-}
+import { BookedSessionForViewType } from "@/components/coach-card/select-date/select-date.model"
+import { $bookedSessionsForView } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 
 const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDateTime, endDateTime , price}) => {
   return (
@@ -30,8 +22,8 @@ const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDateTime, 
 }
 
 
-export const SuccessfullyBookedModal = (props: SuccessfullyBookedModalTypes) => {
-  const bookedSessions = useStore(props.sessionsData.$bookedSessionsForView)
+export const SuccessfullyBookedModal = () => {
+  const bookedSessions = useStore($bookedSessionsForView)
 
   return (
     <Container>
@@ -51,7 +43,7 @@ export const SuccessfullyBookedModal = (props: SuccessfullyBookedModalTypes) => 
             <StyledAvatar src={bookedSessions[0].coach.avatar} />
             <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
           </ListContainer>
-          {useList(props.sessionsData.$bookedSessionsForView, session => (
+          {useList($bookedSessionsForView, session => (
             <StyledSessionItem {...session} />
           ))}
           <WarningTitle>
