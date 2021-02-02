@@ -22,6 +22,7 @@ import { MediaRange } from "@/lib/responsive/media"
 
 const StyledPageContainer = styled(PageContainer)`
   display: flex;
+  
   ${MediaRange.greaterThan("laptop")`
     padding-left: 14px;
   `}
