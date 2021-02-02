@@ -71,7 +71,7 @@ export const createChatModule = (config: ChatModuleConfig) => {
     $chatId
   })
 
-  const mounted = createEvent<number | string>()
+  const mounted = createEvent<ChatId>()
 
   forward({
     from: mounted,

@@ -11,6 +11,7 @@ import {
 import { routeNames } from "@/pages/route-names"
 import { navigatePush } from "@/feature/navigation"
 import { parseFloatToString } from "@/lib/formatting/parsenumbers"
+import { $userData } from "@/feature/user/user.model"
 
 const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, endDatetime, clientPrice}) => {
   return (
@@ -30,12 +31,14 @@ const Success = () => {
   const bookedSessions = useStore($bookedSessions)
   const navigate = useEvent(navigatePush)
   const toggle = useEvent(toggleBookSessionsStatusModal)
+  const userData = useStore($userData)
 
   const pluralize = (plural: string, singular="") => bookedSessions.length > 1 ? plural: singular
 
   const handleOnClick = () => {
     toggle()
-    navigate({ url: routeNames.clientChat("system")})
+    // @ts-ignore
+    navigate({ url: routeNames.clientChat(userData.client.systemChat.toString())})
   }
 
   return (

@@ -93,9 +93,9 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   const $loading = pagination.data.$loading
 
-  const $chatLoaded= createStore<boolean>(false)
+  const $chatLoaded = createStore<boolean>(false)
     .on($loading, (state, loading) => state ? true : !loading)
-    .reset([reset,changeId])
+    .reset([reset, changeId])
 
   $chatLoaded.watch(loaded => (chatLoaded = loaded))
 

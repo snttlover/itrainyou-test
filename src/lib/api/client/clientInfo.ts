@@ -20,7 +20,8 @@ export interface ClientSelfData {
   categories: SessionCategory[]
   creationDatetime: ISODate
   completedSessionsCount: number
-  spentHoursCount: number
+  spentHoursCount: number,
+  systemChat: number
 }
 
 export type User = {

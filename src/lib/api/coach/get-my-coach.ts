@@ -44,6 +44,7 @@ export interface CoachSelfData {
   nearestSessionDatetime: ISODate
   lastRegistrationApplyDatetime: ISODate
   creationDatetime: ISODate
+  systemChat: number
 }
 
 export const getMyCoach = (): Promise<CoachSelfData> =>
