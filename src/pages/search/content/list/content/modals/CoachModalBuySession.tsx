@@ -113,7 +113,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
     <StyledDialog value={visibility} onChange={() => _toggleCreditCardsModal(false)}>
       <Container>
         <Header>Бронирование сессий</Header>
-        <Description>Деньги на карте будут списаны автоматически за 24 часа до сессии.</Description>
+        <Description>Деньги будут списаны автоматически за 24 часа до сессии.</Description>
 
         <Label>Выберите карту</Label>
         <StyledSelectInput

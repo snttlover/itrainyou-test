@@ -19,26 +19,27 @@ const StyledLink = styled(Link)`
 export const ReviewNotification = (props: ReviewNotificationProps) => {
   const { review } = props.notification
   return (
-    <Card>
-      <Row>
-        <StyledLink to={routeNames.coachClientProfile(review.reviewerClient.id.toString())}>
+    <StyledLink to={routeNames.coachClientProfile(review.reviewerClient.id.toString())}>
+      <Card>
+        <Row>
+        
           <NotificationAvatar src={review.reviewerClient.avatar} />
-        </StyledLink>
-        <Title>
-          <StyledLink to={routeNames.coachClientProfile(review.reviewerClient.id.toString())}>
+        
+          <Title>
             <Bold>
               {review.reviewerClient.firstName} {review.reviewerClient.lastName}
             </Bold>
-          </StyledLink>{" "}
+            {" "}
           оставила о вас отзыв
-          {review.text && <Review>{review.text}</Review>}
-        </Title>
-        <Time>{props.time}</Time>
-      </Row>
-      <GradeWrapper>
-        <RatingPicker value={review.grade} />
-      </GradeWrapper>
-    </Card>
+            {review.text && <Review>{review.text}</Review>}
+          </Title>
+          <Time>{props.time}</Time>
+        </Row>
+        <GradeWrapper>
+          <RatingPicker value={review.grade} />
+        </GradeWrapper>
+      </Card>
+    </StyledLink>
   )
 }
 
