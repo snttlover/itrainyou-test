@@ -28,7 +28,7 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
       if (error.file.size > maxSize) {
         addToast({
           type: "error",
-          text: `Размер файла ${error.file.name} превышает 2mb, он не будет загружен.`
+          text: `Размер файла ${error.file.name} превышает 100mb, он не будет загружен.`
         })
         return
       }
@@ -40,7 +40,7 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
   }, [])
 
   const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"]
-  const maxSize = 2097152
+  const maxSize = 104857600
 
   const { getInputProps, open } = useDropzone({
     onDropAccepted,
