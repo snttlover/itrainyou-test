@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef } from "react"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
