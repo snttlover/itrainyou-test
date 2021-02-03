@@ -146,6 +146,7 @@ const StyledTextarea = styled(Textarea)`
   width: 100%;
   resize: none;
   height: 140px;
+  color: #424242;
 `
 
 const StyledButton = styled(DashedButton)`
