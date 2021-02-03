@@ -245,7 +245,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
         return (
           ("SYSTEM" === message.data.type ||
             (config.type === "client" && !!message.data.senderCoach) ||
-            (config.type === "coach" && !!message.data.senderClient)) &&
+            (config.type === "coach" && !!message.data.senderClient) || !!config.isSupport) &&
           chatId === message.data.chat
         )
       },
