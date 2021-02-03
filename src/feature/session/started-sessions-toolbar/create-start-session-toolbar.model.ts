@@ -18,8 +18,11 @@ const formatDates = (start: ISODate, end: ISODate) => {
   return `${date(start).format("HH:mm")} - ${date(end).format("HH:mm")}`
 }
 
-const isStartedSession = (session: DashboardSession) =>
+const isBeginningIsComingSoon = (session: DashboardSession) =>
   date().isBetween(date(session.startDatetime).subtract(5, "minute"), date(session.endDatetime).add(10, "minute"))
+
+const isStartedSession = (session: DashboardSession) =>
+  date().isBetween(date(session.startDatetime).toDate(), date(session.endDatetime).toDate())
 
 export const createStartSessionToolbarModel = (config: CreateStartSessionToolbarModelConfig) => {
   const reset = createEvent()
@@ -40,15 +43,15 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
   const $sessions = combine($sessionsList, $lastCallId, (sessions, currentSessionCall) => {
     return sessions
       .filter(session => session.id !== currentSessionCall)
-      .filter(isStartedSession)
+      .filter(isBeginningIsComingSoon)
       .map(session => {
         const user = config.type === "coach" ? session.clients[0] : session.coach
-
         return {
           id: session.id,
           name: `${user.firstName} ${user.lastName}`,
           avatar: user.avatar,
           time: formatDates(session.startDatetime, session.endDatetime),
+          sessionIsStarted: isStartedSession(session)
         }
       })
       .slice(0, 1)

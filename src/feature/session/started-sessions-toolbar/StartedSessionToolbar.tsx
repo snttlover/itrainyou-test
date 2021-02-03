@@ -1,9 +1,10 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
-import { useEvent, useList } from "effector-react"
+import { useEvent, useList, useStore } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
+import { $startedSessionsList } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
 
 export const createStartedSessionsToolbar = ($model: ReturnType<typeof createStartSessionToolbarModel>) => {
   return () => {
@@ -13,7 +14,13 @@ export const createStartedSessionsToolbar = ($model: ReturnType<typeof createSta
 
     useEffect(() => {
       load()
-      return () => reset()
+      const timer = setInterval(() => {
+        load()
+      }, 10000)
+      return () => {
+        clearInterval(timer)
+        reset()
+      }
     }, [])
 
     return (
@@ -21,7 +28,7 @@ export const createStartedSessionsToolbar = ($model: ReturnType<typeof createSta
         {useList($model.data.$sessions, session => (
           <Container>
             <Toolbar>
-              <StartedText>Сессия началась</StartedText>
+              <StartedText>{session.sessionIsStarted ? "Сессия уже началась!" : "До сессии осталось меньше 5 минут!"}</StartedText>
               <User>
                 <StyledAvatar src={session.avatar} />
                 <Name>{session.name}</Name>
