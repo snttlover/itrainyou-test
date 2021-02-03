@@ -33,7 +33,7 @@ const StyledTabs = styled(Tabs)`
   justify-content: flex-start;
   ${MediaRange.lessThan("mobile")`
     margin-top: 20px;
-    justify-content: space-between;
+    justify-content: space-around;
   `}
 `
 
