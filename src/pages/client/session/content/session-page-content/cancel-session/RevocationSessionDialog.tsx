@@ -129,7 +129,7 @@ const UserName = styled.div`
 
 const Form = styled.div`
   margin-top: 17px;
-  width: 400px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-bottom: 22px;
