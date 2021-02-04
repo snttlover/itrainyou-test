@@ -34,12 +34,6 @@ export const buySessionsFx = createEffect({
   handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
 })
 
-const sessionBookSuccessToast: Toast = { type: "info", text: "Коучу был отправлен запрос на бронирование" }
-buySessionsFx.done.watch(() => {
-  runInScope(toasts.remove, sessionBookSuccessToast)
-  runInScope(toasts.add, sessionBookSuccessToast)
-  // runInScope(clientChatsList.methods.reset)
-})
 
 // ToDo: отрефакторить, слишком перегруженная функция с кучей связей из разных модулей
 export const genCoachSessions = (id = 0) => {

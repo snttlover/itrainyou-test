@@ -255,7 +255,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   guard({
     source: config.socket.events.onMessage,
-    filter: message => (message.data.chat === chatId && chatLoaded) || !!config.isSupport,
+    filter: message => (message.data.chat === chatId && chatLoaded) || (!!config.isSupport && chatLoaded),
     target: addMessage,
   })
   

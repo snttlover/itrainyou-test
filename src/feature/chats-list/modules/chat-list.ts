@@ -147,6 +147,8 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     (chats, time, counters, currentSessionCallId) => {
       return chats
         .filter((chat, index) => chats.findIndex(c => c.id === chat.id) === index)
+        // @ts-ignore
+        .filter(chat =>  chat.type !== "SUPPORT")
         .sort((chatA, chatB) => (getChatDate(chatA) > getChatDate(chatB) ? -1 : 1))
         .map(chat => {
           const newMessagesCounter = counters.find(counter => counter.id === chat.id)
@@ -189,6 +191,8 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
         })
     }
   )
+
+  $chatsList.watch(resp => console.log("test",resp))
 
   const loadChats = createEvent()
 

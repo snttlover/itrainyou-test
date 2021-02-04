@@ -13,7 +13,7 @@ export type GetCoachSessionRequestsQuery = {
 }
 
 export type SessionRequestTypes = "CANCEL" | "RESCHEDULE" | "BOOK" | "CONFIRMATION_COMPLETION"
-export type SessionRequestStatus = "AWAITING" | "APPROVED" | "AUTOMATICALLY_APPROVED" | "DENIED" | "CANCELLED"
+export type SessionRequestStatus = "AWAITING" | "APPROVED" | "AUTOMATICALLY_APPROVED" | "DENIED" | "CANCELLED" | "AUTOMATICALLY_CANCELLED"
 export type SessionRequestProblems = "COACH_ABSENT" | "COACH_INADEQUATE" | "OTHER"
 
 export type SessionRequest = {
