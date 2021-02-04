@@ -85,7 +85,7 @@ const CalendarCell = styled.td`
 `
 
 const Session = styled.div<{areAvailable: boolean}>`
-  background: ${({areAvailable})=> areAvailable ? "red" : "#F4F5F7"};
+  background: ${({areAvailable})=> areAvailable ? "#DFD0E7" : "#F4F5F7"};
   border-radius: 12px;
   font-family: Roboto;
   font-style: normal;

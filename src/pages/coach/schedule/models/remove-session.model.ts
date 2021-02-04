@@ -12,7 +12,6 @@ export type CoachSession = {
   client?: any
 }
 
-const _removeSession = useEvent(removeSession)
 
 export const openRemoveSessionModal = createEvent()
 export const closeRemoveSessionModal = createEvent()
@@ -35,7 +34,7 @@ export const startRemovingSession = createEffect((session: CoachSession) => {
     changeRemovingSession(session)
     openRemoveSessionModal() 
   } else if(session.id){
-    _removeSession(session.id)
+    removeSession(session.id)
   }
 })
 
