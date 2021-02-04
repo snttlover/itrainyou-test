@@ -53,7 +53,7 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
 
     let price = transaction.amount
 
-    if (["WITHDRAW", "TRANSFER_TO_CLIENT_WALLET", "SESSION_CANCELLATION"].includes(transaction.type)) price = `${+price}`
+    if (+price < 1) price = `${+price}`
     else price = `+${+price}`
 
     let name = "Пополнение кошелька"

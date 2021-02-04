@@ -26,6 +26,8 @@ import { Dayjs } from "dayjs"
 import { useEvent, useGate, useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
+import { RemoveSessionModal } from "@/pages/coach/schedule/components/RemoveSessionModal"
+import { $showRemoveSessionModal } from "@/pages/coach/schedule/models/remove-session.model"
 
 const RemoveButton = styled(DashedButton)`
   width: 100%;
@@ -103,6 +105,7 @@ export const CalendarPart = () => {
   const range = useStore($pickedDeleteRange)
   const setRange = useEvent(changePickedDeleteRange)
   const disabledDelete = useStore($deleteButtonIsDisabled)
+  const showRemoveSessionModal = useStore($showRemoveSessionModal)
 
   useGate(CalendarGate)
 
@@ -135,6 +138,7 @@ export const CalendarPart = () => {
         {isSessionsLoading && <Spinner />}
       </CalendarContainer>
       {isAddSessionModalShowed && <AddSessionModal onCrossClick={() => _setModalShow(false)} />}
+      {showRemoveSessionModal && <RemoveSessionModal/>}
     </>
   )
 }

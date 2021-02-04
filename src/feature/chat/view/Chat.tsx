@@ -23,7 +23,6 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
   const Sessions = createChatSessions($chatModule.chatSessions)
   const MessageBox = createChatMessageBox($chatModule.messageBox)
   const MaterialsDialog = createMaterialsDialog($chatModule.materials)
-
   return () => {
     const chat = useStore($chatModule.chat.$chat)
     const chatLoading = useStore($chatModule.chat.$loading)

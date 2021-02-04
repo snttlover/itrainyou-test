@@ -50,6 +50,7 @@ export const RevocationSessionDialog = () => {
   const pending = useStore(revocationFx.pending)
 
   const user = useStore($revocationUser)
+
   return (
     <StyledDialog value={visibility} onChange={changeVisibility}>
       <Container>
@@ -129,7 +130,7 @@ const UserName = styled.div`
 
 const Form = styled.div`
   margin-top: 17px;
-  width: 400px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-bottom: 22px;
@@ -146,6 +147,7 @@ const StyledTextarea = styled(Textarea)`
   width: 100%;
   resize: none;
   height: 140px;
+  color: #424242;
 `
 
 const StyledButton = styled(DashedButton)`
