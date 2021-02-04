@@ -50,6 +50,7 @@ export const RevocationSessionDialog = () => {
   const pending = useStore(revocationFx.pending)
 
   const user = useStore($revocationUser)
+
   return (
     <StyledDialog value={visibility} onChange={changeVisibility}>
       <Container>

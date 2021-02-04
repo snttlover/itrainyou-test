@@ -7,6 +7,8 @@ import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, forward, restore, sample, merge, attach } from "effector-root"
+import { openRemoveSessionModal } from "@/pages/coach/schedule/models/remove-session.model"
+import { useEvent } from "effector-react"
 
 type DateRange = {
   from: string
@@ -25,9 +27,7 @@ const CANCEL = -1
 export const removeSession = createEvent<number>()
 export const removeSessionFx = createEffect({
   handler: (id: number) => {
-    const answer = confirm("Вы точно хотите удалить сессию?")
-    if (answer) return removeCoachSession(id)
-    else return CANCEL
+    return removeCoachSession(id)
   },
 })
 
@@ -67,6 +67,8 @@ export const $allSessions = combine(
   ({ repeatedSessions, sessions }) => ({
     repeatedSessions,
     sessions: sessions.map(session => ({
+      areAvailable: !!session.clients.length,
+      client: session.clients[0],
       id: session.id,
       sessionDurationType: session.durationType,
       startTime: date(session.startDatetime),

@@ -3,11 +3,12 @@ import { Icon } from "@/components/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { $currentMonth, $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"
-import { $allSessions, removeSession } from "@/pages/coach/schedule/models/sessions.model"
+import { $allSessions } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
+import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 
 const Container = styled.div`
   display: flex;
@@ -83,8 +84,8 @@ const CalendarCell = styled.td`
   height: 96px;
 `
 
-const Session = styled.div`
-  background: #F4F5F7;
+const Session = styled.div<{areAvailable: boolean}>`
+  background: ${({areAvailable})=> areAvailable ? "red" : "#F4F5F7"};
   border-radius: 12px;
   font-family: Roboto;
   font-style: normal;
@@ -156,7 +157,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const monthDayStart = date(useStore($monthStartDate))
   const sessions = useStore($allSessions)
   const monthDayEnd = date(useStore($monthEndDate))
-  const _removeSession = useEvent(removeSession)
+  const _removeSession = useEvent(startRemovingSession)
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
   const daysCount = monthDayStart.daysInMonth() + countPadStartDays + countPadEndDays
@@ -216,9 +217,9 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                         {sessions.sessions
                           .filter(session => session.startTime.isSame(day, "d"))
                           .map(session => (
-                            <Session key={session.id}>
+                            <Session key={session.id} areAvailable={session.areAvailable}>
                               {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
-                              <CrossIcon onClick={() => _removeSession(session.id)} />
+                              <CrossIcon onClick={() => _removeSession(session)} />
                             </Session>
                           ))}
                       </SessionContainer>

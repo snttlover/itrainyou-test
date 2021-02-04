@@ -34,7 +34,6 @@ export const DenyCompletetionDialog = () => {
   const hide = useEvent(hideDenyCompletetionDialogVisibility)
   const user = useStore($denyDialogRequestUser)
   const send = useEvent(sendDenyCompletationDialog)
-
   const problem = useStore($denyCompletationProblem)
   const changeProblem = useEvent(changeDenyCompletationProblem)
 
