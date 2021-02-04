@@ -2,10 +2,11 @@ import { createEffect, createEvent, createStore, restore } from "effector-root"
 import { date } from "@/lib/formatting/date"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { useEvent } from "effector-react"
+import { Dayjs } from "dayjs"
 
 export type CoachSession = {
-  startTime: Date,
-  endTime: Date,
+  startTime: Dayjs,
+  endTime: Dayjs,
   areAvailable: boolean,
   id: number | null,
   client?: any
@@ -22,8 +23,8 @@ export const $showRemoveSessionModal = createStore(false)
 
 export const changeRemovingSession = createEvent<CoachSession>()
 export const $sessionToDelete = restore<CoachSession>(changeRemovingSession, {
-  startTime: date().toDate(),
-  endTime: date().toDate(),
+  startTime: date(),
+  endTime: date(),
   areAvailable: false,
   client: null,
   id: null

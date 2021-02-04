@@ -30,7 +30,7 @@ export const RemoveSessionModal = () => {
   }
 
   return (
-    <StyledDialog value={showModal} onChange={_closeModal}>
+    <StyledDialog value={showModal} onChange={() => _closeModal()}>
       <Container>
         <Header>Вы точно хотите удалить сессию?</Header>
         <Description>
@@ -44,7 +44,7 @@ export const RemoveSessionModal = () => {
         <SessionTime><SessionTimeBold>{month} </SessionTimeBold>{time}</SessionTime>
 
         <ButtonsContainer>
-          <StyledDashedButton onClick={_closeModal}>Нет</StyledDashedButton>
+          <StyledDashedButton onClick={() => _closeModal}>Нет</StyledDashedButton>
           <StyledSuccessButton onClick={removeSessionHandler}>Да</StyledSuccessButton>
         </ButtonsContainer>
         

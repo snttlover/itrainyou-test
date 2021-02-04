@@ -31,7 +31,7 @@ export const removeSessionFx = createEffect({
   },
 })
 
-const sessionRemoved = removeSessionFx.done.filter({ fn: data => data.result !== CANCEL })
+const sessionRemoved = removeSessionFx.done.filter({ fn: () => true })
 
 forward({
   from: removeSession,
