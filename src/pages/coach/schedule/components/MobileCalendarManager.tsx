@@ -2,11 +2,12 @@ import { Calendar } from "@/components/calendar/Calendar"
 import { Icon } from "@/components/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { $currentMonth, changeDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
-import { $allSessions, removeSession } from "@/pages/coach/schedule/models/sessions.model"
+import { $allSessions } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
+import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 
 const Divider = styled.div`
   height: 1px;
@@ -48,7 +49,7 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
   const _changeDate = useEvent(changeDate)
   const currentDate = date(useStore($currentMonth))
   const sessions = useStore($allSessions)
-  const _removeSession = useEvent(removeSession)
+  const _removeSession = useEvent(startRemovingSession)
 
   const selectedDaySessions = sessions.sessions.filter(session => session.startTime.isSame(currentDate, "d"))
 
@@ -74,7 +75,7 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
           <Time>
             {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
           </Time>
-          <RemoveIcon onClick={() => _removeSession(session.id)} />
+          <RemoveIcon onClick={() => _removeSession(session)} />
         </Times>
       ))}
       <Times>
