@@ -63,11 +63,11 @@ const getText = (
 
   if (commonSystemMessages) {
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
+      return `${request.receiverCoach?.firstName} подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} не подтвердил запрос на бронирование сессии`
+      return `${request.receiverCoach?.firstName} не подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} запрос на бронирование сессии`
     }
 
     if (is("CANCEL", "DENIED", "COMPLETED")) {
@@ -188,11 +188,11 @@ const getText = (
     }
 
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
+      return `${request.receiverCoach?.firstName} подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} не подтвердил запрос на бронирование сессии`
+      return `${request.receiverCoach?.firstName} не подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} запрос на бронирование сессии`
     }
 
     if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
