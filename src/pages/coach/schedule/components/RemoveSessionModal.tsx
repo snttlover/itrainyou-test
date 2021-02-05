@@ -13,6 +13,7 @@ import { date } from "@/lib/formatting/date"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
 import { Button } from "@/components/button/normal/Button"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { MediaRange } from "@/lib/responsive/media"
 
 export const RemoveSessionModal = () => {
   const session = useStore($sessionToDelete)
@@ -44,7 +45,7 @@ export const RemoveSessionModal = () => {
         <SessionTime><SessionTimeBold>{month} </SessionTimeBold>{time}</SessionTime>
 
         <ButtonsContainer>
-          <StyledDashedButton onClick={() => _closeModal}>Нет</StyledDashedButton>
+          <StyledDashedButton onClick={() => _closeModal()}>Нет</StyledDashedButton>
           <StyledSuccessButton onClick={removeSessionHandler}>Да</StyledSuccessButton>
         </ButtonsContainer>
         
@@ -56,10 +57,16 @@ export const RemoveSessionModal = () => {
 const StyledSuccessButton = styled(Button)`
   width: 220px;
   margin-left: 16px;
+  ${MediaRange.lessThan("mobile")`
+    width: 144px
+  `}
 `
 
 const StyledDashedButton = styled(DashedButton)`
   width: 220px;
+  ${MediaRange.lessThan("mobile")`
+    width: 144px
+  `}
 `
 
 const ButtonsContainer = styled.div`
@@ -92,6 +99,9 @@ const StyledAvatar = styled(Avatar)`
 const StyledDialog = styled(Dialog)`
   max-width: 560px;
   padding: 24px 51px;
+  ${MediaRange.lessThan("mobile")`
+    padding: 55px 8px 24px;
+  `}
 `
 
 const UserInfo = styled.div`
