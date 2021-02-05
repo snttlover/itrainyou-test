@@ -29,16 +29,7 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
   const pagination = createPagination<ChatSession>({
     fetchMethod: config.fetch,
     $query: combine(config.$chatId, $tab, (id, tab) => {
-      let query: any
-
-      if (id === "system")
-      {
-        query = { id: id }
-      }
-      else {
-        query = { id: +id }
-      }
-
+      const query: any = { id: +id }
 
       if (tab === "past") {
         query.past = "True"
