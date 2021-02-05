@@ -89,7 +89,6 @@ const StyledDialog = styled(Dialog)`
   width: 100%;
   ${MediaRange.lessThan("mobile")`
       width: 100%;
-      height: 100vh;
       padding: 12px;
       ${Close} {
         width: 30px;
