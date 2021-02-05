@@ -192,8 +192,6 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     }
   )
 
-  $chatsList.watch(resp => console.log("test",resp))
-
   const loadChats = createEvent()
 
   forward({

@@ -18,7 +18,7 @@ type SessionsHistoryProps = {
 
 export const SessionsHistory = (props: SessionsHistoryProps) => {
   const InfiniteScroll = createInfinityScroll(props.pagination)
-
+  console.log(props)
   return (
     <Container>
       <Header>История сессии</Header>
