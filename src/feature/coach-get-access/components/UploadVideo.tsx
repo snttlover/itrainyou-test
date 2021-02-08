@@ -127,6 +127,9 @@ const StyledInformationAboutPrivacy = styled.div`
   font-weight: 500;
   text-align: center;
   margin-top: 16px;
+  ${MediaRange.lessThan("mobile")`
+    font-size: 14px;
+  `}
 `
 
 const $videoInterview = $form.map(form => form.videoInterview)
