@@ -93,13 +93,14 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop | null): Promise
   const canvas = document.createElement("canvas")
   const scaleX = image.naturalWidth / image.width
   const scaleY = image.naturalHeight / image.height
+  console.log(image.naturalWidth, image.width, crop)
   if (crop === null) {
     canvas.width = image.naturalWidth
     canvas.height = image.naturalHeight
   }
   else {
-    canvas.width = crop.width
-    canvas.height = crop.height
+    canvas.width = crop.width * 4
+    canvas.height = crop.height * 4
   }
   const ctx = canvas.getContext("2d")
 
@@ -119,8 +120,8 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop | null): Promise
       crop.height * scaleY,
       0,
       0,
-      crop.width,
-      crop.height
+      crop.width * 4,
+      crop.height * 4
     )
   }
   return new Promise(resolve => {
