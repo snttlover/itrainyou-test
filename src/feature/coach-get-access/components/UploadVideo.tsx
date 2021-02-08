@@ -121,6 +121,14 @@ const InterviewQuestions = styled.ol`
   `}
 `
 
+const StyledInformationAboutPrivacy = styled.div`
+  font-size: 16px;
+  color: #5B6670;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 16px;
+`
+
 const $videoInterview = $form.map(form => form.videoInterview)
 
 export const UploadVideo = () => {
@@ -154,6 +162,8 @@ export const UploadVideo = () => {
     maxSize,
   })
 
+  const informationAboutPrivacy = <StyledInformationAboutPrivacy>Это видео будет видно только администраторам</StyledInformationAboutPrivacy>
+
   return (
     <InterviewContainer>
 
@@ -179,7 +189,7 @@ export const UploadVideo = () => {
           </div>
         </Question>
         {!video && isVideoUploading && <ProgressBar secondary percent={videoUploadProgress} />}
-        {video && !isVideoUploading && (
+        {video && !isVideoUploading && [informationAboutPrivacy,
           <VideoContainer>
             {!isPlaying && <PlayButton />}
             <Video
@@ -198,10 +208,11 @@ export const UploadVideo = () => {
             >
               <source src={video + "#t=0.5"} />
             </Video>
-          </VideoContainer>
-        )}
+          </VideoContainer>]
+        }
         {error && <ErrorText>{error}</ErrorText>}
         {!isVideoUploading && <AddVideo onClick={open}>Загрузить видео</AddVideo>}
+        {!video && !isVideoUploading && !error && informationAboutPrivacy}
       </InterviewQuestions>
       <input 
         {...getInputProps()}
@@ -239,13 +250,13 @@ const VideoContainer = styled.div`
   position: relative;
   margin-top: 12px;
 
-  ${MediaRange.greaterThan("mobile")`
+  ${MediaRange.lessThan("mobile")`
     margin-top: 24px;
   `}
 `
 
 const AddVideo = styled(DashedButton).attrs({ "data-secondary": true })`
-  margin: 28px auto 0;
+  margin: 28px auto 8px;
   display: flex;
   justify-content: center;
   align-items: center;
