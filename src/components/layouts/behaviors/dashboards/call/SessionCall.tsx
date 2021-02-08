@@ -10,10 +10,12 @@ import { MediaRange } from "@/lib/responsive/media"
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
   return () => {
     const play = useEvent($module.methods.play)
+    const _update = useEvent($module.methods.update)
 
     useEffect(() => {
       play()
-      return () => {}
+      const timer = setInterval(() => _update(), 60000)
+      return () => clearInterval(timer)
     }, [])
 
     const interlocutor = useStore($module.data.$interlocutor)
@@ -27,6 +29,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const visibility = useStore($module.data.$callsVisibility)
     const time = useStore($module.data.$time)
+
 
     return (
       <Container

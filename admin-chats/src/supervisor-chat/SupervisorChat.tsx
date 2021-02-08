@@ -70,7 +70,7 @@ const StyledDialog = styled(Dialog)`
 const Container = styled.div`
   position: relative;
   position: relative;
-  height: 100%;
+  //height: 100%;
   display: flex;
   overflow: hidden;
   border-radius: 10px;

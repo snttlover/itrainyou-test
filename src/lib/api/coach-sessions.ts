@@ -4,6 +4,7 @@ import { get } from "@/lib/network/network"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
 
 export interface CoachSession {
+  clients: [any]
   id: number
   coach: number
   clientPrice: string // example: 12.00

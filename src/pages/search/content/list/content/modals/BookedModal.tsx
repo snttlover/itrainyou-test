@@ -48,7 +48,7 @@ const Success = () => {
         {" "}на бронирование сесси{`${pluralize("й", "и")}`}
       </Header>
       <Description>
-        При подтверждении или отклонения запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
+        При подтверждении или отклонении запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
       </Description>
       <CoachContainer>
         <StyledAvatar src={bookedSessions[0].coach.avatar} />

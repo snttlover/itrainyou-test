@@ -18,21 +18,21 @@ const StyledLink = styled(Link)`
 export const NewCoachNotification = (props: NewCoachNotificationProps) => {
   const { newCoach } = props.notification
   return (
-    <Card>
-      <Row>
-        <StyledLink to={routeNames.searchCoachPage(newCoach.id.toString())}>
+    <StyledLink to={routeNames.searchCoachPage(newCoach.id.toString())}>
+      <Card>
+        <Row>
+
           <NotificationAvatar src={newCoach.avatar} />
-        </StyledLink>
-        <Title>
+
+          <Title>
           Вас может заинтересовать новый коуч{" "}
-          <StyledLink to={routeNames.searchCoachPage(newCoach.id.toString())}>
             <Bold>
               {newCoach.firstName} {newCoach.lastName}
             </Bold>
-          </StyledLink>
-        </Title>
-        <Time>{props.time}</Time>
-      </Row>
-    </Card>
+          </Title>
+          <Time>{props.time}</Time>
+        </Row>
+      </Card>
+    </StyledLink>
   )
 }

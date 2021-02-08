@@ -87,7 +87,7 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
       _birthdayChanged(date)
       setBirthdayError(null)
       setNextDisabled(false)
-    } else {
+    } else if(year.length > 3 && month || !+year && year || !+day && day) {
       _birthdayChanged(null)
       setBirthdayError("Неверная дата")
       setNextDisabled(true)

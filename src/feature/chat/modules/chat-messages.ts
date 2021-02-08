@@ -95,7 +95,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   const $chatLoaded = createStore<boolean>(false)
     .on($loading, (state, loading) => state ? true : !loading)
-    .reset([reset, changeId])
+    .reset([reset])
 
   $chatLoaded.watch(loaded => (chatLoaded = loaded))
 
@@ -245,7 +245,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
         return (
           ("SYSTEM" === message.data.type ||
             (config.type === "client" && !!message.data.senderCoach) ||
-            (config.type === "coach" && !!message.data.senderClient)) &&
+            (config.type === "coach" && !!message.data.senderClient) ) &&
           chatId === message.data.chat
         )
       },
@@ -255,7 +255,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   guard({
     source: config.socket.events.onMessage,
-    filter: message => (message.data.chat === chatId && chatLoaded) || !!config.isSupport,
+    filter: message => (message.data.chat === chatId && (chatLoaded || !!config.isSupport)),
     target: addMessage,
   })
   

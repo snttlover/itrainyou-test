@@ -1,4 +1,4 @@
-import { combine, createEffect, createEvent, forward, guard, restore } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard, restore } from "effector-root"
 import { getCoachSessionVideoToken, VideoTokenData } from "@/lib/api/coach/get-session-video-token"
 import { getCoachSession, SessionInfo } from "@/lib/api/coach/get-session"
 import { Client } from "@/lib/api/client/clientInfo"
@@ -214,13 +214,19 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: [changeSessionId, getTokenDataFx, getSessionDataFx],
   })
 
+  const update = createEvent()
   const $sessionTokenData = restore<VideoTokenData>(getTokenDataFx.doneData, null).reset(reset)
   const $minutesLeft = $sessionTokenData.map(data => {
     if (!data) {
       return false
     }
     return date(data.sessionTerminationDatetime).diff(date(), "minute") + 1
-  })
+  }).on(update, (state,payload) => {
+    // @ts-ignore
+    const test: any = state - 1
+    return test})
+  //костыль
+
   const $isCloseToTerminate = combine($sessionTokenData, $minutesLeft, (tokenData, minutes) => {
     if (!tokenData || !minutes) {
       return false
@@ -364,6 +370,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       changeVideo,
       connectToSession,
       close,
+      update
     },
   }
 }

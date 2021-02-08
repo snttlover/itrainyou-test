@@ -7,6 +7,7 @@ import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, forward, restore, sample, merge, attach } from "effector-root"
+import { $sessionToDelete } from "@/pages/coach/schedule/models/remove-session.model"
 
 type DateRange = {
   from: string
@@ -25,22 +26,26 @@ const CANCEL = -1
 export const removeSession = createEvent<number>()
 export const removeSessionFx = createEffect({
   handler: (id: number) => {
-    const answer = confirm("Вы точно хотите удалить сессию?")
-    if (answer) return removeCoachSession(id)
-    else return CANCEL
+    return removeCoachSession(id)
   },
 })
 
-const sessionRemoved = removeSessionFx.done.filter({ fn: data => data.result !== CANCEL })
+const sessionRemoved = removeSessionFx.done.filter({ fn: () => true })
 
 forward({
   from: removeSession,
   to: removeSessionFx,
 })
 
-const removeSuccessMessage: Toast = { type: "info", text: "Сессия удалена" }
 forward({
-  from: sessionRemoved.map(_ => removeSuccessMessage),
+  from: sessionRemoved.map(_ => {
+    const time = `${
+      $sessionToDelete.getState().startTime.format("DD.MM.YY HH:mm")
+    }-${
+      $sessionToDelete.getState().endTime.format("HH:mm")
+    }`
+    return { type: "info", text: `Сессия ${time} удалена` } as Toast
+  }),
   to: [toasts.remove, toasts.add],
 })
 
@@ -67,6 +72,8 @@ export const $allSessions = combine(
   ({ repeatedSessions, sessions }) => ({
     repeatedSessions,
     sessions: sessions.map(session => ({
+      areAvailable: !!session.clients.length,
+      client: session.clients[0],
       id: session.id,
       sessionDurationType: session.durationType,
       startTime: date(session.startDatetime),

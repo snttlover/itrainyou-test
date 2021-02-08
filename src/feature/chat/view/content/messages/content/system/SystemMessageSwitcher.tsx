@@ -63,11 +63,11 @@ const getText = (
 
   if (commonSystemMessages) {
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
+      return `${request.receiverCoach?.firstName} подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} не подтвердил запрос на бронирование сессии`
+      return `${request.receiverCoach?.firstName} не подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} запрос на бронирование сессии`
     }
 
     if (is("CANCEL", "DENIED", "COMPLETED")) {
@@ -76,7 +76,7 @@ const getText = (
       } отмену сессии. Сессия состоится`
     }
 
-    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED" ], "INITIATED")) {
       return `Вы хотите перенести сессию на ${formatSessionDate(
         request.rescheduleSession?.startDatetime,
         request.rescheduleSession?.endDatetime
@@ -91,7 +91,7 @@ const getText = (
       return `${request.initiatorClient?.firstName} отменил${request.receiverCoach?.sex === "F" ? "a" : ""} сессию`
     }
 
-    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED") && request.initiatorClient) {
+    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED") && request.initiatorClient) {
       return `${request.initiatorClient?.firstName} отправил${
         request.initiatorClient?.sex === "F" ? "a" : ""
       } запрос на подтверждение сессии`
@@ -104,7 +104,7 @@ const getText = (
       } запрос на подтверждение сессии`
     }
 
-    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED")) {
       return `${request.initiatorClient?.firstName} отправил${
         request.initiatorClient?.sex === "F" ? "a" : ""
       } запрос на отмену сессии`
@@ -116,7 +116,7 @@ const getText = (
       } запрос на отмену сессии`
     }
 
-    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED")) {
       return `${request.initiatorClient?.firstName} хочет перенести сессию на ${formatSessionDate(
         request.rescheduleSession?.startDatetime,
         request.rescheduleSession?.endDatetime
@@ -146,11 +146,11 @@ const getText = (
       )}`
     }
 
-    if (is("CANCEL", "AUTOMATICALLY_APPROVED", ["COMPLETED", "INITIATED"]) && request.initiatorClient) {
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED","AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"]) && request.initiatorClient) {
       return `${request.initiatorClient?.firstName} отменил${request.initiatorClient?.sex === "F" ? "a" : ""} сессию`
     }
 
-    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED") && request.initiatorClient) {
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED") && request.initiatorClient) {
       return `${request.initiatorClient?.firstName} отправил${
         request.initiatorClient?.sex === "F" ? "a" : ""
       } запрос на отмену сессии`
@@ -175,7 +175,11 @@ const getText = (
       return "Администратор решил спор в вашу пользу. Деньги на карте за сессию были возвращены"
     }
 
-    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("BOOK", "AUTOMATICALLY_CANCELLED", "COMPLETED")) {
+      return "Запрос на бронирование был автоматически отменен, так как коуч не ответил на запрос"
+    }
+
+    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
       return "Вы отправили запрос на бронирование сессии"
     }
 
@@ -184,14 +188,14 @@ const getText = (
     }
 
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} подтвердил бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
+      return `${request.receiverCoach?.firstName} подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} не подтвердил запрос на бронирование сессии`
+      return `${request.receiverCoach?.firstName} не подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} запрос на бронирование сессии`
     }
 
-    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
       return "Вы отправили запрос на отмену сессии"
     }
 
@@ -201,15 +205,23 @@ const getText = (
       } отмену сессии. Сессия состоится`
     }
 
-    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
       return `Вы хотите перенести сессию на ${formatSessionDate(
         request.rescheduleSession?.startDatetime,
         request.rescheduleSession?.endDatetime
       )}`
     }
 
+    if (is("RESCHEDULE", "AUTOMATICALLY_CANCELLED", "COMPLETED")) {
+      return "Запрос на перенос сессии был автоматически отменен, так как коуч не ответил на запрос"
+    }
+
     if (is("RESCHEDULE", "CANCELLED", "COMPLETED")) {
       return `Вы отменили перенос сессии на ${formatDate(request.resultDatetime)}`
+    }
+
+    if (is("CANCEL", "AUTOMATICALLY_CANCELLED", "COMPLETED")) {
+      return "Запрос на отмену сессии был автоматически отменен, так как коуч не ответил на запрос"
     }
 
     if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "APPROVED"], "COMPLETED") && request.initiatorCoach) {
@@ -220,7 +232,7 @@ const getText = (
       return "Сессия успешно отменена"
     }
 
-    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
       return "Вы запросили отмену сессии."
     }
 
@@ -306,7 +318,11 @@ const getText = (
       return `${request.initiatorClient?.firstName} отменил${request.receiverCoach?.sex === "F" ? "a" : ""} сессию`
     }
 
-    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED") && request.initiatorClient) {
+    if (is("BOOK", "AUTOMATICALLY_CANCELLED", "COMPLETED")) {
+      return "Запрос на бронирование был автоматически отменен из-за превышения времени ожидания"
+    }
+
+    if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED") && request.initiatorClient) {
       return `${request.initiatorClient?.firstName} отправил${
         request.initiatorClient?.sex === "F" ? "a" : ""
       } запрос на подтверждение сессии`
@@ -322,7 +338,7 @@ const getText = (
       } запрос на подтверждение сессии`
     }
 
-    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
       return `${request.initiatorClient?.firstName} отправил${
         request.initiatorClient?.sex === "F" ? "a" : ""
       } запрос на отмену сессии`
@@ -334,15 +350,23 @@ const getText = (
       } запрос на отмену сессии`
     }
 
+    if (is("CANCEL", "AUTOMATICALLY_CANCELLED", "COMPLETED")) {
+      return "Запрос на отмену сессии был автоматически отменен из-за превышения времени ожидания"
+    }
+
     if (is("BOOK", "APPROVED", "COMPLETED")) {
       return "Вы подтвердили бронирование сессии"
     }
 
-    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED"], "INITIATED")) {
+    if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
       return `${request.initiatorClient?.firstName} хочет перенести сессию на ${formatSessionDate(
         request.rescheduleSession?.startDatetime,
         request.rescheduleSession?.endDatetime
       )}`
+    }
+
+    if (is("RESCHEDULE", "AUTOMATICALLY_CANCELLED", "COMPLETED")) {
+      return "Запрос на перенос сессии был автоматически отменен из-за превышения времени ожидания"
     }
 
     if (is("RESCHEDULE", "DENIED", "COMPLETED")) {
@@ -368,7 +392,7 @@ const getText = (
       )}`
     }
 
-    if (is("CANCEL", "AUTOMATICALLY_APPROVED", ["COMPLETED", "INITIATED"]) && request.initiatorClient) {
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED","AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"]) && request.initiatorClient) {
       return `${request.initiatorClient?.firstName} отменил${request.initiatorClient?.sex === "F" ? "a" : ""} сессию`
     }
 
@@ -378,7 +402,7 @@ const getText = (
       } запрос на отмену сессии`
     }
 
-    if (is("CANCEL", "AUTOMATICALLY_APPROVED", ["COMPLETED", "INITIATED"])) {
+    if (is("CANCEL", ["AUTOMATICALLY_APPROVED","AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"])) {
       return " Вы отменили сессию. Сессии не будет."
     }
 

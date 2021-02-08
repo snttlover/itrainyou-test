@@ -2,11 +2,12 @@ import { Calendar } from "@/components/calendar/Calendar"
 import { Icon } from "@/components/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { $currentMonth, changeDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
-import { $allSessions, removeSession } from "@/pages/coach/schedule/models/sessions.model"
+import { $allSessions } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
+import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 
 const Divider = styled.div`
   height: 1px;
@@ -15,10 +16,13 @@ const Divider = styled.div`
   margin: 3px 0;
 `
 
-const Times = styled.div`
+const Times = styled.div<{ primary: boolean }>`
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+  background-color: ${ ({primary}) => primary ? "#DFD0E7" : "unset" };
+  border-radius: 12px;
+  padding: 0 6px;
 `
 
 const Time = styled.p`
@@ -48,7 +52,7 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
   const _changeDate = useEvent(changeDate)
   const currentDate = date(useStore($currentMonth))
   const sessions = useStore($allSessions)
-  const _removeSession = useEvent(removeSession)
+  const _removeSession = useEvent(startRemovingSession)
 
   const selectedDaySessions = sessions.sessions.filter(session => session.startTime.isSame(currentDate, "d"))
 
@@ -70,14 +74,14 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
       />
       <Divider />
       {selectedDaySessions.map(session => (
-        <Times key={session.id}>
+        <Times key={session.id} primary={session.areAvailable}>
           <Time>
             {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
           </Time>
-          <RemoveIcon onClick={() => _removeSession(session.id)} />
+          <RemoveIcon onClick={() => _removeSession(session)} />
         </Times>
       ))}
-      <Times>
+      <Times primary={false}>
         <Time />
         <AddIcon onClick={() => onAddClick(currentDate)} />
       </Times>
