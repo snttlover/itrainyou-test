@@ -1,7 +1,6 @@
 import { createEffect, createEvent, createStore, restore } from "effector-root"
 import { date } from "@/lib/formatting/date"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
-import { useEvent } from "effector-react"
 import { Dayjs } from "dayjs"
 
 export type CoachSession = {
@@ -30,9 +29,9 @@ export const $sessionToDelete = restore<CoachSession>(changeRemovingSession, {
 })
 
 export const startRemovingSession = createEffect((session: CoachSession) => {
+  changeRemovingSession(session)
   if(session.areAvailable){
-    changeRemovingSession(session)
-    openRemoveSessionModal() 
+    openRemoveSessionModal()
   } else if(session.id){
     removeSession(session.id)
   }
