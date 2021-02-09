@@ -84,6 +84,7 @@ export type IconName =
   | "checkstep4"
   | "ykassa-approved"
   | "ykassa-not-approved"
+  | "hang-up"
 
 type IconProps = {
   name: IconName,

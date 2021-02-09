@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled, { css } from "styled-components"
 
 import { Icon } from "@/components/icon/Icon"
@@ -7,10 +7,72 @@ import { createSessionCallModule } from "@/components/layouts/behaviors/dashboar
 import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 
+
+function usetrackMouse<T>(ref: React.MutableRefObject<T>, callback: (eventX: MouseEvent & any,eventY: MouseEvent & any) => void) {
+
+  document.onmousemove = handleMouseMove
+
+  function handleMouseMove(event: MouseEvent & any) {
+    let eventDoc, doc, body
+
+    event = event || window.event // IE-ism
+
+    // If pageX/Y aren't available and clientX/Y are,
+    // calculate pageX/Y - logic taken from jQuery.
+    // (This is to support old IE)
+    if (event.pageX == null && event.clientX != null) {
+      eventDoc = (event.target && event.target.ownerDocument) || document
+      doc = eventDoc.documentElement
+      body = eventDoc.body
+
+      event.pageX = event.clientX +
+                (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+                (doc && doc.clientLeft || body && body.clientLeft || 0)
+      event.pageY = event.clientY +
+                (doc && doc.scrollTop || body && body.scrollTop || 0) -
+                (doc && doc.clientTop || body && body.clientTop || 0)
+    }
+
+    // Use event.pageX / event.pageY here
+    callback(event.pageX, event.pageY)
+  }
+
+  /*useEffect(() => {
+    const handleClickOutside = (event: MouseEvent & any) => {
+      const el = ref.current
+      const path = event.path || (event.composedPath && event.composedPath())
+      for (const pathEl of path) {
+        if (pathEl === el) return
+      }
+      callback()
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [ref])*/
+}
+
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
   return () => {
     const play = useEvent($module.methods.play)
     const _update = useEvent($module.methods.update)
+
+    const visibility = useStore($module.data.$callsVisibility)
+
+    const [footerVisibility, showFooter] = useState(true)
+
+    const videoCallRef = useRef(null)
+
+    if (visibility) {
+      usetrackMouse(videoCallRef, ((eventX, eventY) => {
+        showFooter(true)
+        setTimeout(() => showFooter(false), 3000)
+      }))
+    }
 
     useEffect(() => {
       play()
@@ -27,9 +89,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const changeVideo = useEvent($module.methods.changeVideo)
     const changeFullScreen = useEvent($module.methods.changeFullScreen)
 
-    const visibility = useStore($module.data.$callsVisibility)
     const time = useStore($module.data.$time)
-
 
     return (
       <Container
@@ -38,9 +98,15 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
         data-visibility={visibility}
         data-fullscreen={self.fullscreen}
       >
-        <Call>
+        <Call ref={videoCallRef}>
           <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
           <NotConnected>Собеседник отключился</NotConnected>
+          {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate}>
+            <Time>
+              <TimeLeftLabel>Осталось:</TimeLeftLabel>
+              <TimeLeft>{time.minutesLeft} минут</TimeLeft>
+            </Time>
+          </TimeTooltip> )}
           <Header>
             {interlocutor.info && (
               <User>
@@ -49,15 +115,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                 <Name>{interlocutor.info.name}</Name>
               </User>
             )}
-            <Time>
-              {time.minutesLeft && (
-                <>
-                  <TimeLeftLabel>Осталось:</TimeLeftLabel>
-                  <TimeLeft data-terminate={time.isCloseToTerminate}>{time.minutesLeft} минут</TimeLeft>
-                </>
-              )}
-            </Time>
-            <Close onClick={() => close()} />
           </Header>
           <InterlocutorVideo id='InterlocutorVideo' />
           {!interlocutor.video && interlocutor.connected && (
@@ -73,11 +130,17 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
             </MyUserVideoPlaceholder>
           )}
 
-          <Actions>
-            <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
-            <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
-            <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
-          </Actions>
+          <Footer visibility={footerVisibility}>
+            <Actions>
+              <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
+              <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
+              <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
+              <StyledContainer>
+                <HangUp onClick={() => close()} />
+                <HangUpTooltip>Выйти из сессии</HangUpTooltip>
+              </StyledContainer>
+            </Actions>
+          </Footer>
         </Call>
       </Container>
     )
@@ -88,7 +151,7 @@ const Tooltip = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 50px;
+  top: 24px;
 
   background: rgba(66, 66, 66, 0.8);
   border-radius: 2px;
@@ -106,17 +169,35 @@ const Tooltip = styled.div`
 
 const WasNotConnected = styled(Tooltip)``
 const NotConnected = styled(Tooltip)``
+const TimeTooltip = styled(Tooltip)`
+  &[data-terminate="true"] {
+    background: rgba(255, 107, 0, 1);
+  }
+`
 
 const Header = styled.div`
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0);
   padding: 4px 8px;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   z-index: 10;
+`
+
+const Footer = styled.div<{visibility: boolean}>`
+  z-index: ${({ visibility }) => (visibility ? "10" : "-1")};
+  display: flex;
+  transition: z-index 1s ease;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 `
 
 const Time = styled.div`
@@ -204,13 +285,59 @@ const Actions = styled.div`
 `
 
 type ActionIconTypes = {
-  active: boolean
+  active?: boolean
 }
 
 const ActionIcon = styled(Icon)`
   width: 40px;
   height: 40px;
   cursor: pointer;
+`
+
+const HangUpTooltip = styled.span`
+  width: 136px;
+  height: auto;
+  position: absolute;
+  z-index: 1;
+  padding: 12px;
+  background: #ffffff;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 1px 3px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+  bottom: 120%;
+  left: 50%;
+  margin-left: -68px;
+  display: none;
+
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+  }
+`
+
+const StyledContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover ${HangUpTooltip} {
+    display: block;
+  }
+  ${MediaRange.lessThan("mobile")`
+      position: unset;
+      
+      &:hover ${HangUpTooltip} {
+      display: none;
+      }
+  `}
 `
 
 const ToggleVideo = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
@@ -222,11 +349,15 @@ const ToggleMicro = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
 const ToggleFullscreen = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
   name: active ? "disabled-fullscreen" : "enabled-fullscreen",
 }))<ActionIconTypes>``
+const HangUp = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
+  name: "hang-up",
+}))<ActionIconTypes>``
 
 const User = styled.div`
   display: none;
   align-items: center;
 `
+
 const StyledAvatar = styled(Avatar)`
   width: 24px;
   height: 24px;
@@ -235,25 +366,22 @@ const StyledAvatar = styled(Avatar)`
 `
 
 const Name = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #424242;
   margin-left: 4px;
 `
 
-const Close = styled(Icon).attrs({ name: "close" })`
-  width: 36px;
-  height: 36px;
-  display: none;
-  cursor: pointer;
-  fill: #fff;
+const TimeLeftLabel = styled.div`
+  font-size: 14px;
+  line-height: 22px;
 `
 
-const TimeLeftLabel = styled.div``
 const TimeLeft = styled.div`
-  &[data-terminate="true"] {
-    color: #ffa666;
-  }
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
 `
 
 const fullscreenCSS = css`
@@ -283,10 +411,12 @@ const fullscreenCSS = css`
     padding: 4px 20px;
     justify-content: space-between;
   }
-  ${User} {
-    display: flex;
+
+  ${Footer} {
+    height: 84px;
   }
-  ${Close} {
+  
+  ${User} {
     display: flex;
   }
   ${MyUserVideoPlaceholder},
@@ -298,6 +428,7 @@ const fullscreenCSS = css`
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
     border-radius: 2px;
     position: absolute;
+    top: 24px;
     right: 20px;
     bottom: 16px;
   }
@@ -305,20 +436,30 @@ const fullscreenCSS = css`
     bottom: 16px;
   }
   ${ActionIcon} {
-    width: 52px;
-    height: 52px;
+    width: 44px;
+    height: 44px;
   }
 
   ${MediaRange.lessThan("tablet")`
       ${MyUserVideoPlaceholder},
       ${MyUserVideo} {
-        top: 76px;
+        top: 24px;
         right: 16px;
         width: 240px;
         height: 160px;
       }
       ${Actions} {
-        bottom: 52px;
+        bottom: 16px;
+      }
+    `}
+
+  ${MediaRange.lessThan("mobile")`
+      ${MyUserVideo} {
+        top: unset;
+        bottom: 86px;
+        right: 16px;
+        width: 160px;
+        height: 100px;
       }
     `}
 `
@@ -342,6 +483,29 @@ const Container = styled.div`
   &[data-fullscreen="true"] {
     ${fullscreenCSS}
   }
+  
+  &[data-fullscreen="false"] {
+    ${WasNotConnected}{
+      top: 0;
+    }
+
+    ${NotConnected}{
+      top: 0;
+    }
+    
+    ${TimeTooltip}{
+      top: 0;
+      width: 160px;
+      height: 26px;
+    }
+
+    ${TimeLeft}{
+      font-size: 12px;
+      line-height: 18px;
+    }
+    
+  }
+  
   ${MediaRange.lessThan("mobile")`
     ${fullscreenCSS}
     
@@ -377,6 +541,11 @@ const Container = styled.div`
   }
   &[data-interlocutor-is-connected="false"] {
     ${NotConnected} {
+      display: flex;
+    }
+  }
+  &[data-interlocutor-is-connected="true"] {
+    ${TimeTooltip} {
       display: flex;
     }
   }
