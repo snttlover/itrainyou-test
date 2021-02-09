@@ -98,8 +98,8 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop | null): Promise
     canvas.height = image.naturalHeight
   }
   else {
-    canvas.width = crop.width
-    canvas.height = crop.height
+    canvas.width = crop.width * 4
+    canvas.height = crop.height * 4
   }
   const ctx = canvas.getContext("2d")
 
