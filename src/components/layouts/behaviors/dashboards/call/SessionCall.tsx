@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled, { css } from "styled-components"
-
 import { Icon } from "@/components/icon/Icon"
 import { Avatar } from "@/components/avatar/Avatar"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
+import { useMousePosition } from "@/components/mouse-tracking/track-mouse"
 
 
 function usetrackMouse<T>(ref: React.MutableRefObject<T>, callback: (eventX: MouseEvent & any,eventY: MouseEvent & any) => void) {
 
-  document.onmousemove = handleMouseMove
+  ref.current.onmousemove = handleMouseMove
 
   function handleMouseMove(event: MouseEvent & any) {
     let eventDoc, doc, body
@@ -67,17 +67,27 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const videoCallRef = useRef(null)
 
-    if (visibility) {
+    /*if (visibility) {
       usetrackMouse(videoCallRef, ((eventX, eventY) => {
         showFooter(true)
         setTimeout(() => showFooter(false), 3000)
       }))
-    }
+    }*/
+    let hideTimer: any
+
+    useMousePosition(videoCallRef, ((pos) => {
+      if (footerVisibility && visibility) {
+        showFooter(true)
+        setTimeout(() => showFooter(false), 3000)
+      }
+    }))
 
     useEffect(() => {
       play()
       const timer = setInterval(() => _update(), 60000)
-      return () => clearInterval(timer)
+      return () => {
+        clearInterval(timer)
+      }
     }, [])
 
     const interlocutor = useStore($module.data.$interlocutor)
@@ -92,57 +102,59 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const time = useStore($module.data.$time)
 
     return (
-      <Container
-        data-interlocutor-is-connected={interlocutor.connected}
-        data-interlocutor-was-connected={interlocutor.wasConnected}
-        data-visibility={visibility}
-        data-fullscreen={self.fullscreen}
-      >
-        <Call ref={videoCallRef}>
-          <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
-          <NotConnected>Собеседник отключился</NotConnected>
-          {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate}>
-            <Time>
-              <TimeLeftLabel>Осталось:</TimeLeftLabel>
-              <TimeLeft>{time.minutesLeft} минут</TimeLeft>
-            </Time>
-          </TimeTooltip> )}
-          <Header>
-            {interlocutor.info && (
-              <User>
-                {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
-                <StyledAvatar src={interlocutor.info.avatar} />
-                <Name>{interlocutor.info.name}</Name>
-              </User>
+      <div ref={videoCallRef}>
+        <Container
+          data-interlocutor-is-connected={interlocutor.connected}
+          data-interlocutor-was-connected={interlocutor.wasConnected}
+          data-visibility={visibility}
+          data-fullscreen={self.fullscreen}
+        >
+          <Call>
+            <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
+            <NotConnected>Собеседник отключился</NotConnected>
+            {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate}>
+              <Time>
+                <TimeLeftLabel>Осталось:</TimeLeftLabel>
+                <TimeLeft>{time.minutesLeft} минут</TimeLeft>
+              </Time>
+            </TimeTooltip> )}
+            <Header visibility={footerVisibility}>
+              {interlocutor.info && (
+                <User>
+                  {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
+                  <StyledAvatar src={interlocutor.info.avatar} />
+                  <Name>{interlocutor.info.name}</Name>
+                </User>
+              )}
+            </Header>
+            <InterlocutorVideo id='InterlocutorVideo' />
+            {!interlocutor.video && interlocutor.connected && (
+              <InterlocutorVideoPlaceholder>
+                <InterlocutorIcon />
+                <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
+              </InterlocutorVideoPlaceholder>
             )}
-          </Header>
-          <InterlocutorVideo id='InterlocutorVideo' />
-          {!interlocutor.video && interlocutor.connected && (
-            <InterlocutorVideoPlaceholder>
-              <InterlocutorIcon />
-              <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
-            </InterlocutorVideoPlaceholder>
-          )}
-          <MyUserVideo id='MyUserVideo' />
-          {!self.video && (
-            <MyUserVideoPlaceholder>
-              <MyUserVideoPlaceholderIcon />
-            </MyUserVideoPlaceholder>
-          )}
+            <MyUserVideo id='MyUserVideo' />
+            {!self.video && (
+              <MyUserVideoPlaceholder>
+                <MyUserVideoPlaceholderIcon />
+              </MyUserVideoPlaceholder>
+            )}
 
-          <Footer visibility={footerVisibility}>
-            <Actions>
-              <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
-              <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
-              <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
-              <StyledContainer>
-                <HangUp onClick={() => close()} />
-                <HangUpTooltip>Выйти из сессии</HangUpTooltip>
-              </StyledContainer>
-            </Actions>
-          </Footer>
-        </Call>
-      </Container>
+            <Footer visibility={footerVisibility}>
+              <Actions>
+                <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
+                <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
+                <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
+                <StyledContainer>
+                  <HangUp onClick={() => close()} />
+                  <HangUpTooltip>Выйти из сессии</HangUpTooltip>
+                </StyledContainer>
+              </Actions>
+            </Footer>
+          </Call>
+        </Container>
+      </div>
     )
   }
 }
@@ -175,7 +187,9 @@ const TimeTooltip = styled(Tooltip)`
   }
 `
 
-const Header = styled.div`
+const Header = styled.div<{visibility: boolean}>`
+  z-index: ${({ visibility }) => (visibility ? "10" : "-1")};
+  transition: z-index 1s ease;
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0);
@@ -184,7 +198,6 @@ const Header = styled.div`
   left: 0;
   top: 0;
   width: 100%;
-  z-index: 10;
 `
 
 const Footer = styled.div<{visibility: boolean}>`
@@ -369,7 +382,7 @@ const Name = styled.div`
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
-  color: #424242;
+  color: #ffffff;
   margin-left: 4px;
 `
 
@@ -543,6 +556,11 @@ const Container = styled.div`
     ${NotConnected} {
       display: flex;
     }
+
+    ${TimeTooltip} {
+      top: 72px;
+      display: flex;
+    }
   }
   &[data-interlocutor-is-connected="true"] {
     ${TimeTooltip} {
@@ -555,6 +573,10 @@ const Container = styled.div`
     }
     ${NotConnected} {
       display: none !important;
+    }
+    ${TimeTooltip} {
+      top: 72px;
+      display: flex;
     }
   }
 `
