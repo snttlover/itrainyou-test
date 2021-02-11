@@ -31,6 +31,14 @@ export const createSupportChat = (chatId: ChatId, $chatModule: ReturnType<typeof
     const openDialog = useEvent($chatModule.materials.methods.openDialog)
 
     useEffect(() => {
+      // console.log("first")
+      // window.addEventListener("resize", ()=>{
+      //   console.log("resize")
+      //   const viewheight = window.innerHeight
+      //   const viewwidth = window.innerWidth
+      //   const viewport = document.querySelector("meta[name=viewport]")
+      //   viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0")
+      // })
       mounted(chatId)
       return () => unmounted()
     }, [])
@@ -64,7 +72,7 @@ const StyledChatContainer = styled(ChatContainer)`
 const StyledDialog = styled(Dialog)`
   width: 100%;
   max-width: 700px;
-  height: 90vh;
+  max-height: 90vh;
   padding: 0;
   border-radius: 10px;
   
@@ -76,8 +84,7 @@ const StyledDialog = styled(Dialog)`
 
 const Container = styled.div`
   position: relative;
-  position: relative;
-  //height: 100%;
+  height: 100%;
   display: flex;
   overflow: hidden;
   border-radius: 10px;

@@ -154,15 +154,16 @@ const CalendarWrapper = styled.div<CalendarWrapperTypes>`
   ${props => props.isBig && BigCalendarStyles}
 `
 
+const equalFormat = "DDMMYYYY"
+
 function firsDayOfMonth(month: number, year: number) {
   return new Date(date(`${year}-${month}-01`).valueOf())
 }
 
-const isEqualDates = (first: Date, second: Date, format = "DDMMYYYY") =>
+const isEqualDates = (first: Date, second: Date, format = equalFormat) =>
   date(first).format(format) === date(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
-  const equalFormat = "DDMMYYYY"
   const [startDate, changeActiveStartDate] = useState(new Date())
 
   useEffect(() => {
@@ -183,7 +184,6 @@ export const Calendar = (props: CalendarTypes) => {
 
   const customClassNames = ({ date: dat }: CustomClassNamesTypes) => {
     const classes = []
-
     classes.push(`day-of-week-${date(dat).day()}`)
 
     if (props.pinTo && props.value) {
@@ -219,8 +219,9 @@ export const Calendar = (props: CalendarTypes) => {
     }
 
     if (enabledDefined) {
-      if (enabledDates.includes(date(dat).format(equalFormat))) {
+      if (enabledDates.includes(date(dat, undefined, undefined, true).format(equalFormat))) {
         classes.push("enabled")
+
       } else {
         classes.push("disabled")
       }
@@ -256,7 +257,6 @@ export const Calendar = (props: CalendarTypes) => {
   }
 
   const formatter = "YYYYMM"
-  console.log(date(startDate).valueOf())
   const lessThanTheCurrentMonth = +date(startDate).format(formatter) <= +date(new Date()).format(formatter)
   return (
     <CalendarWrapper className={props.className} isBig={props.isBig}>
@@ -274,6 +274,7 @@ export const Calendar = (props: CalendarTypes) => {
         activeStartDate={firsDayOfMonth(startDate.getMonth() + 1, startDate.getFullYear())}
         selectRange={props.selectRange || false}
         showNavigation={false}
+        returnValue={"end"}
       />
     </CalendarWrapper>
   )
