@@ -435,7 +435,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const enabledDates = sessions.map(session => session.startDatetime)
-  console.log(enabledDates)
   useEffect(() => {
     changeCurrentDate((prevState) => {
       return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
@@ -484,10 +483,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
-
-  useEffect(()=>{
-    console.log("Current date: ",currentDate)
-  }, [currentDate])
 
   return (
     <Container>
