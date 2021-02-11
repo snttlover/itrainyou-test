@@ -5,56 +5,7 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
-import { useMousePosition } from "@/components/mouse-tracking/track-mouse"
-
-
-function usetrackMouse<T>(ref: React.MutableRefObject<T>, callback: (eventX: MouseEvent & any,eventY: MouseEvent & any) => void) {
-
-  ref.current.onmousemove = handleMouseMove
-
-  function handleMouseMove(event: MouseEvent & any) {
-    let eventDoc, doc, body
-
-    event = event || window.event // IE-ism
-
-    // If pageX/Y aren't available and clientX/Y are,
-    // calculate pageX/Y - logic taken from jQuery.
-    // (This is to support old IE)
-    if (event.pageX == null && event.clientX != null) {
-      eventDoc = (event.target && event.target.ownerDocument) || document
-      doc = eventDoc.documentElement
-      body = eventDoc.body
-
-      event.pageX = event.clientX +
-                (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
-                (doc && doc.clientLeft || body && body.clientLeft || 0)
-      event.pageY = event.clientY +
-                (doc && doc.scrollTop || body && body.scrollTop || 0) -
-                (doc && doc.clientTop || body && body.clientTop || 0)
-    }
-
-    // Use event.pageX / event.pageY here
-    callback(event.pageX, event.pageY)
-  }
-
-  /*useEffect(() => {
-    const handleClickOutside = (event: MouseEvent & any) => {
-      const el = ref.current
-      const path = event.path || (event.composedPath && event.composedPath())
-      for (const pathEl of path) {
-        if (pathEl === el) return
-      }
-      callback()
-    }
-
-    // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [ref])*/
-}
+import { useMousePosition, trackMouse } from "@/components/mouse-tracking/track-mouse"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
   return () => {
@@ -67,20 +18,27 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const videoCallRef = useRef(null)
 
-    /*if (visibility) {
-      usetrackMouse(videoCallRef, ((eventX, eventY) => {
-        showFooter(true)
-        setTimeout(() => showFooter(false), 3000)
+    if (visibility) {
+      trackMouse(videoCallRef, ((eventX, eventY) => {
+        console.log("test")
+        const hideTimer = setTimeout(() => showFooter(false), 3000)
+        !footerVisibility ? clearTimeout(hideTimer) : showFooter(true)
       }))
-    }*/
-    let hideTimer: any
+    }
 
-    useMousePosition(videoCallRef, ((pos) => {
-      if (footerVisibility && visibility) {
+    /*useMousePosition(videoCallRef, ((pos) => {
+      let test: any
+      const hideTimer = () => {
+        test = setTimeout(() => {
+          console.log("timer")
+          showFooter(false)
+        }, 3000)
+      }
+      if (visibility) {
         showFooter(true)
         setTimeout(() => showFooter(false), 3000)
       }
-    }))
+    }))*/
 
     useEffect(() => {
       play()
