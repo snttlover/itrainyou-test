@@ -2,7 +2,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, restor
 import { getCoachSessionVideoToken, VideoTokenData } from "@/lib/api/coach/get-session-video-token"
 import { getCoachSession, SessionInfo } from "@/lib/api/coach/get-session"
 import { Client } from "@/lib/api/client/clientInfo"
-import { Client as AgoraClient, Stream, VideoEncoderConfiguration } from "agora-rtc-sdk"
+import { Client as AgoraClient, Stream, VideoEncoderConfiguration, MediaDeviceInfo  } from "agora-rtc-sdk"
 import { createSessionCall } from "@/components/layouts/behaviors/dashboards/call/SessionCall"
 import { config as appConfig } from "@/config"
 import { $isClient } from "@/lib/effector"
@@ -10,6 +10,8 @@ import { getClientSessionVideoToken } from "@/lib/api/client/get-session-video-t
 import { getClientSession } from "@/lib/api/client/get-client-session"
 import { date } from "@/lib/formatting/date"
 import { runInScope } from "@/scope"
+
+//agoraData.client.getRecordingDevices
 
 type CreateSessionCallModuleConfig = {
   dashboard: "client" | "coach"
@@ -63,6 +65,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   const changeInterculatorIsConnected = createEvent<boolean>()
   const $interculatorIsConnected = restore(changeInterculatorIsConnected, false).reset(reset)
+
+  const changeGrantedPermission = createEvent<boolean>()
+  const $userGrantedPermission = restore(changeGrantedPermission, false).reset(reset)
 
   const playAgoraFx = createEffect({
     handler: () => {
@@ -131,9 +136,13 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         agoraData.client.on("stream-subscribed", e => {
           agoraData.remoteStream = e.stream
           play()
+
           agoraData.remoteStream?.on("player-status-change", (event) => {
             runInScope(changeInterlocutorVideoStatus, agoraData.remoteStream?.hasVideo() || false)
             runInScope(changeInterlocutorMicrophoneStatus, agoraData.remoteStream?.hasAudio() || false)
+            /*agoraData.client?.getRecordingDevices(devices => console.log("RECORDING DEVICES",devices))
+            agoraData.client?.getPlayoutDevices(devices => console.log("PLAYOUT DEVICES",devices))
+            agoraData.client?.getCameras(devices => console.log("GET CAMERAS",devices))*/
           })
           runInScope(changeInterculatorWasConnected, true)
           runInScope(changeInterculatorIsConnected, true)
@@ -174,6 +183,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
             console.log(agoraData.localStream)
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
+            agoraData.client?.getRecordingDevices(devices => console.log("RECORDING DEVICES",devices))
+            agoraData.client?.getPlayoutDevices(devices => console.log("PLAYOUT DEVICES",devices))
+            agoraData.client?.getCameras(devices => console.log("GET CAMERAS",devices))
 
             agoraData.localStream.init(() => {
               if (agoraData.localStream) {

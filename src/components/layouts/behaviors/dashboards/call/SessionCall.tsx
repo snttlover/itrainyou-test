@@ -18,11 +18,9 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const videoCallRef = useRef(null)
 
-    let clearTrackMouse: any
     if (visibility) {
       let timer: any
-      clearTrackMouse = trackMouse(videoCallRef, ((eventX, eventY) => {
-
+      trackMouse(videoCallRef, ((eventX, eventY) => {
         timer && clearTimeout(timer)
         timer = setTimeout(() => showFooter(false), 3000)
         !footerVisibility ? clearTimeout(timer) : showFooter(true)
@@ -35,8 +33,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
       const timer = setInterval(() => _update(), 60000)
       return () => {
         clearInterval(timer)
-        console.log("kek", clearTrackMouse)
-        clearTrackMouse && clearTrackMouse()
       }
     }, [])
 
