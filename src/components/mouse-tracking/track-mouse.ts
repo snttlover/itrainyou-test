@@ -21,14 +21,11 @@ export function useMousePosition (ref: React.MutableRefObject<HTMLDivElement | n
   return callback(mousePosition)
 }
 
-export function trackMouse (ref: React.MutableRefObject<HTMLDivElement | null>, callback: (eventX: MouseEvent, eventY: MouseEvent) => void) {
+export function trackMouse (ref: React.MutableRefObject<HTMLDivElement | null>, callback: (eventX: MouseEvent, eventY: MouseEvent) => void): void | (() => void) {
 
   //ref.current.onmousemove = handleMouseMove
   if (ref && ref.current) {
     ref.current.addEventListener("mousemove", handleMouseMove)
-
-    // @ts-ignore
-    return () => ref.current.removeEventListener("mousemove", handleMouseMove)
   }
 
   function handleMouseMove(event: MouseEvent & any) {
@@ -55,6 +52,4 @@ export function trackMouse (ref: React.MutableRefObject<HTMLDivElement | null>, 
     // Use event.pageX / event.pageY here
     callback(event.pageX, event.pageY)
   }
-
-  return
 }

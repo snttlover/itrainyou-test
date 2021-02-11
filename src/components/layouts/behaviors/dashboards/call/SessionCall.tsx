@@ -5,7 +5,7 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
-import { useMousePosition, trackMouse } from "@/components/mouse-tracking/track-mouse"
+import { trackMouse } from "@/components/mouse-tracking/track-mouse"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
   return () => {
@@ -18,33 +18,25 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const videoCallRef = useRef(null)
 
+    let clearTrackMouse: any
     if (visibility) {
-      trackMouse(videoCallRef, ((eventX, eventY) => {
-        console.log("test")
-        const hideTimer = setTimeout(() => showFooter(false), 3000)
-        !footerVisibility ? clearTimeout(hideTimer) : showFooter(true)
+      let timer: any
+      clearTrackMouse = trackMouse(videoCallRef, ((eventX, eventY) => {
+
+        timer && clearTimeout(timer)
+        timer = setTimeout(() => showFooter(false), 3000)
+        !footerVisibility ? clearTimeout(timer) : showFooter(true)
       }))
     }
 
-    /*useMousePosition(videoCallRef, ((pos) => {
-      let test: any
-      const hideTimer = () => {
-        test = setTimeout(() => {
-          console.log("timer")
-          showFooter(false)
-        }, 3000)
-      }
-      if (visibility) {
-        showFooter(true)
-        setTimeout(() => showFooter(false), 3000)
-      }
-    }))*/
 
     useEffect(() => {
       play()
       const timer = setInterval(() => _update(), 60000)
       return () => {
         clearInterval(timer)
+        console.log("kek", clearTrackMouse)
+        clearTrackMouse && clearTrackMouse()
       }
     }, [])
 
@@ -101,13 +93,26 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
             <Footer visibility={footerVisibility}>
               <Actions>
-                <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
-                <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
-                <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
-                <StyledContainer>
+
+                <IconContainer>
+                  <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
+                  {self.fullscreen && <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру" }</IconToolTip>}
+                </IconContainer>
+
+                <IconContainer>
+                  <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
+                  {self.fullscreen && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
+                </IconContainer>
+
+                <IconContainer>
+                  <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
+                  {self.fullscreen && <IconToolTip>{self.fullscreen ? "Свернуть окно" : "Развернуть окно" }</IconToolTip>}
+                </IconContainer>
+
+                <IconContainer>
                   <HangUp onClick={() => close()} />
-                  <HangUpTooltip>Выйти из сессии</HangUpTooltip>
-                </StyledContainer>
+                  {self.fullscreen && <IconToolTip>Выйти из сессии</IconToolTip>}
+                </IconContainer>
               </Actions>
             </Footer>
           </Call>
@@ -265,7 +270,7 @@ const ActionIcon = styled(Icon)`
   cursor: pointer;
 `
 
-const HangUpTooltip = styled.span`
+const IconToolTip = styled.span`
   width: 136px;
   height: auto;
   position: absolute;
@@ -294,18 +299,18 @@ const HangUpTooltip = styled.span`
   }
 `
 
-const StyledContainer = styled.div`
+const IconContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
 
-  &:hover ${HangUpTooltip} {
+  &:hover ${IconToolTip} {
     display: block;
   }
   ${MediaRange.lessThan("mobile")`
       position: unset;
       
-      &:hover ${HangUpTooltip} {
+      &:hover ${IconToolTip} {
       display: none;
       }
   `}
