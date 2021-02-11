@@ -1,19 +1,19 @@
-const path = require('path');
+const path = require("path")
 
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require("webpack")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
-  entry: './admin-chats/init.ts',
+  entry: "./admin-chats/index.ts",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./../src"),
     },
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: [".ts", ".tsx", ".js"]
   },
   output: {
-    path: path.join(__dirname, './dist'),
-    filename: 'bundle.min.js'
+    path: path.join(__dirname, "./dist"),
+    filename: "bundle.min.js"
   },
   module: {
     rules: [
@@ -22,7 +22,7 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
               "plugins": [
                 ["effector/babel-plugin"],
@@ -40,7 +40,7 @@ module.exports = {
 
           },
           {
-            loader: 'ts-loader'
+            loader: "ts-loader"
           }
         ]
       },
@@ -61,11 +61,11 @@ module.exports = {
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      BUILD_TARGET: 'client',
+      BUILD_TARGET: "client",
       DEBUG: false
     }),
     new HtmlWebpackPlugin({
-      template: './admin-chats/index.html'
+      template: "./admin-chats/index.html"
     })
   ]
 }

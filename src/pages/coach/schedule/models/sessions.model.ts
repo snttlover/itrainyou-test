@@ -7,8 +7,7 @@ import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, forward, restore, sample, merge, attach } from "effector-root"
-import { openRemoveSessionModal } from "@/pages/coach/schedule/models/remove-session.model"
-import { useEvent } from "effector-react"
+import { $sessionToDelete } from "@/pages/coach/schedule/models/remove-session.model"
 
 type DateRange = {
   from: string
@@ -38,9 +37,15 @@ forward({
   to: removeSessionFx,
 })
 
-const removeSuccessMessage: Toast = { type: "info", text: "Сессия удалена" }
 forward({
-  from: sessionRemoved.map(_ => removeSuccessMessage),
+  from: sessionRemoved.map(_ => {
+    const time = `${
+      $sessionToDelete.getState().startTime.format("DD.MM.YY HH:mm")
+    }-${
+      $sessionToDelete.getState().endTime.format("HH:mm")
+    }`
+    return { type: "info", text: `Сессия ${time} удалена` } as Toast
+  }),
   to: [toasts.remove, toasts.add],
 })
 

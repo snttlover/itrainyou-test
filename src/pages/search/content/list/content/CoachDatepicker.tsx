@@ -435,7 +435,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const enabledDates = sessions.map(session => session.startDatetime)
-
   useEffect(() => {
     changeCurrentDate((prevState) => {
       return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
@@ -502,11 +501,11 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
         {loading && <Spinner />}
         <Datepicker>
           <StyledCalendar
-            value={currentDate as Date}
+            value={currentDate}
             enabledDates={enabledDates}
             onChange={changeCurrentDate}
             isBig={true}
-            startFrom={new Date(date(currentDate || undefined).valueOf())}
+            // startFrom={new Date(date(currentDate || undefined).toDate())}
           />
 
           {/*<FooterWrapper>*/}

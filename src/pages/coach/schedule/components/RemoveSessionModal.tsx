@@ -57,6 +57,7 @@ export const RemoveSessionModal = () => {
 const StyledSuccessButton = styled(Button)`
   width: 220px;
   margin-left: 16px;
+  font-size: 16px;
   ${MediaRange.lessThan("mobile")`
     width: 144px
   `}
@@ -64,6 +65,8 @@ const StyledSuccessButton = styled(Button)`
 
 const StyledDashedButton = styled(DashedButton)`
   width: 220px;
+  padding: 6px 24px;
+  font-size: 16px;
   ${MediaRange.lessThan("mobile")`
     width: 144px
   `}
