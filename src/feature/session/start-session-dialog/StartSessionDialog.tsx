@@ -20,11 +20,11 @@ export const createStartSessionDialog = ($module: ReturnType<typeof createStartS
   return (
     <StyledDialog value={visibility} onChange={() => hide()}>
       <Container>
-        <Title>У вас началась сессия</Title>
+        <Title>До сессии менее 5 минут!</Title>
         <Time>{session.time}</Time>
         <StyledAvatar src={session.avatar} />
         <Name>{session.name}</Name>
-        <StartButton onClick={start}>Начать сессию</StartButton>
+        <StartButton onClick={start}>Зайти в сессию</StartButton>
       </Container>
     </StyledDialog>
   )

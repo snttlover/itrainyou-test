@@ -11,11 +11,11 @@ import {
   $activeSessions,
   $isHasMoreRecommendations,
   $recommendations,
-  $todaySessions,
+  $upcomingSessions,
   loadActiveSessionsFx,
   loadMore,
   loadRecommendationsFx,
-  loadTodaySessionsFx,
+  loadUpcomingSessionsFx,
   mounted,
 } from "./home.model"
 import React, { useEffect, useState } from "react"
@@ -84,11 +84,11 @@ const SessionEnterText = styled.p`
 export const HomePage = () => {
   const [isFirstRender, setIsFirstRender] = useState(true)
   const activeSessions = useStore($activeSessions)
-  const todaySessions = useStore($todaySessions)
+  const upcomingSessions = useStore($upcomingSessions)
   const recommendations = useStore($recommendations)
   const isHasMoreRecommendations = useStore($isHasMoreRecommendations)
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
-  const todaySessionsPending = useStore(loadTodaySessionsFx.pending)
+  const upcomingSessionsPending = useStore(loadUpcomingSessionsFx.pending)
   const recommendationPending = useStore(loadRecommendationsFx.pending)
   const _mounted = useEvent(mounted)
   const _loadMore = useEvent(loadMore)
@@ -124,22 +124,22 @@ export const HomePage = () => {
         )}
       </ContentContainer>
 
-      {todaySessions.length ? (
+      {upcomingSessions.length ? (
         <ContentContainer>
           <Block>
             <Title>Ближайшие сессии</Title>
-            {todaySessions.map(session => (
+            {upcomingSessions.map(session => (
               <TodaySessionCard session={session} key={session.id} />
             ))}
           </Block>
         </ContentContainer>
 
       ) : 
-        (todaySessionsPending || isFirstRender)? 
+        (upcomingSessionsPending || isFirstRender)?
           <Loader/> : <Onboarding/>}
 
       {
-        !(todaySessionsPending || isFirstRender) &&
+        !(upcomingSessionsPending || isFirstRender) &&
         <ContentContainer>
           <Block>
             <Title>Рекомендации</Title>
