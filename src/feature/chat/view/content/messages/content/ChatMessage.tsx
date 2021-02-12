@@ -29,7 +29,7 @@ const Container = styled.div<ContainerTypes>`
   
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   position: relative;
   
   &[data-self="true"] {

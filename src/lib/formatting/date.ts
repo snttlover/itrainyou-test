@@ -14,7 +14,7 @@ dayjs.extend(timezone)
 dayjs.locale("ru")
 
 
-export const date = (_date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string): Dayjs => {
+export const date = (_date?: dayjs.ConfigType, option?: dayjs.OptionType, locale?: string, useClientTimezone?: boolean): Dayjs => {
   if (!_date) {
     _date = undefined
   }
@@ -27,7 +27,7 @@ export const date = (_date?: dayjs.ConfigType, option?: dayjs.OptionType, locale
   const userData =
     process.env.BUILD_TARGET === "client" ? getStoreFromScope($userData) : { client: { user: { timeZone: "GMT" } } }
 
-  const timeZone = userData?.client?.user?.timeZone || dayjs.tz.guess()
+  const timeZone = useClientTimezone ? dayjs.tz.guess() : userData?.client?.user?.timeZone || dayjs.tz.guess()
 
   const dt = dayjs(_date, options, locale)
 

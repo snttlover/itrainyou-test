@@ -59,7 +59,6 @@ export const DateFilter = () => {
 
   const start = q.nearest_session_date__gte ? formatedDate(q.nearest_session_date__lte).valueOf() : undefined
   const end = q.nearest_session_date__lte ? formatedDate(q.nearest_session_date__gte).valueOf() : undefined
-  console.log(start,end)
   const getRangeType = () => {
     if (!!start && !!end) {
       return "range"
