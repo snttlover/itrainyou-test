@@ -15,6 +15,7 @@ import { DashboardPageWrapper } from "@/application/components/layouts/behaviors
 import { CoachStartedSessionsToolbar } from "@/feature/session/started-sessions-toolbar"
 import { CoachSessionCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { CoachStartedSessionDialog } from "@/feature/session/start-session-dialog"
+import { NoPermissionGrantedDialog } from "@/components/layouts/behaviors/dashboards/call/NoPermissionGrantedDialog"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -30,6 +31,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
       <CoachSessionCall />
       <DashboardContainer {...props}>
         <CoachStartedSessionDialog />
+        <NoPermissionGrantedDialog />
         <CoachMenu />
         <ToastsContainer />
         <DashboardContent>

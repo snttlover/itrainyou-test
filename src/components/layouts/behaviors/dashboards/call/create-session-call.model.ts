@@ -11,7 +11,6 @@ import { getClientSession } from "@/lib/api/client/get-client-session"
 import { date } from "@/lib/formatting/date"
 import { runInScope } from "@/scope"
 
-//agoraData.client.getRecordingDevices
 
 type CreateSessionCallModuleConfig = {
   dashboard: "client" | "coach"
@@ -66,8 +65,16 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeInterculatorIsConnected = createEvent<boolean>()
   const $interculatorIsConnected = restore(changeInterculatorIsConnected, false).reset(reset)
 
-  const changeGrantedPermission = createEvent<boolean>()
-  const $userGrantedPermission = restore(changeGrantedPermission, false).reset(reset)
+  const changeGrantedPermissionForCamera = createEvent<boolean>()
+  const changeGrantedPermissionForMic = createEvent<boolean>()
+  const $userGrantedPermission = createStore({
+    micro: false,
+    camera: false,
+  }).on(changeGrantedPermissionForCamera, (state,payload) => {
+    return {micro: state.micro, camera: payload}
+  }).on(changeGrantedPermissionForMic,(state,payload) => {
+    return {micro: payload, camera: state.camera}
+  })
 
   const playAgoraFx = createEffect({
     handler: () => {
@@ -140,9 +147,20 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           agoraData.remoteStream?.on("player-status-change", (event) => {
             runInScope(changeInterlocutorVideoStatus, agoraData.remoteStream?.hasVideo() || false)
             runInScope(changeInterlocutorMicrophoneStatus, agoraData.remoteStream?.hasAudio() || false)
-            /*agoraData.client?.getRecordingDevices(devices => console.log("RECORDING DEVICES",devices))
+            /*
+            agoraData.client?.getRecordingDevices(devices => {
+              console.log("RECORDING DEVICES",devices)
+              const isDeviceID = devices.find(device => !!device.deviceId)
+              if (isDeviceID) runInScope(changeGrantedPermissionForMic, true)
+            })
+
             agoraData.client?.getPlayoutDevices(devices => console.log("PLAYOUT DEVICES",devices))
-            agoraData.client?.getCameras(devices => console.log("GET CAMERAS",devices))*/
+
+            agoraData.client?.getCameras(devices => {
+              console.log("GET CAMERAS",devices)
+              const isDeviceID = devices.find(device => !!device.deviceId)
+              if (isDeviceID) runInScope(changeGrantedPermissionForCamera, true)
+            })*/
           })
           runInScope(changeInterculatorWasConnected, true)
           runInScope(changeInterculatorIsConnected, true)
@@ -183,10 +201,19 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
             console.log(agoraData.localStream)
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
-            agoraData.client?.getRecordingDevices(devices => console.log("RECORDING DEVICES",devices))
-            agoraData.client?.getPlayoutDevices(devices => console.log("PLAYOUT DEVICES",devices))
-            agoraData.client?.getCameras(devices => console.log("GET CAMERAS",devices))
 
+            agoraData.client?.getRecordingDevices(devices => {
+              console.log("RECORDING DEVICES",devices)
+              const isDeviceID = devices.find(device => !!device.deviceId)
+              if (isDeviceID) runInScope(changeGrantedPermissionForMic, true)
+            })
+
+            agoraData.client?.getCameras(devices => {
+              console.log("GET CAMERAS",devices)
+              const isDeviceID = devices.find(device => !!device.deviceId)
+              if (isDeviceID) runInScope(changeGrantedPermissionForCamera, true)
+            })
+            
             agoraData.localStream.init(() => {
               if (agoraData.localStream) {
                 play()
@@ -373,6 +400,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       $self,
       $interlocutor,
       $time,
+      $userGrantedPermission,
       dashboardType: config.dashboard
     },
     methods: {
@@ -402,3 +430,15 @@ export const clientCall = createSessionCallModule({
 })
 
 export const ClientSessionCall = createSessionCall(clientCall)
+
+
+export const togglePermissionGrantedModal = createEvent<void | boolean>()
+export const $permissionGrantedModalVisibility = createStore<boolean>(false).on(
+  togglePermissionGrantedModal,
+  (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
+
+export const changeModalInfo = createEvent<"video" | "mic">()
+export const $modalInfo = restore(changeModalInfo,"video")

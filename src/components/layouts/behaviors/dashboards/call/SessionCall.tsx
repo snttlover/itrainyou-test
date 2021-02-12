@@ -6,15 +6,18 @@ import { createSessionCallModule } from "@/components/layouts/behaviors/dashboar
 import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 import { trackMouse } from "@/components/mouse-tracking/track-mouse"
+import { togglePermissionGrantedModal, changeModalInfo } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
   return () => {
     const play = useEvent($module.methods.play)
     const _update = useEvent($module.methods.update)
+    const _toggleModal = useEvent(togglePermissionGrantedModal)
 
     const visibility = useStore($module.data.$callsVisibility)
+    const permission = useStore($module.data.$userGrantedPermission)
 
-    const [footerVisibility, showFooter] = useState(true)
+    const [userActive, changeUserActivity] = useState(true)
 
     const videoCallRef = useRef(null)
 
@@ -22,8 +25,8 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
       let timer: any
       trackMouse(videoCallRef, ((eventX, eventY) => {
         timer && clearTimeout(timer)
-        timer = setTimeout(() => showFooter(false), 3000)
-        !footerVisibility ? clearTimeout(timer) : showFooter(true)
+        timer = setTimeout(() => changeUserActivity(false), 3000)
+        !userActive ? clearTimeout(timer) : changeUserActivity(true)
       }))
     }
 
@@ -33,6 +36,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
       const timer = setInterval(() => _update(), 60000)
       return () => {
         clearInterval(timer)
+        _toggleModal(false)
       }
     }, [])
 
@@ -46,6 +50,26 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const changeFullScreen = useEvent($module.methods.changeFullScreen)
 
     const time = useStore($module.data.$time)
+
+    const handleOnClickVideo = () => {
+      if(permission.camera) {
+        changeVideo(!self.video)
+      }
+      else {
+        changeModalInfo("video")
+        _toggleModal(true)
+      }
+    }
+
+    const handleOnClickMicro = () => {
+      if(permission.micro) {
+        changeMicro(!self.micro)
+      }
+      else {
+        changeModalInfo("mic")
+        _toggleModal(true)
+      }
+    }
 
     return (
       <div ref={videoCallRef}>
@@ -64,7 +88,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                 <TimeLeft>{time.minutesLeft} минут</TimeLeft>
               </Time>
             </TimeTooltip> )}
-            <Header visibility={footerVisibility}>
+            <Header visibility={userActive}>
               {interlocutor.info && (
                 <User>
                   {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
@@ -87,23 +111,22 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
               </MyUserVideoPlaceholder>
             )}
 
-            <Footer visibility={footerVisibility}>
+            <Footer visibility={userActive}>
               <Actions>
-
                 <IconContainer>
-                  <ToggleVideo active={self.video} onClick={() => changeVideo(!self.video)} />
-                  {self.fullscreen && <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру" }</IconToolTip>}
+                  <ToggleVideo active={self.video} permission={permission.camera} onClick={handleOnClickVideo} />
+                  {self.fullscreen && permission.camera && <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру" }</IconToolTip>}
                 </IconContainer>
 
                 <IconContainer>
-                  <ToggleMicro active={self.micro} onClick={() => changeMicro(!self.micro)} />
-                  {self.fullscreen && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
+                  <ToggleMicro active={self.micro} permission={permission.micro} onClick={handleOnClickMicro} />
+                  {self.fullscreen && permission.micro && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
                 </IconContainer>
 
-                <IconContainer>
+                <IconFullScreenContainer>
                   <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
                   {self.fullscreen && <IconToolTip>{self.fullscreen ? "Свернуть окно" : "Развернуть окно" }</IconToolTip>}
-                </IconContainer>
+                </IconFullScreenContainer>
 
                 <IconContainer>
                   <HangUp onClick={() => close()} />
@@ -258,6 +281,7 @@ const Actions = styled.div`
 
 type ActionIconTypes = {
   active?: boolean
+  permission?: boolean
 }
 
 const ActionIcon = styled(Icon)`
@@ -312,12 +336,39 @@ const IconContainer = styled.div`
   `}
 `
 
-const ToggleVideo = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
-  name: active ? "enabled-video" : "disabled-video",
-}))<ActionIconTypes>``
-const ToggleMicro = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
-  name: active ? "enabled-micro" : "disabled-micro",
-}))<ActionIconTypes>``
+const IconFullScreenContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover ${IconToolTip} {
+    display: block;
+  }
+  ${MediaRange.lessThan("mobile")`
+      position: unset;
+      
+      &:hover ${IconToolTip} {
+      display: none;
+      }
+  `}
+`
+
+const ToggleVideo = styled(ActionIcon).attrs(({ active, permission }: ActionIconTypes) => {
+  if (permission) {
+    return { name: active ? "enabled-video" : "disabled-video", }
+  }
+  else {
+    return { name: "no-cam-permission", }
+  }
+})<ActionIconTypes>``
+const ToggleMicro = styled(ActionIcon).attrs(({ active, permission }: ActionIconTypes) => {
+  if (permission) {
+    return { name: active ? "enabled-micro" : "disabled-micro", }
+  }
+  else {
+    return { name: "no-mic-permission", }
+  }
+})<ActionIconTypes>``
 const ToggleFullscreen = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
   name: active ? "disabled-fullscreen" : "enabled-fullscreen",
 }))<ActionIconTypes>``
@@ -363,7 +414,7 @@ const fullscreenCSS = css`
   top: 0;
   bottom: 0;
   right: 0;
-  z-index: 2000;
+  z-index: 990;
   ${Tooltip} {
     max-width: 259px;
   }
@@ -483,6 +534,9 @@ const Container = styled.div`
     
     ${ToggleFullscreen} {
       display: none;
+    }
+    ${IconFullScreenContainer} {
+    display: none;
     }
     ${Actions} {
       bottom: 40px;

@@ -39,7 +39,7 @@ const Header = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #4858CC;
-  text-align: flex-start;
+  text-align: left;
 `
 
 const Description = styled.div`

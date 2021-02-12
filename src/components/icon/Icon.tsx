@@ -85,6 +85,9 @@ export type IconName =
   | "ykassa-approved"
   | "ykassa-not-approved"
   | "hang-up"
+  | "no-cam-permission"
+  | "no-mic-permission"
+  | "ellipse-list-marker"
 
 type IconProps = {
   name: IconName,

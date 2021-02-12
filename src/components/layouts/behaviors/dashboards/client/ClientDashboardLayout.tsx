@@ -17,6 +17,7 @@ import { ClientStartedSessionsToolbar } from "@/feature/session/started-sessions
 import { ClientSessionCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { ClientStartedSessionDialog } from "@/feature/session/start-session-dialog"
 import { BookSessionsStatusModalDialog } from "@/pages/search/content/list/content/modals/BookSessionsStatusModalDialog"
+import { NoPermissionGrantedDialog } from "@/components/layouts/behaviors/dashboards/call/NoPermissionGrantedDialog"
 
 type DashboardTypes = {
   children: React.ReactChild
@@ -37,6 +38,7 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
       <ToastsContainer />
       <DashboardContent>
         <ClientStartedSessionDialog />
+        <NoPermissionGrantedDialog />
         <FundsUpDialog />
         <ClientTopBar />
         <ClientStartedSessionsToolbar />

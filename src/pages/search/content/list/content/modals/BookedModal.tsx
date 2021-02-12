@@ -59,7 +59,7 @@ const Success = () => {
       ))}
       <WarningTitle>
         Вы можете следить за статусом запрос{`${pluralize("ов", "а")}`}
-        {" "}в чате <StyledLink onClick={handleOnClick}>«Уведомления о сессях»</StyledLink>
+        {" "}в чате <StyledLink onClick={handleOnClick}>«Уведомления о сессиях»</StyledLink>
       </WarningTitle>
     </Container>
   )
