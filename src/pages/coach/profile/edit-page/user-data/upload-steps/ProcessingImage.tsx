@@ -119,8 +119,8 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop | null): Promise
       crop.height * scaleY,
       0,
       0,
-      crop.width,
-      crop.height
+      crop.width * 4,
+      crop.height * 4
     )
   }
   return new Promise(resolve => {
