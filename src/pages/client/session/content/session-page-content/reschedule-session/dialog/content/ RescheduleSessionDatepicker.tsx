@@ -12,6 +12,7 @@ import {
   changePickedRescheduleSession,
   changeRescheduleDate,
   rescheduleSession,
+  rescheduleSessionFx
 } from "@/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
 import dayjs from "dayjs"
 
@@ -23,6 +24,7 @@ export const RescheduleSessionDatepicker = () => {
   const session = useStore($formattedPickedRescheduleSession)
   const submit = useEvent(rescheduleSession)
   const tags = useStore($rescheduleSelectedSessions)
+  const pending = useStore(rescheduleSessionFx.pending)
 
   return (
     <Container>
@@ -57,7 +59,7 @@ export const RescheduleSessionDatepicker = () => {
             </>
           )}
           <Actions>
-            <RescheduleButton disabled={!session} onClick={() => submit()}>Перенести</RescheduleButton>
+            <RescheduleButton disabled={!session || pending} onClick={() => submit()}>Перенести</RescheduleButton>
           </Actions>
         </SelectSessionContainer>
       </Column>

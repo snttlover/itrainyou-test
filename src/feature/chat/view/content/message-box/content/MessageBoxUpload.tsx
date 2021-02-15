@@ -39,7 +39,7 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
     })
   }, [])
 
-  const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"]
+  const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif",".heic"]
   const maxSize = 104857600
 
   const { getInputProps, open } = useDropzone({
