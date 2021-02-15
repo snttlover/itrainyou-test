@@ -115,6 +115,7 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
     const session = transaction.session
     const { amount } = transaction
     return {
+      id: session.coach.id,
       avatar: session.coach.avatar,
       name: `${session.coach.firstName} ${session.coach.lastName}`,
       price: `${+amount > 0 ? "+" : ""}${+amount}`,

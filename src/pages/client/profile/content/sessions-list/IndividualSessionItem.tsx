@@ -3,6 +3,7 @@ import { Avatar } from "@/components/avatar/Avatar"
 import { Icon } from "@/components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import React from "react"
+import { useHistory } from "react-router-dom"
 
 const Price = styled.div`
   font-weight: 500;
@@ -62,6 +63,13 @@ const Item = styled.div`
     ${MediaRange.lessThan("mobile")`
     padding-right: 0;
   `}
+`
+
+const LinkContainer = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -128,6 +136,7 @@ const RightMobileGroup = styled.div<{ canceled: boolean }>`
 
 type IndividualSessionItemType = {
   data: {
+    id: number
     avatar: string
     name: string
     price: string
@@ -138,6 +147,8 @@ type IndividualSessionItemType = {
 }
 
 export const IndividualSessionItem = (props: IndividualSessionItemType) => {
+  const history = useHistory()
+
   const Status = () => {
     switch (props.data.status) {
     case "WAITING_FOR_HOLD":
@@ -154,10 +165,16 @@ export const IndividualSessionItem = (props: IndividualSessionItemType) => {
       return null
     }
   }
+
+  const redirectToCoach = () => {
+    history.push(`/search/coach/${props.data.id}`)
+  }
   return (
     <Item>
-      <StyledAvatar src={props.data.avatar} />
-      <Name>{props.data.name}</Name>
+      <LinkContainer onClick={redirectToCoach}>
+        <StyledAvatar src={props.data.avatar} />
+        <Name>{props.data.name}</Name>
+      </LinkContainer>
       <Status />
       <RightMobileGroup canceled={props.data.status === "SESSION_CANCELLED"}>
         <Price>

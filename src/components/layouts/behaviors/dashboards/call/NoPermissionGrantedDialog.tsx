@@ -161,6 +161,10 @@ const StyledConfirmButton = styled(Button)`
   width: 100%;
   max-width: 220px;
   margin-top: 100px;
+  
+  ${MediaRange.lessThan("mobile")`
+    margin-top: 40px;
+  `}
 `
 
 const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })`
