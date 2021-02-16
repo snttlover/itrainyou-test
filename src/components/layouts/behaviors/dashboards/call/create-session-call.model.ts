@@ -102,10 +102,27 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
   const play = createEvent()
 
+  const userPermissionFx = createEffect({
+    handler: () => {
+      agoraData.client?.getRecordingDevices(devices => {
+        console.log("RECORDING DEVICES", devices)
+        const isDeviceID = devices.find(device => !!device.deviceId)
+        if (isDeviceID) runInScope(changeGrantedPermissionForMic, true)
+      })
+
+      agoraData.client?.getCameras(devices => {
+        console.log("GET CAMERAS", devices)
+        const isDeviceID = devices.find(device => !!device.deviceId)
+        if (isDeviceID) runInScope(changeGrantedPermissionForCamera, true)
+      })
+    },
+  })
+
   forward({
     from: play,
-    to: playAgoraFx,
+    to: [playAgoraFx,userPermissionFx],
   })
+
 
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(reset)
@@ -202,7 +219,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
 
-            agoraData.client?.getRecordingDevices(devices => {
+            /*agoraData.client?.getRecordingDevices(devices => {
               console.log("RECORDING DEVICES",devices)
               const isDeviceID = devices.find(device => !!device.deviceId)
               if (isDeviceID) runInScope(changeGrantedPermissionForMic, true)
@@ -212,11 +229,12 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
               console.log("GET CAMERAS",devices)
               const isDeviceID = devices.find(device => !!device.deviceId)
               if (isDeviceID) runInScope(changeGrantedPermissionForCamera, true)
-            })
+            })*/
             
             agoraData.localStream.init(() => {
               if (agoraData.localStream) {
                 play()
+
                 agoraData.client && agoraData.client.publish(agoraData.localStream, agoraHandleFail)
               }
             })
@@ -410,7 +428,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       changeVideo,
       connectToSession,
       close,
-      update
+      update,
     },
   }
 }

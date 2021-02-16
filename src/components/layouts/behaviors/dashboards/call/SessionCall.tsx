@@ -82,12 +82,13 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
           <Call>
             <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
             <NotConnected>Собеседник отключился</NotConnected>
-            {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate}>
+            {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate} visibility={userActive}>
               <Time>
                 <TimeLeftLabel>Осталось:</TimeLeftLabel>
                 <TimeLeft>{time.minutesLeft} минут</TimeLeft>
               </Time>
-            </TimeTooltip> )}
+            </TimeTooltip>
+            )}
             <Header visibility={userActive}>
               {interlocutor.info && (
                 <User>
@@ -163,15 +164,21 @@ const Tooltip = styled.div`
 
 const WasNotConnected = styled(Tooltip)``
 const NotConnected = styled(Tooltip)``
-const TimeTooltip = styled(Tooltip)`
+const TimeTooltip = styled(Tooltip)<{visibility: boolean}>`
   &[data-terminate="true"] {
     background: rgba(255, 107, 0, 1);
+  }
+
+  &[data-terminate="false"] {
+    opacity: ${({ visibility }) => (visibility ? "1" : "0")};
+    transition: opacity 0.5s ease;
   }
 `
 
 const Header = styled.div<{visibility: boolean}>`
-  z-index: ${({ visibility }) => (visibility ? "10" : "-1")};
-  transition: z-index 1s ease;
+  z-index: 10;
+  opacity: ${({ visibility }) => (visibility ? "1" : "0")};
+  transition: opacity 0.5s ease;
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0);
@@ -183,9 +190,10 @@ const Header = styled.div<{visibility: boolean}>`
 `
 
 const Footer = styled.div<{visibility: boolean}>`
-  z-index: ${({ visibility }) => (visibility ? "10" : "-1")};
+  z-index: 10;
+  opacity: ${({ visibility }) => (visibility ? "1" : "0")};
   display: flex;
-  transition: z-index 1s ease;
+  transition: opacity 0.5s ease;
   align-items: center;
   background: rgba(0, 0, 0, 0.6);
   padding: 4px 8px;
@@ -231,7 +239,7 @@ const InterlocutorVideoPlaceholder = styled(InterlocutorVideo)`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  color: ${props => props.theme.colors.invert.primary};
+  color: #ffffff;
   z-index: 1;
   background: #dbdee0;
 `
@@ -251,7 +259,7 @@ const MyUserVideo = styled.div`
 const MyUserVideoPlaceholderIcon = styled(Icon).attrs({ name: "user" })`
   width: 50px;
   height: 50px;
-  fill: ${props => props.theme.colors.primary};
+  fill: #ffffff;
 `
 
 const MyUserVideoPlaceholder = styled.div`
@@ -477,6 +485,7 @@ const fullscreenCSS = css`
     `}
 
   ${MediaRange.lessThan("mobile")`
+      ${MyUserVideoPlaceholder},
       ${MyUserVideo} {
         top: unset;
         bottom: 86px;
@@ -527,6 +536,10 @@ const Container = styled.div`
       line-height: 18px;
     }
     
+    ${Footer}{
+      padding: 0;
+    }
+    
   }
   
   ${MediaRange.lessThan("mobile")`
@@ -539,7 +552,7 @@ const Container = styled.div`
     display: none;
     }
     ${Actions} {
-      bottom: 40px;
+      bottom: 16px;
     }
     ${MyUserVideoPlaceholder},
     ${MyUserVideo} {
