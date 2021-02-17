@@ -34,6 +34,10 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     useEffect(() => {
       play()
       const timer = setInterval(() => _update(), 60000)
+      if (videoCallRef) {
+        // @ts-ignore
+        videoCallRef.current.scrollTop = 0
+      }
       return () => {
         clearInterval(timer)
         _toggleModal(false)
@@ -146,7 +150,7 @@ const Tooltip = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 24px;
+  top: 30px;
 
   background: rgba(66, 66, 66, 0.8);
   border-radius: 2px;
@@ -231,7 +235,7 @@ const InterlocutorVideo = styled.div`
 const InterlocutorIcon = styled(Icon).attrs({ name: "user" })`
   width: 34px;
   height: 34px;
-  fill: ${props => props.theme.colors.invert.primary};
+  fill: #ffffff;
 `
 
 const InterlocutorVideoPlaceholder = styled(InterlocutorVideo)`
@@ -440,7 +444,6 @@ const fullscreenCSS = css`
 
   ${Header} {
     padding: 4px 20px;
-    justify-content: space-between;
   }
 
   ${Footer} {
@@ -493,6 +496,10 @@ const fullscreenCSS = css`
         width: 160px;
         height: 100px;
       }
+      ${Header} {
+      padding: 4px 20px;
+      justify-content: center;
+    }
     `}
 `
 

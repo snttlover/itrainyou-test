@@ -104,6 +104,18 @@ const getRequestText = (req: SessionRequest) => {
     return "Клиент отменил сессию"
   }
 
+  if (req.type === "RESCHEDULE" && req.status === "AUTOMATICALLY_CANCELLED") {
+    return `Запрос на перенос на ${date(req.session.startDatetime).format("HH:mm DD MMMM YYYYг")} был автоматически отклонен`
+  }
+
+  if (req.type === "CANCEL" && req.status === "AUTOMATICALLY_CANCELLED") {
+    return "Запрос на отмену сессии был автоматически отклонен"
+  }
+
+  if (req.type === "BOOK" && req.status === "AUTOMATICALLY_CANCELLED") {
+    return "Запрос на бронирование был автоматически отклонен"
+  }
+
   if (req.type === "CONFIRMATION_COMPLETION" && req.status === "AWAITING") {
     return "Ожидается подтверждение завершения сессии у Клиента "
   }
