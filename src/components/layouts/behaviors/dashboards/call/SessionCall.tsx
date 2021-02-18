@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState, useCallback } from "react"
 import styled, { css } from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { Avatar } from "@/components/avatar/Avatar"
@@ -7,6 +7,7 @@ import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 import { trackMouse } from "@/components/mouse-tracking/track-mouse"
 import { togglePermissionGrantedModal, changeModalInfo } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { FullScreen, useFullScreenHandle } from "react-full-screen"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
   return () => {
@@ -21,6 +22,8 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const videoCallRef = useRef(null)
 
+    const handleFullscreen = useFullScreenHandle()
+
     if (visibility) {
       let timer: any
       trackMouse(videoCallRef, ((eventX, eventY) => {
@@ -34,10 +37,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     useEffect(() => {
       play()
       const timer = setInterval(() => _update(), 60000)
-      if (videoCallRef) {
-        // @ts-ignore
-        videoCallRef.current.scrollTop = 0
-      }
       return () => {
         clearInterval(timer)
         _toggleModal(false)
@@ -75,72 +74,90 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
       }
     }
 
+    const handleOnClose = () => {
+      if (window.innerWidth <= 480) {
+        handleFullscreen.exit()
+      }
+      close()
+    }
+
+    const handleOnChangeFullscreen = () => {
+      if (window.innerWidth <= 480) {
+        handleFullscreen.enter()
+      }
+      changeFullScreen(!self.fullscreen)
+    }
+
     return (
       <div ref={videoCallRef}>
-        <Container
-          data-interlocutor-is-connected={interlocutor.connected}
-          data-interlocutor-was-connected={interlocutor.wasConnected}
-          data-visibility={visibility}
-          data-fullscreen={self.fullscreen}
-        >
-          <Call>
-            <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
-            <NotConnected>Собеседник отключился</NotConnected>
-            {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate} visibility={userActive}>
-              <Time>
-                <TimeLeftLabel>Осталось:</TimeLeftLabel>
-                <TimeLeft>{time.minutesLeft} минут</TimeLeft>
-              </Time>
-            </TimeTooltip>
-            )}
-            <Header visibility={userActive}>
-              {interlocutor.info && (
-                <User>
-                  {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
-                  <StyledAvatar src={interlocutor.info.avatar} />
-                  <Name>{interlocutor.info.name}</Name>
-                </User>
+        <FullScreen handle={handleFullscreen}>
+          <Container
+            data-interlocutor-is-connected={interlocutor.connected}
+            data-interlocutor-was-connected={interlocutor.wasConnected}
+            data-visibility={visibility}
+            data-fullscreen={self.fullscreen}
+          >
+            <Call>
+              <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
+              <NotConnected>Собеседник отключился</NotConnected>
+              {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate} visibility={userActive}>
+                <Time>
+                  <TimeLeftLabel>Осталось:</TimeLeftLabel>
+                  <TimeLeft>{time.minutesLeft} минут</TimeLeft>
+                </Time>
+              </TimeTooltip>
               )}
-            </Header>
-            <InterlocutorVideo id='InterlocutorVideo' />
-            {!interlocutor.video && interlocutor.connected && (
-              <InterlocutorVideoPlaceholder>
-                <InterlocutorIcon />
-                <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
-              </InterlocutorVideoPlaceholder>
-            )}
-            <MyUserVideo id='MyUserVideo' />
-            {!self.video && (
-              <MyUserVideoPlaceholder>
-                <MyUserVideoPlaceholderIcon />
-              </MyUserVideoPlaceholder>
-            )}
+              <Header visibility={userActive}>
+                {interlocutor.info && (
+                  <User>
+                    {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
+                    <StyledAvatar src={interlocutor.info.avatar} />
+                    <Name>{interlocutor.info.name}</Name>
+                  </User>
+                )}
+              </Header>
+              <InterlocutorVideo id='InterlocutorVideo' />
+              {!interlocutor.video && interlocutor.connected && (
+                <InterlocutorVideoPlaceholder>
+                  <InterlocutorIcon />
+                  <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
+                </InterlocutorVideoPlaceholder>
+              )}
+              <MyUserVideo id='MyUserVideo' />
+              {!self.video && (
+                <MyUserVideoPlaceholder>
+                  <MyUserVideoPlaceholderIcon />
+                </MyUserVideoPlaceholder>
+              )}
 
-            <Footer visibility={userActive}>
-              <Actions>
-                <IconContainer>
-                  <ToggleVideo active={self.video} permission={permission.camera} onClick={handleOnClickVideo} />
-                  {self.fullscreen && permission.camera && <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру" }</IconToolTip>}
-                </IconContainer>
+              <Footer visibility={userActive}>
+                <Actions>
+                  <IconContainer>
+                    <ToggleVideo active={self.video} permission={permission.camera} onClick={handleOnClickVideo} />
+                    {self.fullscreen && permission.camera && <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру" }</IconToolTip>}
+                  </IconContainer>
 
-                <IconContainer>
-                  <ToggleMicro active={self.micro} permission={permission.micro} onClick={handleOnClickMicro} />
-                  {self.fullscreen && permission.micro && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
-                </IconContainer>
+                  <IconContainer>
+                    <ToggleMicro active={self.micro} permission={permission.micro} onClick={handleOnClickMicro} />
+                    {self.fullscreen && permission.micro && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
+                  </IconContainer>
 
-                <IconFullScreenContainer>
-                  <ToggleFullscreen active={self.fullscreen} onClick={() => changeFullScreen(!self.fullscreen)} />
-                  {self.fullscreen && <IconToolTip>{self.fullscreen ? "Свернуть окно" : "Развернуть окно" }</IconToolTip>}
-                </IconFullScreenContainer>
+                  <div onClick={handleFullscreen.enter}>тест хука</div>
 
-                <IconContainer>
-                  <HangUp onClick={() => close()} />
-                  {self.fullscreen && <IconToolTip>Выйти из сессии</IconToolTip>}
-                </IconContainer>
-              </Actions>
-            </Footer>
-          </Call>
-        </Container>
+                  <IconFullScreenContainer>
+                    <ToggleFullscreen active={self.fullscreen} onClick={handleOnChangeFullscreen} />
+                    {self.fullscreen && <IconToolTip>{self.fullscreen ? "Свернуть окно" : "Развернуть окно" }</IconToolTip>}
+                  </IconFullScreenContainer>
+
+                  <IconContainer>
+                    <HangUp onClick={handleOnClose} />
+                    {self.fullscreen && <IconToolTip>Выйти из сессии</IconToolTip>}
+                  </IconContainer>
+                </Actions>
+              </Footer>
+            </Call>
+          </Container>
+        </FullScreen>
       </div>
     )
   }
