@@ -19,7 +19,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const permission = useStore($module.data.$userGrantedPermission)
 
     const [userActive, changeUserActivity] = useState(true)
-    const [test,setTest] = useState("test")
 
     const videoCallRef = useRef(null)
 
@@ -76,20 +75,16 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     }
 
     const handleOnClose = () => {
-      if (window.innerWidth <= 480) {
-        handleFullscreen.exit().catch((e)=> setTest(e))
-      }
+      /*if (window.innerWidth <= 480) {
+        handleFullscreen.exit().catch((e)=> console.log(e))
+      }*/
       close()
     }
 
-    const testFx = () => {
-      handleFullscreen.enter().catch((e)=> setTest(e))
-    }
-
     const handleOnChangeFullscreen = () => {
-      if (window.innerWidth <= 480) {
-        handleFullscreen.enter().catch((e)=> setTest(e))
-      }
+      /*if (window.innerWidth <= 480) {
+        handleFullscreen.enter().catch((e)=> console.log(e))
+      }*/
       changeFullScreen(!self.fullscreen)
     }
 
@@ -146,8 +141,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                     <ToggleMicro active={self.micro} permission={permission.micro} onClick={handleOnClickMicro} />
                     {self.fullscreen && permission.micro && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
                   </IconContainer>
-
-                  <div onClick={testFx}>{test}</div>
 
                   <IconFullScreenContainer>
                     <ToggleFullscreen active={self.fullscreen} onClick={handleOnChangeFullscreen} />

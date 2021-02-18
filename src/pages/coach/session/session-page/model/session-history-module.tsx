@@ -120,7 +120,7 @@ const getRequestText = (req: SessionRequest) => {
     return "Ожидается подтверждение завершения сессии у Клиента "
   }
 
-  if (req.type === "CONFIRMATION_COMPLETION" && req.status === "APPROVED") {
+  if (req.type === "CONFIRMATION_COMPLETION" && (req.status === "APPROVED" || req.status === "AUTOMATICALLY_APPROVED")) {
     return "Клиент подтвердил, что сессия успешно завершилась"
   }
 
