@@ -76,14 +76,14 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const handleOnClose = () => {
       if (window.innerWidth <= 480) {
-        handleFullscreen.exit()
+        handleFullscreen.exit().catch((e)=> alert(e))
       }
       close()
     }
 
     const handleOnChangeFullscreen = () => {
       if (window.innerWidth <= 480) {
-        handleFullscreen.enter()
+        handleFullscreen.enter().catch((e)=> alert(e))
       }
       changeFullScreen(!self.fullscreen)
     }
@@ -141,8 +141,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                     <ToggleMicro active={self.micro} permission={permission.micro} onClick={handleOnClickMicro} />
                     {self.fullscreen && permission.micro && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
                   </IconContainer>
-
-                  <div onClick={handleFullscreen.enter}>тест хука</div>
 
                   <IconFullScreenContainer>
                     <ToggleFullscreen active={self.fullscreen} onClick={handleOnChangeFullscreen} />
@@ -611,7 +609,15 @@ const Container = styled.div`
       top: 72px;
       display: flex;
     }
+
+    ${MediaRange.lessThan("mobile")`
+    ${NotConnected} {
+      top: 30px;
+      display: flex;
+    }
+  `}
   }
+  
   &[data-interlocutor-is-connected="true"] {
     ${TimeTooltip} {
       display: flex;
@@ -628,5 +634,13 @@ const Container = styled.div`
       top: 72px;
       display: flex;
     }
+    
+    ${MediaRange.lessThan("mobile")`
+    ${WasNotConnected} {
+      top: 30px;
+      display: flex;
+    }
+  `}
+    
   }
 `
