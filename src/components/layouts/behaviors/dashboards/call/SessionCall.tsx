@@ -564,7 +564,26 @@ const Container = styled.div`
     
   }
   
-  ${MediaRange.lessThan("mobile")`
+  @media screen and (max-width: 900px) and (orientation : landscape) {
+  ${fullscreenCSS}
+    
+    ${ToggleFullscreen} {
+      display: none;
+    }
+    ${IconFullScreenContainer} {
+    display: none;
+    }
+    ${Actions} {
+      bottom: 16px;
+    }
+    ${MyUserVideoPlaceholder},
+    ${MyUserVideo} {
+      width: 120px;
+      height: 80.36px;      
+    }
+  }
+  
+  @media screen and (max-width: 480px) and (orientation : portrait) {
     ${fullscreenCSS}
     
     ${ToggleFullscreen} {
@@ -581,7 +600,7 @@ const Container = styled.div`
       width: 120px;
       height: 80.36px;      
     }
-  `}
+  }
 
   &[data-interlocutor-was-connected="false"],
   &[data-interlocutor-is-connected="false"] {
@@ -644,3 +663,24 @@ const Container = styled.div`
     
   }
 `
+
+
+/* 567 строчка
+${MediaRange.lessThan("mobile")`
+    ${fullscreenCSS}
+
+    ${ToggleFullscreen} {
+      display: none;
+    }
+    ${IconFullScreenContainer} {
+    display: none;
+    }
+    ${Actions} {
+      bottom: 16px;
+    }
+    ${MyUserVideoPlaceholder},
+    ${MyUserVideo} {
+      width: 120px;
+      height: 80.36px;
+    }
+  `}*/

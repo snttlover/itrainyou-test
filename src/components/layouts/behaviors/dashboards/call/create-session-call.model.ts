@@ -162,22 +162,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           play()
 
           agoraData.remoteStream?.on("player-status-change", (event) => {
-            runInScope(changeInterlocutorVideoStatus, agoraData.remoteStream?.hasVideo() || false)
-            runInScope(changeInterlocutorMicrophoneStatus, agoraData.remoteStream?.hasAudio() || false)
-            /*
-            agoraData.client?.getRecordingDevices(devices => {
-              console.log("RECORDING DEVICES",devices)
-              const isDeviceID = devices.find(device => !!device.deviceId)
-              if (isDeviceID) runInScope(changeGrantedPermissionForMic, true)
-            })
-
-            agoraData.client?.getPlayoutDevices(devices => console.log("PLAYOUT DEVICES",devices))
-
-            agoraData.client?.getCameras(devices => {
-              console.log("GET CAMERAS",devices)
-              const isDeviceID = devices.find(device => !!device.deviceId)
-              if (isDeviceID) runInScope(changeGrantedPermissionForCamera, true)
-            })*/
+            //runInScope(changeInterlocutorVideoStatus, agoraData.remoteStream?.hasVideo() || false)
+            //runInScope(changeInterlocutorMicrophoneStatus, agoraData.remoteStream?.hasAudio() || false)
           })
           runInScope(changeInterculatorWasConnected, true)
           runInScope(changeInterculatorIsConnected, true)
@@ -218,18 +204,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
             console.log(agoraData.localStream)
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
-
-            /*agoraData.client?.getRecordingDevices(devices => {
-              console.log("RECORDING DEVICES",devices)
-              const isDeviceID = devices.find(device => !!device.deviceId)
-              if (isDeviceID) runInScope(changeGrantedPermissionForMic, true)
-            })
-
-            agoraData.client?.getCameras(devices => {
-              console.log("GET CAMERAS",devices)
-              const isDeviceID = devices.find(device => !!device.deviceId)
-              if (isDeviceID) runInScope(changeGrantedPermissionForCamera, true)
-            })*/
             
             agoraData.localStream.init(() => {
               if (agoraData.localStream) {
