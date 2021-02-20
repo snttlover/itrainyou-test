@@ -12,6 +12,7 @@ import { SupportChatHeader } from "./SupportChatHeader"
 import { Close } from "@/components/dialog/Dialog"
 import { createChatMessageBox } from "@/feature/chat/view/content/message-box/ChatMessageBox"
 import { createMaterialsDialog } from "@/feature/chat/modules/chat-materials/createMaterialsDialog"
+import { MediaRange } from "@/lib/responsive/media"
 
 export const createSupportChat = (chatId: ChatId, $chatModule: ReturnType<typeof createAdminSupportChatModel>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -67,6 +68,9 @@ export const createSupportChat = (chatId: ChatId, $chatModule: ReturnType<typeof
 const StyledChatContainer = styled(ChatContainer)`
   max-width: unset;
   width: 100%;
+  ${MediaRange.lessThan("mobile")`
+    height: 87%;
+  `}
 `
 
 const StyledDialog = styled(Dialog)`
