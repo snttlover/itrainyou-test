@@ -7,7 +7,7 @@ import { clientChatsSocket, coachChatsSocket } from "@/feature/socket/chats-sock
 
 const coachSessionsToolbarModel = createStartSessionToolbarModel({
   type: "coach",
-  fetchSessions: () => getDashboardSessions({ excludePast: true }),
+  fetchSessions: () => getDashboardSessions({ excludePast: true, active: true }),
   sessionCallModule: coachCall,
   socket: coachChatsSocket,
 })
@@ -16,7 +16,7 @@ export const CoachStartedSessionsToolbar = createStartedSessionsToolbar(coachSes
 
 const clientSessionsToolbarModel = createStartSessionToolbarModel({
   type: "client",
-  fetchSessions: () => getClientSessions({ excludePast: true }).then(pagnation => pagnation.results),
+  fetchSessions: () => getClientSessions({ excludePast: true, active: true }).then(pagnation => pagnation.results),
   sessionCallModule: clientCall,
   socket: clientChatsSocket,
 })

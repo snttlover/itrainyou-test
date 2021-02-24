@@ -43,7 +43,6 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
   const $sessions = combine($sessionsList, $lastCallId, (sessions, currentSessionCall) => {
     return sessions
       .filter(session => session.id !== currentSessionCall)
-      .filter(isBeginningIsComingSoon)
       .map(session => {
         const user = config.type === "coach" ? session.clients[0] : session.coach
         return {
