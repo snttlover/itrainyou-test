@@ -55,6 +55,7 @@ export const createSupportChat = (chatId: ChatId, $chatModule: ReturnType<typeof
                   <SupportChatHeader {...chatHeader} showMaterials={() => openDialog()} />
                   <Messages showUser={true} />
                   <MessageBox />
+                  <StyledMargin />
                 </StyledChatContainer>
                 <MaterialsDialog />
               </>
@@ -68,9 +69,14 @@ export const createSupportChat = (chatId: ChatId, $chatModule: ReturnType<typeof
 const StyledChatContainer = styled(ChatContainer)`
   max-width: unset;
   width: 100%;
+`
+
+const StyledMargin = styled.div`
+  display: none;
   ${MediaRange.lessThan("mobile")`
-    height: 87%;
-  `}
+      height: 10vh;
+      display: flex;
+    `}
 `
 
 const StyledDialog = styled(Dialog)`

@@ -111,7 +111,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     $isClient,
     $userData,
     $isFullRegistered,
-    (l, c, user, full) => (l && c && !!user && (userType !== "coach" || !!user.coach) && full) || userType === "support"
+    (l, c, user, full) => l && c && !!user && (userType !== "coach" || !!user.coach) && full
   )
 
   const reportUnknownTypeFx = createEffect({
@@ -125,7 +125,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     (l,user) => l && !!user && (userType !== "coach" || !!user.coach)
   )*/
 
-  const connect = guard({
+  /*const connect = guard({
     source: $token,
     filter: $needConnect,
     target: socket.methods.connect.prepend((data: string)=>{
@@ -136,13 +136,13 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
         return data
       }
     }),
-  })
+  })*/
 
-  /*const connect = guard({
+  const connect = guard({
     source: $token,
     filter: $needConnect,
     target: socket.methods.connect,
-  })*/
+  })
 
   const changeCountersFromInit = createEvent<InitMessage>()
 
