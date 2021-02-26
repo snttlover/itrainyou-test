@@ -55,6 +55,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   const changeInterculatorWasConnected = createEvent<boolean>()
   const $interculatorWasConnected = restore(changeInterculatorWasConnected, false).reset(reset)
+  $interculatorWasConnected.watch(resp=>console.log("$interculatorWasConnected",resp))
 
   const changeInterlocutorVideoStatus = createEvent<boolean>()
   const $interlocutorVideoStatus = restore(changeInterlocutorVideoStatus, true).reset(reset)
@@ -64,6 +65,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   const changeInterculatorIsConnected = createEvent<boolean>()
   const $interculatorIsConnected = restore(changeInterculatorIsConnected, false).reset(reset)
+  $interculatorIsConnected.watch(resp=>console.log("$interculatorIsConnected",resp))
 
   const changeGrantedPermissionForCamera = createEvent<boolean>()
   const changeGrantedPermissionForMic = createEvent<boolean>()
@@ -75,6 +77,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   }).on(changeGrantedPermissionForMic,(state,payload) => {
     return {micro: payload, camera: state.camera}
   })
+
+  const checkDevicePermission = createEvent()
 
   const playAgoraFx = createEffect({
     handler: () => {
@@ -107,15 +111,20 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       agoraData.client?.getRecordingDevices(devices => {
         console.log("RECORDING DEVICES", devices)
         const isDeviceID = devices.find(device => !!device.deviceId)
-        if (isDeviceID) runInScope(changeGrantedPermissionForMic, true)
+        isDeviceID ? runInScope(changeGrantedPermissionForMic, true) : runInScope(changeGrantedPermissionForMic, false)
       })
 
       agoraData.client?.getCameras(devices => {
         console.log("GET CAMERAS", devices)
         const isDeviceID = devices.find(device => !!device.deviceId)
-        if (isDeviceID) runInScope(changeGrantedPermissionForCamera, true)
+        isDeviceID ? runInScope(changeGrantedPermissionForCamera, true) : runInScope(changeGrantedPermissionForCamera, false)
       })
     },
+  })
+
+  forward({
+    from: checkDevicePermission,
+    to: userPermissionFx,
   })
 
   forward({
@@ -159,12 +168,21 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
         agoraData.client.on("stream-subscribed", e => {
           agoraData.remoteStream = e.stream
+
+          agoraData.remoteStream?.on("accessAllowed", (event) => {
+            console.log("REMOTE HUITA1111111111111111")
+          })
+          agoraData.remoteStream?.on("accessDenied", (event) => {
+            console.log("REMOTE HUITA2222222222222")
+          })
+
           play()
 
           agoraData.remoteStream?.on("player-status-change", (event) => {
             //runInScope(changeInterlocutorVideoStatus, agoraData.remoteStream?.hasVideo() || false)
             //runInScope(changeInterlocutorMicrophoneStatus, agoraData.remoteStream?.hasAudio() || false)
           })
+
           runInScope(changeInterculatorWasConnected, true)
           runInScope(changeInterculatorIsConnected, true)
         })
@@ -201,7 +219,26 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
               screen: false,
             }) as Stream
 
-            console.log(agoraData.localStream)
+            agoraData.localStream?.on("accessAllowed", (event) => {
+              console.log("TEEEEEEEEEST")
+              runInScope(checkDevicePermission)})
+            agoraData.localStream?.on("accessDenied", (event) => {
+              console.log("TEEEEEEEEEST123333123123")
+              runInScope(checkDevicePermission)})
+
+            agoraData.localStream?.on("videoTrackEnded", (event) => {
+              runInScope(checkDevicePermission)
+            })
+
+            agoraData.localStream?.on("audioTrackEnded", (event) => {
+              runInScope(checkDevicePermission)
+            })
+
+            agoraData.localStream?.on("audioMixingPlayed", (event) => {
+              console.log("ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLO")
+              runInScope(checkDevicePermission)
+            })
+
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
             

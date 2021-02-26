@@ -54,7 +54,7 @@ forward({
 })
 
 forward({
-  from: getCardSessionsFx.done,
+  from: getCardSessionsFx.done.map(() => true),
   to: toggleDeleteCardModalDialog,
 })
 
@@ -64,7 +64,7 @@ forward({
 })
 
 forward({
-  from: deleteCardFx.done,
+  from: deleteCardFx.done.map(() => false),
   to: toggleDeleteCardModalDialog,
 })
 

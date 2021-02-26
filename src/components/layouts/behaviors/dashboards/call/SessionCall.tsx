@@ -641,6 +641,13 @@ const Container = styled.div`
     ${TimeTooltip} {
       display: flex;
     }
+
+    ${MediaRange.lessThan("mobile")`
+    ${TimeTooltip}{
+      display: flex;
+      top: 30px;
+    }
+  `}
   }
   &[data-interlocutor-was-connected="false"] {
     ${WasNotConnected} {

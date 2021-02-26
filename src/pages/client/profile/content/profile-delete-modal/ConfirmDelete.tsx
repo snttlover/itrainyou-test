@@ -23,7 +23,10 @@ export const ConfirmDelete = () => {
                   Отмена
         </StyledCancelButton>
         <StyledConfirmButton
-          onClick={() => confirm(id!)}
+          onClick={() => {
+            confirm(id!)
+            hide(false)
+          }}
         >
                   Удалить
         </StyledConfirmButton>

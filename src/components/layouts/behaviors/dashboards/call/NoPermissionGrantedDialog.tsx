@@ -20,7 +20,8 @@ const StyledListItem: React.FC<ListItemType> = ({ text, link }) => {
         <MarkerIcon />
         <ItemText>
           {text}
-          {!!link && <StyledLink>{link}</StyledLink>}
+          <br/>
+          {!!link && <StyledLink href={'https://support.google.com/chrome/answer/114662?co=GENIE.Platform%3DDesktop&hl=ru'} target="_blank">{link}</StyledLink>}
         </ItemText>
       </Item>
     </ItemWrapper>
@@ -123,8 +124,8 @@ const Description = styled.div`
   `}
 `
 
-const StyledLink = styled.div`
-  color: #424242;
+const StyledLink = styled.a`
+  color: #4858CC;
   font-weight: 500;
   text-decoration: underline;
   cursor: pointer;

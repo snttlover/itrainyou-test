@@ -160,7 +160,7 @@ const getText = (
 
   if (chatType === "client") {
     if (status === "MONEY_HOLD_UNSUCCESSFUL") {
-      return "Сессия отменена. Денег на карте недостаточно"
+      return "Сессия отменена. Произошла ошибка при попытке списания денег с карты"
     }
       
     if (status === "MONEY_SUCCESSFULLY_HELD") {
