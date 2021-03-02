@@ -55,7 +55,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   const changeInterculatorWasConnected = createEvent<boolean>()
   const $interculatorWasConnected = restore(changeInterculatorWasConnected, false).reset(reset)
-  $interculatorWasConnected.watch(resp=>console.log("$interculatorWasConnected",resp))
 
   const changeInterlocutorVideoStatus = createEvent<boolean>()
   const $interlocutorVideoStatus = restore(changeInterlocutorVideoStatus, true).reset(reset)
@@ -65,7 +64,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   const changeInterculatorIsConnected = createEvent<boolean>()
   const $interculatorIsConnected = restore(changeInterculatorIsConnected, false).reset(reset)
-  $interculatorIsConnected.watch(resp=>console.log("$interculatorIsConnected",resp))
 
   const changeGrantedPermissionForCamera = createEvent<boolean>()
   const changeGrantedPermissionForMic = createEvent<boolean>()
@@ -150,6 +148,12 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           agoraData.client && agoraData.client.subscribe(e.stream)
         })
 
+        agoraData.client.on("peer-online", e => {
+          console.log("INTERCULATOR JOINED")
+          runInScope(changeInterculatorWasConnected, true)
+          runInScope(changeInterculatorIsConnected, true)
+        })
+
         agoraData.client.on("peer-leave", (e) => {
           if (e.uid === agoraData.remoteStream?.getId()) {
             runInScope(changeInterculatorIsConnected, false)
@@ -168,13 +172,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
         agoraData.client.on("stream-subscribed", e => {
           agoraData.remoteStream = e.stream
-
-          agoraData.remoteStream?.on("accessAllowed", (event) => {
-            console.log("REMOTE HUITA1111111111111111")
-          })
-          agoraData.remoteStream?.on("accessDenied", (event) => {
-            console.log("REMOTE HUITA2222222222222")
-          })
 
           play()
 
@@ -211,7 +208,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           credentials.userAccount,
 
           // create streams
-          () => {
+          // @ts-ignore
+          (uid:number) => {
             agoraData.localStream = agoraLib.createStream({
               streamID: credentials.userAccount,
               audio: true,
@@ -220,10 +218,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
             }) as Stream
 
             agoraData.localStream?.on("accessAllowed", (event) => {
-              console.log("TEEEEEEEEEST")
               runInScope(checkDevicePermission)})
+
             agoraData.localStream?.on("accessDenied", (event) => {
-              console.log("TEEEEEEEEEST123333123123")
               runInScope(checkDevicePermission)})
 
             agoraData.localStream?.on("videoTrackEnded", (event) => {
@@ -235,7 +232,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
             })
 
             agoraData.localStream?.on("audioMixingPlayed", (event) => {
-              console.log("ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLO")
               runInScope(checkDevicePermission)
             })
 

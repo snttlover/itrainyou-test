@@ -14,6 +14,34 @@ type ListItemType = {
 }
 
 const StyledListItem: React.FC<ListItemType> = ({ text, link }) => {
+
+  const handleOnClick = () => {
+
+    console.log(navigator.userAgent)
+
+    if((navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR")) != -1 )
+    {
+      window.open('https://help.opera.com/ru/latest/web-preferences/#Управление-доступом-к-камере')
+    }
+    else if(navigator.userAgent.indexOf("Chrome") != -1 )
+    {
+      window.open('https://support.google.com/chrome/answer/114662?co=GENIE.Platform%3DDesktop&hl=ru')
+    }
+    else if(navigator.userAgent.indexOf("Safari") != -1)
+    {
+      if (window.innerWidth >= 480) {
+        window.open('https://support.apple.com/ru-ru/guide/safari/ibrw7f78f7fe/mac')
+      }
+      else {
+        window.open('https://ipadstory.ru/kak-upravlyat-nastrojkami-privatnosti-v-safari-na-iphone-i-ipad.html')
+      }
+    }
+    else if(navigator.userAgent.indexOf("Firefox") != -1 )
+    {
+      window.open('https://support.mozilla.org/ru/kb/upravlenie-razresheniyami-dlya-kamery-i-mikrofona-')
+    }
+  }
+
   return (
     <ItemWrapper>
       <Item>
@@ -21,7 +49,7 @@ const StyledListItem: React.FC<ListItemType> = ({ text, link }) => {
         <ItemText>
           {text}
           <br/>
-          {!!link && <StyledLink href={'https://support.google.com/chrome/answer/114662?co=GENIE.Platform%3DDesktop&hl=ru'} target="_blank">{link}</StyledLink>}
+          {!!link && <StyledLink onClick={handleOnClick}>{link}</StyledLink>}
         </ItemText>
       </Item>
     </ItemWrapper>
@@ -124,8 +152,8 @@ const Description = styled.div`
   `}
 `
 
-const StyledLink = styled.a`
-  color: #4858CC;
+const StyledLink = styled.div`
+  color: ${props => props.theme.colors.primary};
   font-weight: 500;
   text-decoration: underline;
   cursor: pointer;
@@ -169,6 +197,14 @@ const StyledConfirmButton = styled(Button)`
 `
 
 const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })`
+  align-self: flex-start;
+  margin-top: 7px;
   width: 8px;
   height: 8px;
+  fill: ${props => props.theme.colors.primary};
+  
+  ${MediaRange.lessThan("mobile")`
+    width: 7px;
+    height: 7px;
+  `}
 `
