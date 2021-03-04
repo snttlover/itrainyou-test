@@ -87,7 +87,8 @@ export type IconName =
   | "hang-up"
   | "no-cam-permission"
   | "no-mic-permission"
-  | "ellipse-list-marker"
+  | "ellipse-list-marker-client"
+  | "ellipse-list-marker-coach"
 
 type IconProps = {
   name: IconName,

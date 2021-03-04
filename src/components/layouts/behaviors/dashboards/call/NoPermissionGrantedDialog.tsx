@@ -17,7 +17,6 @@ const StyledListItem: React.FC<ListItemType> = ({ text, link }) => {
 
   const handleOnClick = () => {
 
-    console.log(navigator.userAgent)
 
     if((navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR")) != -1 )
     {
@@ -196,12 +195,18 @@ const StyledConfirmButton = styled(Button)`
   `}
 `
 
-const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })`
+const MarkerIcon = styled(Icon).attrs((props) => {
+  if (props.theme.colors.primary === "#4858CC") {
+    return { name: "ellipse-list-marker-client" }
+  }
+  else {
+    return { name: "ellipse-list-marker-coach" }
+  }
+})`
   align-self: flex-start;
   margin-top: 7px;
   width: 8px;
   height: 8px;
-  fill: ${props => props.theme.colors.primary};
   
   ${MediaRange.lessThan("mobile")`
     width: 7px;

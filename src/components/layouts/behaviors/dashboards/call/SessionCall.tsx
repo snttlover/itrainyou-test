@@ -35,7 +35,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
 
     useEffect(() => {
-      play()
+      //play()
       const timer = setInterval(() => _update(), 60000)
       return () => {
         clearInterval(timer)
