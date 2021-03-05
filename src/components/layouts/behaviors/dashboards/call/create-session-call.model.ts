@@ -1,4 +1,4 @@
-import { combine, createEffect, createEvent, createStore, forward, guard, restore } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard, restore, sample } from "effector-root"
 import { getCoachSessionVideoToken, VideoTokenData } from "@/lib/api/coach/get-session-video-token"
 import { getCoachSession, SessionInfo } from "@/lib/api/coach/get-session"
 import { Client } from "@/lib/api/client/clientInfo"
@@ -10,12 +10,14 @@ import { getClientSessionVideoToken } from "@/lib/api/client/get-session-video-t
 import { getClientSession } from "@/lib/api/client/get-client-session"
 import { date } from "@/lib/formatting/date"
 import { runInScope } from "@/scope"
+import { clientChatsSocket, coachChatsSocket, createChatsSocket } from "@/feature/socket/chats-socket"
 
 
 type CreateSessionCallModuleConfig = {
   dashboard: "client" | "coach"
   getConnectDataRequest: (id: number) => Promise<VideoTokenData>
   getSessionRequest: (id: number) => Promise<SessionInfo>
+  socket: ReturnType<typeof createChatsSocket>
 }
 
 type Agora = {
@@ -278,6 +280,11 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: [changeSessionId, getTokenDataFx, getSessionDataFx],
   })
 
+  forward({
+    from: connectToSession.map(id => ({sessionId: id})),
+    to: config.socket.methods.userEnteredSession,
+  })
+
   const update = createEvent()
   const $sessionTokenData = restore<VideoTokenData>(getTokenDataFx.doneData, null).reset(reset)
   const $minutesLeft = $sessionTokenData.map(data => {
@@ -353,6 +360,23 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   forward({
     from: close,
     to: [leaveAgoraFx, reset],
+  })
+
+  sample({
+    source: $sessionId,
+    clock: close,
+    fn: (sessionId, closeId) => ({sessionId: sessionId}),
+    target: config.socket.methods.userLeftSession,
+  })
+
+  forward({
+    from: config.socket.events.onUserEnteredSessionDone.map((data)=> true),
+    to: [changeInterculatorIsConnected,changeInterculatorWasConnected],
+  })
+
+  forward({
+    from: config.socket.events.onUserLeftSessionDone.map((data)=> false),
+    to: changeInterculatorIsConnected,
   })
 
   const changeFullScreen = createEvent<boolean>()
@@ -444,6 +468,7 @@ export const coachCall = createSessionCallModule({
   dashboard: "coach",
   getConnectDataRequest: getCoachSessionVideoToken,
   getSessionRequest: getCoachSession,
+  socket: coachChatsSocket
 })
 
 export const CoachSessionCall = createSessionCall(coachCall)
@@ -452,6 +477,7 @@ export const clientCall = createSessionCallModule({
   dashboard: "client",
   getConnectDataRequest: getClientSessionVideoToken,
   getSessionRequest: getClientSession,
+  socket: clientChatsSocket
 })
 
 export const ClientSessionCall = createSessionCall(clientCall)
