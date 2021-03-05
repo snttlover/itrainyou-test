@@ -9,6 +9,7 @@ export interface VideoTokenData {
   userAccount: string
   sessionTerminationDatetime: ISODate
   extraTimeMinutes: number
+  interlocutorConnected: boolean
 }
 
 export const getCoachSessionVideoToken = (id: number): Promise<VideoTokenData> =>

@@ -310,6 +310,11 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: agoraConnectFx,
   })
 
+  forward({
+    from: getTokenDataFx.doneData.map(data => data.interlocutorConnected),
+    to: changeInterculatorIsConnected,
+  })
+
   const changeAgoraMicroFx = createEffect({
     handler: (status: boolean) => {
       if (agoraData.localStream) {
