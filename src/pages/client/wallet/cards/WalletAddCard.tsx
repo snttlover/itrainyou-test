@@ -14,6 +14,17 @@ const PlusIcon = styled(Icon).attrs({ name: "plus" })`
   height: 10px;
   fill: ${({ theme }) => theme.colors.primary};
 `
+const MirLogo = styled(Icon).attrs({name: "mir-logo-card"})`
+  margin-left: 8px;
+  width: 32px;
+  height: 22px;
+`
+
+const Maestro = styled(Icon).attrs({name: "maestro"})`
+  margin-left: 8px;
+  width: 32px;
+  height: 22px;
+`
 
 const LogosContainer = styled.div`
   display: flex;
@@ -30,12 +41,6 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 12px 0;
-  padding-right: 16px;
-
-  ${MediaRange.lessThan("mobile")`
-    padding-right: 0;
-  `}
 `
 
 const BottomRow = styled.div`
@@ -49,7 +54,13 @@ const BottomRow = styled.div`
   `}
 `
 
-const TypeImg = styled.img`
+const VisaImg = styled.img`
+  margin-left: 8px;
+  width: 32px;
+  height: 22px;
+`
+
+const MasterCardImg = styled.img`
   width: 32px;
   height: 22px;
 `
@@ -71,7 +82,7 @@ const Text = styled.div`
   font-size: 14px;
   line-height: 18px;
   text-align: center;
-  color: #4858CC;
+  color: ${({ theme }) => theme.colors.primary};
 `
 const MobileGroup = styled.div`
 
@@ -83,7 +94,7 @@ const MobileGroup = styled.div`
 `
 const StyledButton = styled(Button)`
   background: #ffffff;
-  border: 1px solid #4858CC;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
 `
 
 export const WalletAddCard = () => {
@@ -97,11 +108,13 @@ export const WalletAddCard = () => {
       <BottomRow>
         <LogosContainer>
           <Title> Новая карта </Title>
-          <TypeImg src={MasterCard} />
-          <TypeImg src={Visa} />
+          <MasterCardImg src={MasterCard} />
+          <Maestro />
+          <VisaImg src={Visa} />
+          <MirLogo />
         </LogosContainer>
         <MobileGroup>
-          <StyledButton onClick={handleAddCard}><Text>Добавить карту <PlusIcon /></Text></StyledButton>
+          <StyledButton onClick={handleAddCard}><Text>Добавить карту</Text></StyledButton>
         </MobileGroup>
       </BottomRow>
     </Item>

@@ -89,6 +89,8 @@ export type IconName =
   | "no-mic-permission"
   | "ellipse-list-marker-client"
   | "ellipse-list-marker-coach"
+  | "mir-logo-card"
+  | "maestro"
 
 type IconProps = {
   name: IconName,
