@@ -270,6 +270,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeCallsVisibility = createEvent<boolean>()
   const $callsVisibility = restore(changeCallsVisibility, false).reset(reset)
 
+  $callsVisibility.watch(resp => console.log("test",resp))
+
   forward({
     from: connectToSession.map(() => true),
     to: changeCallsVisibility,

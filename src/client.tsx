@@ -17,28 +17,30 @@ import { fixChrome88timeZone } from "@/polyfills/chrome88-dayjs-timezone-fix"
 
 fixChrome88timeZone()
 
-Sentry.init({
-  dsn: `${config.SENTRY_CLIENT_DSN}`,
-  beforeSend(event) {
-    // Check if it is an exception, and if so, show the report dialog
-    if (event.exception) {
-      Sentry.showReportDialog(event)
-    }
-    return event
-  },
-  integrations: [
-    new Integrations.BrowserTracing(),
-  ],
-  ignoreErrors: [
-    "Received `true` for a non-boolean attribute `active`",
-    "ResizeObserver loop limit exceeded",
-    `${config.BACKEND_URL}/api/v1/web/clients/`,
-    "canvas.contentDocument",
-  ],
-  debug: true,
-  sampleRate: 1.0,
-  tracesSampleRate: 1.0,
-})
+if (config.SERVER_TYPE === "production") {
+  Sentry.init({
+    dsn: `${config.SENTRY_CLIENT_DSN}`,
+    beforeSend(event) {
+      // Check if it is an exception, and if so, show the report dialog
+      if (event.exception) {
+        Sentry.showReportDialog(event)
+      }
+      return event
+    },
+    integrations: [
+      new Integrations.BrowserTracing(),
+    ],
+    ignoreErrors: [
+      "Received `true` for a non-boolean attribute `active`",
+      "ResizeObserver loop limit exceeded",
+      `${config.BACKEND_URL}/api/v1/web/clients/`,
+      "canvas.contentDocument",
+    ],
+    debug: true,
+    sampleRate: 1.0,
+    tracesSampleRate: 1.0,
+  })
+}
 
 const token = Cookies.get(TOKEN_COOKIE_KEY)
 runInScope(changeToken, Cookies.get(TOKEN_COOKIE_KEY))

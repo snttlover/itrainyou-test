@@ -11,6 +11,7 @@ export const createStartSessionDialog = ($module: ReturnType<typeof createStartS
   const session = useStore($module.data.$session)
   const hide = useEvent($module.methods.hideDialog)
   const connectToSession = useEvent($module.methods.connectToSession)
+  const callVisibility = useStore($module.data.$callsVisibility)
 
   const start = () => {
     connectToSession(session.id)
@@ -18,7 +19,7 @@ export const createStartSessionDialog = ($module: ReturnType<typeof createStartS
   }
 
   return (
-    <StyledDialog value={visibility} onChange={() => hide()}>
+    <StyledDialog value={visibility && !callVisibility} onChange={() => hide()}>
       <Container>
         <Title>До сессии менее 5 минут!</Title>
         <Time>{session.time}</Time>
