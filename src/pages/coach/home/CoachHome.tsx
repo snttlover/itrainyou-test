@@ -16,7 +16,6 @@ import { useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.model"
-import { TinkoffApproved } from "@/pages/coach/home/tinkoff/TinkoffApproved"
 
 const Container = styled.div`
   max-width: 640px;
@@ -72,7 +71,19 @@ const CurrentState = () => {
   return (
     <>
       <ContentContainer>
-        <TinkoffApproved />
+        {state === "profile-fill" && (
+          <Container>
+            <Title>У вас пока закрыт доступ к функционалу коуча</Title>
+            <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
+            <CoachGetAccess />
+          </Container>
+        )}
+        {state === "approve-wait" && <AwaitingApproval />}
+        {state === "forever-rejected" && <ApprovalFailing />}
+        {state === "temporary-rejected-wait" && <ApprovalTimer />}
+        {state === "temporary-rejected-done" && <ApprovalTimerOver />}
+        {state === "yandex-kassa-completed" && <YandexKassaWaitingForApproval />}
+        {state === "yandex-kassa-not-approved" && <YandexKassaInstructions />}
       </ContentContainer>
       {state === "approved" && <CoachSessionsPage />}
     </>
@@ -96,19 +107,3 @@ export const CoachHome = () => {
 }
 
 export default CoachHome
-
-/*
-{state === "profile-fill" && (
-          <Container>
-            <Title>У вас пока закрыт доступ к функционалу коуча</Title>
-            <Description>Заполните все поля, которые вы пропустили на этапе регистрации</Description>
-            <CoachGetAccess />
-          </Container>
-        )}
-        {state === "approve-wait" && <AwaitingApproval />}
-        {state === "forever-rejected" && <ApprovalFailing />}
-        {state === "temporary-rejected-wait" && <ApprovalTimer />}
-        {state === "temporary-rejected-done" && <ApprovalTimerOver />}
-        {state === "yandex-kassa-completed" && <YandexKassaWaitingForApproval />}
-        {state === "yandex-kassa-not-approved" && <YandexKassaInstructions />}
- */
