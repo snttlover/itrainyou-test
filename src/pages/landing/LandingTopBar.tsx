@@ -172,9 +172,9 @@ const BurgerMenu = () => {
 }
 
 const BurgerContentContainer = styled.div`
-  position: fixed;
+  position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: linear-gradient(135deg, #0058cc -5.89%, #5758cc 51.66%, #8b58cc 97.71%);
   z-index: 100;
   left: 0;
@@ -218,7 +218,7 @@ const StyledRegisterLink = styled(Link)`
 
 const LoginButtonLink = styled(Link)`
   margin-top: 16px;
-  margin-bottom: 35px;
+  margin-bottom: 25px;
   width: 100%;
   height: 34px;
   background: #ffffff;
