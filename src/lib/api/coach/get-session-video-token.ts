@@ -5,11 +5,12 @@ import { get } from "@/lib/network/network"
 
 export interface VideoTokenData {
   token: string
+  connectedClients: [number]
   channelName: string
   userAccount: string
   sessionTerminationDatetime: ISODate
   extraTimeMinutes: number
-  interlocutorConnected: boolean
+  isCoachConnected: boolean
 }
 
 export const getCoachSessionVideoToken = (id: number): Promise<VideoTokenData> =>

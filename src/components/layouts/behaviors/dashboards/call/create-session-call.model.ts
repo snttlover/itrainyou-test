@@ -56,7 +56,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const connectToSession = createEvent<number>()
 
   const changeInterculatorWasConnected = createEvent<boolean>()
-  const $interculatorWasConnected = restore(changeInterculatorWasConnected, false).reset(reset)
+  const changeInterculatorIsConnected = createEvent<boolean>()
+
+  const $interculatorWasConnected = restore(changeInterculatorWasConnected, false).on(changeInterculatorIsConnected, (state,payload) => state ? state : true).reset(reset)
 
   const changeInterlocutorVideoStatus = createEvent<boolean>()
   const $interlocutorVideoStatus = restore(changeInterlocutorVideoStatus, true).reset(reset)
@@ -64,7 +66,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeInterlocutorMicrophoneStatus = createEvent<boolean>()
   const $interlocutorMicrophoneStatus = restore(changeInterlocutorMicrophoneStatus, true).reset(reset)
 
-  const changeInterculatorIsConnected = createEvent<boolean>()
   const $interculatorIsConnected = restore(changeInterculatorIsConnected, false).reset(reset)
 
   const changeGrantedPermissionForCamera = createEvent<boolean>()
@@ -134,7 +135,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
 
   const changeSessionId = createEvent<number>()
-  const $sessionId = restore(changeSessionId, 0).reset(reset)
+  const $sessionId = restore(changeSessionId, 0).reset(config.socket.methods.userLeftSession)
+  //.reset(config.socket.methods.userLeftSession)
 
   const initAgoraFx = createEffect({
     handler: () => {
@@ -281,7 +283,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   forward({
-    from: connectToSession.map(id => ({sessionId: id})),
+    from: connectToSession.map(id => ({session: id})),
     to: config.socket.methods.userEnteredSession,
   })
 
@@ -311,7 +313,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   forward({
-    from: getTokenDataFx.doneData.map(data => data.interlocutorConnected),
+    from: getTokenDataFx.doneData.map(data => (config.dashboard !== "coach" ? data.isCoachConnected : data.connectedClients.length > 0)),
     to: changeInterculatorIsConnected,
   })
 
@@ -362,6 +364,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   const close = createEvent()
+
   forward({
     from: close,
     to: [leaveAgoraFx, reset],
@@ -369,8 +372,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   sample({
     source: $sessionId,
-    clock: close,
-    fn: (sessionId, closeId) => ({sessionId: sessionId}),
+    clock: leaveAgoraFx.doneData,
+    fn: (sessionId, closeId) => ({session: sessionId}),
     target: config.socket.methods.userLeftSession,
   })
 

@@ -22,6 +22,8 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const videoCallRef = useRef(null)
 
+    const time = useStore($module.data.$time)
+
     const handleFullscreen = useFullScreenHandle()
 
     if (visibility) {
@@ -35,8 +37,18 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
 
     useEffect(() => {
-      //play()
-      const timer = setInterval(() => _update(), 60000)
+      const timer = setInterval(() => {
+        if (time.minutesLeft > 0) {
+          _update()
+        }
+      }, 60000)
+      window.addEventListener('beforeunload', function() {
+        const x = 200
+        const a = (new Date()).getTime() + x
+
+        close()
+        while ((new Date()).getTime() < a) {}
+      }, false)
       return () => {
         clearInterval(timer)
         _toggleModal(false)
@@ -51,8 +63,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const changeMicro = useEvent($module.methods.changeMicro)
     const changeVideo = useEvent($module.methods.changeVideo)
     const changeFullScreen = useEvent($module.methods.changeFullScreen)
-
-    const time = useStore($module.data.$time)
 
     const handleOnClickVideo = () => {
       if(permission.camera) {
