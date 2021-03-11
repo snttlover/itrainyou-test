@@ -126,7 +126,12 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                   </User>
                 )}
               </Header>
-              <InterlocutorVideo id='InterlocutorVideo' />
+              <InterlocutorVideo id='InterlocutorVideo' >
+                <InterlocutorVideoPlaceholder>
+                  <InterlocutorIcon />
+                  <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
+                </InterlocutorVideoPlaceholder>
+              </InterlocutorVideo>
               {!interlocutor.video && interlocutor.connected && (
                 <InterlocutorVideoPlaceholder>
                   <InterlocutorIcon />

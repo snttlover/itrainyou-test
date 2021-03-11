@@ -58,7 +58,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeInterculatorWasConnected = createEvent<boolean>()
   const changeInterculatorIsConnected = createEvent<boolean>()
 
-  const $interculatorWasConnected = restore(changeInterculatorWasConnected, false).on(changeInterculatorIsConnected, (state,payload) => state ? state : true).reset(reset)
+  const $interculatorWasConnected = restore(changeInterculatorWasConnected, false).reset(reset)
 
   const changeInterlocutorVideoStatus = createEvent<boolean>()
   const $interlocutorVideoStatus = restore(changeInterlocutorVideoStatus, true).reset(reset)
@@ -136,7 +136,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(config.socket.methods.userLeftSession)
-  //.reset(config.socket.methods.userLeftSession)
 
   const initAgoraFx = createEffect({
     handler: () => {
@@ -153,7 +152,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         })
 
         agoraData.client.on("peer-online", e => {
-          console.log("INTERCULATOR JOINED")
           runInScope(changeInterculatorWasConnected, true)
           runInScope(changeInterculatorIsConnected, true)
         })
