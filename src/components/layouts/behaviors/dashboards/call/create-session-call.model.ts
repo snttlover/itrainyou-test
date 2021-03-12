@@ -312,7 +312,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   forward({
     from: getTokenDataFx.doneData.map(data => (config.dashboard !== "coach" ? data.isCoachConnected : data.connectedClients.length > 0)),
-    to: changeInterculatorIsConnected,
+    to: [changeInterculatorIsConnected, changeInterculatorWasConnected],
   })
 
   const changeAgoraMicroFx = createEffect({
