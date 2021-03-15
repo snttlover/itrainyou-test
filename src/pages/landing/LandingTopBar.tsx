@@ -218,7 +218,7 @@ const StyledRegisterLink = styled(Link)`
 
 const LoginButtonLink = styled(Link)`
   margin-top: 16px;
-  margin-bottom: 8vh;
+  margin-bottom: 12vh;
   width: 100%;
   height: 34px;
   background: #ffffff;

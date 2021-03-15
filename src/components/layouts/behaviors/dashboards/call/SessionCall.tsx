@@ -67,10 +67,24 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const handleOnClickVideo = () => {
       if(permission.camera) {
         changeVideo(!self.video)
+        /*navigator.mediaDevices.getUserMedia({audio: true, video: true})
+                .then(function(stream) {
+                  console.log("trueeeeee",stream)
+                })
+                .catch(function(err) {
+                  console.log("errrrrrrrror",err)
+                })*/
       }
       else {
         changeModalInfo("video")
         _toggleModal(true)
+        /*navigator.mediaDevices.getUserMedia({audio: true, video: true})
+                .then(function(stream) {
+                  console.log("trueeeeee",stream)
+                })
+                .catch(function(err) {
+                  console.log("errrrrrrrror",err)
+                })*/
       }
     }
 
@@ -517,20 +531,36 @@ const fullscreenCSS = css`
       }
     `}
 
-  ${MediaRange.lessThan("mobile")`
-      ${MyUserVideoPlaceholder},
-      ${MyUserVideo} {
-        top: unset;
-        bottom: 86px;
-        right: 16px;
-        width: 160px;
-        height: 100px;
-      }
-      ${Header} {
+  @media screen and (max-width: 900px) and (orientation : landscape) {
+  height: 100vh;
+  ${MyUserVideoPlaceholder},
+  ${MyUserVideo} {
+    top: unset;
+    bottom: 86px;
+    right: 16px;
+    width: 160px;
+    height: 100px;
+  }
+  ${Header} {
+    padding: 4px 20px;
+    justify-content: flex-start;
+  }
+  }
+
+  @media screen and (max-width: 480px) and (orientation : portrait) {
+    ${MyUserVideoPlaceholder},
+    ${MyUserVideo} {
+      top: unset;
+      bottom: 86px;
+      right: 16px;
+      width: 160px;
+      height: 100px;
+    }
+    ${Header} {
       padding: 4px 20px;
       justify-content: center;
     }
-    `}
+  }
 `
 
 const Container = styled.div`
@@ -685,24 +715,19 @@ const Container = styled.div`
     
   }
 `
-
-
-/* 567 строчка
+/*
 ${MediaRange.lessThan("mobile")`
-    ${fullscreenCSS}
-
-    ${ToggleFullscreen} {
-      display: none;
+      ${MyUserVideoPlaceholder},
+      ${MyUserVideo} {
+        top: unset;
+        bottom: 86px;
+        right: 16px;
+        width: 160px;
+        height: 100px;
+      }
+      ${Header} {
+      padding: 4px 20px;
+      justify-content: center;
     }
-    ${IconFullScreenContainer} {
-    display: none;
-    }
-    ${Actions} {
-      bottom: 16px;
-    }
-    ${MyUserVideoPlaceholder},
-    ${MyUserVideo} {
-      width: 120px;
-      height: 80.36px;
-    }
-  `}*/
+    `}
+ */
