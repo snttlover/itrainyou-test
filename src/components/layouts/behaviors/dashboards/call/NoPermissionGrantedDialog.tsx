@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useEvent, useStore } from "effector-react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
@@ -14,9 +14,15 @@ type ListItemType = {
 }
 
 const StyledListItem: React.FC<ListItemType> = ({ text, link, action}) => {
+  const [showed,setShowed] = useState(true)
+
+  useEffect(() => {
+    if (!navigator.userAgent || navigator.userAgent.indexOf("Edg") != -1 || navigator.userAgent.indexOf("YaBrowser") != -1) {
+      setShowed(false) 
+    }
+  }, [])
 
   const handleOnClick = () => {
-
     if (!!action) {
       if ((navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR")) != -1) {
         window.open("https://help.opera.com/ru/latest/web-preferences/#Управление-доступом-к-камере")
@@ -41,7 +47,7 @@ const StyledListItem: React.FC<ListItemType> = ({ text, link, action}) => {
         <ItemText>
           {text}
           <br/>
-          {!!link && <StyledLink onClick={handleOnClick}>{link}</StyledLink>}
+          {!!link && showed && <StyledLink onClick={handleOnClick}>{link}</StyledLink>}
         </ItemText>
       </Item>
     </ItemWrapper>
