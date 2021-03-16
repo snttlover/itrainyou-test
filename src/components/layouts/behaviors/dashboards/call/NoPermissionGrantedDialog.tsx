@@ -1,8 +1,7 @@
 import React from "react"
-import { useEvent, useList, useStore } from "effector-react"
+import { useEvent, useStore } from "effector-react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { navigatePush } from "@/feature/navigation"
 import { Button } from "@/components/button/normal/Button"
 import { Dialog } from "@/components/dialog/Dialog"
 import { togglePermissionGrantedModal, $permissionGrantedModalVisibility, $modalInfo } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
@@ -11,33 +10,27 @@ import { Icon } from "@/components/icon/Icon"
 type ListItemType = {
   text: string
   link: string | null
+  action: string | null
 }
 
-const StyledListItem: React.FC<ListItemType> = ({ text, link }) => {
+const StyledListItem: React.FC<ListItemType> = ({ text, link, action}) => {
 
   const handleOnClick = () => {
 
-
-    if((navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR")) != -1 )
-    {
-      window.open('https://help.opera.com/ru/latest/web-preferences/#Управление-доступом-к-камере')
-    }
-    else if(navigator.userAgent.indexOf("Chrome") != -1 )
-    {
-      window.open('https://support.google.com/chrome/answer/114662?co=GENIE.Platform%3DDesktop&hl=ru')
-    }
-    else if(navigator.userAgent.indexOf("Safari") != -1)
-    {
-      if (window.innerWidth >= 480) {
-        window.open('https://support.apple.com/ru-ru/guide/safari/ibrw7f78f7fe/mac')
+    if (!!action) {
+      if ((navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR")) != -1) {
+        window.open("https://help.opera.com/ru/latest/web-preferences/#Управление-доступом-к-камере")
+      } else if (navigator.userAgent.indexOf("Chrome") != -1) {
+        window.open("https://support.google.com/chrome/answer/114662?co=GENIE.Platform%3DDesktop&hl=ru")
+      } else if (navigator.userAgent.indexOf("Safari") != -1) {
+        if (window.innerWidth >= 480) {
+          window.open("https://support.apple.com/ru-ru/guide/safari/ibrw7f78f7fe/mac")
+        } else {
+          window.open("https://ipadstory.ru/kak-upravlyat-nastrojkami-privatnosti-v-safari-na-iphone-i-ipad.html")
+        }
+      } else if (navigator.userAgent.indexOf("Firefox") != -1) {
+        window.open("https://support.mozilla.org/ru/kb/upravlenie-razresheniyami-dlya-kamery-i-mikrofona-")
       }
-      else {
-        window.open('https://ipadstory.ru/kak-upravlyat-nastrojkami-privatnosti-v-safari-na-iphone-i-ipad.html')
-      }
-    }
-    else if(navigator.userAgent.indexOf("Firefox") != -1 )
-    {
-      window.open('https://support.mozilla.org/ru/kb/upravlenie-razresheniyami-dlya-kamery-i-mikrofona-')
     }
   }
 
@@ -57,15 +50,14 @@ const StyledListItem: React.FC<ListItemType> = ({ text, link }) => {
 
 export const NoPermissionGrantedDialog = () => {
   const visibility = useStore($permissionGrantedModalVisibility)
-  const navigate = useEvent(navigatePush)
   const toggle = useEvent(togglePermissionGrantedModal)
   const info = useStore($modalInfo)
 
   const list = [
-    {text: `запрещен доступ к ${info === "video" ? "камере" : "микрофону"} в браузере`,link: `Как включить ${info === "video" ? "камеру" : "микрофон"}`},
-    {text: `запрещен доступ к ${info === "video" ? "камере" : "микрофону"} в настройках компьютера`,link: null},
-    {text: `${info === "video" ? "камера" : "микрофон"} неисправ${info === "video" ? "на" : "ен"}`,link: null},
-    {text: `нет ${info === "video" ? "камеры" : "микрофона"} в компьютере`,link: null},
+    {text: `запрещен доступ к ${info === "video" ? "камере" : "микрофону"} в браузере`,link: `Как включить ${info === "video" ? "камеру" : "микрофон"}`, action: "redicrect"},
+    {text: `запрещен доступ к ${info === "video" ? "камере" : "микрофону"} в настройках компьютера`,link: `После разрешения доступа к ${info === "video" ? "камере" : "микрофону"} перезагрузите страницу`, action: null},
+    {text: `${info === "video" ? "камера" : "микрофон"} неисправ${info === "video" ? "на" : "ен"}`,link: null, action: null},
+    {text: `нет ${info === "video" ? "камеры" : "микрофона"} в компьютере`,link: null, action: null},
   ]
 
   return (

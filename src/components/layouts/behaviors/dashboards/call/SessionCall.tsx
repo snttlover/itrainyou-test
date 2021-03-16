@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled, { css } from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { Avatar } from "@/components/avatar/Avatar"
@@ -7,11 +7,9 @@ import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 import { trackMouse } from "@/components/mouse-tracking/track-mouse"
 import { togglePermissionGrantedModal, changeModalInfo } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
-import { FullScreen, useFullScreenHandle } from "react-full-screen"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
   return () => {
-    const play = useEvent($module.methods.play)
     const _update = useEvent($module.methods.update)
     const _toggleModal = useEvent(togglePermissionGrantedModal)
 
@@ -23,8 +21,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const videoCallRef = useRef(null)
 
     const time = useStore($module.data.$time)
-
-    const handleFullscreen = useFullScreenHandle()
 
     if (visibility) {
       let timer: any
@@ -42,7 +38,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
           _update()
         }
       }, 60000)
-      window.addEventListener('beforeunload', function() {
+      window.addEventListener("beforeunload", function() {
         const x = 200
         const a = (new Date()).getTime() + x
 
@@ -67,24 +63,10 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const handleOnClickVideo = () => {
       if(permission.camera) {
         changeVideo(!self.video)
-        /*navigator.mediaDevices.getUserMedia({audio: true, video: true})
-                .then(function(stream) {
-                  console.log("trueeeeee",stream)
-                })
-                .catch(function(err) {
-                  console.log("errrrrrrrror",err)
-                })*/
       }
       else {
         changeModalInfo("video")
         _toggleModal(true)
-        /*navigator.mediaDevices.getUserMedia({audio: true, video: true})
-                .then(function(stream) {
-                  console.log("trueeeeee",stream)
-                })
-                .catch(function(err) {
-                  console.log("errrrrrrrror",err)
-                })*/
       }
     }
 
@@ -99,92 +81,84 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     }
 
     const handleOnClose = () => {
-      /*if (window.innerWidth <= 480) {
-        handleFullscreen.exit().catch((e)=> console.log(e))
-      }*/
       close()
     }
 
     const handleOnChangeFullscreen = () => {
-      /*if (window.innerWidth <= 480) {
-        handleFullscreen.enter().catch((e)=> console.log(e))
-      }*/
       changeFullScreen(!self.fullscreen)
     }
 
     return (
       <div ref={videoCallRef}>
-        <FullScreen handle={handleFullscreen}>
-          <Container
-            data-interlocutor-is-connected={interlocutor.connected}
-            data-interlocutor-was-connected={interlocutor.wasConnected}
-            data-visibility={visibility}
-            data-fullscreen={self.fullscreen}
-          >
-            <Call>
-              <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
-              <NotConnected>Собеседник отключился</NotConnected>
-              {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate} visibility={userActive}>
-                <Time>
-                  <TimeLeftLabel>Осталось:</TimeLeftLabel>
-                  <TimeLeft>{time.minutesLeft} минут</TimeLeft>
-                </Time>
-              </TimeTooltip>
+        <Container
+          data-interlocutor-is-connected={interlocutor.connected}
+          data-interlocutor-was-connected={interlocutor.wasConnected}
+          data-visibility={visibility}
+          data-fullscreen={self.fullscreen}
+        >
+          <Call>
+            <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
+            <NotConnected>Собеседник отключился</NotConnected>
+            {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate} visibility={userActive}>
+              <Time>
+                <TimeLeftLabel>Осталось:</TimeLeftLabel>
+                <TimeLeft>{time.minutesLeft} минут</TimeLeft>
+              </Time>
+            </TimeTooltip>
+            )}
+            <Header visibility={userActive}>
+              {interlocutor.info && (
+                <User>
+                  {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
+                  <StyledAvatar src={interlocutor.info.avatar} />
+                  <Name>{interlocutor.info.name}</Name>
+                </User>
               )}
-              <Header visibility={userActive}>
-                {interlocutor.info && (
-                  <User>
-                    {!interlocutor.micro && interlocutor.connected && <DisabledInterlocutorMicro />}
-                    <StyledAvatar src={interlocutor.info.avatar} />
-                    <Name>{interlocutor.info.name}</Name>
-                  </User>
-                )}
-              </Header>
-              <InterlocutorVideo id='InterlocutorVideo' >
-                <InterlocutorVideoPlaceholder>
-                  <InterlocutorIcon />
-                  <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
-                </InterlocutorVideoPlaceholder>
-              </InterlocutorVideo>
-              {!interlocutor.video && interlocutor.connected && (
-                <InterlocutorVideoPlaceholder>
-                  <InterlocutorIcon />
-                  <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
-                </InterlocutorVideoPlaceholder>
-              )}
-              <MyUserVideo id='MyUserVideo' />
-              {!self.video && (
-                <MyUserVideoPlaceholder>
-                  <MyUserVideoPlaceholderIcon />
-                </MyUserVideoPlaceholder>
-              )}
+            </Header>
+            <InterlocutorVideo id='InterlocutorVideo' >
+              <InterlocutorVideoPlaceholder>
+                <InterlocutorIcon />
+                <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
+              </InterlocutorVideoPlaceholder>
+            </InterlocutorVideo>
+            {!interlocutor.video && interlocutor.connected && (
+              <InterlocutorVideoPlaceholder>
+                <InterlocutorIcon />
+                <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
+              </InterlocutorVideoPlaceholder>
+            )}
+            <MyUserVideo id='MyUserVideo' />
+            {!self.video && (
+              <MyUserVideoPlaceholder>
+                <MyUserVideoPlaceholderIcon />
+              </MyUserVideoPlaceholder>
+            )}
 
-              <Footer visibility={userActive}>
-                <Actions>
-                  <IconContainer>
-                    <ToggleVideo active={self.video} permission={permission.camera} onClick={handleOnClickVideo} />
-                    {self.fullscreen && permission.camera && <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру" }</IconToolTip>}
-                  </IconContainer>
+            <Footer visibility={userActive}>
+              <Actions>
+                <IconContainer>
+                  <ToggleVideo active={self.video} permission={permission.camera} onClick={handleOnClickVideo} />
+                  {self.fullscreen && permission.camera && <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру" }</IconToolTip>}
+                </IconContainer>
 
-                  <IconContainer>
-                    <ToggleMicro active={self.micro} permission={permission.micro} onClick={handleOnClickMicro} />
-                    {self.fullscreen && permission.micro && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
-                  </IconContainer>
+                <IconContainer>
+                  <ToggleMicro active={self.micro} permission={permission.micro} onClick={handleOnClickMicro} />
+                  {self.fullscreen && permission.micro && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
+                </IconContainer>
 
-                  <IconFullScreenContainer>
-                    <ToggleFullscreen active={self.fullscreen} onClick={handleOnChangeFullscreen} />
-                    {self.fullscreen && <IconToolTip>{self.fullscreen ? "Свернуть окно" : "Развернуть окно" }</IconToolTip>}
-                  </IconFullScreenContainer>
+                <IconFullScreenContainer>
+                  <ToggleFullscreen active={self.fullscreen} onClick={handleOnChangeFullscreen} />
+                  {self.fullscreen && <IconToolTip>{self.fullscreen ? "Свернуть окно" : "Развернуть окно" }</IconToolTip>}
+                </IconFullScreenContainer>
 
-                  <IconContainer>
-                    <HangUp onClick={handleOnClose} />
-                    {self.fullscreen && <IconToolTip>Выйти из сессии</IconToolTip>}
-                  </IconContainer>
-                </Actions>
-              </Footer>
-            </Call>
-          </Container>
-        </FullScreen>
+                <IconContainer>
+                  <HangUp onClick={handleOnClose} />
+                  {self.fullscreen && <IconToolTip>Выйти из сессии</IconToolTip>}
+                </IconContainer>
+              </Actions>
+            </Footer>
+          </Call>
+        </Container>
       </div>
     )
   }
@@ -715,19 +689,3 @@ const Container = styled.div`
     
   }
 `
-/*
-${MediaRange.lessThan("mobile")`
-      ${MyUserVideoPlaceholder},
-      ${MyUserVideo} {
-        top: unset;
-        bottom: 86px;
-        right: 16px;
-        width: 160px;
-        height: 100px;
-      }
-      ${Header} {
-      padding: 4px 20px;
-      justify-content: center;
-    }
-    `}
- */

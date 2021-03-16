@@ -110,13 +110,11 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const userPermissionFx = createEffect({
     handler: () => {
       agoraData.client?.getRecordingDevices(devices => {
-        console.log("RECORDING DEVICES", devices)
         const isDeviceID = devices.find(device => !!device.deviceId)
         isDeviceID ? runInScope(changeGrantedPermissionForMic, true) : runInScope(changeGrantedPermissionForMic, false)
       })
 
       agoraData.client?.getCameras(devices => {
-        console.log("GET CAMERAS", devices)
         const isDeviceID = devices.find(device => !!device.deviceId)
         isDeviceID ? runInScope(changeGrantedPermissionForCamera, true) : runInScope(changeGrantedPermissionForCamera, false)
       })
@@ -177,10 +175,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
           play()
 
-          agoraData.remoteStream?.on("player-status-change", (event) => {
-            //runInScope(changeInterlocutorVideoStatus, agoraData.remoteStream?.hasVideo() || false)
-            //runInScope(changeInterlocutorMicrophoneStatus, agoraData.remoteStream?.hasAudio() || false)
-          })
 
           runInScope(changeInterculatorWasConnected, true)
           runInScope(changeInterculatorIsConnected, true)
