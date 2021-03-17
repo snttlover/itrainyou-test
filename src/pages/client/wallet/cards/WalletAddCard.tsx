@@ -6,7 +6,7 @@ import styled from "styled-components"
 import MasterCard from "@/pages/client/wallet/img/MasterCard.svg"
 import Visa from "@/pages/client/wallet/img/Visa.svg"
 import { Button } from "@/components/button/normal/Button"
-import { addCard } from "@/feature/client-funds-up/dialog/models/units"
+import {toggleAddTinkoffCardModal} from "@/pages/coach/home/coach-home.model"
 
 
 const PlusIcon = styled(Icon).attrs({ name: "plus" })`
@@ -98,9 +98,10 @@ const StyledButton = styled(Button)`
 `
 
 export const WalletAddCard = () => {
-  const _addCard = useEvent(addCard)
+  const toggle = useEvent(toggleAddTinkoffCardModal)
 
   const handleAddCard = (e: React.SyntheticEvent) => {
+    toggle(true)
   }
 
   return (

@@ -7,6 +7,7 @@ import { $userData } from "@/feature/user/user.model"
 import { yandexRegistrationCompletedFx } from "@/pages/coach/home/coach-home.model"
 import { Icon } from "@/components/icon/Icon"
 import { WalletAddCard } from "@/pages/client/wallet/cards/WalletAddCard"
+import { AddTinkoffCardDialog } from "@/pages/coach/home/tinkoff/AddCardDialog";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -90,6 +91,8 @@ export const TinkoffApproved = () => {
   const legalForm = useStore($userData)
   const _sendYandexRegistration = useEvent(yandexRegistrationCompletedFx)
   return (
+          <>
+              <AddTinkoffCardDialog />
     <Container>
       <Title>Вашу анкету одобрили!</Title>
       <LetterIcon />
@@ -99,5 +102,6 @@ export const TinkoffApproved = () => {
         <WalletAddCard />
       </AddCardContainer>
     </Container>
+              </>
   )
 }

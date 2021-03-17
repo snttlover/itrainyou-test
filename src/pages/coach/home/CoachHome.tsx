@@ -16,6 +16,7 @@ import { useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.model"
+import {TinkoffApproved} from "@/pages/coach/home/tinkoff/TinkoffApproved";
 
 const Container = styled.div`
   max-width: 640px;
@@ -85,6 +86,7 @@ const CurrentState = () => {
         {state === "yandex-kassa-completed" && <YandexKassaWaitingForApproval />}
         {state === "yandex-kassa-not-approved" && <YandexKassaInstructions />}
       </ContentContainer>
+      {state === "tinkoff" && <TinkoffApproved />}
       {state === "approved" && <CoachSessionsPage />}
     </>
   )

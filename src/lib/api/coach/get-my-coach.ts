@@ -29,6 +29,7 @@ export interface CoachSelfData {
   isYandexRegistrationApproved: boolean
   isApplicationApproved: boolean
   isYandexRegistrationCompleted: boolean
+  paymentSystem: "YOU_KASSA" | "TINKOFF"
   legalForm: "SELF_EMPLOYMENT" | "IP_PROFESSIONAL_TAXES" | "IP_OTHER_TAXES" | ""
   photos: string[]
   description: string
