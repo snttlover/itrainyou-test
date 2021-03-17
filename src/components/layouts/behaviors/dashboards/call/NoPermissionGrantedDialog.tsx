@@ -47,7 +47,7 @@ const StyledListItem: React.FC<ListItemType> = ({ text, link, action}) => {
         <ItemText>
           {text}
           <br/>
-          {!!link && showed && <StyledLink onClick={handleOnClick}>{link}</StyledLink>}
+          {!!link && showed && <StyledLink active={action} onClick={handleOnClick}>{link}</StyledLink>}
         </ItemText>
       </Item>
     </ItemWrapper>
@@ -149,11 +149,11 @@ const Description = styled.div`
   `}
 `
 
-const StyledLink = styled.div`
+const StyledLink = styled.div<{ active: string | null }>`
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
   text-decoration: underline;
-  cursor: pointer;
+  cursor: ${({ active }) => (!!active ? "pointer" : "none")};
 `
 
 
