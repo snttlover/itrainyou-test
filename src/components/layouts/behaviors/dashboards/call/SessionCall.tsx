@@ -438,6 +438,7 @@ const TimeLeft = styled.div`
 `
 
 const fullscreenCSS = css`
+  position: absolute;      
   width: 100%;
   height: 100%;
   left: 0;
@@ -519,6 +520,9 @@ const fullscreenCSS = css`
     padding: 4px 20px;
     justify-content: flex-start;
   }
+  ${Footer} {
+    height: calc(12vh + 80px);  
+  }
   }
 
   @media screen and (max-width: 480px) and (orientation : portrait) {
@@ -593,7 +597,7 @@ const Container = styled.div`
     display: none;
     }
     ${Actions} {
-      bottom: 16px;
+      bottom: calc(12vh + 16px);
     }
     ${MyUserVideoPlaceholder},
     ${MyUserVideo} {
