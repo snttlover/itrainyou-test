@@ -1,8 +1,7 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { finishTopUp } from "@/lib/api/wallet/client/finish-top-up"
 import { parseQueryString } from "@/lib/helpers/query"
-import { loadCardsFx } from "@/pages/client/wallet/cards/cards.model"
-import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
+import { loadClientCardsFx } from "@/pages/client/wallet/cards/cards.model"
 import { createGate } from "@/scope"
 import { createEffect, forward, split } from "effector-root"
 
@@ -35,7 +34,7 @@ const { __: confirmFinishedSuccess } = split(confirmFx.doneData, {
 const successConfirmToast: Toast = { type: "info", text: "Кошелек пополнен" }
 forward({
   from: confirmFinishedSuccess.map(_ => successConfirmToast),
-  to: [toasts.remove, toasts.add, loadInfoFx.prepend(() => {}), loadCardsFx.prepend(() => {})],
+  to: [toasts.remove, toasts.add, loadClientCardsFx.prepend(() => {})],
 })
 
 forward({

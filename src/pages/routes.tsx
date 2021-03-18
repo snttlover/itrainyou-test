@@ -6,7 +6,6 @@ import { ResetPasswordPage } from "@/pages/auth/pages/reset-password/ResetPasswo
 import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import HomePage from "@/pages/client/home/HomePage"
 import ProfilePage from "@/pages/client/profile/ProfilePage"
-import { ClientWalletPage } from "@/pages/client/wallet/ClientWalletPage"
 import CoachBlockedPage from "@/pages/coach/blocked/CoachBlockedPage"
 import { ClientPage } from "@/pages/coach/client/ClientPage"
 import CoachClientsPage from "@/pages/coach/clients/CoachClientsPage"
@@ -106,10 +105,6 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.clientProfile(),
     exact: true,
     component: ProfilePage,
-  },
-  {
-    path: routeNames.clientWallet(),
-    component: ClientWalletPage,
   },
   {
     path: routeNames.clientSettings(),

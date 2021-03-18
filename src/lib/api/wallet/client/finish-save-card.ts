@@ -6,7 +6,7 @@ export type FinishSaveCardRequest = {
   paymentId: string
 }
 
-export type FinishSaveCardResponse = {
+export type FinishSaveClientCardResponse = {
     id: number
     client: number
     firstSixDigits: string
@@ -19,7 +19,7 @@ export type FinishSaveCardResponse = {
     isPrimary: boolean
 }
 
-export const finishSaveCard = (params: FinishSaveCardRequest): Promise<FinishSaveCardResponse> =>
+export const finishSaveClientCard = (params: FinishSaveCardRequest): Promise<FinishSaveClientCardResponse> =>
   post(`${config.BACKEND_URL}/api/v1/web/client/wallet/finish-save-card/`, keysToSnake(params))
     .then(response => response.data)
     .then(keysToCamel)

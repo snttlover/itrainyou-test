@@ -1,7 +1,7 @@
 import { combine, createEvent, createStore, forward, Store } from "effector-root"
 import { mounted, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 import { buySessionsFx } from "@/components/coach-card/select-date/select-date.model"
-import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/models/units"
+import { finishSaveClientCardFx } from "@/feature/client-funds-up/dialog/models/units"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 
 export type BookedSessionForViewType = {
@@ -29,7 +29,7 @@ $bookSessionsStatusModalVisibility.on(
     if (payload !== undefined) return payload
     return !state
   })
-  .on(finishSaveCardFx, () => true)
+  .on(finishSaveClientCardFx, () => true)
   .reset([mounted])
 
 forward({
@@ -43,6 +43,6 @@ forward({
 
 export const $buySessionsLoading = combine(
   buySessionsFx.pending,
-  finishSaveCardFx.pending,
+  finishSaveClientCardFx.pending,
   (buySessionsPending, finishSaveCardPending) => buySessionsPending || finishSaveCardPending
 )

@@ -1,13 +1,9 @@
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { useEvent, useStore } from "effector-react"
 import * as React from "react"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { $userData } from "@/feature/user/user.model"
-import { yandexRegistrationCompletedFx } from "@/pages/coach/home/coach-home.model"
 import { Icon } from "@/components/icon/Icon"
 import { WalletAddCard } from "@/pages/client/wallet/cards/WalletAddCard"
-import { AddTinkoffCardDialog } from "@/pages/coach/home/tinkoff/AddCardDialog";
+import { AddTinkoffCardDialog } from "@/pages/coach/home/tinkoff/AddCardDialog"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -88,20 +84,19 @@ const AddCardContainer = styled.div`
 `
 
 export const TinkoffApproved = () => {
-  const legalForm = useStore($userData)
-  const _sendYandexRegistration = useEvent(yandexRegistrationCompletedFx)
+
   return (
-          <>
-              <AddTinkoffCardDialog />
-    <Container>
-      <Title>Вашу анкету одобрили!</Title>
-      <LetterIcon />
-      <InterviewTitle>Привяжите карту</InterviewTitle>
-      <SubTitle>Для того, чтобы получать деньги на карту, привяжите карту.</SubTitle>
-      <AddCardContainer>
-        <WalletAddCard />
-      </AddCardContainer>
-    </Container>
-              </>
+    <>
+      <AddTinkoffCardDialog />
+      <Container>
+        <Title>Вашу анкету одобрили!</Title>
+        <LetterIcon />
+        <InterviewTitle>Привяжите карту</InterviewTitle>
+        <SubTitle>Для того, чтобы получать деньги на карту, привяжите карту.</SubTitle>
+        <AddCardContainer>
+          <WalletAddCard />
+        </AddCardContainer>
+      </Container>
+    </>
   )
 }

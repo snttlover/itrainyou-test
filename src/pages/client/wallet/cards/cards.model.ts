@@ -1,31 +1,27 @@
 import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { CardResponse, getCardsList } from "@/lib/api/wallet/client/get-cards-list"
-import { createGate } from "@/scope"
+import { CardResponse, getClientCardsList } from "@/lib/api/wallet/client/get-cards-list"
 import { createEffect, createEvent, forward, restore, split, guard } from "effector-root"
 import { deleteCard } from "@/lib/api/wallet/client/delete-card"
 import { makeCardPrimary } from "@/lib/api/wallet/client/make-card-primary"
 import { some } from "patronum"
 import { getCardSessions, CardSessionsResponse } from "@/lib/api/wallet/client/get-card-sessions"
 import { toggleDeleteCardModalDialog } from "@/pages/client/profile/profile-page.model"
+import { getCoachCardsList } from "@/lib/api/wallet/coach/get-cards-list"
 
 class DeleteCardCancelError extends Error {}
-const reset = createEvent()
 export const deletedCard = createEvent<number>()
 export const confirmDeleteCard = createEvent<number>()
 
-export const CardsTabGate = createGate()
+export const loadClientCardsFx = createEffect({
+  handler: getClientCardsList,
+})
 
-export const loadCardsFx = createEffect({
-  handler: getCardsList,
+export const loadCoachCardsFx = createEffect({
+  handler: getCoachCardsList,
 })
 
 export const getCardSessionsFx = createEffect({
   handler: getCardSessions,
-})
-
-forward({
-  from: CardsTabGate.open,
-  to: loadCardsFx,
 })
 
 export const deleteCardFx = createEffect({
@@ -45,7 +41,7 @@ forward({
 
 forward({
   from: madeCardPrimaryFx.done,
-  to: loadCardsFx,
+  to: loadClientCardsFx,
 })
 
 forward({
@@ -75,7 +71,7 @@ const { canceledCardDelete, __: cardDeleteError } = split(deleteCardFx.fail, {
 const successRemoveToast: Toast = { type: "info", text: "Карта успешно удалена" }
 forward({
   from: deleteCardFx.done.map(() => successRemoveToast),
-  to: [toasts.remove, toasts.add, loadCardsFx.prepend(() => {})],
+  to: [toasts.remove, toasts.add, loadClientCardsFx.prepend(() => {})],
 })
 
 const failedRemoveToast: Toast = { type: "error", text: "Не удалось удалить карту" }
@@ -84,14 +80,14 @@ forward({
   to: [toasts.remove, toasts.add],
 })
 
-export const $isLoading = some({ predicate: true, stores: [loadCardsFx.pending, deleteCardFx.pending] })
+export const $isLoading = some({ predicate: true, stores: [loadClientCardsFx.pending, deleteCardFx.pending] })
 
-const $cards = restore<CardResponse[]>(
-  loadCardsFx.doneData.map(data => data.results),
+const $clientCards = restore<CardResponse[]>(
+  loadClientCardsFx.doneData.map(data => data.results),
   []
 )
 
-export const $cardsListForView = $cards.map(cards =>
+export const $clientCardsListForView = $clientCards.map(cards =>
   cards.map(card => ({
     id: card.id,
     type: card.cardType,

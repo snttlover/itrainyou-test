@@ -6,7 +6,7 @@ type FinishSaveCardRequest = {
   paymentId: string
 }
 
-export const finishSaveCard = (data: FinishSaveCardRequest) =>
+export const finishSaveCoachCard = (data: FinishSaveCardRequest) =>
   post<void, FinishSaveCardRequest>(
     `${config.BACKEND_URL}/api/v1/web/coach/wallet/finish-save-card/`,
     keysToSnake(data)

@@ -6,8 +6,8 @@ import arrowIcon from "@/components/coach-card/images/arrow.svg"
 import {useEffect, useState} from "react"
 import { useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
-import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
-import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/models/units"
+import { $clientCardsListForView } from "@/pages/client/wallet/cards/cards.model"
+import { finishSaveClientCardFx } from "@/feature/client-funds-up/dialog/models/units"
 
 
 export type SetCardList = {
@@ -75,10 +75,10 @@ const TitleContainer = styled.div`
 `
 
 export const ProfileCreditCards = () => {
-  const cards = useStore($cardsListForView)
+  const cards = useStore($clientCardsListForView)
   const [isShowed, changeIsShow] = useState(false)
   const [cardList, setCardList] = useState<SetCardList[]>([])
-  const isLoading = useStore(finishSaveCardFx.pending)
+  const isLoading = useStore(finishSaveClientCardFx.pending)
 
   const toggleCards = (e: React.SyntheticEvent) => {
     if (isShowed) {
