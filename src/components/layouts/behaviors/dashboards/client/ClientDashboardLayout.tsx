@@ -1,4 +1,3 @@
-import { FundsUpDialog } from "@/feature/client-funds-up/dialog/FundsUpDialog"
 import { ConfirmationGate } from "@/feature/client-funds-up/confirmation.model"
 import { changeDashboardType } from "@/feature/dashboard/dashboard"
 import { withFullRegister } from "@/feature/user/with-full-register"
@@ -39,7 +38,6 @@ const Dashboard = styled(({ children, ...props }: DashboardTypes) => {
       <DashboardContent>
         <ClientStartedSessionDialog />
         <NoPermissionGrantedDialog />
-        <FundsUpDialog />
         <ClientTopBar />
         <ClientStartedSessionsToolbar />
         <DashboardPageWrapper>{children}</DashboardPageWrapper>

@@ -17,7 +17,6 @@ import { CoachSessionsHistory } from "@/pages/coach/profile/session-history/Coac
 import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
 import CoachSupportPage from "@/pages/coach/support/CoachSupportPage"
 import ClientSupportPage from "@/pages/client/support/ClientSupportPage"
-import CoachWalletPage from "@/pages/coach/wallet/CoachWalletPage"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
 import { ClientChatPage } from "@/pages/client/chats/chat/ClientChatPage"
 import ClientChatListPage from "@/pages/client/chats/list/ClientChatListPage"
@@ -158,10 +157,6 @@ export const ROUTES: RouteConfig[] = [
         <SettingsPage />
       </CoachDashboardLayout>
     ),
-  },
-  {
-    path: routeNames.coachWallet(),
-    component: CoachWalletPage,
   },
   {
     path: routeNames.coachClients(),

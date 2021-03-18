@@ -1,25 +1,14 @@
 import { attach, forward, guard, sample, split } from "effector-root"
 import {
-  $canSubmit,
-  $fundUpForm,
   $redirectUrl,
   addCard,
-  changeShowFundUpDialog,
-  coachFailMessage,
   deletePaymentIdFx,
-  failCardMessage,
-  failMessageUnknown,
   finishSaveCardFx,
-  FundUpModalGate,
   getPaymentIdFx,
   loadSessionsIdFx,
-  resetFundUpModal,
   setRedirectUrl,
   startSaveCardFx,
-  startTopUpFx,
-  submitFundUp,
   successfulAddedCard,
-  successMessage,
   unsuccessfulAddedCard
 } from "@/feature/client-funds-up/dialog/models/units"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
@@ -29,42 +18,6 @@ import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
 import { $sessionsPickerStore, mounted as CoachByIdMounted } from "@/pages/search/coach-by-id/models/units"
 import { routeNames } from "@/pages/route-names"
 import { mounted as homeMounted } from "@/pages/client/home/home.model.ts"
-import { isAxiosError } from "@/lib/network/network"
-import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
-
-const { failedTopUpFromCoach, failedTopUpWithCard, __: failedTopUpUnknown } = split(startTopUpFx.fail, {
-  failedTopUpFromCoach: ({ params, error }) =>
-    params.type === "coach" && isAxiosError(error) && error.response?.status === 400,
-  failedTopUpWithCard: ({ params, error }) =>
-    params.type === "card" && isAxiosError(error) && error.response?.status === 400,
-})
-
-forward({
-  from: failedTopUpFromCoach.map(_ => coachFailMessage),
-  to: [toasts.remove, toasts.add],
-})
-
-forward({
-  from: failedTopUpWithCard.map(_ => failCardMessage),
-  to: [toasts.remove, toasts.add],
-})
-
-forward({
-  from: failedTopUpUnknown.map(_ => failMessageUnknown),
-  to: [toasts.remove, toasts.add],
-})
-
-forward({
-  from: startTopUpFx.doneData.map(_ => successMessage),
-  to: [
-    toasts.remove,
-    toasts.add,
-    changeShowFundUpDialog.prepend(_ => false),
-    resetFundUpModal.prepend(_ => {}),
-    loadInfoFx.prepend(() => {}),
-    loadCardsFx.prepend(() => {}),
-  ],
-})
 
 forward({
   from: finishSaveCardFx.fail.map(({params,error}) => unsuccessfulAddedCard),
@@ -122,12 +75,6 @@ sample({
   target: startSaveCardFx,
 })
 
-sample({
-  clock: guard({ source: submitFundUp, filter: $canSubmit }),
-  source: $fundUpForm,
-  target: startTopUpFx,
-})
-
 forward({
   from: finishSaveCardFx.doneData,
   to: attach({
@@ -149,15 +96,5 @@ guard({
   }) => {
     return response
   }),
-})
-
-forward({
-  from: FundUpModalGate.open,
-  to: resetFundUpModal,
-})
-
-sample({
-  clock: FundUpModalGate.open,
-  source: $userHasCoach,
 })
 
