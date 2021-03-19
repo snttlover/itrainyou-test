@@ -4,6 +4,13 @@ import * as React from "react"
 import { Icon } from "@/components/icon/Icon"
 import { WalletAddCard } from "@/pages/client/wallet/cards/WalletAddCard"
 import { AddTinkoffCardDialog } from "@/pages/coach/home/tinkoff/AddCardDialog"
+import { $coachCardsListForView } from "@/pages/client/wallet/cards/cards.model"
+import { CreditCardsList } from "@/pages/client/profile/content/credit-cards/CreditCardsList"
+import {useStore} from "effector-react"
+import { finishSaveCoachCardFx } from "@/feature/client-funds-up/dialog/models/units"
+import { Loader } from "@/components/spinner/Spinner"
+import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { useHistory } from "react-router-dom"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -83,7 +90,19 @@ const AddCardContainer = styled.div`
   `}
 `
 
+const StyledButton = styled(DashedButton)`
+    font-size: 16px;
+    line-height: 24px;
+    width: 220px;
+    padding: 2px 10px;
+    margin-top: 40px;
+    align-self: flex-end;
+`
+
 export const TinkoffApproved = () => {
+  const isLoading = useStore(finishSaveCoachCardFx.pending)
+  const cards = useStore($coachCardsListForView)
+  const history = useHistory()
 
   return (
     <>
@@ -94,8 +113,10 @@ export const TinkoffApproved = () => {
         <InterviewTitle>Привяжите карту</InterviewTitle>
         <SubTitle>Для того, чтобы получать деньги на карту, привяжите карту.</SubTitle>
         <AddCardContainer>
-          <WalletAddCard />
+          {cards.length === 0 ? <WalletAddCard /> : null }
+          {!isLoading ? <CreditCardsList list={cards} show={true} userType={"coach"} /> : <Loader />}
         </AddCardContainer>
+        <StyledButton onClick={() => history.push("/coach")} disabled={cards.length === 0}> Завершить регистрацию</StyledButton>
       </Container>
     </>
   )

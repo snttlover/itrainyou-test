@@ -133,7 +133,7 @@ export const ProfileCreditCards = () => {
             <Title>Привязанные карты</Title>
             <Arrow reverse={isShowed} onClick={toggleCards} />
           </TitleContainer>
-          <CreditCardsList list={cardList} show={isShowed} />
+          <CreditCardsList list={cardList} show={isShowed} userType={"client"} />
         </Cards>
         : <Loader /> }
     </Container>
