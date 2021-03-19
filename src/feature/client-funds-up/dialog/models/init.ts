@@ -25,18 +25,6 @@ import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.m
 
 forward({
   from: [
-    finishSaveClientCardFx.fail.map(({params,error}) => unsuccessfulAddedCard),
-    finishSaveCoachCardFx.fail.map(({params,error}) => unsuccessfulAddedCard)
-  ],
-  to: [
-    toasts.remove,
-    toasts.add,
-    deletePaymentIdFx.prepend(() => {}),
-  ],
-})
-
-forward({
-  from: [
     finishSaveClientCardFx.doneData.map(_ => successfulAddedCard),
     finishSaveCoachCardFx.doneData.map(_ => successfulAddedCard)
   ],
@@ -44,6 +32,26 @@ forward({
     toasts.remove,
     toasts.add,
     loadClientCardsFx.prepend(() => {}),
+    loadCoachCardsFx.prepend(() => {}),
+    deletePaymentIdFx.prepend(() => {}),
+  ],
+})
+
+forward({
+  from: finishSaveClientCardFx.doneData.map(_ => successfulAddedCard),
+  to: [
+    toasts.remove,
+    toasts.add,
+    loadClientCardsFx.prepend(() => {}),
+    deletePaymentIdFx.prepend(() => {}),
+  ],
+})
+
+forward({
+  from: finishSaveCoachCardFx.doneData.map(_ => successfulAddedCard),
+  to: [
+    toasts.remove,
+    toasts.add,
     loadCoachCardsFx.prepend(() => {}),
     deletePaymentIdFx.prepend(() => {}),
   ],
@@ -64,18 +72,13 @@ startSaveCoachCardFx.doneData.watch((response) => {
 })
 
 forward({
-  from: [ClientProfileGate.open, CoachByIdMounted, homeMounted, CoachHomeGate.open],
-  to: getPaymentIdFx,
-})
-
-/*forward({
   from: CoachHomeGate.open,
-  to: loadCoachCardsFx.prepend(() => {}),
-})*/
+  to: [getPaymentIdFx,loadCoachCardsFx.prepend(() => {})],
+})
 
 forward({
   from: [ClientProfileGate.open, CoachByIdMounted, homeMounted],
-  to: loadClientCardsFx.prepend(() => {}),
+  to: [loadClientCardsFx.prepend(() => {}),getPaymentIdFx]
 })
 
 forward({
