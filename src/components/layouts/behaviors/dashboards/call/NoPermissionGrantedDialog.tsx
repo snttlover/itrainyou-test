@@ -153,7 +153,7 @@ const StyledLink = styled.div<{ active: string | null }>`
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
   text-decoration: underline;
-  cursor: ${({ active }) => (!!active ? "pointer" : "none")};
+  cursor: ${({ active }) => (!!active ? "pointer" : "default")};
 `
 
 

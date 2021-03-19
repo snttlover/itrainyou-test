@@ -22,6 +22,10 @@ export const loadSessionsIdFx = createEffect({
   }
 })
 
+export const reportUnknownTypeFx = createEffect({
+  handler: (response: any) => console.log("UnknownTypeOfpaymentId", response),
+})
+
 export const startSaveClientCardFx = createEffect({
   handler: (params: StartSaveClientCardParams) => startSaveClientCard({returnUrl: params.returnUrl, coach: params.coach})
 })

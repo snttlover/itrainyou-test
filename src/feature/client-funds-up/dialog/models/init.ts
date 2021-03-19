@@ -12,10 +12,11 @@ import {
   startSaveCoachCardFx,
   successfulAddedCard,
   unsuccessfulAddedCard,
+  reportUnknownTypeFx,
   PAYMENT_KEY
 } from "@/feature/client-funds-up/dialog/models/units"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { loadClientCardsFx } from "@/pages/client/wallet/cards/cards.model"
+import { loadClientCardsFx, loadCoachCardsFx } from "@/pages/client/wallet/cards/cards.model"
 import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
 import { $sessionsPickerStore, mounted as CoachByIdMounted } from "@/pages/search/coach-by-id/models/units"
 import { routeNames } from "@/pages/route-names"
@@ -43,6 +44,7 @@ forward({
     toasts.remove,
     toasts.add,
     loadClientCardsFx.prepend(() => {}),
+    loadCoachCardsFx.prepend(() => {}),
     deletePaymentIdFx.prepend(() => {}),
   ],
 })
@@ -61,19 +63,19 @@ startSaveCoachCardFx.doneData.watch((response) => {
   return
 })
 
-/*
-const stringData = localStorage.getItem(REGISTER_SAVE_KEY)
-    return JSON.parse(stringData!).clientData
- */
+forward({
+  from: [ClientProfileGate.open, CoachByIdMounted, homeMounted, CoachHomeGate.open],
+  to: getPaymentIdFx,
+})
 
-/*
-const data = JSON.stringify(socialNetworkName)
-    localStorage.setItem(SOCIAL_NETWORK_SAVE_KEY, data)
- */
+/*forward({
+  from: CoachHomeGate.open,
+  to: loadCoachCardsFx.prepend(() => {}),
+})*/
 
 forward({
-  from: [ClientProfileGate.open, CoachByIdMounted, homeMounted,CoachHomeGate.open],
-  to: getPaymentIdFx,
+  from: [ClientProfileGate.open, CoachByIdMounted, homeMounted],
+  to: loadClientCardsFx.prepend(() => {}),
 })
 
 forward({
@@ -86,12 +88,6 @@ forward({
   to: setRedirectUrl,
 })
 
-/*guard({
-  source: getPaymentIdFx.doneData,
-  filter: paymentId => paymentId !== null,
-  target: finishSaveCardFx,
-})*/
-
 split({
   source: getPaymentIdFx.doneData,
   match: {
@@ -101,18 +97,9 @@ split({
   cases: {
     client: finishSaveClientCardFx,
     coach: finishSaveCoachCardFx,
+    __: reportUnknownTypeFx,
   }
 })
-
-/*sample({
-  clock: addCard,
-  source: $redirectUrl,
-  fn: (url, id) => (id ? {
-    returnUrl: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ""}${url}`,
-    coach: id
-  } : {returnUrl: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ""}${url}`,}),
-  target: startSaveCardFx,
-})*/
 
 const splitAddCard = sample({ 
   clock: addCard,
@@ -138,18 +125,6 @@ forward({
   to: startSaveCoachCardFx,
 })
 
-/*split({
-  source: addCard,
-  match: {
-    client: payload => !!payload === true,
-    coach: payload => !payload === true,
-  },
-  cases: {
-    client: startSaveClientCardFx,
-    coach: startSaveCoachCardFx,
-  }
-})*/
-
 forward({
   from: finishSaveClientCardFx.doneData,
   to: attach({
@@ -159,34 +134,6 @@ forward({
     },
   }),
 })
-
-/*guard({
-  source: finishSaveClientCardFx.doneData,
-  filter: response => !!response,
-  target: attach({
-    effect: loadSessionsIdFx,
-    mapParams: (response: FinishSaveClientCardResponse) => {
-      return  response.id
-    },
-  }),
-})*/
-
-/*split({
-  source: finishSaveCardFx.doneData,
-  match: {
-    client: (response) => !!response,
-    coach: (response) => !response,  
-  },
-  cases: {
-    client: attach({
-      effect: loadSessionsIdFx,
-      mapParams: response => {
-        return  response.id
-      },
-    }),  
-    coach: console.log,
-  }
-})*/
 
 guard({
   source: loadSessionsIdFx.doneData,

@@ -141,26 +141,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     handler: (response: any) => console.log("reportUnknownType", response),
   })
 
-  /*const $needConnect = combine(
-    $isLoggedIn,
-    $userData,
-    $isFullRegistered,
-    (l,user) => l && !!user && (userType !== "coach" || !!user.coach)
-  )*/
-
-  /*const connect = guard({
-    source: $token,
-    filter: $needConnect,
-    target: socket.methods.connect.prepend((data: string)=>{
-      if(userType === "support") {
-        return getChatSocketLink(userType, data, query)
-      }
-      else {
-        return data
-      }
-    }),
-  })*/
-
   const connect = guard({
     source: $token,
     filter: $needConnect,
