@@ -54,7 +54,7 @@ const getCoachState = ({
   if (access.isForeverRejected) return "forever-rejected"
   if (access.isTemporarilyRejected && datetimeLeft.days > 0) return "temporary-rejected-wait"
   if (access.isTemporarilyRejected && datetimeLeft.days <= 0) return "temporary-rejected-done"
-  if (access.isProfileFilled && !access.isApplicationApproved && access.paymentSystem === "TINKOFF") return "tinkoff"
+  if (access.isProfileFilled && !access.isApproved && access.isApplicationApproved && access.paymentSystem === "TINKOFF") return "tinkoff"
   if (access.isProfileFilled && !access.isApplicationApproved && access.paymentSystem === "YOU_KASSA") return "approve-wait"
 
   return "profile-fill"

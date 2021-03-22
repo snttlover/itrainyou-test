@@ -10,7 +10,6 @@ import {useStore} from "effector-react"
 import { finishSaveCoachCardFx } from "@/feature/client-funds-up/dialog/models/units"
 import { Loader } from "@/components/spinner/Spinner"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { useHistory } from "react-router-dom"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -71,6 +70,7 @@ const SubTitle = styled.div`
     line-height: 24px;
     text-align: center;
     color: #5B6670;
+    margin-bottom: 24px;
 
     ${MediaRange.lessThan("mobile")`
     font-size: 14px;
@@ -102,7 +102,6 @@ const StyledButton = styled(DashedButton)`
 export const TinkoffApproved = () => {
   const isLoading = useStore(finishSaveCoachCardFx.pending)
   const cards = useStore($coachCardsListForView)
-  const history = useHistory()
 
   return (
     <>
@@ -116,7 +115,7 @@ export const TinkoffApproved = () => {
           {cards.length === 0 ? <WalletAddCard /> : null }
           {!isLoading ? <CreditCardsList list={cards} show={true} userType={"coach"} /> : <Loader />}
         </AddCardContainer>
-        <StyledButton onClick={() => history.push("/coach")} disabled={cards.length === 0}> Завершить регистрацию</StyledButton>
+        <StyledButton onClick={() => document.location.reload()} disabled={cards.length === 0}> Завершить регистрацию</StyledButton>
       </Container>
     </>
   )
