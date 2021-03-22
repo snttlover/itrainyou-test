@@ -144,7 +144,7 @@ export const ProfileCreditCards = (props: {userType: "client" | "coach"}) => {
             <Title>Привязанные карты</Title>
             <Arrow reverse={isShowed} onClick={toggleCards} />
           </TitleContainer>
-          <CreditCardsList list={cardList} show={isShowed} userType={"client"} />
+          <CreditCardsList list={cardList} show={isShowed} userType={props.userType} />
         </Cards>
         : <Loader /> }
     </Container>
