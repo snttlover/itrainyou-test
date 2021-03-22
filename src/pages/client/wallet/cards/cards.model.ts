@@ -9,6 +9,7 @@ import { some } from "patronum"
 import { getCardSessions, CardSessionsResponse } from "@/lib/api/wallet/client/get-card-sessions"
 import { toggleDeleteCardModalDialog } from "@/pages/client/profile/profile-page.model"
 import { getCoachCardsList } from "@/lib/api/wallet/coach/get-cards-list"
+import { SessionsHistoryGate } from "@/pages/coach/profile/session-history/sessions-history.model"
 
 class DeleteCardCancelError extends Error {}
 export const deletedClientCard = createEvent<number>()
@@ -65,7 +66,7 @@ forward({
 })
 
 forward({
-  from: madeCoachCardPrimaryFx.done,
+  from: [madeCoachCardPrimaryFx.done, SessionsHistoryGate.open],
   to: loadCoachCardsFx,
 })
 

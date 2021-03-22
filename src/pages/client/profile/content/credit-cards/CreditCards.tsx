@@ -3,11 +3,12 @@ import styled from "styled-components"
 import { CreditCardsList } from "./CreditCardsList"
 import { MediaRange } from "@/lib/responsive/media"
 import arrowIcon from "@/components/coach-card/images/arrow.svg"
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import { useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
-import { $clientCardsListForView } from "@/pages/client/wallet/cards/cards.model"
-import { finishSaveClientCardFx } from "@/feature/client-funds-up/dialog/models/units"
+import { $clientCardsListForView, $coachCardsListForView } from "@/pages/client/wallet/cards/cards.model"
+import { finishSaveClientCardFx, finishSaveCoachCardFx } from "@/feature/client-funds-up/dialog/models/units"
+import { Store } from "effector-root"
 
 
 export type SetCardList = {
@@ -74,16 +75,26 @@ const TitleContainer = styled.div`
     margin-bottom: 10px;
 `
 
-export const ProfileCreditCards = () => {
-  const cards = useStore($clientCardsListForView)
+type CardType = {
+    id: number
+    type: string
+    cardEnd: string
+    expireDate: string
+    isPrimary: boolean
+}
+
+export const ProfileCreditCards = (props: {userType: "client" | "coach"}) => {
+  let cards: CardType[]
+  props.userType === "client" ? cards = useStore($clientCardsListForView) : cards = useStore($coachCardsListForView)
   const [isShowed, changeIsShow] = useState(false)
   const [cardList, setCardList] = useState<SetCardList[]>([])
-  const isLoading = useStore(finishSaveClientCardFx.pending)
+  let isLoading: boolean
+  props.userType === "client" ? isLoading = useStore(finishSaveClientCardFx.pending) : isLoading = useStore(finishSaveClientCardFx.pending)
 
   const toggleCards = (e: React.SyntheticEvent) => {
     if (isShowed) {
       if (cards.length > 0) {
-        const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+        const primaryCard = cards.find((card: CardType) => card.isPrimary) || cards[0]
         setCardList([primaryCard])
       }
       else {
@@ -91,7 +102,7 @@ export const ProfileCreditCards = () => {
       }
     }
     else {
-      const primaryCard = cards.find(card => card.isPrimary)
+      const primaryCard = cards.find((card: CardType) => card.isPrimary)
       if (primaryCard) {
         const changedArrayOfCards = cards
         changedArrayOfCards.splice(cards.indexOf(primaryCard), 1)
@@ -108,14 +119,14 @@ export const ProfileCreditCards = () => {
   useEffect(() => {
     if (cards.length > 0) {
       if (cards.length === cardList.length) {
-        const primaryCard = cards.find(card => card.isPrimary)
+        const primaryCard = cards.find((card: CardType) => card.isPrimary)
         const newCardList = cardList.map(card => (primaryCard && card.id === primaryCard.id ? {
           ...card,
           isPrimary: true
         } : {...card, isPrimary: false}))
         isShowed ? setCardList(newCardList) : (primaryCard ? setCardList([primaryCard]) : setCardList([cards[0]]))
       } else {
-        const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+        const primaryCard = cards.find((card: CardType) => card.isPrimary) || cards[0]
         isShowed ? setCardList(cards) : setCardList([primaryCard])
       }
     }

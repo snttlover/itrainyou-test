@@ -36,7 +36,7 @@ const ProfilePage = () => {
         <Container>
           <ProfileHeader />
           <ProfileInterests />
-          <ProfileCreditCards />
+          <ProfileCreditCards userType={"client"} />
           {sessionsCount && <IndividualSessions />}
           <ProfileCoachButton />
           <DeleteModalDialog />

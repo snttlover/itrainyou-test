@@ -48,14 +48,14 @@ const getCoachState = ({
   access: InferStoreType<typeof $coachAccess>
   datetimeLeft: InferStoreType<typeof $datetimeLeft>
 }): CoachState => {
-  if (access.isApproved && (access.paymentSystem === "YOU_KASSA" || access.paymentSystem === "TINKOFF")) return "approved"
+  if (access.isApproved) return "approved"
   if (!access.isApproved && access.isApplicationApproved && access.isYandexRegistrationCompleted && access.paymentSystem === "YOU_KASSA") return "yandex-kassa-completed"
   if (!access.isApproved && access.isApplicationApproved && !access.isYandexRegistrationApproved && access.paymentSystem === "YOU_KASSA") return "yandex-kassa-not-approved"
   if (access.isForeverRejected) return "forever-rejected"
   if (access.isTemporarilyRejected && datetimeLeft.days > 0) return "temporary-rejected-wait"
   if (access.isTemporarilyRejected && datetimeLeft.days <= 0) return "temporary-rejected-done"
   if (!access.isApproved && access.isProfileFilled && access.isApplicationApproved && access.paymentSystem === "TINKOFF") return "tinkoff"
-  if (access.isProfileFilled && !access.isApplicationApproved && (access.paymentSystem === "YOU_KASSA" || access.paymentSystem === "TINKOFF")) return "approve-wait"
+  if (access.isProfileFilled && !access.isApplicationApproved) return "approve-wait"
 
   return "profile-fill"
 }

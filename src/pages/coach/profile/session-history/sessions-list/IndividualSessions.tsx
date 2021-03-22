@@ -31,12 +31,14 @@ const Container = styled.div`
 `
 
 const Title = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #5b6670;
-  text-align: center;
-  margin-bottom: 10px;
+    font-family: Roboto Slab;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+    color: #424242;
+    text-align: left;
+    margin-bottom: 25px;
   ${MediaRange.lessThan("mobile")`
     font-size: 12px;
     line-height: 16px;
@@ -92,7 +94,7 @@ export const IndividualSessions = () => {
 
   return (
     <Container>
-      <Title>История сессий</Title>
+      <Title>История платежей</Title>
       <ListContainer>
         {sessions.length === 0 && !pending && <SessionsEmpty>Нет сессий</SessionsEmpty>}
         <InfiniteScroll

@@ -4,6 +4,7 @@ import { IndividualSessions } from "@/pages/coach/profile/session-history/sessio
 import React from "react"
 import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ProfileCreditCards } from "@/pages/client/profile/content/credit-cards/CreditCards"
 
 export const CoachSessionsHistory = () => (
   <CoachDashboardLayout>
@@ -11,6 +12,7 @@ export const CoachSessionsHistory = () => (
       <TabsContainer>
         <ProfileTabs />
       </TabsContainer>
+      <ProfileCreditCards userType={"coach"} />
       <IndividualSessions />
     </ContentContainer>
   </CoachDashboardLayout>

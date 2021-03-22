@@ -29,7 +29,7 @@ export const CreditCardsList = (props: CreditCardsProps) => {
           <StyledWalletCard key={`${index}`} showed={props.show} {...card} userType={props.userType} />
         ))}
       </CardsContainer>
-      {/*props.show || props.list.length === 0 ? <WalletAddCard /> : null*/}
+      {props.userType === "coach" ? <WalletAddCard /> : null}
     </>
   )
 }

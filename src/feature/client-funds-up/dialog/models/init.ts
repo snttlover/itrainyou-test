@@ -94,8 +94,8 @@ forward({
 split({
   source: getPaymentIdFx.doneData,
   match: {
-    client: payload => payload.type === "client",
-    coach: payload => payload.type === "coach",
+    client: payload => !!payload && payload.type === "client",
+    coach: payload => !!payload && payload.type === "coach",
   },
   cases: {
     client: finishSaveClientCardFx,
