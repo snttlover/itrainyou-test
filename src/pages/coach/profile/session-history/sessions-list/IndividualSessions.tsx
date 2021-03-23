@@ -40,8 +40,8 @@ const Title = styled.div`
     text-align: left;
     margin-bottom: 25px;
   ${MediaRange.lessThan("mobile")`
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 16px;
+    line-height: 24px;
   `}
 `
 

@@ -95,6 +95,10 @@ const MobileGroup = styled.div`
 const StyledButton = styled(Button)`
   background: #ffffff;
   border: 1px solid ${({ theme }) => theme.colors.primary};
+
+    ${MediaRange.lessThan("mobile")`
+     padding: 2px 16px; 
+    `}
 `
 
 export const WalletAddCard = () => {

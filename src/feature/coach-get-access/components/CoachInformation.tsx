@@ -1,6 +1,6 @@
 import { Button } from "@/components/button/normal/Button"
 import { Icon } from "@/components/icon/Icon"
-import { RegisterSteps } from "@/components/register-steps/RegisterSteps"
+import { YandexRegisterSteps } from "@/components/register-steps/YandexRegisterSteps"
 import { Loader } from "@/components/spinner/Spinner"
 import { $categoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import {
@@ -115,7 +115,7 @@ const LoaderContainer = styled.div`
   align-items: center;
 `
 
-const StyledRegisterSteps = styled(RegisterSteps)`
+const StyledRegisterSteps = styled(YandexRegisterSteps)`
   margin-top: 52px;
   margin-bottom: 24px;
   display: none;
