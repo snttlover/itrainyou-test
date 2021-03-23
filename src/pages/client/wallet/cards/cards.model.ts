@@ -105,6 +105,11 @@ forward({
   to: [toasts.remove, toasts.add, loadClientCardsFx.prepend(() => {})],
 })
 
+forward({
+  from: deleteCoachCardFx.done.map(() => successRemoveToast),
+  to: [toasts.remove, toasts.add, loadCoachCardsFx.prepend(() => {})],
+})
+
 const failedRemoveToast: Toast = { type: "error", text: "Не удалось удалить карту" }
 forward({
   from: cardDeleteError.map(() => failedRemoveToast),
