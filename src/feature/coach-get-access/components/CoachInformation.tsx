@@ -252,7 +252,7 @@ export const CoachInformation = ({
           <CheckStepIcon checkstep={"checkstep2"} />
           <CheckStepArrow />
           <CheckStep description='Вы зарегистрируетесь в ЮKassa' />
-          <CheckStepIcon checkstep={"checkstep3"} />
+          <CheckStepIcon checkstep={"checkstep3-yandex"} />
           <CheckStepArrow />
           <CheckStep description='Вы получите доступ к платформе' />
           <CheckStepIcon checkstep={"checkstep4"} />
