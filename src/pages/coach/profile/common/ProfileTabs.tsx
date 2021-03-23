@@ -38,7 +38,7 @@ export const ProfileTabs = () => (
       Профиль
     </Tab>
     <Tab exact to={routeNames.coachSessionsHistory()}>
-      Карты и платежи
+      Платежные данные
     </Tab>
   </TabsContainer>
 )

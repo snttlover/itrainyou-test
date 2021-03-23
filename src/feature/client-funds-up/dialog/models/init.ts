@@ -26,19 +26,8 @@ import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.m
 forward({
   from: [
     finishSaveClientCardFx.doneData.map(_ => successfulAddedCard),
-    finishSaveCoachCardFx.doneData.map(_ => successfulAddedCard)
+    finishSaveClientCardFx.fail.map(({params,error}) => unsuccessfulAddedCard)
   ],
-  to: [
-    toasts.remove,
-    toasts.add,
-    loadClientCardsFx.prepend(() => {}),
-    loadCoachCardsFx.prepend(() => {}),
-    deletePaymentIdFx.prepend(() => {}),
-  ],
-})
-
-forward({
-  from: finishSaveClientCardFx.doneData.map(_ => successfulAddedCard),
   to: [
     toasts.remove,
     toasts.add,
@@ -48,7 +37,10 @@ forward({
 })
 
 forward({
-  from: finishSaveCoachCardFx.doneData.map(_ => successfulAddedCard),
+  from: [
+    finishSaveCoachCardFx.doneData.map(_ => successfulAddedCard),
+    finishSaveCoachCardFx.fail.map(({params,error}) => unsuccessfulAddedCard)
+  ],
   to: [
     toasts.remove,
     toasts.add,

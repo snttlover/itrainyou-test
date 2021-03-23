@@ -8,7 +8,6 @@ import { useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
 import { $clientCardsListForView, $coachCardsListForView } from "@/pages/client/wallet/cards/cards.model"
 import { finishSaveClientCardFx, finishSaveCoachCardFx } from "@/feature/client-funds-up/dialog/models/units"
-import { Store } from "effector-root"
 
 
 export type SetCardList = {
@@ -19,8 +18,8 @@ export type SetCardList = {
     isPrimary: boolean
 }
 
-const Container = styled.div`
-  padding-right: 140px;
+const Container = styled.div<{userType: "client" | "coach"}>`
+  padding-right: ${({userType}) => userType === "client" ? "140px" : "0"};
   width: 100%;
   margin-top: 32px;
   position: relative;
@@ -89,7 +88,7 @@ export const ProfileCreditCards = (props: {userType: "client" | "coach"}) => {
   const [isShowed, changeIsShow] = useState(false)
   const [cardList, setCardList] = useState<SetCardList[]>([])
   let isLoading: boolean
-  props.userType === "client" ? isLoading = useStore(finishSaveClientCardFx.pending) : isLoading = useStore(finishSaveClientCardFx.pending)
+  props.userType === "client" ? isLoading = useStore(finishSaveClientCardFx.pending) : isLoading = useStore(finishSaveCoachCardFx.pending)
 
   const toggleCards = (e: React.SyntheticEvent) => {
     if (isShowed) {
@@ -137,7 +136,7 @@ export const ProfileCreditCards = (props: {userType: "client" | "coach"}) => {
   },[cards])
 
   return (
-    <Container>
+    <Container userType={props.userType}>
       {!isLoading ?
         <Cards>
           <TitleContainer>

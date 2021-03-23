@@ -2,7 +2,6 @@ import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import { Icon } from "@/components/icon/Icon"
-import { WalletAddCard } from "@/pages/client/wallet/cards/WalletAddCard"
 import { AddTinkoffCardDialog } from "@/pages/coach/home/tinkoff/AddCardDialog"
 import { $coachCardsListForView } from "@/pages/client/wallet/cards/cards.model"
 import { CreditCardsList } from "@/pages/client/profile/content/credit-cards/CreditCardsList"
@@ -112,7 +111,6 @@ export const TinkoffApproved = () => {
         <InterviewTitle>Привяжите карту</InterviewTitle>
         <SubTitle>Для того, чтобы получать деньги на карту, привяжите карту.</SubTitle>
         <AddCardContainer>
-          {cards.length === 0 ? <WalletAddCard /> : null }
           {!isLoading ? <CreditCardsList list={cards} show={true} userType={"coach"} /> : <Loader />}
         </AddCardContainer>
         <StyledButton onClick={() => document.location.reload()} disabled={cards.length === 0}> Завершить регистрацию</StyledButton>
