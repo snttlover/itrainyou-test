@@ -92,10 +92,14 @@ const AddCardContainer = styled.div`
 const StyledButton = styled(DashedButton)`
     font-size: 16px;
     line-height: 24px;
-    width: 220px;
+    width: 240px;
     padding: 2px 10px;
     margin-top: 40px;
     align-self: flex-end;
+    
+    ${MediaRange.lessThan("mobile")`
+        padding: 2px 6px;
+    `}
 `
 
 export const TinkoffApproved = () => {
