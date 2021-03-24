@@ -135,6 +135,26 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(config.socket.methods.userLeftSession)
 
+  const checkCompatibilityFx = createEffect({
+    handler: () => {
+      if (agoraLib) {
+        const isAgora = agoraLib.checkSystemRequirements()
+        return isAgora
+      }
+    }
+  })
+  /*
+    try {
+          const isAgora = agoraLib.checkSystemRequirements()
+          console.log("teeeeeest",isAgora)
+          const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true})
+        } catch (e) {
+          console.log("getUserMedia",e.name)
+        }
+     */
+
+  const $compatibility = createStore(false).on(checkCompatibilityFx.doneData, (_,payload) => payload)
+
   const initAgoraFx = createEffect({
     handler: () => {
       if (agoraLib) {
@@ -187,6 +207,12 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     source: $isClient,
     filter: $isClient,
     target: initAgoraFx.prepend(() => {}),
+  })
+
+  guard({
+    source: $isClient,
+    filter: $isClient,
+    target: checkCompatibilityFx.prepend(() => {}),
   })
 
   const agoraData: Agora = {
@@ -449,6 +475,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       $self,
       $interlocutor,
       $time,
+      $compatibility,
       $userGrantedPermission,
       dashboardType: config.dashboard
     },

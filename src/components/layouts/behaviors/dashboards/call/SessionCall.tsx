@@ -7,6 +7,7 @@ import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 import { trackMouse } from "@/components/mouse-tracking/track-mouse"
 import { togglePermissionGrantedModal, changeModalInfo } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { NotCompatibleDialog } from "@/components/layouts/behaviors/dashboards/call/NotCompatibleDialog"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
   return () => {
@@ -15,6 +16,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     const visibility = useStore($module.data.$callsVisibility)
     const permission = useStore($module.data.$userGrantedPermission)
+    const compatibility = useStore($module.data.$compatibility)
 
     const [userActive, changeUserActivity] = useState(true)
 
@@ -90,6 +92,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     return (
       <div ref={videoCallRef}>
+        <NotCompatibleDialog visibility={!compatibility && self.fullscreen} />
         <Container
           data-interlocutor-is-connected={interlocutor.connected}
           data-interlocutor-was-connected={interlocutor.wasConnected}
