@@ -30,6 +30,6 @@ export interface CoachReviewResponse {
 }
 
 export const getCoachReviews = ({ id }: { id: number }) =>
-  get<Pagination<CoachReviewResponse>>(`${config.BACKEND_URL}/api/v1/web/coaches/${id}/reviews/`)
+  get<Pagination<CoachReviewResponse>>(`${config.BACKEND_URL}/api/v1/web/coaches/me/reviews/`)
     .then(response => response.data)
     .then(keysToCamel)

@@ -202,9 +202,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           credentials.token,
           credentials.channelName,
           credentials.userAccount,
+          undefined,
 
           // create streams
-          // @ts-ignore
           (uid:number) => {
             agoraData.localStream = agoraLib.createStream({
               streamID: credentials.userAccount,
