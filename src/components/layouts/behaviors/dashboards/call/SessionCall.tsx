@@ -92,7 +92,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     return (
       <div ref={videoCallRef}>
-        <NotCompatibleDialog visibility={!compatibility && self.fullscreen} />
+        <NotCompatibleDialog visibility={!compatibility} />
         <Container
           data-interlocutor-is-connected={interlocutor.connected}
           data-interlocutor-was-connected={interlocutor.wasConnected}

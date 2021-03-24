@@ -9,7 +9,6 @@ export const NotCompatibleDialog = (props: any) => {
 
   const [showed,setShowed] = useState(true)
 
-    
   return (
     <StyledDialog value={props.visibility && showed} onChange={(val) => setShowed(false)}>
       <ModalWrapper>
