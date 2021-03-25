@@ -19,8 +19,8 @@ stages:
     - docker build -t $IMAGE -t $LATEST_IMAGE -t $HEROKU_IMAGE .
     - docker push $IMAGE
     - docker push $LATEST_IMAGE
-    - docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com
-    - docker push $HEROKU_IMAGE
+    - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+    - docker push registry.heroku.com/itrainnew-frontend/web
 
 build:
   extends: .build
@@ -39,8 +39,8 @@ deploy-dev:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     IMAGE_NAME: itrainyoufrontend
   script:
-    - docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com
-    - docker run --rm -e HEROKU_API_KEY=${HEROKU_API_KEY} wingrunr21/alpine-heroku-cli container:release web --app $IMAGE_NAME
+    - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $IMAGE_NAME
   only:
     - development
   when: manual
