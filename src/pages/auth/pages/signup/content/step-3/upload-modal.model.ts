@@ -6,6 +6,7 @@ import { combineEvents } from "patronum"
 export const uploadImage = createEvent<File | Blob>()
 export const uploadOriginalAvatar = createEvent<File | Blob>()
 const uploadPercentChanged = createEvent<number>()
+const uploadOriginalAvatarPercentChanged = createEvent<number>()
 
 export const uploadImageFx = createEffect({
   handler: (file: File | Blob) => {
@@ -29,7 +30,7 @@ export const uploadOriginalAvatarFx = createEffect({
         file,
       },
       (pe: ProgressEvent) => {
-        uploadPercentChanged(Math.round((pe.loaded * 100) / pe.total))
+        uploadOriginalAvatarPercentChanged(Math.round((pe.loaded * 100) / pe.total))
       }
     )
   },
@@ -38,8 +39,9 @@ export const uploadOriginalAvatarFx = createEffect({
 const waitAllEvents = combineEvents({ events: [uploadImageFx.done, uploadOriginalAvatarFx.done] })
 
 export const $uploadPercent = createStore(0)
-  .on(uploadPercentChanged, (state, payload) => payload)
-  .reset(uploadImageFx.finally)
+  .on(uploadPercentChanged, (state, payload) => (state + payload)/2)
+  .on(uploadOriginalAvatarPercentChanged, (state,payload) => (state + payload)/2)
+  .reset(waitAllEvents)
 
 forward({
   from: uploadOriginalAvatar,

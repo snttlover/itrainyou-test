@@ -1,7 +1,7 @@
 import cross from "@/components/modal/cross.svg"
 import { ProgressBar } from "@/components/progress-bar/ProgressBar"
 import { MediaRange } from "@/lib/responsive/media"
-import { $uploadPercent, uploadImageFx } from "./upload-modal.model"
+import { $uploadPercent, uploadImageFx, uploadOriginalAvatarFx } from "./upload-modal.model"
 import { ProcessingImage } from "./upload-steps/ProcessingImage"
 import { SelectImage } from "./upload-steps/SelectImage"
 import { useStore } from "effector-react"
@@ -109,6 +109,7 @@ type UploadModalProps = {
 
 export const UploadModal = ({ onClose }: UploadModalProps) => {
   const isUploading = useStore(uploadImageFx.pending)
+  const isOriginalAvatarUploading = useStore(uploadOriginalAvatarFx.pending)
   const uploadPercent = useStore($uploadPercent)
   const [image, setImage] = useState<File | string | null>(null)
   const [error, setError] = useState<"large-file" | "mime-type" | null>(null)
@@ -141,7 +142,7 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
   let component = <SelectImage open={open} error={error} />
 
   if (image) component = <ProcessingImage image={image} setImage={setImage} />
-  if (isUploading) component = <ProgressBar percent={uploadPercent} />
+  if (isUploading || isOriginalAvatarUploading) component = <ProgressBar percent={uploadPercent} />
 
   return (
     <Backdrop>
