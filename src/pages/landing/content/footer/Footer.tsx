@@ -10,6 +10,9 @@ import footerBgTablet from "../../assets/footer-bg-tablet.svg"
 import footerBgMobile from "./images/mobile-background.svg"
 import instagram from "../../assets/instagram.svg"
 import telegram from "../../assets/telegram.svg"
+import facebook from "../../assets/facebook.svg"
+import {Icon} from "@/components/icon/Icon"
+import {MediaRange} from "@/lib/responsive/media"
 
 const StyledFooter = styled.div`
   background-color: #4858cc;
@@ -116,6 +119,33 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
+const MirLogo = styled(Icon).attrs({name: "mir-logo-card"})`
+    margin-left: 16px;    
+    width: 32px;
+    height: 22px;
+`
+
+const VisaLogo = styled(Icon).attrs({name: "Visa"})`
+  margin-left: 16px;      
+  width: 32px;
+  height: 22px;
+`
+
+const MasterCardLogo = styled(Icon).attrs({name: "MasterCard"})`
+  width: 32px;
+  height: 22px;
+`
+
+const LogosContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  ${MediaRange.lessThan("mobile")`
+    
+  `}
+`
+
 export const Footer = () => (
   <StyledFooter>
     <StyledContainer>
@@ -137,6 +167,9 @@ export const Footer = () => (
       <MetaContainer>
         <Copyright>Все права защищены I train you</Copyright>
         <Socials>
+          <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'>
+            <img src={facebook} />
+          </SocialLink>
           <SocialLink href='https://instagram.com/i_trainyou'>
             <img src={instagram} />
           </SocialLink>
@@ -144,6 +177,11 @@ export const Footer = () => (
             <img src={telegram} />
           </SocialLink>
         </Socials>
+        <LogosContainer>
+          <MasterCardLogo />
+          <VisaLogo />
+          <MirLogo />
+        </LogosContainer>
       </MetaContainer>
     </StyledContainer>
   </StyledFooter>
@@ -153,7 +191,7 @@ const MetaContainer = styled.div`
   margin-top: auto;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 `
 
 const Copyright = styled.div`
@@ -167,8 +205,8 @@ const Copyright = styled.div`
 
 const SocialLink = styled.a`
   display: block;
-  height: 52px;
-  width: 52px;
+  height: 36px;
+  width: 36px;
 
   @media screen and (max-width: 565px) {
     height: 32px;
