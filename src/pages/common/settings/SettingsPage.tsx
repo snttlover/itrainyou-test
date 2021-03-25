@@ -30,6 +30,28 @@ const StyledLoaderWrapper = styled.div`
   top: 0;
 `
 
+const AcceptionText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  color: #424242;
+
+  max-width: 738px;
+  margin-top: 60px;
+    
+  & a {
+    color: #424242;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+
+    ${MediaRange.lessThan("mobile")`
+    margin-top: 45px;
+  `}
+`
+
 export const SettingsPage = () => {
   const pending = useStore(getMyUserFx.pending)
   return (
@@ -43,6 +65,11 @@ export const SettingsPage = () => {
         <Title>Настройки</Title>
         <GeneralSettingsForm />
         <PasswordForm />
+        <AcceptionText>
+          <a href='/privacy_policy.pdf' target='_blank'>Политика конфиденциальности</a>,{" "}
+          <a href='/personal_data.pdf' target='_blank'>Политика по обработке персональных данных</a>,{" "}
+          <a href='/oferta.pdf' target='_blank'>Оферта</a>
+        </AcceptionText>
       </LeftPageContainer>
     </ContentContainer>
   )
