@@ -80,6 +80,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   const checkDevicePermission = createEvent()
+  const close = createEvent()
 
   const playAgoraFx = createEffect({
     handler: () => {
@@ -143,15 +144,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       }
     }
   })
-  /*
-    try {
-          const isAgora = agoraLib.checkSystemRequirements()
-          console.log("teeeeeest",isAgora)
-          const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true})
-        } catch (e) {
-          console.log("getUserMedia",e.name)
-        }
-     */
 
   const $compatibility = createStore(false).on(checkCompatibilityFx.doneData, (_,payload) => payload)
 
@@ -380,8 +372,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       }
     },
   })
-
-  const close = createEvent()
 
   forward({
     from: close,

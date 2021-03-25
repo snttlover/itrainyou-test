@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { Dialog } from "@/components/dialog/Dialog"
-import { Icon } from "@/components/icon/Icon"
 
+type NotCompatibleDialogTypes = {
+    visibility: boolean
+    close: () => void
+}
+export const NotCompatibleDialog = (props: NotCompatibleDialogTypes) => {
 
-export const NotCompatibleDialog = (props: any) => {
-
-  const [showed,setShowed] = useState(true)
+  const handleOnClick = () => {
+    window.open("https://docs.agora.io/en/All/faq/browser_support")
+  }
 
   return (
-    <StyledDialog value={props.visibility && showed} onChange={(val) => setShowed(false)}>
+    <StyledDialog value={props.visibility} onChange={props.close}>
       <ModalWrapper>
         <Container>
           <Header>
@@ -19,7 +23,7 @@ export const NotCompatibleDialog = (props: any) => {
           <Description>
                             К сожалению, браузер на вашем устройстве не поддерживает видеоконференции. Попробуйте с другого браузера.
 
-                            Подробнее о списке поддерживаемых браузерах можно прочитать здесь
+                            Подробнее о списке поддерживаемых браузерах можно прочитать <a onClick={handleOnClick}>здесь</a>
           </Description>
         </Container>
       </ModalWrapper>
@@ -78,63 +82,16 @@ const Description = styled.div`
   margin-bottom: 24px;
   max-width: 400px;
 
+    & a {
+        color: ${({ theme }) => theme.colors.primary};
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
   ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 22px;
     margin-top: 8px;
     max-width: 300px;
-  `}
-`
-
-const StyledLink = styled.div<{ active: string | null }>`
-  color: ${props => props.theme.colors.primary};
-  font-weight: 500;
-  text-decoration: underline;
-  cursor: ${({ active }) => (active ? "pointer" : "default")};
-`
-
-
-const ItemText = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 22px;
-  color: #5B6670;
-  margin-left: 8px;
-`
-
-const ItemWrapper = styled.div`
-  flex: 1;
-  flex-direction: column;
-  display: flex;
-  align-self: flex-start;
-  justify-content: center;
-  margin-top: 12px;
-`
-
-const Item = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`
-
-const MarkerIcon = styled(Icon).attrs((props) => {
-  if (props.theme.colors.primary === "#4858CC") {
-    return { name: "ellipse-list-marker-client" }
-  }
-  else {
-    return { name: "ellipse-list-marker-coach" }
-  }
-})`
-  align-self: flex-start;
-  margin-top: 7px;
-  width: 8px;
-  height: 8px;
-  
-  ${MediaRange.lessThan("mobile")`
-    width: 7px;
-    height: 7px;
   `}
 `
