@@ -7,28 +7,47 @@ services:
   - docker:18.09-dind
 
 stages:
-  - build
-  - deploy
+  - build-dev
+  - deploy-dev
+  - deploy-master
 
 .build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
-    - docker pull $IMAGE || true
-    - docker build -t $IMAGE .
+    - docker pull $LATEST_IMAGE || true
+    - docker build -t $IMAGE -t $LATEST_IMAGE -t $HEROKU_IMAGE .
     - docker push $IMAGE
+    - docker push $LATEST_IMAGE
+    - docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com
+    - docker push $HEROKU_IMAGE
 
-build-prod:
+build:
   extends: .build
   variables:
-    IMAGE: $CI_REGISTRY_IMAGE:stable
+    IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    LATEST_IMAGE: $CI_REGISTRY_IMAGE:latest
+    HEROKU_IMAGE: registry.heroku.com/itrainnew-frontend/web
   only:
+    - development
     - master
 
-deploy:
+deploy-dev:
   stage: deploy
   variables:
-    IMAGE_TAG: $CI_REGISTRY_IMAGE:stable
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    IMAGE_NAME: itrainyoufrontend
+  script:
+    - docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com
+    - docker run --rm -e HEROKU_API_KEY=${HEROKU_API_KEY} wingrunr21/alpine-heroku-cli container:release web --app $IMAGE_NAME
+  only:
+    - development
+  when: manual
+
+deploy-prod:
+  stage: deploy
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     IMAGE_NAME: itrainyoufrontend
     SERVER_IP: 109.71.10.78
     USER: 'django'
@@ -45,3 +64,4 @@ deploy:
     - ssh -p22 $USER@$SERVER_IP "docker logout registry.gitlab.com"
   only:
     - master
+  when: manual
