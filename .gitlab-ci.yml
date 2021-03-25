@@ -9,7 +9,7 @@ services:
 stages:
   - build
   - deploy-dev
-  - deploy-master
+  - deploy-prod
 
 .build:
   stage: build
@@ -34,7 +34,7 @@ build:
   when: manual
 
 deploy-dev:
-  stage: deploy
+  stage: deploy-dev
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     IMAGE_NAME: itrainyoufrontend
@@ -46,7 +46,7 @@ deploy-dev:
   when: manual
 
 deploy-prod:
-  stage: deploy
+  stage: deploy-prod
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     IMAGE_NAME: itrainyoufrontend
