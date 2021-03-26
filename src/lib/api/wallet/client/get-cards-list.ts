@@ -16,7 +16,7 @@ export type CardResponse = {
   isPrimary: boolean
 }
 
-export const getCardsList = () =>
+export const getClientCardsList = () =>
   get<Pagination<CardResponse>>(`${config.BACKEND_URL}/api/v1/web/client/cards/`)
     .then(response => response.data)
     .then(keysToCamel)

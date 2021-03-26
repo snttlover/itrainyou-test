@@ -11,6 +11,8 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 import { $coach, $isFavourite, toggleFavourite } from "@/pages/search/coach-by-id/models/units"
+import { GrayTooltip } from "@/components/gray-tooltip/GrayTooltip"
+import { declOfNum } from "@/lib/formatting/numerals"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
@@ -85,6 +87,7 @@ const StarIcon = styled(Icon).attrs({ name: "star" })`
 
 const CategoriesContainer = styled.div`
   margin-top: 12px;
+  display: flex;
   ${MediaRange.greaterThan("mobile")`      
     margin-top: 34px;
   `}
@@ -173,7 +176,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
         <UserInfo>
           <Name>
             {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-            <Year>{getYearsCount(coach?.birthDate!)} лет</Year>
+            <Year>{getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!),["год", "года", "лет"])}</Year>
             {/*<IsAuthed>*/}
             {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
             {/*</IsAuthed>*/}
@@ -184,9 +187,14 @@ export const BaseCoachInfo = styled(({ ...props }) => {
           </Rating>
           <CategoriesAndButtonContainer>
             <CategoriesContainer>
-              {coach?.isTopCoach && <TopCoachIcon />}
+              {coach?.isTopCoach && 
+              <GrayTooltip text={"Топ-коуч"}>
+                <TopCoachIcon/>
+              </GrayTooltip>}
               {coach?.categories.map(cat => (
-                <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
+                <GrayTooltip text={cat.name} key={cat.id}>
+                  <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
+                </GrayTooltip>
               ))}
             </CategoriesContainer>
             <IsAuthed>

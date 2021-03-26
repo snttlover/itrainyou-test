@@ -68,7 +68,7 @@ const ArrowDelimiter = styled.div`
    `}
 `
 
-export const RegisterSteps = styled(({ className }) => (
+export const YandexRegisterSteps = styled(({ className }) => (
   <Container className={className}>
     <Step>
       <StepTitle>Эта заявка отправится супервизору</StepTitle>
@@ -82,7 +82,31 @@ export const RegisterSteps = styled(({ className }) => (
     <ArrowDelimiter />
     <Step>
       <StepTitle>Вы зарегистрируетесь в ЮKassa</StepTitle>
-      <CheckStepIcon checkstep={"checkstep3"} />
+      <CheckStepIcon checkstep={"checkstep3-yandex"} />
+    </Step>
+    <ArrowDelimiter />
+    <Step>
+      <StepTitle>Вы получите доступ к платформе</StepTitle>
+      <CheckStepIcon checkstep={"checkstep4"} />
+    </Step>
+  </Container>
+))``
+
+export const TinkoffRegisterSteps = styled(({ className }) => (
+  <Container className={className}>
+    <Step>
+      <StepTitle>Эта заявка отправится супервизору</StepTitle>
+      <CheckStepIcon checkstep={"checkstep1"} />
+    </Step>
+    <ArrowDelimiter />
+    <Step>
+      <StepTitle>Супервизор одобрит вашу заявку</StepTitle>
+      <CheckStepIcon checkstep={"checkstep2"} />
+    </Step>
+    <ArrowDelimiter />
+    <Step>
+      <StepTitle>Вы привяжете карту</StepTitle>
+      <CheckStepIcon checkstep={"checkstep3-tinkoff"} />
     </Step>
     <ArrowDelimiter />
     <Step>

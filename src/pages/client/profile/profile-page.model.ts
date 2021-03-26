@@ -12,11 +12,14 @@ export const loadProfileFx = createEffect({
 })
 
 export const toggleInterestCategory = createEvent<number>()
-export const toggleDeleteCardModalDialog = createEvent<void>()
+export const toggleDeleteCardModalDialog = createEvent<void | boolean>()
 
 export const ClientProfileGate = createGate()
 export const $showDeleteCardModalDialog = createStore(false)
-  .on(toggleDeleteCardModalDialog, (state, payload) => !state)
+  .on(toggleDeleteCardModalDialog, (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
   .reset(ClientProfileGate.open)
 
 const updateProfile = createEffect<UpdateClientRequest, ClientSelfData>({
@@ -115,6 +118,7 @@ export const $profilePageSessions = $ProfileSessions.map(transactions =>
     const session = transaction.session
     const { amount } = transaction
     return {
+      id: session.coach.id,
       avatar: session.coach.avatar,
       name: `${session.coach.firstName} ${session.coach.lastName}`,
       price: `${+amount > 0 ? "+" : ""}${+amount}`,

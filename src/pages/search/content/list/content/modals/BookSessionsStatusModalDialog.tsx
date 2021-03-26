@@ -17,7 +17,7 @@ export const BookSessionsStatusModalDialog = () => {
   const isLoading = useStore($buySessionsLoading)
 
   return (
-    <StyledDialog isLoaded={!isLoading} value={visibility} onChange={() => toggle()}>
+    <StyledDialog isLoaded={!isLoading} value={visibility} onChange={toggle}>
       <Container>
         {isLoading ? <Spinner /> : <BookedModal />}
       </Container>

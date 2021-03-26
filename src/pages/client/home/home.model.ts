@@ -12,7 +12,7 @@ export const loadActiveSessionsFx = createEffect({
   handler: () => getClientSessions({ active: true, excludePast: true }),
 })
 
-export const loadTodaySessionsFx = createEffect({
+export const loadUpcomingSessionsFx = createEffect({
   handler: () => getClientSessions({ excludePast: true }),
 })
 
@@ -46,8 +46,8 @@ export const $activeSessions = createStore<DashboardSession[]>([]).on(
 )
   .reset(mounted)
 
-export const $todaySessions = createStore<DashboardSession[]>([]).on(
-  loadTodaySessionsFx.doneData,
+export const $upcomingSessions = createStore<DashboardSession[]>([]).on(
+  loadUpcomingSessionsFx.doneData,
   (state, payload) => payload.results
 ).reset(mounted)
 
@@ -69,5 +69,5 @@ sample({
 
 forward({
   from: mounted,
-  to: [loadActiveSessionsFx, loadTodaySessionsFx, loadMore],
+  to: [loadActiveSessionsFx, loadUpcomingSessionsFx, loadMore],
 })

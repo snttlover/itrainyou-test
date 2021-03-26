@@ -9,6 +9,7 @@ import * as React from "react"
 import { useCallback, useState } from "react"
 import { FileRejection, useDropzone } from "react-dropzone"
 import styled from "styled-components"
+import { Dialog } from "@/components/dialog/Dialog"
 
 const Backdrop = styled.div`
   position: fixed;
@@ -24,6 +25,8 @@ const Backdrop = styled.div`
     padding: 44px;
   `}
 `
+
+const StyledDialog = styled(Dialog)``
 
 const Content = styled.div`
   height: 100%;
@@ -145,18 +148,17 @@ export const UploadModal = ({ onClose }: UploadModalProps) => {
   if (isUploading || isOriginalAvatarUploading) component = <ProgressBar percent={uploadPercent} />
 
   return (
-    <Backdrop>
+    <StyledDialog value={true} onChange={onClose}>
       <Container
         {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
         fullscreen={!!image || isUploading || !!error}
       >
-        <Cross onClick={onClose} />
         <Content>
           <Title small={!image && !isUploading}>Загрузка фотографии профиля</Title>
           {component}
           <input {...getInputProps()} />
         </Content>
       </Container>
-    </Backdrop>
+    </StyledDialog>
   )
 }

@@ -17,6 +17,7 @@ const StyledWalletCard = styled(WalletCard)``
 type CreditCardsProps = {
     list : SetCardList[]
     show: boolean
+    userType: "client" | "coach"
 }
 
 export const CreditCardsList = (props: CreditCardsProps) => {
@@ -25,10 +26,10 @@ export const CreditCardsList = (props: CreditCardsProps) => {
     <>
       <CardsContainer>
         {props.list.map((card, index) => (
-          <StyledWalletCard key={`${index}`} showed={props.show} {...card} />
+          <StyledWalletCard key={`${index}`} showed={props.show} {...card} userType={props.userType} />
         ))}
       </CardsContainer>
-      {/*props.show || props.list.length === 0 ? <WalletAddCard /> : null*/}
+      {props.userType === "coach" ? <WalletAddCard /> : null}
     </>
   )
 }

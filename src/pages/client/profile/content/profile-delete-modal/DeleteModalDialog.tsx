@@ -15,7 +15,7 @@ export const DeleteModalDialog = () => {
   const cards = useStore($cardsSessionsForView)
   
   return (
-    <StyledDialog isSessions={cards.length > 0} value={visibility} onChange={() => hide()}>
+    <StyledDialog isSessions={cards.length > 0} value={visibility} onChange={hide}>
       <Container>
         {cards.length > 0 ? <CardSessions /> : <ConfirmDelete />}
       </Container>

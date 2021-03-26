@@ -2,17 +2,17 @@ import { config } from "@/config"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post } from "@/lib/network/network"
 
-export type StartSaveCardParams = {
+export type StartSaveClientCardParams = {
   returnUrl: string
-  coach: number
+  coach?: number
 }
 
-export type StartSaveCardResponse = {
+type StartSaveClientCardResponse = {
   paymentId: string
   confirmationUrl: string
 }
 
-export const startSaveCard = (params: StartSaveCardParams): Promise<StartSaveCardResponse> =>
+export const startSaveClientCard = (params: StartSaveClientCardParams): Promise<StartSaveClientCardResponse> =>
   post(`${config.BACKEND_URL}/api/v1/web/client/wallet/start-save-card/`, keysToSnake(params))
     .then(response => response.data)
     .then(keysToCamel)

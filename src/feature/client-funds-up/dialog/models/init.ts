@@ -1,100 +1,76 @@
 import { attach, forward, guard, sample, split } from "effector-root"
 import {
-  $canSubmit,
-  $fundUpForm,
   $redirectUrl,
   addCard,
-  changeShowFundUpDialog,
-  coachFailMessage,
   deletePaymentIdFx,
-  failCardMessage,
-  failMessageUnknown,
-  finishSaveCardFx,
-  FundUpModalGate,
+  finishSaveClientCardFx,
+  finishSaveCoachCardFx,
   getPaymentIdFx,
   loadSessionsIdFx,
-  resetFundUpModal,
   setRedirectUrl,
-  startSaveCardFx,
-  startTopUpFx,
-  submitFundUp,
+  startSaveClientCardFx,
+  startSaveCoachCardFx,
   successfulAddedCard,
-  successMessage,
-  unsuccessfulAddedCard
+  unsuccessfulAddedCard,
+  reportUnknownTypeFx,
+  PAYMENT_KEY
 } from "@/feature/client-funds-up/dialog/models/units"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import { loadInfoFx } from "@/pages/client/wallet/info/info.model"
-import { loadCardsFx } from "@/pages/client/wallet/cards/cards.model"
+import { loadClientCardsFx, loadCoachCardsFx } from "@/pages/client/wallet/cards/cards.model"
 import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
 import { $sessionsPickerStore, mounted as CoachByIdMounted } from "@/pages/search/coach-by-id/models/units"
 import { routeNames } from "@/pages/route-names"
 import { mounted as homeMounted } from "@/pages/client/home/home.model.ts"
-import { isAxiosError } from "@/lib/network/network"
-import { $userHasCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
-
-const { failedTopUpFromCoach, failedTopUpWithCard, __: failedTopUpUnknown } = split(startTopUpFx.fail, {
-  failedTopUpFromCoach: ({ params, error }) =>
-    params.type === "coach" && isAxiosError(error) && error.response?.status === 400,
-  failedTopUpWithCard: ({ params, error }) =>
-    params.type === "card" && isAxiosError(error) && error.response?.status === 400,
-})
+import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 
 forward({
-  from: failedTopUpFromCoach.map(_ => coachFailMessage),
-  to: [toasts.remove, toasts.add],
-})
-
-forward({
-  from: failedTopUpWithCard.map(_ => failCardMessage),
-  to: [toasts.remove, toasts.add],
-})
-
-forward({
-  from: failedTopUpUnknown.map(_ => failMessageUnknown),
-  to: [toasts.remove, toasts.add],
-})
-
-forward({
-  from: startTopUpFx.doneData.map(_ => successMessage),
-  to: [
-    toasts.remove,
-    toasts.add,
-    changeShowFundUpDialog.prepend(_ => false),
-    resetFundUpModal.prepend(_ => {}),
-    loadInfoFx.prepend(() => {}),
-    loadCardsFx.prepend(() => {}),
+  from: [
+    finishSaveClientCardFx.doneData.map(_ => successfulAddedCard),
+    finishSaveClientCardFx.fail.map(({params,error}) => unsuccessfulAddedCard)
   ],
-})
-
-forward({
-  from: finishSaveCardFx.fail.map(({params,error}) => unsuccessfulAddedCard),
   to: [
     toasts.remove,
     toasts.add,
+    loadClientCardsFx.prepend(() => {}),
     deletePaymentIdFx.prepend(() => {}),
   ],
 })
 
 forward({
-  from: finishSaveCardFx.doneData.map(_ => successfulAddedCard),
+  from: [
+    finishSaveCoachCardFx.doneData.map(_ => successfulAddedCard),
+    finishSaveCoachCardFx.fail.map(({params,error}) => unsuccessfulAddedCard)
+  ],
   to: [
     toasts.remove,
     toasts.add,
-    loadInfoFx.prepend(() => {}),
-    loadCardsFx.prepend(() => {}),
+    loadCoachCardsFx.prepend(() => {}),
     deletePaymentIdFx.prepend(() => {}),
   ],
 })
 
-startSaveCardFx.doneData.watch((response) => {
-  localStorage.setItem("payment_id", response.paymentId)
+startSaveClientCardFx.doneData.watch((response) => {
+  const data  = JSON.stringify({paymentId: response.paymentId, type: "client"})
+  localStorage.setItem(PAYMENT_KEY, data)
+  window.location.href = response.confirmationUrl
+  return
+})
+
+startSaveCoachCardFx.doneData.watch((response) => {
+  const data  = JSON.stringify({paymentId: response.paymentId, type: "coach"})
+  localStorage.setItem(PAYMENT_KEY, data)
   window.location.href = response.confirmationUrl
   return
 })
 
 forward({
+  from: CoachHomeGate.open,
+  to: [getPaymentIdFx,loadCoachCardsFx.prepend(() => {})],
+})
+
+forward({
   from: [ClientProfileGate.open, CoachByIdMounted, homeMounted],
-  to: getPaymentIdFx,
+  to: [loadClientCardsFx.prepend(() => {}),getPaymentIdFx]
 })
 
 forward({
@@ -102,34 +78,50 @@ forward({
     ClientProfileGate.open.map(() => routeNames.clientProfile()),
     CoachByIdMounted.map((id)=> routeNames.searchCoachPage(id.id.toString())),
     homeMounted.map(() => routeNames.client()),
+    CoachHomeGate.open.map(() => routeNames.coach()),
   ],
   to: setRedirectUrl,
 })
 
-guard({
+split({
   source: getPaymentIdFx.doneData,
-  filter: paymentId => paymentId !== null,
-  target: finishSaveCardFx,
+  match: {
+    client: payload => !!payload && payload.type === "client",
+    coach: payload => !!payload && payload.type === "coach",
+  },
+  cases: {
+    client: finishSaveClientCardFx,
+    coach: finishSaveCoachCardFx,
+    __: reportUnknownTypeFx,
+  }
 })
 
-sample({
+const splitAddCard = sample({ 
   clock: addCard,
   source: $redirectUrl,
-  fn: (url, id) => ({
+  fn: (url, id) => (id ? {
     returnUrl: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ""}${url}`,
     coach: id
-  }),
-  target: startSaveCardFx,
+  } : {returnUrl: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ""}${url}`,}),
 })
 
-sample({
-  clock: guard({ source: submitFundUp, filter: $canSubmit }),
-  source: $fundUpForm,
-  target: startTopUpFx,
+const userType = split(splitAddCard, {
+  client: payload => !!payload.coach === true,
+  coach: payload => !!payload.coach === false,
 })
 
 forward({
-  from: finishSaveCardFx.doneData,
+  from: userType.client,
+  to: startSaveClientCardFx,
+})
+
+forward({
+  from: userType.coach,
+  to: startSaveCoachCardFx,
+})
+
+forward({
+  from: finishSaveClientCardFx.doneData,
   to: attach({
     effect: loadSessionsIdFx,
     mapParams: response => {
@@ -149,15 +141,5 @@ guard({
   }) => {
     return response
   }),
-})
-
-forward({
-  from: FundUpModalGate.open,
-  to: resetFundUpModal,
-})
-
-sample({
-  clock: FundUpModalGate.open,
-  source: $userHasCoach,
 })
 

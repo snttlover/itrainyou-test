@@ -8,7 +8,7 @@ import { date } from "@/lib/formatting/date"
 import { Icon } from "@/components/icon/Icon"
 import { Button } from "@/components/button/normal/Button"
 import { SelectInputCard } from "@/components/select-input/SelectInputCard"
-import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
+import { $clientCardsListForView } from "@/pages/client/wallet/cards/cards.model"
 import { MediaRange } from "@/lib/responsive/media"
 import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 import { addCard } from "@/feature/client-funds-up/dialog/models/units"
@@ -27,7 +27,7 @@ const equalTimeFormat = "HH:mm"
 export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const visibility = useStore($creditCardsModalVisibility)
   const _toggleCreditCardsModal = useEvent(toggleCreditCardsModal)
-  const cards = useStore($cardsListForView)
+  const cards = useStore($clientCardsListForView)
 
   const [options, setOptions] = useState<SetValue[]>([{
     id: "other",

@@ -1,13 +1,14 @@
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
-import { useEvent } from "effector-react"
+import {useEvent, useStore} from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval/common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval/common/SubTitle"
-import { RegisterSteps } from "@/components/register-steps/RegisterSteps"
+import { YandexRegisterSteps, TinkoffRegisterSteps } from "@/components/register-steps/YandexRegisterSteps"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
+import {$coachAccess} from "@/feature/user/user.model"
 
 const Container = styled.div`
   margin: 0 auto;
@@ -58,11 +59,13 @@ const StyledButton = styled(Button)`
 
 export const AwaitingApproval = () => {
   const navigate = useEvent(navigatePush)
+  const paymentSystem = useStore($coachAccess).paymentSystem
+
   return (
     <Container>
       <StyledTitle>Ваша заявка ждет одобрения!</StyledTitle>
       <StyledSubTitle>В среднем заявка обрабатывается около суток</StyledSubTitle>
-      <RegisterSteps />
+      {paymentSystem === "TINKOFF" ? <TinkoffRegisterSteps /> : <YandexRegisterSteps /> }
       <StyledBottomSubtitle>А пока можете сами пройти сессии как клиент</StyledBottomSubtitle>
       <StyledButton onClick={() => navigate({ url: routeNames.client() })}>Попробовать</StyledButton>
     </Container>

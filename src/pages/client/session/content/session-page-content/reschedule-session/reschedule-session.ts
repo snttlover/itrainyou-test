@@ -79,7 +79,7 @@ export const $formattedPickedRescheduleSession = combine($sessions, $pickedResch
 export const changeRescheduleVisibility = createEvent<boolean>()
 export const $rescheduleVisibility = restore(changeRescheduleVisibility, false).reset(resetRescheduleDialog)
 
-const rescheduleSessionFx = createEffect({
+export const rescheduleSessionFx = createEffect({
   handler: createClientSessionRequest,
 })
 export const rescheduleSession = createEvent()

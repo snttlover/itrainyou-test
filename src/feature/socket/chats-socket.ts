@@ -22,6 +22,23 @@ import { condition, debounce } from "patronum"
 import { runInScope } from "@/scope"
 import { registerUserFx } from "@/pages/auth/pages/signup/models/units"
 
+type UserLeftSession = {
+  session: number
+}
+
+type UserLeftSessionDone = {
+  type: "LEFT_SESSION_DONE"
+  data: { session: number }
+}
+
+type UserEnteredSession = {
+  session: number
+}
+
+type UserEnteredSessionDone = {
+  type: "ENTER_SESSION_DONE"
+  data: { session: number }
+}
 
 type SendSocketChatMessage = {
   chat: number
@@ -86,6 +103,8 @@ type SocketMessageReceive =
   | NewNotification
   | ReadNotificationsDone
   | SessionStarted
+  | UserEnteredSessionDone
+  | UserLeftSessionDone
 
 type UserType = "client" | "coach" | "admin" | "support"
 
@@ -102,9 +121,13 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   const onChatCreated = createEvent<OnChatCreated>()
   const onMessagesReadDone = createEvent<MessagesReadDone>()
   const onSessionStarted = createEvent<SessionStarted>()
+  const onUserEnteredSessionDone = createEvent<UserEnteredSessionDone>()
+  const onUserLeftSessionDone = createEvent<UserLeftSessionDone>()
 
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: "WRITE_MESSAGE", data }))
   const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: "READ_MESSAGES", data }))
+  const userEnteredSession = socket.methods.send.prepend<UserEnteredSession>(data => ({ type: "ENTER_SESSION", data}))
+  const userLeftSession = socket.methods.send.prepend<UserLeftSession>(data => ({ type: "LEFT_SESSION", data}))
 
   const $needConnect = combine(
     $isLoggedIn,
@@ -117,13 +140,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   const reportUnknownTypeFx = createEffect({
     handler: (response: any) => console.log("reportUnknownType", response),
   })
-
-  /*const $needConnect = combine(
-    $isLoggedIn,
-    $userData,
-    $isFullRegistered,
-    (l,user) => l && !!user && (userType !== "coach" || !!user.coach)
-  )*/
 
   const connect = guard({
     source: $token,
@@ -240,6 +256,8 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       onMessagesReadDone: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
       changeCountersFromInit: (payload: SocketMessageReceive) => payload.type === "INIT",
       onSessionStarted: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
+      onUserEnteredSessionDone: (payload: SocketMessageReceive) => payload.type === "ENTER_SESSION_DONE",
+      onUserLeftSessionDone: (payload: SocketMessageReceive) => payload.type === "LEFT_SESSION_DONE",
       onPong: (payload: PongMessage) => payload.type === "PONG",
     },
     cases: {
@@ -250,6 +268,8 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       onMessagesReadDone: onMessagesReadDone,
       changeCountersFromInit: changeCountersFromInit,
       onSessionStarted: onSessionStarted,
+      onUserEnteredSessionDone: onUserEnteredSessionDone,
+      onUserLeftSessionDone: onUserLeftSessionDone,
       onPong: changePonged.prepend(() => true),
       __: reportUnknownTypeFx,
     },
@@ -300,10 +320,14 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       onMessagesReadDone,
       onChatCreated,
       onSessionStarted,
+      onUserEnteredSessionDone,
+      onUserLeftSessionDone,
     },
     methods: {
       send,
       readMessages,
+      userEnteredSession,
+      userLeftSession
     },
   }
 }

@@ -3,7 +3,6 @@ import { createEvent, forward, restore } from "effector-root"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { createSessionCallModule } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { formatSessionTime } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
-import { config as globalConfig } from "@/config"
 
 type createStartSessionDialogModelConfig = {
   type: "coach" | "client"
@@ -40,6 +39,7 @@ export const createStartSessionDialogModel = (config: createStartSessionDialogMo
     data: {
       $session,
       $dialogVisibility,
+      $callsVisibility: config.sessionCallModule.data.$callsVisibility,
     },
     methods: {
       hideDialog,

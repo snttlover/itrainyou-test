@@ -6,7 +6,6 @@ import { ResetPasswordPage } from "@/pages/auth/pages/reset-password/ResetPasswo
 import { SignUpPage } from "@/pages/auth/pages/signup/SignUpPage"
 import HomePage from "@/pages/client/home/HomePage"
 import ProfilePage from "@/pages/client/profile/ProfilePage"
-import { ClientWalletPage } from "@/pages/client/wallet/ClientWalletPage"
 import CoachBlockedPage from "@/pages/coach/blocked/CoachBlockedPage"
 import { ClientPage } from "@/pages/coach/client/ClientPage"
 import CoachClientsPage from "@/pages/coach/clients/CoachClientsPage"
@@ -17,7 +16,6 @@ import { CoachSessionsHistory } from "@/pages/coach/profile/session-history/Coac
 import CoachSchedulePage from "@/pages/coach/schedule/CoachSchedulePage"
 import CoachSupportPage from "@/pages/coach/support/CoachSupportPage"
 import ClientSupportPage from "@/pages/client/support/ClientSupportPage"
-import CoachWalletPage from "@/pages/coach/wallet/CoachWalletPage"
 import SettingsPage from "@/pages/common/settings/SettingsPage"
 import { ClientChatPage } from "@/pages/client/chats/chat/ClientChatPage"
 import ClientChatListPage from "@/pages/client/chats/list/ClientChatListPage"
@@ -109,10 +107,6 @@ export const ROUTES: RouteConfig[] = [
     component: ProfilePage,
   },
   {
-    path: routeNames.clientWallet(),
-    component: ClientWalletPage,
-  },
-  {
     path: routeNames.clientSettings(),
     component: () => (
       <ClientDashboardLayout>
@@ -158,10 +152,6 @@ export const ROUTES: RouteConfig[] = [
         <SettingsPage />
       </CoachDashboardLayout>
     ),
-  },
-  {
-    path: routeNames.coachWallet(),
-    component: CoachWalletPage,
   },
   {
     path: routeNames.coachClients(),

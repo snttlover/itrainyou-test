@@ -3,11 +3,11 @@ import styled from "styled-components"
 import { CreditCardsList } from "./CreditCardsList"
 import { MediaRange } from "@/lib/responsive/media"
 import arrowIcon from "@/components/coach-card/images/arrow.svg"
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import { useStore } from "effector-react"
 import { Loader } from "@/components/spinner/Spinner"
-import { $cardsListForView } from "@/pages/client/wallet/cards/cards.model"
-import { finishSaveCardFx } from "@/feature/client-funds-up/dialog/models/units"
+import { $clientCardsListForView, $coachCardsListForView } from "@/pages/client/wallet/cards/cards.model"
+import { finishSaveClientCardFx, finishSaveCoachCardFx } from "@/feature/client-funds-up/dialog/models/units"
 
 
 export type SetCardList = {
@@ -18,8 +18,8 @@ export type SetCardList = {
     isPrimary: boolean
 }
 
-const Container = styled.div`
-  padding-right: 140px;
+const Container = styled.div<{userType: "client" | "coach"}>`
+  padding-right: ${({userType}) => userType === "client" ? "140px" : "0"};
   width: 100%;
   margin-top: 32px;
   position: relative;
@@ -74,16 +74,26 @@ const TitleContainer = styled.div`
     margin-bottom: 10px;
 `
 
-export const ProfileCreditCards = () => {
-  const cards = useStore($cardsListForView)
+type CardType = {
+    id: number
+    type: string
+    cardEnd: string
+    expireDate: string
+    isPrimary: boolean
+}
+
+export const ProfileCreditCards = (props: {userType: "client" | "coach"}) => {
+  let cards: CardType[]
+  props.userType === "client" ? cards = useStore($clientCardsListForView) : cards = useStore($coachCardsListForView)
   const [isShowed, changeIsShow] = useState(false)
   const [cardList, setCardList] = useState<SetCardList[]>([])
-  const isLoading = useStore(finishSaveCardFx.pending)
+  let isLoading: boolean
+  props.userType === "client" ? isLoading = useStore(finishSaveClientCardFx.pending) : isLoading = useStore(finishSaveCoachCardFx.pending)
 
   const toggleCards = (e: React.SyntheticEvent) => {
     if (isShowed) {
       if (cards.length > 0) {
-        const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+        const primaryCard = cards.find((card: CardType) => card.isPrimary) || cards[0]
         setCardList([primaryCard])
       }
       else {
@@ -91,7 +101,7 @@ export const ProfileCreditCards = () => {
       }
     }
     else {
-      const primaryCard = cards.find(card => card.isPrimary)
+      const primaryCard = cards.find((card: CardType) => card.isPrimary)
       if (primaryCard) {
         const changedArrayOfCards = cards
         changedArrayOfCards.splice(cards.indexOf(primaryCard), 1)
@@ -108,14 +118,14 @@ export const ProfileCreditCards = () => {
   useEffect(() => {
     if (cards.length > 0) {
       if (cards.length === cardList.length) {
-        const primaryCard = cards.find(card => card.isPrimary)
+        const primaryCard = cards.find((card: CardType) => card.isPrimary)
         const newCardList = cardList.map(card => (primaryCard && card.id === primaryCard.id ? {
           ...card,
           isPrimary: true
         } : {...card, isPrimary: false}))
         isShowed ? setCardList(newCardList) : (primaryCard ? setCardList([primaryCard]) : setCardList([cards[0]]))
       } else {
-        const primaryCard = cards.find(card => card.isPrimary) || cards[0]
+        const primaryCard = cards.find((card: CardType) => card.isPrimary) || cards[0]
         isShowed ? setCardList(cards) : setCardList([primaryCard])
       }
     }
@@ -126,14 +136,14 @@ export const ProfileCreditCards = () => {
   },[cards])
 
   return (
-    <Container>
+    <Container userType={props.userType}>
       {!isLoading ?
         <Cards>
           <TitleContainer>
             <Title>Привязанные карты</Title>
             <Arrow reverse={isShowed} onClick={toggleCards} />
           </TitleContainer>
-          <CreditCardsList list={cardList} show={isShowed} />
+          <CreditCardsList list={cardList} show={isShowed} userType={props.userType} />
         </Cards>
         : <Loader /> }
     </Container>

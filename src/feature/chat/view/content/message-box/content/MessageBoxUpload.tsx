@@ -18,8 +18,14 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
   const addToast = useEvent(toasts.add)
 
   const onDropAccepted = useCallback(acceptedFiles => {
-    acceptedFiles.forEach((file: File) => {
-      props.add(file)
+    const heic2any = require('heic2any')
+    acceptedFiles.forEach(async (file: File) => {
+      if (file.type.length === 0 || file.type === "image/heic") {
+        const result = await heic2any({blob: file, toType: "image/jpeg"})
+        props.add(result)
+      } else {
+        props.add(file)
+      }
     })
   }, [])
 
@@ -39,7 +45,7 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
     })
   }, [])
 
-  const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"]
+  const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif",".heic"]
   const maxSize = 104857600
 
   const { getInputProps, open } = useDropzone({

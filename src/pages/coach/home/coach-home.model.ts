@@ -14,6 +14,7 @@ type CoachState =
   | "profile-fill"
   | "yandex-kassa-not-approved"
   | "yandex-kassa-completed"
+  | "tinkoff"
 
 export const updateTime = createEvent()
 
@@ -32,6 +33,14 @@ export const $datetimeLeft = combine({ now: $now, lastRegistrationDaytime: $last
   }
 )
 
+export const toggleAddTinkoffCardModal = createEvent<void | boolean>()
+export const $addTinkoffCardModalVisibility = createStore<boolean>(false).on(
+  toggleAddTinkoffCardModal,
+  (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
+
 const getCoachState = ({
   access,
   datetimeLeft,
@@ -40,11 +49,12 @@ const getCoachState = ({
   datetimeLeft: InferStoreType<typeof $datetimeLeft>
 }): CoachState => {
   if (access.isApproved) return "approved"
-  if (!access.isApproved && access.isApplicationApproved && access.isYandexRegistrationCompleted) return "yandex-kassa-completed"
-  if (!access.isApproved && access.isApplicationApproved && !access.isYandexRegistrationApproved) return "yandex-kassa-not-approved"
+  if (!access.isApproved && access.isApplicationApproved && access.isYandexRegistrationCompleted && access.paymentSystem === "YOU_KASSA") return "yandex-kassa-completed"
+  if (!access.isApproved && access.isApplicationApproved && !access.isYandexRegistrationApproved && access.paymentSystem === "YOU_KASSA") return "yandex-kassa-not-approved"
   if (access.isForeverRejected) return "forever-rejected"
   if (access.isTemporarilyRejected && datetimeLeft.days > 0) return "temporary-rejected-wait"
   if (access.isTemporarilyRejected && datetimeLeft.days <= 0) return "temporary-rejected-done"
+  if (!access.isApproved && access.isProfileFilled && access.isApplicationApproved && access.paymentSystem === "TINKOFF") return "tinkoff"
   if (access.isProfileFilled && !access.isApplicationApproved) return "approve-wait"
 
   return "profile-fill"

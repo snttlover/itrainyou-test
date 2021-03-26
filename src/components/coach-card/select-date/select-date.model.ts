@@ -16,7 +16,7 @@ import {
   split,
   Store
 } from "effector-root"
-import { changeShowFundUpDialog, finishSaveCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
+import { changeShowFundUpDialog, finishSaveClientCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 
 export interface CoachSessionWithSelect extends CoachSession {
@@ -161,7 +161,7 @@ export const genCoachSessions = (id = 0) => {
     },
     buySessionsLoading: combine(
       buySessionsFx.pending,
-      finishSaveCardFx.pending,
+      finishSaveClientCardFx.pending,
       (buySessionsPending, finishSaveCardPending) => buySessionsPending || finishSaveCardPending
     ),
     buySessionBulk,

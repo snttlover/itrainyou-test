@@ -10,6 +10,7 @@ import { Block } from "./common/Block"
 import { useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
+import { declOfNum } from "@/lib/formatting/numerals"
 
 const StyledAvatar = styled(Avatar)`
   border: 2px solid #fff;
@@ -103,7 +104,7 @@ export const ProfileHeader = styled(({ ...props }) => {
         <UserInfo>
           <Name>
             {`${client?.firstName} ${client?.lastName}`},&nbsp;
-            <Year>{getYearsCount(client?.birthDate!)} лет</Year>
+            <Year>{getYearsCount(client?.birthDate!)} {declOfNum(getYearsCount(client?.birthDate!),["год", "года", "лет"])}</Year>
           </Name>
           <Since>На сайте с {date(client?.creationDatetime!).format("DD.MM.YYYY")}</Since>
           <CategoriesAndButtonContainer>
