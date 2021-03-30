@@ -92,6 +92,7 @@ export type IconName =
   | "ellipse-list-marker-coach"
   | "mir-logo-card"
   | "maestro"
+  | "file-preview"
 
 type IconProps = {
   name: IconName,
