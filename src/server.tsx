@@ -90,73 +90,106 @@ const syncLoadAssets = () => {
 }
 syncLoadAssets()
 
-// const userAgent = require("express-useragent")
+const generateSSRPage = async (req: express.Request, res: express.Response) => {
+  const scope = fork(root)
 
+  try {
+    const t1 = performance.now()
+    await allSettled(serverStarted, {
+      scope,
+      params: { req, res, isSSR: true },
+    })
+    const t2 = performance.now()
+    console.log(`Load data from backend: ${t2 - t1}ms`)
+  } catch (error) {
+    console.log(error)
+  }
+
+  if (res.statusCode >= 300 && res.statusCode < 400) {
+    return
+  }
+
+  const context = {}
+  const sheet = new ServerStyleSheet()
+
+  const jsx = sheet.collectStyles(
+    <StaticRouter context={context} location={req.url}>
+      <Provider value={scope}>
+        <Application />
+      </Provider>
+    </StaticRouter>
+  )
+
+  const storesValues = effectorSerialize(scope, { ignore: [$token], onlyChanges: true })
+  const html = ReactDOMServer.renderToString(jsx)
+  const css = sheet.getStyleTags()
+
+  const generatedPage = `${htmlStart(assets.client.css, assets.client.js, css)}${html}${htmlEnd(storesValues)}`
+  sheet.seal()
+  return generatedPage
+}
+
+// ToDo: супер простая реализация кеша, переделать на middleware + redis
+const cache = {}
+const CACHE_TIMEOUT = 5 * 60
+
+const cacheGet = (key: string) => {
+  if((cache[key])) {
+    const isFresh = Math.round((Date.now() - cache[key].setDatetime) / 1000) < CACHE_TIMEOUT
+
+    if (isFresh) return cache[key].value
+  }
+}
+
+const cacheSet = (key: string, value: string) => {
+  cache[key] = {
+    value,
+    setDatetime: Date.now()
+  }
+}
+
+const ROUTES_TO_CACHE = ["/"]
 
 export const server = express()
   .disable("x-powered-by")
   .use(Sentry.Handlers.requestHandler())
   .use(cookieParser())
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
-  // .use(userAgent.express())
   .get("/*", async (req: express.Request, res: express.Response) => {
     const tStart = performance.now()
     const currentRoutes = matchRoutes(ROUTES, req.url.split("?")[0])
     const isSSR = currentRoutes.reduce((_, route) => route.route.ssr, false)
     const hasCookie = !!req.cookies[TOKEN_COOKIE_KEY]
 
-    // const test = {
-    //   browser: req.useragent.browser,
-    //   version: req.useragent.version,
-    //   os: req.useragent.os,
-    //   platform: req.useragent.platform
-    // }
-    // console.log(JSON.stringify(test, null ,4))
-
     if (isSSR && !hasCookie) {
-      const scope = fork(root)
+      if ((ROUTES_TO_CACHE.includes(req.url)) && (cacheGet(req.url))) {
+        console.log("Reading from cache")
+        res.end(cacheGet(req.url))
+      } else {
 
-      try {
-        const t1 = performance.now()
-        await allSettled(serverStarted, {
-          scope,
-          params: { req, res, isSSR },
-        })
-        const t2 = performance.now()
-        console.log(`Load data from backend: ${t2 - t1}ms`)
-      } catch (error) {
-        console.log(error)
+        let generatedPage
+        try {
+          generatedPage = await generateSSRPage(req, res)
+        } catch (error) {
+          console.log(error)
+          res.end()
+          return
+        }
+
+        if (ROUTES_TO_CACHE.includes(req.url)) {
+          console.log(`Settings cache for ${req.url}`)
+          cacheSet(req.url, generatedPage!)
+        }
+
+        res.end(generatedPage)
       }
-      if (res.statusCode >= 300 && res.statusCode < 400) {
-        return
-      }
-
-      const context = {}
-      const sheet = new ServerStyleSheet()
-
-      const jsx = sheet.collectStyles(
-        <StaticRouter context={context} location={req.url}>
-          <Provider value={scope}>
-            <Application />
-          </Provider>
-        </StaticRouter>
-      )
-
-      const storesValues = effectorSerialize(scope, { ignore: [$token], onlyChanges: true })
-      const html = ReactDOMServer.renderToString(jsx)
-      const css = sheet.getStyleTags()
-
-      res.write(htmlStart(assets.client.css, assets.client.js, css))
-      res.write(html)
-      res.end(htmlEnd(storesValues))
-
-      const tEnd = performance.now()
-      console.log(`Request done by ${tEnd - tStart}ms`)
-      sheet.seal()
     } else {
       res.write(htmlStart(assets.client.css, assets.client.js, ""))
       res.end(htmlEnd({}))
     }
+
+    const tEnd = performance.now()
+    console.log(`Request done by ${tEnd - tStart}ms`)
   })
   .use(Sentry.Handlers.errorHandler())
 
