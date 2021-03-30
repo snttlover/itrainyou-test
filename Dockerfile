@@ -9,7 +9,7 @@ COPY . ./
 RUN npm run build
 
 FROM node:12.18.1-alpine
-ENV NODE_OPTIONS="--max-old-space-size=(2 * 1024)"
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 
