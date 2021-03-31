@@ -5,6 +5,8 @@ import { ImagesLimitDialog } from "@/feature/chat/view/content/message-box/conte
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { useStore, useEvent } from "effector-react"
+import { Icon } from "@/components/icon/Icon"
+import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
 type ChatMessageBoxTypes = {
   blockedText?: string | null
@@ -34,6 +36,11 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
       change("")
     }
   }
+  
+  const handleOnClick = () => {
+    send(value)
+    change("") 
+  }
 
   useEffect(() => {
     if (input.current && window.innerWidth > 768) {
@@ -43,34 +50,73 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
 
   return (
     <Container>
-      <MessageBoxUpload images={images} add={addImage} delete={deleteImage} upload={upload} />
+      <MessageContainer>
 
-      <StyledInput
-        ref={input}
-        value={value}
-        disabled={!!props.blockedText}
-        placeholder={props.blockedText || "Напишите сообщение..."}
-        onChange={e => change(e.target.value)}
-        onKeyDown={keydownHandler}
-      />
+        <MessageBoxUpload images={images} add={addImage} delete={deleteImage} upload={upload} />
 
-      <ImagesLimitDialog
-        images={images}
-        visibility={showLimitDialog}
-        onChangeVisibility={changeLimitDialogVisibility}
-        send={() => sendTenImages()}
-      />
+        <InputContainer>
+          <StyledInput
+            ref={input}
+            value={value}
+            disabled={!!props.blockedText}
+            placeholder={props.blockedText || "Напишите сообщение..."}
+            onChange={e => change(e.target.value)}
+            onKeyDown={keydownHandler}
+          />
+          <Send onClick={handleOnClick} />
+        </InputContainer>
+
+        <ImagesLimitDialog
+          images={images}
+          visibility={showLimitDialog}
+          onChangeVisibility={changeLimitDialogVisibility}
+          send={() => sendTenImages()}
+        />
+      </MessageContainer>
+        {/*<MessageContainer>
+
+          <InputContainer>
+            <FileIcon src={FilePreview} />
+          <Send onClick={handleOnClick} />
+        </InputContainer>
+                  
+      </MessageContainer>*/}
     </Container>
   )
 }
 
-const Container = styled.div`
+const MessageContainer = styled.div`
   background: #dbdee0;
   border-radius: 0px 0px 2px 2px;
   padding: 12px;
   display: flex;
   align-items: center;
   position: relative;
+`
+
+const Container = styled.div`
+  background: #dbdee0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`
+
+const Send = styled(Icon).attrs({ name: "send" })`
+  fill: #424242;;
+  cursor: pointer;
+  height: 17px;
+  position: absolute; 
+  right: 22px;
+  top: 21px; 
+`
+
+const FileIcon = styled.img`
+  width: 40px;
+  height: 40px;
+`
+
+const InputContainer = styled.div`
+  width: 100%; 
 `
 
 const StyledInput = styled.input`
@@ -83,6 +129,9 @@ const StyledInput = styled.input`
   border: none;
   outline: none;
   flex: 1;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  width: 100%;  
 
   &::placeholder {
     color: #9aa0a6;

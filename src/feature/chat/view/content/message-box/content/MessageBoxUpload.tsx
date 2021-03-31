@@ -14,11 +14,12 @@ type MessageBoxUploadProps = {
   upload: (p: void) => void
 }
 
-export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
+const UploadMenu = (props: any) => {
+
   const addToast = useEvent(toasts.add)
 
   const onDropAccepted = useCallback(acceptedFiles => {
-    const heic2any = require('heic2any')
+    const heic2any = require("heic2any")
     acceptedFiles.forEach(async (file: File) => {
       if (file.type.length === 0 || file.type === "image/heic") {
         const result = await heic2any({blob: file, toType: "image/jpeg"})
@@ -53,8 +54,21 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
     onDropRejected,
     multiple: true,
     maxSize,
-    accept: acceptMimeTypes,
   })
+
+
+  return (
+    <UploadMenuContainer>
+      <FileInput {...getInputProps()} />
+      <MenuItem onClick={open}>Фотографии</MenuItem>
+      <MenuItem onClick={open}>Документы</MenuItem>
+
+    </UploadMenuContainer>
+  )
+
+}
+
+export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
 
   const imagesRef = useRef<any>(null)
 
@@ -102,11 +116,11 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
 
   return (
     <Container>
-      <UploadIcon onClick={open} />
-      <FileInput {...getInputProps()} />
+      <UploadMenu add={props.add} />
+      <UploadIcon />
 
       {!!props.images.length && (
-        <Uploader>
+        <UploaderForImages>
           <LeftArrow onClick={scrollLeft} />
           <Images>
             <StyledSimpleBar ref={imagesRef}>
@@ -124,7 +138,7 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
           </Images>
           <RightArrow onClick={scrollRight} />
           <Send onClick={() => props.upload()} />
-        </Uploader>
+        </UploaderForImages>
       )}
     </Container>
   )
@@ -140,6 +154,21 @@ const StyledSimpleBar = styled(SimpleBar)`
 
 const Container = styled.div``
 
+const UploadMenuContainer = styled.div`
+  background: #FFFFFF;
+  position: absolute;
+  transform: translateY(-125%);
+  left: 0;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+`
+
+const MenuItem = styled.div`
+  width: 137px;
+  height: 48px;
+  cursor: pointer;  
+`
+
 const UploadIcon = styled(Icon).attrs({ name: "clip" })`
   fill: ${props => props.theme.colors.primary};
   cursor: pointer;
@@ -153,7 +182,7 @@ const FileInput = styled.input`
   display: none;
 `
 
-const Uploader = styled.div`
+const UploaderForImages = styled.div`
   position: absolute;
   left: 44px;
   width: calc(100% - 44px);
