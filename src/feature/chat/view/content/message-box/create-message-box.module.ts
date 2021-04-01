@@ -10,7 +10,7 @@ type CreateChatMessageBoxModuleConfig = SupportChatModelConfig & {
   $chatId: Store<ChatId>
 }
 
-export type ChatImage = {
+export type ChatFile = {
   id: number
   percent: number
   file: File
@@ -18,7 +18,7 @@ export type ChatImage = {
   preview: string | null // src
 }
 
-type ChangeImage = { file: File } & Partial<ChatImage>
+type ChangeImage = { file: File } & Partial<ChatFile>
 
 export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleConfig) => {
   const FileId = (i => () => i++)(0)
@@ -36,19 +36,19 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
   })
 
   const addFile = createEvent<File>()
-    const addDocument = createEvent<File>()
+  const addDocument = createEvent<File>()
 
-  const changeImages = createEvent<ChatImage[]>()
-    const changeDocuments = createEvent<ChatImage[]>()
+  const changeImages = createEvent<ChatFile[]>()
+  const changeDocuments = createEvent<ChatFile[]>()
 
   const changeTenImages = createEvent()
-    const changeTenDocuments = createEvent()
+  const changeTenDocuments = createEvent()
 
   const changeImage = createEvent<ChangeImage>()
-    const changeDocument = createEvent<ChangeImage>()
+  const changeDocument = createEvent<ChangeImage>()
 
   const deleteImage = createEvent<number>()
-    const deleteDocument = createEvent<number>()
+  const deleteDocument = createEvent<number>()
 
   const $images = restore(changeImages, [])
     .on(deleteImage, (images, id) => images.filter(image => image.id !== id))
@@ -72,27 +72,27 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
       return [...images]
     })
 
-    const $documents = restore(changeDocuments, [])
-      .on(deleteDocument, (documents, id) => documents.filter(image => image.id !== id))
-      .on(changeTenDocuments, (documents) => documents.slice(0, 10))
-      .on(addDocument, (documents, file) => [
-          ...documents,
-          {
-              file,
-              preview: FilePreview,
-              id: FileId(),
-              percent: 0,
-              serverUrl: "",
-          },
-      ])
-      .on(changeDocument, (documents, payload) => {
-          const document = documents.find(document => document.file === payload.file)
-          if (document) {
-              Object.assign(document, payload)
-          }
+  const $documents = restore(changeDocuments, [])
+    .on(deleteDocument, (documents, id) => documents.filter(image => image.id !== id))
+    .on(changeTenDocuments, (documents) => documents.slice(0, 10))
+    .on(addDocument, (documents, file) => [
+      ...documents,
+      {
+        file,
+        preview: FilePreview,
+        id: FileId(),
+        percent: 0,
+        serverUrl: "",
+      },
+    ])
+    .on(changeDocument, (documents, payload) => {
+      const document = documents.find(document => document.file === payload.file)
+      if (document) {
+        Object.assign(document, payload)
+      }
 
-          return [...documents]
-      })
+      return [...documents]
+    })
 
   const readImageFx = createEffect({
     handler: (file: File) => {
@@ -120,10 +120,10 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
   })
 
   const uploadImages = createEvent()
-    const uploadDocuments = createEvent()
+  const uploadDocuments = createEvent()
 
   const uploadImagesFx = createEffect({
-    handler: (images: ChatImage[]) => {
+    handler: (images: ChatFile[]) => {
       return Promise.all(
         images.map(image =>
           uploadMedia(
@@ -148,31 +148,31 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     },
   })
 
-    const uploadDocumentsFx = createEffect({
-        handler: (images: ChatImage[]) => {
-            return Promise.all(
-              images.map(image =>
-                uploadMedia(
-                  {
-                      type: "OTHER",
-                      file: image.file,
-                  },
-                  (pe: ProgressEvent) => {
-                      runInScope(changeDocument, {
-                          file: image.file,
-                          percent: Math.round((pe.loaded * 100) / pe.total),
-                      })
-                  }
-                ).then(res => {
-                    runInScope(changeDocument, {
-                        file: image.file,
-                        serverUrl: res.file,
-                    })
-                })
-              )
-            )
-        },
-    })
+  const uploadDocumentsFx = createEffect({
+    handler: (images: ChatFile[]) => {
+      return Promise.all(
+        images.map(image =>
+          uploadMedia(
+            {
+              type: "OTHER",
+              file: image.file,
+            },
+            (pe: ProgressEvent) => {
+              runInScope(changeDocument, {
+                file: image.file,
+                percent: Math.round((pe.loaded * 100) / pe.total),
+              })
+            }
+          ).then(res => {
+            runInScope(changeDocument, {
+              file: image.file,
+              serverUrl: res.file,
+            })
+          })
+        )
+      )
+    },
+  })
 
   sample({
     source: $images,
@@ -180,14 +180,14 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     target: uploadImagesFx,
   })
 
-    sample({
-        source: $documents,
-        clock: uploadDocuments,
-        target: uploadDocumentsFx,
-    })
+  sample({
+    source: $documents,
+    clock: uploadDocuments,
+    target: uploadDocumentsFx,
+  })
 
   const sendImagesToChatFx = createEffect({
-    handler({ images, chat }: { images: ChatImage[]; chat: number }) {
+    handler({ images, chat }: { images: ChatFile[]; chat: number }) {
       return new Promise((res) => {
         images
           .forEach(image => {
@@ -203,31 +203,31 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     },
   })
 
-    const sendDocumentsToChatFx = createEffect({
-        handler({ documents, chat }: { images: ChatImage[]; chat: number }) {
-            return new Promise((res) => {
-                documents
-                  .forEach(document => {
-                      if (document.serverUrl) {
-                          runInScope(config.socket.methods.send, {
-                              chat: chat,
-                              document: document.serverUrl,
-                          })
-                      }
-                  })
-                res()
-            })
-        },
-    })
+  const sendDocumentsToChatFx = createEffect({
+    handler({ documents, chat }: { documents: ChatFile[]; chat: number }) {
+      return new Promise((res) => {
+        documents
+          .forEach(document => {
+            if (document.serverUrl) {
+              runInScope(config.socket.methods.send, {
+                chat: chat,
+                document: document.serverUrl,
+              })
+            }
+          })
+        res()
+      })
+    },
+  })
 
   const sendImage = createEvent()
-    const sendDocument = createEvent()
+  const sendDocument = createEvent()
 
   const changeLimitImagesDialogVisibility = createEvent<boolean>()
-    const changeLimitDocumentsDialogVisibility = createEvent<boolean>()
+  const changeLimitDocumentsDialogVisibility = createEvent<boolean>()
 
   const $limitImagesDialogVisibility = restore(changeLimitImagesDialogVisibility, false)
-    const $limitDocumentsDialogVisibility = restore(changeLimitImagesDialogVisibility, false)
+  const $limitDocumentsDialogVisibility = restore(changeLimitImagesDialogVisibility, false)
 
   condition({
     source: sendImage,
@@ -236,15 +236,15 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     else: changeLimitImagesDialogVisibility.prepend(() => true)
   })
 
-    condition({
-        source: sendDocument,
-        if: $documents.map(documents => documents.length < 11),
-        then: uploadDocuments,
-        else: changeLimitDocumentsDialogVisibility.prepend(() => true)
-    })
+  condition({
+    source: sendDocument,
+    if: $documents.map(documents => documents.length < 11),
+    then: uploadDocuments,
+    else: changeLimitDocumentsDialogVisibility.prepend(() => true)
+  })
 
   const sendTenImages = createEvent()
-    const sendTenDocuments = createEvent()
+  const sendTenDocuments = createEvent()
 
   forward({
     from: sendTenImages,
@@ -256,25 +256,25 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     to: changeTenImages
   })
 
-    forward({
-        from: sendTenDocuments,
-        to: changeLimitDocumentsDialogVisibility.prepend(() => false)
-    })
+  forward({
+    from: sendTenDocuments,
+    to: changeLimitDocumentsDialogVisibility.prepend(() => false)
+  })
 
-    forward({
-        from: sendTenDocuments,
-        to: changeTenDocuments
-    })
+  forward({
+    from: sendTenDocuments,
+    to: changeTenDocuments
+  })
 
   forward({
     from: changeTenImages,
     to: uploadImages
   })
 
-    forward({
-        from: changeTenDocuments,
-        to: uploadDocuments
-    })
+  forward({
+    from: changeTenDocuments,
+    to: uploadDocuments
+  })
 
   sample({
     // @ts-ignore
@@ -284,29 +284,29 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     target: sendImagesToChatFx,
   })
 
-    sample({
-        // @ts-ignore
-        source: combine($documents, config.$chatId, (documents, chat) => ({ documents, chat })),
-        clock: uploadDocumentsFx.doneData,
-        // @ts-ignore
-        target: sendDocumentsToChatFx,
-    })
+  sample({
+    // @ts-ignore
+    source: combine($documents, config.$chatId, (documents, chat) => ({ documents, chat })),
+    clock: uploadDocumentsFx.doneData,
+    // @ts-ignore
+    target: sendDocumentsToChatFx,
+  })
 
   forward({
     from: sendImagesToChatFx.doneData,
     to: changeImages.prepend(() => [])
   })
 
-    forward({
-        from: sendDocumentsToChatFx.doneData,
-        to: changeDocuments.prepend(() => [])
-    })
+  forward({
+    from: sendDocumentsToChatFx.doneData,
+    to: changeDocuments.prepend(() => [])
+  })
 
   return {
     data: {
       $message,
       $images,
-        $documents,
+      $documents,
       $limitDialogVisibility: {$limitImagesDialogVisibility,$limitDocumentsDialogVisibility},
     },
     methods: {

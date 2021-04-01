@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { ImagesLimitDialog, DocumentsLimitDialog } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
-import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { createChatMessageBoxModule, ChatFile } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { useStore, useEvent } from "effector-react"
 import { Icon } from "@/components/icon/Icon"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
@@ -11,6 +11,17 @@ import FilePreview from "@/feature/chat/view/content/message-box/content/file-pr
 type ChatMessageBoxTypes = {
   blockedText?: string | null
 }
+
+const DocumentList = ({ doc, del }: {doc: ChatFile, del: (id: number) => void}) => (
+  <Item>
+    <FileIcon src={FilePreview} />
+    <DocInfo>
+      <Name>{doc.file.name}</Name>
+      <Size>{(doc.file.size / 1048576).toFixed(2)} МБ</Size>
+    </DocInfo>
+    <Close onClick={() => del(doc.id)} />
+  </Item>
+)
 
 export const createChatMessageBox = ($module: ReturnType<typeof createChatMessageBoxModule>) => (
   props: ChatMessageBoxTypes
@@ -20,16 +31,14 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const send = useEvent($module.methods.sendTextMessage)
 
   const input = useRef<HTMLInputElement>(null)
-
-  const addImage = useEvent($module.methods.add.addFile)
+    
   const images = useStore($module.data.$images)
-    const documents = useStore($module.data.$documents)
-  const deleteImage = useEvent($module.methods.delete.deleteImage)
-  const uploadImage = useEvent($module.methods.send.sendImage)
-    const uploadDocument = useEvent($module.methods.send.sendImage)
+  const documents = useStore($module.data.$documents)
+  const deleteDocument = useEvent($module.methods.delete.deleteDocument)
+  const uploadDocument = useEvent($module.methods.send.sendDocument)
 
   const showImagesLimitDialog = useStore($module.data.$limitDialogVisibility.$limitImagesDialogVisibility)
-    const showDocumentsLimitDialog = useStore($module.data.$limitDialogVisibility.$limitDocumentsDialogVisibility)
+  const showDocumentsLimitDialog = useStore($module.data.$limitDialogVisibility.$limitDocumentsDialogVisibility)
   const changeLimitImagesDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitImagesDialogVisibility)
   const sendTenImages = useEvent($module.methods.sendTen.sendTenImages)
 
@@ -51,11 +60,12 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     }
   }, [])
 
+  //<MessageBoxUpload module={$module} images={images} add={addImage} delete={deleteImage} upload={uploadImage} />
   return (
     <Container>
       <MessageContainer>
 
-        <MessageBoxUpload module={$module} images={images} add={addImage} delete={deleteImage} upload={uploadImage} />
+        <MessageBoxUpload module={$module} />
 
         <InputContainer>
           <StyledInput
@@ -76,17 +86,46 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
           send={() => sendTenImages()}
         />
       </MessageContainer>
-        {documents ? <MessageContainer>
-
-          <InputContainer>
-            <FileIcon src={FilePreview} />
-          <Send onClick={handleOnClick} />
-        </InputContainer>
-
-      </MessageContainer> : null}
+      {documents.length > 0 ?
+        <MessageContainer>
+          <ListContainer>
+            {documents.map((doc,i) => (<DocumentList doc={doc} del={deleteDocument} key={i} />))}
+          </ListContainer>
+          <Send onClick={() => uploadDocument()} />
+        </MessageContainer>
+        : null}
     </Container>
   )
 }
+
+const DocInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 240px;
+  margin-left: 8px;
+`
+
+const Name = styled.div`
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    color: #5B6670;
+`
+
+const Size = styled.div`
+    font-family: Roboto;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    color: #9AA0A6;
+`
+
+const Item = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;  
+`
 
 const MessageContainer = styled.div`
   background: #dbdee0;
@@ -104,6 +143,12 @@ const Container = styled.div`
   position: relative;
 `
 
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;  
+`
+
 const Send = styled(Icon).attrs({ name: "send" })`
   fill: #424242;;
   cursor: pointer;
@@ -113,13 +158,20 @@ const Send = styled(Icon).attrs({ name: "send" })`
   top: 21px; 
 `
 
+const Close = styled(Icon).attrs({ name: "close" })`
+  width: 32px;
+  cursor: pointer;
+  fill: #9AA0A6;
+  margin-right: 40px;  
+`
+
 const FileIcon = styled.img`
   width: 40px;
   height: 40px;
 `
 
 const InputContainer = styled.div`
-  width: 100%; 
+  width: 100%;
 `
 
 const StyledInput = styled.input`

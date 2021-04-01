@@ -93,6 +93,8 @@ export type IconName =
   | "mir-logo-card"
   | "maestro"
   | "file-preview"
+  | "photos-icon"
+  | "documents-icon"
 
 type IconProps = {
   name: IconName,

@@ -5,12 +5,12 @@ import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
-import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { ChatFile } from "@/feature/chat/view/content/message-box/create-message-box.module"
 
 type ImagesLimitDialogProps = {
   visibility: boolean
   onChangeVisibility: (val: boolean) => any
-  images: ChatImage[]
+  images: ChatFile[]
   send: () => void
 }
 
