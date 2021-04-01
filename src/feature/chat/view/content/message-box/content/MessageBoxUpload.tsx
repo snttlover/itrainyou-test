@@ -46,29 +46,34 @@ const UploadMenu = (props: any) => {
     })
   }, [])
 
-  const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif",".heic"]
+  //const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif",".heic"]
+    const acceptMimeTypes = []
   const maxSize = 104857600
 
-  const { getInputProps, open } = useDropzone({
-    onDropAccepted,
-    onDropRejected,
-    multiple: true,
-    maxSize,
-  })
+    const { getInputProps, open } = useDropzone({
+        onDropAccepted,
+        onDropRejected,
+        multiple: true,
+        maxSize,
+        accept: acceptMimeTypes,
+    })
 
 
   return (
-    <UploadMenuContainer>
+    <>
       <FileInput {...getInputProps()} />
-      <MenuItem onClick={open}>Фотографии</MenuItem>
-      <MenuItem onClick={open}>Документы</MenuItem>
-
-    </UploadMenuContainer>
+      <MenuItem onClick={open}><MenuIcon name={props.iconName}/>props.name</MenuItem>
+    </>
   )
 
 }
 
 export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
+
+    const menuItems = [
+        {name: "Фотографии", iconName: ""},
+        {name: "Документы", iconName: ""},
+    ]
 
   const imagesRef = useRef<any>(null)
 
@@ -116,7 +121,11 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
 
   return (
     <Container>
-      <UploadMenu add={props.add} />
+        <UploadMenuContainer>
+            {menuItems.map((item,i) => (
+                    <UploadMenu add={props.add} item={item} key={i} />
+                    ))}
+        </UploadMenuContainer>
       <UploadIcon />
 
       {!!props.images.length && (
@@ -288,6 +297,14 @@ const RightArrow = styled(Icon).attrs({ name: "right-icon" })`
   margin-left: 10px;
   margin-right: 13px;
   height: 14px;
+`
+
+const MenuIcon = styled(Icon).attrs((props: any) => ({
+    name: props.iconName,
+    ...props
+}))`
+    width: 32px;
+    height: 22px;
 `
 
 const Send = styled(Icon).attrs({ name: "send" })`

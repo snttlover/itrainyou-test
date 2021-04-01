@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { ImagesLimitDialog } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
+import { ImagesLimitDialog, DocumentsLimitDialog } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { useStore, useEvent } from "effector-react"
@@ -21,14 +21,17 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
 
   const input = useRef<HTMLInputElement>(null)
 
-  const addImage = useEvent($module.methods.addFile)
+  const addImage = useEvent($module.methods.add.addFile)
   const images = useStore($module.data.$images)
-  const deleteImage = useEvent($module.methods.deleteImage)
-  const upload = useEvent($module.methods.send)
+    const documents = useStore($module.data.$documents)
+  const deleteImage = useEvent($module.methods.delete.deleteImage)
+  const uploadImage = useEvent($module.methods.send.sendImage)
+    const uploadDocument = useEvent($module.methods.send.sendImage)
 
-  const showLimitDialog = useStore($module.data.$limitDialogVisibility)
-  const changeLimitDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility)
-  const sendTenImages = useEvent($module.methods.sendTenImages)
+  const showImagesLimitDialog = useStore($module.data.$limitDialogVisibility.$limitImagesDialogVisibility)
+    const showDocumentsLimitDialog = useStore($module.data.$limitDialogVisibility.$limitDocumentsDialogVisibility)
+  const changeLimitImagesDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitImagesDialogVisibility)
+  const sendTenImages = useEvent($module.methods.sendTen.sendTenImages)
 
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
@@ -52,7 +55,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     <Container>
       <MessageContainer>
 
-        <MessageBoxUpload images={images} add={addImage} delete={deleteImage} upload={upload} />
+        <MessageBoxUpload module={$module} images={images} add={addImage} delete={deleteImage} upload={uploadImage} />
 
         <InputContainer>
           <StyledInput
@@ -68,19 +71,19 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
 
         <ImagesLimitDialog
           images={images}
-          visibility={showLimitDialog}
-          onChangeVisibility={changeLimitDialogVisibility}
+          visibility={showImagesLimitDialog}
+          onChangeVisibility={changeLimitImagesDialogVisibility}
           send={() => sendTenImages()}
         />
       </MessageContainer>
-        {/*<MessageContainer>
+        {documents ? <MessageContainer>
 
           <InputContainer>
             <FileIcon src={FilePreview} />
           <Send onClick={handleOnClick} />
         </InputContainer>
-                  
-      </MessageContainer>*/}
+
+      </MessageContainer> : null}
     </Container>
   )
 }

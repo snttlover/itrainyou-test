@@ -35,6 +35,27 @@ export const ImagesLimitDialog = (props: ImagesLimitDialogProps) => (
   </Wrapper>
 )
 
+export const DocumentsLimitDialog = (props: ImagesLimitDialogProps) => (
+        <Wrapper>
+            <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
+                <Container>
+                    <Header>Превышен лимит отправки фотографий</Header>
+                    <Description>За один раз возможно отправлять только 10 фотографий. Отправить эти фотографии?</Description>
+                    <Images>
+                        {props.images.map(image => <Image
+                                key={image.id}
+                                style={{ backgroundImage: `url("${image.preview}")` }}
+                        />)}
+                    </Images>
+                    <Actions>
+                        <Cancel onClick={() => props.onChangeVisibility(false)}>Отмена</Cancel>
+                        <Confirm onClick={() => props.send()}>Отправить </Confirm>
+                    </Actions>
+                </Container>
+            </StyledDialog>
+        </Wrapper>
+)
+
 const Wrapper = styled.div`
   ${DialogOverlayContainer} {
     ${MediaRange.lessThan("mobile")`

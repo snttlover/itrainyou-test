@@ -204,14 +204,14 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
   })
 
     const sendDocumentsToChatFx = createEffect({
-        handler({ images, chat }: { images: ChatImage[]; chat: number }) {
+        handler({ documents, chat }: { images: ChatImage[]; chat: number }) {
             return new Promise((res) => {
-                images
-                  .forEach(image => {
-                      if (image.serverUrl) {
+                documents
+                  .forEach(document => {
+                      if (document.serverUrl) {
                           runInScope(config.socket.methods.send, {
                               chat: chat,
-                              document: image.serverUrl,
+                              document: document.serverUrl,
                           })
                       }
                   })
@@ -227,7 +227,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     const changeLimitDocumentsDialogVisibility = createEvent<boolean>()
 
   const $limitImagesDialogVisibility = restore(changeLimitImagesDialogVisibility, false)
-    const $limitImagesDocumentsVisibility = restore(changeLimitImagesDialogVisibility, false)
+    const $limitDocumentsDialogVisibility = restore(changeLimitImagesDialogVisibility, false)
 
   condition({
     source: sendImage,
@@ -306,16 +306,17 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     data: {
       $message,
       $images,
-      $limitDialogVisibility: $limitImagesDialogVisibility
+        $documents,
+      $limitDialogVisibility: {$limitImagesDialogVisibility,$limitDocumentsDialogVisibility},
     },
     methods: {
       changeMessage,
       sendTextMessage,
-      addFile,
-      deleteImage,
-      send: sendImage,
-      changeLimitDialogVisibility: changeLimitImagesDialogVisibility,
-      sendTenImages
+      add: {addFile,addDocument},
+      delete: {deleteImage, deleteDocument},
+      send: {sendImage, sendDocument},
+      changeLimitDialogVisibility: {changeLimitImagesDialogVisibility, changeLimitDocumentsDialogVisibility},
+      sendTen: {sendTenImages, sendTenDocuments},
     },
   }
 }
