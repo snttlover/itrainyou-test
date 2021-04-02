@@ -67,7 +67,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
 
         <MessageBoxUpload module={$module} />
 
-        <InputContainer>
+          {documents.length === 0 ? <InputContainer>
           <StyledInput
             ref={input}
             value={value}
@@ -77,7 +77,14 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
             onKeyDown={keydownHandler}
           />
           <Send onClick={handleOnClick} />
-        </InputContainer>
+        </InputContainer> :
+                  <>
+          <ListContainer>
+              {documents.map((doc,i) => (<DocumentList doc={doc} del={deleteDocument} key={i} />))}
+          </ListContainer>
+          <Send onClick={() => uploadDocument()} />
+          </>
+          }
 
         <ImagesLimitDialog
           images={images}
@@ -86,14 +93,14 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
           send={() => sendTenImages()}
         />
       </MessageContainer>
-      {documents.length > 0 ?
+      {/*documents.length > 0 ?
         <MessageContainer>
           <ListContainer>
             {documents.map((doc,i) => (<DocumentList doc={doc} del={deleteDocument} key={i} />))}
           </ListContainer>
           <Send onClick={() => uploadDocument()} />
         </MessageContainer>
-        : null}
+        : null*/}
     </Container>
   )
 }

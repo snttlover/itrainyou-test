@@ -7,6 +7,7 @@ import SimpleBar from "simplebar-react"
 import {useEvent, useStore} from "effector-react"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import {useClickOutside} from "@/components/click-outside/use-click-outside"
+import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg";
 
 type MessageBoxUploadProps = {
   images: ChatFile[]
@@ -15,10 +16,23 @@ type MessageBoxUploadProps = {
   upload: (p: void) => void
 }
 
-const UploadMenu = ({title, iconName, add}: {
+const DocumentList = ({ doc, del }: {doc: ChatFile, del: (id: number) => void}) => (
+        <Item>
+            <FileIcon src={FilePreview} />
+            <DocInfo>
+                <Name>{doc.file.name}</Name>
+                <Size>{(doc.file.size / 1048576).toFixed(2)} МБ</Size>
+            </DocInfo>
+            <Delete onClick={() => del(doc.id)} />
+        </Item>
+)
+
+
+const UploadMenu = ({title, iconName, add, visible}: {
     title: string
     iconName: string
     add: (file: File) => void
+    visible: boolean
 }) => {
 
   const addToast = useEvent(toasts.add)
@@ -71,11 +85,14 @@ const UploadMenu = ({title, iconName, add}: {
 
 
   return (
+          <>
+          {visible ?
     <ItemContainer onClick={open}>
-      <FileInput {...getInputProps()} />
-      <MenuIcon iconName={iconName}/>
-      <MenuItem>{title}</MenuItem>
-    </ItemContainer>
+        <FileInput {...getInputProps()} />
+        <MenuIcon iconName={iconName}/>
+        <MenuItem>{title}</MenuItem>
+    </ItemContainer> : null}
+    </>
   )
 
 }
@@ -88,11 +105,15 @@ export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChat
   const deleteImage = useEvent(module.methods.delete.deleteImage)
   const uploadImage = useEvent(module.methods.send.sendImage)
 
+    const documents = useStore(module.data.$documents)
+    const deleteDocument = useEvent(module.methods.delete.deleteDocument)
+    const uploadDocument = useEvent(module.methods.send.sendDocument)
+
   const [visibility, setVisibility] = useState(false)
     
   const menuItems = [
-    {title: "Фотографии", iconName: "photos-icon", add: addImage},
-    {title: "Документы", iconName: "documents-icon", add: addDocument},
+    {title: "Фотографии", iconName: "photos-icon", add: addImage, visible: !documents.length},
+    {title: "Документы", iconName: "documents-icon", add: addDocument, visible: !images.length},
   ]
 
   const imagesRef = useRef<any>(null)
@@ -175,9 +196,65 @@ export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChat
           <Send onClick={() => uploadImage()} />
         </UploaderForImages>
       )}
+        {/*!!documents.length && (
+                <UploaderForImages>
+            <ListContainer>
+                {documents.map((doc,i) => (<DocumentList doc={doc} del={deleteDocument} key={i} />))}
+            </ListContainer>
+            <Send onClick={() => uploadDocument()} />
+        </UploaderForImages>
+        )*/}
     </Container>
   )
 }
+
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;  
+`
+
+const Delete = styled(Icon).attrs({ name: "close" })`
+  width: 32px;
+  cursor: pointer;
+  fill: #9AA0A6;
+  margin-right: 40px;  
+`
+
+const FileIcon = styled.img`
+  width: 40px;
+  height: 40px;
+`
+
+const DocInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 240px;
+  margin-left: 8px;
+`
+
+const Name = styled.div`
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    color: #5B6670;
+`
+
+const Size = styled.div`
+    font-family: Roboto;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    color: #9AA0A6;
+`
+
+const Item = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;  
+`
 
 const StyledSimpleBar = styled(SimpleBar)`
   width: 100%;
