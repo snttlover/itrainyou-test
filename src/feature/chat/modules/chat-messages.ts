@@ -56,6 +56,7 @@ export type PersonalChatMessage = {
   isMine: boolean
   text: string
   image: string
+  document: string
   time: string
   user: CoachUser | Client | null
   imageIndex: number
@@ -220,6 +221,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             isReadByYou: message.isReadByYou,
             text: message.text,
             image: message.image,
+            document: message.document,
             time: date(message.creationDatetime).format("HH:mm"),
             imageIndex: message.image ? imageIndex-- : imageIndex,
             user

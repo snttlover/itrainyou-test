@@ -4,6 +4,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { CoachUser } from "@/lib/api/coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
+import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
 type ContainerTypes = {
   "data-self": boolean
@@ -72,6 +73,7 @@ type ChatMessageTypes = {
   time: string
   text: string
   image: string
+  document: string
   showUser?: boolean
   user: CoachUser | Client | null
   imageClick?: (index: number) => void
@@ -97,6 +99,12 @@ export const ChatMessage = (props: ChatMessageTypes) => (
           onClick={() => props.imageClick && props.imageClick(props.imageIndex)}
         />
       )}
+        {!!props.document && (
+                <Image
+                        src={FilePreview}
+                        className='message-document'
+                />
+        )}
       <MessageText>{props.text}</MessageText>
       <Time>{props.time}</Time>
     </Container>
