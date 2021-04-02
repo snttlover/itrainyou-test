@@ -7,7 +7,7 @@ import SimpleBar from "simplebar-react"
 import {useEvent, useStore} from "effector-react"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import {useClickOutside} from "@/components/click-outside/use-click-outside"
-import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg";
+import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
 type MessageBoxUploadProps = {
   images: ChatFile[]
@@ -28,16 +28,18 @@ const DocumentList = ({ doc, del }: {doc: ChatFile, del: (id: number) => void}) 
 )
 
 
-const UploadMenu = ({title, iconName, add, visible}: {
+const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
     title: string
     iconName: string
     add: (file: File) => void
     visible: boolean
+    setVisibility: (e: boolean) => void
 }) => {
 
   const addToast = useEvent(toasts.add)
 
   const onDropAccepted = useCallback(acceptedFiles => {
+      setVisibility(false)
     const heic2any = require("heic2any")
     acceptedFiles.forEach(async (file: File) => {
       if ((file.type.length === 0 || file.type === "image/heic") && title === "Фотографии") {
@@ -50,6 +52,7 @@ const UploadMenu = ({title, iconName, add, visible}: {
   }, [])
 
   const onDropRejected = useCallback((files: FileRejection[]) => {
+      setVisibility(false)
     files.forEach(error => {
       if (error.file.size > maxSize) {
         addToast({
@@ -170,7 +173,7 @@ export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChat
     <Container>
       {visibility ? <UploadMenuContainer ref={menuRef}>
         {menuItems.map((item,i) => (
-          <UploadMenu {...item} key={i} />
+          <UploadMenu {...item} key={i} setVisibility={setVisibility} />
         ))}
       </UploadMenuContainer> : null}
       <UploadIcon onClick={() => setVisibility(true)} />
@@ -281,7 +284,7 @@ const MenuItem = styled.div`
 `
 
 const UploadIcon = styled(Icon).attrs({ name: "clip" })`
-  fill: ${props => props.theme.colors.primary};
+  fill: #5B6670;;
   cursor: pointer;
   width: 20px;
   margin-right: 12px;
@@ -421,7 +424,7 @@ const MenuIcon = styled(Icon).attrs((props: any) => ({
 `
 
 const Send = styled(Icon).attrs({ name: "send" })`
-  fill: ${props => props.theme.colors.primary};
+  fill: #5B6670;
   cursor: pointer;
   height: 17px;
   margin-right: 25px;

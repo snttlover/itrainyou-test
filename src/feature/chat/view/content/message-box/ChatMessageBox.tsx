@@ -39,8 +39,12 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
 
   const showImagesLimitDialog = useStore($module.data.$limitDialogVisibility.$limitImagesDialogVisibility)
   const showDocumentsLimitDialog = useStore($module.data.$limitDialogVisibility.$limitDocumentsDialogVisibility)
+
   const changeLimitImagesDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitImagesDialogVisibility)
+    const changeLimitDocumentsDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitDocumentsDialogVisibility)
+
   const sendTenImages = useEvent($module.methods.sendTen.sendTenImages)
+    const sendTenDocuments = useEvent($module.methods.sendTen.sendTenDocuments)
 
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
@@ -91,6 +95,13 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
           visibility={showImagesLimitDialog}
           onChangeVisibility={changeLimitImagesDialogVisibility}
           send={() => sendTenImages()}
+        />
+
+        <DocumentsLimitDialog
+                visibility={showDocumentsLimitDialog}
+                onChangeVisibility={changeLimitDocumentsDialogVisibility}
+                documents={documents}
+                send={() => sendTenDocuments()}
         />
       </MessageContainer>
       {/*documents.length > 0 ?
@@ -157,7 +168,7 @@ const ListContainer = styled.div`
 `
 
 const Send = styled(Icon).attrs({ name: "send" })`
-  fill: #424242;;
+  fill: #5B6670;
   cursor: pointer;
   height: 17px;
   position: absolute; 

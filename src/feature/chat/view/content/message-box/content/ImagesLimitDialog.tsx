@@ -6,6 +6,7 @@ import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
 import { ChatFile } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
 type ImagesLimitDialogProps = {
   visibility: boolean
@@ -34,17 +35,25 @@ export const ImagesLimitDialog = (props: ImagesLimitDialogProps) => (
     </StyledDialog>
   </Wrapper>
 )
+//`url("${FilePreview}")`
 
-export const DocumentsLimitDialog = (props: ImagesLimitDialogProps) => (
+type DocumentsLimitDialogProps = {
+    visibility: boolean
+    onChangeVisibility: (val: boolean) => any
+    documents: ChatFile[]
+    send: () => void
+}
+
+export const DocumentsLimitDialog = (props: DocumentsLimitDialogProps) => (
         <Wrapper>
             <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
                 <Container>
-                    <Header>Превышен лимит отправки фотографий</Header>
-                    <Description>За один раз возможно отправлять только 10 фотографий. Отправить эти фотографии?</Description>
+                    <Header>Превышен лимит отправки файлов</Header>
+                    <Description>За один раз возможно отправлять только 10 файлов. Отправить эти файлы?</Description>
                     <Images>
-                        {props.images.map(image => <Image
-                                key={image.id}
-                                style={{ backgroundImage: `url("${image.preview}")` }}
+                        {props.documents.map((document, id) => <Image
+                                key={id}
+                                style={{ backgroundImage: `url("${FilePreview}")` }}
                         />)}
                     </Images>
                     <Actions>
