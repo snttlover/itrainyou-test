@@ -119,7 +119,7 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
-const MirLogo = styled(Icon).attrs({name: "mir-logo-card"})`
+const MirLogo = styled(Icon).attrs({name: "MIR"})`
     margin-left: 16px;    
     width: 32px;
     height: 22px;
