@@ -14,7 +14,7 @@ const PlusIcon = styled(Icon).attrs({ name: "plus" })`
   height: 10px;
   fill: ${({ theme }) => theme.colors.primary};
 `
-const MirLogo = styled(Icon).attrs({name: "mir-logo-card"})`
+const MirLogo = styled(Icon).attrs({name: "MIR"})`
   margin-left: 8px;
   width: 32px;
   height: 22px;

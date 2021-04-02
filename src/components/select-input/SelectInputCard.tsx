@@ -102,7 +102,7 @@ export type SelectInputProps<T extends Value> = {
 }
 
 type CardIconTypes = {
-  cardtype: "MasterCard" | "Visa"
+  cardtype: "MasterCard" | "Visa" | "MIR"
 }
 
 const CardIcon = styled(Icon).attrs((props: any) => ({

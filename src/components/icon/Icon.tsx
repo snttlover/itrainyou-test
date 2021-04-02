@@ -77,6 +77,7 @@ export type IconName =
   | "facebook-s-login"
   | "MasterCard"
   | "Visa"
+  | "MIR"
   | "noletter"
   | "checkstep1"
   | "checkstep2"
@@ -90,7 +91,6 @@ export type IconName =
   | "no-mic-permission"
   | "ellipse-list-marker-client"
   | "ellipse-list-marker-coach"
-  | "mir-logo-card"
   | "maestro"
   | "file-preview"
 
