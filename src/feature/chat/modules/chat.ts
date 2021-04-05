@@ -9,7 +9,7 @@ import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-c
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
-import { ChatImage } from "@/lib/api/chats/clients/get-images"
+import { ChatMaterials } from "@/lib/api/chats/clients/get-images"
 import { PaginationRequest } from "@/feature/pagination/modules/pagination"
 
 export type ChatModuleConfig = {
@@ -17,7 +17,7 @@ export type ChatModuleConfig = {
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
-  fetchMaterials: (id: ChatId, params: PaginationRequest) => Promise<Pagination<ChatImage>>,
+  fetchMaterials: (id: ChatId, materials: "images" | "documents", params: PaginationRequest) => Promise<Pagination<ChatMaterials>>,
   fetchSessions: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 

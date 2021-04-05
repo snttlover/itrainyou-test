@@ -7,6 +7,35 @@ import { createInfinityScroll } from "@/feature/pagination"
 import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
 import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
 import { MediaRange } from "@/lib/responsive/media"
+import { Tab, Tabs } from "@/components/tabs/Tabs"
+import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
+
+type MaterialProps = {
+    material: {
+        id: number
+        type: string
+        file: string
+    }
+    handleOnClick: (file: string) => void
+}
+
+const MaterialsItem = (props: MaterialProps) => {
+  let preview: string
+  props.material.type === "IMAGE" ? (preview = props.material.file) : (preview = FilePreview)
+
+  return (
+    <>
+      {props.material.type === "IMAGE" ?
+        <Image image={props.material.file} onClick={() => props.handleOnClick(props.material.file)} />
+        :
+        <Content>
+          <FileIcon src={FilePreview} />
+          <Name>{props.material.file}</Name>
+        </Content>
+      }
+    </>
+  )
+}
 
 export const createMaterialsDialog = ($module: ReturnType<typeof createChatMaterialsModule>) => {
   const InfinityScroll = createInfinityScroll($module.modules.pagination)
@@ -14,7 +43,9 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
   return () => {
     const visibility = useStore($module.data.$dialogVisibility)
     const changeVisibility = useEvent($module.methods.changeDialogVisibility)
+    const changeTab = useEvent($module.methods.changeTab)
     const isEmpty = useStore($module.data.$isEmpty)
+    const tab = useStore($module.data.$tab)
 
     const previewDialogVisibility = useStore($module.modules.imagesDialog.$visibility)
     const changePreviewDialogVisibility = useEvent($module.modules.imagesDialog.changeVisibility)
@@ -24,20 +55,30 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
     const loadMore = useEvent($module.methods.load)
     const itemsCount = useStore($module.modules.imagesDialog.$itemsCount)
 
+    const handleOnClick = (file: string) => {
+      if (tab === "images") {
+        openImage(file)
+      }
+    }
+
     return (
       <>
         <Wrapper>
           <StyledDialog id='materials-dialog' value={visibility} onChange={changeVisibility}>
             <Container>
               <Header>Материалы диалога</Header>
+              <StyledTabs value={tab} onChange={changeTab}>
+                <StyledTab value='images'>Фотографии</StyledTab>
+                <StyledTab value='documents'>Файлы</StyledTab>
+              </StyledTabs>
               {isEmpty && <Empty>Нет файлов</Empty>}
               <Images>
                 <InfinityScroll scrollableTarget='materials-dialog'>
-                  <ImagesWrapper>
-                    {useList($module.data.$materials, image => (
-                      <Image image={image.file} onClick={() => openImage(image.file)} />
+                  <MaterialsWrapper materials={tab}>
+                    {useList($module.data.$materials, material => (
+                      <MaterialsItem material={material} handleOnClick={handleOnClick} />
                     ))}
-                  </ImagesWrapper>
+                  </MaterialsWrapper>
                 </InfinityScroll>
               </Images>
             </Container>
@@ -67,9 +108,20 @@ const Wrapper = styled.div`
   }
 `
 
-const ImagesWrapper = styled.div`
+const Name = styled.div`
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    color: #5B6670;
+    margin-left: 15px;
+`
+
+const MaterialsWrapper = styled.div<{ materials: "images" | "documents"}>`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: ${({ materials,theme }) => materials === "images" ? "wrap" : "nowrap"};
+  width: ${({ materials,theme }) => materials === "images" ? "unset" : "100%"};
+  flex-direction: ${({ materials,theme }) => materials === "images" ? "unset" : "column"};  
 `
 
 const Empty = styled.div`
@@ -139,4 +191,40 @@ const Image = styled.div<ImageType>`
     width: calc(33% - 8px);
     height: 72px;
   `}
+`
+
+const FileIcon = styled.img`
+  width: 40px;
+  height: 40px;
+`
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 4px;  
+`
+
+const StyledTabs = styled(Tabs)`
+  display: flex;
+  position: relative;
+  margin-bottom: 16px;  
+`
+
+const StyledTab = styled(Tab)`
+  font-size: 14px;
+  line-height: 18px;
+  color: #424242;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2px;
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  &[data-active="true"] {
+    border-bottom: 2px solid ${props => props.theme.colors.primary};
+    background: transparent;
+  }
 `
