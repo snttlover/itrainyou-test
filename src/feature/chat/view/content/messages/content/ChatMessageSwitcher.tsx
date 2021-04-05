@@ -35,7 +35,6 @@ export const ChatMessageSwitcher = ({
   }
 
   if (message.type === "TEXT") {
-      console.log("test",message)
     return (
       <StyledUnreadMessage readed={message.isReadByYou}>
         <ChatMessage

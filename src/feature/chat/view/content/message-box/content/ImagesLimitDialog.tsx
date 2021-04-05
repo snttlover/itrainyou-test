@@ -35,7 +35,6 @@ export const ImagesLimitDialog = (props: ImagesLimitDialogProps) => (
     </StyledDialog>
   </Wrapper>
 )
-//`url("${FilePreview}")`
 
 type DocumentsLimitDialogProps = {
     visibility: boolean
@@ -45,24 +44,29 @@ type DocumentsLimitDialogProps = {
 }
 
 export const DocumentsLimitDialog = (props: DocumentsLimitDialogProps) => (
-        <Wrapper>
-            <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
-                <Container>
-                    <Header>Превышен лимит отправки файлов</Header>
-                    <Description>За один раз возможно отправлять только 10 файлов. Отправить эти файлы?</Description>
-                    <Images>
-                        {props.documents.map((document, id) => <Image
-                                key={id}
-                                style={{ backgroundImage: `url("${FilePreview}")` }}
-                        />)}
-                    </Images>
-                    <Actions>
-                        <Cancel onClick={() => props.onChangeVisibility(false)}>Отмена</Cancel>
-                        <Confirm onClick={() => props.send()}>Отправить </Confirm>
-                    </Actions>
-                </Container>
-            </StyledDialog>
-        </Wrapper>
+  <Wrapper>
+    <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
+      <Container>
+        <Header>Превышен лимит отправки файлов</Header>
+        <Description>За один раз возможно отправлять только 10 файлов. Отправить эти файлы?</Description>
+        <ListContainer>
+          {props.documents.map((document, id) => (
+            <Item key={id}>
+              <FileIcon src={FilePreview} />
+              <DocInfo>
+                <Name>{document.file.name}</Name>
+                <Size>{(document.file.size / 1048576).toFixed(2)} МБ</Size>
+              </DocInfo>
+            </Item>
+          ))}
+        </ListContainer>
+        <Actions>
+          <Cancel onClick={() => props.onChangeVisibility(false)}>Отмена</Cancel>
+          <Confirm onClick={() => props.send()}>Отправить </Confirm>
+        </Actions>
+      </Container>
+    </StyledDialog>
+  </Wrapper>
 )
 
 const Wrapper = styled.div`
@@ -159,4 +163,44 @@ const Confirm = styled(Button)`
   ${MediaRange.lessThan("mobile")`
       width: 144px;
   `}
+`
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;  
+`
+
+const DocInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 240px;
+  margin-left: 8px;
+`
+
+const Name = styled.div`
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    color: #5B6670;
+`
+
+const Size = styled.div`
+    font-family: Roboto;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    color: #9AA0A6;
+`
+
+const Item = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;  
+`
+
+const FileIcon = styled.img`
+  width: 40px;
+  height: 40px;
 `

@@ -227,7 +227,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
   const changeLimitDocumentsDialogVisibility = createEvent<boolean>()
 
   const $limitImagesDialogVisibility = restore(changeLimitImagesDialogVisibility, false)
-  const $limitDocumentsDialogVisibility = restore(changeLimitImagesDialogVisibility, false)
+  const $limitDocumentsDialogVisibility = restore(changeLimitDocumentsDialogVisibility, false)
 
   condition({
     source: sendImage,

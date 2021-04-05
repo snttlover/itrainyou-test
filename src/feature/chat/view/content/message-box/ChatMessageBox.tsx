@@ -41,10 +41,10 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const showDocumentsLimitDialog = useStore($module.data.$limitDialogVisibility.$limitDocumentsDialogVisibility)
 
   const changeLimitImagesDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitImagesDialogVisibility)
-    const changeLimitDocumentsDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitDocumentsDialogVisibility)
+  const changeLimitDocumentsDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitDocumentsDialogVisibility)
 
   const sendTenImages = useEvent($module.methods.sendTen.sendTenImages)
-    const sendTenDocuments = useEvent($module.methods.sendTen.sendTenDocuments)
+  const sendTenDocuments = useEvent($module.methods.sendTen.sendTenDocuments)
 
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
@@ -64,14 +64,13 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     }
   }, [])
 
-  //<MessageBoxUpload module={$module} images={images} add={addImage} delete={deleteImage} upload={uploadImage} />
   return (
     <Container>
       <MessageContainer>
 
         <MessageBoxUpload module={$module} />
 
-          {documents.length === 0 ? <InputContainer>
+        {documents.length === 0 ? <InputContainer>
           <StyledInput
             ref={input}
             value={value}
@@ -82,13 +81,13 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
           />
           <Send onClick={handleOnClick} />
         </InputContainer> :
-                  <>
-          <ListContainer>
+          <>
+            <ListContainer>
               {documents.map((doc,i) => (<DocumentList doc={doc} del={deleteDocument} key={i} />))}
-          </ListContainer>
-          <Send onClick={() => uploadDocument()} />
+            </ListContainer>
+            <Send onClick={() => uploadDocument()} />
           </>
-          }
+        }
 
         <ImagesLimitDialog
           images={images}
@@ -98,20 +97,12 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
         />
 
         <DocumentsLimitDialog
-                visibility={showDocumentsLimitDialog}
-                onChangeVisibility={changeLimitDocumentsDialogVisibility}
-                documents={documents}
-                send={() => sendTenDocuments()}
+          visibility={showDocumentsLimitDialog}
+          onChangeVisibility={changeLimitDocumentsDialogVisibility}
+          documents={documents}
+          send={() => sendTenDocuments()}
         />
       </MessageContainer>
-      {/*documents.length > 0 ?
-        <MessageContainer>
-          <ListContainer>
-            {documents.map((doc,i) => (<DocumentList doc={doc} del={deleteDocument} key={i} />))}
-          </ListContainer>
-          <Send onClick={() => uploadDocument()} />
-        </MessageContainer>
-        : null*/}
     </Container>
   )
 }

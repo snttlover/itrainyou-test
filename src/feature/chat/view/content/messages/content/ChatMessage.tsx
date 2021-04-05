@@ -99,12 +99,12 @@ export const ChatMessage = (props: ChatMessageTypes) => (
           onClick={() => props.imageClick && props.imageClick(props.imageIndex)}
         />
       )}
-        {!!props.document && (
-                <Image
-                        src={FilePreview}
-                        className='message-document'
-                />
-        )}
+      {!!props.document && (
+        <Image
+          src={FilePreview}
+          className='message-document'
+        />
+      )}
       <MessageText>{props.text}</MessageText>
       <Time>{props.time}</Time>
     </Container>
