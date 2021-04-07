@@ -5,11 +5,11 @@ import styled from "styled-components"
 import { Close, Dialog } from "@/components/dialog/Dialog"
 import { createInfinityScroll } from "@/feature/pagination"
 import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
-import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
 import { MediaRange } from "@/lib/responsive/media"
 import { Tab, Tabs } from "@/components/tabs/Tabs"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
-import download from "downloadjs"
+import { getFileName, downloadByURL } from "@/lib/network/get-file-by-url"
+import { Icon } from "@/components/icon/Icon"
 
 type MaterialProps = {
     material: {
@@ -20,68 +20,22 @@ type MaterialProps = {
     handleOnClick: (file: string) => void
 }
 
-function downloadFile(filePath){
-    var link=document.createElement('a')
-    link.download = filePath
-    let blob = new Blob(["Hello, world!"], {type: 'text/plain'})
-
-    link.href = URL.createObjectURL(blob)
-
-    link.click()
-    URL.revokeObjectURL(link.href)
-}
-
-function download123(filename, text, type) {
-    var element = document.createElement('a');
-    element.setAttribute('href', `data:${type};charset=utf-8,` + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-    document.body.removeChild(element);
-}
-
-function dataURItoFile(dataURI: string) {
-    // convert base64 to raw binary data held in a string
-    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-    const byteString = atob(dataURI.split(",")[1])
-
-    // separate out the mime component
-    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0]
-
-    // write the bytes of the string to an ArrayBuffer
-    const ab = new ArrayBuffer(byteString.length)
-
-    // create a view into the buffer
-    const ia = new Uint8Array(ab)
-
-    // set the bytes of the buffer to the correct values
-    for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i)
+const MaterialsItem = (props: MaterialProps) => (
+  <>
+    {props.material.type === "IMAGE" ?
+      <Image image={props.material.file} onClick={() => props.handleOnClick(props.material.file)}/>
+      :
+      <Content>
+        <Content>
+          <FileIcon src={FilePreview}/>
+          <Name>{getFileName(props.material.file)}</Name>
+        </Content>
+        <DownLoad onClick={() => downloadByURL(props.material.file,getFileName(props.material.file))} />
+      </Content>
     }
+  </>
+)
 
-    // write the ArrayBuffer to a blob, and you're done
-    return new Blob([ab], { type: mimeString })
-}
-
-const MaterialsItem = (props: MaterialProps) => {
-    //download(dataURItoFile(props.material.file))
-    //download(props.material.file,"test", "image")
-    return (
-            <>
-                {props.material.type === "IMAGE" ?
-                        <Image image={props.material.file} onClick={() => props.handleOnClick(props.material.file)}/>
-                        :
-                        <Content onClick={() => download(props.material.file)}>
-                            <FileIcon src={FilePreview}/>
-                            <Name>{props.material.file}</Name>
-                        </Content>
-                }
-            </>
-    )
-}
 
 export const createMaterialsDialog = ($module: ReturnType<typeof createChatMaterialsModule>) => {
   const InfinityScroll = createInfinityScroll($module.modules.pagination)
@@ -109,27 +63,25 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
 
     return (
       <>
-        <Wrapper>
-          <StyledDialog id='materials-dialog' value={visibility} onChange={changeVisibility}>
-            <Container>
-              <Header>Материалы диалога</Header>
-              <StyledTabs value={tab} onChange={changeTab}>
-                <StyledTab value='images'>Фотографии</StyledTab>
-                <StyledTab value='documents'>Файлы</StyledTab>
-              </StyledTabs>
-              {isEmpty && <Empty>Нет файлов</Empty>}
-              <Images>
-                <InfinityScroll scrollableTarget='materials-dialog'>
-                  <MaterialsWrapper materials={tab}>
-                    {useList($module.data.$materials, material => (
-                      <MaterialsItem material={material} handleOnClick={handleOnClick} />
-                    ))}
-                  </MaterialsWrapper>
-                </InfinityScroll>
-              </Images>
-            </Container>
-          </StyledDialog>
-        </Wrapper>
+        <StyledDialog id='materials-dialog' value={visibility} onChange={changeVisibility}>
+          <Container>
+            <Header>Материалы диалога</Header>
+            <StyledTabs value={tab} onChange={changeTab}>
+              <StyledTab value='images'>Фотографии</StyledTab>
+              <StyledTab value='documents'>Файлы</StyledTab>
+            </StyledTabs>
+            {isEmpty && <Empty>Нет файлов</Empty>}
+            <Images>
+              <InfinityScroll scrollableTarget='materials-dialog'>
+                <MaterialsWrapper materials={tab}>
+                  {useList($module.data.$materials, material => (
+                    <MaterialsItem material={material} handleOnClick={handleOnClick} />
+                  ))}
+                </MaterialsWrapper>
+              </InfinityScroll>
+            </Images>
+          </Container>
+        </StyledDialog>
 
         {previewDialogVisibility && (
           <ImagesViewModal
@@ -145,15 +97,6 @@ export const createMaterialsDialog = ($module: ReturnType<typeof createChatMater
   }
 }
 
-const Wrapper = styled.div`
-  ${DialogOverlayContainer} {
-    ${MediaRange.lessThan("mobile")`
-        padding: 0;
-        flex-direction: column;
-    `}
-  }
-`
-
 const Name = styled.div`
     font-family: Roboto;
     font-weight: 500;
@@ -161,6 +104,7 @@ const Name = styled.div`
     line-height: 22px;
     color: #5B6670;
     margin-left: 15px;
+    max-width: 280px;
 `
 
 const MaterialsWrapper = styled.div<{ materials: "images" | "documents"}>`
@@ -185,9 +129,9 @@ const Empty = styled.div`
 const StyledDialog = styled(Dialog)`
   max-width: 800px;
   width: 100%;
+  height: 100%;
   ${MediaRange.lessThan("mobile")`
-      width: 100%;
-      height: 100vh;
+
       padding: 12px;
       ${Close} {
         width: 30px;
@@ -245,10 +189,11 @@ const FileIcon = styled.img`
 `
 
 const Content = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  margin: 4px;  
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px;  
 `
 
 const StyledTabs = styled(Tabs)`
@@ -273,4 +218,11 @@ const StyledTab = styled(Tab)`
     border-bottom: 2px solid ${props => props.theme.colors.primary};
     background: transparent;
   }
+`
+
+const DownLoad = styled(Icon).attrs({ name: "download" })`
+  width: 32px;
+  cursor: pointer;
+  fill: ${props => props.theme.colors.primary};
+  margin-right: 10px;  
 `

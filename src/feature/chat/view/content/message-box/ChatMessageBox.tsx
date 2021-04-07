@@ -14,11 +14,13 @@ type ChatMessageBoxTypes = {
 
 const DocumentList = ({ doc, del }: {doc: ChatFile, del: (id: number) => void}) => (
   <Item>
-    <FileIcon src={FilePreview} />
-    <DocInfo>
-      <Name>{doc.file.name}</Name>
-      <Size>{(doc.file.size / 1048576).toFixed(2)} МБ</Size>
-    </DocInfo>
+    <Item>
+      <FileIcon src={FilePreview} />
+      <DocInfo>
+        <Name>{doc.file.name}</Name>
+        <Size>{(doc.file.size / 1048576).toFixed(2)} МБ</Size>
+      </DocInfo>
+    </Item>
     <Close onClick={() => del(doc.id)} />
   </Item>
 )

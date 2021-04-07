@@ -5,6 +5,7 @@ import { CoachUser } from "@/lib/api/coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
+import { getFileName } from "@/lib/network/get-file-by-url"
 
 type ContainerTypes = {
   "data-self": boolean
@@ -50,15 +51,17 @@ const Container = styled.div<ContainerTypes>`
     }
   `}
 `
-const MessageText = styled.div`
+const MessageText = styled.div<{doc?: boolean}>`
+  font-weight: ${({ doc }) => doc ? "500" : "400"};
   font-size: 16px;
   line-height: 22px;
   max-width: 100%;
-  
-  ${MediaRange.lessThan("mobile")`
-    font-size: 16px;
-    line-height: 22px;
-  `}
+`
+
+const Content = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 `
 
 const Image = styled.img`
@@ -100,10 +103,13 @@ export const ChatMessage = (props: ChatMessageTypes) => (
         />
       )}
       {!!props.document && (
-        <Image
-          src={FilePreview}
-          className='message-document'
-        />
+        <Content>
+          <Image
+            src={FilePreview}
+            className='message-document'
+          />
+          <MessageText doc={true}>{getFileName(props.document)}</MessageText>
+        </Content>
       )}
       <MessageText>{props.text}</MessageText>
       <Time>{props.time}</Time>
