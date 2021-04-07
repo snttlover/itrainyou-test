@@ -9,6 +9,7 @@ import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
 import { MediaRange } from "@/lib/responsive/media"
 import { Tab, Tabs } from "@/components/tabs/Tabs"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
+import download from "downloadjs"
 
 type MaterialProps = {
     material: {
@@ -19,22 +20,67 @@ type MaterialProps = {
     handleOnClick: (file: string) => void
 }
 
-const MaterialsItem = (props: MaterialProps) => {
-  let preview: string
-  props.material.type === "IMAGE" ? (preview = props.material.file) : (preview = FilePreview)
+function downloadFile(filePath){
+    var link=document.createElement('a')
+    link.download = filePath
+    let blob = new Blob(["Hello, world!"], {type: 'text/plain'})
 
-  return (
-    <>
-      {props.material.type === "IMAGE" ?
-        <Image image={props.material.file} onClick={() => props.handleOnClick(props.material.file)} />
-        :
-        <Content>
-          <FileIcon src={FilePreview} />
-          <Name>{props.material.file}</Name>
-        </Content>
-      }
-    </>
-  )
+    link.href = URL.createObjectURL(blob)
+
+    link.click()
+    URL.revokeObjectURL(link.href)
+}
+
+function download123(filename, text, type) {
+    var element = document.createElement('a');
+    element.setAttribute('href', `data:${type};charset=utf-8,` + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+    document.body.removeChild(element);
+}
+
+function dataURItoFile(dataURI: string) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    const byteString = atob(dataURI.split(",")[1])
+
+    // separate out the mime component
+    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0]
+
+    // write the bytes of the string to an ArrayBuffer
+    const ab = new ArrayBuffer(byteString.length)
+
+    // create a view into the buffer
+    const ia = new Uint8Array(ab)
+
+    // set the bytes of the buffer to the correct values
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i)
+    }
+
+    // write the ArrayBuffer to a blob, and you're done
+    return new Blob([ab], { type: mimeString })
+}
+
+const MaterialsItem = (props: MaterialProps) => {
+    //download(dataURItoFile(props.material.file))
+    //download(props.material.file,"test", "image")
+    return (
+            <>
+                {props.material.type === "IMAGE" ?
+                        <Image image={props.material.file} onClick={() => props.handleOnClick(props.material.file)}/>
+                        :
+                        <Content onClick={() => download(props.material.file)}>
+                            <FileIcon src={FilePreview}/>
+                            <Name>{props.material.file}</Name>
+                        </Content>
+                }
+            </>
+    )
 }
 
 export const createMaterialsDialog = ($module: ReturnType<typeof createChatMaterialsModule>) => {
