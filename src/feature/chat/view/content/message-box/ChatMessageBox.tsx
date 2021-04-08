@@ -128,7 +128,7 @@ const Name = styled.div`
     overflow: hidden;
 
     ${MediaRange.lessThan("mobile")`
-        max-width: 200px;
+        max-width: 150px;
     `}
 `
 

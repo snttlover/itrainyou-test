@@ -4,7 +4,6 @@ import { Dialog } from "@/components/dialog/Dialog"
 import { DashedButton } from "@/components/button/dashed/DashedButton"
 import { Button } from "@/components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
-import { DialogOverlayContainer } from "@/components/dialog/DialogOverlay"
 import { ChatFile } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
@@ -16,24 +15,22 @@ type ImagesLimitDialogProps = {
 }
 
 export const ImagesLimitDialog = (props: ImagesLimitDialogProps) => (
-  <Wrapper>
-    <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
-      <Container>
-        <Header>Превышен лимит отправки фотографий</Header>
-        <Description>За один раз возможно отправлять только 10 фотографий. Отправить эти фотографии?</Description>
-        <Images>
-          {props.images.map(image => <Image
-            key={image.id}
-            style={{ backgroundImage: `url("${image.preview}")` }}
-          />)}
-        </Images>
-        <Actions>
-          <Cancel onClick={() => props.onChangeVisibility(false)}>Отмена</Cancel>
-          <Confirm onClick={() => props.send()}>Отправить </Confirm>
-        </Actions>
-      </Container>
-    </StyledDialog>
-  </Wrapper>
+  <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
+    <Container>
+      <Header>Превышен лимит отправки фотографий</Header>
+      <Description>За один раз возможно отправлять только 10 фотографий. Отправить эти фотографии?</Description>
+      <Images>
+        {props.images.map(image => <Image
+          key={image.id}
+          style={{ backgroundImage: `url("${image.preview}")` }}
+        />)}
+      </Images>
+      <Actions>
+        <Cancel onClick={() => props.onChangeVisibility(false)}>Отмена</Cancel>
+        <Confirm onClick={() => props.send()}>Отправить </Confirm>
+      </Actions>
+    </Container>
+  </StyledDialog>
 )
 
 type DocumentsLimitDialogProps = {
@@ -44,39 +41,28 @@ type DocumentsLimitDialogProps = {
 }
 
 export const DocumentsLimitDialog = (props: DocumentsLimitDialogProps) => (
-  <Wrapper>
-    <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
-      <Container>
-        <Header>Превышен лимит отправки файлов</Header>
-        <Description>За один раз возможно отправлять только 10 файлов. Отправить эти файлы?</Description>
-        <ListContainer>
-          {props.documents.map((document, id) => (
-            <Item key={id}>
-              <FileIcon src={FilePreview} />
-              <DocInfo>
-                <Name>{document.file.name}</Name>
-                <Size>{(document.file.size / 1048576).toFixed(2)} МБ</Size>
-              </DocInfo>
-            </Item>
-          ))}
-        </ListContainer>
-        <Actions>
-          <Cancel onClick={() => props.onChangeVisibility(false)}>Отмена</Cancel>
-          <Confirm onClick={() => props.send()}>Отправить </Confirm>
-        </Actions>
-      </Container>
-    </StyledDialog>
-  </Wrapper>
+  <StyledDialog value={props.visibility} onChange={props.onChangeVisibility}>
+    <Container>
+      <Header>Превышен лимит отправки файлов</Header>
+      <Description>За один раз возможно отправлять только 10 файлов. Отправить эти файлы?</Description>
+      <ListContainer>
+        {props.documents.map((document, id) => (
+          <Item key={id}>
+            <FileIcon src={FilePreview} />
+            <DocInfo>
+              <Name>{document.file.name}</Name>
+              <Size>{(document.file.size / 1048576).toFixed(2)} МБ</Size>
+            </DocInfo>
+          </Item>
+        ))}
+      </ListContainer>
+      <Actions>
+        <Cancel onClick={() => props.onChangeVisibility(false)}>Отмена</Cancel>
+        <Confirm onClick={() => props.send()}>Отправить </Confirm>
+      </Actions>
+    </Container>
+  </StyledDialog>
 )
-
-const Wrapper = styled.div`
-  ${DialogOverlayContainer} {
-    ${MediaRange.lessThan("mobile")`
-        padding: 0;
-        flex-direction: column;
-    `}
-  }
-`
 
 const StyledDialog = styled(Dialog)`
   width: 100%;
@@ -187,6 +173,14 @@ const Name = styled.div`
     font-size: 14px;
     line-height: 22px;
     color: #5B6670;
+    max-width: 440px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    ${MediaRange.lessThan("mobile")`
+        max-width: 150px;
+    `}
 `
 
 const Size = styled.div`
