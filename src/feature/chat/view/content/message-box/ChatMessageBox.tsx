@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import styled from "styled-components"
+import styled, {ThemeProps} from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { ImagesLimitDialog, DocumentsLimitDialog } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
@@ -87,7 +87,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
             <ListContainer>
               {documents.map((doc,i) => (<DocumentList doc={doc} del={deleteDocument} key={i} />))}
             </ListContainer>
-            <Send onClick={() => uploadDocument()} />
+            <SendDocument listEmpty={!!documents.length} onClick={() => uploadDocument()} />
           </>
         }
 
@@ -101,7 +101,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
         <DocumentsLimitDialog
           visibility={showDocumentsLimitDialog}
           onChangeVisibility={changeLimitDocumentsDialogVisibility}
-          documents={documents}
+          documents={documents.slice(0,10)}
           send={() => sendTenDocuments()}
         />
       </MessageContainer>
@@ -135,11 +135,12 @@ const Size = styled.div`
 const Item = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;  
+  justify-content: space-between;
+  align-items: center;
 `
 
 const MessageContainer = styled.div`
-  background: #dbdee0;
+  background: #e1e6ea;
   border-radius: 0px 0px 2px 2px;
   padding: 12px;
   display: flex;
@@ -148,7 +149,7 @@ const MessageContainer = styled.div`
 `
 
 const Container = styled.div`
-  background: #dbdee0;
+  background: #e1e6ea;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -167,6 +168,23 @@ const Send = styled(Icon).attrs({ name: "send" })`
   position: absolute; 
   right: 22px;
   top: 21px; 
+`
+
+const SendDocument = styled(Icon).attrs((props: any) => ({
+  name: "send",
+  ...props
+}))<{listEmpty: boolean}>`
+  fill: #5B6670;
+  cursor: pointer;
+  height: 17px;
+  align-self: flex-end;
+  margin-bottom: ${({ listEmpty }) => !listEmpty ? "0" : "13px"};
+
+  @media screen and (max-width: 480px) and (orientation : portrait) {
+    align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-start"};
+    margin-bottom: 0;
+    margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "24px"};
+  }
 `
 
 const Close = styled(Icon).attrs({ name: "close" })`
@@ -195,9 +213,11 @@ const StyledInput = styled.input`
   border: none;
   outline: none;
   flex: 1;
-  white-space: pre-wrap;
+  white-space: normal;
   word-wrap: break-word;
-  width: 100%;  
+  word-break: break-word;  
+  width: 100%;
+  height: auto;  
 
   &::placeholder {
     color: #9aa0a6;

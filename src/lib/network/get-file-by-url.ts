@@ -16,15 +16,19 @@ type GetFileParams = {
 const axios = Axios.create()
 
 export const getFileName = (path: string) => {
-  const name = path.substring((path.indexOf("media/") + 6),path.indexOf("DUP") - 1)
-  const fileExtension = path.substring(path.lastIndexOf("."))
-  return name + fileExtension
+  let name: string
+  let fileExtension: string
+  if(path.indexOf("DUP") > 0) {
+    name = path.substring((path.indexOf("media/") + 6),path.indexOf("DUP") - 1)
+    fileExtension = path.substring(path.lastIndexOf("."))
+    return name + fileExtension
+  }
+  else {
+    name = path.substring((path.indexOf("media/") + 6))
+    return name
+  }
 }
 
 export const downloadByURL = (URL: string, filename: string) =>
   axios.request<Blob>({url: URL, method: "GET", responseType: "blob"})
     .then(response => download(response.data, filename))
-
-/*export const downloadByURL = (URL: string, filename: string) =>
-  get<Blob, GetFileParams>(URL, {responseType: "blob"})
-    .then(response => download(response.data, filename))*/

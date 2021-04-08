@@ -105,6 +105,7 @@ const Header = styled.div`
   line-height: 26px;
   text-align: center;
   color: #424242;
+  margin-bottom: 16px;  
   ${MediaRange.lessThan("mobile")`
       padding-top: 40px;
   `}
@@ -115,7 +116,7 @@ const Description = styled.div`
   line-height: 18px;
   text-align: center;
   color: #5b6670;
-  margin-top: 3px;
+  margin-bottom: 24px;
 `
 
 const Images = styled.div`
@@ -150,8 +151,9 @@ const Actions = styled.div`
 `
 
 const Cancel = styled(DashedButton)`
-  width: 160px;
+  width: 180px;
   margin-right: 16px;
+  padding: 7px 24px;  
   ${MediaRange.lessThan("mobile")`
       width: 144px;
       margin-right: 8px;
@@ -159,7 +161,8 @@ const Cancel = styled(DashedButton)`
 `
 
 const Confirm = styled(Button)`
-  width: 160px;
+  width: 180px;
+  padding: 7px 24px;
   ${MediaRange.lessThan("mobile")`
       width: 144px;
   `}

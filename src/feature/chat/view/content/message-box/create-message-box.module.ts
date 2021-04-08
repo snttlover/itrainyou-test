@@ -44,6 +44,9 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
   const changeTenImages = createEvent()
   const changeTenDocuments = createEvent()
 
+    const changeLimitImagesDialogVisibility = createEvent<boolean>()
+    const changeLimitDocumentsDialogVisibility = createEvent<boolean>()
+
   const changeImage = createEvent<ChangeImage>()
   const changeDocument = createEvent<ChangeImage>()
 
@@ -93,9 +96,6 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
 
       return [...documents]
     })
-
-    $documents.watch(resp => console.log("test", resp.length))
-    $images.watch(resp => console.log("asdsad",resp.length))
 
   const readImageFx = createEffect({
     handler: (file: File) => {
@@ -226,8 +226,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
   const sendImage = createEvent()
   const sendDocument = createEvent()
 
-  const changeLimitImagesDialogVisibility = createEvent<boolean>()
-  const changeLimitDocumentsDialogVisibility = createEvent<boolean>()
+
 
   const $limitImagesDialogVisibility = restore(changeLimitImagesDialogVisibility, false)
   const $limitDocumentsDialogVisibility = restore(changeLimitDocumentsDialogVisibility, false)
@@ -254,20 +253,10 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
     to: [changeLimitImagesDialogVisibility.prepend(() => false),changeTenImages],
   })
 
-  /*forward({
-    from: sendTenImages,
-    to: changeTenImages
-  })*/
-
   forward({
     from: sendTenDocuments,
     to: [changeLimitDocumentsDialogVisibility.prepend(() => false),changeTenDocuments],
   })
-
-  /*forward({
-    from: sendTenDocuments,
-    to: changeTenDocuments,
-  })*/
 
   forward({
     from: changeTenImages,

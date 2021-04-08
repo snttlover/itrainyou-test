@@ -104,7 +104,17 @@ const Name = styled.div`
     line-height: 22px;
     color: #5B6670;
     margin-left: 15px;
-    max-width: 280px;
+    max-width: 560px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    
+    ${MediaRange.lessThan("tablet")`
+    max-width: 400px;
+  `}
+
+    ${MediaRange.lessThan("mobile")`
+    max-width: 240px;
+  `}
 `
 
 const MaterialsWrapper = styled.div<{ materials: "images" | "documents"}>`
@@ -148,9 +158,10 @@ const Container = styled.div`
 
 const Header = styled.div`
   font-family: Roboto Slab;
+  font-weight: 700;  
   margin-bottom: 12px;
   font-size: 20px;
-  line-height: 26px;
+  line-height: 28px;
   color: #424242;
   ${MediaRange.lessThan("mobile")`
       margin-bottom: 34px;
@@ -170,16 +181,16 @@ type ImageType = {
 }
 
 const Image = styled.div<ImageType>`
-  width: calc(25% - 8px);
-  height: 144px;
+  width: 104px;
+  height: 104px;
   margin-right: 8px;
   margin-bottom: 8px;
   background: url("${props => props.image}");
   background-size: cover;
   position: relative;
   ${MediaRange.lessThan("mobile")`  
-    width: calc(33% - 8px);
-    height: 72px;
+    width: 62px;
+    height: 62px;
   `}
 `
 
@@ -214,6 +225,7 @@ const StyledTab = styled(Tab)`
   background: transparent;
   border-bottom: 2px solid transparent;
   cursor: pointer;
+  max-width: 120px;  
   &[data-active="true"] {
     border-bottom: 2px solid ${props => props.theme.colors.primary};
     background: transparent;
@@ -224,5 +236,9 @@ const DownLoad = styled(Icon).attrs({ name: "download" })`
   width: 32px;
   cursor: pointer;
   fill: ${props => props.theme.colors.primary};
-  margin-right: 10px;  
+  margin-right: 10px;
+
+    ${MediaRange.lessThan("mobile")`
+    margin-right: 5px;
+  `}
 `

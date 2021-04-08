@@ -5,7 +5,8 @@ import { CoachUser } from "@/lib/api/coach"
 import { Client } from "@/lib/api/client/clientInfo"
 import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
-import { getFileName } from "@/lib/network/get-file-by-url"
+import { downloadByURL, getFileName } from "@/lib/network/get-file-by-url"
+import { Icon } from "@/components/icon/Icon"
 
 type ContainerTypes = {
   "data-self": boolean
@@ -52,10 +53,18 @@ const Container = styled.div<ContainerTypes>`
   `}
 `
 const MessageText = styled.div<{doc?: boolean}>`
-  font-weight: ${({ doc }) => doc ? "500" : "400"};
   font-size: 16px;
   line-height: 22px;
-  max-width: 100%;
+  max-width: ${({ doc }) => doc ? "320px" : "100%"};
+  margin-left: ${({ doc }) => doc ? "8px" : "0"};
+  cursor: ${({ doc }) => doc ? "pointer" : "default"};
+  text-overflow: ${({ doc }) => doc ? "ellipsis" : "unset"};
+  white-space: ${({ doc }) => doc ? "nowrap" : "unset"};
+  overflow: ${({ doc }) => doc ? "hidden" : "unset"};
+    
+  ${MediaRange.lessThan("mobile")`
+    max-width: 240px;
+  `}
 `
 
 const Content = styled.div`
@@ -69,6 +78,14 @@ const Image = styled.img`
   max-width: 100%;
   display: inline-block;
   cursor: pointer;
+`
+
+const FileIcon = styled(Icon).attrs({ name: "file-preview" })`
+  fill: ${props => props.theme.colors.primary};
+  background: white;  
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 `
 
 type ChatMessageTypes = {
@@ -103,11 +120,15 @@ export const ChatMessage = (props: ChatMessageTypes) => (
         />
       )}
       {!!props.document && (
-        <Content>
-          <Image
-            src={FilePreview}
-            className='message-document'
-          />
+        <Content onClick={() => downloadByURL(props.document,getFileName(props.document))}>
+          {props["data-self"] ?  
+            <FileIcon />
+            :
+            <Image
+              src={FilePreview}
+              className='message-document'
+            />
+          }
           <MessageText doc={true}>{getFileName(props.document)}</MessageText>
         </Content>
       )}

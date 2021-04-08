@@ -7,6 +7,7 @@ import SimpleBar from "simplebar-react"
 import {useEvent, useStore} from "effector-react"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import {useClickOutside} from "@/components/click-outside/use-click-outside"
+import { MediaRange } from "@/lib/responsive/media"
 
 const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
     title: string
@@ -148,7 +149,7 @@ export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChat
   }, [images])
 
   return (
-    <Container>
+    <Container listEmpty={!!documents.length}>
       {visibility ? <UploadMenuContainer ref={menuRef}>
         {menuItems.map((item,i) => (
           <UploadMenu {...item} key={i} setVisibility={setVisibility} />
@@ -189,7 +190,18 @@ const StyledSimpleBar = styled(SimpleBar)`
   }
 `
 
-const Container = styled.div``
+
+const Container = styled.div<{listEmpty: boolean}>`
+  display: flex;
+  align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-end"};
+  margin-bottom: ${({ listEmpty }) => !listEmpty ? "0" : "10px"};
+
+    @media screen and (max-width: 480px) and (orientation : portrait) {
+        align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-start"};
+        margin-bottom: 0;
+        margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "24px"};
+    }
+`
 
 const UploadMenuContainer = styled.div`
   background: #FFFFFF;
@@ -208,7 +220,7 @@ const MenuItem = styled.div`
 const UploadIcon = styled(Icon).attrs({ name: "clip" })`
   fill: #5B6670;;
   cursor: pointer;
-  width: 20px;
+  width: 28px;
   margin-right: 12px;
   display: flex;
   align-items: center;
@@ -227,7 +239,7 @@ const UploaderForImages = styled.div`
   align-items: center;
   z-index: 1;
   top: 0;
-  background: #dbdee0;
+  background: #e1e6ea;
 `
 
 const ItemContainer = styled.div`
