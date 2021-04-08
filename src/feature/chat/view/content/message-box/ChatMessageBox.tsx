@@ -122,6 +122,14 @@ const Name = styled.div`
     font-size: 14px;
     line-height: 22px;
     color: #5B6670;
+    max-width: 440px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    ${MediaRange.lessThan("mobile")`
+        max-width: 200px;
+    `}
 `
 
 const Size = styled.div`
@@ -183,7 +191,7 @@ const SendDocument = styled(Icon).attrs((props: any) => ({
   @media screen and (max-width: 480px) and (orientation : portrait) {
     align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-start"};
     margin-bottom: 0;
-    margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "24px"};
+    margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "12px"};
   }
 `
 
@@ -191,7 +199,11 @@ const Close = styled(Icon).attrs({ name: "close" })`
   width: 32px;
   cursor: pointer;
   fill: #9AA0A6;
-  margin-right: 40px;  
+  margin-right: 40px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-right: 0;
+  `}
 `
 
 const FileIcon = styled.img`

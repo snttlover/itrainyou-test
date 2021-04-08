@@ -44,8 +44,8 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
   const changeTenImages = createEvent()
   const changeTenDocuments = createEvent()
 
-    const changeLimitImagesDialogVisibility = createEvent<boolean>()
-    const changeLimitDocumentsDialogVisibility = createEvent<boolean>()
+  const changeLimitImagesDialogVisibility = createEvent<boolean>()
+  const changeLimitDocumentsDialogVisibility = createEvent<boolean>()
 
   const changeImage = createEvent<ChangeImage>()
   const changeDocument = createEvent<ChangeImage>()
@@ -225,7 +225,6 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
 
   const sendImage = createEvent()
   const sendDocument = createEvent()
-
 
 
   const $limitImagesDialogVisibility = restore(changeLimitImagesDialogVisibility, false)

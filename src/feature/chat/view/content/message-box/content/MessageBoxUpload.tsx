@@ -199,7 +199,7 @@ const Container = styled.div<{listEmpty: boolean}>`
     @media screen and (max-width: 480px) and (orientation : portrait) {
         align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-start"};
         margin-bottom: 0;
-        margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "24px"};
+        margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "12px"};
     }
 `
 
