@@ -1,29 +1,37 @@
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { Pagination } from "@/lib/api/interfaces/utils.interface"
-import { createEvent, forward, restore, sample, Store } from "effector-root"
-import { ChatImage } from "@/lib/api/chats/clients/get-images"
+import { createEvent, createStore, forward, restore, sample, Store } from "effector-root"
+import { ChatMaterials } from "@/lib/api/chats/clients/get-images"
 import { createPagination } from "@/feature/pagination"
 import { PaginationRequest } from "@/feature/pagination/modules/pagination"
 
 type createChatMaterialsModuleConfig = {
   $chatId: Store<ChatId>
-  fetchMaterials: (id: ChatId, params: PaginationRequest) => Promise<Pagination<ChatImage>>
+  fetchMaterials: (id: ChatId, materials: "images" | "documents", params: PaginationRequest) => Promise<Pagination<ChatMaterials>>
 }
+
+type ChatMaterialsTabs = "images" | "documents"
 
 export const createChatMaterialsModule = (config: createChatMaterialsModuleConfig) => {
   const reset = createEvent()
 
-  let chatId: ChatId = 0
-  config.$chatId.watch(payload => (chatId = payload))
+  const changeTab = createEvent<ChatMaterialsTabs>()
+  const $tab = createStore<ChatMaterialsTabs>("images")
+    .on(changeTab, (_, tab) => tab)
 
-  const pagination = createPagination<ChatImage>({
-    fetchMethod: params => config.fetchMaterials(chatId, params),
+  let chatId: ChatId = 0
+  let tab: "images" | "documents" = "images"
+  config.$chatId.watch(payload => (chatId = payload))
+  $tab.watch(payload => (tab = payload))
+
+  const pagination = createPagination<ChatMaterials>({
+    fetchMethod: params => config.fetchMaterials(chatId, tab, params),
   })
 
   const changeDialogVisibility = createEvent<boolean>()
   const $dialogVisibility = restore(changeDialogVisibility, false).reset()
 
-  const $materials = pagination.data.$list.map(images => images.map(image => image))
+  const $materials = pagination.data.$list.map(materials => materials.map(material => material))
 
   const load = createEvent()
   const openDialog = createEvent()
@@ -51,6 +59,11 @@ export const createChatMaterialsModule = (config: createChatMaterialsModuleConfi
   forward({
     from: load,
     to: pagination.methods.loadMore,
+  })
+
+  forward({
+    from: changeTab,
+    to: [reset, load],
   })
 
   const openImage = createEvent<string>()
@@ -86,13 +99,15 @@ export const createChatMaterialsModule = (config: createChatMaterialsModuleConfi
     data: {
       $dialogVisibility,
       $materials,
-      $isEmpty: pagination.data.$listIsEmpty
+      $tab,
+      $isEmpty: pagination.data.$listIsEmpty,
     },
     methods: {
       changeDialogVisibility,
       reset,
       load,
       openDialog,
+      changeTab,
     },
     modules: {
       pagination,

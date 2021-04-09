@@ -1,35 +1,38 @@
-import React, { useCallback, useEffect, useRef } from "react"
+import React, {useCallback, useEffect, useRef, useState} from "react"
 import styled from "styled-components"
 import { Icon } from "@/components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
-import { ChatImage } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import {ChatFile, createChatMessageBoxModule} from "@/feature/chat/view/content/message-box/create-message-box.module"
 import SimpleBar from "simplebar-react"
-import { useEvent } from "effector-react"
+import {useEvent, useStore} from "effector-react"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import {useClickOutside} from "@/components/click-outside/use-click-outside"
 
-type MessageBoxUploadProps = {
-  images: ChatImage[]
-  add: (file: File) => void
-  delete: (id: number) => void
-  upload: (p: void) => void
-}
+const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
+    title: string
+    iconName: string
+    add: (file: File) => void
+    visible: boolean
+    setVisibility: (e: boolean) => void
+}) => {
 
-export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
   const addToast = useEvent(toasts.add)
 
   const onDropAccepted = useCallback(acceptedFiles => {
-    const heic2any = require('heic2any')
+    setVisibility(false)
+    const heic2any = require("heic2any")
     acceptedFiles.forEach(async (file: File) => {
-      if (file.type.length === 0 || file.type === "image/heic") {
+      if ((file.type.length === 0 || file.type === "image/heic") && title === "Фотографии") {
         const result = await heic2any({blob: file, toType: "image/jpeg"})
-        props.add(result)
+        add(result)
       } else {
-        props.add(file)
+        add(file)
       }
     })
   }, [])
 
   const onDropRejected = useCallback((files: FileRejection[]) => {
+    setVisibility(false)
     files.forEach(error => {
       if (error.file.size > maxSize) {
         addToast({
@@ -44,19 +47,63 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
       })
     })
   }, [])
-
+    
   const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif",".heic"]
   const maxSize = 104857600
-
-  const { getInputProps, open } = useDropzone({
+    
+  const options = title === "Фотографии" ? ({
     onDropAccepted,
     onDropRejected,
     multiple: true,
     maxSize,
     accept: acceptMimeTypes,
+  }) : ({
+    onDropAccepted,
+    onDropRejected,
+    multiple: true,
+    maxSize,
   })
 
+  const { getInputProps, open } = useDropzone(options)
+
+
+  return (
+    <>
+      {visible ?
+        <ItemContainer onClick={open}>
+          <FileInput {...getInputProps()} />
+          <MenuIcon iconName={iconName}/>
+          <MenuItem>{title}</MenuItem>
+        </ItemContainer> : null}
+    </>
+  )
+
+}
+
+export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChatMessageBoxModule>}) => {
+
+  const addImage = useEvent(module.methods.add.addFile)
+  const addDocument = useEvent(module.methods.add.addDocument)
+  const images: ChatFile[] = useStore(module.data.$images)
+  const deleteImage = useEvent(module.methods.delete.deleteImage)
+  const uploadImage = useEvent(module.methods.send.sendImage)
+
+  const documents = useStore(module.data.$documents)
+
+  const [visibility, setVisibility] = useState(false)
+    
+  const menuItems = [
+    {title: "Фотографии", iconName: "photos-icon", add: addImage, visible: !documents.length},
+    {title: "Документы", iconName: "documents-icon", add: addDocument, visible: !images.length},
+  ]
+
   const imagesRef = useRef<any>(null)
+
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useClickOutside(menuRef, () => {
+    setVisibility(false)
+  })
 
   const getScrollLeft = () => {
     return imagesRef.current.getScrollElement("x").scrollLeft
@@ -98,22 +145,26 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
         imagesRef.current?.el.removeEventListener("mousewheel", scrollHandler)
       }
     }
-  }, [props.images])
+  }, [images])
 
   return (
-    <Container>
-      <UploadIcon onClick={open} />
-      <FileInput {...getInputProps()} />
+    <Container listEmpty={!!documents.length}>
+      {visibility ? <UploadMenuContainer ref={menuRef}>
+        {menuItems.map((item,i) => (
+          <UploadMenu {...item} key={i} setVisibility={setVisibility} />
+        ))}
+      </UploadMenuContainer> : null}
+      <UploadIcon onClick={() => setVisibility(true)} />
 
-      {!!props.images.length && (
-        <Uploader>
+      {!!images.length && (
+        <UploaderForImages>
           <LeftArrow onClick={scrollLeft} />
           <Images>
             <StyledSimpleBar ref={imagesRef}>
               <ImagesWrapper>
-                {props.images.map(image => (
+                {images.map(image => (
                   <Image key={image.id} image={image.preview}>
-                    <RemoveImage onClick={() => props.delete(image.id)}>
+                    <RemoveImage onClick={() => deleteImage(image.id)}>
                       <RemoveImageIcon />
                     </RemoveImage>
                     {!!image.percent && <Progress value={image.percent} />}
@@ -123,8 +174,8 @@ export const MessageBoxUpload = (props: MessageBoxUploadProps) => {
             </StyledSimpleBar>
           </Images>
           <RightArrow onClick={scrollRight} />
-          <Send onClick={() => props.upload()} />
-        </Uploader>
+          <Send onClick={() => uploadImage()} />
+        </UploaderForImages>
       )}
     </Container>
   )
@@ -138,12 +189,37 @@ const StyledSimpleBar = styled(SimpleBar)`
   }
 `
 
-const Container = styled.div``
+
+const Container = styled.div<{listEmpty: boolean}>`
+  display: flex;
+  align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-end"};
+  margin-bottom: ${({ listEmpty }) => !listEmpty ? "0" : "10px"};
+
+    @media screen and (max-width: 480px) and (orientation : portrait) {
+        align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-start"};
+        margin-bottom: 0;
+        margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "12px"};
+    }
+`
+
+const UploadMenuContainer = styled.div`
+  background: #FFFFFF;
+  position: absolute;
+  transform: translateY(-125%);
+  left: 0;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+`
+
+const MenuItem = styled.div`
+  font-size: 14px;
+  line-height: 22px;  
+`
 
 const UploadIcon = styled(Icon).attrs({ name: "clip" })`
-  fill: ${props => props.theme.colors.primary};
+  fill: #5B6670;;
   cursor: pointer;
-  width: 20px;
+  width: 28px;
   margin-right: 12px;
   display: flex;
   align-items: center;
@@ -153,7 +229,7 @@ const FileInput = styled.input`
   display: none;
 `
 
-const Uploader = styled.div`
+const UploaderForImages = styled.div`
   position: absolute;
   left: 44px;
   width: calc(100% - 44px);
@@ -162,7 +238,17 @@ const Uploader = styled.div`
   align-items: center;
   z-index: 1;
   top: 0;
-  background: #dbdee0;
+  background: #e1e6ea;
+`
+
+const ItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 12px;
+    width: 137px;
+    height: 48px;
+    cursor: pointer;
 `
 
 const Images = styled.div`
@@ -261,8 +347,17 @@ const RightArrow = styled(Icon).attrs({ name: "right-icon" })`
   height: 14px;
 `
 
+const MenuIcon = styled(Icon).attrs((props: any) => ({
+  name: props.iconName,
+  ...props
+}))`
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+`
+
 const Send = styled(Icon).attrs({ name: "send" })`
-  fill: ${props => props.theme.colors.primary};
+  fill: #5B6670;
   cursor: pointer;
   height: 17px;
   margin-right: 25px;

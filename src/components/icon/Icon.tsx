@@ -93,6 +93,9 @@ export type IconName =
   | "ellipse-list-marker-coach"
   | "maestro"
   | "file-preview"
+  | "photos-icon"
+  | "documents-icon"
+  | "download"
 
 type IconProps = {
   name: IconName,

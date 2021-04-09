@@ -65,6 +65,7 @@ export type ChatMessage = {
     type: MessageTypes
     text: string
     image: string
+    document: string
     chat: number
     transaction: TransActionProperties | null
     transactionType: TransActionsStatus

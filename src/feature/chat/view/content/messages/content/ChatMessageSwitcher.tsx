@@ -42,6 +42,7 @@ export const ChatMessageSwitcher = ({
           showUser={showUser}
           text={message.text}
           image={message.image}
+          document={message.document}
           id={`message-${message.id}`}
           time={message.time}
           data-self={message.isMine}

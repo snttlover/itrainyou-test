@@ -63,20 +63,15 @@ const DeleteBtn = styled.div`
 
 const PrimaryBtn = styled.div<{
     isPrimary: boolean
-    userType: "coach" | "client"
 }>`
   font-family: Roboto;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ isPrimary, userType }) => {
+  color: ${({ isPrimary, theme }) => {
     if (isPrimary) {
-      if (userType === "client") {
-        return "#4858CC"
-      } else {
-        return "#783D9D"
-      }
+      return theme.colors.primary
     } else {
       return "#E1E6EA"
     }}};
@@ -160,7 +155,6 @@ export const WalletCard: React.FC<WalletCardProps> = ({ id, type, cardEnd, expir
         </LogosContainer>
         <PrimaryBtn 
           isPrimary={isPrimary}
-          userType={userType}
           onClick={handleOnClick}>
           {isPrimary ? "Основная" : "Сделать основной"}
         </PrimaryBtn>

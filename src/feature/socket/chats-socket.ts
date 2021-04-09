@@ -44,6 +44,7 @@ type SendSocketChatMessage = {
   chat: number
   text?: string
   image?: string
+  document?: string
 }
 
 type ReadChatMessages = {
