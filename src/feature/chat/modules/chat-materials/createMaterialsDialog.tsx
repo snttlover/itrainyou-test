@@ -105,15 +105,16 @@ const Name = styled.div`
     color: #5B6670;
     margin-left: 15px;
     max-width: 560px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     
     ${MediaRange.lessThan("tablet")`
     max-width: 400px;
   `}
 
     ${MediaRange.lessThan("mobile")`
-    max-width: 240px;
+    max-width: 180px;
   `}
 `
 

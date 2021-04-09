@@ -7,7 +7,6 @@ import SimpleBar from "simplebar-react"
 import {useEvent, useStore} from "effector-react"
 import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
 import {useClickOutside} from "@/components/click-outside/use-click-outside"
-import { MediaRange } from "@/lib/responsive/media"
 
 const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
     title: string
