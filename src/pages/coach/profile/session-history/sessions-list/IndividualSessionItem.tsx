@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components"
-import { Avatar } from "@/components/avatar/Avatar"
-import { Icon } from "@/components/icon/Icon"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import React from "react"
 

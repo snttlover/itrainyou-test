@@ -1,5 +1,5 @@
-import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import React from "react"
 import styled from "styled-components"
 import { createChat } from "@/feature/chat"

@@ -1,6 +1,6 @@
 import { combine, createEvent, createStore, forward, Store } from "effector-root"
 import { mounted, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
-import { buySessionsFx } from "@/components/coach-card/select-date/select-date.model"
+import { buySessionsFx } from "@/oldcomponents/coach-card/select-date/select-date.model"
 import { finishSaveClientCardFx } from "@/feature/client-funds-up/dialog/models/units"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 

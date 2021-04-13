@@ -1,7 +1,7 @@
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { FormItem } from "@/components/form-item/FormItem"
-import { Input } from "@/components/input/Input"
-import { Textarea } from "@/components/textarea/Textarea"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { FormItem } from "@/oldcomponents/form-item/FormItem"
+import { Input } from "@/oldcomponents/input/Input"
+import { Textarea } from "@/oldcomponents/textarea/Textarea"
 import {
   $form,
   $formErrors,
@@ -27,7 +27,7 @@ import { useDropzone } from "react-dropzone"
 import ReactIdSwiper from "react-id-swiper"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
-import { Checkbox } from "@/components/checkbox/Checkbox"
+import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
 import { PriceWithCommisionInput } from "@/feature/coach-get-access/components/PriceWithCommisionInputGroup"
 
 const InformationContainer = styled.div`

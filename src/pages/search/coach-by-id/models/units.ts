@@ -5,7 +5,7 @@ import { CoachReviewResponse, getCoachReviews } from "@/lib/api/reviews"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { addCoachToFavourites } from "@/lib/api/coach/add-coach-to-favourites"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
-import { genCoachSessions } from "@/components/coach-card/select-date/select-date.model"
+import { genCoachSessions } from "@/oldcomponents/coach-card/select-date/select-date.model"
 
 export const loadCoachFx = createEffect({
   handler: getCoach,

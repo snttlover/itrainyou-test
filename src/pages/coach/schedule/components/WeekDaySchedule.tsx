@@ -1,5 +1,5 @@
-import { Icon } from "@/components/icon/Icon"
-import { useSelectInput } from "@/components/select-input/SelectInput"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { WeekDayName } from "@/lib/api/coaching-sessions/types"
 import { $durationOptions } from "@/pages/coach/schedule/models/add-session.model"

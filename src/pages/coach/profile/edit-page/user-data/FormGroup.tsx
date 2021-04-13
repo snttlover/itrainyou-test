@@ -1,4 +1,4 @@
-import { FormItem } from "@/components/form-item/FormItem"
+import { FormItem } from "@/oldcomponents/form-item/FormItem"
 import { MediaRange } from "@/lib/responsive/media"
 import styled from "styled-components"
 

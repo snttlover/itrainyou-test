@@ -1,5 +1,5 @@
-import { Calendar } from "@/components/calendar/Calendar"
-import { Icon } from "@/components/icon/Icon"
+import { Calendar } from "@/oldcomponents/calendar/Calendar"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { $currentMonth, changeDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import { $allSessions } from "@/pages/coach/schedule/models/sessions.model"

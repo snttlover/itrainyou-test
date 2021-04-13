@@ -1,5 +1,5 @@
-import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { LoginPage } from "@/pages/auth/pages/login/LoginPage"
 import RecoveryPage from "@/pages/auth/pages/recovery/RecoveryPage"
 import { ResetPasswordPage } from "@/pages/auth/pages/reset-password/ResetPasswordPage"

@@ -1,4 +1,4 @@
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { createCoachSchedule } from "@/lib/api/coaching-sessions/create-coach-schedule"
 import { getCoachSchedule } from "@/lib/api/coaching-sessions/get-coach-schedule"
 import { CreateCoachSchedule, UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"

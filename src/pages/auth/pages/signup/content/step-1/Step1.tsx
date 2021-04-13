@@ -1,7 +1,7 @@
-import { FormItem } from "@/components/form-item/FormItem"
-import { Input } from "@/components/input/Input"
-import { PasswordInput } from "@/components/input/PasswordInput"
-import { AuthLayout } from "@/components/layouts/sections/auth/AuthLayout"
+import { FormItem } from "@/oldcomponents/form-item/FormItem"
+import { Input } from "@/oldcomponents/input/Input"
+import { PasswordInput } from "@/oldcomponents/input/PasswordInput"
+import { AuthLayout } from "@/oldcomponents/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/lib/responsive/media"
 import { Socials } from "@/pages/auth/pages/socials/components/Socials"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
@@ -23,7 +23,7 @@ import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { userDataReset } from "@/pages/auth/pages/signup/models/units"
-import { Checkbox,StyledCheckbox } from "@/components/checkbox/Checkbox"
+import { Checkbox,StyledCheckbox } from "@/oldcomponents/checkbox/Checkbox"
 
 const Container = styled.div`
   min-width: 320px;

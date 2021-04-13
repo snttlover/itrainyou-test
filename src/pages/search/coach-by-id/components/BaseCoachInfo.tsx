@@ -1,6 +1,6 @@
-import { Avatar } from "@/components/avatar/Avatar"
-import { Button } from "@/components/button/normal/Button"
-import { Icon } from "@/components/icon/Icon"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Button } from "@/oldcomponents/button/normal/Button"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { IsAuthed } from "@/feature/user/IsAuthed"
 import { getYearsCount } from "@/lib/formatting/date"
@@ -11,7 +11,7 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 import { $coach, $isFavourite, toggleFavourite } from "@/pages/search/coach-by-id/models/units"
-import { GrayTooltip } from "@/components/gray-tooltip/GrayTooltip"
+import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
 import { declOfNum } from "@/lib/formatting/numerals"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`

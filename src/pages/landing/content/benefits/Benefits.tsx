@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { BenefitCard } from "./BenefitCard"
 import { LandingPageContainer } from "../../common/LandingPageContainer"
-import { Button } from "../../../../components/button/normal/Button"
+import { Button } from "../../../../oldcomponents/button/normal/Button"
 import cards from "./cards"
 
 const Title = styled.h3`

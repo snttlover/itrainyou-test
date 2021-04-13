@@ -1,11 +1,11 @@
-import { Button } from "@/components/button/normal/Button"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import { $isNoteEdit, $note, noteChanged, saveNote, setIsEdit } from "@/pages/coach/client/client-page.model"
 import { SessionsStats } from "@/pages/coach/client/components/SessionsStats"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { Textarea } from "@/components/textarea/Textarea"
+import { Textarea } from "@/oldcomponents/textarea/Textarea"
 
 const Container = styled.div`
   width: 100%;

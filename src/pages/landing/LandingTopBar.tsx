@@ -1,5 +1,5 @@
-import { Icon } from "@/components/icon/Icon"
-import { Input } from "@/components/input/Input"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { Input } from "@/oldcomponents/input/Input"
 import { LandingPageContainer } from "@/pages/landing/common/LandingPageContainer"
 import { RegisterButton } from "@/pages/landing/common/RegisterButton"
 import { CategoriesPicker } from "@/pages/landing/content/top-bar/categories-picker/CategoriesPicker"

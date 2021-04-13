@@ -1,4 +1,4 @@
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { $categoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import { $selectedCategories, toggleCategory } from "./coach-data.model"
 //import { CategoryCard } from "./CategoryCard"

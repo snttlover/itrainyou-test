@@ -1,5 +1,5 @@
-import { Icon } from "@/components/icon/Icon"
-import { Input } from "@/components/input/Input"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { Input } from "@/oldcomponents/input/Input"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import React from "react"

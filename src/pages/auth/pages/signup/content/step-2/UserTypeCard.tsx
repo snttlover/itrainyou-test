@@ -1,4 +1,4 @@
-import { Checkbox } from "@/components/checkbox/Checkbox"
+import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"

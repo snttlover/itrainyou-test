@@ -3,7 +3,7 @@ import { useEvent, useList, useStore } from "effector-react"
 import styled from "styled-components"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
-import { Avatar } from "@/components/avatar/Avatar"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import {
   $bookedSessions,
   BookedSessionForViewType, toggleBookSessionsStatusModal

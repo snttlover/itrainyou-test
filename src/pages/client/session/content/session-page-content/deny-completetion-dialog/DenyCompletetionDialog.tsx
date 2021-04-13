@@ -12,13 +12,13 @@ import {
   hideDenyCompletetionDialogVisibility,
   sendDenyCompletationDialog,
 } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
-import { Dialog } from "@/components/dialog/Dialog"
+import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import styled from "styled-components"
 import { useEvent } from "effector-react"
-import { Textarea } from "@/components/textarea/Textarea"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { Avatar } from "@/components/avatar/Avatar"
-import { useSelectInput } from "@/components/select-input/SelectInput"
+import { Textarea } from "@/oldcomponents/textarea/Textarea"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
 import { DenySessionRequestProblems } from "@/lib/api/coach/deny-session-request"
 
 export const DenyCompletetionDialog = () => {

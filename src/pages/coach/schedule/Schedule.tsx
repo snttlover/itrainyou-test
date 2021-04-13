@@ -1,4 +1,4 @@
-import { Spinner } from "@/components/spinner/Spinner"
+import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"

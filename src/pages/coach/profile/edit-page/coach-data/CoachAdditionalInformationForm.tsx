@@ -1,6 +1,6 @@
-import { FormItem } from "@/components/form-item/FormItem"
-import { Input } from "@/components/input/Input"
-import { Textarea } from "@/components/textarea/Textarea"
+import { FormItem } from "@/oldcomponents/form-item/FormItem"
+import { Input } from "@/oldcomponents/input/Input"
+import { Textarea } from "@/oldcomponents/textarea/Textarea"
 import {
   $form,
   $formErrors,
@@ -17,8 +17,8 @@ import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components"
-import { Icon } from "@/components/icon/Icon"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import ReactIdSwiper from "react-id-swiper"
 import { SwiperOptions } from "swiper"
 

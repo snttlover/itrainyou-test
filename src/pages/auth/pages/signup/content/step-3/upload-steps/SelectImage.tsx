@@ -1,4 +1,4 @@
-import { Button } from "@/components/button/normal/Button"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"

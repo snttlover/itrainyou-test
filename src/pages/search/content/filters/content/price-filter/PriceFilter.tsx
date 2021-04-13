@@ -1,4 +1,4 @@
-import { RangeSlider } from "@/components/slider/RangeSlider"
+import { RangeSlider } from "@/oldcomponents/slider/RangeSlider"
 import { formatCurrency } from "@/lib/formatting/currency"
 import * as React from "react"
 import styled from "styled-components"

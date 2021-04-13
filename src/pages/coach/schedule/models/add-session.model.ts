@@ -1,4 +1,4 @@
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { createSession } from "@/lib/api/coaching-sessions/create-session"
 import { date } from "@/lib/formatting/date"

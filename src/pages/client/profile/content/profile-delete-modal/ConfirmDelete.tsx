@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 import { useEvent, useStore } from "effector-react"
-import { Button } from "@/components/button/normal/Button"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Button } from "@/oldcomponents/button/normal/Button"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { cardIdForDelete, confirmDeleteCard } from "@/pages/client/wallet/cards/cards.model"
 import { toggleDeleteCardModalDialog } from "@/pages/client/profile/profile-page.model"
 

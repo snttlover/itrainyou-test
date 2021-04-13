@@ -5,7 +5,7 @@ import { useEvent } from "effector-react"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval/common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval/common/SubTitle"
-import { Button } from "@/components/button/normal/Button"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 

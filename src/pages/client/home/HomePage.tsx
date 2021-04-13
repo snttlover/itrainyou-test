@@ -1,8 +1,8 @@
-import { Button } from "@/components/button/normal/Button"
-import { CoachCard } from "@/components/coach-card/CoachCard"
-import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
-import { Loader } from "@/components/spinner/Spinner"
+import { Button } from "@/oldcomponents/button/normal/Button"
+import { CoachCard } from "@/oldcomponents/coach-card/CoachCard"
+import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { SessionCard } from "@/pages/client/home/SessionCard"
 import { useEvent, useStore } from "effector-react"
@@ -20,7 +20,7 @@ import {
 } from "./home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { clientCall } from "@/components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { clientCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Onboarding } from "@/pages/client/home/Onboarding"
 
 const Block = styled.div`

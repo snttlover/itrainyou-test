@@ -1,6 +1,6 @@
 import React from "react"
 import { ReviewNotificationType } from "@/lib/api/client/get-notifications"
-import { RatingPicker } from "@/components/rating/RatingPicker"
+import { RatingPicker } from "@/oldcomponents/rating/RatingPicker"
 
 import { Card, NotificationAvatar, Title, Bold, Time, Row } from "../common/NotificationsCommon"
 import styled from "styled-components"

@@ -1,4 +1,4 @@
-import { Button } from "@/components/button/normal/Button"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import styled from "styled-components"
 
 export const RegisterButton = styled(Button)`

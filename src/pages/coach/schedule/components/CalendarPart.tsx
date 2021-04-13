@@ -1,5 +1,5 @@
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { Spinner } from "@/components/spinner/Spinner"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { MobileCalendarManager } from "@/pages/coach/schedule/components/MobileCalendarManager"

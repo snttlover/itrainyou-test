@@ -1,7 +1,7 @@
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import { Slider } from "@/components/slider/Slider"
+import { Slider } from "@/oldcomponents/slider/Slider"
 import { declOfNum, DeclOfNumListType } from "@/lib/formatting/numerals"
 import { $searchPageQuery, addSearchPageQuery } from "@/pages/search/coaches-search.model"
 

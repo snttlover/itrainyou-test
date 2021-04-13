@@ -1,5 +1,5 @@
-import { Header, LeftIcon, MonthContainer, MonthName, RightIcon, Year } from "@/components/calendar/CalendarHeader"
-import { Icon } from "@/components/icon/Icon"
+import { Header, LeftIcon, MonthContainer, MonthName, RightIcon, Year } from "@/oldcomponents/calendar/CalendarHeader"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { $currentMonth, $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"

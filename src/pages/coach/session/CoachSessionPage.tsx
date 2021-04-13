@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 import { SessionPageContainer as Container } from "@/pages/client/session/content/session-page-content/common/SessionPageContainer"
 import { SessionPageContent as Content } from "@/pages/client/session/content/session-page-content/common/SessionPageContent"
@@ -12,7 +12,7 @@ import {
 import { coachSessionPage } from "@/pages/coach/session/coach-session-page"
 import { useParams } from "react-router-dom"
 import { useEvent, useStore } from "effector-react"
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { SessionsHistory } from "@/pages/client/session/content/session-page-content/session-history/SessionsHistory"
 import {

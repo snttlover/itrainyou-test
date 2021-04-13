@@ -9,7 +9,7 @@ import dayjs, { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample, Event, guard } from "effector-root"
 import { every, spread } from "patronum"
 import { updateMyClient } from "@/lib/api/client/update"
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { becomeCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()

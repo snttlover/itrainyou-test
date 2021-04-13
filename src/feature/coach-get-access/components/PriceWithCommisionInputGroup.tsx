@@ -1,4 +1,4 @@
-import { FormItem } from "@/components/form-item/FormItem"
+import { FormItem } from "@/oldcomponents/form-item/FormItem"
 import { PriceInput } from "@/pages/coach/schedule/components/PriceInput"
 import { $pricesWithFee,changePrice, Prices } from "@/feature/coach-get-access/coach-get-access.model"
 import { useEvent, useStoreMap } from "effector-react"

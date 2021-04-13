@@ -1,6 +1,6 @@
 import React from "react"
-import { ClientDashboardLayout } from "@/components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import { createChatList } from "@/feature/chats-list"
 import { clientChatsList } from "@/pages/client/chats/list/client-chats-list.module"
 

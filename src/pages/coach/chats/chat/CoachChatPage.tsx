@@ -1,7 +1,7 @@
 import React from "react"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import styled from "styled-components"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { createChat } from "@/feature/chat"
 import { coachChat } from "@/pages/coach/chats/chat/coach-chat.model"
 

@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { SearchInputItem } from "@/components/search-input/SearchInputItem"
+import { SearchInputItem } from "@/oldcomponents/search-input/SearchInputItem"
 import { sortingItems, SortingItemType } from "@/pages/search/content/list/content/sorting/items"
 import {PickerTypes} from "@/pages/search/content/list/content/sorting/SortingPicker"
 

@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "@/oldcomponents/icon/Icon"
 
 type SocialIconTypes = {
   name: "vk" | "google" | "facebook" | "vk-s" | "google-s" | "facebook-s"

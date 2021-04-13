@@ -1,8 +1,8 @@
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectionPlaceholder"
 import { PhoneWithGirl } from "@/feature/coach-placeholder/right-images/PhoneWithGirl"
 import * as React from "react"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 const features = [
   "Подать заявку на становление супервизором",
