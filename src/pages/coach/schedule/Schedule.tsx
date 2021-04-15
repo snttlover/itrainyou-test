@@ -8,24 +8,26 @@ import { useGate, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 import { ScheduleGate } from "./models/schedule.model"
+import { Informer } from "@/newcomponents/informer/Informer"
 
-export const Title = styled.h2`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
-  color: #424242;
+export const Title = styled.div`
+    font-family: Roboto Slab;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 20px;
+    line-height: 28px;
+    color: #424242;
 `
 
-export const Description = styled.p`
+export const Description = styled.div`
   margin-top: 4px;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: 16px;
+  line-height: 24px;
   color: #5b6670;
+  max-width: 552px;  
 `
 
 const PriceContainer = styled.div`
@@ -39,7 +41,7 @@ const PriceContainer = styled.div`
   `}
 `
 const WeeklyScheduleContainer = styled.div`
-  max-width: 320px;
+  max-width: 100%;
 `
 
 const ScheduleSettingsContainerMobileStyles = `
@@ -75,6 +77,7 @@ const ScheduleSettingsContainer = styled.div`
 const PriceListContainer = styled.div`
   margin-top: 16px;
   position: relative;
+  max-width: 312px;  
 
   ${WeekDaySchedule}:not(:first-child) {
     margin-top: 8px;
@@ -93,10 +96,11 @@ export const Schedule = () => {
     <>
       <ScheduleSettingsContainer>
         <WeeklyScheduleContainer>
-          <Title>Недельное расписание</Title>
+          <Title>Составьте свое расписание</Title>
           <Description>
-            Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
+              Выберите дни и временные промежутки, в которые вы можете работать. Клиенты смогут бронировать занятия в это время.
           </Description>
+            <Informer>Вы можете выбрать несколько сессий в течение одного дня</Informer>
           <PriceListContainer>
             <WeekDaySchedule title='Понедельник' weekday='MONDAY' />
             <WeekDaySchedule title='Вторник' weekday='TUESDAY' />
@@ -108,24 +112,20 @@ export const Schedule = () => {
             {isWeekdaySchedulePending && <Spinner />}
           </PriceListContainer>
         </WeeklyScheduleContainer>
-        <PriceContainer>
+          {/*<PriceContainer>
           <Title>Цена</Title>
           <Description>
             Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
           </Description>
           <PriceListContainer>
-            {/*<PriceInputGroup
-              title='Промо сессия (15 минут)'
-              name='promo'
-            />*/}
             <PriceInputGroup title='30 минут' name='d30Price' />
             <PriceInputGroup title='45 минут' name='d45Price' />
             <PriceInputGroup title='60 минут' name='d60Price' />
             <PriceInputGroup title='90 минут' name='d90Price' />
           </PriceListContainer>
-        </PriceContainer>
+        </PriceContainer>*/}
       </ScheduleSettingsContainer>
-      <CalendarPart />
+        {/*<CalendarPart />*/}
     </>
   )
 }

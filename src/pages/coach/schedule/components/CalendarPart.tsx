@@ -28,6 +28,7 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { RemoveSessionModal } from "@/pages/coach/schedule/components/RemoveSessionModal"
 import { $showRemoveSessionModal } from "@/pages/coach/schedule/models/remove-session.model"
+import { Informer } from "@/newcomponents/informer/Informer"
 
 const RemoveButton = styled(DashedButton)`
   width: 100%;
@@ -116,6 +117,7 @@ export const CalendarPart = () => {
 
   return (
     <>
+        <Informer>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
       <Title>Календарь</Title>
       <Description>Планируете отпуск? Отмените сессии на промежутке дат</Description>
       <RemoveDateRangeContainer>

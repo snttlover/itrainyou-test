@@ -96,6 +96,7 @@ export type IconName =
   | "photos-icon"
   | "documents-icon"
   | "download"
+  | "google-calendar"
 
 type IconProps = {
   name: IconName,

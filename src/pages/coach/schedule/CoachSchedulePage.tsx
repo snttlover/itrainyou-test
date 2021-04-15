@@ -11,20 +11,23 @@ import { MediaRange } from "@/lib/responsive/media"
 import { InputComponent } from "@/newcomponents/input/Input"
 import { Input } from "@/oldcomponents/input/Input"
 import { useState } from "react"
+import { GoogleCalendar } from "@/pages/coach/schedule/GoogleCalendar"
+import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
+  background: #FFFFFF;  
 `
 
 const StyledTabs = styled(Tabs)`
   display: flex;
   position: relative;
-  margin-bottom: 16px;  
+  margin-bottom: 24px;  
 `
 
 const StyledTab = styled(Tab)`
-  font-size: 14px;
-  line-height: 18px;
+  font-size: 16px;
+  line-height: 24px;
   color: #424242;
   flex: 1;
   align-items: center;
@@ -34,7 +37,7 @@ const StyledTab = styled(Tab)`
   background: transparent;
   border-bottom: 2px solid transparent;
   cursor: pointer;
-  max-width: 120px;  
+  max-width: 200px;  
   &[data-active="true"] {
     border-bottom: 2px solid ${props => props.theme.colors.primary};
     background: transparent;
@@ -45,8 +48,8 @@ const Header = styled.div`
   font-family: Roboto Slab;
   font-weight: 700;  
   margin-bottom: 12px;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 24px;
+  line-height: 32px;
   color: #424242;
   ${MediaRange.lessThan("mobile")`
       margin-bottom: 34px;
@@ -57,25 +60,38 @@ const Header = styled.div`
 const StyledInput = styled(InputComponent)`
 `
 
+const TabsWrapper = styled.div<{ materials: "images" | "documents"}>`
+  display: flex;
+  flex-wrap: ${({ materials,theme }) => materials === "images" ? "wrap" : "nowrap"};
+  width: ${({ materials,theme }) => materials === "images" ? "unset" : "100%"};
+  flex-direction: ${({ materials,theme }) => materials === "images" ? "unset" : "column"};  
+`
+
 export const CoachSchedulePage = () => {
   const coachAccess = useStore($coachAccess)
 
-    const [value,setValue] = useState("")
+    const [tab,changeTab] = useState<"calendar" | "schedule" | "google_calendar">("calendar")
 
-    const test = (e) => {
-      console.log("test", e)
-    }
   return (
     <CoachDashboardLayout>
-        <Header>Расписание</Header>
-        <StyledTabs>
-            <StyledTab value='images'>Календарь</StyledTab>
-            <StyledTab value='documents'>Настройки расписания</StyledTab>
-            <StyledTab value='documents'>Google-календарь</StyledTab>
-        </StyledTabs>
-        <StyledInput placeholder={"test"} maxWidth={"400px"} label='Текст' error={"Неверный вариант"} required value={value} onChange={setValue} />
-
-      <Container>{coachAccess.isApproved ? <Schedule /> : <CoachSchedulePlaceholder />}</Container>
+        {/*
+        <StyledInput
+        placeholder={"test"}
+        maxWidth={"400px"}
+        label='Текст'
+        error={"Неверный вариант"}
+        required value={value} onChange={setValue} />*/}
+      <Container>
+          <Header>Расписание</Header>
+          <StyledTabs value={tab} onChange={changeTab}>
+              <StyledTab value='calendar'>Календарь</StyledTab>
+              <StyledTab value='schedule'>Настройки расписания</StyledTab>
+              <StyledTab value='google_calendar'>Google-календарь</StyledTab>
+          </StyledTabs>
+          {tab === "schedule" ? (coachAccess.isApproved ? <Schedule /> : <CoachSchedulePlaceholder />) : null}
+          {tab === "google_calendar" ? (<GoogleCalendar />) : null}
+          {tab === "calendar" ? (<CalendarPart />) : null}
+      </Container>
     </CoachDashboardLayout>
   )
 }

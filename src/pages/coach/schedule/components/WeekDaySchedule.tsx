@@ -1,5 +1,6 @@
 import { Icon } from "@/oldcomponents/icon/Icon"
-import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
+//import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
+import { useDropDown } from "@/newcomponents/dropdown/DropDownItem"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { WeekDayName } from "@/lib/api/coaching-sessions/types"
 import { $durationOptions } from "@/pages/coach/schedule/models/add-session.model"
@@ -18,7 +19,8 @@ import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   background: #ffffff;
-  border-radius: 2px;
+  border: 2px solid #F4F5F7;
+  border-radius: 8px;
   padding: 8px;
 `
 
@@ -141,8 +143,8 @@ type Props = {
 
 export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => {
 
-  const {SelectInput: StartSelectInput} = useSelectInput()
-  const {SelectInput: TypeSelectInput} = useSelectInput()
+  const {SelectInput: StartSelectInput} = useDropDown()
+  const {SelectInput: TypeSelectInput} = useDropDown()
 
   const StyledStartSelectInput = styled(StartSelectInput)`
     &:not(:first-child) {
@@ -221,7 +223,7 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
             value={startTime}
             onChange={value => setStartTime((value as unknown) as string)}
             options={freeTimes}
-            placeholder='Начало'
+            placeholder='Время'
           />
           <StyledTypeSelectInput
             value={duration}
