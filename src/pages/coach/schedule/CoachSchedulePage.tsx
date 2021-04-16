@@ -1,7 +1,8 @@
 import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { $coachAccess } from "@/feature/user/user.model"
+import { ScheduleGate } from "@/pages/coach/schedule/models/schedule.model"
 import { CoachSchedulePlaceholder } from "@/pages/coach/schedule/CoachSchedulePlaceholder"
-import { useStore } from "effector-react"
+import { useStore, useGate } from "effector-react"
 import * as React from "react"
 import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import styled from "styled-components"
@@ -13,6 +14,7 @@ import { Input } from "@/oldcomponents/input/Input"
 import { useState } from "react"
 import { GoogleCalendar } from "@/pages/coach/schedule/GoogleCalendar"
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
+import { Prices } from "@/pages/coach/schedule/Prices"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
@@ -60,21 +62,36 @@ const Header = styled.div`
 const StyledInput = styled(InputComponent)`
 `
 
-const TabsWrapper = styled.div<{ materials: "images" | "documents"}>`
-  display: flex;
-  flex-wrap: ${({ materials,theme }) => materials === "images" ? "wrap" : "nowrap"};
-  width: ${({ materials,theme }) => materials === "images" ? "unset" : "100%"};
-  flex-direction: ${({ materials,theme }) => materials === "images" ? "unset" : "column"};  
+export const Title = styled.div`
+    font-family: Roboto Slab;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 20px;
+    line-height: 28px;
+    color: #424242;
+`
+
+export const Description = styled.div`
+  margin-top: 4px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #5b6670;
+  max-width: 552px;  
 `
 
 export const CoachSchedulePage = () => {
   const coachAccess = useStore($coachAccess)
 
-    const [tab,changeTab] = useState<"calendar" | "schedule" | "google_calendar">("calendar")
+  useGate(ScheduleGate)
+
+  const [tab,changeTab] = useState<"calendar" | "schedule" | "google_calendar" | "prices">("calendar")
 
   return (
     <CoachDashboardLayout>
-        {/*
+      {/*
         <StyledInput
         placeholder={"test"}
         maxWidth={"400px"}
@@ -82,15 +99,17 @@ export const CoachSchedulePage = () => {
         error={"Неверный вариант"}
         required value={value} onChange={setValue} />*/}
       <Container>
-          <Header>Расписание</Header>
-          <StyledTabs value={tab} onChange={changeTab}>
-              <StyledTab value='calendar'>Календарь</StyledTab>
-              <StyledTab value='schedule'>Настройки расписания</StyledTab>
-              <StyledTab value='google_calendar'>Google-календарь</StyledTab>
-          </StyledTabs>
-          {tab === "schedule" ? (coachAccess.isApproved ? <Schedule /> : <CoachSchedulePlaceholder />) : null}
-          {tab === "google_calendar" ? (<GoogleCalendar />) : null}
-          {tab === "calendar" ? (<CalendarPart />) : null}
+        <Header>Расписание</Header>
+        <StyledTabs value={tab} onChange={changeTab}>
+          <StyledTab value='calendar'>Календарь</StyledTab>
+          <StyledTab value='schedule'>Настройки расписания</StyledTab>
+          <StyledTab value='google_calendar'>Google-календарь</StyledTab>
+          <StyledTab value='prices'>Цены</StyledTab>
+        </StyledTabs>
+        {tab === "schedule" ? (coachAccess.isApproved ? <Schedule /> : <CoachSchedulePlaceholder />) : null}
+        {tab === "google_calendar" ? (<GoogleCalendar />) : null}
+        {tab === "calendar" ? (<CalendarPart />) : null}
+        {tab === "prices" ? (<Prices />) : null}
       </Container>
     </CoachDashboardLayout>
   )

@@ -1,12 +1,13 @@
 import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CoachSession, getCoachSessions } from "@/lib/api/coach-sessions"
+import { addGoogleCalendar, endSyncCalendar, startSyncCalendar, AddGoogleCalendarParams } from "@/lib/api/coach/google-calendar/add-google-calendar"
 import { removeCoachSession, removeCoachSessionRange } from "@/lib/api/coaching-sessions/remove-coach-session"
 import { date } from "@/lib/formatting/date"
 import { $monthEndDate, $monthStartDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, forward, restore, sample, merge, attach } from "effector-root"
+import { combine, createEffect, createEvent, forward, restore, sample, merge, attach, createStore } from "effector-root"
 import { $sessionToDelete } from "@/pages/coach/schedule/models/remove-session.model"
 
 type DateRange = {
@@ -111,25 +112,6 @@ export const loadSessionsWithParamsFx = attach({
   mapParams: (_, data) => ({ ...data }),
 })
 
-
-/*export const loadSessionsWithParamsFx = attach({
-  effect: loadSessionsFx,
-  // @ts-ignore
-  source: combine(
-    {
-      from: $monthStartDate,
-      to: $monthEndDate,
-    },
-    ({ from, to }) => {
-      console.log("from and to", from,to)
-      return {
-        from: from,
-        to: to,
-      }}
-  ),
-  mapParams: (_, data) => ({ ...data }),
-})*/
-
 forward({
   from: merge([loadSessions, setCurrentMonth, CalendarGate.open]),
   to: loadSessionsWithParamsFx,
@@ -168,4 +150,24 @@ const removeRangeFailMessage: Toast = { type: "error", text: "Ошибка пр�
 forward({
   from: removeSessionsRangeFx.failData.map(_ => removeRangeFailMessage),
   to: [toasts.remove, toasts.add, loadSessions.prepend(_ => {})],
+})
+
+export const $syncedEmail = createStore("test@mail.ru")
+export const getRefreshToken = createEvent<any>()
+
+const addGoogleCalendarFx = createEffect({
+  handler: (params: {code: string}) => addGoogleCalendar({refreshToken: params.code})
+})
+
+forward({
+  from: getRefreshToken,
+  to: addGoogleCalendarFx,
+})
+
+const startCalendarSyncFx = createEffect({
+  handler: () => startSyncCalendar()
+})
+
+const endCalendarSyncFx = createEffect({
+  handler: () => endSyncCalendar()
 })

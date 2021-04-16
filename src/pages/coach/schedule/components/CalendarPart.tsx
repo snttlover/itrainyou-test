@@ -21,7 +21,6 @@ import {
   loadSessionsFx,
   removeSessionsRange,
 } from "@/pages/coach/schedule/models/sessions.model"
-import { Description, Title } from "@/pages/coach/schedule/Schedule"
 import { Dayjs } from "dayjs"
 import { useEvent, useGate, useStore } from "effector-react"
 import React, { useState } from "react"
@@ -30,7 +29,7 @@ import { RemoveSessionModal } from "@/pages/coach/schedule/components/RemoveSess
 import { $showRemoveSessionModal } from "@/pages/coach/schedule/models/remove-session.model"
 import { Informer } from "@/newcomponents/informer/Informer"
 
-const RemoveButton = styled(DashedButton)`
+const AddVacationButton = styled(DashedButton)`
   width: 100%;
   margin-top: 12px;
 
@@ -39,8 +38,7 @@ const RemoveButton = styled(DashedButton)`
   `}
 
   ${MediaRange.greaterThan("laptop")`
-    width: 160px;
-    min-width: 160px;
+    max-width: 200px;
   `}
 `
 const CalendarContainer = styled.div`
@@ -66,7 +64,7 @@ const RemoveDateRangeContainer = styled.div`
     flex-direction: row;
     align-items: center;
     
-    ${RemoveButton} {
+    ${AddVacationButton} {
       line-height: unset;
       margin-top: 0;
       margin-left: 28px;
@@ -117,14 +115,9 @@ export const CalendarPart = () => {
 
   return (
     <>
-        <Informer>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
-      <Title>Календарь</Title>
-      <Description>Планируете отпуск? Отмените сессии на промежутке дат</Description>
+      <Informer>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
       <RemoveDateRangeContainer>
         <StyledDateRangePicker range={range} rangeChanged={setRange} />
-        <RemoveButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
-          Удалить
-        </RemoveButton>
       </RemoveDateRangeContainer>
       <CalendarContainer>
         <MobileCalendar>

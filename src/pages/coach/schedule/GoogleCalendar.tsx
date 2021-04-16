@@ -1,8 +1,13 @@
 import * as React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { Description, Title } from "@/pages/coach/schedule/Schedule"
+import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { Icon } from "@/oldcomponents/icon/Icon"
+import { useGoogleLogin } from "react-google-login"
+import { config } from "@/config"
+import { getRefreshToken, $syncedEmail } from "@/pages/coach/schedule/models/sessions.model"
+import { useEvent, useStore } from "effector-react"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 
 const GoogleButton = styled.div`
     border: 2px solid #F4F5F7;
@@ -27,15 +32,52 @@ const GoogleIcon = styled(Icon).attrs({name: "google-calendar"})`
     margin-right: 20px;
 `
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+`
+
+const SyncButton = styled(DashedButton)`
+  width: 240px;
+`
+
+const Email = styled.div`
+  font-family: Roboto Slab;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #424242;
+`
+
 export const GoogleCalendar = () => {
+  const onSuccess = useEvent(getRefreshToken)
+  const email = useStore($syncedEmail)
+
+  const { signIn } = useGoogleLogin({
+    clientId: `${config.GOOGLE_CLIENT_ID}`,
+    redirectUri: `${window.location.protocol}//${window.location.hostname}/coach/schedule`,
+    onSuccess: onSuccess,
+    uxMode: "popup",
+    scope: "profile email https://www.googleapis.com/auth/calendar",
+    accessType: "offline",
+    responseType: "code",
+  })
+
   return (
     <>
       <Title>Google-календарь</Title>
       <Description>Синхронизируйтесь со своим google-календарём, и мы отметим недоступными даты, когда вы заняты</Description>
-      <GoogleButton>
+      <GoogleButton onClick={signIn}>
         <GoogleIcon />
         <div>Подключить Google-календарь</div>
       </GoogleButton>
+      {/*<Row>
+        <Email>{email}</Email>
+        <SyncButton>Отключить синхронизацию</SyncButton>
+      </Row>*/}
     </>
   )
 }

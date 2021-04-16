@@ -3,12 +3,17 @@ import { Icon } from "@/oldcomponents/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { $currentMonth, $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"
-import { $allSessions } from "@/pages/coach/schedule/models/sessions.model"
+import {
+  $allSessions,
+  $deleteButtonIsDisabled, $pickedDeleteRange, changePickedDeleteRange,
+  removeSessionsRange
+} from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 
 const Container = styled.div`
   display: flex;
@@ -20,6 +25,10 @@ const Container = styled.div`
 const StyledHeader = styled(Header)`
   max-width: 700px;
   padding-right: 4px;
+`
+
+const AddVacationButton = styled(DashedButton)`
+  width: 188px;
 `
 
 const StyledMonthContainer = styled(MonthContainer)`
@@ -37,10 +46,10 @@ const StyledRightIcon = styled(RightIcon)`
 const StyledMonthName = styled(MonthName)`
   font-family: Roboto;
   font-style: normal;
-  width: 100px;
   font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
+  width: 150px;
+  font-size: 16px;
+  line-height: 24px;
   text-align: center;
   color: #424242;
 `
@@ -63,10 +72,13 @@ const HorizontalOverflowScrollContainer = styled.div`
 
 const CalendarTable = styled.table`
   width: 100%;
-  border-spacing: 4px;
+  border-spacing: 0px;
 `
+//border-spacing: 4px;
 
-const WeekRow = styled.tr``
+const WeekRow = styled.tr`
+  height: 48px;    
+`
 
 const CalendarHeaderCell = styled.th`
   font-family: Roboto;
@@ -77,6 +89,7 @@ const CalendarHeaderCell = styled.th`
   text-align: center;
   color: #5b6670;
 `
+//border: 1px solid gray;
 
 const CalendarCell = styled.td`
   width: 96px;
@@ -158,6 +171,12 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const sessions = useStore($allSessions)
   const monthDayEnd = date(useStore($monthEndDate))
   const _removeSession = useEvent(startRemovingSession)
+
+  const _removeSessionsRange = useEvent(removeSessionsRange)
+  const disabledDelete = useStore($deleteButtonIsDisabled)
+  const range = useStore($pickedDeleteRange)
+  const setRange = useEvent(changePickedDeleteRange)
+
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
   const daysCount = monthDayStart.daysInMonth() + countPadStartDays + countPadEndDays
@@ -187,22 +206,24 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
       <StyledHeader>
         <StyledMonthContainer>
           <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={() => prevMonth(currentMonth)} />
-          <StyledMonthName>{currentMonth.format("MMMM")}</StyledMonthName>
           <StyledRightIcon onClick={() => nextMonth(currentMonth)} />
+          <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
         </StyledMonthContainer>
-        <StyledYear>{currentMonth.format("YYYY")}</StyledYear>
+        <AddVacationButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
+          Добавить отпуск
+        </AddVacationButton>
       </StyledHeader>
       <HorizontalOverflowScrollContainer>
         <CalendarTable>
           <thead>
             <WeekRow>
-              <CalendarHeaderCell>Понедельник</CalendarHeaderCell>
-              <CalendarHeaderCell>Вторник</CalendarHeaderCell>
-              <CalendarHeaderCell>Среда</CalendarHeaderCell>
-              <CalendarHeaderCell>Четверг</CalendarHeaderCell>
-              <CalendarHeaderCell>Пятница</CalendarHeaderCell>
-              <CalendarHeaderCell>Суббота</CalendarHeaderCell>
-              <CalendarHeaderCell>Воскресенье</CalendarHeaderCell>
+              <CalendarHeaderCell>Пн</CalendarHeaderCell>
+              <CalendarHeaderCell>Вт</CalendarHeaderCell>
+              <CalendarHeaderCell>Ср</CalendarHeaderCell>
+              <CalendarHeaderCell>Чт</CalendarHeaderCell>
+              <CalendarHeaderCell>Пт</CalendarHeaderCell>
+              <CalendarHeaderCell>Сб</CalendarHeaderCell>
+              <CalendarHeaderCell>Вс</CalendarHeaderCell>
             </WeekRow>
           </thead>
           <tbody>

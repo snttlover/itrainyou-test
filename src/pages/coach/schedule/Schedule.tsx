@@ -7,28 +7,8 @@ import { saveWeekdaySlotsFx } from "@/pages/coach/schedule/models/weekday-schedu
 import { useGate, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
-import { ScheduleGate } from "./models/schedule.model"
+import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { Informer } from "@/newcomponents/informer/Informer"
-
-export const Title = styled.div`
-    font-family: Roboto Slab;
-    font-weight: 700;
-    margin-bottom: 8px;
-    font-size: 20px;
-    line-height: 28px;
-    color: #424242;
-`
-
-export const Description = styled.div`
-  margin-top: 4px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: #5b6670;
-  max-width: 552px;  
-`
 
 const PriceContainer = styled.div`
   max-width: 320px;
@@ -40,6 +20,7 @@ const PriceContainer = styled.div`
     margin-right: 100px;
   `}
 `
+
 const WeeklyScheduleContainer = styled.div`
   max-width: 100%;
 `
@@ -88,7 +69,6 @@ const PriceListContainer = styled.div`
 `
 
 export const Schedule = () => {
-  useGate(ScheduleGate)
 
   const isWeekdaySchedulePending = useStore(saveWeekdaySlotsFx.pending)
 
@@ -100,7 +80,7 @@ export const Schedule = () => {
           <Description>
               Выберите дни и временные промежутки, в которые вы можете работать. Клиенты смогут бронировать занятия в это время.
           </Description>
-            <Informer>Вы можете выбрать несколько сессий в течение одного дня</Informer>
+          <Informer>Вы можете выбрать несколько сессий в течение одного дня</Informer>
           <PriceListContainer>
             <WeekDaySchedule title='Понедельник' weekday='MONDAY' />
             <WeekDaySchedule title='Вторник' weekday='TUESDAY' />
@@ -112,7 +92,7 @@ export const Schedule = () => {
             {isWeekdaySchedulePending && <Spinner />}
           </PriceListContainer>
         </WeeklyScheduleContainer>
-          {/*<PriceContainer>
+        {/*<PriceContainer>
           <Title>Цена</Title>
           <Description>
             Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
@@ -125,7 +105,7 @@ export const Schedule = () => {
           </PriceListContainer>
         </PriceContainer>*/}
       </ScheduleSettingsContainer>
-        {/*<CalendarPart />*/}
+      {/*<CalendarPart />*/}
     </>
   )
 }
