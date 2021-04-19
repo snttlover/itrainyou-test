@@ -97,6 +97,8 @@ export type IconName =
   | "documents-icon"
   | "download"
   | "google-calendar"
+  | "left-calendar-icon"
+  | "right-calendar-icon"
 
 type IconProps = {
   name: IconName,

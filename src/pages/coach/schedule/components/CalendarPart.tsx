@@ -1,6 +1,8 @@
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { date } from "@/lib/formatting/date"
+import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
+import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { MediaRange } from "@/lib/responsive/media"
 import { MobileCalendarManager } from "@/pages/coach/schedule/components/MobileCalendarManager"
 import {
@@ -28,6 +30,7 @@ import styled from "styled-components"
 import { RemoveSessionModal } from "@/pages/coach/schedule/components/RemoveSessionModal"
 import { $showRemoveSessionModal } from "@/pages/coach/schedule/models/remove-session.model"
 import { Informer } from "@/newcomponents/informer/Informer"
+import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
 
 const AddVacationButton = styled(DashedButton)`
   width: 100%;
@@ -78,6 +81,11 @@ const StyledDateRangePicker = styled(RemoveSessionsDateRangePicker)`
   width: 100%;
 `
 
+const AddVacationDialog = styled(Dialog)`
+  max-width: 560px;
+  padding: 24px 24px;
+`
+
 const MobileCalendar = styled.div`
   ${MediaRange.greaterThan("mobile")`
     display: none;
@@ -106,6 +114,8 @@ export const CalendarPart = () => {
   const disabledDelete = useStore($deleteButtonIsDisabled)
   const showRemoveSessionModal = useStore($showRemoveSessionModal)
 
+  const [visibility,setVisibility] = useState(false)
+
   useGate(CalendarGate)
 
   const openModalCallback = (date: Dayjs) => {
@@ -116,9 +126,9 @@ export const CalendarPart = () => {
   return (
     <>
       <Informer>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
-      <RemoveDateRangeContainer>
+      {/*<RemoveDateRangeContainer>
         <StyledDateRangePicker range={range} rangeChanged={setRange} />
-      </RemoveDateRangeContainer>
+      </RemoveDateRangeContainer>*/}
       <CalendarContainer>
         <MobileCalendar>
           <MobileCalendarManager onAddClick={openModalCallback} />
@@ -128,12 +138,14 @@ export const CalendarPart = () => {
             nextMonth={currentDate => _setCurrentMonth(currentDate.add(1, "month"))}
             onAddClick={openModalCallback}
             prevMonth={currentDate => _setCurrentMonth(currentDate.subtract(1, "month"))}
+            showVacationModal={setVisibility}
           />
         </DesktopCalendar>
         {isSessionsLoading && <Spinner />}
       </CalendarContainer>
       {isAddSessionModalShowed && <AddSessionModal onCrossClick={() => _setModalShow(false)} />}
       {showRemoveSessionModal && <RemoveSessionModal/>}
+      <AddVacationModal visibility={visibility} setVisibility={setVisibility} />
     </>
   )
 }

@@ -7,7 +7,18 @@ import { $monthEndDate, $monthStartDate, setCurrentMonth } from "@/pages/coach/s
 import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, forward, restore, sample, merge, attach, createStore } from "effector-root"
+import {
+  combine,
+  createEffect,
+  createEvent,
+  forward,
+  restore,
+  sample,
+  merge,
+  attach,
+  createStore,
+  split
+} from "effector-root"
 import { $sessionToDelete } from "@/pages/coach/schedule/models/remove-session.model"
 
 type DateRange = {
@@ -152,7 +163,7 @@ forward({
   to: [toasts.remove, toasts.add, loadSessions.prepend(_ => {})],
 })
 
-export const $syncedEmail = createStore("test@mail.ru")
+export const $syncedEmail = createStore<string | null>("").on(loadScheduleFx.doneData,(state, payload) => payload.googleCalendarEmail)
 export const getRefreshToken = createEvent<any>()
 
 const addGoogleCalendarFx = createEffect({
@@ -164,10 +175,33 @@ forward({
   to: addGoogleCalendarFx,
 })
 
+export const syncGoogleCalendar = createEvent()
+
 const startCalendarSyncFx = createEffect({
   handler: () => startSyncCalendar()
 })
 
 const endCalendarSyncFx = createEffect({
   handler: () => endSyncCalendar()
+})
+
+export const $isSynced = createStore<"synced" | "unsynced">("unsynced")
+  .on(loadScheduleFx.doneData,(state, payload) => payload.isGoogleCalendarSync ? "synced" : "unsynced")
+  .on(startCalendarSyncFx.done,(state,payload) => "synced")
+  .on(endCalendarSyncFx.done,(state,payload) => "unsynced")
+
+export const $isGoogleCalendarAdded = createStore(false).on(loadScheduleFx.doneData,(state, payload) => payload.isGoogleCalendarAdded)
+
+split({
+  source: syncGoogleCalendar,
+  match: $isSynced,
+  cases: {
+    synced: endCalendarSyncFx,
+    unsynced: startCalendarSyncFx,
+  }
+})
+
+forward({
+  from: [addGoogleCalendarFx.done, startCalendarSyncFx.done, endCalendarSyncFx.done],
+  to: loadScheduleFx,
 })

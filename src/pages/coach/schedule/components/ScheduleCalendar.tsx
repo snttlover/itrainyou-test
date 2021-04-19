@@ -14,12 +14,42 @@ import React from "react"
 import styled from "styled-components"
 import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 704px;
+`
+
+const IconToolTip = styled.span`
+  width: 136px;
+  height: auto;
+  position: absolute;
+  z-index: 1;
+  padding: 12px;
+  background: #ffffff;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 1px 3px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+  bottom: 80%;
+  left: 50%;
+  margin-left: -68px;
+  display: none;
+
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+  }
 `
 
 const StyledHeader = styled(Header)`
@@ -36,12 +66,13 @@ const StyledMonthContainer = styled(MonthContainer)`
 `
 
 const StyledLeftIcon = styled(LeftIcon)`
-  width: 16px;
-  height: 16px;
+  width: 40px;
+  height: 40px;
 `
 const StyledRightIcon = styled(RightIcon)`
-  width: 16px;
-  height: 16px;
+  width: 40px;
+  height: 40px;
+  margin-left: 8px;
 `
 const StyledMonthName = styled(MonthName)`
   font-family: Roboto;
@@ -73,8 +104,8 @@ const HorizontalOverflowScrollContainer = styled.div`
 const CalendarTable = styled.table`
   width: 100%;
   border-spacing: 0px;
+  border-collapse: collapse;
 `
-//border-spacing: 4px;
 
 const WeekRow = styled.tr`
   height: 48px;    
@@ -88,18 +119,22 @@ const CalendarHeaderCell = styled.th`
   line-height: 16px;
   text-align: center;
   color: #5b6670;
+  border: 1px solid #F4F5F7;
 `
-//border: 1px solid gray;
 
-const CalendarCell = styled.td`
+const CalendarCell = styled.td<{presentDay: boolean}>`
   width: 96px;
   min-width: 96px;
   height: 96px;
+  border: 1px solid #F4F5F7;
+  background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
+  cursor: ${({presentDay})=> presentDay ? "pointer" : "default"};
 `
 
 const Session = styled.div<{areAvailable: boolean}>`
-  background: ${({areAvailable})=> areAvailable ? "#DFD0E7" : "#F4F5F7"};
-  border-radius: 12px;
+  background: ${({areAvailable})=> !areAvailable ? "#FFFFFF" : "#F4EFF7"};
+  border-radius: 9px;
+  border: ${({areAvailable})=> !areAvailable ? "1px dashed #DFD0E7" : ""};
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -109,6 +144,11 @@ const Session = styled.div<{areAvailable: boolean}>`
   padding: 0 4px;
   display: flex;
   justify-content: space-between;
+
+
+  &:hover ${IconToolTip} {
+    display: block;
+  }
 `
 
 const SessionContainer = styled.div`
@@ -116,10 +156,10 @@ const SessionContainer = styled.div`
   height: 100%;
 `
 
-const DayContainer = styled.div`
+const DayContainer = styled.div<{presentDay: boolean}>`
   width: 96px;
   height: 96px;
-  background-color: #fff;
+  background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   position: relative;
   padding: 24px 4px 12px;
   ${Session}:not(:first-child) {
@@ -162,9 +202,10 @@ export type ScheduleCalendarTypes = {
   prevMonth: (currentMonth: Dayjs) => void
   nextMonth: (currentMonth: Dayjs) => void
   onAddClick: (day: Dayjs) => void
+  showVacationModal: (value: boolean) => void
 }
 
-export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth, onAddClick }) => {
+export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth, onAddClick, showVacationModal }) => {
   const now = date()
   const currentMonth = date(useStore($currentMonth))
   const monthDayStart = date(useStore($monthStartDate))
@@ -209,7 +250,10 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
           <StyledRightIcon onClick={() => nextMonth(currentMonth)} />
           <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
         </StyledMonthContainer>
-        <AddVacationButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
+        {/*<AddVacationButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
+          Добавить отпуск
+        </AddVacationButton>*/}
+        <AddVacationButton onClick={() => showVacationModal(true)}>
           Добавить отпуск
         </AddVacationButton>
       </StyledHeader>
@@ -230,8 +274,8 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
             {weeks.map((week, i) => (
               <WeekRow key={i}>
                 {week.map(day => (
-                  <CalendarCell key={day.weekday()}>
-                    <DayContainer>
+                  <CalendarCell presentDay={now.isBefore(day, "d") || now.isSame(day, "d")} key={day.weekday()}>
+                    <DayContainer presentDay={now.isBefore(day, "d") || now.isSame(day, "d")}>
                       <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
                       {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => onAddClick(day)} />}
                       <SessionContainer>
@@ -241,6 +285,8 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                             <Session key={session.id} areAvailable={session.areAvailable}>
                               {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
                               <CrossIcon onClick={() => _removeSession(session)} />
+                              <IconToolTip key={session.id}>тест</IconToolTip>
+                              {/*<GrayTooltip key={session.id} text={"тест"}></GrayTooltip>*/}
                             </Session>
                           ))}
                       </SessionContainer>

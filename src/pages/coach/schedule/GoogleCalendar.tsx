@@ -5,7 +5,7 @@ import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { useGoogleLogin } from "react-google-login"
 import { config } from "@/config"
-import { getRefreshToken, $syncedEmail } from "@/pages/coach/schedule/models/sessions.model"
+import { getRefreshToken, $syncedEmail, $isSynced, $isGoogleCalendarAdded, syncGoogleCalendar } from "@/pages/coach/schedule/models/sessions.model"
 import { useEvent, useStore } from "effector-react"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 
@@ -55,12 +55,15 @@ const Email = styled.div`
 export const GoogleCalendar = () => {
   const onSuccess = useEvent(getRefreshToken)
   const email = useStore($syncedEmail)
+  const isSynced = useStore($isSynced)
+  const isAdded = useStore($isGoogleCalendarAdded)
+  const onSync = useEvent(syncGoogleCalendar)
 
   const { signIn } = useGoogleLogin({
     clientId: `${config.GOOGLE_CLIENT_ID}`,
     redirectUri: `${window.location.protocol}//${window.location.hostname}/coach/schedule`,
     onSuccess: onSuccess,
-    uxMode: "popup",
+    uxMode: "redirect",
     scope: "profile email https://www.googleapis.com/auth/calendar",
     accessType: "offline",
     responseType: "code",
@@ -70,14 +73,16 @@ export const GoogleCalendar = () => {
     <>
       <Title>Google-календарь</Title>
       <Description>Синхронизируйтесь со своим google-календарём, и мы отметим недоступными даты, когда вы заняты</Description>
-      <GoogleButton onClick={signIn}>
+      {!isAdded ? <GoogleButton onClick={signIn}>
         <GoogleIcon />
         <div>Подключить Google-календарь</div>
       </GoogleButton>
-      {/*<Row>
-        <Email>{email}</Email>
-        <SyncButton>Отключить синхронизацию</SyncButton>
-      </Row>*/}
+        :
+        (<Row>
+          <Email>{email}</Email>
+          <SyncButton onClick={() => onSync()}>{isSynced === "synced" ? "Отключить" : "Включить"} синхронизацию</SyncButton>
+        </Row>)
+      }
     </>
   )
 }

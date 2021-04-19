@@ -16,7 +16,7 @@ type LeftButtonTypes = {
   disabled?: boolean
 }
 
-export const LeftIcon = styled(Icon).attrs({ name: "left-icon" })<LeftButtonTypes>`
+export const LeftIcon = styled(Icon).attrs({ name: "left-calendar-icon" })<LeftButtonTypes>`
   width: 5px;
   height: 9px;
   fill: ${({ theme }) => theme.colors.primary};
@@ -25,7 +25,7 @@ export const LeftIcon = styled(Icon).attrs({ name: "left-icon" })<LeftButtonType
   pointer-events: ${props => (props.disabled ? "none" : "auto")};
 `
 
-export const RightIcon = styled(Icon).attrs({ name: "right-icon" })<LeftButtonTypes>`
+export const RightIcon = styled(Icon).attrs({ name: "right-calendar-icon" })<LeftButtonTypes>`
   width: 5px;
   height: 9px;
   fill: ${({ theme }) => theme.colors.primary};

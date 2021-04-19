@@ -1,5 +1,5 @@
 import { config } from "@/config"
-import { keysToCamel } from "@/lib/network/casing"
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post } from "@/lib/network/network"
 
 export interface AddGoogleCalendarParams {
@@ -7,7 +7,7 @@ export interface AddGoogleCalendarParams {
 }
 
 export const addGoogleCalendar = (params: AddGoogleCalendarParams) =>
-  post<void, AddGoogleCalendarParams>(`${config.BACKEND_URL}/api/v1/web/coaches/me/add-calendar/`, params)
+  post<void, AddGoogleCalendarParams>(`${config.BACKEND_URL}/api/v1/web/coaches/me/add-calendar/`, keysToSnake(params))
     .then(response => response.data)
     .then(keysToCamel)
 
