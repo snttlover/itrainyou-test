@@ -3,7 +3,7 @@ import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post } from "@/lib/network/network"
 
 export interface AddGoogleCalendarParams {
-  refreshToken: string
+  code: string
 }
 
 export const addGoogleCalendar = (params: AddGoogleCalendarParams) =>

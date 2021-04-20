@@ -69,6 +69,10 @@ export const GoogleCalendar = () => {
     responseType: "code",
   })
 
+  const handleOnClick = () => {
+    isSynced === "synced" ? onSync("desynchronize") : onSync("synchronize")
+  }
+
   return (
     <>
       <Title>Google-календарь</Title>
@@ -80,7 +84,7 @@ export const GoogleCalendar = () => {
         :
         (<Row>
           <Email>{email}</Email>
-          <SyncButton onClick={() => onSync()}>{isSynced === "synced" ? "Отключить" : "Включить"} синхронизацию</SyncButton>
+          <SyncButton onClick={handleOnClick}>{isSynced === "synced" ? "Отключить" : "Включить"} синхронизацию</SyncButton>
         </Row>)
       }
     </>

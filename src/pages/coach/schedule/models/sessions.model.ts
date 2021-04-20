@@ -20,6 +20,7 @@ import {
   split
 } from "effector-root"
 import { $sessionToDelete } from "@/pages/coach/schedule/models/remove-session.model"
+import { AxiosError } from "axios"
 
 type DateRange = {
   from: string
@@ -167,7 +168,7 @@ export const $syncedEmail = createStore<string | null>("").on(loadScheduleFx.don
 export const getRefreshToken = createEvent<any>()
 
 const addGoogleCalendarFx = createEffect({
-  handler: (params: {code: string}) => addGoogleCalendar({refreshToken: params.code})
+  handler: (params: {code: string}) => addGoogleCalendar(params)
 })
 
 forward({
@@ -175,13 +176,13 @@ forward({
   to: addGoogleCalendarFx,
 })
 
-export const syncGoogleCalendar = createEvent()
+export const syncGoogleCalendar = createEvent<"synchronize" | "desynchronize">()
 
-const startCalendarSyncFx = createEffect({
+const startCalendarSyncFx = createEffect<"synchronize" | "desynchronize", void, AxiosError>({
   handler: () => startSyncCalendar()
 })
 
-const endCalendarSyncFx = createEffect({
+const endCalendarSyncFx = createEffect<"synchronize" | "desynchronize", void, AxiosError>({
   handler: () => endSyncCalendar()
 })
 
@@ -194,10 +195,13 @@ export const $isGoogleCalendarAdded = createStore(false).on(loadScheduleFx.doneD
 
 split({
   source: syncGoogleCalendar,
-  match: $isSynced,
+  match: {
+    synchronize: (payload: "synchronize" | "desynchronize") => payload === "synchronize",
+    desynchronize: (payload: "synchronize" | "desynchronize") => payload === "desynchronize",
+  },
   cases: {
-    synced: endCalendarSyncFx,
-    unsynced: startCalendarSyncFx,
+    synchronize: startCalendarSyncFx,
+    desynchronize: endCalendarSyncFx,
   }
 })
 
