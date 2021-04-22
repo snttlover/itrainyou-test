@@ -13,6 +13,7 @@ import { useEvent, useStore } from "effector-react"
 import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
+import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
@@ -39,7 +40,7 @@ const IconToolTip = styled.div<{show: boolean}>`
   font-size: 14px;
   line-height: 22px;
   color: #424242;
-  transform: translate(-80px,-135px);
+  transform: translate(-45%,0);
   display: ${({show})=> !show ? "none" : "block"};
 
   &:after {
@@ -113,10 +114,11 @@ const CalendarTable = styled.table`
   border-spacing: 0px;
   border-collapse: collapse;
 `
-
+//min-height: ${({weeks})=> weeks ? "48px" : "unset"};
+//${({weeks})=> weeks ? "100%" : "48px"}
 const WeekRow = styled.tr<{weeks?: boolean}>`
-  height: ${({weeks})=> weeks ? "auto" : "48px"};
-  min-height: ${({weeks})=> weeks ? "48px" : "unset"};
+  height: ${({weeks})=> weeks ? "100%" : "48px"};
+  min-height: 48px;
 `
 
 const CalendarHeaderCell = styled.th`
@@ -132,11 +134,10 @@ const CalendarHeaderCell = styled.th`
 
 const CalendarCell = styled.td<{presentDay: boolean}>`
   width: 96px;
-  min-width: 96px;
-  min-height: 96px;
   border: 1px solid #F4F5F7;
   background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   cursor: ${({presentDay})=> presentDay ? "pointer" : "default"};
+  vertical-align: top;
 `
 
 const Session = styled.div<{areAvailable: boolean}>`
@@ -161,6 +162,7 @@ const Session = styled.div<{areAvailable: boolean}>`
 const SessionContainer = styled.div`
   overflow-y: auto;
   height: 100%;
+  margin-bottom: auto;
 `
 
 const DayContainer = styled.div<{presentDay: boolean}>`
@@ -178,7 +180,6 @@ const Day = styled.span<{ weekend: boolean }>`
   position: absolute;
   left: 8px;
   top: 4px;
-
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -249,27 +250,29 @@ type SessionType = {
 const ToolTipContent = (session: SessionType) => {
 
   const _removeSession = useEvent(startRemovingSession)
+  const _removeSession2 = useEvent(removeSession)
 
   const {id, client} = fixAvatarAndImageUrl(session)
   
   const handleOnClick = () => {
-    _removeSession(session)
+    _removeSession2(session.id)
   }
 
   return (
     <ToolTipContainer>
-      {!session.areAvailable ?
+      {session.areAvailable ?
         <>
-          <div>Этот слот еще не занят никем в вашем расписании</div>
-          <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-        </>
-        : <>
           <ToolTipHeader>Сессия забронирована</ToolTipHeader>
           <UserInfo>
             <StyledAvatar src={client?.avatar || null} />
             <UserName>{client?.firstName} {client?.lastName}</UserName>
           </UserInfo>
           <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+        </>
+        :
+        <>
+          <div>Этот слот еще не занят никем в вашем расписании</div>
+          <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
         </>
       }
     </ToolTipContainer>
@@ -316,9 +319,9 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const lessThanTheCurrentMonth = +currentMonth.format(formatter) <= +date().format(formatter)
 
   const toolTipRef = useRef(null)
-  useClickOutside(toolTipRef, () => {
-    setShow({sessionId: null})
-  })
+  /*useClickOutside(toolTipRef, () => {
+    setTimeout(() => setShow({sessionId: null}), 200)
+  })*/
 
   return (
     <Container>
@@ -364,7 +367,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                               {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
                               {/*<CrossIcon onClick={() => _removeSession(session)} />*/}
                               <IconToolTip ref={toolTipRef} key={session.id} show={showToolTip.sessionId === session.id}>
-                                <ToolTipContent {...session} />
+                                <ToolTipContent {...session} key={session.id} />
                               </IconToolTip>
                               {/*<GrayTooltip key={session.id} ><ToolTipContent {...session} /></GrayTooltip>*/}
                             </Session>
