@@ -11,7 +11,7 @@ export const setModalShow = createEvent<boolean>()
 export const $isAddSessionModalShowed = restore(setModalShow, false)
 
 export const setAddSessionDate = createEvent<Dayjs>()
-const $sessionDate = restore(setAddSessionDate, date())
+export const $sessionDate = restore(setAddSessionDate, date())
 
 export const $durationList = createStore<{ label: string; value: DurationType }[]>([
   { label: "30 минут", value: "D30" },

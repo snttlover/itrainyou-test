@@ -39,7 +39,7 @@ const weekDayToNumberMap: { [key in WeekDayName]: 0 | 1 | 2 | 3 | 4 | 5 | 6 } = 
 }
 
 export const removeSlot = createEvent<{ slotId: number; weekday: WeekDayName }>()
-export const addSlot = createEvent<{ weekday: WeekDayName; startTime: string; sessionDurationType: DurationType }>()
+export const addSlot = createEvent<{ weekday: WeekDayName; startTime: string[]; sessionDurationType: DurationType }>()
 
 export const $weekdaySlots = createStore(
   ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].map(weekday => ({

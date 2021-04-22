@@ -15,10 +15,24 @@ import {
   createSessionsFx,
   durationChanged,
   startDatetimeChanged,
+  $sessionDate
 } from "@/pages/coach/schedule/models/add-session.model"
+import {
+  $freeWeekdayTimes,
+  $weekdaySlotsForView,
+  addSlot,
+  removeSlot,
+} from "@/pages/coach/schedule/models/weekday-schedule.model"
 import { useStore, useEvent } from "effector-react"
 import React, { useRef } from "react"
 import styled from "styled-components"
+import { Dialog } from "@/oldcomponents/dialog/Dialog"
+
+
+const RowBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+`
 
 const Background = styled.div`
   position: fixed;
@@ -53,6 +67,15 @@ const CrossIcon = styled(Icon).attrs({ name: "cross" })`
   position: absolute;
   right: 16px;
   top: 12px;
+`
+
+const Date = styled.div`
+font-family: Roboto;
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+color: #424242;
 `
 
 const Title = styled.h2`
@@ -105,7 +128,11 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }
 
   const _startDatetimeChanged = useEvent(startDatetimeChanged)
   const _durationChanged = useEvent(durationChanged)
-  const _addSession = useEvent(addSession)
+
+  const _addTodaySession = useEvent(addSession)
+  const _addWeekDaySlot = useEvent(addSlot)
+
+  const date = useStore($sessionDate)
 
   const blockRef = useRef(null)
 
@@ -115,12 +142,14 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }
       <Background>
         <Block ref={blockRef}>
           <CrossIcon onClick={onCrossClick} />
-          <Title>Добавить сессию</Title>
+          <Title>Доступное время</Title>
+          <Date>{date.format('dddd [,] D MMMM')}</Date>
+          <RowBlock>
           <StyledStartSelectInput
             value={formData.startDatetime}
             onChange={value => _startDatetimeChanged(value as string)}
             options={startDatetimeOptions}
-            placeholder='Начало'
+            placeholder='Время'
           />
           <StyledTypeSelectInput
             value={formData.durationType}
@@ -128,8 +157,12 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ onCrossClick }
             options={durationOptions}
             placeholder='Тип'
           />
-          <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addSession()}>
-            Добавить сессию
+          </RowBlock>
+          <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addWeekDaySlot()}>
+            Применить для всех {date.format('dd')}
+          </StyledDashedButton>
+          <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addTodaySession()}>
+            Применить для {date.format('D MMMM')}
           </StyledDashedButton>
           {isLoading && <Spinner />}
         </Block>
