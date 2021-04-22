@@ -161,11 +161,16 @@ const LabelItem = styled(({ label, children, error, required, ...props }: FormIt
 export const InputComponent = styled(({ className, label, error, ...props }: InputTypes) => {
   const [showPassword, setShowPassword] = useState(true)
 
+  const handleOnClick = () => {
+    //"₽"
+    setShowPassword(!showPassword)
+  }
+
   return (
     <LabelItem label={label} error={error}>
       <InputPasswordContainer maxWidth={props.maxWidth}>
         <Input {...props} type={showPassword ? "text" : "password"} />
-        <Icon name={showPassword ? "eye-open" : "eye-close"} onClick={() => setShowPassword(!showPassword)} />
+        <Icon name={showPassword ? "eye-open" : "eye-close"} onClick={handleOnClick} />
       </InputPasswordContainer>
     </LabelItem>
   )

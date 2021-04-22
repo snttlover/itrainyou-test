@@ -10,11 +10,14 @@ import {
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
-import React from "react"
+import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
+import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
 
 const Container = styled.div`
   display: flex;
@@ -22,12 +25,13 @@ const Container = styled.div`
   width: 100%;
   max-width: 704px;
 `
-
-const IconToolTip = styled.span`
-  width: 136px;
+//${({areAvailable})=> !areAvailable ? "none" : "block"}
+//transform: translate(-55%,-220%); -135px
+const IconToolTip = styled.div<{show: boolean}>`
+  width: 240px;
   height: auto;
-  position: absolute;
-  z-index: 1;
+  position: fixed;
+  z-index: 1000;
   padding: 12px;
   background: #ffffff;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 1px 3px rgba(0, 0, 0, 0.12);
@@ -35,17 +39,14 @@ const IconToolTip = styled.span`
   font-size: 14px;
   line-height: 22px;
   color: #424242;
-  bottom: 80%;
-  left: 50%;
-  margin-left: -68px;
-  display: none;
+  transform: translate(-80px,-135px);
+  display: ${({show})=> !show ? "none" : "block"};
 
   &:after {
     content: " ";
     position: absolute;
     top: 100%;
     left: 50%;
-    margin-left: -5px;
     border-width: 5px;
     border-style: solid;
     border-color: white transparent transparent transparent;
@@ -59,6 +60,11 @@ const StyledHeader = styled(Header)`
 
 const AddVacationButton = styled(DashedButton)`
   width: 188px;
+`
+
+const ToolTipButton = styled(DashedButton)`
+  width: 80%;
+  max-width: 200px;
 `
 
 const StyledMonthContainer = styled(MonthContainer)`
@@ -85,12 +91,13 @@ const StyledMonthName = styled(MonthName)`
   color: #424242;
 `
 
-const StyledYear = styled(Year)`
+const ToolTipHeader = styled.div`
   font-family: Roboto;
   font-style: normal;
-  font-weight: normal;
+  font-weight: 500;
+  align-self: flex-start;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 22px;
   color: #424242;
 `
 
@@ -107,8 +114,9 @@ const CalendarTable = styled.table`
   border-collapse: collapse;
 `
 
-const WeekRow = styled.tr`
-  height: 48px;    
+const WeekRow = styled.tr<{weeks?: boolean}>`
+  height: ${({weeks})=> weeks ? "auto" : "48px"};
+  min-height: ${({weeks})=> weeks ? "48px" : "unset"};
 `
 
 const CalendarHeaderCell = styled.th`
@@ -125,7 +133,7 @@ const CalendarHeaderCell = styled.th`
 const CalendarCell = styled.td<{presentDay: boolean}>`
   width: 96px;
   min-width: 96px;
-  height: 96px;
+  min-height: 96px;
   border: 1px solid #F4F5F7;
   background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   cursor: ${({presentDay})=> presentDay ? "pointer" : "default"};
@@ -144,12 +152,11 @@ const Session = styled.div<{areAvailable: boolean}>`
   padding: 0 4px;
   display: flex;
   justify-content: space-between;
-
-
-  &:hover ${IconToolTip} {
-    display: block;
-  }
 `
+
+//&:hover ${IconToolTip} {
+//     display: block;
+//   }
 
 const SessionContainer = styled.div`
   overflow-y: auto;
@@ -158,7 +165,7 @@ const SessionContainer = styled.div`
 
 const DayContainer = styled.div<{presentDay: boolean}>`
   width: 96px;
-  height: 96px;
+  min-height: 96px;
   background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   position: relative;
   padding: 24px 4px 12px;
@@ -198,11 +205,75 @@ const CrossIcon = styled(Icon).attrs({ name: "cross" })`
   fill: ${({ theme }) => theme.colors.primary};
 `
 
+const ToolTipContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const StyledAvatar = styled(Avatar)`
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+`
+
+const UserName = styled.div`
+  font-size: 16px;
+  line-height: 24px;
+  color: #424242;
+`
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: 16px;
+`
+
 export type ScheduleCalendarTypes = {
   prevMonth: (currentMonth: Dayjs) => void
   nextMonth: (currentMonth: Dayjs) => void
   onAddClick: (day: Dayjs) => void
   showVacationModal: (value: boolean) => void
+}
+
+type SessionType = {
+  areAvailable: boolean
+  client: [any]
+  id: number
+  sessionDurationType: "D30" | "D45" | "D60" | "D90"
+  startTime: Dayjs
+  endTime: Dayjs
+}
+
+const ToolTipContent = (session: SessionType) => {
+
+  const _removeSession = useEvent(startRemovingSession)
+
+  const {id, client} = fixAvatarAndImageUrl(session)
+  
+  const handleOnClick = () => {
+    _removeSession(session)
+  }
+
+  return (
+    <ToolTipContainer>
+      {!session.areAvailable ?
+        <>
+          <div>Этот слот еще не занят никем в вашем расписании</div>
+          <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+        </>
+        : <>
+          <ToolTipHeader>Сессия забронирована</ToolTipHeader>
+          <UserInfo>
+            <StyledAvatar src={client?.avatar || null} />
+            <UserName>{client?.firstName} {client?.lastName}</UserName>
+          </UserInfo>
+          <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+        </>
+      }
+    </ToolTipContainer>
+  )
 }
 
 export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth, onAddClick, showVacationModal }) => {
@@ -221,6 +292,8 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
   const daysCount = monthDayStart.daysInMonth() + countPadStartDays + countPadEndDays
+
+  const [showToolTip, setShow] = useState<{sessionId: null | number}>({sessionId: null})
 
   const weeks: Dayjs[][] = []
   let currentWeek = []
@@ -241,6 +314,11 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
 
   const formatter = "YYYYMM"
   const lessThanTheCurrentMonth = +currentMonth.format(formatter) <= +date().format(formatter)
+
+  const toolTipRef = useRef(null)
+  useClickOutside(toolTipRef, () => {
+    setShow({sessionId: null})
+  })
 
   return (
     <Container>
@@ -272,7 +350,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
           </thead>
           <tbody>
             {weeks.map((week, i) => (
-              <WeekRow key={i}>
+              <WeekRow weeks key={i}>
                 {week.map(day => (
                   <CalendarCell presentDay={now.isBefore(day, "d") || now.isSame(day, "d")} key={day.weekday()}>
                     <DayContainer presentDay={now.isBefore(day, "d") || now.isSame(day, "d")}>
@@ -282,11 +360,13 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                         {sessions.sessions
                           .filter(session => session.startTime.isSame(day, "d"))
                           .map(session => (
-                            <Session key={session.id} areAvailable={session.areAvailable}>
+                            <Session onClick={() => setShow({sessionId: session.id})} key={session.id} areAvailable={session.areAvailable}>
                               {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
-                              <CrossIcon onClick={() => _removeSession(session)} />
-                              <IconToolTip key={session.id}>тест</IconToolTip>
-                              {/*<GrayTooltip key={session.id} text={"тест"}></GrayTooltip>*/}
+                              {/*<CrossIcon onClick={() => _removeSession(session)} />*/}
+                              <IconToolTip ref={toolTipRef} key={session.id} show={showToolTip.sessionId === session.id}>
+                                <ToolTipContent {...session} />
+                              </IconToolTip>
+                              {/*<GrayTooltip key={session.id} ><ToolTipContent {...session} /></GrayTooltip>*/}
                             </Session>
                           ))}
                       </SessionContainer>

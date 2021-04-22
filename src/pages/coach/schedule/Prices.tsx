@@ -6,6 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { $feeRatio } from "@/pages/coach/schedule/models/schedule.model"
 import { useStore } from "effector-react"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
+import { InputComponent } from "@/newcomponents/input/Input"
 
 
 const PriceListContainer = styled.div`
