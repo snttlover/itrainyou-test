@@ -6,9 +6,15 @@ import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
 import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { combine, createEvent, sample, restore, createStore, createEffect, guard, forward } from "effector-root"
+import { togglePermissionGrantedModal } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
 
-export const setModalShow = createEvent<boolean>()
-export const $isAddSessionModalShowed = restore(setModalShow, false)
+export const setModalShow = createEvent<void | boolean>()
+export const $isAddSessionModalShowed = createStore<boolean>(false).on(
+  setModalShow,
+  (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
 
 export const setAddSessionDate = createEvent<Dayjs>()
 export const $sessionDate = restore(setAddSessionDate, date())
@@ -38,7 +44,13 @@ const $daySessions = combine($allSessions, $sessionDate, (allSessions, dat) =>
   )
 )
 
-export const durationChanged = createEvent<DurationType>()
+type StartTimeChanged = {
+  startTime?: string
+  duration?: DurationType
+  id: number
+}
+
+export const durationChanged = createEvent<StartTimeChanged>()
 const $duration = restore<DurationType>(durationChanged, "D30")
 const $durationIsCorrect = combine($durationOptions, $duration, (opts, selected) =>
   opts.map(({ value }) => value).includes(selected)
@@ -72,15 +84,36 @@ export const $startDatetimeOptions = combine(
   }
 )
 
-export const startDatetimeChanged = createEvent<string>()
-const $startDatetime = restore<string>(startDatetimeChanged, "00:00")
+export const addNewTimesToDialog = createEvent()
+export const deleteTimeFromDialog = createEvent<number>()
+
+export const startDatetimeChanged = createEvent<StartTimeChanged>()
+//const $startDatetime = restore<string>(startDatetimeChanged, "00:00")
+
+export const $startDatetime = createStore<StartTimeChanged[]>([{id: 1}]).on(startDatetimeChanged, (state,payload) => {
+  const currentElement = state.filter(item => item.id === payload.id)
+  const changedElement = {...currentElement,startTime: payload.startTime}
+  return state.splice(state.indexOf(currentElement), 1, changedElement)
+}).on(durationChanged, (state,payload) => {
+  const currentElement = state.filter(item => item.id === payload.id)
+  const changedElement = {...currentElement,startTime: payload.duration}
+  return state.splice(state.indexOf(currentElement), 1, changedElement)
+}).on(addNewTimesToDialog,(state,payload) => {
+  const lastItem = state[state.length - 1]
+  return state.concat({id: lastItem.id + 1})
+}).on(deleteTimeFromDialog, (state,payload) => {
+  const currentElement = state.filter(item => item.id === payload)
+  return state.splice(state.indexOf(currentElement), 1)
+})
+
+$startDatetime.watch(payload => console.log("test",payload))
 const $startDatetimeIsCorrect = combine($startDatetimeOptions, $startDatetime, (opts, selected) =>
   opts.map(({ value }) => value).includes(selected)
 )
 
-export const addSession = createEvent()
+export const addSessions = createEvent()
 
-export const $form = combine({ startDatetime: $startDatetime, durationType: $duration })
+export const $form = combine($startDatetime, $duration, (startDatetime, duration)=> ({ startDatetime: startDatetime, durationType: duration }))
 
 export const createSessionsFx = createEffect({
   handler: createSession,
@@ -118,7 +151,7 @@ const $canBeCreated = combine(
 )
 
 sample({
-  clock: guard({ source: addSession, filter: $canBeCreated }),
+  clock: guard({ source: addSessions, filter: $canBeCreated }),
   source: {
     form: $form,
     date: $sessionDate,

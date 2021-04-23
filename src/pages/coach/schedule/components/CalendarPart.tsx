@@ -143,7 +143,7 @@ export const CalendarPart = () => {
         </DesktopCalendar>
         {isSessionsLoading && <Spinner />}
       </CalendarContainer>
-      {isAddSessionModalShowed && <AddSessionModal onCrossClick={() => _setModalShow(false)} />}
+      <AddSessionModal showAddSessionModal={isAddSessionModalShowed} onCrossClick={_setModalShow} />
       {showRemoveSessionModal && <RemoveSessionModal/>}
       <AddVacationModal visibility={visibility} setVisibility={setVisibility} />
     </>
