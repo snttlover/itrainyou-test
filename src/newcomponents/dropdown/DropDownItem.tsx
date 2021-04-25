@@ -85,9 +85,11 @@ export type SelectInputProps<T extends Value> = {
     value: T | null
     placeholder?: string
     onChange: (value: T) => void
+    index: number
     options: {
         value: T
         label: string
+        price?: number
     }[]
     error?: boolean
     onBlur?: () => void
@@ -111,7 +113,7 @@ export const useDropDown = () => {
     onBlur,
     className,
     withoutBorder,
-    onClick
+    onClick,
   }: SelectInputProps<T>) => {
 
     const dropdownItems = options.map(item => {

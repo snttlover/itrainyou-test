@@ -6,7 +6,6 @@ import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
 import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { combine, createEvent, sample, restore, createStore, createEffect, guard, forward } from "effector-root"
-import { togglePermissionGrantedModal } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
 
 export const setModalShow = createEvent<void | boolean>()
 export const $isAddSessionModalShowed = createStore<boolean>(false).on(
@@ -25,6 +24,24 @@ export const $durationList = createStore<{ label: string; value: DurationType }[
   { label: "60 минут", value: "D60" },
   { label: "90 минут", value: "D90" },
 ])
+
+export const $durationListTest = $prices.map((prices,state) =>
+  prices.map(item => {
+    if (item.key === "D30") {
+      return { label: "30 минут", value: "D30", price: item.value }
+    }
+    if (item.key === "D45") {
+      return { label: "45 минут", value: "D45", price: item.value }
+    }
+    if (item.key === "D60") {
+      return { label: "60 минут", value: "D60", price: item.value }
+    }
+    if (item.key === "D90") {
+      return { label: "90 минут", value: "D90", price: item.value }
+    }
+    return null
+  }).filter(item => item !== null)
+)
 
 export const $durationOptions = combine($durationList, $prices, (list, prices) => {
   const keys = prices.filter(({ value }) => Boolean(value)).map(({ key }) => key)
@@ -51,12 +68,81 @@ type StartTimeChanged = {
 }
 
 export const durationChanged = createEvent<StartTimeChanged>()
-const $duration = restore<DurationType>(durationChanged, "D30")
+const $duration = restore(durationChanged, "D30")
+/*const $duration = createStore<StartTimeChanged[]>([{id: 1, duration: "D30"}]).on(durationChanged, (state,payload) => {
+  console.log("durationChanged",payload)
+  const currentElement = state.filter(item => item.id === payload.id)
+  const changedElement = {...currentElement, duration: payload.duration}
+  return state.splice(state.indexOf(currentElement), 1, changedElement)
+})*/
+
+export const addNewTimesToDialog = createEvent()
+export const deleteTimeFromDialog = createEvent<number>()
+
+export const startDatetimeChanged = createEvent<StartTimeChanged>()
+//const $startDatetime = restore<string>(startDatetimeChanged, "00:00")
+
+export const $startDatetime = createStore<StartTimeChanged[]>([{id: 1, duration: "D30"}]).on(startDatetimeChanged, (state,payload) => {
+  const currentElementID = state.findIndex(item => item.id === payload.id)
+  state[currentElementID] = {...state[currentElementID], startTime: payload.startTime, duration: "D30"}
+  return state
+}).on(durationChanged, (state,payload) => {
+  const currentElementID = state.findIndex(item => item.id === payload.id)
+  state[currentElementID] = {...state[currentElementID], duration: payload.duration}
+  return state
+}).on(addNewTimesToDialog,(state,payload) => {
+  const lastItem = state[state.length - 1]
+  return state.concat({id: lastItem.id + 1, duration: "D30"})
+}).on(deleteTimeFromDialog, (state,payload) => {
+  return state.filter(item => item.id !== payload)
+}).on(setModalShow, (state, payload) => payload ? state : [{id: 1, duration: "D30"}])
+
+$startDatetime.watch(payload => console.log("test",payload))
+
+
 const $durationIsCorrect = combine($durationOptions, $duration, (opts, selected) =>
   opts.map(({ value }) => value).includes(selected)
 )
 
+const $priceForDurationIsCorrect = combine($prices, $duration, (prices, durationList) => {
+  const test = prices.map(({ value }) => value)
+  //console.log("test",test)
+  })
+
+//const endTime = pickedSessions.map(item => optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute"))
+
 export const $startDatetimeOptions = combine(
+  { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions, selectedDuration: $duration, formSessions: $startDatetime },
+  ({ opts, sessionDate, sessions, selectedDuration, formSessions }) => {
+    const now = date()
+
+    return opts
+      .filter(({ hour, min }) => {
+        const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+
+        const endTimes = formSessions.map(item =>
+          optionTime.add(parseInt(item.duration.slice(1), 10), "minute"))
+
+        const isAfterThanNow = optionTime.isAfter(now)
+        const isCollideWithExistSessions = sessions.reduce((isCollide, session) => {
+          if (isCollide) return isCollide
+          return (
+            optionTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
+            endTimes.map(time => time.isBetween(session.startTime.subtract(1, "ms"), session.endTime))
+              .filter(time => time === false).length > 0
+          )
+        }, false)
+
+        return isAfterThanNow && !isCollideWithExistSessions
+      })
+      .map(item => ({
+        label: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
+        value: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
+      }))
+  }
+)
+
+/*export const $startDatetimeOptions = combine(
   { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions, selectedDuration: $duration },
   ({ opts, sessionDate, sessions, selectedDuration }) => {
     const now = date()
@@ -82,31 +168,8 @@ export const $startDatetimeOptions = combine(
         value: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
       }))
   }
-)
+)*/
 
-export const addNewTimesToDialog = createEvent()
-export const deleteTimeFromDialog = createEvent<number>()
-
-export const startDatetimeChanged = createEvent<StartTimeChanged>()
-//const $startDatetime = restore<string>(startDatetimeChanged, "00:00")
-
-export const $startDatetime = createStore<StartTimeChanged[]>([{id: 1}]).on(startDatetimeChanged, (state,payload) => {
-  const currentElement = state.filter(item => item.id === payload.id)
-  const changedElement = {...currentElement,startTime: payload.startTime}
-  return state.splice(state.indexOf(currentElement), 1, changedElement)
-}).on(durationChanged, (state,payload) => {
-  const currentElement = state.filter(item => item.id === payload.id)
-  const changedElement = {...currentElement,startTime: payload.duration}
-  return state.splice(state.indexOf(currentElement), 1, changedElement)
-}).on(addNewTimesToDialog,(state,payload) => {
-  const lastItem = state[state.length - 1]
-  return state.concat({id: lastItem.id + 1})
-}).on(deleteTimeFromDialog, (state,payload) => {
-  const currentElement = state.filter(item => item.id === payload)
-  return state.splice(state.indexOf(currentElement), 1)
-})
-
-$startDatetime.watch(payload => console.log("test",payload))
 const $startDatetimeIsCorrect = combine($startDatetimeOptions, $startDatetime, (opts, selected) =>
   opts.map(({ value }) => value).includes(selected)
 )

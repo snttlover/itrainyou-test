@@ -19,7 +19,8 @@ import {
   $sessionDate,
   $startDatetime,
   addNewTimesToDialog,
-  deleteTimeFromDialog
+  deleteTimeFromDialog,
+        $durationListTest
 } from "@/pages/coach/schedule/models/add-session.model"
 import {
   $freeWeekdayTimes,
@@ -129,6 +130,11 @@ const DeleteIcon = styled(Icon).attrs({ name: "delete" })`
   cursor: pointer;
 `
 
+/*const SelectBox = () => {
+
+  return ()
+}*/
+
 export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSessionModal, onCrossClick }) => {
   const { SelectInput: StartSelectInput } = useDropDown()
   const { SelectInput: TypeSelectInput } = useDropDown()
@@ -140,6 +146,8 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
   const StyledTypeSelectInput = styled(TypeSelectInput)`
     margin-top: 20px;
   `
+
+  const durationOptionsTest = useStore($durationListTest)
 
   const formData = useStore($form)
   const durationOptions = useStore($durationOptions)
@@ -173,12 +181,14 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
                 onChange={value => _startDatetimeChanged({startTime: value, id: item.id})}
                 options={startDatetimeOptions}
                 placeholder='Время'
+                index={index}
               />
               <StyledTypeSelectInput
                 value={item.duration}
                 onChange={value => _durationChanged({duration: value, id: item.id})}
-                options={durationOptions}
+                options={durationOptionsTest}
                 placeholder='Тип'
+                index={index}
               />
               <DeleteIcon onClick={() => _onDelete(item.id)}  />
             </RowBlock>
