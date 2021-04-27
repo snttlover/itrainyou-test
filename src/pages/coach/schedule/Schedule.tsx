@@ -80,7 +80,7 @@ export const Schedule = () => {
           <Description>
               Выберите дни и временные промежутки, в которые вы можете работать. Клиенты смогут бронировать занятия в это время.
           </Description>
-          <Informer>Вы можете выбрать несколько сессий в течение одного дня</Informer>
+          <Informer closable>Вы можете выбрать несколько сессий в течение одного дня</Informer>
           <PriceListContainer>
             <WeekDaySchedule title='Понедельник' weekday='MONDAY' />
             <WeekDaySchedule title='Вторник' weekday='TUESDAY' />

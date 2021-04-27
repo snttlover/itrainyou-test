@@ -87,6 +87,18 @@ const FormItemRequiredStar = styled.span`
   color: #ff6b00;
 `
 
+const RubbleSign = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  color: #9aa0a6;
+  transform: translate(0, -50%);
+  user-select: none;
+  pointer-events: none;
+  display: flex;
+  justify-content: flex-end;
+`
+
 type FormItemTypes = {
     label?: string | React.ReactNode
     children?: React.ReactNode
@@ -98,6 +110,7 @@ type FormItemTypes = {
 export type InputTypes = {
     name?: string
     label?: string
+    price?: boolean
     value: string
     readOnly?: boolean
     placeholder?: string
@@ -158,7 +171,7 @@ const LabelItem = styled(({ label, children, error, required, ...props }: FormIt
   )
 })``
 
-export const InputComponent = styled(({ className, label, error, ...props }: InputTypes) => {
+export const InputComponent = styled(({ className, label, error, price, ...props }: InputTypes) => {
   const [showPassword, setShowPassword] = useState(true)
 
   const handleOnClick = () => {
@@ -170,7 +183,7 @@ export const InputComponent = styled(({ className, label, error, ...props }: Inp
     <LabelItem label={label} error={error}>
       <InputPasswordContainer maxWidth={props.maxWidth}>
         <Input {...props} type={showPassword ? "text" : "password"} />
-        <Icon name={showPassword ? "eye-open" : "eye-close"} onClick={handleOnClick} />
+        {!price ? <RubbleSign>₽</RubbleSign> : <Icon name={showPassword ? "eye-open" : "eye-close"} onClick={handleOnClick} />}
       </InputPasswordContainer>
     </LabelItem>
   )

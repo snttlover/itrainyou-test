@@ -85,7 +85,6 @@ export type SelectInputProps<T extends Value> = {
     value: T | null
     placeholder?: string
     onChange: (value: T) => void
-    index: number
     options: {
         value: T
         label: string
@@ -98,7 +97,61 @@ export type SelectInputProps<T extends Value> = {
     onClick?: () => void
 }
 
-export const useDropDown = () => {
+export const DropDown = <T extends Value = Value>({
+  value,
+  placeholder,
+  onChange,
+  options,
+  error,
+  onBlur,
+  className,
+  withoutBorder,
+  onClick,
+}: SelectInputProps<T>) => {
+
+  const [isOpen, changeOpen] = useState(false)
+
+  const dropdownItems = options.map(item => {
+    return (
+      <DropdownItem key={item.value} onClick={() => onChange({value: item.value, price: item.price})}>
+        {item.label}
+      </DropdownItem>
+    )
+  })
+
+  const selectedItem = options.find(item => item.value === value)
+
+  const selectBoxRef = useRef<HTMLDivElement>(null)
+
+  useClickOutside(selectBoxRef, () => {
+    changeOpen(false)
+  })
+
+  return (
+    <SelectBox
+      isOpen={isOpen}
+      error={error}
+      ref={selectBoxRef}
+      placeholder={placeholder}
+      className={className}
+      onClick={() => {
+        onClick && onClick()
+        const newValue = !isOpen
+        changeOpen(newValue)
+        if (!newValue && onBlur) {
+          onBlur()
+        }
+      }}
+      withoutBorder={withoutBorder}
+    >
+      {selectedItem ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
+      <Arrow />
+      {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
+    </SelectBox>
+  )
+}
+
+export const useDropDown = (id: number) => {
   const [isOpen, changeOpen] = useState(false)
 
   const openSelect = () => changeOpen(true)

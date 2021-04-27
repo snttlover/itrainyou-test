@@ -36,9 +36,11 @@ const Content = styled.div`
     font-size: 14px;
     line-height: 22px;
     color: #5B6670;
+    display: flex;
+    align-items: center;
 `
 
-export const Informer = styled(({ className, label, error, children, ...props }) => {
+export const Informer = styled(({ className, label, error, closable, children, ...props }) => {
 
   const [showed, setShowed] = useState(true)
   return (
@@ -48,7 +50,7 @@ export const Informer = styled(({ className, label, error, children, ...props })
         <Content>
           {children}
         </Content>
-        <Close onClick={() => setShowed(false)}/>
+        {closable ? <Close onClick={() => setShowed(false)}/> : null}
       </Container> : null}
     </>
   )

@@ -93,7 +93,7 @@ const MobileCalendar = styled.div`
 `
 
 const DesktopCalendar = styled.div`
-  display: none;
+  display: flex;
 
   ${MediaRange.greaterThan("mobile")`
     display: flex;
@@ -125,14 +125,14 @@ export const CalendarPart = () => {
 
   return (
     <>
-      <Informer>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
+      <Informer closable>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
       {/*<RemoveDateRangeContainer>
         <StyledDateRangePicker range={range} rangeChanged={setRange} />
       </RemoveDateRangeContainer>*/}
       <CalendarContainer>
-        <MobileCalendar>
+        {/*<MobileCalendar>
           <MobileCalendarManager onAddClick={openModalCallback} />
-        </MobileCalendar>
+        </MobileCalendar>*/}
         <DesktopCalendar>
           <ScheduleCalendar
             nextMonth={currentDate => _setCurrentMonth(currentDate.add(1, "month"))}

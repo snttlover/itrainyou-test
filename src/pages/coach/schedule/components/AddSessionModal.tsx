@@ -2,14 +2,13 @@ import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { Modal } from "@/oldcomponents/modal/Modal"
-import { useDropDown } from "@/newcomponents/dropdown/DropDownItem"
+import { DropDown } from "@/newcomponents/dropdown/DropDownItem"
 import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
 import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
 import {
   $durationOptions,
-  $form,
   $isCreateButtonDisabled,
   $startDatetimeOptions,
   addSessions,
@@ -20,7 +19,8 @@ import {
   $startDatetime,
   addNewTimesToDialog,
   deleteTimeFromDialog,
-        $durationListTest
+  $durationListTest,
+  StartTimeChanged
 } from "@/pages/coach/schedule/models/add-session.model"
 import {
   $freeWeekdayTimes,
@@ -32,14 +32,9 @@ import { useStore, useEvent } from "effector-react"
 import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Informer } from "@/newcomponents/informer/Informer"
+import { InputComponent } from "@/newcomponents/input/Input"
 
-
-const RowBlock = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`
 
 const Background = styled.div`
   position: fixed;
@@ -83,15 +78,15 @@ const Date = styled.div`
   color: #424242;
 `
 
-const Title = styled.h2`
+const Title = styled.div`
   font-family: Roboto Slab;
   font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 26px;
-  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: left;
   color: #424242;
-  align-self: flex-start;
+  margin-bottom: 24px;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 20px;
@@ -125,31 +120,41 @@ const AddIcon = styled(Icon).attrs({ name: "cross" })`
 
 const DeleteIcon = styled(Icon).attrs({ name: "delete" })`
   fill: #9AA0A6;
-  width: 50px;
-  height: 50px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 `
 
-/*const SelectBox = () => {
+const Text = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: left;
+`
 
-  return ()
-}*/
+const SelectBoxContainer = styled.div`
+  width: 130px;
+  margin-right: 10px;
+`
+
+
+const RowBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 15px 0;
+`
 
 export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSessionModal, onCrossClick }) => {
-  const { SelectInput: StartSelectInput } = useDropDown()
-  const { SelectInput: TypeSelectInput } = useDropDown()
-
-  const StyledStartSelectInput = styled(StartSelectInput)`
-    margin-top: 20px;
-  `
-
-  const StyledTypeSelectInput = styled(TypeSelectInput)`
-    margin-top: 20px;
-  `
+  //const { SelectInput: StartSelectInput } = useDropDown()
+  //const { SelectInput: TypeSelectInput } = useDropDown()
 
   const durationOptionsTest = useStore($durationListTest)
 
-  const formData = useStore($form)
+  //const formData = useStore($form)
   const durationOptions = useStore($durationOptions)
   const startDatetimeOptions = useStore($startDatetimeOptions)
   const isLoading = useStore(createSessionsFx.pending)
@@ -175,26 +180,47 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
           <Title>Доступное время</Title>
           <Date>{date.format("dddd [,] D MMMM")}</Date>
           {newSessionsStore.map((item,index) => (
-            <RowBlock key={index}>
-              <StyledStartSelectInput
+            <div key={index}>
+              <RowBlock>
+                <SelectBoxContainer>
+                  <DropDown
+                    value={item.startTime}
+                    onChange={value => _startDatetimeChanged({startTime: value, id: item.id, duration: item.duration, price: item.price})}
+                    options={startDatetimeOptions}
+                    placeholder='Время'
+                  />
+                </SelectBoxContainer>
+                <SelectBoxContainer>
+                  <DropDown
+                    value={item.duration}
+                    onChange={value => _durationChanged({duration: value.value, id: item.id, startTime: item.startTime, price: value.price})}
+                    options={durationOptionsTest}
+                    placeholder='Тип'
+                  />
+                </SelectBoxContainer>
+                {newSessionsStore.length > 1 ? <DeleteIcon onClick={() => _onDelete(item.id)} /> : null}
+                {/*<StyledStartSelectInput
                 value={item.startTime}
                 onChange={value => _startDatetimeChanged({startTime: value, id: item.id})}
                 options={startDatetimeOptions}
                 placeholder='Время'
-                index={index}
               />
               <StyledTypeSelectInput
                 value={item.duration}
                 onChange={value => _durationChanged({duration: value, id: item.id})}
-                options={durationOptionsTest}
+                options={durationOptions}
                 placeholder='Тип'
-                index={index}
               />
-              <DeleteIcon onClick={() => _onDelete(item.id)}  />
-            </RowBlock>
+              <DeleteIcon onClick={() => _onDelete(item.id)}  />*/}
+              </RowBlock>
+              {item.price === 0 ? 
+                <Informer>
+                  <InputComponent error={false} value={"0"} label={"Укажите цену сессии"} />
+                </Informer> : null}
+            </div>
           ))}
           <RowBlock>
-            <AddIcon onClick={() => _onAdd()} /> <div>Добавить еще время</div>
+            <AddIcon onClick={() => _onAdd()} /> <Text>Добавить еще время</Text>
           </RowBlock>
           <RowBlock>
             <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addWeekDaySlot()}>

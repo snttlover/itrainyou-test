@@ -18,20 +18,33 @@ import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
+import { Times, Time, RemoveIcon } from "@/pages/coach/schedule/components/MobileCalendarManager"
+import { DurationType } from "@/lib/api/coach-sessions"
 import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
 
-const Container = styled.div`
-  display: flex;
+
+const MobileContainer = styled.div`
+  ${MediaRange.lessThan("mobile")`
+    display: flex;
+    flex-direction: column;
+  `}
+`
+const Container = styled.div<{mobile?: boolean}>`
+  display: ${({mobile})=> !mobile ? "flex" : "none"};
   flex-direction: column;
   width: 100%;
   max-width: 704px;
+
+  ${MediaRange.lessThan("mobile")`
+    min-width: 280px;
+  `}
 `
 //${({areAvailable})=> !areAvailable ? "none" : "block"}
 //transform: translate(-55%,-220%); -135px
 const IconToolTip = styled.div<{show: boolean}>`
   width: 240px;
   height: auto;
-  position: fixed;
+  position: absolute;
   z-index: 1000;
   padding: 12px;
   background: #ffffff;
@@ -40,7 +53,8 @@ const IconToolTip = styled.div<{show: boolean}>`
   font-size: 14px;
   line-height: 22px;
   color: #424242;
-  transform: translate(-45%,0);
+  bottom: 80%;
+  left: -80%;
   display: ${({show})=> !show ? "none" : "block"};
 
   &:after {
@@ -57,6 +71,10 @@ const IconToolTip = styled.div<{show: boolean}>`
 const StyledHeader = styled(Header)`
   max-width: 700px;
   padding-right: 4px;
+
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column-reverse;
+  `}
 `
 
 const AddVacationButton = styled(DashedButton)`
@@ -76,11 +94,13 @@ const StyledLeftIcon = styled(LeftIcon)`
   width: 40px;
   height: 40px;
 `
+
 const StyledRightIcon = styled(RightIcon)`
   width: 40px;
   height: 40px;
   margin-left: 8px;
 `
+
 const StyledMonthName = styled(MonthName)`
   font-family: Roboto;
   font-style: normal;
@@ -119,6 +139,11 @@ const CalendarTable = styled.table`
 const WeekRow = styled.tr<{weeks?: boolean}>`
   height: ${({weeks})=> weeks ? "100%" : "48px"};
   min-height: 48px;
+
+  ${MediaRange.lessThan("mobile")`
+    height: 12px;
+    min-height: 12px;
+  `}
 `
 
 const CalendarHeaderCell = styled.th`
@@ -138,6 +163,10 @@ const CalendarCell = styled.td<{presentDay: boolean}>`
   background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   cursor: ${({presentDay})=> presentDay ? "pointer" : "default"};
   vertical-align: top;
+
+  ${MediaRange.lessThan("mobile")`
+    width: 12px;
+  `}
 `
 
 const Session = styled.div<{areAvailable: boolean}>`
@@ -153,6 +182,10 @@ const Session = styled.div<{areAvailable: boolean}>`
   padding: 0 4px;
   display: flex;
   justify-content: space-between;
+  
+  &:hover ${IconToolTip} {
+     display: block;
+   }
 `
 
 //&:hover ${IconToolTip} {
@@ -163,6 +196,12 @@ const SessionContainer = styled.div`
   overflow-y: auto;
   height: 100%;
   margin-bottom: auto;
+  display: flex;
+  flex-direction: column;
+
+  ${MediaRange.lessThan("mobile")`
+    display: none;
+  `}
 `
 
 const DayContainer = styled.div<{presentDay: boolean}>`
@@ -174,6 +213,11 @@ const DayContainer = styled.div<{presentDay: boolean}>`
   ${Session}:not(:first-child) {
     margin-top: 4px;
   }
+
+  ${MediaRange.lessThan("mobile")`
+    width: 12px;
+    min-height: 12px;
+  `}
 `
 
 const Day = styled.span<{ weekend: boolean }>`
@@ -197,6 +241,10 @@ const AddIcon = styled(Icon).attrs({ name: "cross" })`
   top: 4px;
   right: 4px;
   cursor: pointer;
+
+  ${MediaRange.lessThan("mobile")`
+    display: none;
+  `}
 `
 
 const CrossIcon = styled(Icon).attrs({ name: "cross" })`
@@ -249,13 +297,13 @@ type SessionType = {
 
 const ToolTipContent = (session: SessionType) => {
 
-  const _removeSession = useEvent(startRemovingSession)
-  const _removeSession2 = useEvent(removeSession)
+  //const _removeSession = useEvent(startRemovingSession)
+  const _removeSession = useEvent(removeSession)
 
   const {id, client} = fixAvatarAndImageUrl(session)
   
   const handleOnClick = () => {
-    _removeSession2(session.id)
+    _removeSession(session.id)
   }
 
   return (
@@ -318,69 +366,103 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const formatter = "YYYYMM"
   const lessThanTheCurrentMonth = +currentMonth.format(formatter) <= +date().format(formatter)
 
+  const mobileSelectedDaySessions = sessions.sessions.filter(session => session.startTime.isSame(currentMonth, "d"))
+
   const toolTipRef = useRef(null)
   /*useClickOutside(toolTipRef, () => {
     setTimeout(() => setShow({sessionId: null}), 200)
   })*/
 
+  const handleOnCellClick = (day: Dayjs) => {
+    onAddClick(day)
+  }
+
+  const handleOnSessionClick = (e: React.SyntheticEvent, session: {
+    areAvailable: boolean
+    client: any
+    id: number
+    sessionDurationType: DurationType,
+    startTime: Dayjs
+    endTime: Dayjs}) => {
+    setShow({sessionId: session.id})
+    e.stopPropagation()
+  }
+
   return (
-    <Container>
-      <StyledHeader>
-        <StyledMonthContainer>
-          <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={() => prevMonth(currentMonth)} />
-          <StyledRightIcon onClick={() => nextMonth(currentMonth)} />
-          <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
-        </StyledMonthContainer>
-        {/*<AddVacationButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
+    <MobileContainer>
+      <Container>
+        <StyledHeader>
+          <StyledMonthContainer>
+            <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={() => prevMonth(currentMonth)} />
+            {window.innerWidth <= 480 ? <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName> : null}
+            <StyledRightIcon onClick={() => nextMonth(currentMonth)} />
+            {window.innerWidth > 480 ? <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName> : null}
+          </StyledMonthContainer>
+          {/*<AddVacationButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
           Добавить отпуск
         </AddVacationButton>*/}
-        <AddVacationButton onClick={() => showVacationModal(true)}>
+          <AddVacationButton onClick={() => showVacationModal(true)}>
           Добавить отпуск
-        </AddVacationButton>
-      </StyledHeader>
-      <HorizontalOverflowScrollContainer>
-        <CalendarTable>
-          <thead>
-            <WeekRow>
-              <CalendarHeaderCell>Пн</CalendarHeaderCell>
-              <CalendarHeaderCell>Вт</CalendarHeaderCell>
-              <CalendarHeaderCell>Ср</CalendarHeaderCell>
-              <CalendarHeaderCell>Чт</CalendarHeaderCell>
-              <CalendarHeaderCell>Пт</CalendarHeaderCell>
-              <CalendarHeaderCell>Сб</CalendarHeaderCell>
-              <CalendarHeaderCell>Вс</CalendarHeaderCell>
-            </WeekRow>
-          </thead>
-          <tbody>
-            {weeks.map((week, i) => (
-              <WeekRow weeks key={i}>
-                {week.map(day => (
-                  <CalendarCell presentDay={now.isBefore(day, "d") || now.isSame(day, "d")} key={day.weekday()}>
-                    <DayContainer presentDay={now.isBefore(day, "d") || now.isSame(day, "d")}>
-                      <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
-                      {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => onAddClick(day)} />}
-                      <SessionContainer>
-                        {sessions.sessions
-                          .filter(session => session.startTime.isSame(day, "d"))
-                          .map(session => (
-                            <Session onClick={() => setShow({sessionId: session.id})} key={session.id} areAvailable={session.areAvailable}>
-                              {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
-                              {/*<CrossIcon onClick={() => _removeSession(session)} />*/}
-                              <IconToolTip ref={toolTipRef} key={session.id} show={showToolTip.sessionId === session.id}>
-                                <ToolTipContent {...session} key={session.id} />
-                              </IconToolTip>
-                              {/*<GrayTooltip key={session.id} ><ToolTipContent {...session} /></GrayTooltip>*/}
-                            </Session>
-                          ))}
-                      </SessionContainer>
-                    </DayContainer>
-                  </CalendarCell>
-                ))}
+          </AddVacationButton>
+        </StyledHeader>
+        <HorizontalOverflowScrollContainer>
+          <CalendarTable>
+            <thead>
+              <WeekRow>
+                <CalendarHeaderCell>Пн</CalendarHeaderCell>
+                <CalendarHeaderCell>Вт</CalendarHeaderCell>
+                <CalendarHeaderCell>Ср</CalendarHeaderCell>
+                <CalendarHeaderCell>Чт</CalendarHeaderCell>
+                <CalendarHeaderCell>Пт</CalendarHeaderCell>
+                <CalendarHeaderCell>Сб</CalendarHeaderCell>
+                <CalendarHeaderCell>Вс</CalendarHeaderCell>
               </WeekRow>
-            ))}
-          </tbody>
-        </CalendarTable>
-      </HorizontalOverflowScrollContainer>
-    </Container>
+            </thead>
+            <tbody>
+              {weeks.map((week, i) => (
+                <WeekRow weeks key={i}>
+                  {week.map(day => (
+                    <CalendarCell presentDay={now.isBefore(day, "d") || now.isSame(day, "d")} key={day.weekday()} onClick={() => handleOnCellClick(day)}>
+                      <DayContainer presentDay={now.isBefore(day, "d") || now.isSame(day, "d")}>
+                        <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
+                        {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => handleOnCellClick(day)} />}
+                        <SessionContainer>
+                          {sessions.sessions
+                            .filter(session => session.startTime.isSame(day, "d"))
+                            .map(session => (
+                              <Session onClick={(event) => handleOnSessionClick(event,session)} key={session.id} areAvailable={session.areAvailable}>
+                                {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
+                                {/*<CrossIcon onClick={() => _removeSession(session)} />*/}
+                                <IconToolTip ref={toolTipRef} key={session.id} show={showToolTip.sessionId === session.id}>
+                                  <ToolTipContent {...session} key={session.id} />
+                                </IconToolTip>
+                                {/*<GrayTooltip key={session.id} ><ToolTipContent {...session} /></GrayTooltip>*/}
+                              </Session>
+                            ))}
+                        </SessionContainer>
+                      </DayContainer>
+                    </CalendarCell>
+                  ))}
+                </WeekRow>
+              ))}
+            </tbody>
+          </CalendarTable>
+        </HorizontalOverflowScrollContainer>
+      </Container>
+      <Container mobile>
+        {mobileSelectedDaySessions.map(session => (
+          <Times key={session.id} >
+            <Time primary={session.areAvailable}>
+              {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
+            </Time>
+            <RemoveIcon onClick={() => _removeSession(session)} />
+          </Times>
+        ))}
+        <Times>
+          <Time />
+          <AddIcon onClick={() => onAddClick(currentMonth)} />
+        </Times>
+      </Container>
+    </MobileContainer>
   )
 }
