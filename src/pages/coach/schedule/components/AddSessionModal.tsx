@@ -152,7 +152,8 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
   //const { SelectInput: StartSelectInput } = useDropDown()
   //const { SelectInput: TypeSelectInput } = useDropDown()
 
-  const durationOptionsTest = useStore($durationListTest)
+  // @ts-ignore
+  const durationOptionsTest: {label: string; value: string; price: number}[] = useStore($durationListTest)
 
   //const formData = useStore($form)
   const durationOptions = useStore($durationOptions)
@@ -185,7 +186,7 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
                 <SelectBoxContainer>
                   <DropDown
                     value={item.startTime}
-                    onChange={value => _startDatetimeChanged({startTime: value, id: item.id, duration: item.duration, price: item.price})}
+                    onChange={value => _startDatetimeChanged({startTime: value.value, id: item.id, duration: item.duration, price: item.price})}
                     options={startDatetimeOptions}
                     placeholder='Время'
                   />
@@ -213,7 +214,7 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
               />
               <DeleteIcon onClick={() => _onDelete(item.id)}  />*/}
               </RowBlock>
-              {item.price === 0 ? 
+              {durationOptionsTest.find(duration => duration.value === item.duration)?.price === 0 ?
                 <Informer>
                   <InputComponent error={false} value={"0"} label={"Укажите цену сессии"} />
                 </Informer> : null}

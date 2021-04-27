@@ -90,10 +90,10 @@ forward({
 })
 
 const { d30Changed, d45Changed, d60Changed, d90Changed } = split(changePrice, {
-  d30Changed: ({ name }) => name === "d30Price",
-  d45Changed: ({ name }) => name === "d45Price",
-  d60Changed: ({ name }) => name === "d60Price",
-  d90Changed: ({ name }) => name === "d90Price",
+  d30Changed: ({ name, value}) => name === "d30Price" && !!value,
+  d45Changed: ({ name, value}) => name === "d45Price" && !!value,
+  d60Changed: ({ name, value}) => name === "d60Price" && !!value,
+  d90Changed: ({ name, value}) => name === "d90Price" && !!value,
 })
 
 const savePricesFx = attach({

@@ -46,7 +46,7 @@ export const PriceInputGroup: React.FC<PriceInputGroupType> = ({ title, name }) 
           }}
         />
       </FormItem>
-      <SummaryPriceFormItem label='Итоговая цена'>
+      {/*<SummaryPriceFormItem label='Итоговая цена'>
         <StyledPriceInput
           placeholder='0'
           withoutBorder
@@ -54,7 +54,7 @@ export const PriceInputGroup: React.FC<PriceInputGroupType> = ({ title, name }) 
           type='number'
           value={price?.valueWithFee.toString() || ""}
         />
-      </SummaryPriceFormItem>
+      </SummaryPriceFormItem>*/}
     </Container>
   )
 }

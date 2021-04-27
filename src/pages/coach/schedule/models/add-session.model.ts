@@ -85,28 +85,26 @@ export const startDatetimeChanged = createEvent<StartTimeChanged>()
 
 export const $startDatetime = createStore<StartTimeChanged[]>([{id: 1, startTime: null, duration: "D30", price: 0}])
   .on(startDatetimeChanged, (state,payload) => {
-    const currentElementID = state.findIndex(item => item.id === payload.id)
-    state[currentElementID] = {...state[currentElementID], startTime: payload.startTime, price: payload.price }
-    // return state
-    const lastItem = state[state.length - 1]
-    return state.concat({id: lastItem.id + 1, duration: "D30", startTime: null, price: 0})})
+    let newState = [...state]
+    const currentElementID = newState.findIndex(item => item.id === payload.id)
+    newState[currentElementID] = {...newState[currentElementID], startTime: payload.startTime, price: payload.price }
+    return newState
+  })
   .on(durationChanged, (state,payload) => {
-    const currentElementID = state.findIndex(item => item.id === payload.id)
-    state[currentElementID] = {...state[currentElementID], duration: payload.duration, price: payload.price}
-    // return state
-    const lastItem = state[state.length - 1]
-    return state.concat({id: lastItem.id + 1, duration: "D30", startTime: null, price: 0})})
+    let newState = [...state]
+    const currentElementID = newState.findIndex(item => item.id === payload.id)
+    newState[currentElementID] = {...newState[currentElementID], duration: payload.duration, price: payload.price}
+    return newState})
   .on(addNewTimesToDialog,(state,payload) => {
     const lastItem = state[state.length - 1]
     return state.concat({id: lastItem.id + 1, duration: "D30", startTime: null, price: 0})})
-  .on(deleteTimeFromDialog, (state,payload) => {
-    return state.filter(item => item.id !== payload)})
+  .on(deleteTimeFromDialog, (state,payload) =>
+    state.filter(item => item.id !== payload))
   .on(setModalShow, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null, price: 0}])
 
 startDatetimeChanged.watch(payload => console.log("date changed", payload))
 durationChanged.watch(payload => console.log("duration changed", payload))
 $startDatetime.watch(payload => console.log("dates store",payload))
-
 
 /*const $durationIsCorrect = combine($durationOptions, $duration, (opts, selected) =>
   opts.map(({ value }) => value).includes(selected)
@@ -124,7 +122,6 @@ export const $startDatetimeOptions = combine(
   { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions, formSessions: $startDatetime },
   ({ opts, sessionDate, sessions, formSessions }) => {
     const now = date()
-    console.log("sessions",sessions)
 
     return opts
       .filter(({ hour, min }) => {
@@ -144,16 +141,45 @@ export const $startDatetimeOptions = combine(
         }, false)
 
         return isAfterThanNow && !isCollideWithExistSessions*/
-        const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+        const optionTimeSession = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+        const endTime = optionTimeSession.add(parseInt(formSessions[0].duration.slice(1), 10), "minute")
 
-        /*const endTimes = formSessions.map(item => item !== null ?
-          optionTime.add(parseInt(item?.duration?.slice(1), 10), "minute") : {})*/
 
-        const endTimes = !!formSessions[0].duration ? optionTime.add(parseInt(formSessions[0].duration.slice(1), 10), "minute") : null
+       // const endTimes = !!formSessions[0].duration ? optionTimeSession.add(parseInt(formSessions[0].duration.slice(1), 10), "minute") : null
 
-        const isAfterThanNow = optionTime.isAfter(now)
+        /*const isCollideWithExistSessions = formSessions.reduce((formCollide, formSession) => {
+          if (formCollide) {
+            return formCollide
+          } else {
+            return sessions.reduce((isCollide, session) => {
+              if (isCollide) {
+                return isCollide
+              } else {
+                // @ts-ignore
+                const endTimeSession = optionTime.add(parseInt(formSession.duration.slice(1), 10), "minute")
+                const optionTimeFormSession = date(formSession).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+                const optionTimeSession = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+                return (
+                  optionTimeSession.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
+                  endTimeSession.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
+                  // про шлые сессии !!formSession && endTimeSession.isBetween(formSession.startTime.subtract(1, "ms"), session.endTime)
+                )
+              }
+            }, false)
+          }
+        }, false)*/
 
-        return isAfterThanNow
+        const isCollideWithExistSessions = sessions.reduce((isCollide, session) => {
+          if (isCollide) return isCollide
+          return (
+            optionTimeSession.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
+            endTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
+          )
+        }, false)
+
+        const isAfterThanNow = optionTimeSession.isAfter(now)
+
+        return isAfterThanNow && !isCollideWithExistSessions
       })
       .map(item => ({
         label: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
