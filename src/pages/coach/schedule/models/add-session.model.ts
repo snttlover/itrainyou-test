@@ -5,7 +5,7 @@ import { date } from "@/lib/formatting/date"
 import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
 import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
-import { combine, createEvent, sample, restore, createStore, createEffect, guard, forward } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 
 export const setModalShow = createEvent<void | boolean>()
 export const $isAddSessionModalShowed = createStore<boolean>(false).on(
@@ -63,7 +63,7 @@ const $daySessions = combine($allSessions, $sessionDate, (allSessions, dat) =>
 
 export type StartTimeChanged = {
   startTime: string | null
-  duration: DurationType | null
+  duration: DurationType
   id: number
   price: number
 }
@@ -110,7 +110,6 @@ $startDatetime.watch(payload => console.log("dates store",payload))
   opts.map(({ value }) => value).includes(selected)
 )*/
 
-const $durationIsCorrect = createStore(false)
 
 /*const $priceForDurationIsCorrect = combine($prices, $duration, (prices, durationList) => {
   const test = prices.map(({ value }) => value)
@@ -220,8 +219,17 @@ export const $startDatetimeOptions = combine(
 /*const $startDatetimeIsCorrect = combine($startDatetimeOptions, $startDatetime, (opts, selected) =>
   opts.map(({ value }) => value).includes(selected)
 )*/
+const $durationIsCorrect = $startDatetime.map(times => times.reduce((isFilled,time)=> {
+  if (isFilled) return isFilled
+  return (!!time.duration)
+}, false))
 
-const $startDatetimeIsCorrect = createStore(false)
+const $startDatetimeIsCorrect = $startDatetime.map(times => times.reduce((isFilled,time)=> {
+  if (isFilled) return isFilled
+  return (!!time.startTime)
+}, false))
+
+const $priceIsCorrect = createStore(true)
 
 export const addSessions = createEvent()
 
@@ -251,8 +259,9 @@ forward({
 export const $isCreateButtonDisabled = combine(
   $startDatetimeIsCorrect,
   $durationIsCorrect,
+  $priceIsCorrect,
   createSessionsFx.pending,
-  (dateTimeCorrect, durationCorrect, pending) => !dateTimeCorrect || !durationCorrect || pending
+  (dateTimeCorrect, durationCorrect,price, pending) => !dateTimeCorrect || !durationCorrect || !price  || pending
 )
 
 /*const $canBeCreated = combine(
@@ -275,3 +284,23 @@ export const $isCreateButtonDisabled = combine(
   },
   target: createSessionsFx,
 })*/
+
+
+sample({
+  clock: addSessions,
+  source: {
+    sessions: $startDatetime,
+    date: $sessionDate,
+  },
+  fn: ({ sessions, date }) => {
+    const sepparatedHourMinutes = sessions.map(session => session.startTime!.split(":"))
+
+    const dateTimes = sepparatedHourMinutes.map(time =>
+      date.set("h", parseInt(time[0], 10)).set("m", parseInt(time[1], 10)).second(0).millisecond(0).toISOString())
+
+    const durations = sessions.map(session => session.duration)
+
+    return dateTimes.map((time, index) => ({ startDatetime: time, durationType: durations[index] }))
+  },
+  target: createSessionsFx,
+})

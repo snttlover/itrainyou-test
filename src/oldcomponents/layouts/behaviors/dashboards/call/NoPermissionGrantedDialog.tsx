@@ -193,14 +193,8 @@ const StyledConfirmButton = styled(Button)`
   `}
 `
 
-const MarkerIcon = styled(Icon).attrs((props) => {
-  if (props.theme.colors.primary === "#4858CC") {
-    return { name: "ellipse-list-marker-client" }
-  }
-  else {
-    return { name: "ellipse-list-marker-coach" }
-  }
-})`
+const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })`
+  fill: ${props => props.theme.colors.primary};
   align-self: flex-start;
   margin-top: 7px;
   width: 8px;

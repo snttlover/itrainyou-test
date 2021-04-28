@@ -26,47 +26,22 @@ import {
   $freeWeekdayTimes,
   $weekdaySlotsForView,
   addSlot,
+  addSlotFromModal,
   removeSlot,
 } from "@/pages/coach/schedule/models/weekday-schedule.model"
-import { useStore, useEvent } from "effector-react"
+import { useStore, useEvent, useStoreMap } from "effector-react"
 import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { Informer } from "@/newcomponents/informer/Informer"
 import { InputComponent } from "@/newcomponents/input/Input"
+import { $pricesWithFee, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings.model"
 
-
-const Background = styled.div`
-  position: fixed;
-  background: rgba(42, 42, 42, 0.6);
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
 
 const StyledDialog = styled(Dialog)`
   max-width: 560px;
   padding: 24px 24px;
-`
-
-const Block = styled.div`
-  max-width: 480px;
-  background: #ffffff;
-  border-radius: 2px;
-  position: relative;
-  padding: 40px 12px 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  ${MediaRange.greaterThan("mobile")`
-    max-width: 280px;
-  `}
+  min-height: 300px;
 `
 
 const Date = styled.div`
@@ -148,6 +123,65 @@ const RowBlock = styled.div`
   margin: 15px 0;
 `
 
+const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) => {
+
+
+  let name: keyof Prices = "d30Price"
+
+  if (durationType === "D30") {
+    name = "d30Price"
+  }
+  if (durationType === "D45") {
+    name = "d45Price"
+  }
+  if (durationType === "D60") {
+    name = "d60Price"
+  }
+  if (durationType === "D90") {
+    name = "d90Price"
+  }
+
+  /*switch (durationType) {
+  case "D30":
+    name = "d30Price"
+    break
+  case "D45":
+    name = "d45Price"
+    break
+  case "D60":
+    name = "d60Price"
+    break
+  case "D90":
+    name = "d90Price"
+    break
+  default:
+    name = "d30Price"
+    break
+  }*/
+
+  const price = useStoreMap({
+    store: $pricesWithFee,
+    keys: [name],
+    fn: (prices, [name]) => prices.find(price => price.name === name),
+  })
+
+  const priceUpdate = useEvent(changePrice)
+  return (
+    <Informer>
+      <InputComponent
+        placeholder='0'
+        withoutBorder
+        type='number'
+        value={price?.value.toString() || ""}
+        label={"Укажите цену сессии"}
+        onChange={value => {
+          priceUpdate({ name, value: parseFloat(value) })
+        }}/>
+      <StyledDashedButton>Подтвердить</StyledDashedButton>
+    </Informer>
+  )
+}
+
 export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSessionModal, onCrossClick }) => {
   //const { SelectInput: StartSelectInput } = useDropDown()
   //const { SelectInput: TypeSelectInput } = useDropDown()
@@ -168,7 +202,7 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
   const _onDelete = useEvent(deleteTimeFromDialog)
 
   const _addTodaySession = useEvent(addSessions)
-  const _addWeekDaySlot = useEvent(addSlot)
+  const _addWeekDaySlot = useEvent(addSlotFromModal)
 
   const date = useStore($sessionDate)
 
@@ -215,9 +249,7 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
               <DeleteIcon onClick={() => _onDelete(item.id)}  />*/}
               </RowBlock>
               {durationOptionsTest.find(duration => duration.value === item.duration)?.price === 0 ?
-                <Informer>
-                  <InputComponent error={false} value={"0"} label={"Укажите цену сессии"} />
-                </Informer> : null}
+                <SetPrice durationType={item.duration} /> : null}
             </div>
           ))}
           <RowBlock>

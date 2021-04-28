@@ -11,7 +11,7 @@ import {
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
 import React, { useRef, useState } from "react"
-import styled from "styled-components"
+import styled, { ThemeProps } from "styled-components"
 import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
@@ -29,13 +29,22 @@ const MobileContainer = styled.div`
     flex-direction: column;
   `}
 `
-const Container = styled.div<{mobile?: boolean}>`
-  display: ${({mobile})=> !mobile ? "flex" : "none"};
+const Container = styled.div`
+  display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 704px;
 
   ${MediaRange.lessThan("mobile")`
+    min-width: 280px;
+  `}
+`
+const MobileList = styled.div`
+  display: none;
+  flex-direction: column;
+
+  ${MediaRange.lessThan("mobile")`
+    display: flex;
     min-width: 280px;
   `}
 `
@@ -166,6 +175,7 @@ const CalendarCell = styled.td<{presentDay: boolean}>`
 
   ${MediaRange.lessThan("mobile")`
     width: 12px;
+    vertical-align: middle;
   `}
 `
 
@@ -244,6 +254,26 @@ const AddIcon = styled(Icon).attrs({ name: "cross" })`
 
   ${MediaRange.lessThan("mobile")`
     display: none;
+  `}
+`
+
+/*(props) => {
+  if (props.theme.colors.primary === "#4858CC") {
+    return { name: "ellipse-list-marker-client" }
+  }
+  else {
+    return { name: "ellipse-list-marker-coach" }
+  }
+}*/
+
+const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })<{ pinned: boolean}>`
+  fill: ${props => props.theme.colors.primary};
+  width: 4px;
+  height: 4px;
+  display: none;
+
+  ${MediaRange.lessThan("mobile")`
+    display: ${({ pinned }) => (pinned ? "flex" : "none")};
   `}
 `
 
@@ -366,7 +396,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const formatter = "YYYYMM"
   const lessThanTheCurrentMonth = +currentMonth.format(formatter) <= +date().format(formatter)
 
-  const mobileSelectedDaySessions = sessions.sessions.filter(session => session.startTime.isSame(currentMonth, "d"))
+  const [currentDay, setCurrentDay] = useState<Dayjs>(now)
 
   const toolTipRef = useRef(null)
   /*useClickOutside(toolTipRef, () => {
@@ -374,7 +404,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   })*/
 
   const handleOnCellClick = (day: Dayjs) => {
-    onAddClick(day)
+    window.innerWidth > 480 ? onAddClick(day) : setCurrentDay(day)
   }
 
   const handleOnSessionClick = (e: React.SyntheticEvent, session: {
@@ -426,6 +456,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                       <DayContainer presentDay={now.isBefore(day, "d") || now.isSame(day, "d")}>
                         <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
                         {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => handleOnCellClick(day)} />}
+                        <MarkerIcon pinned={sessions.sessions.filter(session => session.startTime.isSame(day, "d")).length > 0} />
                         <SessionContainer>
                           {sessions.sessions
                             .filter(session => session.startTime.isSame(day, "d"))
@@ -449,20 +480,21 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
           </CalendarTable>
         </HorizontalOverflowScrollContainer>
       </Container>
-      <Container mobile>
-        {mobileSelectedDaySessions.map(session => (
-          <Times key={session.id} >
-            <Time primary={session.areAvailable}>
-              {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
-            </Time>
-            <RemoveIcon onClick={() => _removeSession(session)} />
-          </Times>
-        ))}
+      <MobileList>
+        {sessions.sessions
+          .filter(session => session.startTime.isSame(currentDay, "d")).map(session => (
+            <Times key={session.id} >
+              <Time primary={session.areAvailable}>
+                {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
+              </Time>
+              <RemoveIcon onClick={() => _removeSession(session)} />
+            </Times>
+          ))}
         <Times>
           <Time />
-          <AddIcon onClick={() => onAddClick(currentMonth)} />
+          <AddIcon onClick={() => onAddClick(currentDay)} />
         </Times>
-      </Container>
+      </MobileList>
     </MobileContainer>
   )
 }
