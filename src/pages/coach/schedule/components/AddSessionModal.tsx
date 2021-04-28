@@ -220,6 +220,7 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
                 <SelectBoxContainer>
                   <DropDown
                     value={item.startTime}
+                          // @ts-ignore
                     onChange={value => _startDatetimeChanged({startTime: value.value, id: item.id, duration: item.duration, price: item.price})}
                     options={startDatetimeOptions}
                     placeholder='Время'
@@ -228,6 +229,7 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
                 <SelectBoxContainer>
                   <DropDown
                     value={item.duration}
+                          // @ts-ignore
                     onChange={value => _durationChanged({duration: value.value, id: item.id, startTime: item.startTime, price: value.price})}
                     options={durationOptionsTest}
                     placeholder='Тип'

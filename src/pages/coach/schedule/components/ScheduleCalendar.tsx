@@ -273,7 +273,9 @@ const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })<{ pinned:
   display: none;
 
   ${MediaRange.lessThan("mobile")`
-    display: ${({ pinned }) => (pinned ? "flex" : "none")};
+    display: ${
+          // @ts-ignore
+  ({ pinned }) => (pinned ? "flex" : "none")};
   `}
 `
 

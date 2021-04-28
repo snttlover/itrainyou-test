@@ -113,6 +113,7 @@ export const DropDown = <T extends Value = Value>({
 
   const dropdownItems = options.map(item => {
     return (
+    // @ts-ignore
       <DropdownItem key={item.value} onClick={() => onChange({value: item.value, price: item.price})}>
         {item.label}
       </DropdownItem>
@@ -151,7 +152,7 @@ export const DropDown = <T extends Value = Value>({
   )
 }
 
-export const useDropDown = (id: number) => {
+export const useDropDown = () => {
   const [isOpen, changeOpen] = useState(false)
 
   const openSelect = () => changeOpen(true)
