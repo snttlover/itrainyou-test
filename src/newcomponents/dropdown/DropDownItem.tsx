@@ -88,7 +88,6 @@ export type SelectInputProps<T extends Value> = {
     options: {
         value: T
         label: string
-        price?: number
     }[]
     error?: boolean
     onBlur?: () => void
@@ -113,7 +112,7 @@ export const DropDown = <T extends Value = Value>({
 
   const dropdownItems = options.map(item => {
     return (
-      <DropdownItem key={item.value} onClick={() => onChange({value: item.value, price: item.price})}>
+      <DropdownItem key={item.value} onClick={() => onChange(item.value)}>
         {item.label}
       </DropdownItem>
     )

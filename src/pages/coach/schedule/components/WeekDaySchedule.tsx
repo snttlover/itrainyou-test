@@ -190,6 +190,7 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
   }
 
   const saveSessionHandler = () => {
+    // @ts-ignore
     startTime && addedSlot({ weekday, startTime, sessionDurationType: duration }) && setStartTime("")
   }
 

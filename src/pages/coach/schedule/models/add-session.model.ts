@@ -2,10 +2,10 @@ import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/comm
 import { DurationType } from "@/lib/api/coach-sessions"
 import { createSession } from "@/lib/api/coaching-sessions/create-session"
 import { date } from "@/lib/formatting/date"
-import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
 import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
+import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
 
 export const showAddSessionModal = createEvent<void | boolean>()
 export const $isAddSessionModalShowed = createStore<boolean>(false).on(
@@ -33,31 +33,12 @@ export const $durationList = createStore<{ label: string; value: DurationType }[
   { label: "90 минут", value: "D90" },
 ])
 
-export const $durationListTest = $prices.map((prices,state) =>
-  prices.map(item => {
-    if (item.key === "D30") {
-      return { label: "30 минут", value: "D30", price: item.value }
-    }
-    if (item.key === "D45") {
-      return { label: "45 минут", value: "D45", price: item.value }
-    }
-    if (item.key === "D60") {
-      return { label: "60 минут", value: "D60", price: item.value }
-    }
-    if (item.key === "D90") {
-      return { label: "90 минут", value: "D90", price: item.value }
-    }
-    return null
-  }).filter(item => item !== null)
-)
-
-export const $durationOptions = combine($durationList, $prices, (list, prices) => {
-  const keys = prices.filter(({ value }) => Boolean(value)).map(({ key }) => key)
-
-  return list.filter(({ value }) => keys.includes(value))
+export const $durationOptions = $durationList.map((durations) => {
+  // ToDo: переписать логику, чтобы отдавать только те duration, которые не налезут на существующие сессии
+  return durations
 })
 
-const $timesOptions = createStore(
+const $allTimesOptions = createStore(
   Array.from(Array(24).keys())
     .map(hour => Array.from(Array(4).keys()).map(mod => ({ hour, min: mod * 15 })))
     .flat()
@@ -70,149 +51,109 @@ const $daySessions = combine($allSessions, $sessionDate, (allSessions, dat) =>
 )
 
 export type StartTimeChanged = {
+  id: number
   startTime: string | null
   duration: DurationType
-  id: number
-  price: number
 }
 
-export const durationChanged = createEvent<StartTimeChanged>()
-//const $duration = restore(durationChanged, "D30")
-/*const $duration = createStore<StartTimeChanged[]>([{id: 1, duration: "D30"}]).on(durationChanged, (state,payload) => {
-  console.log("durationChanged",payload)
-  const currentElement = state.filter(item => item.id === payload.id)
-  const changedElement = {...currentElement, duration: payload.duration}
-  return state.splice(state.indexOf(currentElement), 1, changedElement)
-})*/
+export const addSessionToForm = createEvent()
+export const deleteSessionToForm = createEvent<number>()
 
-export const addNewTimesToDialog = createEvent()
-export const deleteTimeFromDialog = createEvent<number>()
+export const getStartTimeOptions = createEvent<number>()
 
-export const startDatetimeChanged = createEvent<StartTimeChanged>()
-//const $startDatetime = restore<string>(startDatetimeChanged, "00:00")
+export const formSessionDurationChanged = createEvent<StartTimeChanged>()
+export const formSessionStartDatetimeChanged = createEvent<StartTimeChanged>()
 
-export const $startDatetime = createStore<StartTimeChanged[]>([{id: 1, startTime: null, duration: "D30", price: 0}])
-  .on(startDatetimeChanged, (state,payload) => {
-    let newState = [...state]
+export const $formSessionsData = createStore<StartTimeChanged[]>([{id: 1, startTime: null, duration: "D30"}])
+  .on(formSessionStartDatetimeChanged, (state, payload) => {
+    const newState = [...state]
     const currentElementID = newState.findIndex(item => item.id === payload.id)
-    newState[currentElementID] = {...newState[currentElementID], startTime: payload.startTime, price: payload.price }
+    newState[currentElementID] = {...newState[currentElementID], startTime: payload.startTime}
     return newState
   })
-  .on(durationChanged, (state,payload) => {
-    let newState = [...state]
+  .on(formSessionDurationChanged, (state, payload) => {
+    const newState = [...state]
     const currentElementID = newState.findIndex(item => item.id === payload.id)
-    newState[currentElementID] = {...newState[currentElementID], duration: payload.duration, price: payload.price}
-    return newState})
-  .on(addNewTimesToDialog,(state,payload) => {
-    const lastItem = state[state.length - 1]
-    return state.concat({id: lastItem.id + 1, duration: "D30", startTime: null, price: 0})})
-  .on(deleteTimeFromDialog, (state,payload) =>
+    newState[currentElementID] = {...newState[currentElementID], duration: payload.duration}
+    return newState
+  })
+  .on(addSessionToForm,(state) => {
+    const id = state.length + 1
+    return [...state, {id, startTime: null, duration: "D30"}]
+  })
+  .on(deleteSessionToForm, (state, payload) =>
     state.filter(item => item.id !== payload))
-  .on(showAddSessionModal, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null, price: 0}])
+  .on(showAddSessionModal, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null}])
 
-$startDatetime.watch(payload => console.log("dates store",payload))
+const $formSessions = combine(
+  {sessionDate: $sessionDate, formSessionsData: $formSessionsData},
+  ({sessionDate, formSessionsData}) => {
 
-/*const $durationIsCorrect = combine($durationOptions, $duration, (opts, selected) =>
-  opts.map(({ value }) => value).includes(selected)
-)*/
+    formSessionsData = formSessionsData.filter(({startTime}) => !!startTime)
 
+    return formSessionsData.map(({startTime, duration, id}) => {
+      const parts = startTime!.split(":")
+      const hour = parseInt(parts[0], 10)
+      const min = parseInt(parts[1], 10)
 
-/*const $priceForDurationIsCorrect = combine($prices, $duration, (prices, durationList) => {
-  const test = prices.map(({ value }) => value)
-})*/
+      const _startTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+      const endTime = _startTime.add(parseInt(duration.slice(1), 10), "minute")
 
-//const endTime = pickedSessions.map(item => optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute"))
+      return {
+        id: id,
+        startTime: _startTime,
+        endTime,
+        duration
+      }
+    })
 
-export const $startDatetimeOptions = combine(
-  { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions, formSessions: $startDatetime },
-  ({ opts, sessionDate, sessions, formSessions }) => {
-    const now = date()
-
-    return opts
-      .filter(({ hour, min }) => {
-        /*const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
-
-        const endTimes = formSessions.map(item =>
-          optionTime.add(parseInt(item.duration.slice(1), 10), "minute"))
-
-        const isAfterThanNow = optionTime.isAfter(now)
-        const isCollideWithExistSessions = sessions.reduce((isCollide, session) => {
-          if (isCollide) return isCollide
-          return (
-            optionTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
-            endTimes.map(time => time.isBetween(session.startTime.subtract(1, "ms"), session.endTime))
-              .filter(time => time === false).length > 0
-          )
-        }, false)
-
-        return isAfterThanNow && !isCollideWithExistSessions*/
-        const optionTimeSession = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
-        const endTime = optionTimeSession.add(parseInt(formSessions[0].duration.slice(1), 10), "minute")
-
-
-       // const endTimes = !!formSessions[0].duration ? optionTimeSession.add(parseInt(formSessions[0].duration.slice(1), 10), "minute") : null
-
-        /*const isCollideWithExistSessions = formSessions.reduce((formCollide, formSession) => {
-          if (formCollide) {
-            return formCollide
-          } else {
-            return sessions.reduce((isCollide, session) => {
-              if (isCollide) {
-                return isCollide
-              } else {
-                // @ts-ignore
-                const endTimeSession = optionTime.add(parseInt(formSession.duration.slice(1), 10), "minute")
-                const optionTimeFormSession = date(formSession).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
-                const optionTimeSession = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
-                return (
-                  optionTimeSession.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
-                  endTimeSession.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
-                  // про шлые сессии !!formSession && endTimeSession.isBetween(formSession.startTime.subtract(1, "ms"), session.endTime)
-                )
-              }
-            }, false)
-          }
-        }, false)*/
-
-        const isCollideWithExistSessions = sessions.reduce((isCollide, session) => {
-          if (isCollide) return isCollide
-          return (
-            optionTimeSession.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
-            endTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
-          )
-        }, false)
-
-        const isAfterThanNow = optionTimeSession.isAfter(now)
-
-        return isAfterThanNow && !isCollideWithExistSessions
-      })
-      .map(item => ({
-        label: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
-        value: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
-      }))
   }
 )
-//reset(durationChanged)
 
-/*export const $startDatetimeOptions = combine(
-  { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions, selectedDuration: $duration },
-  ({ opts, sessionDate, sessions, selectedDuration }) => {
+export const $startTimeOptions = createStore([{label: "00:00", value: "00:00"}])
+
+sample({
+  clock: getStartTimeOptions,
+  source: combine(
+    {
+      allTimesOptions: $allTimesOptions,
+      sessionDate: $sessionDate,
+      existedSessions: $daySessions,
+      formSessionsData: $formSessionsData,
+      formSessions: $formSessions,
+    }),
+  target: $startTimeOptions,
+  fn: (
+    {
+      allTimesOptions,
+      sessionDate,
+      existedSessions,
+      formSessionsData,
+      formSessions
+    },
+    sessionId
+  ) => {
     const now = date()
 
-    return opts
-      .filter(({ hour, min }) => {
-        const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
-        const endTime = optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute")
+    const existedAndFormSessions = [...existedSessions, ...formSessions.filter(session => session.id != sessionId)]
 
-        const isAfterThanNow = optionTime.isAfter(now)
-        const isCollideWithExistSessions = sessions.reduce((isCollide, session) => {
+    return allTimesOptions
+      .filter(({ hour, min }) => {
+        const startDatetimeOption = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
+
+        const lastSessionDataDuration = formSessionsData[formSessionsData.length - 1].duration.slice(1)
+        const endDateTimeOption = startDatetimeOption.add(parseInt(lastSessionDataDuration, 10), "minute")
+
+        const isCollideWithExistSessions = existedAndFormSessions.reduce((isCollide, session) => {
           if (isCollide) return isCollide
+
           return (
-            optionTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
-            endTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
+            startDatetimeOption.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
+            endDateTimeOption.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
           )
         }, false)
 
+        const isAfterThanNow = startDatetimeOption.isAfter(now)
         return isAfterThanNow && !isCollideWithExistSessions
       })
       .map(item => ({
@@ -220,53 +161,31 @@ export const $startDatetimeOptions = combine(
         value: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
       }))
   }
-)*/
+})
 
-/*const $startDatetimeIsCorrect = combine($startDatetimeOptions, $startDatetime, (opts, selected) =>
-  opts.map(({ value }) => value).includes(selected)
-)*/
-const $durationIsCorrect = $startDatetime.map(times => times.reduce((isFilled,time)=> {
+const $durationIsCorrect = $formSessionsData.map(times => times.reduce((isFilled, time)=> {
   if (isFilled) return isFilled
   return (!!time.duration)
 }, false))
 
-const $startDatetimeIsCorrect = $startDatetime.map(times => times.reduce((isFilled,time)=> {
+const $startDatetimeIsCorrect = $formSessionsData.map(times => times.reduce((isFilled, time)=> {
   if (isFilled) return isFilled
   return (!!time.startTime)
 }, false))
 
 
-const $priceIsCorrect = $startDatetime.map(times => times.reduce((isFilled,time)=> {
-  if (isFilled) return isFilled
-  return (!!time.price)
-}, false))
+const $priceIsCorrect = combine(
+  {formSessionsData: $formSessionsData, prices: $prices},
+  ({formSessionsData, prices}) => {
+    const sessionDurations = formSessionsData.map(sessionData => sessionData.duration)
+    return sessionDurations.reduce((isPriceSet, duration) => {
+      if (!isPriceSet) return false
 
-/*const $priceIsCorrect = combine($startDatetime, $durationListTest, (dates, prices) => {
-  if (!!prices) {
-    const emptyPrices = prices.filter(item => item.price === 0)
-    console.log("lul", emptyPrices)
-    const isCorrect =  emptyPrices.reduce((hasEmpty, item) => {
-      if (hasEmpty)  {
-        return hasEmpty
-      }
-      else {
-        const test = dates.reduce((acc, currentValue) => {
-          if (acc) return acc
-          return currentValue.duration === item.value
-        }, false)
-        console.log("test",test)
-        return test
-      }
-    }, false)
-    return isCorrect
-  } else {
-    return false
-  }
-})*/
+      return !!(prices.find(price => price.key === duration)?.value)
+    }, true)
+  })
 
 export const addSessions = createEvent()
-
-//export const $form = combine($startDatetime, $duration, (startDatetime, duration)=> ({ startDatetime: startDatetime, durationType: duration }))
 
 export const createSessionsFx = createEffect({
   handler: createSession,
@@ -322,16 +241,18 @@ export const $isCreateButtonDisabled = combine(
 sample({
   clock: addSessions,
   source: {
-    sessions: $startDatetime,
+    sessionsData: $formSessionsData,
     date: $sessionDate,
   },
-  fn: ({ sessions, date }) => {
-    const sepparatedHourMinutes = sessions.map(session => session.startTime!.split(":"))
+  fn: ({ sessionsData, date }) => {
+    sessionsData  = sessionsData.filter(({startTime}) => !!startTime)
 
-    const dateTimes = sepparatedHourMinutes.map(time =>
+    const separatedHourMinutes = sessionsData.map(session => session.startTime!.split(":"))
+
+    const dateTimes = separatedHourMinutes.map(time =>
       date.set("h", parseInt(time[0], 10)).set("m", parseInt(time[1], 10)).second(0).millisecond(0).toISOString())
 
-    const durations = sessions.map(session => session.duration)
+    const durations = sessionsData.map(session => session.duration)
 
     return dateTimes.map((time, index) => ({ startDatetime: time, durationType: durations[index] }))
   },

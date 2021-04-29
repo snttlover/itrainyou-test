@@ -1,7 +1,7 @@
 import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { UpdateCoachSchedule, WeekDayName, WeekDaySlot } from "@/lib/api/coaching-sessions/types"
-import { $sessionDate, $startDatetime } from "@/pages/coach/schedule/models/add-session.model"
+import { $sessionDate, $formSessionsData } from "@/pages/coach/schedule/models/add-session.model"
 import { date } from "@/lib/formatting/date"
 import { loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { loadSessionsWithParamsFx } from "@/pages/coach/schedule/models/sessions.model"
