@@ -196,7 +196,7 @@ export const AddSessionModal = () => {
                     value={item.startTime}
                     onChange={
                       value => _startDatetimeChanged({
-                        startTime: value, id: item.id, duration: item.duration, price: item.price
+                        startTime: value, id: item.id, duration: item.duration
                       })
                     }
                     options={[...startTimeOptions, {label: item.startTime!, value: item.startTime!}]}
@@ -207,9 +207,9 @@ export const AddSessionModal = () => {
                   <DropDown
                     value={item.duration}
                     onChange={value => _durationChanged({
-                      duration: value, id: item.id, startTime: item.startTime, price: item.price
+                      duration: value, id: item.id, startTime: item.startTime
                     })}
-                    options={[...durationOptions, {label: item.duration!, value: item.duration!}]}
+                    options={durationOptions}
                     placeholder='Тип'
                   />
                 </SelectBoxContainer>

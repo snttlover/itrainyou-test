@@ -5,6 +5,7 @@ import { date } from "@/lib/formatting/date"
 import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
+import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
 
 export const showAddSessionModal = createEvent<void | boolean>()
 export const $isAddSessionModalShowed = createStore<boolean>(false).on(
@@ -53,7 +54,6 @@ export type StartTimeChanged = {
   id: number
   startTime: string | null
   duration: DurationType
-  price: number
 }
 
 export const addSessionToForm = createEvent()
@@ -64,26 +64,26 @@ export const getStartTimeOptions = createEvent<number>()
 export const formSessionDurationChanged = createEvent<StartTimeChanged>()
 export const formSessionStartDatetimeChanged = createEvent<StartTimeChanged>()
 
-export const $formSessionsData = createStore<StartTimeChanged[]>([{id: 1, startTime: null, duration: "D30", price: 0}])
+export const $formSessionsData = createStore<StartTimeChanged[]>([{id: 1, startTime: null, duration: "D30"}])
   .on(formSessionStartDatetimeChanged, (state, payload) => {
     const newState = [...state]
     const currentElementID = newState.findIndex(item => item.id === payload.id)
-    newState[currentElementID] = {...newState[currentElementID], startTime: payload.startTime, price: payload.price }
+    newState[currentElementID] = {...newState[currentElementID], startTime: payload.startTime}
     return newState
   })
   .on(formSessionDurationChanged, (state, payload) => {
     const newState = [...state]
     const currentElementID = newState.findIndex(item => item.id === payload.id)
-    newState[currentElementID] = {...newState[currentElementID], duration: payload.duration, price: payload.price}
+    newState[currentElementID] = {...newState[currentElementID], duration: payload.duration}
     return newState
   })
   .on(addSessionToForm,(state) => {
     const id = state.length + 1
-    return [...state, {id, startTime: null, duration: "D30", price: 0}]
+    return [...state, {id, startTime: null, duration: "D30"}]
   })
   .on(deleteSessionToForm, (state, payload) =>
     state.filter(item => item.id !== payload))
-  .on(showAddSessionModal, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null, price: 0}])
+  .on(showAddSessionModal, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null}])
 
 const $formSessions = combine(
   {sessionDate: $sessionDate, formSessionsData: $formSessionsData},
@@ -174,37 +174,18 @@ const $startDatetimeIsCorrect = $formSessionsData.map(times => times.reduce((isF
 }, false))
 
 
-const $priceIsCorrect = $formSessionsData.map(times => times.reduce((isFilled, time)=> {
-  if (isFilled) return isFilled
-  return (!!time.price)
-}, false))
+const $priceIsCorrect = combine(
+  {formSessionsData: $formSessionsData, prices: $prices},
+  ({formSessionsData, prices}) => {
+    const sessionDurations = formSessionsData.map(sessionData => sessionData.duration)
+    return sessionDurations.reduce((isPriceSet, duration) => {
+      if (!isPriceSet) return false
 
-/*const $priceIsCorrect = combine($startDatetime, $durationListTest, (dates, prices) => {
-  if (!!prices) {
-    const emptyPrices = prices.filter(item => item.price === 0)
-    console.log("lul", emptyPrices)
-    const isCorrect =  emptyPrices.reduce((hasEmpty, item) => {
-      if (hasEmpty)  {
-        return hasEmpty
-      }
-      else {
-        const test = dates.reduce((acc, currentValue) => {
-          if (acc) return acc
-          return currentValue.duration === item.value
-        }, false)
-        console.log("test",test)
-        return test
-      }
-    }, false)
-    return isCorrect
-  } else {
-    return false
-  }
-})*/
+      return !!(prices.find(price => price.key === duration)?.value)
+    }, true)
+  })
 
 export const addSessions = createEvent()
-
-//export const $form = combine($startDatetime, $duration, (startDatetime, duration)=> ({ startDatetime: startDatetime, durationType: duration }))
 
 export const createSessionsFx = createEffect({
   handler: createSession,
@@ -260,16 +241,18 @@ export const $isCreateButtonDisabled = combine(
 sample({
   clock: addSessions,
   source: {
-    sessions: $formSessionsData,
+    sessionsData: $formSessionsData,
     date: $sessionDate,
   },
-  fn: ({ sessions, date }) => {
-    const sepparatedHourMinutes = sessions.map(session => session.startTime!.split(":"))
+  fn: ({ sessionsData, date }) => {
+    sessionsData  = sessionsData.filter(({startTime}) => !!startTime)
 
-    const dateTimes = sepparatedHourMinutes.map(time =>
+    const separatedHourMinutes = sessionsData.map(session => session.startTime!.split(":"))
+
+    const dateTimes = separatedHourMinutes.map(time =>
       date.set("h", parseInt(time[0], 10)).set("m", parseInt(time[1], 10)).second(0).millisecond(0).toISOString())
 
-    const durations = sessions.map(session => session.duration)
+    const durations = sessionsData.map(session => session.duration)
 
     return dateTimes.map((time, index) => ({ startDatetime: time, durationType: durations[index] }))
   },
