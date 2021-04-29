@@ -1,41 +1,31 @@
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
-import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
 import { Icon } from "@/oldcomponents/icon/Icon"
-import { Modal } from "@/oldcomponents/modal/Modal"
 import { DropDown } from "@/newcomponents/dropdown/DropDownItem"
-import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
 import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
 import {
+  $durationList,
   $durationOptions,
+  $formSessionsData, $isAddSessionModalShowed,
   $isCreateButtonDisabled,
+  $sessionDate,
   $startTimeOptions,
   addSessions,
-  createSessionsFx,
-  formSessionDurationChanged,
-  formSessionStartDatetimeChanged,
-  $sessionDate,
-  $formSessionsData,
   addSessionToForm,
+  createSessionsFx,
   deleteSessionToForm,
-  $durationListTest,
-  StartTimeChanged, getStartTimeOptions, $durationList
+  formSessionDurationChanged,
+  formSessionStartDatetimeChanged, getStartTimeOptions, showAddSessionModal
 } from "@/pages/coach/schedule/models/add-session.model"
-import {
-  $freeWeekdayTimes,
-  $weekdaySlotsForView,
-  addSlot,
-  addSlotFromModal,
-  removeSlot,
-} from "@/pages/coach/schedule/models/weekday-schedule.model"
-import { useStore, useEvent, useStoreMap } from "effector-react"
-import React, { useRef, useState } from "react"
+import { addSlotFromModal, } from "@/pages/coach/schedule/models/weekday-schedule.model"
+import { useEvent, useStore } from "effector-react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { Informer } from "@/newcomponents/informer/Informer"
 import { InputComponent } from "@/newcomponents/input/Input"
-import { $prices, $pricesWithFee, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings.model"
+import { $prices, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings.model"
 
 
 const StyledDialog = styled(Dialog)`
@@ -69,12 +59,6 @@ const Title = styled.div`
   `}
 `
 
-type AddSessionModalProps = {
-  showAddSessionModal: boolean
-  onCrossClick: (payload: boolean | void) => boolean | void
-}
-
-
 const StyledDashedButton = styled(DashedButton)`
   margin-top: 16px;
 
@@ -83,6 +67,11 @@ const StyledDashedButton = styled(DashedButton)`
     padding-top: 0;
     padding-bottom: 0;
   `}
+`
+
+const StyledPriceButton = styled(DashedButton)`
+  margin-top: 16px;
+  width: 100px;
 `
 
 const AddIcon = styled(Icon).attrs({ name: "cross" })`
@@ -140,30 +129,13 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
     name = "d90Price"
   }
 
-  /*switch (durationType) {
-  case "D30":
-    name = "d30Price"
-    break
-  case "D45":
-    name = "d45Price"
-    break
-  case "D60":
-    name = "d60Price"
-    break
-  case "D90":
-    name = "d90Price"
-    break
-  default:
-    name = "d30Price"
-    break
-  }*/
-
-  const price = useStoreMap({
+  /*const price = useStoreMap({
     store: $pricesWithFee,
     keys: [name],
     fn: (prices, [name]) => prices.find(price => price.name === name),
-  })
+  })*/
 
+  const [priceValue, setValue] = useState("")
   const priceUpdate = useEvent(changePrice)
   return (
     <Informer>
@@ -171,22 +143,25 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
         placeholder='0'
         withoutBorder
         type='number'
-        value={price?.value.toString() || ""}
+        value={priceValue}
         label={"Укажите цену сессии"}
         onChange={value => {
-          priceUpdate({ name, value: parseFloat(value) })
+          setValue(value)
         }}/>
-      <StyledDashedButton>Подтвердить</StyledDashedButton>
+      <StyledPriceButton
+        disabled={!priceValue}
+        onClick={() => priceUpdate({ name, value: parseFloat(priceValue)})}>
+        Подтвердить</StyledPriceButton>
     </Informer>
   )
 }
 
-export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSessionModal, onCrossClick }) => {
-  const durationOptions = useStore($durationList)
-
+export const AddSessionModal = () => {
   const prices = useStore($prices)
-
+  const durationOptions = useStore($durationOptions)
   const startTimeOptions = useStore($startTimeOptions)
+  const visibility = useStore($isAddSessionModalShowed)
+
   const isLoading = useStore(createSessionsFx.pending)
   const isCreateButtonDisabled = useStore($isCreateButtonDisabled)
   const formSessions = useStore($formSessionsData)
@@ -197,13 +172,15 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
   const _onAdd = useEvent(addSessionToForm)
   const _onDelete = useEvent(deleteSessionToForm)
 
+  const onCrossClick = useEvent(showAddSessionModal)
+
   const _addTodaySession = useEvent(addSessions)
   const _addWeekDaySlot = useEvent(addSlotFromModal)
 
   const date = useStore($sessionDate)
 
   return (
-    <StyledDialog value={showAddSessionModal} onChange={onCrossClick}>
+    <StyledDialog value={visibility} onChange={onCrossClick}>
       {isLoading ? <Spinner />
         :
         <>

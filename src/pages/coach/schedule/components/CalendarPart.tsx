@@ -6,9 +6,7 @@ import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { MediaRange } from "@/lib/responsive/media"
 import { MobileCalendarManager } from "@/pages/coach/schedule/components/MobileCalendarManager"
 import {
-  $isAddSessionModalShowed,
   setAddSessionDate,
-  setModalShow,
 } from "@/pages/coach/schedule/models/add-session.model"
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
 import { RemoveSessionsDateRangePicker } from "@/pages/coach/schedule/components/RemoveSessionsDateRangePicker"
@@ -102,9 +100,7 @@ const DesktopCalendar = styled.div`
 `
 
 export const CalendarPart = () => {
-  const isAddSessionModalShowed = useStore($isAddSessionModalShowed)
   const isSessionsLoading = useStore(loadSessionsFx.pending)
-  const _setModalShow = useEvent(setModalShow)
   const _setDate = useEvent(setAddSessionDate)
   const _removeSessionsRange = useEvent(removeSessionsRange)
   const _setCurrentMonth = useEvent(setCurrentMonth)
@@ -118,10 +114,6 @@ export const CalendarPart = () => {
 
   useGate(CalendarGate)
 
-  const openModalCallback = (date: Dayjs) => {
-    _setDate(date)
-    _setModalShow(true)
-  }
 
   return (
     <>
@@ -136,14 +128,12 @@ export const CalendarPart = () => {
         <DesktopCalendar>
           <ScheduleCalendar
             nextMonth={currentDate => _setCurrentMonth(currentDate.add(1, "month"))}
-            onAddClick={openModalCallback}
             prevMonth={currentDate => _setCurrentMonth(currentDate.subtract(1, "month"))}
             showVacationModal={setVisibility}
           />
         </DesktopCalendar>
         {isSessionsLoading && <Spinner />}
       </CalendarContainer>
-      <AddSessionModal showAddSessionModal={isAddSessionModalShowed} onCrossClick={_setModalShow} />
       {showRemoveSessionModal && <RemoveSessionModal/>}
       <AddVacationModal visibility={visibility} setVisibility={setVisibility} />
     </>

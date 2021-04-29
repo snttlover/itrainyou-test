@@ -2,15 +2,21 @@ import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/comm
 import { DurationType } from "@/lib/api/coach-sessions"
 import { createSession } from "@/lib/api/coaching-sessions/create-session"
 import { date } from "@/lib/formatting/date"
-import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
 import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
-import { $userData } from "@/feature/user/user.model"
 
-export const setModalShow = createEvent<void | boolean>()
+export const showAddSessionModal = createEvent<void | boolean>()
 export const $isAddSessionModalShowed = createStore<boolean>(false).on(
-  setModalShow,
+  showAddSessionModal,
+  (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
+
+export const showMobileSessionInfo = createEvent<void | boolean>()
+export const $isMobileSessionInfoShowed = createStore<boolean>(false).on(
+  showMobileSessionInfo,
   (state, payload) => {
     if (payload !== undefined) return payload
     return !state
@@ -26,28 +32,9 @@ export const $durationList = createStore<{ label: string; value: DurationType }[
   { label: "90 минут", value: "D90" },
 ])
 
-export const $durationListTest = $prices.map((prices, state) =>
-  prices.map(item => {
-    if (item.key === "D30") {
-      return { label: "30 минут", value: "D30", price: item.value }
-    }
-    if (item.key === "D45") {
-      return { label: "45 минут", value: "D45", price: item.value }
-    }
-    if (item.key === "D60") {
-      return { label: "60 минут", value: "D60", price: item.value }
-    }
-    if (item.key === "D90") {
-      return { label: "90 минут", value: "D90", price: item.value }
-    }
-    return null
-  }).filter(item => item !== null)
-)
-
-export const $durationOptions = combine($durationList, $prices, (list, prices) => {
-  const keys = prices.filter(({ value }) => Boolean(value)).map(({ key }) => key)
-
-  return list.filter(({ value }) => keys.includes(value))
+export const $durationOptions = $durationList.map((durations) => {
+  // ToDo: переписать логику, чтобы отдавать только те duration, которые не налезут на существующие сессии
+  return durations
 })
 
 const $allTimesOptions = createStore(
@@ -68,14 +55,6 @@ export type StartTimeChanged = {
   duration: DurationType
   price: number
 }
-
-//const $duration = restore(formSessionDurationChanged, "D30")
-/*const $duration = createStore<StartTimeChanged[]>([{id: 1, duration: "D30"}]).on(formSessionDurationChanged, (state,payload) => {
-  console.log("formSessionDurationChanged",payload)
-  const currentElement = state.filter(item => item.id === payload.id)
-  const changedElement = {...currentElement, duration: payload.duration}
-  return state.splice(state.indexOf(currentElement), 1, changedElement)
-})*/
 
 export const addSessionToForm = createEvent()
 export const deleteSessionToForm = createEvent<number>()
@@ -104,11 +83,7 @@ export const $formSessionsData = createStore<StartTimeChanged[]>([{id: 1, startT
   })
   .on(deleteSessionToForm, (state, payload) =>
     state.filter(item => item.id !== payload))
-  .on(setModalShow, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null, price: 0}])
-
-formSessionStartDatetimeChanged.watch(payload => console.log("date changed", payload))
-formSessionDurationChanged.watch(payload => console.log("duration changed", payload))
-$formSessionsData.watch(payload => console.log("dates store", payload))
+  .on(showAddSessionModal, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null, price: 0}])
 
 const $formSessions = combine(
   {sessionDate: $sessionDate, formSessionsData: $formSessionsData},
@@ -134,18 +109,8 @@ const $formSessions = combine(
 
   }
 )
-/*const $durationIsCorrect = combine($durationOptions, $duration, (opts, selected) =>
-  opts.map(({ value }) => value).includes(selected)
-)*/
 
-
-/*const $priceForDurationIsCorrect = combine($prices, $duration, (prices, durationList) => {
-  const test = prices.map(({ value }) => value)
-})*/
-
-//const endTime = pickedSessions.map(item => optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute"))
-
-export const $startTimeOptions = createStore([{label: '00:00', value: '00:00'}])
+export const $startTimeOptions = createStore([{label: "00:00", value: "00:00"}])
 
 sample({
   clock: getStartTimeOptions,
@@ -198,38 +163,6 @@ sample({
   }
 })
 
-
-/*export const $startDatetimeOptions = combine(
-  { opts: $timesOptions, sessionDate: $sessionDate, sessions: $daySessions, selectedDuration: $duration },
-  ({ opts, sessionDate, sessions, selectedDuration }) => {
-    const now = date()
-
-    return opts
-      .filter(({ hour, min }) => {
-        const optionTime = date(sessionDate).set("h", hour).set("m", min).set("s", 0).set("ms", 0)
-        const endTime = optionTime.add(parseInt(selectedDuration.slice(1), 10), "minute")
-
-        const isAfterThanNow = optionTime.isAfter(now)
-        const isCollideWithExistSessions = sessions.reduce((isCollide, session) => {
-          if (isCollide) return isCollide
-          return (
-            optionTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime) ||
-            endTime.isBetween(session.startTime.subtract(1, "ms"), session.endTime)
-          )
-        }, false)
-
-        return isAfterThanNow && !isCollideWithExistSessions
-      })
-      .map(item => ({
-        label: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
-        value: `${item.hour.toString().padStart(2, "0")}:${item.min.toString().padEnd(2, "0")}`,
-      }))
-  }
-)*/
-
-/*const $startDatetimeIsCorrect = combine($startDatetimeOptions, $startDatetime, (opts, selected) =>
-  opts.map(({ value }) => value).includes(selected)
-)*/
 const $durationIsCorrect = $formSessionsData.map(times => times.reduce((isFilled, time)=> {
   if (isFilled) return isFilled
   return (!!time.duration)
@@ -240,7 +173,34 @@ const $startDatetimeIsCorrect = $formSessionsData.map(times => times.reduce((isF
   return (!!time.startTime)
 }, false))
 
-const $priceIsCorrect = createStore(true)
+
+const $priceIsCorrect = $formSessionsData.map(times => times.reduce((isFilled, time)=> {
+  if (isFilled) return isFilled
+  return (!!time.price)
+}, false))
+
+/*const $priceIsCorrect = combine($startDatetime, $durationListTest, (dates, prices) => {
+  if (!!prices) {
+    const emptyPrices = prices.filter(item => item.price === 0)
+    console.log("lul", emptyPrices)
+    const isCorrect =  emptyPrices.reduce((hasEmpty, item) => {
+      if (hasEmpty)  {
+        return hasEmpty
+      }
+      else {
+        const test = dates.reduce((acc, currentValue) => {
+          if (acc) return acc
+          return currentValue.duration === item.value
+        }, false)
+        console.log("test",test)
+        return test
+      }
+    }, false)
+    return isCorrect
+  } else {
+    return false
+  }
+})*/
 
 export const addSessions = createEvent()
 
@@ -258,7 +218,7 @@ forward({
 const successToastMessage: Toast = { type: "info", text: "Сессия создана" }
 forward({
   from: createSessionsFx.done.map(_ => successToastMessage),
-  to: [toasts.remove, toasts.add, setModalShow.prepend(_ => false)],
+  to: [toasts.remove, toasts.add, showAddSessionModal.prepend(_ => false)],
 })
 
 const failToastMessage: Toast = { type: "error", text: "Ошибка создания сессии" }
@@ -272,7 +232,7 @@ export const $isCreateButtonDisabled = combine(
   $durationIsCorrect,
   $priceIsCorrect,
   createSessionsFx.pending,
-  (dateTimeCorrect, durationCorrect,price, pending) => !dateTimeCorrect || !durationCorrect || !price  || pending
+  (dateTimeCorrect, durationCorrect, priceCorrect, pending) => !dateTimeCorrect || !durationCorrect || !priceCorrect  || pending
 )
 
 /*const $canBeCreated = combine(

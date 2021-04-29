@@ -21,14 +21,22 @@ import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
 import { Times, Time, RemoveIcon } from "@/pages/coach/schedule/components/MobileCalendarManager"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
+import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
+import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import {
+  setAddSessionDate,
+  showAddSessionModal,
+  showMobileSessionInfo,
+  $isMobileSessionInfoShowed
+} from "@/pages/coach/schedule/models/add-session.model"
+import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 
 
-const MobileContainer = styled.div`
-  ${MediaRange.lessThan("mobile")`
+const CalendarContainer = styled.div`
     display: flex;
     flex-direction: column;
-  `}
 `
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -180,7 +188,7 @@ const CalendarCell = styled.td<{presentDay: boolean}>`
 `
 
 const Session = styled.div<{areAvailable: boolean}>`
-  background: ${({areAvailable})=> !areAvailable ? "#FFFFFF" : "#F4EFF7"};
+  background: ${({areAvailable})=> areAvailable ? "#eaa6ff" : "#FFFFFF"};
   border-radius: 9px;
   border: ${({areAvailable})=> !areAvailable ? "1px dashed #DFD0E7" : ""};
   font-family: Roboto;
@@ -257,15 +265,6 @@ const AddIcon = styled(Icon).attrs({ name: "cross" })`
   `}
 `
 
-/*(props) => {
-  if (props.theme.colors.primary === "#4858CC") {
-    return { name: "ellipse-list-marker-client" }
-  }
-  else {
-    return { name: "ellipse-list-marker-coach" }
-  }
-}*/
-
 const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })<{ pinned: boolean}>`
   fill: ${props => props.theme.colors.primary};
   width: 4px;
@@ -311,10 +310,14 @@ const UserInfo = styled.div`
   margin-bottom: 16px;
 `
 
+const StyledDialog = styled(Dialog)`
+  max-width: 560px;
+  padding: 24px 24px;
+`
+
 export type ScheduleCalendarTypes = {
   prevMonth: (currentMonth: Dayjs) => void
   nextMonth: (currentMonth: Dayjs) => void
-  onAddClick: (day: Dayjs) => void
   showVacationModal: (value: boolean) => void
 }
 
@@ -325,6 +328,42 @@ type SessionType = {
   sessionDurationType: "D30" | "D45" | "D60" | "D90"
   startTime: Dayjs
   endTime: Dayjs
+}
+
+const MobileSessionInfoModal = (session: SessionType) => {
+  const toggle = useEvent(showMobileSessionInfo)
+
+  const visibility = useStore($isMobileSessionInfoShowed)
+
+  const _removeSession = useEvent(removeSession)
+
+  const {id, client} = fixAvatarAndImageUrl(session)
+
+  const handleOnClick = () => {
+    _removeSession(session.id)
+  }
+  return (
+    <StyledDialog value={visibility} onChange={toggle}>
+      <ToolTipContainer>
+        {session.areAvailable ?
+          <>
+            <Title>Сессия забронирована</Title>
+            <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+            <UserInfo>
+              <StyledAvatar src={client?.avatar || null} />
+              <UserName>{client?.firstName} {client?.lastName}</UserName>
+            </UserInfo>
+            <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+          </>
+          :
+          <>
+            <Title>Этот слот еще не занят никем в вашем расписании</Title>
+            <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+          </>
+        }
+      </ToolTipContainer>
+    </StyledDialog>
+  )
 }
 
 const ToolTipContent = (session: SessionType) => {
@@ -359,18 +398,24 @@ const ToolTipContent = (session: SessionType) => {
   )
 }
 
-export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth, onAddClick, showVacationModal }) => {
+export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth, showVacationModal }) => {
   const now = date()
   const currentMonth = date(useStore($currentMonth))
   const monthDayStart = date(useStore($monthStartDate))
   const sessions = useStore($allSessions)
   const monthDayEnd = date(useStore($monthEndDate))
-  const _removeSession = useEvent(startRemovingSession)
 
+  const _setMobileSessionInfoShow = useEvent(showMobileSessionInfo)
+  const _setAddSessionModalShow = useEvent(showAddSessionModal)
+
+  const _setDate = useEvent(setAddSessionDate)
+
+  const _removeSession = useEvent(startRemovingSession)
   const _removeSessionsRange = useEvent(removeSessionsRange)
   const disabledDelete = useStore($deleteButtonIsDisabled)
   const range = useStore($pickedDeleteRange)
   const setRange = useEvent(changePickedDeleteRange)
+
 
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
@@ -398,12 +443,17 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const formatter = "YYYYMM"
   const lessThanTheCurrentMonth = +currentMonth.format(formatter) <= +date().format(formatter)
 
-  const [currentDay, setCurrentDay] = useState<Dayjs>(now)
+  const [currentDay, setCurrentDay] = useState<Dayjs>(date())
 
   const toolTipRef = useRef(null)
   /*useClickOutside(toolTipRef, () => {
     setTimeout(() => setShow({sessionId: null}), 200)
   })*/
+
+  const onAddClick = (date: Dayjs) => {
+    _setDate(date)
+    _setAddSessionModalShow(true)
+  }
 
   const handleOnCellClick = (day: Dayjs) => {
     window.innerWidth > 480 ? onAddClick(day) : setCurrentDay(day)
@@ -421,7 +471,8 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   }
 
   return (
-    <MobileContainer>
+    <CalendarContainer>
+      <AddSessionModal />
       <Container>
         <StyledHeader>
           <StyledMonthContainer>
@@ -486,10 +537,11 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
         {sessions.sessions
           .filter(session => session.startTime.isSame(currentDay, "d")).map(session => (
             <Times key={session.id} >
-              <Time primary={session.areAvailable}>
+              <Time primary={session.areAvailable} onClick={() => _setMobileSessionInfoShow(true)}>
                 {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
               </Time>
               <RemoveIcon onClick={() => _removeSession(session)} />
+              <MobileSessionInfoModal {...session} key={session.id} />
             </Times>
           ))}
         <Times>
@@ -497,6 +549,6 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
           <AddIcon onClick={() => onAddClick(currentDay)} />
         </Times>
       </MobileList>
-    </MobileContainer>
+    </CalendarContainer>
   )
 }
