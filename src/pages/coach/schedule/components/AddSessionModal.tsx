@@ -10,17 +10,17 @@ import { MediaRange } from "@/lib/responsive/media"
 import {
   $durationOptions,
   $isCreateButtonDisabled,
-  $startDatetimeOptions,
+  $startTimeOptions,
   addSessions,
   createSessionsFx,
-  durationChanged,
-  startDatetimeChanged,
+  formSessionDurationChanged,
+  formSessionStartDatetimeChanged,
   $sessionDate,
-  $startDatetime,
-  addNewTimesToDialog,
-  deleteTimeFromDialog,
+  $formSessionsData,
+  addSessionToForm,
+  deleteSessionToForm,
   $durationListTest,
-  StartTimeChanged
+  StartTimeChanged, getStartTimeOptions, $durationList
 } from "@/pages/coach/schedule/models/add-session.model"
 import {
   $freeWeekdayTimes,
@@ -35,7 +35,7 @@ import styled from "styled-components"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { Informer } from "@/newcomponents/informer/Informer"
 import { InputComponent } from "@/newcomponents/input/Input"
-import { $pricesWithFee, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings.model"
+import { $prices, $pricesWithFee, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings.model"
 
 
 const StyledDialog = styled(Dialog)`
@@ -125,7 +125,6 @@ const RowBlock = styled.div`
 
 const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) => {
 
-
   let name: keyof Prices = "d30Price"
 
   if (durationType === "D30") {
@@ -183,30 +182,26 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
 }
 
 export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSessionModal, onCrossClick }) => {
-  //const { SelectInput: StartSelectInput } = useDropDown()
-  //const { SelectInput: TypeSelectInput } = useDropDown()
+  const durationOptions = useStore($durationList)
 
-  // @ts-ignore
-  const durationOptionsTest: {label: string; value: string; price: number}[] = useStore($durationListTest)
+  const prices = useStore($prices)
 
-  //const formData = useStore($form)
-  const durationOptions = useStore($durationOptions)
-  const startDatetimeOptions = useStore($startDatetimeOptions)
+  const startTimeOptions = useStore($startTimeOptions)
   const isLoading = useStore(createSessionsFx.pending)
   const isCreateButtonDisabled = useStore($isCreateButtonDisabled)
-  const newSessionsStore = useStore($startDatetime)
+  const formSessions = useStore($formSessionsData)
 
-  const _startDatetimeChanged = useEvent(startDatetimeChanged)
-  const _durationChanged = useEvent(durationChanged)
-  const _onAdd = useEvent(addNewTimesToDialog)
-  const _onDelete = useEvent(deleteTimeFromDialog)
+  const _getStartTimeOptions = useEvent(getStartTimeOptions)
+  const _startDatetimeChanged = useEvent(formSessionStartDatetimeChanged)
+  const _durationChanged = useEvent(formSessionDurationChanged)
+  const _onAdd = useEvent(addSessionToForm)
+  const _onDelete = useEvent(deleteSessionToForm)
 
   const _addTodaySession = useEvent(addSessions)
   const _addWeekDaySlot = useEvent(addSlotFromModal)
 
   const date = useStore($sessionDate)
 
-  //formData.startDatetime formData.durationType
   return (
     <StyledDialog value={showAddSessionModal} onChange={onCrossClick}>
       {isLoading ? <Spinner />
@@ -214,43 +209,37 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
         <>
           <Title>Доступное время</Title>
           <Date>{date.format("dddd [,] D MMMM")}</Date>
-          {newSessionsStore.map((item,index) => (
+
+          {formSessions.map((item, index) => (
             <div key={index}>
               <RowBlock>
                 <SelectBoxContainer>
                   <DropDown
+                    onClick={() => _getStartTimeOptions(item.id)}
                     value={item.startTime}
-                          // @ts-ignore
-                    onChange={value => _startDatetimeChanged({startTime: value.value, id: item.id, duration: item.duration, price: item.price})}
-                    options={startDatetimeOptions}
+                    onChange={
+                      value => _startDatetimeChanged({
+                        startTime: value, id: item.id, duration: item.duration, price: item.price
+                      })
+                    }
+                    options={[...startTimeOptions, {label: item.startTime!, value: item.startTime!}]}
                     placeholder='Время'
                   />
                 </SelectBoxContainer>
                 <SelectBoxContainer>
                   <DropDown
                     value={item.duration}
-                          // @ts-ignore
-                    onChange={value => _durationChanged({duration: value.value, id: item.id, startTime: item.startTime, price: value.price})}
-                    options={durationOptionsTest}
+                    onChange={value => _durationChanged({
+                      duration: value, id: item.id, startTime: item.startTime, price: item.price
+                    })}
+                    options={[...durationOptions, {label: item.duration!, value: item.duration!}]}
                     placeholder='Тип'
                   />
                 </SelectBoxContainer>
-                {newSessionsStore.length > 1 ? <DeleteIcon onClick={() => _onDelete(item.id)} /> : null}
-                {/*<StyledStartSelectInput
-                value={item.startTime}
-                onChange={value => _startDatetimeChanged({startTime: value, id: item.id})}
-                options={startDatetimeOptions}
-                placeholder='Время'
-              />
-              <StyledTypeSelectInput
-                value={item.duration}
-                onChange={value => _durationChanged({duration: value, id: item.id})}
-                options={durationOptions}
-                placeholder='Тип'
-              />
-              <DeleteIcon onClick={() => _onDelete(item.id)}  />*/}
+                {formSessions.length > 1 ? <DeleteIcon onClick={() => _onDelete(item.id)} /> : null}
+
               </RowBlock>
-              {durationOptionsTest.find(duration => duration.value === item.duration)?.price === 0 ?
+              {!(prices.find(price => price.key === item.duration)?.value)?
                 <SetPrice durationType={item.duration} /> : null}
             </div>
           ))}
@@ -259,10 +248,10 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
           </RowBlock>
           <RowBlock>
             <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addWeekDaySlot()}>
-        Применить для всех {date.format("dd")}
+              Применить для всех {date.format("dd")}
             </StyledDashedButton>
             <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addTodaySession()}>
-        Применить для {date.format("D MMMM")}
+              Применить для {date.format("D MMMM")}
             </StyledDashedButton>
           </RowBlock> 
         </>      
