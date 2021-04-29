@@ -7,9 +7,17 @@ import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessio
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 
-export const setModalShow = createEvent<void | boolean>()
+export const showAddSessionModal = createEvent<void | boolean>()
 export const $isAddSessionModalShowed = createStore<boolean>(false).on(
-  setModalShow,
+  showAddSessionModal,
+  (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
+
+export const showMobileSessionInfo = createEvent<void | boolean>()
+export const $isMobileSessionInfoShowed = createStore<boolean>(false).on(
+  showMobileSessionInfo,
   (state, payload) => {
     if (payload !== undefined) return payload
     return !state
@@ -100,10 +108,8 @@ export const $startDatetime = createStore<StartTimeChanged[]>([{id: 1, startTime
     return state.concat({id: lastItem.id + 1, duration: "D30", startTime: null, price: 0})})
   .on(deleteTimeFromDialog, (state,payload) =>
     state.filter(item => item.id !== payload))
-  .on(setModalShow, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null, price: 0}])
+  .on(showAddSessionModal, (state, payload) => payload ? state : [{id: 1, duration: "D30", startTime: null, price: 0}])
 
-startDatetimeChanged.watch(payload => console.log("date changed", payload))
-durationChanged.watch(payload => console.log("duration changed", payload))
 $startDatetime.watch(payload => console.log("dates store",payload))
 
 /*const $durationIsCorrect = combine($durationOptions, $duration, (opts, selected) =>
@@ -229,7 +235,34 @@ const $startDatetimeIsCorrect = $startDatetime.map(times => times.reduce((isFill
   return (!!time.startTime)
 }, false))
 
-const $priceIsCorrect = createStore(true)
+
+const $priceIsCorrect = $startDatetime.map(times => times.reduce((isFilled,time)=> {
+  if (isFilled) return isFilled
+  return (!!time.price)
+}, false))
+
+/*const $priceIsCorrect = combine($startDatetime, $durationListTest, (dates, prices) => {
+  if (!!prices) {
+    const emptyPrices = prices.filter(item => item.price === 0)
+    console.log("lul", emptyPrices)
+    const isCorrect =  emptyPrices.reduce((hasEmpty, item) => {
+      if (hasEmpty)  {
+        return hasEmpty
+      }
+      else {
+        const test = dates.reduce((acc, currentValue) => {
+          if (acc) return acc
+          return currentValue.duration === item.value
+        }, false)
+        console.log("test",test)
+        return test
+      }
+    }, false)
+    return isCorrect
+  } else {
+    return false
+  }
+})*/
 
 export const addSessions = createEvent()
 
@@ -247,7 +280,7 @@ forward({
 const successToastMessage: Toast = { type: "info", text: "Сессия создана" }
 forward({
   from: createSessionsFx.done.map(_ => successToastMessage),
-  to: [toasts.remove, toasts.add, setModalShow.prepend(_ => false)],
+  to: [toasts.remove, toasts.add, showAddSessionModal.prepend(_ => false)],
 })
 
 const failToastMessage: Toast = { type: "error", text: "Ошибка создания сессии" }
@@ -261,7 +294,7 @@ export const $isCreateButtonDisabled = combine(
   $durationIsCorrect,
   $priceIsCorrect,
   createSessionsFx.pending,
-  (dateTimeCorrect, durationCorrect,price, pending) => !dateTimeCorrect || !durationCorrect || !price  || pending
+  (dateTimeCorrect, durationCorrect, priceCorrect, pending) => !dateTimeCorrect || !durationCorrect || !priceCorrect  || pending
 )
 
 /*const $canBeCreated = combine(

@@ -32,7 +32,7 @@ export const Time = styled.p<{ primary?: boolean }>`
   line-height: 22px;
   color: #424242;
   border-radius: 9px;
-  background-color: ${({primary})=> primary !== undefined ? (primary ? "#F4EFF7" : "#FFFFFF") : "unset"};
+  background-color: ${({primary})=> primary !== undefined ? (primary ? "#eaa6ff" : "#FFFFFF") : "unset"};
   border: ${({primary})=> primary !== undefined ? (primary ? "" : "1px dashed #DFD0E7") : "unset"};
 `
 

@@ -151,7 +151,7 @@ export const DropDown = <T extends Value = Value>({
   )
 }
 
-export const useDropDown = (id: number) => {
+export const useDropDown = () => {
   const [isOpen, changeOpen] = useState(false)
 
   const openSelect = () => changeOpen(true)

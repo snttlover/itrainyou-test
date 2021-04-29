@@ -1,7 +1,5 @@
 import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
-import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
-import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
 import { WeekDaySchedule } from "@/pages/coach/schedule/components/WeekDaySchedule"
 import { saveWeekdaySlotsFx } from "@/pages/coach/schedule/models/weekday-schedule.model"
 import { useGate, useStore } from "effector-react"

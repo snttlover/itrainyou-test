@@ -20,7 +20,7 @@ import {
   addNewTimesToDialog,
   deleteTimeFromDialog,
   $durationListTest,
-  StartTimeChanged
+  StartTimeChanged, $isAddSessionModalShowed, showAddSessionModal
 } from "@/pages/coach/schedule/models/add-session.model"
 import {
   $freeWeekdayTimes,
@@ -69,12 +69,6 @@ const Title = styled.div`
   `}
 `
 
-type AddSessionModalProps = {
-  showAddSessionModal: boolean
-  onCrossClick: (payload: boolean | void) => boolean | void
-}
-
-
 const StyledDashedButton = styled(DashedButton)`
   margin-top: 16px;
 
@@ -83,6 +77,11 @@ const StyledDashedButton = styled(DashedButton)`
     padding-top: 0;
     padding-bottom: 0;
   `}
+`
+
+const StyledPriceButton = styled(DashedButton)`
+  margin-top: 16px;
+  width: 100px;
 `
 
 const AddIcon = styled(Icon).attrs({ name: "cross" })`
@@ -141,30 +140,13 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
     name = "d90Price"
   }
 
-  /*switch (durationType) {
-  case "D30":
-    name = "d30Price"
-    break
-  case "D45":
-    name = "d45Price"
-    break
-  case "D60":
-    name = "d60Price"
-    break
-  case "D90":
-    name = "d90Price"
-    break
-  default:
-    name = "d30Price"
-    break
-  }*/
-
-  const price = useStoreMap({
+  /*const price = useStoreMap({
     store: $pricesWithFee,
     keys: [name],
     fn: (prices, [name]) => prices.find(price => price.name === name),
-  })
+  })*/
 
+  const [priceValue, setValue] = useState("")
   const priceUpdate = useEvent(changePrice)
   return (
     <Informer>
@@ -172,17 +154,20 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
         placeholder='0'
         withoutBorder
         type='number'
-        value={price?.value.toString() || ""}
+        value={priceValue}
         label={"Укажите цену сессии"}
         onChange={value => {
-          priceUpdate({ name, value: parseFloat(value) })
+          setValue(value)
         }}/>
-      <StyledDashedButton>Подтвердить</StyledDashedButton>
+      <StyledPriceButton
+        disabled={!priceValue}
+        onClick={() => priceUpdate({ name, value: parseFloat(priceValue)})}>
+        Подтвердить</StyledPriceButton>
     </Informer>
   )
 }
 
-export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSessionModal, onCrossClick }) => {
+export const AddSessionModal = () => {
   //const { SelectInput: StartSelectInput } = useDropDown()
   //const { SelectInput: TypeSelectInput } = useDropDown()
 
@@ -190,12 +175,14 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
   const durationOptionsTest: {label: string; value: string; price: number}[] = useStore($durationListTest)
 
   //const formData = useStore($form)
+  const visibility = useStore($isAddSessionModalShowed)
   const durationOptions = useStore($durationOptions)
   const startDatetimeOptions = useStore($startDatetimeOptions)
   const isLoading = useStore(createSessionsFx.pending)
   const isCreateButtonDisabled = useStore($isCreateButtonDisabled)
   const newSessionsStore = useStore($startDatetime)
 
+  const onCrossClick = useEvent(showAddSessionModal)
   const _startDatetimeChanged = useEvent(startDatetimeChanged)
   const _durationChanged = useEvent(durationChanged)
   const _onAdd = useEvent(addNewTimesToDialog)
@@ -208,7 +195,7 @@ export const AddSessionModal: React.FC<AddSessionModalProps> = ({ showAddSession
 
   //formData.startDatetime formData.durationType
   return (
-    <StyledDialog value={showAddSessionModal} onChange={onCrossClick}>
+    <StyledDialog value={visibility} onChange={onCrossClick}>
       {isLoading ? <Spinner />
         :
         <>
