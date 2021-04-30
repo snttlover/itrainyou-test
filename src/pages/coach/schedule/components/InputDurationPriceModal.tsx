@@ -7,11 +7,10 @@ import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGro
 import { Button } from "@/oldcomponents/button/normal/Button"
 import { changePrice, Prices } from "@/pages/coach/schedule/models/price-settings/units"
 import {
-  $feeRatio, $inputDurationPriceModelDuration,
-  $isInputDurationPriceModalShowed,
-  toggleInputDurationPriceModal
+  $feeRatio,
+  $inputDurationPriceModelDuration,
+  $isInputDurationPriceModalShowed
 } from "@/pages/coach/schedule/models/schedule/units"
-import { DurationType } from "@/lib/api/coach-sessions"
 
 
 const StyledDialog = styled(Dialog)`
