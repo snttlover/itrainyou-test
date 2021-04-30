@@ -5,7 +5,7 @@ import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { useGoogleLogin } from "react-google-login"
 import { config } from "@/config"
-import { getRefreshToken, $syncedEmail, $isSynced, $isGoogleCalendarAdded, syncGoogleCalendar } from "@/pages/coach/schedule/models/sessions.model"
+import { getRefreshToken, $syncedEmail, $isSynced, $isGoogleCalendarAdded, syncGoogleCalendar, deleteSynchronization } from "@/pages/coach/schedule/models/sessions.model"
 import { useEvent, useStore } from "effector-react"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 
@@ -38,10 +38,18 @@ const Row = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 28px;
+
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+  `}
 `
 
 const SyncButton = styled(DashedButton)`
   width: 240px;
+
+  ${MediaRange.lessThan("mobile")`
+    align-self: flex-end;
+  `}
 `
 
 const Email = styled.div`
@@ -52,12 +60,33 @@ const Email = styled.div`
   color: #424242;
 `
 
+const DeleteIcon = styled(Icon).attrs({ name: "delete" })`
+  fill: #9AA0A6;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-left: 8px;
+`
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  ${MediaRange.lessThan("mobile")`
+    align-self: flex-start;
+    margin-bottom: 24px;
+  `}
+`
+
+
 export const GoogleCalendar = () => {
   const onSuccess = useEvent(getRefreshToken)
   const email = useStore($syncedEmail)
   const isSynced = useStore($isSynced)
   const isAdded = useStore($isGoogleCalendarAdded)
   const onSync = useEvent(syncGoogleCalendar)
+  const onDelete = useEvent(deleteSynchronization)
 
   const { signIn } = useGoogleLogin({
     clientId: `${config.GOOGLE_CLIENT_ID}`,
@@ -83,7 +112,10 @@ export const GoogleCalendar = () => {
       </GoogleButton>
         :
         (<Row>
-          <Email>{email}</Email>
+          <UserInfo>
+            <Email>{email}</Email>
+            <DeleteIcon onClick={() => onDelete()} />
+          </UserInfo>
           <SyncButton onClick={handleOnClick}>{isSynced === "synced" ? "Отключить" : "Включить"} синхронизацию</SyncButton>
         </Row>)
       }

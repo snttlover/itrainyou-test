@@ -27,7 +27,9 @@ import {
   setAddSessionDate,
   showAddSessionModal,
   showMobileSessionInfo,
-  $isMobileSessionInfoShowed
+  $isMobileSessionInfoShowed,
+  setMobileInfo,
+  $mobileEventInfo,
 } from "@/pages/coach/schedule/models/add-session.model"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 
@@ -101,6 +103,7 @@ const AddVacationButton = styled(DashedButton)`
 const ToolTipButton = styled(DashedButton)`
   width: 80%;
   max-width: 200px;
+  align-self: center;
 `
 
 const StyledMonthContainer = styled(MonthContainer)`
@@ -187,7 +190,7 @@ const CalendarCell = styled.td<{presentDay: boolean}>`
   `}
 `
 
-const Session = styled.div<{areAvailable: boolean}>`
+const Session = styled.div<{areAvailable: boolean; googleEvent: boolean}>`
   background: ${({areAvailable})=> areAvailable ? "#eaa6ff" : "#FFFFFF"};
   border-radius: 9px;
   border: ${({areAvailable})=> !areAvailable ? "1px dashed #DFD0E7" : ""};
@@ -200,6 +203,7 @@ const Session = styled.div<{areAvailable: boolean}>`
   padding: 0 4px;
   display: flex;
   justify-content: space-between;
+  text-decoration: ${({googleEvent})=> googleEvent ? "line-through" : "none"};
   
   &:hover ${IconToolTip} {
      display: block;
@@ -265,6 +269,15 @@ const AddIcon = styled(Icon).attrs({ name: "cross" })`
   `}
 `
 
+const AddSessionIcon = styled(Icon).attrs({ name: "cross" })`
+  width: 20px;
+  height: 20px;
+  transform: rotate(45deg);
+  fill: #9aa0a6;
+  cursor: pointer;
+  margin-right: 14px;
+`
+
 const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })<{ pinned: boolean}>`
   fill: ${props => props.theme.colors.primary};
   width: 4px;
@@ -273,7 +286,7 @@ const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })<{ pinned:
 
   ${MediaRange.lessThan("mobile")`
     display: ${
-          // @ts-ignore
+  // @ts-ignore
   ({ pinned }) => (pinned ? "flex" : "none")};
   `}
 `
@@ -304,8 +317,9 @@ const UserName = styled.div`
 
 const UserInfo = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
   margin-top: 24px;
   margin-bottom: 16px;
 `
@@ -313,6 +327,14 @@ const UserInfo = styled.div`
 const StyledDialog = styled(Dialog)`
   max-width: 560px;
   padding: 24px 24px;
+  width: 90%;
+`
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `
 
 export type ScheduleCalendarTypes = {
@@ -322,22 +344,25 @@ export type ScheduleCalendarTypes = {
 }
 
 type SessionType = {
+  googleEvent: boolean
   areAvailable: boolean
-  client: [any]
+  client?: [any]
   id: number
-  sessionDurationType: "D30" | "D45" | "D60" | "D90"
+  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
   startTime: Dayjs
   endTime: Dayjs
 }
 
-const MobileSessionInfoModal = (session: SessionType) => {
+const MobileSessionInfoModal = () => {
   const toggle = useEvent(showMobileSessionInfo)
 
   const visibility = useStore($isMobileSessionInfoShowed)
+  const session = useStore($mobileEventInfo)
 
   const _removeSession = useEvent(removeSession)
 
   const {id, client} = fixAvatarAndImageUrl(session)
+
 
   const handleOnClick = () => {
     _removeSession(session.id)
@@ -345,22 +370,28 @@ const MobileSessionInfoModal = (session: SessionType) => {
   return (
     <StyledDialog value={visibility} onChange={toggle}>
       <ToolTipContainer>
-        {session.areAvailable ?
+        {session.googleEvent ?
           <>
-            <Title>Сессия забронирована</Title>
+            <Title>Этот слот заполнен в вашем google-календаре</Title>
             <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
-            <UserInfo>
-              <StyledAvatar src={client?.avatar || null} />
-              <UserName>{client?.firstName} {client?.lastName}</UserName>
-            </UserInfo>
-            <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
           </>
           :
-          <>
-            <Title>Этот слот еще не занят никем в вашем расписании</Title>
-            <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-          </>
-        }
+          (session.areAvailable ?
+            <>
+              <Title>Сессия забронирована</Title>
+              <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+              <UserInfo>
+                <StyledAvatar src={client?.avatar || null} />
+                <UserName>{client?.firstName} {client?.lastName}</UserName>
+              </UserInfo>
+              <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+            </>
+            :
+            <>
+              <Title>Этот слот еще не занят никем в вашем расписании</Title>
+              <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+            </>
+          )}
       </ToolTipContainer>
     </StyledDialog>
   )
@@ -379,21 +410,24 @@ const ToolTipContent = (session: SessionType) => {
 
   return (
     <ToolTipContainer>
-      {session.areAvailable ?
-        <>
-          <ToolTipHeader>Сессия забронирована</ToolTipHeader>
-          <UserInfo>
-            <StyledAvatar src={client?.avatar || null} />
-            <UserName>{client?.firstName} {client?.lastName}</UserName>
-          </UserInfo>
-          <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
-        </>
+      {session.googleEvent ?
+        <div>Этот слот заполнен в вашем google-календаре</div>
         :
-        <>
-          <div>Этот слот еще не занят никем в вашем расписании</div>
-          <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-        </>
-      }
+        (session.areAvailable ?
+          <>
+            <ToolTipHeader>Сессия забронирована</ToolTipHeader>
+            <UserInfo>
+              <StyledAvatar src={client?.avatar || null} />
+              <UserName>{client?.firstName} {client?.lastName}</UserName>
+            </UserInfo>
+            <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+          </>
+          :
+          <>
+            <div>Этот слот еще не занят никем в вашем расписании</div>
+            <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+          </>
+        )}
     </ToolTipContainer>
   )
 }
@@ -409,6 +443,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const _setAddSessionModalShow = useEvent(showAddSessionModal)
 
   const _setDate = useEvent(setAddSessionDate)
+  const _setMobileEventInfo = useEvent(setMobileInfo)
 
   const _removeSession = useEvent(startRemovingSession)
   const _removeSessionsRange = useEvent(removeSessionsRange)
@@ -459,15 +494,14 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
     window.innerWidth > 480 ? onAddClick(day) : setCurrentDay(day)
   }
 
-  const handleOnSessionClick = (e: React.SyntheticEvent, session: {
-    areAvailable: boolean
-    client: any
-    id: number
-    sessionDurationType: DurationType,
-    startTime: Dayjs
-    endTime: Dayjs}) => {
+  const handleOnSessionClick = (e: React.SyntheticEvent, session: SessionType) => {
     setShow({sessionId: session.id})
     e.stopPropagation()
+  }
+
+  const handleMobileEventOnClick = (session: SessionType) => {
+    _setMobileEventInfo(session)
+    _setMobileSessionInfoShow(true)
   }
 
   return (
@@ -514,7 +548,10 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                           {sessions.sessions
                             .filter(session => session.startTime.isSame(day, "d"))
                             .map(session => (
-                              <Session onClick={(event) => handleOnSessionClick(event,session)} key={session.id} areAvailable={session.areAvailable}>
+                              <Session 
+                                onClick={(event) => handleOnSessionClick(event,session)} 
+                                key={session.id} googleEvent={session.googleEvent} 
+                                areAvailable={session.areAvailable} >
                                 {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
                                 {/*<CrossIcon onClick={() => _removeSession(session)} />*/}
                                 <IconToolTip ref={toolTipRef} key={session.id} show={showToolTip.sessionId === session.id}>
@@ -534,20 +571,20 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
         </HorizontalOverflowScrollContainer>
       </Container>
       <MobileList>
+        <Row>
+          <ToolTipHeader>{currentDay.format("D MMMM")}</ToolTipHeader>
+          <AddSessionIcon onClick={() => onAddClick(currentDay)} />
+        </Row>
         {sessions.sessions
           .filter(session => session.startTime.isSame(currentDay, "d")).map(session => (
             <Times key={session.id} >
-              <Time primary={session.areAvailable} onClick={() => _setMobileSessionInfoShow(true)}>
+              <Time googleEvent={session.googleEvent} primary={session.areAvailable} onClick={() => handleMobileEventOnClick(session)}>
                 {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
               </Time>
-              <RemoveIcon onClick={() => _removeSession(session)} />
-              <MobileSessionInfoModal {...session} key={session.id} />
+              <AddIcon onClick={() => onAddClick(currentDay)} />
             </Times>
           ))}
-        <Times>
-          <Time />
-          <AddIcon onClick={() => onAddClick(currentDay)} />
-        </Times>
+        <MobileSessionInfoModal />
       </MobileList>
     </CalendarContainer>
   )
