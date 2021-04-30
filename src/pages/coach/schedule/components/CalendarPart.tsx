@@ -18,8 +18,8 @@ import {
   CalendarGate,
   changePickedDeleteRange,
   DateArray,
-  loadSessionsFx,
   removeSessionsRange,
+  loadCalendarEventsFx
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useGate, useStore } from "effector-react"
@@ -100,7 +100,7 @@ const DesktopCalendar = styled.div`
 `
 
 export const CalendarPart = () => {
-  const isSessionsLoading = useStore(loadSessionsFx.pending)
+  const isSessionsLoading = useStore(loadCalendarEventsFx.pending)
   const _setDate = useEvent(setAddSessionDate)
   const _removeSessionsRange = useEvent(removeSessionsRange)
   const _setCurrentMonth = useEvent(setCurrentMonth)

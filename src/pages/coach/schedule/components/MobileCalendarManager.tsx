@@ -24,7 +24,7 @@ export const Times = styled.div`
   padding: 0 6px;
 `
 
-export const Time = styled.p<{ primary?: boolean }>`
+export const Time = styled.p<{ primary?: boolean; googleEvent: boolean }>`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -32,6 +32,7 @@ export const Time = styled.p<{ primary?: boolean }>`
   line-height: 22px;
   color: #424242;
   border-radius: 9px;
+  text-decoration: ${({googleEvent})=> googleEvent ? "line-through" : "none"};
   background-color: ${({primary})=> primary !== undefined ? (primary ? "#eaa6ff" : "#FFFFFF") : "unset"};
   border: ${({primary})=> primary !== undefined ? (primary ? "" : "1px dashed #DFD0E7") : "unset"};
 `
@@ -77,14 +78,14 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
       <Divider />
       {selectedDaySessions.map(session => (
         <Times key={session.id} >
-          <Time primary={session.areAvailable}>
+          <Time googleEvent={session.googleEvent} primary={session.areAvailable}>
             {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
           </Time>
           <RemoveIcon onClick={() => _removeSession(session)} />
         </Times>
       ))}
       <Times>
-        <Time />
+        <Time googleEvent={false} />
         <AddIcon onClick={() => onAddClick(currentDate)} />
       </Times>
     </>

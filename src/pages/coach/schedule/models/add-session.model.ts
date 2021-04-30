@@ -23,6 +23,28 @@ export const $isMobileSessionInfoShowed = createStore<boolean>(false).on(
     return !state
   })
 
+export const setMobileInfo = createEvent<{
+  googleEvent: boolean
+  areAvailable: boolean
+  client?: [any]
+  id: number
+  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  startTime: Dayjs
+  endTime: Dayjs
+}>()
+
+export const $mobileEventInfo = restore<{
+  googleEvent: boolean
+  areAvailable: boolean
+  client?: [any]
+  id: number
+  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  startTime: Dayjs
+  endTime: Dayjs
+}>(setMobileInfo,
+  // @ts-ignore
+  {})
+
 export const setAddSessionDate = createEvent<Dayjs>()
 export const $sessionDate = restore(setAddSessionDate, date())
 
