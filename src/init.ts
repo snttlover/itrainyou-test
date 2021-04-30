@@ -1,4 +1,6 @@
 import "@/pages/auth/pages/socials/models/init"
 import "@/pages/auth/pages/signup/models/init"
 import "@/pages/search/coach-by-id/models/init.ts"
+import "@/pages/coach/schedule/models/price-settings/init.ts"
+import "@/pages/coach/schedule/models/schedule/init.ts"
 import "@/feature/client-funds-up/dialog/models/init.ts"

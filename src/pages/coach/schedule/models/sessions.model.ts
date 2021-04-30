@@ -4,7 +4,6 @@ import { addGoogleCalendar, endSyncCalendar, startSyncCalendar, AddGoogleCalenda
 import { removeCoachSession, removeCoachSessionRange } from "@/lib/api/coaching-sessions/remove-coach-session"
 import { date } from "@/lib/formatting/date"
 import { $monthEndDate, $monthStartDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
-import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
 import {
@@ -21,6 +20,7 @@ import {
 } from "effector-root"
 import { $sessionToDelete } from "@/pages/coach/schedule/models/remove-session.model"
 import { AxiosError } from "axios"
+import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule/units"
 
 type DateRange = {
   from: string

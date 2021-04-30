@@ -3,6 +3,7 @@ import MaskedInput from "react-maskedinput"
 import styled from "styled-components"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { useState } from "react"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 
 const TextBox = styled.input<{ error?: string | null | false; withoutBorder?: boolean; maxWidth?: string}>`
   outline: none;
@@ -18,8 +19,6 @@ const TextBox = styled.input<{ error?: string | null | false; withoutBorder?: bo
   color: #424242;
   resize: none;
   overflow: hidden;
-  max-width: ${({ maxWidth }) => maxWidth ? maxWidth : "200px"};
-    
 
   &:hover {
     border: 1px solid #919be0;
@@ -57,8 +56,8 @@ const TextBox = styled.input<{ error?: string | null | false; withoutBorder?: bo
 const StyledFormItem = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
   width: 100%;
+  max-width: 200px;
 `
 
 export const Label = styled.div<{error?: boolean}>`
@@ -85,6 +84,13 @@ const FormItemRequiredStar = styled.span`
   line-height: 16px;
 
   color: #ff6b00;
+`
+
+const StyledLoader = styled(Loader)`
+  width: 100px;
+  height: 100px;
+  position: relative;
+  right: -40px;
 `
 
 const RubbleSign = styled.div`
@@ -126,9 +132,10 @@ export type InputTypes = {
     mask?: string
     required?: boolean
     reff?: React.RefObject<any>
+    loading?: boolean
 }
 
-export const Input = styled((props: InputTypes) => {
+export const InnerInput = styled((props: InputTypes) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
       props.onChange(e.target.value)
@@ -139,8 +146,8 @@ export const Input = styled((props: InputTypes) => {
 
 const InputPasswordContainer = styled.div<{maxWidth?: string}>`
   position: relative;
-  max-width: ${({ maxWidth }) => maxWidth ? maxWidth : "200px"};
-  ${Input} {
+  
+  ${InnerInput} {
     width: 100%;
   }
 
@@ -171,19 +178,22 @@ const LabelItem = styled(({ label, children, error, required, ...props }: FormIt
   )
 })``
 
-export const InputComponent = styled(({ className, label, error, price, ...props }: InputTypes) => {
+export const Input = styled(({ className, label, error, price, mask, loading, ...props }: InputTypes) => {
   const [showPassword, setShowPassword] = useState(true)
 
   const handleOnClick = () => {
-    //"₽"
     setShowPassword(!showPassword)
   }
 
   return (
-    <LabelItem label={label} error={error}>
+    <LabelItem label={label} error={error} className={className}>
       <InputPasswordContainer maxWidth={props.maxWidth}>
-        <Input {...props} type={showPassword ? "text" : "password"} />
-        {!price ? <RubbleSign>₽</RubbleSign> : <Icon name={showPassword ? "eye-open" : "eye-close"} onClick={handleOnClick} />}
+        <InnerInput {...props} type={showPassword ? "text" : "password"} />
+        {price ?
+          <>
+            <RubbleSign>{loading ? <StyledLoader /> : "₽"}</RubbleSign>
+          </>: null}
+        {mask? <Icon name={showPassword ? "eye-open" : "eye-close"} onClick={handleOnClick} /> : null}
       </InputPasswordContainer>
     </LabelItem>
   )

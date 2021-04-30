@@ -1,8 +1,7 @@
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { attach, combine, createEvent, createStore } from "effector-root"
 import { UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
-import { $feeRatio, loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
-import { combine, createEvent, createStore, forward, sample, merge, split, attach } from "effector-root"
-import { debounce, spread } from "patronum"
+import { Toast } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { $feeRatio, updateScheduleFx } from "@/pages/coach/schedule/models/schedule/units"
 
 export type Prices = {
   promo?: number
@@ -19,11 +18,9 @@ type Price = {
   value: number
 }
 
-type ChangePriceEvent = { name: keyof Prices; value: number }
-
+export type ChangePriceEvent = { name: keyof Prices; value: number }
 export const changePrice = createEvent<ChangePriceEvent>()
-const setPrices = createEvent<Prices>()
-
+export const setPrices = createEvent<Prices>()
 export const $prices = createStore<Price[]>([
   {
     name: "promo",
@@ -74,51 +71,14 @@ export const $prices = createStore<Price[]>([
       isLoading: keys.includes(price.name) ? false : price.isLoading,
     }))
   })
-
 export const $pricesWithFee = combine($prices, $feeRatio, (prices, feeRatio) =>
   prices.map(price => ({ ...price, valueWithFee: price ? price.value + price.value * feeRatio : 0 }))
 )
-
-forward({
-  from: loadScheduleFx.doneData.map(data => ({
-    d30Price: parseFloat(data.d30Price),
-    d45Price: parseFloat(data.d45Price),
-    d60Price: parseFloat(data.d60Price),
-    d90Price: parseFloat(data.d90Price),
-  })),
-  to: setPrices,
-})
-
-const { d30Changed, d45Changed, d60Changed, d90Changed } = split(changePrice, {
-  d30Changed: ({ name, value}) => name === "d30Price" && !!value,
-  d45Changed: ({ name, value}) => name === "d45Price" && !!value,
-  d60Changed: ({ name, value}) => name === "d60Price" && !!value,
-  d90Changed: ({ name, value}) => name === "d90Price" && !!value,
-})
-
-const savePricesFx = attach({
+export const savePricesFx = attach({
   effect: updateScheduleFx,
   mapParams: (params: UpdateCoachSchedule) => params,
 })
-
-const successMessage: Toast = {
+export const successMessage: Toast = {
   type: "info",
   text: "Цены сохранены",
 }
-
-forward({
-  from: savePricesFx.doneData.map(_ => successMessage),
-  to: [toasts.remove, toasts.add],
-})
-
-sample({
-  clock: merge([
-    debounce({ source: d30Changed, timeout: 500 }),
-    debounce({ source: d45Changed, timeout: 500 }),
-    debounce({ source: d60Changed, timeout: 500 }),
-    debounce({ source: d90Changed, timeout: 500 }),
-  ]),
-  source: $prices,
-  fn: (_, { name, value }: ChangePriceEvent) => ({ [name]: value }),
-  target: savePricesFx,
-})

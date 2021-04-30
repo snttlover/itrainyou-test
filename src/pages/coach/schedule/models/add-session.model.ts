@@ -5,7 +5,7 @@ import { date } from "@/lib/formatting/date"
 import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
-import { $prices } from "@/pages/coach/schedule/models/price-settings.model"
+import { $prices } from "@/pages/coach/schedule/models/price-settings/units"
 
 export const showAddSessionModal = createEvent<void | boolean>()
 export const $isAddSessionModalShowed = createStore<boolean>(false).on(

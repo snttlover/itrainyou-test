@@ -37,7 +37,7 @@ const calculateProgress = ({
       if (Array.isArray(value)) return value.length > 0
 
       // @ts-ignore
-      // Проверка заполненность цен в расписании (schedule)
+      // Проверка заполненность цен в расписании (price-settings)
       if (isLiteralObject(value) && "d30Price" in value) {
         return Object.values(value).some((_value) => !isArray(_value) && Boolean(_value))
       }

@@ -3,11 +3,11 @@ import * as React from "react"
 import styled from "styled-components"
 import { WeekDaySchedule } from "@/pages/coach/schedule/components/WeekDaySchedule"
 import { MediaRange } from "@/lib/responsive/media"
-import { $feeRatio } from "@/pages/coach/schedule/models/schedule.model"
 import { useStore } from "effector-react"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
-import { InputComponent } from "@/newcomponents/input/Input"
+import { $feeRatio } from "@/pages/coach/schedule/models/schedule/units"
 
+const StyledPriceInputGroup = styled(PriceInputGroup)
 
 const PriceListContainer = styled.div`
   margin-top: 16px;

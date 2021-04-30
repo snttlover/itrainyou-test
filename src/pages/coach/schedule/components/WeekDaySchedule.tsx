@@ -7,12 +7,12 @@ import { $durationOptions } from "@/pages/coach/schedule/models/add-session.mode
 import {
   $freeWeekdayTimes,
   $weekdaySlotsForView,
-  addSlot,
+  addSlot, checkDurationPrice,
   removeSlot,
 } from "@/pages/coach/schedule/models/weekday-schedule.model"
 import { useEvent, useStore, useStoreMap } from "effector-react"
 import styled from "styled-components"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { PricesDialog } from "@/pages/coach/schedule/components/PricesDialog"
 import { $numberOfSessions } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 import { MediaRange } from "@/lib/responsive/media"
@@ -164,6 +164,10 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
   const [startTime, setStartTime] = useState("")
   const [duration, setDuration] = useState<DurationType>("D30")
 
+  useEffect(() => {
+    _checkDurationPrice(duration)
+  }, [duration, startTime])
+
   const freeTimes = useStoreMap({
     store: $freeWeekdayTimes,
     keys: [weekday],
@@ -195,6 +199,8 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
   }
 
   const showTooltips = useStore($numberOfSessions) < 4
+
+  const _checkDurationPrice = useEvent(checkDurationPrice)
 
   return (
     <Container className={className}>
