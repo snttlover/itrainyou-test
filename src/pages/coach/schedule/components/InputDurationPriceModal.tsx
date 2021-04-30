@@ -5,12 +5,13 @@ import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { MediaRange } from "@/lib/responsive/media"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
 import { Button } from "@/oldcomponents/button/normal/Button"
-import { changePrice } from "@/pages/coach/schedule/models/price-settings/units"
+import { changePrice, Prices } from "@/pages/coach/schedule/models/price-settings/units"
 import {
   $feeRatio, $inputDurationPriceModelDuration,
   $isInputDurationPriceModalShowed,
   toggleInputDurationPriceModal
 } from "@/pages/coach/schedule/models/schedule/units"
+import { DurationType } from "@/lib/api/coach-sessions"
 
 
 const StyledDialog = styled(Dialog)`
@@ -69,8 +70,8 @@ export const InputDurationPriceModal = () => {
   const visibility = useStore($isInputDurationPriceModalShowed)
   const duration = useStore($inputDurationPriceModelDuration)
 
-  let title
-  let name
+  let title = ""
+  let name: keyof Prices = "d30Price"
   if (duration === "D30") {
     title = "30 минут"
     name = "d30Price"
@@ -92,6 +93,7 @@ export const InputDurationPriceModal = () => {
   const priceUpdate = useEvent(changePrice)
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <StyledDialog value={visibility} onChange={() => {}} notClosable>
       <Title>Назначьте цену за сессию</Title>
       <Description>
