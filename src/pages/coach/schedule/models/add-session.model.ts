@@ -238,28 +238,6 @@ export const $isCreateButtonDisabled = combine(
   (dateTimeCorrect, durationCorrect, priceCorrect, pending) => !dateTimeCorrect || !durationCorrect || !priceCorrect  || pending
 )
 
-/*const $canBeCreated = combine(
-  $startDatetimeIsCorrect,
-  $durationIsCorrect,
-  createSessionsFx.pending,
-  (dateTimeCorrect, durationCorrect, pending) => dateTimeCorrect && durationCorrect && !pending
-)*/
-
-/*sample({
-  clock: guard({ source: addSessions, filter: $canBeCreated }),
-  source: {
-    form: $form,
-    date: $sessionDate,
-  },
-  fn: ({ form, date }) => {
-    const [hour, minute] = form.startDatetime.split(":")
-    const datetime = date.set("h", parseInt(hour, 10)).set("m", parseInt(minute, 10)).second(0).millisecond(0)
-    return { ...form, startDatetime: datetime.toISOString() }
-  },
-  target: createSessionsFx,
-})*/
-
-
 sample({
   clock: addSessions,
   source: {

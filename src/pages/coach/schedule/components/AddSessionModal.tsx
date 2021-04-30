@@ -224,9 +224,9 @@ export const AddSessionModal = () => {
             <AddIcon onClick={() => _onAdd()} /> <Text>Добавить еще время</Text>
           </RowBlock>
           <RowBlock>
-            <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addWeekDaySlot()}>
+            {/*<StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addWeekDaySlot()}>
               Применить для всех {date.format("dd")}
-            </StyledDashedButton>
+            </StyledDashedButton>*/}
             <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addTodaySession()}>
               Применить для {date.format("D MMMM")}
             </StyledDashedButton>

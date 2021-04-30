@@ -10,7 +10,7 @@ import {
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled, { ThemeProps } from "styled-components"
 import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
@@ -58,8 +58,7 @@ const MobileList = styled.div`
     min-width: 280px;
   `}
 `
-//${({areAvailable})=> !areAvailable ? "none" : "block"}
-//transform: translate(-55%,-220%); -135px
+
 const IconToolTip = styled.div<{show: boolean}>`
   width: 240px;
   height: auto;
@@ -72,8 +71,8 @@ const IconToolTip = styled.div<{show: boolean}>`
   font-size: 14px;
   line-height: 22px;
   color: #424242;
-  bottom: 80%;
-  left: -80%;
+  bottom: 105%;
+  left: -100%;
   display: ${({show})=> !show ? "none" : "block"};
 
   &:after {
@@ -154,8 +153,8 @@ const CalendarTable = styled.table`
   border-spacing: 0px;
   border-collapse: collapse;
 `
-//min-height: ${({weeks})=> weeks ? "48px" : "unset"};
-//${({weeks})=> weeks ? "100%" : "48px"}
+
+
 const WeekRow = styled.tr<{weeks?: boolean}>`
   height: ${({weeks})=> weeks ? "100%" : "48px"};
   min-height: 48px;
@@ -191,6 +190,7 @@ const CalendarCell = styled.td<{presentDay: boolean}>`
 `
 
 const Session = styled.div<{areAvailable: boolean; googleEvent: boolean}>`
+  position: relative;
   background: ${({areAvailable})=> areAvailable ? "#eaa6ff" : "#FFFFFF"};
   border-radius: 9px;
   border: ${({areAvailable})=> !areAvailable ? "1px dashed #DFD0E7" : ""};
@@ -210,14 +210,8 @@ const Session = styled.div<{areAvailable: boolean; googleEvent: boolean}>`
    }
 `
 
-//&:hover ${IconToolTip} {
-//     display: block;
-//   }
-
 const SessionContainer = styled.div`
-  overflow-y: auto;
   height: 100%;
-  margin-bottom: auto;
   display: flex;
   flex-direction: column;
 
@@ -397,38 +391,116 @@ const MobileSessionInfoModal = () => {
   )
 }
 
-const ToolTipContent = (session: SessionType) => {
+const ToolTipContent = (props: {session: SessionType; showedId: {sessionId: number | null} }) => {
 
   //const _removeSession = useEvent(startRemovingSession)
   const _removeSession = useEvent(removeSession)
 
-  const {id, client} = fixAvatarAndImageUrl(session)
+  const {id, client} = fixAvatarAndImageUrl(props.session)
   
   const handleOnClick = () => {
-    _removeSession(session.id)
+    _removeSession(props.session.id)
   }
 
   return (
-    <ToolTipContainer>
-      {session.googleEvent ?
-        <div>Этот слот заполнен в вашем google-календаре</div>
-        :
-        (session.areAvailable ?
-          <>
-            <ToolTipHeader>Сессия забронирована</ToolTipHeader>
-            <UserInfo>
-              <StyledAvatar src={client?.avatar || null} />
-              <UserName>{client?.firstName} {client?.lastName}</UserName>
-            </UserInfo>
-            <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
-          </>
+    <IconToolTip key={props.session.id} show={props.showedId.sessionId === props.session.id} >
+      <ToolTipContainer>
+        {props.session.googleEvent ?
+          <div>Этот слот заполнен в вашем google-календаре</div>
           :
-          <>
-            <div>Этот слот еще не занят никем в вашем расписании</div>
-            <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-          </>
-        )}
-    </ToolTipContainer>
+          (props.session.areAvailable ?
+            <>
+              <ToolTipHeader>Сессия забронирована</ToolTipHeader>
+              <UserInfo>
+                <StyledAvatar src={client?.avatar || null} />
+                <UserName>{client?.firstName} {client?.lastName}</UserName>
+              </UserInfo>
+              <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+            </>
+            :
+            <>
+              <div>Этот слот еще не занят никем в вашем расписании</div>
+              <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+            </>
+          )}
+      </ToolTipContainer>
+    </IconToolTip>
+  )
+}
+
+const Sessions = (props: {day: Dayjs}) => {
+
+  const sessions = useStore($allSessions)
+
+  const [showedToolTipId, setShow] = useState<{sessionId: null | number}>({sessionId: null})
+
+  const handleOnSessionClick = (e: React.SyntheticEvent, session: SessionType) => {
+    setShow({sessionId: session.id})
+    e.stopPropagation()
+  }
+
+  const toolTipRef = useRef(null)
+
+
+  // ToDo: придумать как пофиксить утечку памяти
+  useClickOutside(toolTipRef, (e) => {
+    setShow({sessionId: null})
+  })
+
+  return (
+    <SessionContainer>
+      {sessions.sessions
+        .filter(session => session.startTime.isSame(props.day, "d"))
+        .map(session => (
+          <Session
+            onClick={(event) => handleOnSessionClick(event,session)}
+            key={session.id} googleEvent={session.googleEvent}
+            areAvailable={session.areAvailable} >
+            {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
+            <ToolTipContent showedId={showedToolTipId} session={session} />
+          </Session>
+        ))}
+    </SessionContainer>
+  )
+}
+
+const MobileSessions = (props: {currentDay: Dayjs}) => {
+
+  const sessions = useStore($allSessions)
+
+  const _setMobileSessionInfoShow = useEvent(showMobileSessionInfo)
+  const _setMobileEventInfo = useEvent(setMobileInfo)
+  const _setDate = useEvent(setAddSessionDate)
+  const _setAddSessionModalShow = useEvent(showAddSessionModal)
+
+
+  const handleMobileEventOnClick = (session: SessionType) => {
+    _setMobileEventInfo(session)
+    _setMobileSessionInfoShow(true)
+  }
+
+  const onAddClick = (date: Dayjs) => {
+    _setDate(date)
+    _setAddSessionModalShow(true)
+  }
+
+  return (
+    <MobileList>
+      <Row>
+        <ToolTipHeader>{props.currentDay.format("D MMMM")}</ToolTipHeader>
+        <AddSessionIcon onClick={() => onAddClick(props.currentDay)} />
+      </Row>
+      {sessions.sessions
+        .filter(session => session.startTime.isSame(props.currentDay, "d")).map(session => (
+          <Times key={session.id} >
+            <Time googleEvent={session.googleEvent} primary={session.areAvailable} onClick={() => handleMobileEventOnClick(session)}>
+              {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
+            </Time>
+            <AddIcon onClick={() => onAddClick(props.currentDay)} />
+          </Times>
+        ))}
+      <MobileSessionInfoModal />
+    </MobileList>
   )
 }
 
@@ -455,8 +527,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
   const daysCount = monthDayStart.daysInMonth() + countPadStartDays + countPadEndDays
-
-  const [showToolTip, setShow] = useState<{sessionId: null | number}>({sessionId: null})
+  
 
   const weeks: Dayjs[][] = []
   let currentWeek = []
@@ -480,10 +551,6 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
 
   const [currentDay, setCurrentDay] = useState<Dayjs>(date())
 
-  const toolTipRef = useRef(null)
-  /*useClickOutside(toolTipRef, () => {
-    setTimeout(() => setShow({sessionId: null}), 200)
-  })*/
 
   const onAddClick = (date: Dayjs) => {
     _setDate(date)
@@ -491,18 +558,15 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   }
 
   const handleOnCellClick = (day: Dayjs) => {
-    window.innerWidth > 480 ? onAddClick(day) : setCurrentDay(day)
+    if((now.isBefore(day, "d") || now.isSame(day, "d"))) {
+      window.innerWidth > 480 ? onAddClick(day) : setCurrentDay(day)
+    }
   }
 
-  const handleOnSessionClick = (e: React.SyntheticEvent, session: SessionType) => {
+  /*const handleOnSessionClick = (e: React.SyntheticEvent, session: SessionType) => {
     setShow({sessionId: session.id})
     e.stopPropagation()
-  }
-
-  const handleMobileEventOnClick = (session: SessionType) => {
-    _setMobileEventInfo(session)
-    _setMobileSessionInfoShow(true)
-  }
+  }*/
 
   return (
     <CalendarContainer>
@@ -544,23 +608,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                         <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
                         {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => handleOnCellClick(day)} />}
                         <MarkerIcon pinned={sessions.sessions.filter(session => session.startTime.isSame(day, "d")).length > 0} />
-                        <SessionContainer>
-                          {sessions.sessions
-                            .filter(session => session.startTime.isSame(day, "d"))
-                            .map(session => (
-                              <Session 
-                                onClick={(event) => handleOnSessionClick(event,session)} 
-                                key={session.id} googleEvent={session.googleEvent} 
-                                areAvailable={session.areAvailable} >
-                                {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
-                                {/*<CrossIcon onClick={() => _removeSession(session)} />*/}
-                                <IconToolTip ref={toolTipRef} key={session.id} show={showToolTip.sessionId === session.id}>
-                                  <ToolTipContent {...session} key={session.id} />
-                                </IconToolTip>
-                                {/*<GrayTooltip key={session.id} ><ToolTipContent {...session} /></GrayTooltip>*/}
-                              </Session>
-                            ))}
-                        </SessionContainer>
+                        <Sessions day={day} />
                       </DayContainer>
                     </CalendarCell>
                   ))}
@@ -570,22 +618,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
           </CalendarTable>
         </HorizontalOverflowScrollContainer>
       </Container>
-      <MobileList>
-        <Row>
-          <ToolTipHeader>{currentDay.format("D MMMM")}</ToolTipHeader>
-          <AddSessionIcon onClick={() => onAddClick(currentDay)} />
-        </Row>
-        {sessions.sessions
-          .filter(session => session.startTime.isSame(currentDay, "d")).map(session => (
-            <Times key={session.id} >
-              <Time googleEvent={session.googleEvent} primary={session.areAvailable} onClick={() => handleMobileEventOnClick(session)}>
-                {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
-              </Time>
-              <AddIcon onClick={() => onAddClick(currentDay)} />
-            </Times>
-          ))}
-        <MobileSessionInfoModal />
-      </MobileList>
+      <MobileSessions currentDay={currentDay} />
     </CalendarContainer>
   )
 }
