@@ -7,6 +7,7 @@ import React from "react"
 import styled from "styled-components"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { Informer } from "@/newcomponents/informer/Informer"
+import { InputDurationPriceModal } from "./components/InputDurationPriceModal"
 
 const PriceContainer = styled.div`
   max-width: 320px;
@@ -90,20 +91,8 @@ export const Schedule = () => {
             {isWeekdaySchedulePending && <Spinner />}
           </PriceListContainer>
         </WeeklyScheduleContainer>
-        {/*<PriceContainer>
-          <Title>Цена</Title>
-          <Description>
-            Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
-          </Description>
-          <PriceListContainer>
-            <PriceInputGroup title='30 минут' name='d30Price' />
-            <PriceInputGroup title='45 минут' name='d45Price' />
-            <PriceInputGroup title='60 минут' name='d60Price' />
-            <PriceInputGroup title='90 минут' name='d90Price' />
-          </PriceListContainer>
-        </PriceContainer>*/}
       </ScheduleSettingsContainer>
-      {/*<CalendarPart />*/}
+      <InputDurationPriceModal />
     </>
   )
 }

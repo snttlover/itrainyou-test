@@ -1,11 +1,15 @@
 import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { UpdateCoachSchedule, WeekDayName, WeekDaySlot } from "@/lib/api/coaching-sessions/types"
-import { $sessionDate, $formSessionsData } from "@/pages/coach/schedule/models/add-session.model"
 import { date } from "@/lib/formatting/date"
-import { loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { loadSessionsWithParamsFx } from "@/pages/coach/schedule/models/sessions.model"
-import { attach, combine, createEvent, createStore, forward, restore, sample, merge } from "effector-root"
+import { attach, combine, createEvent, createStore, forward, merge, restore, sample } from "effector-root"
+import {
+  loadScheduleFx,
+  toggleInputDurationPriceModal,
+  updateScheduleFx
+} from "@/pages/coach/schedule/models/schedule/units"
+import { $prices } from "@/pages/coach/schedule/models/price-settings/units"
 
 export const saveWeekdaySlotsFx = attach({
   effect: updateScheduleFx,
@@ -180,14 +184,18 @@ sample({
   target: saveWeekdaySlotsFx,
 })
 
-/*sample({
-  clock: addSlotFromModal,
-  source: {
-    sessions: $startDatetime,
-    today: $sessionDate,
+export const checkDurationPrice = createEvent<DurationType>()
+
+sample({
+  clock: checkDurationPrice,
+  source: $prices,
+  fn: (prices, duration) => {
+    console.log("kek22", prices.find(price => price.key === duration)?.value)
+    return {
+      showModal: !prices.find(price => price.key === duration)?.value,
+      duration
+    }
   },
-  fn: ({sessions, today}) => {
-    return
-  },
-  target: saveWeekdaySlotsFx,
-})*/
+  target: toggleInputDurationPriceModal
+})
+

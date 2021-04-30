@@ -24,8 +24,8 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { Informer } from "@/newcomponents/informer/Informer"
-import { InputComponent } from "@/newcomponents/input/Input"
-import { $prices, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings.model"
+import { Input } from "@/newcomponents/input/Input"
+import { $prices, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings/units"
 
 
 const StyledDialog = styled(Dialog)`
@@ -139,7 +139,7 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
   const priceUpdate = useEvent(changePrice)
   return (
     <Informer>
-      <InputComponent
+      <Input
         placeholder='0'
         withoutBorder
         type='number'

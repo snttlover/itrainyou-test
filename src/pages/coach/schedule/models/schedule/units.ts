@@ -1,22 +1,44 @@
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
-import { createCoachSchedule } from "@/lib/api/coaching-sessions/create-coach-schedule"
+import { attach, createEffect, createEvent, createStore, restore } from "effector-root"
 import { getCoachSchedule } from "@/lib/api/coaching-sessions/get-coach-schedule"
 import { CreateCoachSchedule, UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
 import { updateCoachSchedule } from "@/lib/api/coaching-sessions/update-coach-schedule"
+import { createCoachSchedule } from "@/lib/api/coaching-sessions/create-coach-schedule"
 import { getSystemInfo } from "@/lib/api/system-info"
-import { attach, createEffect, createStore, forward } from "effector-root"
 import { createGate } from "@/scope"
+import { DurationType } from "@/lib/api/coach-sessions"
 
 export const loadScheduleFx = createEffect({
   handler: getCoachSchedule,
 })
-
-const loadSystemInfoFx = createEffect({
+export const loadSystemInfoFx = createEffect({
   handler: getSystemInfo,
 })
-
 export const $isEdit = createStore(false).on(loadScheduleFx.doneData, () => true)
-export const $feeRatio = createStore(0).on(loadSystemInfoFx.doneData, (_, data) => data.platformSessionFee)
+export const $feeRatio = createStore(0).on(
+  loadSystemInfoFx.doneData, (_, data) => data.platformSessionFee
+)
+
+export type toggleInputDurationPrice = {
+  showModal: boolean,
+  duration: DurationType,
+}
+
+export const toggleInputDurationPriceModal = createEvent<toggleInputDurationPrice>()
+export const $isInputDurationPriceModalShowed = createStore<boolean>(false)
+$isInputDurationPriceModalShowed.on(
+  toggleInputDurationPriceModal,
+  (state, payload) => {
+    return payload.showModal
+  }
+)
+
+export const $inputDurationPriceModelDuration = createStore<DurationType>("D30")
+$inputDurationPriceModelDuration.on(
+  toggleInputDurationPriceModal,
+  (state, payload) => {
+    return payload.duration
+  }
+)
 
 export const updateScheduleFx = attach({
   effect: createEffect({
@@ -44,12 +66,4 @@ export const updateScheduleFx = attach({
     form,
   }),
 })
-
-$isEdit.on(updateScheduleFx.done, () => true)
-
 export const ScheduleGate = createGate()
-
-forward({
-  from: ScheduleGate.open,
-  to: [loadScheduleFx, loadSystemInfoFx],
-})

@@ -1,6 +1,5 @@
 import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { $coachAccess } from "@/feature/user/user.model"
-import { ScheduleGate } from "@/pages/coach/schedule/models/schedule.model"
 import { CoachSchedulePlaceholder } from "@/pages/coach/schedule/CoachSchedulePlaceholder"
 import { useStore, useGate } from "effector-react"
 import * as React from "react"
@@ -9,12 +8,12 @@ import styled from "styled-components"
 import { Schedule } from "./Schedule"
 import { Tab, Tabs } from "@/oldcomponents/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
-import { InputComponent } from "@/newcomponents/input/Input"
-import { Input } from "@/oldcomponents/input/Input"
+import { Input } from "@/newcomponents/input/Input"
 import { useState } from "react"
 import { GoogleCalendar } from "@/pages/coach/schedule/GoogleCalendar"
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { Prices } from "@/pages/coach/schedule/Prices"
+import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
@@ -59,9 +58,6 @@ const Header = styled.div`
   `}
 `
 
-const StyledInput = styled(InputComponent)`
-`
-
 export const Title = styled.div`
     font-family: Roboto Slab;
     font-weight: 700;
@@ -91,13 +87,6 @@ export const CoachSchedulePage = () => {
 
   return (
     <CoachDashboardLayout>
-      {/*
-        <StyledInput
-        placeholder={"test"}
-        maxWidth={"400px"}
-        label='Текст'
-        error={"Неверный вариант"}
-        required value={value} onChange={setValue} />*/}
       <Container>
         <Header>Расписание</Header>
         <StyledTabs value={tab} onChange={changeTab}>
