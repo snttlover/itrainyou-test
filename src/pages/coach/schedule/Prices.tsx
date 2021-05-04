@@ -7,7 +7,7 @@ import { useStore } from "effector-react"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { $feeRatio } from "@/pages/coach/schedule/models/schedule/units"
 
-const StyledPriceInputGroup = styled(PriceInputGroup)
+const StyledPriceInputGroup = styled(PriceInputGroup)``
 
 const PriceListContainer = styled.div`
   margin-top: 16px;
@@ -19,6 +19,10 @@ const PriceListContainer = styled.div`
     ${MediaRange.greaterThan("mobile")`
       margin-top: 16px;
     `}
+  }
+  
+  ${StyledPriceInputGroup}:not(:first-child) {
+    margin-top: 16px;
   }
 `
 
@@ -44,10 +48,10 @@ export const Prices = () => {
         Цена для клиента — цена вашей сессии с учетом комиссии платформы ({feeRatio*100}%).
       </Description>
       <PriceListContainer>
-        <PriceInputGroup title='30 минут' name='d30Price' />
-        <PriceInputGroup title='45 минут' name='d45Price' />
-        <PriceInputGroup title='60 минут' name='d60Price' />
-        <PriceInputGroup title='90 минут' name='d90Price' />
+        <StyledPriceInputGroup title='30 минут' name='d30Price' />
+        <StyledPriceInputGroup title='45 минут' name='d45Price' />
+        <StyledPriceInputGroup title='60 минут' name='d60Price' />
+        <StyledPriceInputGroup title='90 минут' name='d90Price' />
       </PriceListContainer>
     </PriceContainer>
   )

@@ -1,21 +1,21 @@
-import { FormItem } from "@/oldcomponents/form-item/FormItem"
-import { PriceInput } from "@/pages/coach/schedule/components/PriceInput"
-import { useEvent, useStoreMap } from "effector-react"
+import { useEvent, useStore, useStoreMap } from "effector-react"
 import React from "react"
 import styled from "styled-components"
-import { $pricesWithFee, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings/units"
+import {
+  $priceInputError,
+  $pricesWithFee,
+  changePrice,
+  Prices
+} from "@/pages/coach/schedule/models/price-settings/units"
+import { Input } from "@/newcomponents/input/Input"
 
 const Container = styled.div`
   display: flex;
 `
 
-const StyledPriceInput = styled(PriceInput)`
+const PriceInput = styled(Input)`
   width: 100%;
-`
-
-const SummaryPriceFormItem = styled(FormItem)`
-  margin-left: 8px;
-  flex-shrink: 1.5;
+  max-width: none;
 `
 
 type PriceInputGroupType = {
@@ -41,26 +41,23 @@ export const PriceInputGroup: React.FC<PriceInputGroupType> = ({
     onChange = (value: string) => priceUpdate({ name, value: parseFloat(value) })
   }
 
+  if (value === undefined) {
+    value = price?.value ? price?.value.toString() : ""
+  }
+
+  const error = value ? "" : "Необходимо указать цену"
+
   return (
     <Container className={className}>
-      <FormItem label={title}>
-        <StyledPriceInput
-          placeholder='0'
-          type='number'
-          loading={price?.isLoading}
-          value={value === undefined ? (price?.value ? price?.value.toString() : "") : value}
-          onChange={onChange}
-        />
-      </FormItem>
-      {/*<SummaryPriceFormItem label='Итоговая цена'>
-        <StyledPriceInput
-          placeholder='0'
-          withoutBorder
-          readOnly
-          type='number'
-          value={price?.valueWithFee.toString() || ""}
-        />
-      </SummaryPriceFormItem>*/}
+      <PriceInput
+        label={title}
+        placeholder="0"
+        type="number"
+        loading={price?.isLoading}
+        errorText={error}
+        value={value!}
+        onChange={onChange}
+      />
     </Container>
   )
 }

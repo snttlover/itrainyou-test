@@ -128,7 +128,7 @@ export type InputTypes = {
     onFocus?: (e: React.FocusEvent) => void
     onBlur?: (e: React.FocusEvent) => void
     onKeyDown?: (e: React.KeyboardEvent) => void
-    error?: string | null | false
+    errorText?: string | null | boolean
     mask?: string
     required?: boolean
     reff?: React.RefObject<any>
@@ -166,7 +166,7 @@ const InputPasswordContainer = styled.div<{maxWidth?: string}>`
 const LabelItem = styled(({ label, children, error, required, ...props }: FormItemTypes) => {
   return (
     <StyledFormItem {...props}>
-      {label && <Label error>
+      {label && <Label error={!!error}>
         {label}&nbsp;{required && <FormItemRequiredStar>*</FormItemRequiredStar>}
       </Label>}
       {React.Children.map(children, child => {
@@ -178,7 +178,7 @@ const LabelItem = styled(({ label, children, error, required, ...props }: FormIt
   )
 })``
 
-export const Input = styled(({ className, label, error, price, mask, loading, ...props }: InputTypes) => {
+export const Input = styled(({ className, label, errorText, price, mask, loading, ...props }) => {
   const [showPassword, setShowPassword] = useState(true)
 
   const handleOnClick = () => {
@@ -186,7 +186,7 @@ export const Input = styled(({ className, label, error, price, mask, loading, ..
   }
 
   return (
-    <LabelItem label={label} error={error} className={className}>
+    <LabelItem label={label} error={errorText} className={className}>
       <InputPasswordContainer maxWidth={props.maxWidth}>
         <InnerInput {...props} type={showPassword ? "text" : "password"} />
         {price ?
