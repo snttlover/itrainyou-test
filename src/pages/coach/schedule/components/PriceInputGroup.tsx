@@ -2,7 +2,6 @@ import { useEvent, useStore, useStoreMap } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 import {
-  $priceInputError,
   $pricesWithFee,
   changePrice,
   Prices

@@ -129,11 +129,6 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
     name = "d90Price"
   }
 
-  /*const price = useStoreMap({
-    store: $pricesWithFee,
-    keys: [name],
-    fn: (prices, [name]) => prices.find(price => price.name === name),
-  })*/
 
   const [priceValue, setValue] = useState("")
   const priceUpdate = useEvent(changePrice)
@@ -145,7 +140,7 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
         type='number'
         value={priceValue}
         label={"Укажите цену сессии"}
-        onChange={value => {
+        onChange={(value: string) => {
           setValue(value)
         }}/>
       <StyledPriceButton

@@ -14,7 +14,7 @@ const TextBox = styled.input<{ error?: string | null | false; withoutBorder?: bo
   background: white;
   padding: 5px 8px;
   font-size: 16px;
-  line-height: 22px;
+  line-height: 24px;
   caret-color: #3746b0;
   color: #424242;
   resize: none;
