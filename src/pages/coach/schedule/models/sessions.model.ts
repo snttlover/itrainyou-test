@@ -43,9 +43,7 @@ export const removeSessionsRangeFx = createEffect({
 const CANCEL = -1
 export const removeSession = createEvent<number>()
 export const removeSessionFx = createEffect({
-  handler: (id: number) => {
-    return removeCoachSession(id)
-  },
+  handler: (id: number) => removeCoachSession(id),
 })
 
 const sessionRemoved = removeSessionFx.done.filter({ fn: () => true })
@@ -81,21 +79,15 @@ const $repeatedSessions = restore(
   loadScheduleFx.doneData.map(data => data.weekdaySlots),
   []
 )
-export const sessionAdded = createEvent<any>()
+export const sessionAdded = createEvent<CoachSession[]>()
 
-
-// .on(sessionRemoved, (state, payload) => state.sessions.filter(session => session.id !== payload.params))
-// @ts-ignore
+//  .on(sessionRemoved, (state, payload) => state.sessions.filter(session => session.id !== payload.params))
 const $sessions = createStore<CalendarEvents>({sessions: [], googleCalendarEvents: []})
   .on(loadCalendarEventsFx.doneData, (state, response) => response)
-  .on(sessionAdded, (state, session) => ({googleCalendarEvents: state.googleCalendarEvents, sessions: [...state.sessions, session]}))
-  .on(sessionRemoved, (state, payload) => state.sessions.filter(session => session.id !== payload.params))
-
-
-/*const $sessions = restore(loadSessionsFx.doneData, [])
-  .on(sessionAdded, (sessions, session) => [...sessions, session])
-  .on(sessionRemoved, (state, payload) => state.filter(session => session.id !== payload.params))*/
-
+  .on(sessionAdded, (state, session) =>
+    ({googleCalendarEvents: state.googleCalendarEvents, sessions: [...state.sessions, ...session]}))
+  .on(sessionRemoved, (state, payload) =>
+    ({googleCalendarEvents: state.googleCalendarEvents, sessions: state.sessions.filter(session => session.id !== payload.params)}))
 
 /*export const $allSessions = combine(
   { repeatedSessions: $repeatedSessions, sessions: $sessions },

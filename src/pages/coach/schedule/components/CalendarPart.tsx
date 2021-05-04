@@ -19,7 +19,7 @@ import {
   changePickedDeleteRange,
   DateArray,
   removeSessionsRange,
-  loadCalendarEventsFx
+  loadCalendarEventsFx, removeSessionFx
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useGate, useStore } from "effector-react"
@@ -101,6 +101,7 @@ const DesktopCalendar = styled.div`
 
 export const CalendarPart = () => {
   const isSessionsLoading = useStore(loadCalendarEventsFx.pending)
+  const isDeletingSession = useStore(removeSessionFx.pending)
   const _setDate = useEvent(setAddSessionDate)
   const _removeSessionsRange = useEvent(removeSessionsRange)
   const _setCurrentMonth = useEvent(setCurrentMonth)
@@ -112,7 +113,7 @@ export const CalendarPart = () => {
 
   const [visibility,setVisibility] = useState(false)
 
-  useGate(CalendarGate)
+  //useGate(CalendarGate)
 
 
   return (
@@ -132,7 +133,7 @@ export const CalendarPart = () => {
             showVacationModal={setVisibility}
           />
         </DesktopCalendar>
-        {isSessionsLoading && <Spinner />}
+        {(isSessionsLoading || isDeletingSession) && <Spinner />}
       </CalendarContainer>
       {showRemoveSessionModal && <RemoveSessionModal/>}
       <AddVacationModal visibility={visibility} setVisibility={setVisibility} />
