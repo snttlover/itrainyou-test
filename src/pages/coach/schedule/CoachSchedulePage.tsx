@@ -14,6 +14,7 @@ import { GoogleCalendar } from "@/pages/coach/schedule/GoogleCalendar"
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { Prices } from "@/pages/coach/schedule/Prices"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
+import { CalendarGate } from "@/pages/coach/schedule/models/sessions.model"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
@@ -82,6 +83,8 @@ export const CoachSchedulePage = () => {
   const coachAccess = useStore($coachAccess)
 
   useGate(ScheduleGate)
+
+  useGate(CalendarGate)
 
   const [tab,changeTab] = useState<"calendar" | "schedule" | "google_calendar" | "prices">("calendar")
 

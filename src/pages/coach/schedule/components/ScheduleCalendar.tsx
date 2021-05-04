@@ -6,11 +6,13 @@ import { $currentMonth, $monthEndDate, $monthStartDate } from "@/pages/coach/sch
 import {
   $allSessions,
   $deleteButtonIsDisabled, $pickedDeleteRange, changePickedDeleteRange,
-  removeSessionsRange
+  removeSessionsRange,
+  removeSessionFx
 } from "@/pages/coach/schedule/models/sessions.model"
+import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
-import React, { useEffect, useRef, useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import styled, { ThemeProps } from "styled-components"
 import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
@@ -59,8 +61,6 @@ const MobileList = styled.div`
   `}
 `
 
-//bottom:  ${({bottomDirection}) => !bottomDirection ? "unset" : "105%"};
-//top: ${({bottomDirection}) => !bottomDirection ? "unset" : "105%"};
 const VerticalToolTip = styled.div<{show: boolean; bottomDirection: boolean }>`
   width: 240px;
   height: auto;
@@ -73,30 +73,21 @@ const VerticalToolTip = styled.div<{show: boolean; bottomDirection: boolean }>`
   font-size: 14px;
   line-height: 22px;
   color: #424242;
-  transform:  ${({bottomDirection}) => !bottomDirection ? "translateY(12%)" : "translateY(-105%)"};
+  transform:  ${({bottomDirection}) => bottomDirection ? "translateY(12%)" : "translateY(-105%)"};
   left: -100%;
   display: ${({show})=> !show ? "none" : "block"};
 
   &:after {
     content: " ";
     position: absolute;
-    top: ${({bottomDirection}) => !bottomDirection ? "unset" : "100%"};
-    bottom: ${({bottomDirection}) => !bottomDirection ? "100%" : "unset"};
+    top: ${({bottomDirection}) => bottomDirection ? "unset" : "100%"};
+    bottom: ${({bottomDirection}) => bottomDirection ? "100%" : "unset"};
     left: 50%;
     border-width: 5px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
+    border-color: ${({bottomDirection}) => bottomDirection ? "transparent transparent white transparent" : "white transparent transparent transparent"};
   }
 `
-/*
-content: "";
-         position: absolute;
-         bottom: 100%;
-         left: 50%;
-         margin-left: -10px;
-         border-width: 3px;
-         border-style: solid;
-         border-color: transparent transparent blue transparent;*/
 
 const StyledHeader = styled(Header)`
   max-width: 700px;
@@ -403,42 +394,57 @@ const MobileSessionInfoModal = () => {
   )
 }
 
-const ToolTipContent = (props: {session: SessionType }) => {
+const ToolTipContent = (props: {session: SessionType; setShow: Dispatch<SetStateAction<{sessionId: number | null }>> }) => {
 
   //const _removeSession = useEvent(startRemovingSession)
   const _removeSession = useEvent(removeSession)
 
+
   const {id, client} = fixAvatarAndImageUrl(props.session)
+
+  const toolTipRef = useRef<HTMLInputElement>(null)
 
   const handleOnClick = () => {
     _removeSession(props.session.id)
   }
 
+
+  // ToDo: придумать как пофиксить утечку памяти
+  useClickOutside(toolTipRef, (e) => {
+    props.setShow({sessionId: null})
+  })
+
+  /*useEffect(() => {
+
+    return () => {
+    }
+  }, [toolTipRef])*/
+
   return (
-      <ToolTipContainer>
-        {props.session.googleEvent ?
-          <div>Этот слот заполнен в вашем google-календаре</div>
+    <ToolTipContainer ref={toolTipRef}>
+      {props.session.googleEvent ?
+        <div>Этот слот заполнен в вашем google-календаре</div>
+        :
+        (props.session.areAvailable ?
+          <>
+            <ToolTipHeader>Сессия забронирована</ToolTipHeader>
+            <UserInfo>
+              <StyledAvatar src={client?.avatar || null} />
+              <UserName>{client?.firstName} {client?.lastName}</UserName>
+            </UserInfo>
+            <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+          </>
           :
-          (props.session.areAvailable ?
-            <>
-              <ToolTipHeader>Сессия забронирована</ToolTipHeader>
-              <UserInfo>
-                <StyledAvatar src={client?.avatar || null} />
-                <UserName>{client?.firstName} {client?.lastName}</UserName>
-              </UserInfo>
-              <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
-            </>
-            :
-            <>
-              <div>Этот слот еще не занят никем в вашем расписании</div>
-              <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-            </>
-          )}
-      </ToolTipContainer>
+          <>
+            <div>Этот слот еще не занят никем в вашем расписании</div>
+            <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+          </>
+        )}
+    </ToolTipContainer>
   )
 }
 
-const Sessions = (props: {day: Dayjs; toolTipDirection: number }) => {
+const Sessions = (props: {day: Dayjs; toolTipDirection: boolean }) => {
 
   const sessions = useStore($allSessions)
 
@@ -448,14 +454,6 @@ const Sessions = (props: {day: Dayjs; toolTipDirection: number }) => {
     setShow({sessionId: session.id})
     e.stopPropagation()
   }
-
-  const toolTipRef = useRef(null)
-
-
-  // ToDo: придумать как пофиксить утечку памяти
-  useClickOutside(toolTipRef, (e) => {
-    setShow({sessionId: null})
-  })
 
   return (
     <SessionContainer>
@@ -467,8 +465,8 @@ const Sessions = (props: {day: Dayjs; toolTipDirection: number }) => {
             key={session.id} googleEvent={session.googleEvent}
             areAvailable={session.areAvailable} >
             {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
-            <VerticalToolTip bottomDirection={props.toolTipDirection === 0} show={showedToolTipId.sessionId === session.id} >
-            <ToolTipContent  session={session} />
+            <VerticalToolTip bottomDirection={props.toolTipDirection} show={showedToolTipId.sessionId === session.id} >
+              <ToolTipContent  setShow={setShow} session={session} />
             </VerticalToolTip>
           </Session>
         ))}
@@ -607,15 +605,15 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
               </WeekRow>
             </thead>
             <tbody>
-              {weeks.map((week, i) => (
-                <WeekRow weeks key={i}>
-                  {week.map((day, i) => (
+              {weeks.map((week, weekIndex) => (
+                <WeekRow weeks key={weekIndex}>
+                  {week.map((day, dayIndex) => (
                     <CalendarCell presentDay={now.isBefore(day, "d") || now.isSame(day, "d")} key={day.weekday()} onClick={() => handleOnCellClick(day)}>
                       <DayContainer presentDay={now.isBefore(day, "d") || now.isSame(day, "d")}>
                         <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
                         {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => handleOnCellClick(day)} />}
                         <MarkerIcon pinned={sessions.sessions.filter(session => session.startTime.isSame(day, "d")).length > 0} />
-                        <Sessions toolTipDirection={i} day={day} />
+                        <Sessions toolTipDirection={weekIndex === 0} day={day} />
                       </DayContainer>
                     </CalendarCell>
                   ))}
