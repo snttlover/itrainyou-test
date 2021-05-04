@@ -59,7 +59,9 @@ const MobileList = styled.div`
   `}
 `
 
-const IconToolTip = styled.div<{show: boolean}>`
+//bottom:  ${({bottomDirection}) => !bottomDirection ? "unset" : "105%"};
+//top: ${({bottomDirection}) => !bottomDirection ? "unset" : "105%"};
+const VerticalToolTip = styled.div<{show: boolean; bottomDirection: boolean }>`
   width: 240px;
   height: auto;
   position: absolute;
@@ -71,20 +73,30 @@ const IconToolTip = styled.div<{show: boolean}>`
   font-size: 14px;
   line-height: 22px;
   color: #424242;
-  bottom: 105%;
+  transform:  ${({bottomDirection}) => !bottomDirection ? "translateY(12%)" : "translateY(-105%)"};
   left: -100%;
   display: ${({show})=> !show ? "none" : "block"};
 
   &:after {
     content: " ";
     position: absolute;
-    top: 100%;
+    top: ${({bottomDirection}) => !bottomDirection ? "unset" : "100%"};
+    bottom: ${({bottomDirection}) => !bottomDirection ? "100%" : "unset"};
     left: 50%;
     border-width: 5px;
     border-style: solid;
-    border-color: white transparent transparent transparent;
+    border-color: black transparent transparent transparent;
   }
 `
+/*
+content: "";
+         position: absolute;
+         bottom: 100%;
+         left: 50%;
+         margin-left: -10px;
+         border-width: 3px;
+         border-style: solid;
+         border-color: transparent transparent blue transparent;*/
 
 const StyledHeader = styled(Header)`
   max-width: 700px;
@@ -204,8 +216,8 @@ const Session = styled.div<{areAvailable: boolean; googleEvent: boolean}>`
   display: flex;
   justify-content: space-between;
   text-decoration: ${({googleEvent})=> googleEvent ? "line-through" : "none"};
-  
-  &:hover ${IconToolTip} {
+
+  &:hover ${VerticalToolTip} {
      display: block;
    }
 `
@@ -391,19 +403,18 @@ const MobileSessionInfoModal = () => {
   )
 }
 
-const ToolTipContent = (props: {session: SessionType; showedId: {sessionId: number | null} }) => {
+const ToolTipContent = (props: {session: SessionType }) => {
 
   //const _removeSession = useEvent(startRemovingSession)
   const _removeSession = useEvent(removeSession)
 
   const {id, client} = fixAvatarAndImageUrl(props.session)
-  
+
   const handleOnClick = () => {
     _removeSession(props.session.id)
   }
 
   return (
-    <IconToolTip key={props.session.id} show={props.showedId.sessionId === props.session.id} >
       <ToolTipContainer>
         {props.session.googleEvent ?
           <div>Этот слот заполнен в вашем google-календаре</div>
@@ -424,11 +435,10 @@ const ToolTipContent = (props: {session: SessionType; showedId: {sessionId: numb
             </>
           )}
       </ToolTipContainer>
-    </IconToolTip>
   )
 }
 
-const Sessions = (props: {day: Dayjs}) => {
+const Sessions = (props: {day: Dayjs; toolTipDirection: number }) => {
 
   const sessions = useStore($allSessions)
 
@@ -457,7 +467,9 @@ const Sessions = (props: {day: Dayjs}) => {
             key={session.id} googleEvent={session.googleEvent}
             areAvailable={session.areAvailable} >
             {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
-            <ToolTipContent showedId={showedToolTipId} session={session} />
+            <VerticalToolTip bottomDirection={props.toolTipDirection === 0} show={showedToolTipId.sessionId === session.id} >
+            <ToolTipContent  session={session} />
+            </VerticalToolTip>
           </Session>
         ))}
     </SessionContainer>
@@ -527,7 +539,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
   const daysCount = monthDayStart.daysInMonth() + countPadStartDays + countPadEndDays
-  
+
 
   const weeks: Dayjs[][] = []
   let currentWeek = []
@@ -563,11 +575,6 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
     }
   }
 
-  /*const handleOnSessionClick = (e: React.SyntheticEvent, session: SessionType) => {
-    setShow({sessionId: session.id})
-    e.stopPropagation()
-  }*/
-
   return (
     <CalendarContainer>
       <AddSessionModal />
@@ -602,13 +609,13 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
             <tbody>
               {weeks.map((week, i) => (
                 <WeekRow weeks key={i}>
-                  {week.map(day => (
+                  {week.map((day, i) => (
                     <CalendarCell presentDay={now.isBefore(day, "d") || now.isSame(day, "d")} key={day.weekday()} onClick={() => handleOnCellClick(day)}>
                       <DayContainer presentDay={now.isBefore(day, "d") || now.isSame(day, "d")}>
                         <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
                         {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => handleOnCellClick(day)} />}
                         <MarkerIcon pinned={sessions.sessions.filter(session => session.startTime.isSame(day, "d")).length > 0} />
-                        <Sessions day={day} />
+                        <Sessions toolTipDirection={i} day={day} />
                       </DayContainer>
                     </CalendarCell>
                   ))}
