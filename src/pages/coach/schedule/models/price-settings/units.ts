@@ -21,6 +21,7 @@ type Price = {
 export type ChangePriceEvent = { name: keyof Prices; value: number }
 export const changePrice = createEvent<ChangePriceEvent>()
 export const setPrices = createEvent<Prices>()
+
 export const $prices = createStore<Price[]>([
   {
     name: "promo",

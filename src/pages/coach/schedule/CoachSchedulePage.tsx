@@ -38,7 +38,7 @@ const StyledTab = styled(Tab)`
   background: transparent;
   border-bottom: 2px solid transparent;
   cursor: pointer;
-  max-width: 200px;  
+  max-width: 200px;
   &[data-active="true"] {
     border-bottom: 2px solid ${props => props.theme.colors.primary};
     background: transparent;
@@ -83,7 +83,7 @@ export const CoachSchedulePage = () => {
 
   useGate(ScheduleGate)
 
-  const [tab,changeTab] = useState<"calendar" | "schedule" | "google_calendar" | "prices">("calendar")
+  const [tab, changeTab] = useState<"calendar" | "schedule" | "google_calendar" | "prices">("calendar")
 
   return (
     <CoachDashboardLayout>
