@@ -2,7 +2,12 @@ import { Header, LeftIcon, MonthContainer, MonthName, RightIcon, Year } from "@/
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
-import { $currentMonth, $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"
+import {
+  $currentMonth, $isMobileSessionInfoShowed,
+  $monthEndDate,
+  $monthStartDate,
+  showAddSessionModal, showMobileSessionInfo, showVacationModal
+} from "@/pages/coach/schedule/models/calendar.model"
 import {
   $allSessions,
   $deleteButtonIsDisabled, $pickedDeleteRange, changePickedDeleteRange,
@@ -27,15 +32,15 @@ import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionMod
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import {
   setAddSessionDate,
-  showAddSessionModal,
-  showMobileSessionInfo,
-  $isMobileSessionInfoShowed,
   setMobileInfo,
   $mobileEventInfo,
+  $sessionDate
 } from "@/pages/coach/schedule/models/add-session.model"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
+import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
+import { Informer } from "@/newcomponents/informer/Informer"
 
 
 const CalendarContainer = styled.div`
@@ -47,7 +52,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 704px;
+  margin-top: 24px;
 
   ${MediaRange.lessThan("mobile")`
     min-width: 280px;
@@ -62,12 +67,11 @@ const MobileList = styled.div`
     min-width: 280px;
   `}
 `
-//transform:  ${({bottomDirection}) => bottomDirection ? "translateY(12%)" : "translateY(-105%)"};
-//left: -100%;
-//top: ${({bottomDirection}) => bottomDirection ? "unset" : "100%"};
-//     bottom: ${({bottomDirection}) => bottomDirection ? "100%" : "unset"};
-//border-color: ${({bottomDirection}) => bottomDirection ? "transparent transparent white transparent" : "white transparent transparent transparent"};
-// ${({bottomDirection}) => bottomDirection ? "transparent transparent black transparent" : "black transparent transparent transparent"};
+
+const StyledInformer = styled(Informer)`
+  
+`
+
 const ToolTip = styled.div<{show: boolean; bottomDirection: boolean; leftDirection: boolean; rightDirection: boolean }>`
   width: 240px;
   height: auto;
@@ -83,11 +87,11 @@ const ToolTip = styled.div<{show: boolean; bottomDirection: boolean; leftDirecti
   transform:  ${({bottomDirection, rightDirection, leftDirection}) => {
     if (bottomDirection) {
       if (!rightDirection && !leftDirection) {
-        return "translate(-40%,15%)"
+        return "translate(-40%,13%)"
       } else if (rightDirection) {
-        return "translate(10%,15%)" 
+        return "translate(10%,13%)" 
       } else if (leftDirection) {
-        return "translate(-80%,15%)" 
+        return "translate(-80%,13%)" 
       }
     } else {
       if (!rightDirection && !leftDirection) {
@@ -124,7 +128,6 @@ const ToolTip = styled.div<{show: boolean; bottomDirection: boolean; leftDirecti
 `
 
 const StyledHeader = styled(Header)`
-  max-width: 700px;
   padding-right: 4px;
 
   ${MediaRange.lessThan("mobile")`
@@ -214,12 +217,12 @@ const CalendarHeaderCell = styled.th`
   line-height: 16px;
   text-align: center;
   color: #5b6670;
-  border: 1px solid #F4F5F7;
+  border: 2px solid #F4F5F7;
 `
 
 const CalendarCell = styled.td<{presentDay: boolean}>`
-  width: 96px;
-  border: 1px solid #F4F5F7;
+  width: 118px;
+  border: 2px solid #F4F5F7;
   background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   cursor: ${({presentDay})=> presentDay ? "pointer" : "default"};
   vertical-align: top;
@@ -348,8 +351,13 @@ const UserInfo = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 24px;
-  margin-bottom: 16px;
+  margin-top: 16px;
+  margin-bottom: 14px;
+  
+  ${MediaRange.lessThan("mobile")`
+    margin-top: 24px;
+    margin-bottom: 16px;
+  `}
 `
 
 const StyledDialog = styled(Dialog)`
@@ -363,7 +371,12 @@ const StyledLink = styled.div`
   color: ${props => props.theme.colors.primary};
   text-decoration: underline;
   cursor: pointer;
-  margin-top: 24px;
+  margin-bottom: 10px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-top: 24px;
+    margin-bottom: 0;
+  `}
 `
 
 const Row = styled.div`
@@ -376,7 +389,6 @@ const Row = styled.div`
 export type ScheduleCalendarTypes = {
   prevMonth: (currentMonth: Dayjs) => void
   nextMonth: (currentMonth: Dayjs) => void
-  showVacationModal: (value: boolean) => void
 }
 
 type SessionType = {
@@ -443,6 +455,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 
   //const _removeSession = useEvent(startRemovingSession)
   const _removeSession = useEvent(removeSession)
+  const navigate = useEvent(navigatePush)
 
   const [showed, setShowed] = useState(false)
   const {id, client} = fixAvatarAndImageUrl(props.session)
@@ -485,6 +498,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
                   <StyledAvatar src={client?.avatar || null} />
                   <UserName>{client?.firstName} {client?.lastName}</UserName>
                 </UserInfo>
+                <StyledLink onClick={() => navigate({ url: routeNames.coachSession(id.toString())})}>На страницу сессии</StyledLink>
                 <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
               </>
               :
@@ -501,13 +515,13 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 }
 
 
-const MobileSessions = (props: {currentDay: Dayjs}) => {
+const MobileSessions = () => {
 
   const sessions = useStore($allSessions)
+  const currentDay = useStore($sessionDate)
 
   const _setMobileSessionInfoShow = useEvent(showMobileSessionInfo)
   const _setMobileEventInfo = useEvent(setMobileInfo)
-  const _setDate = useEvent(setAddSessionDate)
   const _setAddSessionModalShow = useEvent(showAddSessionModal)
 
 
@@ -516,24 +530,23 @@ const MobileSessions = (props: {currentDay: Dayjs}) => {
     _setMobileSessionInfoShow(true)
   }
 
-  const onAddClick = (date: Dayjs) => {
-    _setDate(date)
+  const onAddClick = () => {
     _setAddSessionModalShow(true)
   }
 
   return (
     <MobileList>
       <Row>
-        <ToolTipHeader>{props.currentDay.format("D MMMM")}</ToolTipHeader>
-        <AddSessionIcon onClick={() => onAddClick(props.currentDay)} />
+        <ToolTipHeader>{currentDay.format("D MMMM")}</ToolTipHeader>
+        <AddSessionIcon onClick={onAddClick} />
       </Row>
       {sessions.sessions
-        .filter(session => session.startTime.isSame(props.currentDay, "d")).map(session => (
+        .filter(session => session.startTime.isSame(currentDay, "d")).map(session => (
           <Times key={session.id} >
             <Time googleEvent={session.googleEvent} primary={session.areAvailable} onClick={() => handleMobileEventOnClick(session)}>
               {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
             </Time>
-            <AddIcon onClick={() => onAddClick(props.currentDay)} />
+            <AddIcon onClick={onAddClick} />
           </Times>
         ))}
       <MobileSessionInfoModal />
@@ -541,30 +554,29 @@ const MobileSessions = (props: {currentDay: Dayjs}) => {
   )
 }
 
-export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth, showVacationModal }) => {
+export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth }) => {
   const now = date()
   const currentMonth = date(useStore($currentMonth))
   const monthDayStart = date(useStore($monthStartDate))
   const sessions = useStore($allSessions)
   const monthDayEnd = date(useStore($monthEndDate))
 
-  const _setMobileSessionInfoShow = useEvent(showMobileSessionInfo)
+
   const _setAddSessionModalShow = useEvent(showAddSessionModal)
 
   const _setDate = useEvent(setAddSessionDate)
-  const _setMobileEventInfo = useEvent(setMobileInfo)
-
-  const _removeSession = useEvent(startRemovingSession)
-  const _removeSessionsRange = useEvent(removeSessionsRange)
-  const disabledDelete = useStore($deleteButtonIsDisabled)
-  const range = useStore($pickedDeleteRange)
-  const setRange = useEvent(changePickedDeleteRange)
-
+  const _showVacationModal = useEvent(showVacationModal)
 
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
   const daysCount = monthDayStart.daysInMonth() + countPadStartDays + countPadEndDays
 
+  console.log("test proizvoditelnosti")
+
+
+  useEffect(() => {
+    console.log("Effect proizvoditelnost")
+  }, [])
 
   const weeks: Dayjs[][] = []
   let currentWeek = []
@@ -586,9 +598,6 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const formatter = "YYYYMM"
   const lessThanTheCurrentMonth = +currentMonth.format(formatter) <= +date().format(formatter)
 
-  const [currentDay, setCurrentDay] = useState<Dayjs>(date())
-
-
   const onAddClick = (date: Dayjs) => {
     _setDate(date)
     _setAddSessionModalShow(true)
@@ -596,12 +605,14 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
 
   const handleOnCellClick = (day: Dayjs) => {
     if((now.isBefore(day, "d") || now.isSame(day, "d"))) {
-      window.innerWidth > 480 ? onAddClick(day) : setCurrentDay(day)
+      window.innerWidth > 480 ? onAddClick(day) : _setDate(day)
     }
   }
 
   return (
     <CalendarContainer>
+      <Informer closable>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
+      <AddVacationModal />
       <AddSessionModal />
       <Container>
         <StyledHeader>
@@ -611,10 +622,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
             <StyledRightIcon onClick={() => nextMonth(currentMonth)} />
             {window.innerWidth > 480 ? <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName> : null}
           </StyledMonthContainer>
-          {/*<AddVacationButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
-          Добавить отпуск
-        </AddVacationButton>*/}
-          <AddVacationButton onClick={() => showVacationModal(true)}>
+          <AddVacationButton onClick={() => _showVacationModal(true)}>
           Добавить отпуск
           </AddVacationButton>
         </StyledHeader>
@@ -661,7 +669,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
           </CalendarTable>
         </HorizontalOverflowScrollContainer>
       </Container>
-      <MobileSessions currentDay={currentDay} />
+      <MobileSessions />
     </CalendarContainer>
   )
 }

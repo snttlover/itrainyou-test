@@ -5,18 +5,20 @@ import { MediaRange } from "@/lib/responsive/media"
 import { RemoveSessionsDateRangePicker } from "@/pages/coach/schedule/components/RemoveSessionsDateRangePicker"
 import { useEvent, useStore } from "effector-react"
 import {
+  $deleteButtonIsDisabled,
   $pickedDeleteRange,
   changePickedDeleteRange,
   removeSessionsRange
 } from "@/pages/coach/schedule/models/sessions.model"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { Button } from "@/oldcomponents/button/normal/Button"
 import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
+import { showVacationModal, $isVacationModalShowed } from "@/pages/coach/schedule/models/calendar.model"
 
 
 const AddVacationDialog = styled(Dialog)`
   max-width: 560px;
   padding: 24px 24px;
+  min-height: unset;
 `
 
 const RemoveDateRangeContainer = styled.div`
@@ -31,61 +33,56 @@ const RemoveDateRangeContainer = styled.div`
   `}
 `
 
-const ButtonsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 300px;
-`
-
-const StyledDashedButton = styled(DashedButton)`
-  width: 220px;
-  padding: 6px 24px;
-  font-size: 16px;
-  ${MediaRange.lessThan("mobile")`
-    width: 144px
-  `}
-`
-
 const StyledSuccessButton = styled(Button)`
   width: 220px;
   margin-left: 16px;
   font-size: 16px;
+  margin-top: 40px;
+  float: right;
   ${MediaRange.lessThan("mobile")`
     width: 144px
   `}
+`
+
+const Description = styled.div`
+  margin-top: 8px;
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #5B6670;  
 `
 
 const StyledDateRangePicker = styled(RemoveSessionsDateRangePicker)`
   width: 100%;
 `
 
-type VacationDialogTypes = {
-  visibility: boolean
-  setVisibility: (value: boolean) => void
-}
 
-export const AddVacationModal: React.FC<VacationDialogTypes> = ({visibility, setVisibility }) => {
+export const AddVacationModal = () => {
 
   const range = useStore($pickedDeleteRange)
+  const visibility = useStore($isVacationModalShowed)
+
   const setRange = useEvent(changePickedDeleteRange)
 
   const _removeSessionsRange = useEvent(removeSessionsRange)
+  const toggle = useEvent(showVacationModal)
+
+  const disabledDelete = useStore($deleteButtonIsDisabled)
   
   const handleOnClick = () => {
-    setVisibility(false)
+    toggle(false)
     _removeSessionsRange(range)
   }
 
   return(
-    <AddVacationDialog value={visibility} onChange={setVisibility}>
-      <Title>Выберите даты начала и окончания отпуска</Title>
+    <AddVacationDialog value={visibility} onChange={toggle}>
+      <Title>Когда у Вас отпуск?</Title>
+      <Description>Выберите промежутки, когда не хотите проводить сессии</Description>
       <RemoveDateRangeContainer>
         <StyledDateRangePicker range={range} rangeChanged={setRange} />
       </RemoveDateRangeContainer>
-      <ButtonsContainer>
-        <StyledDashedButton onClick={() => setVisibility(false)}>Нет</StyledDashedButton>
-        <StyledSuccessButton onClick={handleOnClick}>Да</StyledSuccessButton>
-      </ButtonsContainer>
+      <StyledSuccessButton disabled={disabledDelete} onClick={handleOnClick}>Добавить отпуск</StyledSuccessButton>
     </AddVacationDialog>
   )
 }

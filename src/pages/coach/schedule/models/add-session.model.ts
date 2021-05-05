@@ -6,22 +6,7 @@ import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessio
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 import { $prices } from "@/pages/coach/schedule/models/price-settings/units"
-
-export const showAddSessionModal = createEvent<void | boolean>()
-export const $isAddSessionModalShowed = createStore<boolean>(false).on(
-  showAddSessionModal,
-  (state, payload) => {
-    if (payload !== undefined) return payload
-    return !state
-  })
-
-export const showMobileSessionInfo = createEvent<void | boolean>()
-export const $isMobileSessionInfoShowed = createStore<boolean>(false).on(
-  showMobileSessionInfo,
-  (state, payload) => {
-    if (payload !== undefined) return payload
-    return !state
-  })
+import { showAddSessionModal } from "@/pages/coach/schedule/models/calendar.model"
 
 export const setMobileInfo = createEvent<{
   googleEvent: boolean
@@ -193,11 +178,9 @@ const $durationIsCorrect = $formSessionsData.map(times => times.reduce((isFilled
   return (!!time.duration)
 }, false))
 
-const $startDatetimeIsCorrect = $formSessionsData.map(times => times.reduce((isFilled, time)=> {
-  if (isFilled) return isFilled
-  return (!!time.startTime)
-}, false))
 
+const $startDatetimeIncorrect = createStore(true)
+  .on($formSessionsData,(state,payload) => payload.filter(item => item.startTime === null).length > 0)
 
 const $priceIsCorrect = combine(
   {formSessionsData: $formSessionsData, prices: $prices},
@@ -234,11 +217,11 @@ forward({
 })
 
 export const $isCreateButtonDisabled = combine(
-  $startDatetimeIsCorrect,
+  $startDatetimeIncorrect,
   $durationIsCorrect,
   $priceIsCorrect,
   createSessionsFx.pending,
-  (dateTimeCorrect, durationCorrect, priceCorrect, pending) => !dateTimeCorrect || !durationCorrect || !priceCorrect  || pending
+  (dateTimeInCorrect, durationCorrect, priceCorrect, pending) => dateTimeInCorrect || !durationCorrect || !priceCorrect  || pending
 )
 
 sample({

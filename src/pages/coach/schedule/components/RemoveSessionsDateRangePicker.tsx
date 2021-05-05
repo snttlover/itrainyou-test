@@ -12,6 +12,12 @@ const Container = styled.div`
   position: relative;
 `
 
+const CalendarContainer = styled.div`
+  position: fixed;
+  z-index: 2000;
+  background-color: white;
+`
+
 const Dropdown = styled.div`
   position: absolute;
   top: 100%;
@@ -66,19 +72,23 @@ export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePick
       <div ref={dropdownRef}>
         {leftIsOpen && (
           <LeftDropdown>
-            <Calendar
-              value={from}
-              disabledFrom={to}
-              onChange={picked => rangeChanged([date(picked), date(to || dayjs(picked).add(1, "day"))])}
-            />
+            <CalendarContainer>
+              <Calendar
+                value={from}
+                disabledFrom={to}
+                onChange={picked => rangeChanged([date(picked), date(to || dayjs(picked).add(1, "day"))])}
+              />
+            </CalendarContainer>
           </LeftDropdown>
         )}
         {rightIsOpen && (
           <RightDropdown>
-            <Calendar
-              value={to}
-              onChange={picked => rangeChanged([date(from || dayjs(picked).subtract(1, "day")), date(picked)])}
-            />
+            <CalendarContainer>
+              <Calendar
+                value={to}
+                onChange={picked => rangeChanged([date(from || dayjs(picked).subtract(1, "day")), date(picked)])}
+              />
+            </CalendarContainer>
           </RightDropdown>
         )}
       </div>

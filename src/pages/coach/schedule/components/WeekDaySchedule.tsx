@@ -1,6 +1,5 @@
 import { Icon } from "@/oldcomponents/icon/Icon"
-//import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
-import { useDropDown } from "@/newcomponents/dropdown/DropDownItem"
+import { DropDown } from "@/newcomponents/dropdown/DropDownItem"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { WeekDayName } from "@/lib/api/coaching-sessions/types"
 import { $durationOptions } from "@/pages/coach/schedule/models/add-session.model"
@@ -49,6 +48,11 @@ const SettingsContainer = styled.div`
   align-items: center;
   margin-top: 4px;
   position: relative;
+`
+
+const SelectBoxContainer = styled.div`
+  width: 130px;
+  margin-right: 10px;
 `
 
 const Prefix = styled.span`
@@ -143,23 +147,6 @@ type Props = {
 
 export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => {
 
-  const {SelectInput: StartSelectInput} = useDropDown()
-  const {SelectInput: TypeSelectInput} = useDropDown()
-
-  const StyledStartSelectInput = styled(StartSelectInput)`
-    &:not(:first-child) {
-      margin-left: 4px;
-      margin-right: 10px;
-    }
-  `
-
-  const StyledTypeSelectInput = styled(TypeSelectInput)`
-    &:not(:first-child) {
-      margin-left: 4px;
-      margin-right: 10px;
-    }
-  `
-
   const [isAdd, setIsAdd] = useState(false)
   const [startTime, setStartTime] = useState("")
   const [duration, setDuration] = useState<DurationType>("D30")
@@ -226,19 +213,23 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
       )}
       {isAdd && (
         <SettingsContainer>
-          <StyledStartSelectInput
-            value={startTime}
-            onChange={value => setStartTime((value as unknown) as string)}
-            options={freeTimes}
-            placeholder='Время'
-          />
-          <StyledTypeSelectInput
-            value={duration}
-            onChange={value => setDuration((value as unknown) as DurationType)}
-            options={durationOptions}
-            placeholder='Тип'
-            onClick={checkPrices}
-          />
+          <SelectBoxContainer>
+            <DropDown
+              value={startTime}
+              onChange={value => setStartTime((value as unknown) as string)}
+              options={freeTimes}
+              placeholder='Время'
+            />
+          </SelectBoxContainer>
+          <SelectBoxContainer>
+            <DropDown
+              value={duration}
+              onChange={value => setDuration((value as unknown) as DurationType)}
+              options={durationOptions}
+              placeholder='Тип'
+              onClick={checkPrices}
+            />
+          </SelectBoxContainer>
           <MarkIconContainer active={showTooltips && !!startTime}>
             <MarkIcon disabled={!startTime} onClick={saveSessionHandler} />
           </MarkIconContainer>

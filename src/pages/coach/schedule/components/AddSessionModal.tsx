@@ -7,8 +7,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import {
   $durationList,
   $durationOptions,
-  $formSessionsData, $isAddSessionModalShowed,
-  $isCreateButtonDisabled,
+  $formSessionsData, $isCreateButtonDisabled,
   $sessionDate,
   $startTimeOptions,
   addSessions,
@@ -16,7 +15,7 @@ import {
   createSessionsFx,
   deleteSessionToForm,
   formSessionDurationChanged,
-  formSessionStartDatetimeChanged, getStartTimeOptions, showAddSessionModal
+  formSessionStartDatetimeChanged, getStartTimeOptions
 } from "@/pages/coach/schedule/models/add-session.model"
 import { addSlotFromModal, } from "@/pages/coach/schedule/models/weekday-schedule.model"
 import { useEvent, useStore } from "effector-react"
@@ -26,6 +25,7 @@ import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { Informer } from "@/newcomponents/informer/Informer"
 import { Input } from "@/newcomponents/input/Input"
 import { $prices, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings/units"
+import { $isAddSessionModalShowed, showAddSessionModal } from "@/pages/coach/schedule/models/calendar.model"
 
 
 const StyledDialog = styled(Dialog)`
@@ -115,18 +115,23 @@ const RowBlock = styled.div`
 const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) => {
 
   let name: keyof Prices = "d30Price"
+  let title = ""
 
   if (durationType === "D30") {
     name = "d30Price"
+    title = "30 минут"
   }
   if (durationType === "D45") {
     name = "d45Price"
+    title = "45 минут"
   }
   if (durationType === "D60") {
     name = "d60Price"
+    title = "60 минут"
   }
   if (durationType === "D90") {
     name = "d90Price"
+    title = "90 минут"
   }
 
 
@@ -139,7 +144,7 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
         withoutBorder
         type='number'
         value={priceValue}
-        label={"Укажите цену сессии"}
+        label={title}
         onChange={(value: string) => {
           setValue(value)
         }}/>

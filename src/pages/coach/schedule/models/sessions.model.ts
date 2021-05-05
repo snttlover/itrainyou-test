@@ -81,7 +81,6 @@ const $repeatedSessions = restore(
 )
 export const sessionAdded = createEvent<CoachSession[]>()
 
-//  .on(sessionRemoved, (state, payload) => state.sessions.filter(session => session.id !== payload.params))
 const $sessions = createStore<CalendarEvents>({sessions: [], googleCalendarEvents: []})
   .on(loadCalendarEventsFx.doneData, (state, response) => response)
   .on(sessionAdded, (state, session) =>
@@ -89,20 +88,6 @@ const $sessions = createStore<CalendarEvents>({sessions: [], googleCalendarEvent
   .on(sessionRemoved, (state, payload) =>
     ({googleCalendarEvents: state.googleCalendarEvents, sessions: state.sessions.filter(session => session.id !== payload.params)}))
 
-/*export const $allSessions = combine(
-  { repeatedSessions: $repeatedSessions, sessions: $sessions },
-  ({ repeatedSessions, sessions }) => ({
-    repeatedSessions,
-    sessions: sessions.sessions.map(session => ({
-      areAvailable: !!session.clients.length,
-      client: session.clients[0],
-      id: session.id,
-      sessionDurationType: session.durationType,
-      startTime: date(session.startDatetime),
-      endTime: date(session.startDatetime).add(parseInt(session.durationType.slice(1), 10), "minute"),
-    })),
-  })
-)*/
 
 export const $allSessions = combine(
   { repeatedSessions: $repeatedSessions, sessions: $sessions },

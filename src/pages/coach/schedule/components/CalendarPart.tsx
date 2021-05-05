@@ -46,13 +46,16 @@ const CalendarContainer = styled.div`
   position: relative;
   background-color: #fff;
   border-radius: 2px;
-  margin-top: 27px;
   padding: 16px;
-  max-width: 704px;
+  max-width: 828px;
   ${MediaRange.greaterThan("mobile")`
     background-color: transparent;
     padding: 0;
   `};
+`
+
+const StyledInformer = styled(Informer)`
+  max-width: 828px;
 `
 
 const RemoveDateRangeContainer = styled.div`
@@ -111,14 +114,12 @@ export const CalendarPart = () => {
   const disabledDelete = useStore($deleteButtonIsDisabled)
   const showRemoveSessionModal = useStore($showRemoveSessionModal)
 
-  const [visibility,setVisibility] = useState(false)
 
   //useGate(CalendarGate)
 
 
   return (
     <>
-      <Informer closable>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
       {/*<RemoveDateRangeContainer>
         <StyledDateRangePicker range={range} rangeChanged={setRange} />
       </RemoveDateRangeContainer>*/}
@@ -126,17 +127,13 @@ export const CalendarPart = () => {
         {/*<MobileCalendar>
           <MobileCalendarManager onAddClick={openModalCallback} />
         </MobileCalendar>*/}
-        <DesktopCalendar>
           <ScheduleCalendar
             nextMonth={currentDate => _setCurrentMonth(currentDate.add(1, "month"))}
             prevMonth={currentDate => _setCurrentMonth(currentDate.subtract(1, "month"))}
-            showVacationModal={setVisibility}
           />
-        </DesktopCalendar>
         {(isSessionsLoading || isDeletingSession) && <Spinner />}
       </CalendarContainer>
       {showRemoveSessionModal && <RemoveSessionModal/>}
-      <AddVacationModal visibility={visibility} setVisibility={setVisibility} />
     </>
   )
 }

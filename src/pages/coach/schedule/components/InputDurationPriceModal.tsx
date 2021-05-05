@@ -32,6 +32,7 @@ const StyledButton = styled(Button)`
 
 const StyledPriceInputGroup = styled(PriceInputGroup)`
   margin-top: 16px;
+  width: 64px;
 `
 
 const Title = styled.h1`

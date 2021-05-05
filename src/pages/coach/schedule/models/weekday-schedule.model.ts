@@ -190,7 +190,6 @@ sample({
   clock: checkDurationPrice,
   source: $prices,
   fn: (prices, duration) => {
-    console.log("kek22", prices.find(price => price.key === duration)?.value)
     return {
       showModal: !prices.find(price => price.key === duration)?.value,
       duration

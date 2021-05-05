@@ -110,9 +110,9 @@ export const DropDown = <T extends Value = Value>({
 
   const [isOpen, changeOpen] = useState(false)
 
-  const dropdownItems = options.map(item => {
+  const dropdownItems = options.map((item, index) => {
     return (
-      <DropdownItem key={item.value} onClick={() => onChange(item.value)}>
+      <DropdownItem key={index} onClick={() => onChange(item.value)}>
         {item.label}
       </DropdownItem>
     )
@@ -148,69 +148,4 @@ export const DropDown = <T extends Value = Value>({
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
     </SelectBox>
   )
-}
-
-export const useDropDown = () => {
-  const [isOpen, changeOpen] = useState(false)
-
-  const openSelect = () => changeOpen(true)
-  const closeSelect = () => changeOpen(false)
-
-  const SelectInput = <T extends Value = Value>({
-    value,
-    placeholder,
-    onChange,
-    options,
-    error,
-    onBlur,
-    className,
-    withoutBorder,
-    onClick,
-  }: SelectInputProps<T>) => {
-
-    const dropdownItems = options.map(item => {
-      return (
-        <DropdownItem key={item.value} onClick={() => onChange(item.value)}>
-          {item.label}
-        </DropdownItem>
-      )
-    })
-
-    const selectedItem = options.find(item => item.value === value)
-
-    const selectBoxRef = useRef<HTMLDivElement>(null)
-
-    useClickOutside(selectBoxRef, () => {
-      changeOpen(false)
-    })
-
-    return (
-      <SelectBox
-        isOpen={isOpen}
-        error={error}
-        ref={selectBoxRef}
-        placeholder={placeholder}
-        className={className}
-        onClick={() => {
-          onClick && onClick()
-          const newValue = !isOpen
-          changeOpen(newValue)
-          if (!newValue && onBlur) {
-            onBlur()
-          }
-        }}
-        withoutBorder={withoutBorder}
-      >
-        {selectedItem ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
-        <Arrow />
-        {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
-      </SelectBox>
-    )
-  }
-
-  return {
-    SelectInput,
-    openSelect,
-    closeSelect
-  }
 }
