@@ -41,9 +41,12 @@ export const $mobileEventInfo = restore<{
   sessionDurationType?: "D30" | "D45" | "D60" | "D90"
   startTime: Dayjs
   endTime: Dayjs
-}>(setMobileInfo,
-  // @ts-ignore
-  {})
+}>(setMobileInfo, {
+  googleEvent: false,
+  areAvailable: true,
+  id: 0,
+  startTime: date(),
+  endTime: date(),})
 
 export const setAddSessionDate = createEvent<Dayjs>()
 export const $sessionDate = restore(setAddSessionDate, date())

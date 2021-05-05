@@ -34,6 +34,8 @@ import {
   $mobileEventInfo,
 } from "@/pages/coach/schedule/models/add-session.model"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
 
 
 const CalendarContainer = styled.div`
@@ -138,6 +140,10 @@ const ToolTipButton = styled(DashedButton)`
   width: 80%;
   max-width: 200px;
   align-self: center;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-top: 30px;
+  `}
 `
 
 const StyledMonthContainer = styled(MonthContainer)`
@@ -350,6 +356,14 @@ const StyledDialog = styled(Dialog)`
   max-width: 560px;
   padding: 24px 24px;
   width: 90%;
+  min-height: unset;
+`
+
+const StyledLink = styled.div`
+  color: ${props => props.theme.colors.primary};
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 24px;
 `
 
 const Row = styled.div`
@@ -377,6 +391,7 @@ type SessionType = {
 
 const MobileSessionInfoModal = () => {
   const toggle = useEvent(showMobileSessionInfo)
+  const navigate = useEvent(navigatePush)
 
   const visibility = useStore($isMobileSessionInfoShowed)
   const session = useStore($mobileEventInfo)
@@ -389,6 +404,7 @@ const MobileSessionInfoModal = () => {
   const handleOnClick = () => {
     _removeSession(session.id)
   }
+
   return (
     <StyledDialog value={visibility} onChange={toggle}>
       <ToolTipContainer>
@@ -396,6 +412,7 @@ const MobileSessionInfoModal = () => {
           <>
             <Title>Этот слот заполнен в вашем google-календаре</Title>
             <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+            <ToolTipButton onClick={() => toggle(false)}>Понятно</ToolTipButton>
           </>
           :
           (session.areAvailable ?
@@ -406,11 +423,13 @@ const MobileSessionInfoModal = () => {
                 <StyledAvatar src={client?.avatar || null} />
                 <UserName>{client?.firstName} {client?.lastName}</UserName>
               </UserInfo>
+              <StyledLink onClick={() => navigate({ url: routeNames.coachSession(id.toString())})}>На страницу сессии</StyledLink>
               <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
             </>
             :
             <>
               <Title>Этот слот еще не занят никем в вашем расписании</Title>
+              <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
               <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
             </>
           )}
@@ -418,7 +437,8 @@ const MobileSessionInfoModal = () => {
     </StyledDialog>
   )
 }
-// setShow: Dispatch<SetStateAction<{sessionId: number | null }>>
+
+
 const Session = (props: {session: SessionType; bottomToolTip: boolean; rightToolTip: boolean; leftToolTip: boolean }) => {
 
   //const _removeSession = useEvent(startRemovingSession)
@@ -441,12 +461,6 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
   useClickOutside(toolTipRef, (e) => {
     setShowed(false)
   })
-
-  /*useEffect(() => {
-
-    return () => {
-    }
-  }, [toolTipRef])*/
 
   return (
     <SessionContent

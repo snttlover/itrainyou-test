@@ -60,12 +60,12 @@ const StyledFormItem = styled.div`
   max-width: 200px;
 `
 
-export const Label = styled.div<{error?: boolean}>`
+const Label = styled.div<{error?: boolean}>`
   font-family: Roboto;
   display: flex;
   align-items: flex-start;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 22px;
   margin-bottom: 2px;
   color: ${({ error }) => error ? "#FF6B00" : "unset"};  
