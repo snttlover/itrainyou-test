@@ -8,7 +8,6 @@ import styled from "styled-components"
 import { Schedule } from "./Schedule"
 import { Tab, Tabs } from "@/oldcomponents/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
-import { Input } from "@/newcomponents/input/Input"
 import { useState } from "react"
 import { GoogleCalendar } from "@/pages/coach/schedule/GoogleCalendar"
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
@@ -26,7 +25,7 @@ const StyledTabs = styled(Tabs)`
   position: relative;
   margin-bottom: 24px;  
 `
-
+//max-width: 200px;
 const StyledTab = styled(Tab)`
   font-size: 16px;
   line-height: 24px;
@@ -35,10 +34,11 @@ const StyledTab = styled(Tab)`
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2px;
+  padding: 2px 12px;
   background: transparent;
   border-bottom: 2px solid transparent;
   cursor: pointer;
+  white-space: nowrap;
   max-width: 200px;
   &[data-active="true"] {
     border-bottom: 2px solid ${props => props.theme.colors.primary};
@@ -57,6 +57,10 @@ const Header = styled.div`
       margin-bottom: 34px;
       margin-top: 10px;
   `}
+`
+
+const HorizontalOverflowScrollContainer = styled.div`
+  overflow-y: auto;
 `
 
 export const Title = styled.div`
@@ -91,12 +95,14 @@ export const CoachSchedulePage = () => {
     <CoachDashboardLayout>
       <Container>
         <Header>Расписание</Header>
-        <StyledTabs value={tab} onChange={changeTab}>
-          <StyledTab value='calendar'>Календарь</StyledTab>
-          <StyledTab value='schedule'>Настройки расписания</StyledTab>
-          <StyledTab value='google_calendar'>Google-календарь</StyledTab>
-          <StyledTab value='prices'>Цены</StyledTab>
-        </StyledTabs>
+        <HorizontalOverflowScrollContainer>
+          <StyledTabs value={tab} onChange={changeTab}>
+            <StyledTab value='calendar'>Календарь</StyledTab>
+            <StyledTab value='schedule'>Настройки расписания</StyledTab>
+            <StyledTab value='google_calendar'>Google-календарь</StyledTab>
+            <StyledTab value='prices'>Цены</StyledTab>
+          </StyledTabs>
+        </HorizontalOverflowScrollContainer>
         {tab === "schedule" ? (coachAccess.isApproved ? <Schedule /> : <CoachSchedulePlaceholder />) : null}
         {tab === "google_calendar" ? (<GoogleCalendar />) : null}
         {tab === "calendar" ? (<CalendarPart />) : null}

@@ -1,32 +1,25 @@
-import { Header, LeftIcon, MonthContainer, MonthName, RightIcon, Year } from "@/oldcomponents/calendar/CalendarHeader"
+import { Header, LeftIcon, MonthContainer, MonthName, RightIcon } from "@/oldcomponents/calendar/CalendarHeader"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import {
   $currentMonth, $isMobileSessionInfoShowed,
   $monthEndDate,
-  $monthStartDate,
+  $monthStartDate, setCurrentMonth,
   showAddSessionModal, showMobileSessionInfo, showVacationModal
 } from "@/pages/coach/schedule/models/calendar.model"
 import {
   $allSessions,
-  $deleteButtonIsDisabled, $pickedDeleteRange, changePickedDeleteRange,
-  removeSessionsRange,
-  removeSessionFx
 } from "@/pages/coach/schedule/models/sessions.model"
-import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore } from "effector-react"
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import styled, { ThemeProps } from "styled-components"
-import { startRemovingSession } from "@/pages/coach/schedule/models/remove-session.model"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
-import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
 import { Times, Time, RemoveIcon } from "@/pages/coach/schedule/components/MobileCalendarManager"
-import { DurationType } from "@/lib/api/coach-sessions"
 import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
@@ -36,7 +29,7 @@ import {
   $mobileEventInfo,
   $sessionDate
 } from "@/pages/coach/schedule/models/add-session.model"
-import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
+import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
@@ -214,12 +207,12 @@ const CalendarHeaderCell = styled.th`
   line-height: 16px;
   text-align: center;
   color: #5b6670;
-  border: 2px solid #F4F5F7;
+  border: 1px solid #E1E6EA;
 `
 
 const CalendarCell = styled.td<{presentDay: boolean}>`
   width: 118px;
-  border: 2px solid #F4F5F7;
+  border: 1px solid #E1E6EA;
   background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   cursor: ${({presentDay})=> presentDay ? "pointer" : "default"};
   vertical-align: top;
@@ -232,7 +225,7 @@ const CalendarCell = styled.td<{presentDay: boolean}>`
 
 const SessionContent = styled.div<{areAvailable: boolean; googleEvent: boolean}>`
   position: relative;
-  background: ${({areAvailable})=> areAvailable ? "#F4EFF7" : "#FFFFFF"};
+  background: ${({areAvailable, theme})=> areAvailable ? theme.colors.primary : "#FFFFFF"};
   border-radius: 9px;
   border: ${({areAvailable})=> !areAvailable ? "1px dashed #DFD0E7" : ""};
   font-family: Roboto;
@@ -240,11 +233,11 @@ const SessionContent = styled.div<{areAvailable: boolean; googleEvent: boolean}>
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
-  color: #424242;
+  color: ${({ areAvailable })=> !!areAvailable ? "#FFFFFF" : "#424242"};
   padding: 4px;
   display: flex;
   justify-content: center;
-  text-align: center;
+  text-align: left;
   text-decoration: ${({googleEvent})=> googleEvent ? "line-through" : "none"};
 
   &:hover ${ToolTip} {
@@ -266,7 +259,7 @@ const DayContainer = styled.div<{presentDay: boolean}>`
   min-height: 96px;
   background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   position: relative;
-  padding: 24px 4px 12px;
+  padding: 0px 4px 12px;
   ${SessionContent}:not(:first-child) {
     margin-top: 4px;
   }
@@ -287,10 +280,6 @@ const TopCellContainer = styled.div`
   `}
 `
 
-//position: absolute;
-//   left: 8px;
-//   top: 4px;
-
 const Day = styled.span<{ weekend: boolean }>`
   font-family: Roboto;
   font-style: normal;
@@ -299,10 +288,6 @@ const Day = styled.span<{ weekend: boolean }>`
   line-height: 16px;
   color: ${({ weekend }) => (weekend ? "#FF6B00" : "#424242")};
 `
-
-//position: absolute;
-//  top: 4px;
-//   right: 4px;
 
 const AddIcon = styled(Icon).attrs({ name: "cross" })`
   width: 16px;
@@ -396,11 +381,6 @@ const Row = styled.div`
   align-items: center;
 `
 
-export type ScheduleCalendarTypes = {
-  prevMonth: (currentMonth: Dayjs) => void
-  nextMonth: (currentMonth: Dayjs) => void
-}
-
 type SessionType = {
   googleEvent: boolean
   areAvailable: boolean
@@ -463,7 +443,6 @@ const MobileSessionInfoModal = () => {
 
 const Session = (props: {session: SessionType; bottomToolTip: boolean; rightToolTip: boolean; leftToolTip: boolean }) => {
 
-  //const _removeSession = useEvent(startRemovingSession)
   const _removeSession = useEvent(removeSession)
   const navigate = useEvent(navigatePush)
 
@@ -564,7 +543,7 @@ const MobileSessions = () => {
   )
 }
 
-export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, nextMonth }) => {
+export const ScheduleCalendar = () => {
   const now = date()
   const currentMonth = date(useStore($currentMonth))
   const monthDayStart = date(useStore($monthStartDate))
@@ -575,6 +554,7 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
   const _setAddSessionModalShow = useEvent(showAddSessionModal)
 
   const _setDate = useEvent(setAddSessionDate)
+  const _setCurrentMonth = useEvent(setCurrentMonth)
   const _showVacationModal = useEvent(showVacationModal)
 
   const countPadStartDays = monthDayStart.weekday()
@@ -619,17 +599,24 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
     }
   }
 
+  const handleOnLeftIcon = () => {
+    _setCurrentMonth(currentMonth.subtract(1, "month"))
+  }
+
+  const handleOnRightIcon = () => {
+    _setCurrentMonth(currentMonth.add(1, "month"))
+  }
+
   return (
     <CalendarContainer>
-      <Informer closable>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
       <AddVacationModal />
       <AddSessionModal />
       <Container>
         <StyledHeader>
           <StyledMonthContainer>
-            <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={() => prevMonth(currentMonth)} />
+            <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={handleOnLeftIcon} />
             {window.innerWidth <= 480 ? <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName> : null}
-            <StyledRightIcon onClick={() => nextMonth(currentMonth)} />
+            <StyledRightIcon onClick={handleOnRightIcon} />
             {window.innerWidth > 480 ? <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName> : null}
           </StyledMonthContainer>
           <AddVacationButton onClick={() => _showVacationModal(true)}>

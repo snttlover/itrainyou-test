@@ -30,11 +30,11 @@ export const Time = styled.p<{ primary?: boolean; googleEvent: boolean }>`
   font-weight: normal;
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
+  color: ${({ primary })=> !!primary ? "#FFFFFF" : "#424242"};
   border-radius: 9px;
   padding: 4px;
   text-decoration: ${({googleEvent})=> googleEvent ? "line-through" : "none"};
-  background-color: ${({primary})=> primary !== undefined ? (primary ? "#F4EFF7" : "#FFFFFF") : "unset"};
+  background-color: ${({primary, theme})=> primary !== undefined ? (primary ? theme.colors.primary : "#FFFFFF") : "unset"};
   border: ${({primary})=> primary !== undefined ? (primary ? "" : "1px dashed #DFD0E7") : "unset"};
 `
 

@@ -134,14 +134,16 @@ export const loadSessionsWithParamsFx = attach({
       // @ts-ignore
       if( isNaN(from) || isNaN(to) ) {
         return {
-          from: from,
-          to: to,
+          from: true,
+          to: true,
         }
       }
       else {
+        const weekBefore = from.subtract(1, "week")
+        const weekAfter = to.add(1, "week")
         return {
-          from: from.toISOString(),
-          to: to.toISOString(),
+          from: weekBefore.toISOString().substring(0, 10),
+          to: weekAfter.toISOString().substring(0, 10),
         }
       }}
   ),
