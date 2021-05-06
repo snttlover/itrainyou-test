@@ -2,6 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { useState } from "react"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   width: 100%;
@@ -11,6 +12,10 @@ const Container = styled.div`
   padding: 16px;
   background: #F8F8FD;
   border-radius: 8px;
+
+  ${MediaRange.lessThan("mobile")`
+      padding: 8px;
+    `}
 `
 
 const InfoIcon = styled(Icon).attrs({name: "info"})`
@@ -38,6 +43,11 @@ const Content = styled.div`
     color: #5B6670;
     display: flex;
     align-items: center;
+
+    ${MediaRange.lessThan("mobile")`
+      max-width: 77%;
+      flex-direction: column;
+    `}
 `
 
 export const Informer = styled(({ className, label, error, closable, children, ...props }) => {

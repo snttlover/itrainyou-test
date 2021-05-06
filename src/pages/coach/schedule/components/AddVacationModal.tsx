@@ -19,6 +19,10 @@ const AddVacationDialog = styled(Dialog)`
   max-width: 560px;
   padding: 24px 24px;
   min-height: unset;
+
+  ${MediaRange.greaterThan("mobile")`
+    max-width: 90%;
+  `}
 `
 
 const RemoveDateRangeContainer = styled.div`

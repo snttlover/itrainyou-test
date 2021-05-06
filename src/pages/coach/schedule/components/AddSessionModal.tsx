@@ -30,7 +30,6 @@ import { $isAddSessionModalShowed, showAddSessionModal } from "@/pages/coach/sch
 
 const StyledDialog = styled(Dialog)`
   max-width: 560px;
-  padding: 24px 24px;
   min-height: 300px;
 `
 
@@ -61,6 +60,8 @@ const Title = styled.div`
 
 const StyledDashedButton = styled(DashedButton)`
   margin-top: 16px;
+  align-self: flex-end;
+  justify-self: flex-end;
 
   ${MediaRange.greaterThan("mobile")`
     height: 26px;
@@ -71,7 +72,7 @@ const StyledDashedButton = styled(DashedButton)`
 
 const StyledPriceButton = styled(DashedButton)`
   margin-top: 16px;
-  width: 100px;
+  width: 175px;
 `
 
 const AddIcon = styled(Icon).attrs({ name: "cross" })`
@@ -96,13 +97,23 @@ const Text = styled.div`
   font-size: 14px;
   line-height: 22px;
   text-align: left;
+  cursor: pointer;
 `
 
 const SelectBoxContainer = styled.div`
   width: 130px;
   margin-right: 10px;
+
+  ${MediaRange.lessThan("mobile")`
+    width: 100px;
+  `}
 `
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
 
 const RowBlock = styled.div`
   display: flex;
@@ -119,19 +130,19 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
 
   if (durationType === "D30") {
     name = "d30Price"
-    title = "30 минут"
+    title = "Укажите цену для сессии 30 минут"
   }
   if (durationType === "D45") {
     name = "d45Price"
-    title = "45 минут"
+    title = "Укажите цену для сессии 45 минут"
   }
   if (durationType === "D60") {
     name = "d60Price"
-    title = "60 минут"
+    title = "Укажите цену для сессии 60 минут"
   }
   if (durationType === "D90") {
     name = "d90Price"
-    title = "90 минут"
+    title = "Укажите цену для сессии 90 минут"
   }
 
 
@@ -151,7 +162,7 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
       <StyledPriceButton
         disabled={!priceValue}
         onClick={() => priceUpdate({ name, value: parseFloat(priceValue)})}>
-        Подтвердить</StyledPriceButton>
+        Добавить цену</StyledPriceButton>
     </Informer>
   )
 }
@@ -183,7 +194,7 @@ export const AddSessionModal = () => {
     <StyledDialog value={visibility} onChange={onCrossClick}>
       {isLoading ? <Spinner />
         :
-        <>
+        <Container>
           <Title>Доступное время</Title>
           <Date>{date.format("dddd [,] D MMMM")}</Date>
 
@@ -221,17 +232,17 @@ export const AddSessionModal = () => {
             </div>
           ))}
           <RowBlock>
-            <AddIcon onClick={() => _onAdd()} /> <Text>Добавить еще время</Text>
+            <AddIcon onClick={() => _onAdd()} /> <Text onClick={() => _onAdd()}>Добавить еще время</Text>
           </RowBlock>
-          <RowBlock>
-            {/*<StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addWeekDaySlot()}>
+          {/*<RowBlock>
+            <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addWeekDaySlot()}>
               Применить для всех {date.format("dd")}
-            </StyledDashedButton>*/}
-            <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addTodaySession()}>
-              Применить для {date.format("D MMMM")}
             </StyledDashedButton>
-          </RowBlock> 
-        </>      
+          </RowBlock>*/}
+          <StyledDashedButton disabled={isCreateButtonDisabled} onClick={() => _addTodaySession()}>
+            Применить для {date.format("D MMMM")}
+          </StyledDashedButton>
+        </Container>
       }
     </StyledDialog>
   )

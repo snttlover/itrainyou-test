@@ -68,10 +68,6 @@ const MobileList = styled.div`
   `}
 `
 
-const StyledInformer = styled(Informer)`
-  
-`
-
 const ToolTip = styled.div<{show: boolean; bottomDirection: boolean; leftDirection: boolean; rightDirection: boolean }>`
   width: 240px;
   height: auto;
@@ -79,7 +75,8 @@ const ToolTip = styled.div<{show: boolean; bottomDirection: boolean; leftDirecti
   z-index: 1000;
   padding: 12px;
   background: #ffffff;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 6px 18px -6px rgba(0, 0, 0, 0.04);
+  filter: drop-shadow(0px 8px 24px rgba(0, 0, 0, 0.08));
   border-radius: 2px;
   font-size: 14px;
   line-height: 22px;
@@ -87,19 +84,19 @@ const ToolTip = styled.div<{show: boolean; bottomDirection: boolean; leftDirecti
   transform:  ${({bottomDirection, rightDirection, leftDirection}) => {
     if (bottomDirection) {
       if (!rightDirection && !leftDirection) {
-        return "translate(-40%,13%)"
+        return "translate(-2%,20%)"
       } else if (rightDirection) {
-        return "translate(10%,13%)" 
+        return "translate(40%,20%)" 
       } else if (leftDirection) {
-        return "translate(-80%,13%)" 
+        return "translate(-40%,20%)" 
       }
     } else {
       if (!rightDirection && !leftDirection) {
-        return "translate(-40%,-105%)"
+        return "translate(-2%,-100%)"
       } else if (rightDirection) {
-        return "translate(10%,-105%)"
+        return "translate(40%,-100%)"
       } else if (leftDirection) {
-        return "translate(-80%,-105%)"
+        return "translate(-40%,-100%)"
       }
     }
     return ""}};
@@ -235,18 +232,19 @@ const CalendarCell = styled.td<{presentDay: boolean}>`
 
 const SessionContent = styled.div<{areAvailable: boolean; googleEvent: boolean}>`
   position: relative;
-  background: ${({areAvailable})=> areAvailable ? "#eaa6ff" : "#FFFFFF"};
+  background: ${({areAvailable})=> areAvailable ? "#F4EFF7" : "#FFFFFF"};
   border-radius: 9px;
   border: ${({areAvailable})=> !areAvailable ? "1px dashed #DFD0E7" : ""};
   font-family: Roboto;
   font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
   color: #424242;
-  padding: 0 4px;
+  padding: 4px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   text-decoration: ${({googleEvent})=> googleEvent ? "line-through" : "none"};
 
   &:hover ${ToolTip} {
@@ -265,7 +263,6 @@ const SessionContainer = styled.div`
 `
 
 const DayContainer = styled.div<{presentDay: boolean}>`
-  width: 96px;
   min-height: 96px;
   background-color: ${({presentDay})=> presentDay ? "#FFFFFF" : "#F9FAFC"};
   position: relative;
@@ -279,11 +276,22 @@ const DayContainer = styled.div<{presentDay: boolean}>`
     min-height: 12px;
   `}
 `
+const TopCellContainer = styled.div`
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+  `}
+`
+
+//position: absolute;
+//   left: 8px;
+//   top: 4px;
 
 const Day = styled.span<{ weekend: boolean }>`
-  position: absolute;
-  left: 8px;
-  top: 4px;
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -292,14 +300,15 @@ const Day = styled.span<{ weekend: boolean }>`
   color: ${({ weekend }) => (weekend ? "#FF6B00" : "#424242")};
 `
 
+//position: absolute;
+//  top: 4px;
+//   right: 4px;
+
 const AddIcon = styled(Icon).attrs({ name: "cross" })`
-  position: absolute;
   width: 16px;
   height: 16px;
   transform: rotate(45deg);
   fill: #9aa0a6;
-  top: 4px;
-  right: 4px;
   cursor: pointer;
 
   ${MediaRange.lessThan("mobile")`
@@ -320,6 +329,7 @@ const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })<{ pinned:
   fill: ${props => props.theme.colors.primary};
   width: 4px;
   height: 4px;
+  margin-top: 2px;
   display: none;
 
   ${MediaRange.lessThan("mobile")`
@@ -480,7 +490,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
       onClick={(event) => handleOnSessionClick(event,props.session)}
       areAvailable={props.session.areAvailable}
       googleEvent={props.session.googleEvent}>
-      {props.session.startTime.format("HH:mm")}-{props.session.endTime.format("HH:mm")}
+      {props.session.startTime.format("HH:mm")} - {props.session.endTime.format("HH:mm")}
 
       <ToolTip
         bottomDirection={props.bottomToolTip} 
@@ -645,9 +655,11 @@ export const ScheduleCalendar: React.FC<ScheduleCalendarTypes> = ({ prevMonth, n
                   {week.map((day, dayIndex) => (
                     <CalendarCell presentDay={now.isBefore(day, "d") || now.isSame(day, "d")} key={day.weekday()} onClick={() => handleOnCellClick(day)}>
                       <DayContainer presentDay={now.isBefore(day, "d") || now.isSame(day, "d")}>
-                        <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
-                        {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => handleOnCellClick(day)} />}
-                        <MarkerIcon pinned={sessions.sessions.filter(session => session.startTime.isSame(day, "d")).length > 0} />
+                        <TopCellContainer>
+                          {(now.isBefore(day, "d") || now.isSame(day, "d")) && <AddIcon onClick={() => handleOnCellClick(day)} />}
+                          <Day weekend={day.weekday() >= 5}>{day.date()}</Day>
+                          <MarkerIcon pinned={sessions.sessions.filter(session => session.startTime.isSame(day, "d")).length > 0} />
+                        </TopCellContainer>
                         <SessionContainer>
                           {sessions.sessions
                             .filter(session => session.startTime.isSame(day, "d"))

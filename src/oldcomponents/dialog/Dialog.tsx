@@ -66,7 +66,7 @@ const StyledDialog = styled.div`
   
   ${MediaRange.lessThan("mobile")`
     padding: 16px;
-    max-width: 90%;
+    width: 90%;
   `}
   
   ${MediaRange.greaterThan("tablet")`
