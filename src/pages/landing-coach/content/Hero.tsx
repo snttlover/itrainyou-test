@@ -17,6 +17,8 @@ const Wrapper = styled.section`
   background-size: cover;
   background-position: bottom center;
   padding: 0 0 60px;
+
+  margin-bottom: 36px;
 `
 
 const StyledContainer = styled(Container)`
