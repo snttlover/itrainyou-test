@@ -6,6 +6,8 @@ import { Container } from "../common/Container"
 const Wrapper = styled.section`
   height: 584px;
   background: #4858cc;
+
+  margin-bottom: 110px;
 `
 
 const StyledContainer = styled(Container)`
