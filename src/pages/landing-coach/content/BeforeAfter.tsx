@@ -8,6 +8,8 @@ import afterImg from "../assets/before-after/after.svg"
 
 const Wrapper = styled.section`
   background: #4858cc;
+
+  margin-bottom: 122px;
 `
 
 const StyledContainer = styled(Container)`
