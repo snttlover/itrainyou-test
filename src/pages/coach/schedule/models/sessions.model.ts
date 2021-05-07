@@ -3,7 +3,7 @@ import { CoachSession, getCoachSessions } from "@/lib/api/coach-sessions"
 import { googleCalendarApi, endSyncCalendar, startSyncCalendar, CalendarEvents, deleteGoogleCalendar, getCalendarEvents } from "@/lib/api/coach/google-calendar/google-calendar-api"
 import { removeCoachSession, removeCoachSessionRange } from "@/lib/api/coaching-sessions/remove-coach-session"
 import { date } from "@/lib/formatting/date"
-import { $monthEndDate, $monthStartDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
+import { $monthEndDate, $monthStartDate, setCurrentMonth, showMobileSessionInfo, showVacationModal } from "@/pages/coach/schedule/models/calendar.model"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
 import {
@@ -62,7 +62,7 @@ forward({
     }`
     return { type: "info", text: `Сессия ${time} удалена` } as Toast
   }),
-  to: [toasts.remove, toasts.add],
+  to: [toasts.remove, toasts.add, showMobileSessionInfo.prepend(() => false)],
 })
 
 const removeFailedMessage: Toast = {
@@ -181,7 +181,7 @@ forward({
 const removeRangeSuccessMessage: Toast = { type: "info", text: "Успешно удалено" }
 forward({
   from: removeSessionsRangeFx.done.map(_ => removeRangeSuccessMessage),
-  to: [toasts.remove, toasts.add, loadSessions.prepend(_ => {})],
+  to: [toasts.remove, toasts.add, loadSessions.prepend(_ => {}), showVacationModal.prepend(() => false)],
 })
 
 const removeRangeFailMessage: Toast = { type: "error", text: "Ошибка при удалении" }
