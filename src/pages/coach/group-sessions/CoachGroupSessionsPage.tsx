@@ -1,8 +1,8 @@
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectionPlaceholder"
 import { PeopleOnTheClouds } from "@/feature/coach-placeholder/right-images/PeopleOnTheClouds"
 import * as React from "react"
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 const features = [
   "Создавать групповые сессии и их шаблоны",

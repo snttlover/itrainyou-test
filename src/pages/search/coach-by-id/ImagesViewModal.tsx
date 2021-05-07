@@ -1,11 +1,11 @@
-import { Icon } from "@/components/icon/Icon"
-import { Modal } from "@/components/modal/Modal"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { Modal } from "@/oldcomponents/modal/Modal"
 import { MediaRange } from "@/lib/responsive/media"
 import React, { useRef, useState } from "react"
 import ReactIdSwiper, { SwiperInstance, SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
 import Swiper, { SwiperOptions } from "swiper"
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 
 const Layout = styled.div`
   position: fixed;

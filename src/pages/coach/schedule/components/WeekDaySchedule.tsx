@@ -1,24 +1,25 @@
-import { Icon } from "@/components/icon/Icon"
-import { useSelectInput } from "@/components/select-input/SelectInput"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { DropDown } from "@/newcomponents/dropdown/DropDownItem"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { WeekDayName } from "@/lib/api/coaching-sessions/types"
 import { $durationOptions } from "@/pages/coach/schedule/models/add-session.model"
 import {
   $freeWeekdayTimes,
   $weekdaySlotsForView,
-  addSlot,
+  addSlot, checkDurationPrice,
   removeSlot,
 } from "@/pages/coach/schedule/models/weekday-schedule.model"
 import { useEvent, useStore, useStoreMap } from "effector-react"
 import styled from "styled-components"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { PricesDialog } from "@/pages/coach/schedule/components/PricesDialog"
 import { $numberOfSessions } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   background: #ffffff;
-  border-radius: 2px;
+  border: 2px solid #F4F5F7;
+  border-radius: 8px;
   padding: 8px;
 `
 
@@ -47,6 +48,11 @@ const SettingsContainer = styled.div`
   align-items: center;
   margin-top: 4px;
   position: relative;
+`
+
+const SelectBoxContainer = styled.div`
+  width: 130px;
+  margin-right: 10px;
 `
 
 const Prefix = styled.span`
@@ -141,26 +147,13 @@ type Props = {
 
 export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => {
 
-  const {SelectInput: StartSelectInput} = useSelectInput()
-  const {SelectInput: TypeSelectInput} = useSelectInput()
-
-  const StyledStartSelectInput = styled(StartSelectInput)`
-    &:not(:first-child) {
-      margin-left: 4px;
-      margin-right: 10px;
-    }
-  `
-
-  const StyledTypeSelectInput = styled(TypeSelectInput)`
-    &:not(:first-child) {
-      margin-left: 4px;
-      margin-right: 10px;
-    }
-  `
-
   const [isAdd, setIsAdd] = useState(false)
   const [startTime, setStartTime] = useState("")
   const [duration, setDuration] = useState<DurationType>("D30")
+
+  useEffect(() => {
+    _checkDurationPrice(duration)
+  }, [duration, startTime])
 
   const freeTimes = useStoreMap({
     store: $freeWeekdayTimes,
@@ -188,10 +181,13 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
   }
 
   const saveSessionHandler = () => {
+    // @ts-ignore
     startTime && addedSlot({ weekday, startTime, sessionDurationType: duration }) && setStartTime("")
   }
 
   const showTooltips = useStore($numberOfSessions) < 4
+
+  const _checkDurationPrice = useEvent(checkDurationPrice)
 
   return (
     <Container className={className}>
@@ -217,19 +213,23 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
       )}
       {isAdd && (
         <SettingsContainer>
-          <StyledStartSelectInput
-            value={startTime}
-            onChange={value => setStartTime((value as unknown) as string)}
-            options={freeTimes}
-            placeholder='Начало'
-          />
-          <StyledTypeSelectInput
-            value={duration}
-            onChange={value => setDuration((value as unknown) as DurationType)}
-            options={durationOptions}
-            placeholder='Тип'
-            onClick={checkPrices}
-          />
+          <SelectBoxContainer>
+            <DropDown
+              value={startTime}
+              onChange={value => setStartTime((value as unknown) as string)}
+              options={freeTimes}
+              placeholder='Время'
+            />
+          </SelectBoxContainer>
+          <SelectBoxContainer>
+            <DropDown
+              value={duration}
+              onChange={value => setDuration((value as unknown) as DurationType)}
+              options={durationOptions}
+              placeholder='Тип'
+              onClick={checkPrices}
+            />
+          </SelectBoxContainer>
           <MarkIconContainer active={showTooltips && !!startTime}>
             <MarkIcon disabled={!startTime} onClick={saveSessionHandler} />
           </MarkIconContainer>

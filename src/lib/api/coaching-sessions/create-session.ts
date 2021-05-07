@@ -9,7 +9,7 @@ export interface CreateSessionRequest {
   durationType: DurationType
 }
 
-export const createSession = (data: CreateSessionRequest) =>
+export const createSession = (data: CreateSessionRequest[]) =>
   post(`${config.BACKEND_URL}/api/v1/web/coach/sessions/`, keysToSnake(data))
     .then(response => response.data)
     .then(keysToCamel)

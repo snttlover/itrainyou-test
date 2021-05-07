@@ -1,5 +1,5 @@
-import { Avatar } from "@/components/avatar/Avatar"
-import { Rating } from "@/components/rating/Rating"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Rating } from "@/oldcomponents/rating/Rating"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"

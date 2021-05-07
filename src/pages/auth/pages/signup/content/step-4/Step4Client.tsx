@@ -1,4 +1,4 @@
-import { Button } from "@/components/button/normal/Button"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import { $categoriesList } from "@/feature/categories/categories.store"
 import { MediaRange } from "@/lib/responsive/media"
 import { Step4ClientLayout } from "@/pages/auth/pages/signup/content/step-4/client/Step4ClientLayout"

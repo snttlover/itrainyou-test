@@ -1,14 +1,14 @@
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { AddTinkoffCardDialog } from "@/pages/coach/home/tinkoff/AddCardDialog"
 import { $coachCardsListForView } from "@/pages/client/wallet/cards/cards.model"
 import { CreditCardsList } from "@/pages/client/profile/content/credit-cards/CreditCardsList"
 import {useStore} from "effector-react"
 import { finishSaveCoachCardFx } from "@/feature/client-funds-up/dialog/models/units"
-import { Loader } from "@/components/spinner/Spinner"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 
 const Container = styled.div`
   margin: 0 auto;

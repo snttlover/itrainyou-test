@@ -1,15 +1,15 @@
 import { createSupervisorChatModel } from "./create-supervisor-chat.model"
 import { createChatMessages } from "@/feature/chat/view/content/messages/ChatMessages"
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { ChatContainer } from "@/feature/chat/view/content/ChatContainer"
 import React, { useEffect } from "react"
 import { useEvent, useStore } from "effector-react"
 import styled from "styled-components"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
-import { ClientTheme } from "@/components/layouts/themes"
-import { Dialog } from "@/components/dialog/Dialog"
+import { ClientTheme } from "@/oldcomponents/layouts/themes"
+import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { SupervisorChatHeader } from "./SupervisorChatHeader"
-import { Close } from "@/components/dialog/Dialog"
+import { Close } from "@/oldcomponents/dialog/Dialog"
 
 export const createSupervisorChat = (chatId: ChatId, $chatModule: ReturnType<typeof createSupervisorChatModel>) => {
   const Messages = createChatMessages($chatModule.chatMessages)

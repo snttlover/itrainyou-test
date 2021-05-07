@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Tab, Tabs } from "@/components/tabs/Tabs"
+import { Tab, Tabs } from "@/oldcomponents/tabs/Tabs"
 import { Documents } from "@/pages/client/session/content/session-page-content/session-materials/documents/Documents"
 import { Pictures } from "@/pages/client/session/content/session-page-content/session-materials/pictures/Pictures"
 import { Videos } from "@/pages/client/session/content/session-page-content/session-materials/videos/Videos"

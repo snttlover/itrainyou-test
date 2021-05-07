@@ -1,5 +1,5 @@
-import { FormItem } from "@/components/form-item/FormItem"
-import { useSelectInput } from "@/components/select-input/SelectInput"
+import { FormItem } from "@/oldcomponents/form-item/FormItem"
+import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { FormGroup } from "./FormGroup"

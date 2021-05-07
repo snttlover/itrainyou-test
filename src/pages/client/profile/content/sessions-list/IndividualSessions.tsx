@@ -8,7 +8,7 @@ import {
   $ProfileSessions,
   loadMoreProfileSessions,
 } from "@/pages/client/profile/profile-page.model"
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 import SimpleBar from "simplebar-react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import React from "react"

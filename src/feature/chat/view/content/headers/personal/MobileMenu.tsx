@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { useEvent } from "effector-react"
 import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"

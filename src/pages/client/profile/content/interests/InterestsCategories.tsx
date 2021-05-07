@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Checkbox } from "@/components/checkbox/Checkbox"
+import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
 import { CategoryDescription } from "@/pages/landing/content/top-bar/categories-picker/CategoryDescription"
 import { useEvent, useList } from "effector-react"
 import { getCategoryColorById } from "@/feature/categories/categories.store"

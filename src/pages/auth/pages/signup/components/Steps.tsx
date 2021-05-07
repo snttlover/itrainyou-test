@@ -27,7 +27,7 @@ type StepsContainerProps = {
 const isChildrenStep = (child: React.ReactNode): child is React.ReactElement<StepProps> => {
   if (!React.isValidElement(child)) return false
   if (child.type !== StepsLayout.Step) {
-    throw new Error("Steps must be contain only Step components")
+    throw new Error("Steps must be contain only Step oldcomponents")
   }
   return true
 }

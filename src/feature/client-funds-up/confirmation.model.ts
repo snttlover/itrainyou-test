@@ -1,4 +1,4 @@
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { finishTopUp } from "@/lib/api/wallet/client/finish-top-up"
 import { parseQueryString } from "@/lib/helpers/query"
 import { loadClientCardsFx } from "@/pages/client/wallet/cards/cards.model"

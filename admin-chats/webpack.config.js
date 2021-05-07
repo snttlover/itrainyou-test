@@ -46,7 +46,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        include: [path.resolve("src/components/icon/icons")],
+        include: [path.resolve("src/oldcomponents/icon/icons")],
         use: [
           {
             loader: require.resolve("svg-sprite-loader"),

@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Dialog } from "@/components/dialog/Dialog"
-import { Button } from "@/components/button/normal/Button"
+import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import {useHistory} from "react-router-dom"
 

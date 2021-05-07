@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { Close, Dialog } from "@/components/dialog/Dialog"
-import { Button } from "@/components/button/normal/Button"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { Close, Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Button } from "@/oldcomponents/button/normal/Button"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { useEvent, useStore } from "effector-react"
 import {
   $profileCoachButtonVisibility, $userHasCoach, becomeCoach,

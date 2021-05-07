@@ -21,10 +21,10 @@ module.exports = {
   modifyWebpackConfig({ webpackConfig }) {
     const config = Object.assign({}, webpackConfig)
 
-    config.module.rules[2].exclude.push(path.resolve("src/components/icon/icons"))
+    config.module.rules[2].exclude.push(path.resolve("src/oldcomponents/icon/icons"))
     config.module.rules.push({
       test: /\.svg$/,
-      include: [path.resolve("src/components/icon/icons")],
+      include: [path.resolve("src/oldcomponents/icon/icons")],
       use: [
         {
           loader: require.resolve("svg-sprite-loader"),

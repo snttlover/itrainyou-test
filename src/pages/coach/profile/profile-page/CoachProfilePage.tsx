@@ -1,5 +1,5 @@
-import { CoachDashboardLayout } from "@/components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import { MediaRange } from "@/lib/responsive/media"
 import { TabsContainer } from "@/pages/coach/profile/common/TabsContainer"
 import { useGate, useStore } from "effector-react"

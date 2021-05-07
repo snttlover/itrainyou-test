@@ -1,32 +1,13 @@
-import { Spinner } from "@/components/spinner/Spinner"
+import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
-import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
-import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
 import { WeekDaySchedule } from "@/pages/coach/schedule/components/WeekDaySchedule"
 import { saveWeekdaySlotsFx } from "@/pages/coach/schedule/models/weekday-schedule.model"
 import { useGate, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
-import { ScheduleGate } from "./models/schedule.model"
-
-export const Title = styled.h2`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
-  color: #424242;
-`
-
-export const Description = styled.p`
-  margin-top: 4px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 18px;
-  color: #5b6670;
-`
+import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
+import { Informer } from "@/newcomponents/informer/Informer"
+import { InputDurationPriceModal } from "./components/InputDurationPriceModal"
 
 const PriceContainer = styled.div`
   max-width: 320px;
@@ -38,8 +19,9 @@ const PriceContainer = styled.div`
     margin-right: 100px;
   `}
 `
+
 const WeeklyScheduleContainer = styled.div`
-  max-width: 320px;
+  max-width: 100%;
 `
 
 const ScheduleSettingsContainerMobileStyles = `
@@ -75,6 +57,7 @@ const ScheduleSettingsContainer = styled.div`
 const PriceListContainer = styled.div`
   margin-top: 16px;
   position: relative;
+  max-width: 312px;  
 
   ${WeekDaySchedule}:not(:first-child) {
     margin-top: 8px;
@@ -83,9 +66,11 @@ const PriceListContainer = styled.div`
     `}
   }
 `
+const StyledInformer = styled.div`
+  margin-top: 16px;
+`
 
 export const Schedule = () => {
-  useGate(ScheduleGate)
 
   const isWeekdaySchedulePending = useStore(saveWeekdaySlotsFx.pending)
 
@@ -93,10 +78,13 @@ export const Schedule = () => {
     <>
       <ScheduleSettingsContainer>
         <WeeklyScheduleContainer>
-          <Title>Недельное расписание</Title>
+          <Title>Составьте свое расписание</Title>
           <Description>
-            Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
+              Выберите дни и временные промежутки, в которые вы можете работать. Клиенты смогут бронировать занятия в это время.
           </Description>
+          <StyledInformer>
+            <Informer closable>Вы можете выбрать несколько сессий в течение одного дня</Informer>
+          </StyledInformer>
           <PriceListContainer>
             <WeekDaySchedule title='Понедельник' weekday='MONDAY' />
             <WeekDaySchedule title='Вторник' weekday='TUESDAY' />
@@ -108,24 +96,8 @@ export const Schedule = () => {
             {isWeekdaySchedulePending && <Spinner />}
           </PriceListContainer>
         </WeeklyScheduleContainer>
-        <PriceContainer>
-          <Title>Цена</Title>
-          <Description>
-            Укажите, когда вам удобно работать. Когда клиенты будут искать коуча на это время, они увидят вашу анкету.
-          </Description>
-          <PriceListContainer>
-            {/*<PriceInputGroup
-              title='Промо сессия (15 минут)'
-              name='promo'
-            />*/}
-            <PriceInputGroup title='30 минут' name='d30Price' />
-            <PriceInputGroup title='45 минут' name='d45Price' />
-            <PriceInputGroup title='60 минут' name='d60Price' />
-            <PriceInputGroup title='90 минут' name='d90Price' />
-          </PriceListContainer>
-        </PriceContainer>
       </ScheduleSettingsContainer>
-      <CalendarPart />
+      <InputDurationPriceModal />
     </>
   )
 }

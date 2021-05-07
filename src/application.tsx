@@ -1,7 +1,7 @@
 import { AsyncDataLoader } from "@/lib/AsyncDataLoader"
 import * as React from "react"
 import { AppStyles } from "./AppStyles"
-import { ClientTheme } from "./components/layouts/themes"
+import { ClientTheme } from "./oldcomponents/layouts/themes"
 import { Pages } from "./pages"
 import "./init"
 

@@ -1,5 +1,5 @@
-import { Calendar } from "@/components/calendar/Calendar"
-import { Icon } from "@/components/icon/Icon"
+import { Calendar } from "@/oldcomponents/calendar/Calendar"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { $currentMonth, changeDate, setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import { $allSessions } from "@/pages/coach/schedule/models/sessions.model"
@@ -16,25 +16,29 @@ const Divider = styled.div`
   margin: 3px 0;
 `
 
-const Times = styled.div<{ primary: boolean }>`
+export const Times = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-  background-color: ${ ({primary}) => primary ? "#DFD0E7" : "unset" };
   border-radius: 12px;
   padding: 0 6px;
 `
 
-const Time = styled.p`
+export const Time = styled.p<{ primary?: boolean; googleEvent: boolean }>`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 22px;
-  color: #424242;
+  color: ${({ primary })=> !!primary ? "#FFFFFF" : "#424242"};
+  border-radius: 9px;
+  padding: 4px;
+  text-decoration: ${({googleEvent})=> googleEvent ? "line-through" : "none"};
+  background-color: ${({primary, theme})=> primary !== undefined ? (primary ? theme.colors.primary : "#FFFFFF") : "unset"};
+  border: ${({primary})=> primary !== undefined ? (primary ? "" : "1px dashed #DFD0E7") : "unset"};
 `
 
-const RemoveIcon = styled(Icon).attrs({ name: "cross" })`
+export const RemoveIcon = styled(Icon).attrs({ name: "cross" })`
   fill: #5b6670;
 `
 
@@ -74,15 +78,15 @@ export const MobileCalendarManager: React.FC<MobileCalendarManager> = ({ onAddCl
       />
       <Divider />
       {selectedDaySessions.map(session => (
-        <Times key={session.id} primary={session.areAvailable}>
-          <Time>
+        <Times key={session.id} >
+          <Time googleEvent={session.googleEvent} primary={session.areAvailable}>
             {session.startTime.format("HH:mm")}-{session.endTime.format("HH:mm")}
           </Time>
           <RemoveIcon onClick={() => _removeSession(session)} />
         </Times>
       ))}
-      <Times primary={false}>
-        <Time />
+      <Times>
+        <Time googleEvent={false} />
         <AddIcon onClick={() => onAddClick(currentDate)} />
       </Times>
     </>

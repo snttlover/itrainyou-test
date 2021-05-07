@@ -12,11 +12,11 @@ import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySe
 import { useEvent, useStore } from "effector-react"
 import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
 import { $hasStartedSessions } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { $hasNewestParticipantsList } from "@/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
 import { EmptySessions } from "@/pages/coach/home/sessions/content/empty-sessions/EmptySessions"
 import { FillOutSchedule } from "@/pages/coach/home/sessions/content/empty-sessions/FillOutSchedule"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import { FilledOutNoResponses } from "@/pages/coach/home/sessions/content/empty-sessions/FilledOutNoResponses"
 
 const Container = styled.div<{ nosessions: boolean }>`

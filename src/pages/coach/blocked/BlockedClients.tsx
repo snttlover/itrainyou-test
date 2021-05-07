@@ -1,5 +1,5 @@
-import { Spinner } from "@/components/spinner/Spinner"
-import { Tab, Tabs } from "@/components/tabs/Tabs"
+import { Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Tab, Tabs } from "@/oldcomponents/tabs/Tabs"
 import { GetBannedClientsResponse } from "@/lib/api/restriction/get-banned-clients"
 import { MediaRange } from "@/lib/responsive/media"
 import {

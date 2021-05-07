@@ -2,10 +2,10 @@ import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { $userData } from "@/feature/user/user.model"
 import { yandexRegistrationCompletedFx } from "@/pages/coach/home/coach-home.model"
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "@/oldcomponents/icon/Icon"
 
 const Container = styled.div`
   margin: 0 auto;

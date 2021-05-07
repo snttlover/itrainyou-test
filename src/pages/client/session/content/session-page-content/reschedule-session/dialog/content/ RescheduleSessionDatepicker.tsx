@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Calendar } from "@/components/calendar/Calendar"
-import { Button } from "@/components/button/normal/Button"
+import { Calendar } from "@/oldcomponents/calendar/Calendar"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useList, useStore, useStoreMap } from "effector-react"
 import {

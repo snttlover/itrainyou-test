@@ -1,7 +1,7 @@
-import { Avatar } from "@/components/avatar/Avatar"
-import { Button } from "@/components/button/normal/Button"
-import { FormItem } from "@/components/form-item/FormItem"
-import { Input } from "@/components/input/Input"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Button } from "@/oldcomponents/button/normal/Button"
+import { FormItem } from "@/oldcomponents/form-item/FormItem"
+import { Input } from "@/oldcomponents/input/Input"
 import { MediaRange } from "@/lib/responsive/media"
 import { UploadModal } from "./UploadModal"
 import { BirthdayFormGroup } from "./BirthdayFormGroup"
@@ -21,8 +21,8 @@ import {
 import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { Spinner } from "@/components/spinner/Spinner"
+import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { useHistory, useLocation } from "react-router-dom"
 import {
   $userHasCoach, becomeCoach

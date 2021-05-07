@@ -9,9 +9,9 @@ import {
 } from "@/feature/chat/modules/chat-sessions"
 import { createInfinityScroll } from "@/feature/pagination"
 import { useList, useStore } from "effector-react"
-import { Tabs, Tab } from "@/components/tabs/Tabs"
+import { Tabs, Tab } from "@/oldcomponents/tabs/Tabs"
 import { useEvent } from "effector-react"
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "@/oldcomponents/icon/Icon"
 
 export const createChatSessions = (sessionsModule: ReturnType<typeof createChatSessionsModule>) => {
   const Pagination = createInfinityScroll(sessionsModule.modules.pagination)

@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from "react"
 import styled from "styled-components"
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
 import {ChatFile, createChatMessageBoxModule} from "@/feature/chat/view/content/message-box/create-message-box.module"
 import SimpleBar from "simplebar-react"
 import {useEvent, useStore} from "effector-react"
-import { toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
-import {useClickOutside} from "@/components/click-outside/use-click-outside"
+import { toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import {useClickOutside} from "@/oldcomponents/click-outside/use-click-outside"
 
 const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
     title: string

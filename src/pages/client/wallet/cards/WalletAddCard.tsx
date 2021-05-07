@@ -1,11 +1,11 @@
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { useEvent } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 import MasterCard from "@/pages/client/wallet/img/MasterCard.svg"
 import Visa from "@/pages/client/wallet/img/Visa.svg"
-import { Button } from "@/components/button/normal/Button"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import {toggleAddTinkoffCardModal} from "@/pages/coach/home/coach-home.model"
 
 

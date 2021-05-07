@@ -1,5 +1,5 @@
 import React from "react"
-import {ContentContainer} from "@/components/layouts/ContentContainer"
+import {ContentContainer} from "@/oldcomponents/layouts/ContentContainer"
 import { createChatList } from "@/feature/chats-list"
 import { coachChatsList } from "@/pages/coach/chats/list/coach-chats-list.module"
 import styled from "styled-components"

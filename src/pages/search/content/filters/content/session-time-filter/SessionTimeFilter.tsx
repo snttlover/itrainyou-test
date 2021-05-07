@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 import { useEvent, useList } from "effector-react"
-import { Checkbox } from "@/components/checkbox/Checkbox"
+import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
 import {
   $priceFilters,
   toggleFilter,

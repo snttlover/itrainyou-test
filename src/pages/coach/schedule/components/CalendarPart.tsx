@@ -1,143 +1,40 @@
-import { DashedButton } from "@/components/button/dashed/DashedButton"
-import { Spinner } from "@/components/spinner/Spinner"
-import { date } from "@/lib/formatting/date"
+import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
-import { MobileCalendarManager } from "@/pages/coach/schedule/components/MobileCalendarManager"
-import {
-  $isAddSessionModalShowed,
-  setAddSessionDate,
-  setModalShow,
-} from "@/pages/coach/schedule/models/add-session.model"
-import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
-import { RemoveSessionsDateRangePicker } from "@/pages/coach/schedule/components/RemoveSessionsDateRangePicker"
 import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"
-import { setCurrentMonth } from "@/pages/coach/schedule/models/calendar.model"
 import {
-  $deleteButtonIsDisabled,
-  $pickedDeleteRange,
-  CalendarGate,
-  changePickedDeleteRange,
-  DateArray,
-  loadSessionsFx,
-  removeSessionsRange,
+  loadCalendarEventsFx, removeSessionFx
 } from "@/pages/coach/schedule/models/sessions.model"
-import { Description, Title } from "@/pages/coach/schedule/Schedule"
-import { Dayjs } from "dayjs"
-import { useEvent, useGate, useStore } from "effector-react"
-import React, { useState } from "react"
+import { useStore } from "effector-react"
+import React from "react"
 import styled from "styled-components"
 import { RemoveSessionModal } from "@/pages/coach/schedule/components/RemoveSessionModal"
 import { $showRemoveSessionModal } from "@/pages/coach/schedule/models/remove-session.model"
+import { Informer } from "@/newcomponents/informer/Informer"
 
-const RemoveButton = styled(DashedButton)`
-  width: 100%;
-  margin-top: 12px;
-
-  ${MediaRange.greaterThan("mobile")`
-    padding: 0px 24px;
-  `}
-
-  ${MediaRange.greaterThan("laptop")`
-    width: 160px;
-    min-width: 160px;
-  `}
-`
 const CalendarContainer = styled.div`
   position: relative;
   background-color: #fff;
   border-radius: 2px;
-  margin-top: 27px;
   padding: 16px;
-  max-width: 704px;
+  max-width: 830px;
   ${MediaRange.greaterThan("mobile")`
     background-color: transparent;
     padding: 0;
   `};
 `
 
-const RemoveDateRangeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 16px;
-  max-width: 700px;
-
-  ${MediaRange.greaterThan("mobile")`
-    flex-direction: row;
-    align-items: center;
-    
-    ${RemoveButton} {
-      line-height: unset;
-      margin-top: 0;
-      margin-left: 28px;
-      width: 160px;
-      height: 26px;
-    }
-  `}
-`
-
-const StyledDateRangePicker = styled(RemoveSessionsDateRangePicker)`
-  width: 100%;
-`
-
-const MobileCalendar = styled.div`
-  ${MediaRange.greaterThan("mobile")`
-    display: none;
-  `}
-`
-
-const DesktopCalendar = styled.div`
-  display: none;
-
-  ${MediaRange.greaterThan("mobile")`
-    display: flex;
-    margin-top: 10px;
-  `}
-`
-
 export const CalendarPart = () => {
-  const isAddSessionModalShowed = useStore($isAddSessionModalShowed)
-  const isSessionsLoading = useStore(loadSessionsFx.pending)
-  const _setModalShow = useEvent(setModalShow)
-  const _setDate = useEvent(setAddSessionDate)
-  const _removeSessionsRange = useEvent(removeSessionsRange)
-  const _setCurrentMonth = useEvent(setCurrentMonth)
-
-  const range = useStore($pickedDeleteRange)
-  const setRange = useEvent(changePickedDeleteRange)
-  const disabledDelete = useStore($deleteButtonIsDisabled)
+  const isSessionsLoading = useStore(loadCalendarEventsFx.pending)
+  const isDeletingSession = useStore(removeSessionFx.pending)
   const showRemoveSessionModal = useStore($showRemoveSessionModal)
-
-  useGate(CalendarGate)
-
-  const openModalCallback = (date: Dayjs) => {
-    _setDate(date)
-    _setModalShow(true)
-  }
-
+  
   return (
     <>
-      <Title>Календарь</Title>
-      <Description>Планируете отпуск? Отмените сессии на промежутке дат</Description>
-      <RemoveDateRangeContainer>
-        <StyledDateRangePicker range={range} rangeChanged={setRange} />
-        <RemoveButton disabled={disabledDelete} onClick={() => _removeSessionsRange(range)}>
-          Удалить
-        </RemoveButton>
-      </RemoveDateRangeContainer>
       <CalendarContainer>
-        <MobileCalendar>
-          <MobileCalendarManager onAddClick={openModalCallback} />
-        </MobileCalendar>
-        <DesktopCalendar>
-          <ScheduleCalendar
-            nextMonth={currentDate => _setCurrentMonth(currentDate.add(1, "month"))}
-            onAddClick={openModalCallback}
-            prevMonth={currentDate => _setCurrentMonth(currentDate.subtract(1, "month"))}
-          />
-        </DesktopCalendar>
-        {isSessionsLoading && <Spinner />}
+        <Informer closable>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
+        <ScheduleCalendar />
+        {(isSessionsLoading || isDeletingSession) && <Spinner />}
       </CalendarContainer>
-      {isAddSessionModalShowed && <AddSessionModal onCrossClick={() => _setModalShow(false)} />}
       {showRemoveSessionModal && <RemoveSessionModal/>}
     </>
   )

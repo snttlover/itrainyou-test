@@ -1,10 +1,15 @@
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { UpdateCoachSchedule, WeekDayName, WeekDaySlot } from "@/lib/api/coaching-sessions/types"
 import { date } from "@/lib/formatting/date"
-import { loadScheduleFx, updateScheduleFx } from "@/pages/coach/schedule/models/schedule.model"
 import { loadSessionsWithParamsFx } from "@/pages/coach/schedule/models/sessions.model"
-import { attach, combine, createEvent, createStore, forward, restore, sample, merge } from "effector-root"
+import { attach, combine, createEvent, createStore, forward, merge, restore, sample } from "effector-root"
+import {
+  loadScheduleFx,
+  toggleInputDurationPriceModal,
+  updateScheduleFx
+} from "@/pages/coach/schedule/models/schedule/units"
+import { $prices } from "@/pages/coach/schedule/models/price-settings/units"
 
 export const saveWeekdaySlotsFx = attach({
   effect: updateScheduleFx,
@@ -39,7 +44,8 @@ const weekDayToNumberMap: { [key in WeekDayName]: 0 | 1 | 2 | 3 | 4 | 5 | 6 } = 
 }
 
 export const removeSlot = createEvent<{ slotId: number; weekday: WeekDayName }>()
-export const addSlot = createEvent<{ weekday: WeekDayName; startTime: string; sessionDurationType: DurationType }>()
+export const addSlot = createEvent<{ weekday: WeekDayName; startTime: string[]; sessionDurationType: DurationType }>()
+export const addSlotFromModal = createEvent()
 
 export const $weekdaySlots = createStore(
   ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].map(weekday => ({
@@ -168,6 +174,7 @@ sample({
           ...weekdaySlot,
           slots: [...weekdaySlot.slots, { sessionDurationType, startTime }].map(slot => ({
             ...slot,
+            // @ts-ignore
             startTime: timeToUTC(slot.startTime),
           })),
         }
@@ -176,3 +183,18 @@ sample({
   },
   target: saveWeekdaySlotsFx,
 })
+
+export const checkDurationPrice = createEvent<DurationType>()
+
+sample({
+  clock: checkDurationPrice,
+  source: $prices,
+  fn: (prices, duration) => {
+    return {
+      showModal: !prices.find(price => price.key === duration)?.value,
+      duration
+    }
+  },
+  target: toggleInputDurationPriceModal
+})
+

@@ -1,5 +1,5 @@
-import { Calendar } from "@/components/calendar/Calendar"
-import { useClickOutside } from "@/components/click-outside/use-click-outside"
+import { Calendar } from "@/oldcomponents/calendar/Calendar"
+import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
 import { date } from "@/lib/formatting/date"
 import { DatePicker } from "@/pages/coach/schedule/components/DatePicker"
 import dayjs, { Dayjs } from "dayjs"
@@ -10,6 +10,12 @@ import { DateArray } from "@/pages/coach/schedule/models/sessions.model"
 const Container = styled.div`
   display: flex;
   position: relative;
+`
+
+const CalendarContainer = styled.div`
+  position: fixed;
+  z-index: 2000;
+  background-color: white;
 `
 
 const Dropdown = styled.div`
@@ -66,19 +72,23 @@ export const RemoveSessionsDateRangePicker: React.FC<RemoveSessionsDateRangePick
       <div ref={dropdownRef}>
         {leftIsOpen && (
           <LeftDropdown>
-            <Calendar
-              value={from}
-              disabledFrom={to}
-              onChange={picked => rangeChanged([date(picked), date(to || dayjs(picked).add(1, "day"))])}
-            />
+            <CalendarContainer>
+              <Calendar
+                value={from}
+                disabledFrom={to}
+                onChange={picked => rangeChanged([date(picked), date(to || dayjs(picked).add(1, "day"))])}
+              />
+            </CalendarContainer>
           </LeftDropdown>
         )}
         {rightIsOpen && (
           <RightDropdown>
-            <Calendar
-              value={to}
-              onChange={picked => rangeChanged([date(from || dayjs(picked).subtract(1, "day")), date(picked)])}
-            />
+            <CalendarContainer>
+              <Calendar
+                value={to}
+                onChange={picked => rangeChanged([date(from || dayjs(picked).subtract(1, "day")), date(picked)])}
+              />
+            </CalendarContainer>
           </RightDropdown>
         )}
       </div>

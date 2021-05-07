@@ -1,5 +1,5 @@
-import cross from "@/components/modal/cross.svg"
-import { ProgressBar } from "@/components/progress-bar/ProgressBar"
+import cross from "@/oldcomponents/modal/cross.svg"
+import { ProgressBar } from "@/oldcomponents/progress-bar/ProgressBar"
 import { MediaRange } from "@/lib/responsive/media"
 import { $uploadPercent, uploadImageFx, uploadOriginalAvatarFx } from "./upload-modal.model"
 import { ProcessingImage } from "./upload-steps/ProcessingImage"
@@ -9,7 +9,7 @@ import * as React from "react"
 import { useCallback, useState } from "react"
 import { FileRejection, useDropzone } from "react-dropzone"
 import styled from "styled-components"
-import { Dialog } from "@/components/dialog/Dialog"
+import { Dialog } from "@/oldcomponents/dialog/Dialog"
 
 const Backdrop = styled.div`
   position: absolute;

@@ -5,7 +5,7 @@ import { passwordValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import { AxiosError } from "axios"
 import { combine, createEffect, createStoreObject, forward } from "effector-root"
-import { Toast, toasts } from "@/components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export const PasswordFormGate = createGate()
 

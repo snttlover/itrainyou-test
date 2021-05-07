@@ -5,9 +5,9 @@ import { PasswordForm } from "./content/PasswordForm"
 import { MediaRange } from "@/lib/responsive/media"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { useStore } from "effector-react"
-import { Loader } from "@/components/spinner/Spinner"
+import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { LeftPageContainer } from "@/pages/common/settings/content/LeftPageContainer"
-import { ContentContainer } from "@/components/layouts/ContentContainer"
+import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 
 const Title = styled.div`
   font-family: Roboto Slab;

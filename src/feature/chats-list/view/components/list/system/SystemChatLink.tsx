@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { Icon } from "@/components/icon/Icon"
+import { Icon } from "@/oldcomponents/icon/Icon"
 
 export const SystemChatLink = ({ link, newMessagesCount }: { link: string, newMessagesCount: number }) => (
   <Container to={link} data-has-messages={!!newMessagesCount}>

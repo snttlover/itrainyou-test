@@ -15,7 +15,10 @@ export type WeekDaySlot = {
 
 export interface CoachSchedule {
   id: number
-  isAvailable: boolean
+  isAvailable?: boolean
+  googleCalendarEmail: string | null
+  isGoogleCalendarAdded: boolean
+  isGoogleCalendarSync: boolean
   d30Price: string
   d45Price: string
   d60Price: string
