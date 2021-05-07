@@ -12,6 +12,7 @@ import logoImg from "../assets/header/logo.svg"
 const Wrapper = styled.header`
   width: 100%;
   position: absolute;
+  z-index: 2;
 `
 
 const StyledContainer = styled(Container)`
