@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 
-export function useClickOutside<T>(ref: React.MutableRefObject<T>, callback: (e: MouseEvent & any) => void) {
+export function useClickOutside<T>(ref: React.MutableRefObject<T>, callback: () => void) {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent & any) => {
       const el = ref.current
@@ -8,14 +8,14 @@ export function useClickOutside<T>(ref: React.MutableRefObject<T>, callback: (e:
       for (const pathEl of path) {
         if (pathEl === el) return
       }
-      callback(event)
+      callback()
     }
 
     // Bind the event listener
-    document.addEventListener("mousedown", (e) => handleClickOutside(e))
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
       // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", (e) => handleClickOutside(e))
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [ref])
 }

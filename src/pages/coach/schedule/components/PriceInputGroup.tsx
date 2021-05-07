@@ -55,6 +55,7 @@ export const PriceInputGroup: React.FC<PriceInputGroupType> = ({
         loading={price?.isLoading}
         errorText={error}
         value={value!}
+        price={true}
         onChange={onChange}
       />
     </Container>

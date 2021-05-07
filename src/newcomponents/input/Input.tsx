@@ -53,18 +53,18 @@ const TextBox = styled.input<{ error?: string | null | false; withoutBorder?: bo
   }
 `
 
-const StyledFormItem = styled.div`
+const StyledFormItem = styled.div<{maxWidth?: string}>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 200px;
+  max-width: ${({ maxWidth }) => !!maxWidth ? maxWidth : "200px"};
 `
 
 const Label = styled.div<{error?: boolean}>`
   font-family: Roboto;
   display: flex;
   align-items: flex-start;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   line-height: 22px;
   margin-bottom: 2px;
@@ -109,6 +109,7 @@ type FormItemTypes = {
     label?: string | React.ReactNode
     children?: React.ReactNode
     required?: boolean
+    maxWidth?: string
     error?: string | null | boolean
     className?: string
 }
@@ -144,7 +145,7 @@ export const InnerInput = styled((props: InputTypes) => {
   return <TextBox {...props} onChange={change} ref={props.reff} />
 })``
 
-const InputPasswordContainer = styled.div<{maxWidth?: string}>`
+const InputPasswordContainer = styled.div`
   position: relative;
   
   ${InnerInput} {
@@ -163,7 +164,7 @@ const InputPasswordContainer = styled.div<{maxWidth?: string}>`
   }
 `
 
-const LabelItem = styled(({ label, children, error, required, ...props }: FormItemTypes) => {
+const LabelItem = styled(({ label, children, error, required, maxWidth, ...props }: FormItemTypes) => {
   return (
     <StyledFormItem {...props}>
       {label && <Label error={!!error}>
@@ -178,7 +179,7 @@ const LabelItem = styled(({ label, children, error, required, ...props }: FormIt
   )
 })``
 
-export const Input = styled(({ className, label, errorText, price, mask, loading, ...props }) => {
+export const Input = styled(({ className, label, errorText, price, mask, loading, maxWidth, ...props }) => {
   const [showPassword, setShowPassword] = useState(true)
 
   const handleOnClick = () => {
@@ -186,8 +187,8 @@ export const Input = styled(({ className, label, errorText, price, mask, loading
   }
 
   return (
-    <LabelItem label={label} error={errorText} className={className}>
-      <InputPasswordContainer maxWidth={props.maxWidth}>
+    <LabelItem maxWidth={maxWidth} label={label} error={errorText} className={className}>
+      <InputPasswordContainer>
         <InnerInput {...props} type={showPassword ? "text" : "password"} />
         {price ?
           <>

@@ -20,16 +20,28 @@ const GoogleButton = styled.div`
     margin-top: 24px;
     cursor: pointer;
     padding: 8px 16px;
+    font-size: 14px;
+    line-height: 22px;
 
     &:hover {
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12), 1px 1px 3px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.12);
     }
+
+    ${MediaRange.lessThan("mobile")`
+      padding: 8px 11px;
+    `}
 `
 
 const GoogleIcon = styled(Icon).attrs({name: "google-calendar"})`
     width: 40px;
     height: 40px;
-    margin-right: 20px;
+    margin-right: 14px;
+
+    ${MediaRange.lessThan("mobile")`
+      margin-right: 8px;
+      width: 16px;
+      height: 16px;
+    `}
 `
 
 const Row = styled.div`

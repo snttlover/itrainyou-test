@@ -71,8 +71,13 @@ const StyledDashedButton = styled(DashedButton)`
 `
 
 const StyledPriceButton = styled(DashedButton)`
-  margin-top: 16px;
+  margin-left: 16px;
   width: 175px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-top: 16px;
+    margin-left: 0px;
+  `}
 `
 
 const AddIcon = styled(Icon).attrs({ name: "cross" })`
@@ -123,6 +128,29 @@ const RowBlock = styled.div`
   margin: 15px 0;
 `
 
+const PriceRowBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+    align-items: flex-start;
+  `}
+`
+
+const Label = styled.div`
+  font-family: Roboto;
+  display: flex;
+  align-items: flex-start;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 2px;
+  color: #5B6670;  
+`
+
 const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) => {
 
   let name: keyof Prices = "d30Price"
@@ -150,19 +178,26 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
   const priceUpdate = useEvent(changePrice)
   return (
     <Informer>
-      <Input
-        placeholder='0'
-        withoutBorder
-        type='number'
-        value={priceValue}
-        label={title}
-        onChange={(value: string) => {
-          setValue(value)
-        }}/>
-      <StyledPriceButton
-        disabled={!priceValue}
-        onClick={() => priceUpdate({ name, value: parseFloat(priceValue)})}>
-        Добавить цену</StyledPriceButton>
+      <Container>
+        <Label>{title}</Label>
+        <PriceRowBlock>
+          <Input
+            placeholder='0'
+            withoutBorder
+            type='number'
+            value={priceValue}
+            price={true}
+            maxWidth={"144px"}
+            onChange={(value: string) => {
+              setValue(value)
+            }}/>
+          <StyledPriceButton
+            disabled={!priceValue}
+            onClick={() => priceUpdate({ name, value: parseFloat(priceValue)})}>
+        Добавить цену
+          </StyledPriceButton>
+        </PriceRowBlock>
+      </Container>
     </Informer>
   )
 }

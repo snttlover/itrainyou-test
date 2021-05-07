@@ -16,7 +16,7 @@ const CalendarContainer = styled.div`
   background-color: #fff;
   border-radius: 2px;
   padding: 16px;
-  max-width: 828px;
+  max-width: 830px;
   ${MediaRange.greaterThan("mobile")`
     background-color: transparent;
     padding: 0;

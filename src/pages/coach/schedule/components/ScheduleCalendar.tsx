@@ -469,7 +469,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
     e.stopPropagation()
   }
 
-  useClickOutside(toolTipRef, (e) => {
+  useClickOutside(toolTipRef, () => {
     setShowed(false)
   })
 

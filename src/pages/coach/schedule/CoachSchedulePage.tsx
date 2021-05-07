@@ -25,7 +25,7 @@ const StyledTabs = styled(Tabs)`
   position: relative;
   margin-bottom: 24px;  
 `
-//max-width: 200px;
+
 const StyledTab = styled(Tab)`
   font-size: 16px;
   line-height: 24px;
