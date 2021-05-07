@@ -83,7 +83,6 @@ const Progress = styled.div`
     top: 0px;
     background: #ffffff;
     border-radius: 8px;
-    /* transition: all 0.1s ease; */
   }
 `
 
@@ -132,10 +131,10 @@ export class Desktop extends React.Component<Props, State> {
           }
 
           return {
-            progress: prevState.progress + 1,
+            progress: prevState.progress + 0.25,
           }
         }),
-      100
+      25
     )
   }
   componentWillUnmount() {
