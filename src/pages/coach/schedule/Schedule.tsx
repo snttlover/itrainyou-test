@@ -66,6 +66,9 @@ const PriceListContainer = styled.div`
     `}
   }
 `
+const StyledInformer = styled.div`
+  margin-top: 16px;
+`
 
 export const Schedule = () => {
 
@@ -79,7 +82,9 @@ export const Schedule = () => {
           <Description>
               Выберите дни и временные промежутки, в которые вы можете работать. Клиенты смогут бронировать занятия в это время.
           </Description>
-          <Informer closable>Вы можете выбрать несколько сессий в течение одного дня</Informer>
+          <StyledInformer>
+            <Informer closable>Вы можете выбрать несколько сессий в течение одного дня</Informer>
+          </StyledInformer>
           <PriceListContainer>
             <WeekDaySchedule title='Понедельник' weekday='MONDAY' />
             <WeekDaySchedule title='Вторник' weekday='TUESDAY' />

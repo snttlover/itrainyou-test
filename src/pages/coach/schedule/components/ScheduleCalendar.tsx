@@ -58,6 +58,7 @@ const MobileList = styled.div`
   ${MediaRange.lessThan("mobile")`
     display: flex;
     min-width: 280px;
+    margin-top: 30px;
   `}
 `
 
@@ -122,11 +123,17 @@ const StyledHeader = styled(Header)`
 
   ${MediaRange.lessThan("mobile")`
     flex-direction: column-reverse;
+    margin-bottom: 20px;
   `}
 `
 
 const AddVacationButton = styled(DashedButton)`
   width: 188px;
+
+  ${MediaRange.lessThan("mobile")`
+    align-self: flex-end;
+    margin-bottom: 34px;
+  `}
 `
 
 const ToolTipButton = styled(DashedButton)`
@@ -265,10 +272,12 @@ const DayContainer = styled.div<{presentDay: boolean}>`
   }
 
   ${MediaRange.lessThan("mobile")`
-    width: 12px;
     min-height: 12px;
+    padding: 0;
+    margin: 0;
   `}
 `
+
 const TopCellContainer = styled.div`
   display:flex;
   align-items: center;
@@ -560,13 +569,6 @@ export const ScheduleCalendar = () => {
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
   const daysCount = monthDayStart.daysInMonth() + countPadStartDays + countPadEndDays
-
-  console.log("test proizvoditelnosti")
-
-
-  useEffect(() => {
-    console.log("Effect proizvoditelnost")
-  }, [])
 
   const weeks: Dayjs[][] = []
   let currentWeek = []
