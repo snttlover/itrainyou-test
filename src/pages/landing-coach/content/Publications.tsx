@@ -7,7 +7,7 @@ import { Desktop } from "./publications/Desktop"
 const Wrapper = styled.section`
   background: #4858cc;
 
-  margin-bottom: 64px;
+  margin-bottom: 84px;
 `
 
 const MobileVersion = styled(Mobile)`
