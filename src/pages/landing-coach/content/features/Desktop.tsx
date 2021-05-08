@@ -109,6 +109,7 @@ type Props = any
 type State = {
   activeFeature: number
   progress: number
+  userReachedBlock: boolean
 }
 
 export class Desktop extends React.Component<Props, State> {
@@ -117,9 +118,26 @@ export class Desktop extends React.Component<Props, State> {
   state: State = {
     activeFeature: 0,
     progress: 0,
+    userReachedBlock: false,
+  }
+
+  isBottom(el: any) {
+    return el.getBoundingClientRect().top <= window.innerHeight
+  }
+
+  handleScroll() {
+    const wrappedElement = document.getElementById("features-desktop-block")
+
+    if (this.isBottom(wrappedElement)) {
+      if (this.state.userReachedBlock) return
+
+      this.setState({ userReachedBlock: true, activeFeature: 0, progress: 0 })
+    }
   }
 
   componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll.bind(this))
+
     this.timer = setInterval(
       () =>
         this.setState(prevState => {
@@ -138,12 +156,13 @@ export class Desktop extends React.Component<Props, State> {
     )
   }
   componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll)
     clearInterval(this.timer)
   }
 
   render() {
     return (
-      <StyledContainer className={this.props.className}>
+      <StyledContainer className={this.props.className} id='features-desktop-block'>
         <Title>Используйте все функции личного кабинета</Title>
         <Nav>
           {content.map((item, index) => (

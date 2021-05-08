@@ -92,6 +92,7 @@ type Props = any
 type State = {
   activePubl: number
   progress: number
+  userReachedBlock: boolean
 }
 
 export class Desktop extends React.Component<Props, State> {
@@ -100,9 +101,26 @@ export class Desktop extends React.Component<Props, State> {
   state: State = {
     activePubl: 0,
     progress: 0,
+    userReachedBlock: false,
+  }
+
+  isBottom(el: any) {
+    return el.getBoundingClientRect().top <= window.innerHeight
+  }
+
+  handleScroll() {
+    const wrappedElement = document.getElementById("publications-desktop-block")
+
+    if (this.isBottom(wrappedElement)) {
+      if (this.state.userReachedBlock) return
+
+      this.setState({ userReachedBlock: true, activePubl: 0, progress: 0 })
+    }
   }
 
   componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll.bind(this))
+
     this.timer = setInterval(
       () =>
         this.setState(prevState => {
@@ -121,12 +139,13 @@ export class Desktop extends React.Component<Props, State> {
     )
   }
   componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll)
     clearInterval(this.timer)
   }
 
   render() {
     return (
-      <StyledContainer className={this.props.className}>
+      <StyledContainer className={this.props.className} id='publications-desktop-block'>
         <Title>Публикации о нас</Title>
         <Nav>
           {content.map((item, index) => (

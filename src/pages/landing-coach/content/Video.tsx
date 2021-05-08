@@ -28,6 +28,7 @@ const VideoContainer = styled.div`
   background-size: cover;
   border-radius: 8px;
   position: relative;
+  overflow: hidden;
 `
 
 const Title = styled.h2`

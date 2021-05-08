@@ -87,7 +87,7 @@ type State = {
 
 export class Questions extends React.Component<Props, State> {
   state: State = {
-    openedQuestions: [0, 1],
+    openedQuestions: [0],
   }
 
   toggleQuestion(index: number) {
@@ -114,6 +114,7 @@ export class Questions extends React.Component<Props, State> {
           <List>
             {content.map((item, index) => (
               <ListItem
+                key={item.id}
                 onClick={() => {
                   this.toggleQuestion(index)
                 }}
