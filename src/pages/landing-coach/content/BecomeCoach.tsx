@@ -54,6 +54,8 @@ const SectionTitle = styled.h3`
   line-height: 26px;
   color: #4858cc;
   margin-bottom: 16px;
+  min-height: 52px;
+  max-width: 360px;
 `
 
 const List = styled.ul`
