@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 
 import { Container } from "../common/Container"
@@ -126,55 +126,37 @@ const messages = [
   },
 ]
 
-type State = {
-  i: number
-}
+export const BeforeAfter = () => {
+  const [i, setI] = useState(0)
 
-export class BeforeAfter extends React.Component<{}, State> {
-  private timer: any
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (i === messages.length - 1) {
+        setI(0)
+      } else {
+        setI(i + 1)
+      }
+    }, 3000)
 
-  constructor(props: {}) {
-    super(props)
-    this.state = { i: 0 }
-  }
+    return function cleanup() {
+      clearInterval(timer)
+    }
+  })
 
-  componentDidMount() {
-    this.timer = setInterval(
-      () =>
-        this.setState(prevState => {
-          if (prevState.i === messages.length - 1) {
-            return {
-              i: 0,
-            }
-          }
-
-          return {
-            i: prevState.i + 1,
-          }
-        }),
-      3000
-    )
-  }
-  componentWillUnmount() {
-    clearInterval(this.timer)
-  }
-
-  render() {
-    return (
-      <Wrapper>
-        <StyledContainer>
-          <BeforeSection>
-            <BeforeTitle>До ITrainYou</BeforeTitle>
-            <BeforeCard>{messages[this.state.i].before}</BeforeCard>
-            <BeforeImage src={beforeImg} />
-          </BeforeSection>
-          <AfterSection>
-            <AfterTitle>После ITrainYou</AfterTitle>
-            <AfterCard>{messages[this.state.i].after}</AfterCard>
-            <AfterImage src={afterImg} />
-          </AfterSection>
-        </StyledContainer>
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <StyledContainer>
+        <BeforeSection>
+          <BeforeTitle>До ITrainYou</BeforeTitle>
+          <BeforeCard>{messages[i].before}</BeforeCard>
+          <BeforeImage src={beforeImg} />
+        </BeforeSection>
+        <AfterSection>
+          <AfterTitle>После ITrainYou</AfterTitle>
+          <AfterCard>{messages[i].after}</AfterCard>
+          <AfterImage src={afterImg} />
+        </AfterSection>
+      </StyledContainer>
+    </Wrapper>
+  )
 }

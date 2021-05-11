@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
 import { content } from "./content"
@@ -104,89 +104,68 @@ const CurrentImage = styled.img`
   max-width: 600px;
 `
 
-type Props = any
+export const Desktop = ({ className }) => {
+  const [activeFeature, setActiveFeature] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const [userReachedBlock, setUserReachedBlock] = useState(false)
 
-type State = {
-  activeFeature: number
-  progress: number
-  userReachedBlock: boolean
-}
-
-export class Desktop extends React.Component<Props, State> {
-  private timer: any
-
-  state: State = {
-    activeFeature: 0,
-    progress: 0,
-    userReachedBlock: false,
-  }
-
-  isBottom(el: any) {
+  const isBottom = (el: any) => {
     return el.getBoundingClientRect().top <= window.innerHeight
   }
 
-  handleScroll() {
+  const handleScroll = () => {
     const wrappedElement = document.getElementById("features-desktop-block")
 
-    if (this.isBottom(wrappedElement)) {
-      if (this.state.userReachedBlock) return
+    if (isBottom(wrappedElement)) {
+      if (userReachedBlock) return
 
-      this.setState({ userReachedBlock: true, activeFeature: 0, progress: 0 })
+      setActiveFeature(0)
+      setProgress(0)
+      setUserReachedBlock(true)
     }
   }
 
-  componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll.bind(this))
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll)
 
-    this.timer = setInterval(
-      () =>
-        this.setState(prevState => {
-          if (prevState.progress === 100) {
-            return {
-              progress: 0,
-              activeFeature: prevState.activeFeature === content.length - 1 ? 0 : prevState.activeFeature + 1,
-            }
-          }
+    const timer = setInterval(() => {
+      if (progress === 100) {
+        setProgress(0)
+        setActiveFeature(activeFeature === content.length - 1 ? 0 : activeFeature + 1)
+      } else {
+        setProgress(progress + 0.25)
+      }
+    }, 25)
 
-          return {
-            progress: prevState.progress + 0.25,
-          }
-        }),
-      25
-    )
-  }
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll)
-    clearInterval(this.timer)
-  }
+    return function cleanup() {
+      window.removeEventListener("scroll", handleScroll)
+      clearInterval(timer)
+    }
+  })
 
-  render() {
-    return (
-      <StyledContainer className={this.props.className} id='features-desktop-block'>
-        <Title>Используйте все функции личного кабинета</Title>
-        <Nav>
-          {content.map((item, index) => (
-            <NavItem
-              key={item.id}
-              onClick={() => {
-                this.setState({ activeFeature: index, progress: 0 })
-              }}
-              active={this.state.activeFeature === index}
-            >
-              {this.state.activeFeature === index ? <Progress progress={this.state.progress} /> : ""}
-              <Arrow reverse={this.state.activeFeature !== index} />
-              <h3>
-                {item.id}. {item.title}
-              </h3>
-              {this.state.activeFeature === index ? <p>{item.descr}</p> : ""}
-            </NavItem>
-          ))}
-        </Nav>
-        <CurrentImage
-          topOffset={content[this.state.activeFeature].desktopTopOffset}
-          src={content[this.state.activeFeature].image}
-        />
-      </StyledContainer>
-    )
-  }
+  return (
+    <StyledContainer className={className} id='features-desktop-block'>
+      <Title>Используйте все функции личного кабинета</Title>
+      <Nav>
+        {content.map((item, index) => (
+          <NavItem
+            key={item.id}
+            onClick={() => {
+              setActiveFeature(index)
+              setProgress(0)
+            }}
+            active={activeFeature === index}
+          >
+            {activeFeature === index ? <Progress progress={progress} /> : ""}
+            <Arrow reverse={activeFeature !== index} />
+            <h3>
+              {item.id}. {item.title}
+            </h3>
+            {activeFeature === index ? <p>{item.descr}</p> : ""}
+          </NavItem>
+        ))}
+      </Nav>
+      <CurrentImage topOffset={content[activeFeature].desktopTopOffset} src={content[activeFeature].image} />
+    </StyledContainer>
+  )
 }

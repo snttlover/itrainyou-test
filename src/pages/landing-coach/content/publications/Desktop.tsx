@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
 import { content } from "./content"
@@ -87,85 +87,64 @@ const CurrentImage = styled.img`
   max-width: 600px;
 `
 
-type Props = any
+export const Desktop = ({ className }) => {
+  const [activePubl, setActivePubl] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const [userReachedBlock, setUserReachedBlock] = useState(false)
 
-type State = {
-  activePubl: number
-  progress: number
-  userReachedBlock: boolean
-}
-
-export class Desktop extends React.Component<Props, State> {
-  private timer: any
-
-  state: State = {
-    activePubl: 0,
-    progress: 0,
-    userReachedBlock: false,
-  }
-
-  isBottom(el: any) {
+  const isBottom = (el: any) => {
     return el.getBoundingClientRect().top <= window.innerHeight
   }
 
-  handleScroll() {
+  const handleScroll = () => {
     const wrappedElement = document.getElementById("publications-desktop-block")
 
-    if (this.isBottom(wrappedElement)) {
-      if (this.state.userReachedBlock) return
+    if (isBottom(wrappedElement)) {
+      if (userReachedBlock) return
 
-      this.setState({ userReachedBlock: true, activePubl: 0, progress: 0 })
+      setActivePubl(0)
+      setProgress(0)
+      setUserReachedBlock(true)
     }
   }
 
-  componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll.bind(this))
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll)
 
-    this.timer = setInterval(
-      () =>
-        this.setState(prevState => {
-          if (prevState.progress === 100) {
-            return {
-              progress: 0,
-              activePubl: prevState.activePubl === content.length - 1 ? 0 : prevState.activePubl + 1,
-            }
-          }
+    const timer = setInterval(() => {
+      if (progress === 100) {
+        setProgress(0)
+        setActivePubl(activePubl === content.length - 1 ? 0 : activePubl + 1)
+      } else {
+        setProgress(progress + 0.25)
+      }
+    }, 10)
 
-          return {
-            progress: prevState.progress + 0.25,
-          }
-        }),
-      10
-    )
-  }
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll)
-    clearInterval(this.timer)
-  }
+    return function cleanup() {
+      window.removeEventListener("scroll", handleScroll)
+      clearInterval(timer)
+    }
+  })
 
-  render() {
-    return (
-      <StyledContainer className={this.props.className} id='publications-desktop-block'>
-        <Title>Публикации о нас</Title>
-        <Nav>
-          {content.map((item, index) => (
-            <NavItem
-              key={item.id}
-              onClick={() => {
-                this.setState({ activePubl: index, progress: 0 })
-              }}
-              active={this.state.activePubl === index}
-            >
-              {this.state.activePubl === index ? <Progress progress={this.state.progress} /> : ""}
-              <h3>{item.title}</h3>
-            </NavItem>
-          ))}
-        </Nav>
-        <CurrentImage
-          topOffset={content[this.state.activePubl].desktopTopOffset}
-          src={content[this.state.activePubl].image}
-        />
-      </StyledContainer>
-    )
-  }
+  return (
+    <StyledContainer className={className} id='publications-desktop-block'>
+      <Title>Публикации о нас</Title>
+      <Nav>
+        {content.map((item, index) => (
+          <NavItem
+            key={item.id}
+            onClick={() => {
+              setActivePubl(index)
+              setProgress(0)
+            }}
+            active={activePubl === index}
+          >
+            {activePubl === index ? <Progress progress={progress} /> : ""}
+            <h3>{item.title}</h3>
+          </NavItem>
+        ))}
+      </Nav>
+      <CurrentImage topOffset={content[activePubl].desktopTopOffset} src={content[activePubl].image} />
+    </StyledContainer>
+  )
 }

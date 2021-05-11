@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 import { Container } from "../common/Container"
@@ -52,47 +52,31 @@ const PlayButton = styled.i`
   cursor: pointer;
 `
 
-type Props = any
+export const Video = () => {
+  const [isVideoOpen, openVideo] = useState(false)
 
-type State = {
-  isVideoOpen: boolean
-}
-
-export class Video extends React.Component<Props, State> {
-  state: State = {
-    isVideoOpen: false,
-  }
-
-  openVideo() {
-    this.setState({
-      isVideoOpen: true,
-    })
-  }
-
-  render() {
-    return (
-      <Wrapper>
-        <StyledContainer>
-          <VideoContainer>
-            {this.state.isVideoOpen ? (
-              <iframe
-                width='716'
-                height='402'
-                src='https://www.youtube.com/embed/6at5gBa4ZbI?controls=1&autoplay=1'
-                title='YouTube video player'
-                frameBorder='0'
-                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                allowFullScreen
-              ></iframe>
-            ) : (
-              <>
-                <Title>Кто мы такие и почему мы это делаем?</Title>
-                <PlayButton onClick={() => this.openVideo()} />
-              </>
-            )}
-          </VideoContainer>
-        </StyledContainer>
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <StyledContainer>
+        <VideoContainer>
+          {isVideoOpen ? (
+            <iframe
+              width='716'
+              height='402'
+              src='https://www.youtube.com/embed/6at5gBa4ZbI?controls=1&autoplay=1'
+              title='YouTube video player'
+              frameBorder='0'
+              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+              allowFullScreen
+            ></iframe>
+          ) : (
+            <>
+              <Title>Кто мы такие и почему мы это делаем?</Title>
+              <PlayButton onClick={() => openVideo(true)} />
+            </>
+          )}
+        </VideoContainer>
+      </StyledContainer>
+    </Wrapper>
+  )
 }

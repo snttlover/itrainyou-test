@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 import { content } from "./questions/content"
@@ -79,54 +79,35 @@ const Arrow = styled.i`
   transform: rotate(${props => (props.reverse ? "0deg" : "180deg")});
 `
 
-type Props = any
+export const Questions = () => {
+  const [openedQuestions, setOpenedQuestions] = useState([0])
 
-type State = {
-  openedQuestions: array
-}
+  const toggleQuestions = (index: number) => {
+    let newQuestions = [...openedQuestions]
 
-export class Questions extends React.Component<Props, State> {
-  state: State = {
-    openedQuestions: [0],
+    if (openedQuestions.indexOf(index) === -1) {
+      newQuestions.push(index)
+    } else {
+      newQuestions = newQuestions.filter(item => item !== index)
+    }
+
+    return setOpenedQuestions([...newQuestions])
   }
 
-  toggleQuestion(index: number) {
-    this.setState(prevState => {
-      let newQuestions = [...prevState.openedQuestions]
-
-      if (prevState.openedQuestions.indexOf(index) === -1) {
-        newQuestions.push(index)
-      } else {
-        newQuestions = newQuestions.filter(item => item !== index)
-      }
-
-      return {
-        openedQuestions: [...newQuestions],
-      }
-    })
-  }
-
-  render() {
-    return (
-      <Wrapper>
-        <StyledContainer>
-          <Title>Есть вопросы? Возможно эти:</Title>
-          <List>
-            {content.map((item, index) => (
-              <ListItem
-                key={item.id}
-                onClick={() => {
-                  this.toggleQuestion(index)
-                }}
-              >
-                <h3>{item.question}</h3>
-                {this.state.openedQuestions.includes(index) ? <p>{item.answer}</p> : ""}
-                <Arrow reverse={!this.state.openedQuestions.includes(index)} />
-              </ListItem>
-            ))}
-          </List>
-        </StyledContainer>
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <StyledContainer>
+        <Title>Есть вопросы? Возможно эти:</Title>
+        <List>
+          {content.map((item, index) => (
+            <ListItem key={item.id} onClick={() => toggleQuestions(index)}>
+              <h3>{item.question}</h3>
+              {openedQuestions.includes(index) ? <p>{item.answer}</p> : ""}
+              <Arrow reverse={!openedQuestions.includes(index)} />
+            </ListItem>
+          ))}
+        </List>
+      </StyledContainer>
+    </Wrapper>
+  )
 }

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 import { routeNames } from "@/pages/route-names"
@@ -109,69 +109,52 @@ const ShowMore = styled.button`
   cursor: pointer;
 `
 
-type State = {
-  showExtraSchools: boolean
-}
+export const BecomeCoach = () => {
+  const [showExtraSchools, setShowExtraSchools] = useState(false)
 
-export class BecomeCoach extends React.Component<{}, State> {
-  constructor(props: {}) {
-    super(props)
-    this.state = { showExtraSchools: false }
-  }
-
-  render() {
-    return (
-      <Wrapper>
-        <StyledContainer>
-          <Title>Хотите стать коучем iTrainYou?</Title>
-          <StyledRegisterButton to={routeNames.signup("1")}>Зарегистрироваться</StyledRegisterButton>
-          <SectionsWrapper>
-            <Section>
-              <SectionTitle>Вы сертифицированы одной из ведущих школ коучинга:</SectionTitle>
-              <List>
-                <ListItem>Международная Федерация Коучинга (ICF)</ListItem>
-                <ListItem>Международный Эриксоновский Университет Коучинга</ListItem>
-                <ListItem>INTERNATIONAL COACHING ACADEMY</ListItem>
-                <ListItem>Nova Terra Coach Training & Corporate Development</ListItem>
-                <ListItem>Международный Университет GLOBAL COACHING</ListItem>
-                <ListItem>Международный центр профессионального коучинга ICP Centre</ListItem>
-                <ListItem>CareerWay</ListItem>
-                {this.state.showExtraSchools ? (
-                  <>
-                    <ListItem>Hidden School 1</ListItem>
-                    <ListItem>Hidden School 2</ListItem>
-                  </>
-                ) : (
-                  ""
-                )}
-              </List>
-              <ShowMore
-                onClick={() => {
-                  this.setState(prevState => {
-                    return {
-                      showExtraSchools: !prevState.showExtraSchools,
-                    }
-                  })
-                }}
-              >
-                {this.state.showExtraSchools ? "Уменьшить список школ" : "Список всех школ"}
-              </ShowMore>
-            </Section>
-            <Section>
-              <SectionTitle>Вы разделяете наши ценности:</SectionTitle>
-              <List>
-                <ListItem>Постоянное стремление к развитию</ListItem>
-                <ListItem>Максимальная концентрация на клиенте</ListItem>
-                <ListItem>Ориентация на решения в будущем</ListItem>
-                <ListItem>Системный подход в работе с клиентом</ListItem>
-                <ListItem>Осознанность себя, своей жизни, отношений, своих целей</ListItem>
-                <ListItem>Ценности клиента важны ровно как и действия клиента</ListItem>
-                <ListItem>Партнерство в работе с клиентом</ListItem>
-              </List>
-            </Section>
-          </SectionsWrapper>
-        </StyledContainer>
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <StyledContainer>
+        <Title>Хотите стать коучем iTrainYou?</Title>
+        <StyledRegisterButton to={routeNames.signup("1")}>Зарегистрироваться</StyledRegisterButton>
+        <SectionsWrapper>
+          <Section>
+            <SectionTitle>Вы сертифицированы одной из ведущих школ коучинга:</SectionTitle>
+            <List>
+              <ListItem>Международная Федерация Коучинга (ICF)</ListItem>
+              <ListItem>Международный Эриксоновский Университет Коучинга</ListItem>
+              <ListItem>INTERNATIONAL COACHING ACADEMY</ListItem>
+              <ListItem>Nova Terra Coach Training & Corporate Development</ListItem>
+              <ListItem>Международный Университет GLOBAL COACHING</ListItem>
+              <ListItem>Международный центр профессионального коучинга ICP Centre</ListItem>
+              <ListItem>CareerWay</ListItem>
+              {showExtraSchools ? (
+                <>
+                  <ListItem>Hidden School 1</ListItem>
+                  <ListItem>Hidden School 2</ListItem>
+                </>
+              ) : (
+                ""
+              )}
+            </List>
+            <ShowMore onClick={() => setShowExtraSchools(!showExtraSchools)}>
+              {showExtraSchools ? "Уменьшить список школ" : "Список всех школ"}
+            </ShowMore>
+          </Section>
+          <Section>
+            <SectionTitle>Вы разделяете наши ценности:</SectionTitle>
+            <List>
+              <ListItem>Постоянное стремление к развитию</ListItem>
+              <ListItem>Максимальная концентрация на клиенте</ListItem>
+              <ListItem>Ориентация на решения в будущем</ListItem>
+              <ListItem>Системный подход в работе с клиентом</ListItem>
+              <ListItem>Осознанность себя, своей жизни, отношений, своих целей</ListItem>
+              <ListItem>Ценности клиента важны ровно как и действия клиента</ListItem>
+              <ListItem>Партнерство в работе с клиентом</ListItem>
+            </List>
+          </Section>
+        </SectionsWrapper>
+      </StyledContainer>
+    </Wrapper>
+  )
 }
