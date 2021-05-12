@@ -272,5 +272,15 @@ forward({
     startCalendarSyncFx.done,
     endCalendarSyncFx.done,
     deleteGoogleCalendarFx.done]),
-  to: [loadSessionsWithParamsFx,loadScheduleFx],
+  to: loadSessionsWithParamsFx,
+})
+
+forward({
+  from: merge([
+    CalendarGate.open,
+    addGoogleCalendarFx.done,
+    startCalendarSyncFx.done,
+    endCalendarSyncFx.done,
+    deleteGoogleCalendarFx.done]),
+  to: loadScheduleFx,
 })
