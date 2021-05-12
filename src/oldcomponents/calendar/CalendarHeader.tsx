@@ -61,13 +61,20 @@ export const Year = styled.div`
   color: #5b6670;
 `
 
-export const MonthName = styled.div`
+export const MonthName = styled.div<{mobile?: boolean}>`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   color: #5b6670;
   text-transform: capitalize;
   text-align: center;
+  display: ${({ mobile }) => (mobile ? "none" : "unset")};
+
+  ${MediaRange.lessThan("mobile")`
+    display: ${
+  // @ts-ignore
+  ({ mobile }) => (mobile ? "unset" : "none")};
+  `}
 `
 
 type CalendarHeaderTypes = {

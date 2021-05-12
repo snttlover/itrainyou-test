@@ -4,10 +4,11 @@ import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 
 export type CoachSession = {
+  googleEvent: boolean
   startTime: Dayjs,
   endTime: Dayjs,
   areAvailable: boolean,
-  id: number | null,
+  id: number,
   client?: any
 }
 
@@ -24,8 +25,9 @@ export const $sessionToDelete = restore<CoachSession>(changeRemovingSession, {
   startTime: date(),
   endTime: date(),
   areAvailable: false,
+  googleEvent: false,
   client: null,
-  id: null
+  id: 0
 })
 
 export const startRemovingSession = createEffect((session: CoachSession) => {
@@ -33,7 +35,7 @@ export const startRemovingSession = createEffect((session: CoachSession) => {
   if(session.areAvailable){
     openRemoveSessionModal()
   } else if(session.id){
-    removeSession(session.id)
+    removeSession(session)
   }
 })
 
