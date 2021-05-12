@@ -163,11 +163,6 @@ export const loadSessionsWithParamsFx = attach({
   mapParams: (_, data) => ({ ...data }),
 })
 
-forward({
-  from: merge([loadSessions, setCurrentMonth, CalendarGate.open]),
-  to: loadSessionsWithParamsFx,
-})
-
 export type PickerDate = Dayjs | null
 export type DateArray = [PickerDate, PickerDate]
 
@@ -269,6 +264,13 @@ forward({
 })
 
 forward({
-  from: [addGoogleCalendarFx.done, startCalendarSyncFx.done, endCalendarSyncFx.done, deleteGoogleCalendarFx.done],
-  to: loadScheduleFx,
+  from: merge([
+    loadSessions,
+    setCurrentMonth,
+    CalendarGate.open,
+    addGoogleCalendarFx.done,
+    startCalendarSyncFx.done,
+    endCalendarSyncFx.done,
+    deleteGoogleCalendarFx.done]),
+  to: loadSessionsWithParamsFx,
 })
