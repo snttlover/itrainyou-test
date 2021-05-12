@@ -272,5 +272,5 @@ forward({
     startCalendarSyncFx.done,
     endCalendarSyncFx.done,
     deleteGoogleCalendarFx.done]),
-  to: loadSessionsWithParamsFx,
+  to: [loadSessionsWithParamsFx,loadScheduleFx],
 })
