@@ -497,28 +497,33 @@ export const createTestCallModule = () => {
   const agoraData: Agora = {
     client: null,
     localStream: null,
+    remoteStream: null,
   }
 
+  const mounted = createEvent<"audio" | "video">()
+  const setAudioLevel = createEvent()
+  const play = createEvent<"audio" | "video">()
   const test = createEvent<TestingParams>()
-  const getDevices = createEvent<"audio" | "video">()
+
+  const $audioLevel = restore(setAudioLevel, 0)
 
   const getDevicesFx = createEffect({
-  handler: (type: "audio" | "video") => {
-    agoraData.localStream = agoraLib.getDevices(function(devices){
-      const audioDevices = devices.filter(function(device){
-        return device.kind === "audioinput";
-      });
-      const videoDevices = devices.filter(function(device){
-        return device.kind === "videoinput";
-      });
+    handler: (type: "audio" | "video") => {
+      agoraData.localStream = agoraLib.getDevices(function(devices){
+        const audioDevices = devices.filter(function(device){
+          return device.kind === "audioinput"
+        })
+        const videoDevices = devices.filter(function(device){
+          return device.kind === "videoinput"
+        })
 
-      const uid = Math.floor(Math.random()*10000)
-      const selectedMicrophoneId = ""
-      const selectedCameraId = ""
-      test({uid: uid,type: type, selectedDevice: selectedMicrophoneId || selectedCameraId })
-    }
-  }
-})
+        const uid = Math.floor(Math.random()*10000)
+        const selectedMicrophoneId = type === "audio" ? audioDevices[0] : false
+        const selectedCameraId = type === "video" ? videoDevices[0] : false
+        test({uid: uid,type: type, selectedDevice: selectedMicrophoneId || selectedCameraId })
+      })
+    },
+  })
 
   const testFx = createEffect({
     handler: (params: TestingParams) => {
@@ -540,19 +545,61 @@ export const createTestCallModule = () => {
 
         const stream = agoraLib.createStream(streamSpecs)
 
-          // Initialize the stream
-          stream.init(function(){
-            stream.play("mic-test")
-            // Print the audio level every 1000 ms
-            setInterval(function(){
-              console.log(`Local Stream Audio Level ${stream.getAudioLevel()}`);
-            }, 1000);
-          })
+        stream.init(function(){
+          play(params.type)
 
+          /*stream.play("mic-test")
+          setInterval(function(){
+            console.log(`Local Stream Audio Level ${stream.getAudioLevel()}`)
+          }, 1000)*/
+
+        })
+      }
     },
   })
 
-  const get
+  const playFx = createEffect({
+    handler: (type: "audio" | "video") => {
+      if (agoraData.localStream) {
+
+        if (type === "audio") {
+
+          if (agoraData.localStream.isPlaying()) {
+            agoraData.localStream.stop()
+          }
+          /*const player = document.getElementById("AudioTest")
+          if (player) {
+            player.innerHTML = ""
+          }
+          agoraData.localStream.play("AudioTest")*/
+
+          console.log("inside audio")
+
+          setInterval(function(){
+            console.log(`Local Stream Audio Level ${agoraData.localStream!.getAudioLevel()}`)
+          }, 500)
+
+        } else {
+
+          if (agoraData.localStream.isPlaying()) {
+            agoraData.localStream.stop()
+          }
+          console.log("inside video")
+          const player = document.getElementById("VideoTest")
+          if (player) {
+            player.innerHTML = ""
+          }
+          agoraData.localStream.play("VideoTest", { fit: "cover" })
+        }
+      }
+    },
+  })
+
+
+  forward({
+    from: play,
+    to: playFx,
+  })
 
   forward({
     from: test,
@@ -560,10 +607,23 @@ export const createTestCallModule = () => {
   })
 
   forward({
-    from: getDevices,
+    from: mounted,
     to: getDevicesFx,
   })
+
+
+  return {
+    data: {
+      $audioLevel
+    },
+    methods: {
+      play,
+      mounted
+    },
+  }
 }
+
+export const testCall = createTestCallModule()
 
 export const coachCall = createSessionCallModule({
   dashboard: "coach",
@@ -594,3 +654,12 @@ export const $permissionGrantedModalVisibility = createStore<boolean>(false).on(
 
 export const changeModalInfo = createEvent<"video" | "mic">()
 export const $modalInfo = restore(changeModalInfo,"video")
+
+
+export const changeCallModal = createEvent<void | boolean>()
+export const $testCallModal = createStore<boolean>(false).on(
+  changeCallModal,
+  (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
