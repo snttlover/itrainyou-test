@@ -3,18 +3,26 @@ import styled from "styled-components"
 
 import { Container } from "../common/Container"
 
-import adv1Img from "../assets/advantages/1.svg"
-import adv2Img from "../assets/advantages/2.svg"
-import adv3Img from "../assets/advantages/3.svg"
-import adv4Img from "../assets/advantages/4.svg"
+import { content } from "./advantages/content"
 
 const Wrapper = styled.section`
   background: white;
-  margin-bottom: 56px;
+  margin-bottom: 40px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 88px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-bottom: 80px;
+  }
+
+  @media (min-width: 1140px) {
+    margin-bottom: 120px;
+  }
 `
 
 const StyledContainer = styled(Container)`
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,18 +34,65 @@ const AdvantagesList = styled.ul`
   padding: 0;
   list-style: none;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: stretch;
-  width: 100%;
+  width: 288px;
+
+  @media (min-width: 768px) {
+    width: 596px;
+  }
+
+  @media (min-width: 1140px) {
+    width: 100%;
+  }
 `
 
 const Advantage = styled.li`
   margin: 0;
   padding: 0;
-  width: 255px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 767px) {
+    width: 100%;
+
+    &:not(:last-child) {
+      margin-bottom: 32px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1139px) {
+    width: 286px;
+
+    &:nth-child(-n + 2) {
+      margin-bottom: 32px;
+    }
+
+    &:nth-child(2n + 1) {
+      margin-right: 24px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1139px) {
+    width: 286px;
+
+    &:nth-child(-n + 2) {
+      margin-bottom: 32px;
+    }
+
+    &:nth-child(2n + 1) {
+      margin-right: 24px;
+    }
+  }
+
+  @media (min-width: 1140px) {
+    width: 255px;
+
+    &:not(:last-child) {
+      margin-right: 24px;
+    }
+  }
 
   img {
     display: block;
@@ -51,12 +106,18 @@ const Advantage = styled.li`
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
+    display: flex;
+    justify-content: center;
     align-items: center;
     text-align: center;
     color: #4858cc;
     margin-bottom: 8px;
     min-height: 40px;
-    width: 180px;
+    width: 100%;
+
+    @media (min-width: 768px) {
+      width: 80%;
+    }
   }
 
   p {
@@ -67,7 +128,11 @@ const Advantage = styled.li`
     line-height: 22px;
     text-align: center;
     color: #5b6670;
-    width: 230px;
+    width: 100%;
+
+    @media (min-width: 768px) {
+      width: 80%;
+    }
   }
 `
 
@@ -75,26 +140,13 @@ export const Advantages = () => (
   <Wrapper>
     <StyledContainer>
       <AdvantagesList>
-        <Advantage>
-          <img src={adv1Img} />
-          <h3>Новые клиенты</h3>
-          <p>Клиенты находят меня сами. Мне не нужно платить за рекламу в интернете</p>
-        </Advantage>
-        <Advantage>
-          <img src={adv2Img} />
-          <h3>Профессиональное сообщество</h3>
-          <p>Я работаю в компании единомышленников</p>
-        </Advantage>
-        <Advantage>
-          <img src={adv3Img} />
-          <h3>Онлайн-органайзер коучинговой практики</h3>
-          <p>Все материалы о клиенте и прошедшим сессиям в личном кабинете</p>
-        </Advantage>
-        <Advantage>
-          <img src={adv4Img} />
-          <h3>Поддержка на любом этапе работы</h3>
-          <p>Постоянная техподдержка и модерация</p>
-        </Advantage>
+        {content.map(item => (
+          <Advantage key={item.id}>
+            <img src={item.image} />
+            <h3>{item.title}</h3>
+            <p>{item.subtitle}</p>
+          </Advantage>
+        ))}
       </AdvantagesList>
     </StyledContainer>
   </Wrapper>
