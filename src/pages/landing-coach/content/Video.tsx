@@ -10,43 +10,64 @@ import bgImg from "../assets/video/bg.jpg"
 
 const Wrapper = styled.section`
   background: white;
-  margin-bottom: 72px;
+  margin-bottom: 40px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 60px;
+  }
+
+  @media (min-width: 1140px) {
+    margin-bottom: 120px;
+  }
 `
 
 const StyledContainer = styled(Container)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @media (min-width: 1140px) {
+    width: 905px;
+  }
 `
 
 const VideoContainer = styled.div`
-  width: 716px;
-  height: 402px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
   background-color: #5c5c5c;
   background: url("${bgImg}");
   background-size: cover;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 `
 
 const Title = styled.h2`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: bold;
-  font-size: 30px;
-  line-height: 38px;
-  color: #ffffff;
-  width: 379px;
-  position: absolute;
-  top: 20px;
-  left: 30px;
+  font-size: 24px;
+  line-height: 32px;
+  color: #4858cc;
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+    line-height: 44px;
+    margin-bottom: 32px;
+  }
 `
 
 const PlayButton = styled.i`
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
   display: block;
   width: 44px;
   height: 44px;
@@ -60,6 +81,7 @@ export const Video = () => {
   return (
     <Wrapper>
       <StyledContainer>
+        <Title>Кто мы такие и почему мы это делаем?</Title>
         <VideoContainer>
           {isVideoOpen ? (
             <iframe
@@ -73,7 +95,6 @@ export const Video = () => {
             ></iframe>
           ) : (
             <>
-              <Title>Кто мы такие и почему мы это делаем?</Title>
               <PlayButton onClick={() => openVideo(true)} />
             </>
           )}
