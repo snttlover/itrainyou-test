@@ -53,25 +53,6 @@ const SpeakersCheckButton = styled(DashedButton)`
   width: 185px;
 `
 
-//${props => (props.progress ? props.progress : "10")}%
-const Progress = styled.div<{ progress: number }>`
-  height: 4px;
-  width: 100%;
-  background: red;
-  border-radius: 8px;
-
-  &::after {
-    position: absolute;
-    content: "";
-    height: 4px;
-    width: 30%;
-    left: 0px;
-    top: 0px;
-    background: #ffffff;
-    border-radius: 8px;
-  }
-`
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -107,27 +88,6 @@ const VideoTest = styled.div`
     width: 250px;
     height: 180px;
   `}
-`
-
-const MyUserVideo = styled.div`
-  position: absolute;
-  display: none;
-  background: #dbdee0;
-  z-index: 2;
-`
-
-const VideoPlaceholder = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  background: #424242;
-`
-
-const MyUserVideoPlaceholderIcon = styled(Icon).attrs({ name: "user" })`
-  width: 50px;
-  height: 50px;
-  fill: #ffffff;
 `
 
 const CameraIcon = styled(Icon).attrs({ name: "camera" })`
@@ -166,9 +126,6 @@ const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
       <Container>
         <Description>Если вы видите свое изображение, значит камера работает.</Description>
         <VideoTest id='VideoTest' >
-          {/*<MyUserVideoPlaceholder>
-            <MyUserVideoPlaceholderIcon />
-          </MyUserVideoPlaceholder>*/}
         </VideoTest>
       </Container>
     )

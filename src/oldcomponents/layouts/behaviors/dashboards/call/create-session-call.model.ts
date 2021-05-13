@@ -522,6 +522,21 @@ export const createTestCallModule = () => {
     },
   })
 
+  /*const selectedMicrophoneId = videoDevices[0]?.deviceId
+
+  const streamSpecs = params.type === "audio" ? {
+    streamID: params.uid,
+    audio: true,
+    video: true,
+    cameraId: params.selectedDevice,
+    screen: false
+  } : {
+    streamID: params.uid,
+    audio: false,
+    video: true,
+    screen: false
+  }*/
+
   const testFx = createEffect({
     handler: (params: TestingParams) => {
       if (agoraLib) {
@@ -531,7 +546,7 @@ export const createTestCallModule = () => {
         const streamSpecs = params.type === "audio" ? {
           streamID: params.uid,
           audio: true,
-          video: false,
+          video: true,
           screen: false
         } : {
           streamID: params.uid,
