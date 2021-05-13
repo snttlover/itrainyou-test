@@ -2,7 +2,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, restor
 import { getCoachSessionVideoToken, VideoTokenData } from "@/lib/api/coach/get-session-video-token"
 import { getCoachSession, SessionInfo } from "@/lib/api/coach/get-session"
 import { Client } from "@/lib/api/client/clientInfo"
-import { Client as AgoraClient, Stream, VideoEncoderConfiguration } from "agora-rtc-sdk"
+import { Client as AgoraClient, Stream, VideoEncoderConfiguration, MediaDeviceInfo } from "agora-rtc-sdk"
 import { createSessionCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/SessionCall"
 import { config as appConfig } from "@/config"
 import { $isClient } from "@/lib/effector"
@@ -489,7 +489,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 type TestingParams = {
   uid: number
   type: "audio" | "video"
-  selectedDevice: string
+  selectedDevice: MediaDeviceInfo | MediaDeviceInfo[] | string
 }
 //config: TestCallModuleConfig
 export const createTestCallModule = () => {
@@ -509,18 +509,18 @@ export const createTestCallModule = () => {
 
   const getDevicesFx = createEffect({
     handler: (type: "audio" | "video") => {
-      agoraData.localStream = agoraLib.getDevices(function(devices){
-        const audioDevices = devices.filter(function(device){
+      agoraData.localStream = agoraLib.getDevices((devices: MediaDeviceInfo[]) => {
+        const audioDevices = devices.filter((device) => {
           return device.kind === "audioinput"
         })
-        const videoDevices = devices.filter(function(device){
+        const videoDevices = devices.filter((device) => {
           return device.kind === "videoinput"
         })
 
         console.log("devices",audioDevices, videoDevices)
         const uid = Math.floor(Math.random()*10000)
         const selectedMicrophoneId = audioDevices[0]
-        const selectedCameraId = videoDevices[0].deviceId
+        const selectedCameraId = videoDevices[0]?.deviceId
         test({uid: uid,type: type, selectedDevice: type === "audio" ? selectedMicrophoneId : selectedCameraId })
       })
     },
@@ -553,11 +553,11 @@ export const createTestCallModule = () => {
         agoraData.localStream = agoraLib.createStream(streamSpecs)
         //const stream = agoraLib.createStream(streamSpecs)
 
-        agoraData.localStream.init(() => {
+        agoraData?.localStream?.init(() => {
           //stream.play("VideoTest")
           play(params.type)
 
-      //agoraData.client.publish(agoraData.localStream, agoraHandleFail)
+           //agoraData.client.publish(agoraData.localStream, agoraHandleFail)
 
           /*stream.play("mic-test")
           setInterval(function(){

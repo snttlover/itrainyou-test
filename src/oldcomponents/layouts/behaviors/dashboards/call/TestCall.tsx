@@ -153,8 +153,8 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
 const VideoTab = VideoTabContainer(testCall)
 const AudioTab = AudioTabContainer(testCall)
 
-export const TestCallModal = () => {
-  const [tab, changeTab] = useState<"audio" | "video">("video")
+const TestCallModal = () => {
+  const [tab, changeTab] = useState<"audio" | "video">("audio")
   const toggle = useEvent(changeCallModal)
   const visibility = useStore($testCallModal)
 
@@ -169,5 +169,17 @@ export const TestCallModal = () => {
         {tab === "video" ? <VideoTab /> : null}
       </>
     </StyledDialog>
+  )
+}
+
+export const CheckMediaDevices = () => {
+
+  const showModal = useEvent(changeCallModal)
+
+  return (
+          <>
+            <TestCallModal />
+            <div onClick={() => showModal(true)}>Проверьте камеру и микрофон до встречи с клиентом</div>
+          </>
   )
 }

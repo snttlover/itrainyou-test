@@ -18,8 +18,7 @@ import { EmptySessions } from "@/pages/coach/home/sessions/content/empty-session
 import { FillOutSchedule } from "@/pages/coach/home/sessions/content/empty-sessions/FillOutSchedule"
 import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import { FilledOutNoResponses } from "@/pages/coach/home/sessions/content/empty-sessions/FilledOutNoResponses"
-import { TestCallModal } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
-import { changeCallModal } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
+import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
 
 const Container = styled.div<{ nosessions: boolean }>`
   width: 100%;
@@ -35,18 +34,6 @@ const Container = styled.div<{ nosessions: boolean }>`
     // padding: 0 16px;
   `}
 `
-
-const CheckMediaDevices = () => {
-
-  const showModal = useEvent(changeCallModal)
-
-  return (
-          <>
-          <TestCallModal />
-          <div onClick={() => showModal(true)}>Проверьте камеру и микрофон до встречи с клиентом</div>
-            </>
-  )
-}
 
 const useSessions = () => {
   const hasToday = useStore($hasTodaySessions)
