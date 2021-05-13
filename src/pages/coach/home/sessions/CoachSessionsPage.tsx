@@ -94,8 +94,8 @@ export const CoachSessionsPage = () => {
       {/*{showComponentOrLoader(Onbordings)}*/}
       {!(pageLoading || isFirstRender) && <Onbordings/>}
       <ContentContainer>
-        <CheckMediaDevices />
         <Container nosessions={noHasSessions}>
+          <CheckMediaDevices />
           {showComponentOrLoader(MainSessions)}
         </Container>
       </ContentContainer>

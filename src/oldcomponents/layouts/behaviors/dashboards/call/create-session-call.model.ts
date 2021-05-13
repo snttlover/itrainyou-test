@@ -20,11 +20,6 @@ type CreateSessionCallModuleConfig = {
   socket: ReturnType<typeof createChatsSocket>
 }
 
-type TestCallModuleConfig = {
-  dashboard: "client" | "coach"
-  getConnectDataRequest: (id: number) => Promise<VideoTokenData>
-}
-
 type Agora = {
   client: null | AgoraClient
   localStream: null | Stream
@@ -55,6 +50,23 @@ let agoraLib: any = null
 if (process.env.BUILD_TARGET === "client") {
   agoraLib = require("agora-rtc-sdk")
 }
+
+const checkCompatibilityFx = createEffect({
+  handler: () => {
+    if (agoraLib) {
+      const isAgora = agoraLib.checkSystemRequirements()
+      return isAgora
+    }
+  }
+})
+
+export const $compatibility = createStore(false).on(checkCompatibilityFx.doneData, (_,payload) => payload)
+
+guard({
+  source: $isClient,
+  filter: $isClient,
+  target: checkCompatibilityFx.prepend(() => {}),
+})
 
 export const createSessionCallModule = (config: CreateSessionCallModuleConfig) => {
   const reset = createEvent()
@@ -141,16 +153,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(config.socket.methods.userLeftSession)
 
-  const checkCompatibilityFx = createEffect({
-    handler: () => {
-      if (agoraLib) {
-        const isAgora = agoraLib.checkSystemRequirements()
-        return isAgora
-      }
-    }
-  })
-
-  const $compatibility = createStore(false).on(checkCompatibilityFx.doneData, (_,payload) => payload)
 
   const initAgoraFx = createEffect({
     handler: () => {
@@ -206,11 +208,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     target: initAgoraFx.prepend(() => {}),
   })
 
-  guard({
-    source: $isClient,
-    filter: $isClient,
-    target: checkCompatibilityFx.prepend(() => {}),
-  })
 
   const agoraData: Agora = {
     client: null,
@@ -470,7 +467,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       $self,
       $interlocutor,
       $time,
-      $compatibility,
       $userGrantedPermission,
       dashboardType: config.dashboard
     },
@@ -501,8 +497,9 @@ export const createTestCallModule = () => {
   }
 
   const mounted = createEvent<"audio" | "video">()
-  const setAudioLevel = createEvent()
+  const setAudioLevel = createEvent<number>()
   const play = createEvent<"audio" | "video">()
+  const close = createEvent()
   const test = createEvent<TestingParams>()
 
   const $audioLevel = restore(setAudioLevel, 0)
@@ -517,7 +514,6 @@ export const createTestCallModule = () => {
           return device.kind === "videoinput"
         })
 
-        console.log("devices",audioDevices, videoDevices)
         const uid = Math.floor(Math.random()*10000)
         const selectedMicrophoneId = audioDevices[0]
         const selectedCameraId = videoDevices[0]?.deviceId
@@ -529,45 +525,32 @@ export const createTestCallModule = () => {
   const testFx = createEffect({
     handler: (params: TestingParams) => {
       if (agoraLib) {
-        /*agoraData.client = agoraLib.createClient({
-          mode: "live",
-          codec: "h264",
-        }) as AgoraClient
-        const appId = appConfig.AGORA_ID as string
-        agoraData.client.init(appId, () => {}, agoraHandleFail)*/
 
+        //microphoneId: params.selectedDevice,
+        //cameraId: params.selectedDevice,
         const streamSpecs = params.type === "audio" ? {
           streamID: params.uid,
           audio: true,
-          microphoneId: params.selectedDevice,
           video: false,
           screen: false
         } : {
           streamID: params.uid,
           audio: false,
-          cameraId: params.selectedDevice,
           video: true,
           screen: false
         }
 
         agoraData.localStream = agoraLib.createStream(streamSpecs)
-        //const stream = agoraLib.createStream(streamSpecs)
 
         agoraData?.localStream?.init(() => {
-          //stream.play("VideoTest")
           play(params.type)
-
-           //agoraData.client.publish(agoraData.localStream, agoraHandleFail)
-
-          /*stream.play("mic-test")
-          setInterval(function(){
-            console.log(`Local Stream Audio Level ${stream.getAudioLevel()}`)
-          }, 1000)*/
-
         })
+
       }
     },
   })
+
+  let timer: any
 
   const playFx = createEffect({
     handler: (type: "audio" | "video") => {
@@ -578,15 +561,11 @@ export const createTestCallModule = () => {
           if (agoraData.localStream.isPlaying()) {
             agoraData.localStream.stop()
           }
-          /*const player = document.getElementById("AudioTest")
-          if (player) {
-            player.innerHTML = ""
-          }
-          agoraData.localStream.play("AudioTest")*/
 
-          setInterval(function(){
-            console.log(`Local Stream Audio Level ${agoraData.localStream!.getAudioLevel()}`)
-          }, 500)
+          timer = setInterval(() => {
+            // @ts-ignore
+            setAudioLevel(Math.floor(agoraData.localStream.getAudioLevel() * 100))
+          }, 50)
 
         } else {
 
@@ -606,10 +585,17 @@ export const createTestCallModule = () => {
 
   const closeFx = createEffect({
     handler: () => {
-      agoraData.localStream.close()
+      clearTimeout(timer)
+      if (agoraData.localStream) {
+        agoraData.localStream.close()
+      }
     },
   })
 
+  forward({
+    from: close,
+    to: closeFx,
+  })
 
   forward({
     from: play,
@@ -629,11 +615,12 @@ export const createTestCallModule = () => {
 
   return {
     data: {
-      $audioLevel
+      $audioLevel,
     },
     methods: {
       play,
-      mounted
+      mounted,
+      close
     },
   }
 }
