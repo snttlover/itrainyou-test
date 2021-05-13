@@ -15,15 +15,29 @@ const Wrapper = styled.footer`
 `
 
 const StyledContainer = styled(Container)`
-  height: 100%;
-  padding: 85px 0 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  position: relative;
+  padding: 88px 0 16px;
   color: white;
+
+  @media (min-width: 558px) {
+    padding: 88px 0 38px;
+  }
+
+  @media (min-width: 768px) {
+    padding: 85px 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
 `
 
-const BankSection = styled.div``
+const BankSection = styled.div`
+  margin-bottom: 24px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+  }
+`
 
 const BankDescr = styled.p`
   font-family: Roboto;
@@ -32,7 +46,11 @@ const BankDescr = styled.p`
   font-size: 14px;
   line-height: 22px;
   color: #ffffff;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 16px;
+  }
 `
 
 const BankLogos = styled.div`
@@ -49,15 +67,24 @@ const BankLogos = styled.div`
 `
 
 const SocialsCopySection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  @media (min-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
 `
 
 const Socials = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 29px;
+  position: absolute;
+  top: 32px;
+  left: 0;
+
+  @media (min-width: 768px) {
+    position: static;
+    margin-bottom: 29px;
+  }
 `
 
 const Social = styled.a`
