@@ -16,10 +16,27 @@ const Wrapper = styled.header`
 `
 
 const StyledContainer = styled(Container)`
-  padding: 24px 0;
+  padding: 16px 0;
   display: flex;
   align-items: center;
   color: white;
+  position: relative;
+
+  @media (min-width: 558px) {
+    padding: 16px 0;
+  }
+
+  @media (min-width: 768px) {
+    padding: 24px 0;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 24px 0;
+  }
+
+  @media (min-width: 1140px) {
+    padding: 24px 0;
+  }
 `
 
 const LogoLink = styled(Link)`
@@ -33,39 +50,50 @@ const Logo = styled.img`
   display: block;
 `
 
-const Nav = styled.nav`
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-`
-
 const NavLink = styled(Link)`
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
-  text-align: center;
-  color: #ffffff;
   cursor: pointer;
+  color: white;
+`
 
-  &:not(:first-child) {
+const SearchCoachLink = styled(NavLink)`
+  text-decoration: underline;
+  color: #e1e6ea;
+  position: absolute;
+  left: 0;
+  bottom: -20px;
+
+  @media (min-width: 768px) {
+    position: static;
+    margin-left: auto;
+  }
+`
+
+const LoginLink = styled(NavLink)`
+  margin-left: auto;
+
+  @media (min-width: 768px) {
     margin-left: 40px;
-  }
-
-  &:hover {
-    color: #e1e6ea;
-  }
-
-  &:active {
-    text-decoration-line: underline;
-    color: #e1e6ea;
   }
 `
 
 const StyledRegisterButton = styled(RegisterButton)`
-  padding: 9px 24px;
-  margin-left: 32px;
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    padding: 9px 24px;
+    margin-left: 32px;
+  }
 `
 
 export const Header = () => (
@@ -74,10 +102,10 @@ export const Header = () => (
       <LogoLink to={{ pathname: routeNames.landing(), search: "" }}>
         <Logo src={logoImg} />
       </LogoLink>
-      <Nav>
-        <NavLink to={{ pathname: routeNames.search() }}>Найти коуча</NavLink>
-        <NavLink to={routeNames.login()}>Войти</NavLink>
-      </Nav>
+
+      <SearchCoachLink to={{ pathname: routeNames.search() }}>Найти коуча</SearchCoachLink>
+      <LoginLink to={routeNames.login()}>Войти</LoginLink>
+
       <StyledRegisterButton to={routeNames.signup("1")}>Зарегистрироваться</StyledRegisterButton>
     </StyledContainer>
   </Wrapper>

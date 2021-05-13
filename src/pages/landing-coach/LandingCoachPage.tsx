@@ -24,14 +24,14 @@ const LandingCoachPageMarkUp = () => (
     <MainWrapper>
       <Hero />
       <Advantages />
-      <Features />
+      {/* <Features />
       <Payment />
       <Calendar />
       <BeforeAfter />
       <BecomeCoach />
       <Publications />
       <Video />
-      <Questions />
+      <Questions /> */}
     </MainWrapper>
     <Footer />
   </PageWrapper>
