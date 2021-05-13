@@ -64,6 +64,7 @@ const NavLink = styled(Link)`
 `
 
 const StyledRegisterButton = styled(RegisterButton)`
+  padding: 9px 24px;
   margin-left: 32px;
 `
 

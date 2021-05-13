@@ -35,22 +35,66 @@ const Title = styled.h1`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
-  font-size: 40px;
-  line-height: 52px;
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
   color: #ffffff;
-  margin-bottom: 24px;
-  max-width: 480px;
+
+  max-width: 288px;
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+    line-height: 44px;
+    text-align: left;
+
+    max-width: 412px;
+    margin-bottom: 8px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 534px;
+  }
+
+  @media (min-width: 1140px) {
+    font-size: 40px;
+    line-height: 52px;
+
+    max-width: 534px;
+    margin-bottom: 24px;
+  }
 `
 
 const Descr = styled.p`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
   color: #efefef;
-  margin-bottom: 32px;
-  max-width: 480px;
+
+  max-width: 100%;
+  margin-bottom: 24px;
+
+  @media (min-width: 768px) {
+    font-size: 20px;
+    line-height: 28px;
+    text-align: left;
+
+    max-width: 412px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 553px;
+    margin-bottom: 16px;
+  }
+
+  @media (min-width: 1140px) {
+    font-size: 24px;
+    line-height: 32px;
+    margin-bottom: 32px;
+  }
 `
 
 const StyledRegisterButton = styled(RegisterButton)`
