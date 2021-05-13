@@ -256,7 +256,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
-            
+
             agoraData.localStream.init(() => {
               if (agoraData.localStream) {
                 play()
@@ -517,10 +517,11 @@ export const createTestCallModule = () => {
           return device.kind === "videoinput"
         })
 
+        console.log("devices",audioDevices, videoDevices)
         const uid = Math.floor(Math.random()*10000)
-        const selectedMicrophoneId = type === "audio" ? audioDevices[0] : false
-        const selectedCameraId = type === "video" ? videoDevices[0] : false
-        test({uid: uid,type: type, selectedDevice: selectedMicrophoneId || selectedCameraId })
+        const selectedMicrophoneId = audioDevices[0]
+        const selectedCameraId = videoDevices[0].deviceId
+        test({uid: uid,type: type, selectedDevice: type === "audio" ? selectedMicrophoneId : selectedCameraId })
       })
     },
   })
@@ -528,6 +529,12 @@ export const createTestCallModule = () => {
   const testFx = createEffect({
     handler: (params: TestingParams) => {
       if (agoraLib) {
+        /*agoraData.client = agoraLib.createClient({
+          mode: "live",
+          codec: "h264",
+        }) as AgoraClient
+        const appId = appConfig.AGORA_ID as string
+        agoraData.client.init(appId, () => {}, agoraHandleFail)*/
 
         const streamSpecs = params.type === "audio" ? {
           streamID: params.uid,
@@ -543,10 +550,14 @@ export const createTestCallModule = () => {
           screen: false
         }
 
-        const stream = agoraLib.createStream(streamSpecs)
+        agoraData.localStream = agoraLib.createStream(streamSpecs)
+        //const stream = agoraLib.createStream(streamSpecs)
 
-        stream.init(function(){
+        agoraData.localStream.init(() => {
+          //stream.play("VideoTest")
           play(params.type)
+
+      //agoraData.client.publish(agoraData.localStream, agoraHandleFail)
 
           /*stream.play("mic-test")
           setInterval(function(){
@@ -573,8 +584,6 @@ export const createTestCallModule = () => {
           }
           agoraData.localStream.play("AudioTest")*/
 
-          console.log("inside audio")
-
           setInterval(function(){
             console.log(`Local Stream Audio Level ${agoraData.localStream!.getAudioLevel()}`)
           }, 500)
@@ -584,7 +593,7 @@ export const createTestCallModule = () => {
           if (agoraData.localStream.isPlaying()) {
             agoraData.localStream.stop()
           }
-          console.log("inside video")
+
           const player = document.getElementById("VideoTest")
           if (player) {
             player.innerHTML = ""
@@ -592,6 +601,12 @@ export const createTestCallModule = () => {
           agoraData.localStream.play("VideoTest", { fit: "cover" })
         }
       }
+    },
+  })
+
+  const closeFx = createEffect({
+    handler: () => {
+      agoraData.localStream.close()
     },
   })
 

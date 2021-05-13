@@ -22,7 +22,7 @@ const StyledDialog = styled(Dialog)`
 const StyledTabs = styled(Tabs)`
   display: flex;
   position: relative;
-  margin-bottom: 24px;  
+  margin-bottom: 24px;
 `
 
 const StyledTab = styled(Tab)`
@@ -120,9 +120,9 @@ const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
       <Container>
         <Text>Если вы видите свое изображение, значит камера работает.</Text>
         <VideoTest id='VideoTest' >
-          <MyUserVideoPlaceholder>
+          {/*<MyUserVideoPlaceholder>
             <MyUserVideoPlaceholderIcon />
-          </MyUserVideoPlaceholder>
+          </MyUserVideoPlaceholder>*/}
         </VideoTest>
       </Container>
     )
