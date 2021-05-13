@@ -40,10 +40,23 @@ export const removeSessionsRangeFx = createEffect({
   handler: ({ from, to }: DateRange) => removeCoachSessionRange({ start_date: from, end_date: to }),
 })
 
+type SessionType = {
+  googleEvent: boolean
+  areAvailable: boolean
+  client?: [any]
+  id: number
+  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  startTime: Dayjs
+  endTime: Dayjs
+}
+
 const CANCEL = -1
-export const removeSession = createEvent<number>()
+export const removeSession = createEvent<SessionType>()
+
+$sessionToDelete.on(removeSession, (state, payload) => payload)
+
 export const removeSessionFx = createEffect({
-  handler: (id: number) => removeCoachSession(id),
+  handler: (params: SessionType) => removeCoachSession(params.id),
 })
 
 const sessionRemoved = removeSessionFx.done.filter({ fn: () => true })
@@ -86,7 +99,7 @@ const $sessions = createStore<CalendarEvents>({sessions: [], googleCalendarEvent
   .on(sessionAdded, (state, session) =>
     ({googleCalendarEvents: state.googleCalendarEvents, sessions: [...state.sessions, ...session]}))
   .on(sessionRemoved, (state, payload) =>
-    ({googleCalendarEvents: state.googleCalendarEvents, sessions: state.sessions.filter(session => session.id !== payload.params)}))
+    ({googleCalendarEvents: state.googleCalendarEvents, sessions: state.sessions.filter(session => session.id !== payload.params.id)}))
 
 
 export const $allSessions = combine(
@@ -148,11 +161,6 @@ export const loadSessionsWithParamsFx = attach({
       }}
   ),
   mapParams: (_, data) => ({ ...data }),
-})
-
-forward({
-  from: merge([loadSessions, setCurrentMonth, CalendarGate.open]),
-  to: loadSessionsWithParamsFx,
 })
 
 export type PickerDate = Dayjs | null
@@ -256,6 +264,23 @@ forward({
 })
 
 forward({
-  from: [addGoogleCalendarFx.done, startCalendarSyncFx.done, endCalendarSyncFx.done, deleteGoogleCalendarFx.done],
+  from: merge([
+    loadSessions,
+    setCurrentMonth,
+    CalendarGate.open,
+    addGoogleCalendarFx.done,
+    startCalendarSyncFx.done,
+    endCalendarSyncFx.done,
+    deleteGoogleCalendarFx.done]),
+  to: loadSessionsWithParamsFx,
+})
+
+forward({
+  from: merge([
+    CalendarGate.open,
+    addGoogleCalendarFx.done,
+    startCalendarSyncFx.done,
+    endCalendarSyncFx.done,
+    deleteGoogleCalendarFx.done]),
   to: loadScheduleFx,
 })

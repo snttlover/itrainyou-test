@@ -94,19 +94,24 @@ export const CoachSchedulePage = () => {
   return (
     <CoachDashboardLayout>
       <Container>
-        <Header>Расписание</Header>
-        <HorizontalOverflowScrollContainer>
-          <StyledTabs value={tab} onChange={changeTab}>
-            <StyledTab value='calendar'>Календарь</StyledTab>
-            <StyledTab value='schedule'>Настройки расписания</StyledTab>
-            <StyledTab value='google_calendar'>Google-календарь</StyledTab>
-            <StyledTab value='prices'>Цены</StyledTab>
-          </StyledTabs>
-        </HorizontalOverflowScrollContainer>
-        {tab === "schedule" ? (coachAccess.isApproved ? <Schedule /> : <CoachSchedulePlaceholder />) : null}
-        {tab === "google_calendar" ? (<GoogleCalendar />) : null}
-        {tab === "calendar" ? (<CalendarPart />) : null}
-        {tab === "prices" ? (<Prices />) : null}
+        {coachAccess.isApproved ?
+          <>
+            <Header>Расписание</Header>
+            <HorizontalOverflowScrollContainer>
+              <StyledTabs value={tab} onChange={changeTab}>
+                <StyledTab value='calendar'>Календарь</StyledTab>
+                <StyledTab value='schedule'>Настройки расписания</StyledTab>
+                <StyledTab value='google_calendar'>Google-календарь</StyledTab>
+                <StyledTab value='prices'>Цены</StyledTab>
+              </StyledTabs>
+            </HorizontalOverflowScrollContainer>
+            {tab === "schedule" ? (<Schedule />) : null}
+            {tab === "google_calendar" ? (<GoogleCalendar />) : null}
+            {tab === "calendar" ? (<CalendarPart />) : null}
+            {tab === "prices" ? (<Prices />) : null}
+          </>
+          : <CoachSchedulePlaceholder />
+        }
       </Container>
     </CoachDashboardLayout>
   )

@@ -250,6 +250,27 @@ const SessionContent = styled.div<{areAvailable: boolean; googleEvent: boolean}>
   &:hover ${ToolTip} {
      display: block;
    }
+
+  @media screen and (max-width: 930px) and (min-width : 769px) {
+    font-size: 10px;
+    line-height: 22px;
+    padding: 2px;
+  }
+
+  ${MediaRange.lessThan("mobile")`
+    font-size: 12px;
+    line-height: 18px;
+  `}
+`
+
+const ToolTipText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+  margin-bottom: 16px;
 `
 
 const SessionContainer = styled.div`
@@ -413,7 +434,7 @@ const MobileSessionInfoModal = () => {
 
 
   const handleOnClick = () => {
-    _removeSession(session.id)
+    _removeSession(session)
   }
 
   return (
@@ -461,7 +482,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
   const toolTipRef = useRef<HTMLDivElement>(null)
 
   const handleOnClick = () => {
-    _removeSession(props.session.id)
+    _removeSession(props.session)
   }
 
   const handleOnSessionClick = (e: React.SyntheticEvent, session: SessionType) => {
@@ -501,7 +522,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
               </>
               :
               <>
-                <div>Этот слот еще не занят никем в вашем расписании</div>
+                <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
                 <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
               </>
             )}
@@ -617,9 +638,9 @@ export const ScheduleCalendar = () => {
         <StyledHeader>
           <StyledMonthContainer>
             <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={handleOnLeftIcon} />
-            {window.innerWidth <= 480 ? <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName> : null}
+            <StyledMonthName mobile>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
             <StyledRightIcon onClick={handleOnRightIcon} />
-            {window.innerWidth > 480 ? <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName> : null}
+            <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
           </StyledMonthContainer>
           <AddVacationButton onClick={() => _showVacationModal(true)}>
           Добавить отпуск
