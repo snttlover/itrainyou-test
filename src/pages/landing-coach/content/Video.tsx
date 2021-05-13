@@ -4,6 +4,8 @@ import styled from "styled-components"
 import { Container } from "../common/Container"
 
 import playIcon from "../assets/video/play.svg"
+
+// @ts-ignore
 import bgImg from "../assets/video/bg.jpg"
 
 const Wrapper = styled.section`

@@ -3,6 +3,7 @@ import styled from "styled-components"
 
 import { Container } from "../common/Container"
 
+// @ts-ignore
 import mainImg from "../assets/payment/main.jpg"
 
 const Wrapper = styled.section`

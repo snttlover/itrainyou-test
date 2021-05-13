@@ -41,7 +41,7 @@ const CurrentImage = styled.img<{ topOffset: number }>`
 `
 
 type Props = {
-  className: any
+  className?: any
 }
 
 export const Desktop = ({ className }: Props) => {

@@ -68,7 +68,7 @@ const ListItem = styled.li`
   }
 `
 
-const Arrow = styled.i`
+const Arrow = styled.i<{ reverse: boolean }>`
   display: block;
   position: absolute;
   top: 24px;
