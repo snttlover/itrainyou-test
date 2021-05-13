@@ -2,7 +2,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, restor
 import { getCoachSessionVideoToken, VideoTokenData } from "@/lib/api/coach/get-session-video-token"
 import { getCoachSession, SessionInfo } from "@/lib/api/coach/get-session"
 import { Client } from "@/lib/api/client/clientInfo"
-import { Client as AgoraClient, Stream, VideoEncoderConfiguration, MediaDeviceInfo  } from "agora-rtc-sdk"
+import { Client as AgoraClient, Stream, VideoEncoderConfiguration, MediaDeviceInfo } from "agora-rtc-sdk"
 import { createSessionCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/SessionCall"
 import { config as appConfig } from "@/config"
 import { $isClient } from "@/lib/effector"
@@ -50,6 +50,23 @@ let agoraLib: any = null
 if (process.env.BUILD_TARGET === "client") {
   agoraLib = require("agora-rtc-sdk")
 }
+
+const checkCompatibilityFx = createEffect({
+  handler: () => {
+    if (agoraLib) {
+      const isAgora = agoraLib.checkSystemRequirements()
+      return isAgora
+    }
+  }
+})
+
+export const $compatibility = createStore(false).on(checkCompatibilityFx.doneData, (_,payload) => payload)
+
+guard({
+  source: $isClient,
+  filter: $isClient,
+  target: checkCompatibilityFx.prepend(() => {}),
+})
 
 export const createSessionCallModule = (config: CreateSessionCallModuleConfig) => {
   const reset = createEvent()
@@ -136,16 +153,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(config.socket.methods.userLeftSession)
 
-  const checkCompatibilityFx = createEffect({
-    handler: () => {
-      if (agoraLib) {
-        const isAgora = agoraLib.checkSystemRequirements()
-        return isAgora
-      }
-    }
-  })
-
-  const $compatibility = createStore(false).on(checkCompatibilityFx.doneData, (_,payload) => payload)
 
   const initAgoraFx = createEffect({
     handler: () => {
@@ -201,11 +208,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     target: initAgoraFx.prepend(() => {}),
   })
 
-  guard({
-    source: $isClient,
-    filter: $isClient,
-    target: checkCompatibilityFx.prepend(() => {}),
-  })
 
   const agoraData: Agora = {
     client: null,
@@ -251,7 +253,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
-            
+
             agoraData.localStream.init(() => {
               if (agoraData.localStream) {
                 play()
@@ -465,7 +467,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       $self,
       $interlocutor,
       $time,
-      $compatibility,
       $userGrantedPermission,
       dashboardType: config.dashboard
     },
@@ -480,6 +481,166 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     },
   }
 }
+
+type TestingParams = {
+  uid: number
+  type: "audio" | "video"
+  selectedDevice: MediaDeviceInfo | MediaDeviceInfo[] | string
+}
+//config: TestCallModuleConfig
+export const createTestCallModule = () => {
+
+  const agoraData: Agora = {
+    client: null,
+    localStream: null,
+    remoteStream: null,
+  }
+
+  const mounted = createEvent<"audio" | "video">()
+  const setAudioLevel = createEvent<number>()
+  const play = createEvent<"audio" | "video">()
+  const close = createEvent()
+  const test = createEvent<TestingParams>()
+
+  const $audioLevel = restore(setAudioLevel, 0)
+
+  const getDevicesFx = createEffect({
+    handler: (type: "audio" | "video") => {
+      agoraData.localStream = agoraLib.getDevices((devices: MediaDeviceInfo[]) => {
+        const audioDevices = devices.filter((device) => {
+          return device.kind === "audioinput"
+        })
+        const videoDevices = devices.filter((device) => {
+          return device.kind === "videoinput"
+        })
+
+        const uid = Math.floor(Math.random()*10000)
+        const selectedMicrophoneId = audioDevices[0]
+        const selectedCameraId = videoDevices[0]?.deviceId
+        test({uid: uid,type: type, selectedDevice: type === "audio" ? selectedMicrophoneId : selectedCameraId })
+      })
+    },
+  })
+
+  /*const selectedMicrophoneId = videoDevices[0]?.deviceId
+
+  const streamSpecs = params.type === "audio" ? {
+    streamID: params.uid,
+    audio: true,
+    video: true,
+    cameraId: params.selectedDevice,
+    screen: false
+  } : {
+    streamID: params.uid,
+    audio: false,
+    video: true,
+    screen: false
+  }*/
+
+  const testFx = createEffect({
+    handler: (params: TestingParams) => {
+      if (agoraLib) {
+
+        //microphoneId: params.selectedDevice,
+        //cameraId: params.selectedDevice,
+        const streamSpecs = params.type === "audio" ? {
+          streamID: params.uid,
+          audio: true,
+          video: true,
+          screen: false
+        } : {
+          streamID: params.uid,
+          audio: false,
+          video: true,
+          screen: false
+        }
+
+        agoraData.localStream = agoraLib.createStream(streamSpecs)
+
+        agoraData?.localStream?.init(() => {
+          play(params.type)
+        })
+
+      }
+    },
+  })
+
+  let timer: any
+
+  const playFx = createEffect({
+    handler: (type: "audio" | "video") => {
+      if (agoraData.localStream) {
+
+        if (type === "audio") {
+
+          if (agoraData.localStream.isPlaying()) {
+            agoraData.localStream.stop()
+          }
+
+          timer = setInterval(() => {
+            // @ts-ignore
+            setAudioLevel(Math.floor(agoraData.localStream.getAudioLevel() * 100))
+          }, 50)
+
+        } else {
+
+          if (agoraData.localStream.isPlaying()) {
+            agoraData.localStream.stop()
+          }
+
+          const player = document.getElementById("VideoTest")
+          if (player) {
+            player.innerHTML = ""
+          }
+          agoraData.localStream.play("VideoTest", { fit: "cover" })
+        }
+      }
+    },
+  })
+
+  const closeFx = createEffect({
+    handler: () => {
+      clearTimeout(timer)
+      if (agoraData.localStream) {
+        agoraData.localStream.close()
+      }
+    },
+  })
+
+  forward({
+    from: close,
+    to: closeFx,
+  })
+
+  forward({
+    from: play,
+    to: playFx,
+  })
+
+  forward({
+    from: test,
+    to: testFx,
+  })
+
+  forward({
+    from: mounted,
+    to: getDevicesFx,
+  })
+
+
+  return {
+    data: {
+      $audioLevel,
+    },
+    methods: {
+      play,
+      mounted,
+      close
+    },
+  }
+}
+
+export const testCall = createTestCallModule()
 
 export const coachCall = createSessionCallModule({
   dashboard: "coach",
@@ -510,3 +671,12 @@ export const $permissionGrantedModalVisibility = createStore<boolean>(false).on(
 
 export const changeModalInfo = createEvent<"video" | "mic">()
 export const $modalInfo = restore(changeModalInfo,"video")
+
+
+export const changeCallModal = createEvent<void | boolean>()
+export const $testCallModal = createStore<boolean>(false).on(
+  changeCallModal,
+  (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })

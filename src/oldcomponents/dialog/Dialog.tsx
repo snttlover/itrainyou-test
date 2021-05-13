@@ -62,7 +62,6 @@ const StyledDialog = styled.div`
   
   max-width: 560px;
   min-width: 288px;
-  min-height: 300px;
   
   ${MediaRange.lessThan("mobile")`
     padding: 16px;
