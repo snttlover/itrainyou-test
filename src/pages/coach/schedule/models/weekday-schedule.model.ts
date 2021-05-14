@@ -16,11 +16,6 @@ export const saveWeekdaySlotsFx = attach({
   mapParams: (params: UpdateCoachSchedule) => params,
 })
 
-forward({
-  from: saveWeekdaySlotsFx.done,
-  to: loadSessionsWithParamsFx,
-})
-
 const saveWeekdaysSlotsSuccessMessage: Toast = { text: "Недельное расписание изменено", type: "info" }
 forward({
   from: saveWeekdaySlotsFx.doneData.map(_ => saveWeekdaysSlotsSuccessMessage),

@@ -21,7 +21,7 @@ import {
 } from "effector-root"
 import { $sessionToDelete } from "@/pages/coach/schedule/models/remove-session.model"
 import { AxiosError } from "axios"
-import { loadScheduleFx } from "@/pages/coach/schedule/models/schedule/units"
+import { loadScheduleFx, ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
 
 type DateRange = {
   from: string
@@ -277,7 +277,7 @@ forward({
 
 forward({
   from: merge([
-    CalendarGate.open,
+    ScheduleGate.open,
     addGoogleCalendarFx.done,
     startCalendarSyncFx.done,
     endCalendarSyncFx.done,

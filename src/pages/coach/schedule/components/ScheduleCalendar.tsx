@@ -10,16 +10,17 @@ import {
 } from "@/pages/coach/schedule/models/calendar.model"
 import {
   $allSessions,
+  CalendarGate
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
-import { useEvent, useStore } from "effector-react"
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
-import styled, { ThemeProps } from "styled-components"
+import { useEvent, useStore, useGate } from "effector-react"
+import React, { useRef, useState } from "react"
+import styled from "styled-components"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
-import { Times, Time, RemoveIcon } from "@/pages/coach/schedule/components/MobileCalendarManager"
+import { Times, Time } from "@/pages/coach/schedule/components/MobileCalendarManager"
 import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
@@ -33,7 +34,6 @@ import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
-import { Informer } from "@/newcomponents/informer/Informer"
 
 
 const CalendarContainer = styled.div`
@@ -586,6 +586,8 @@ export const ScheduleCalendar = () => {
   const _setDate = useEvent(setAddSessionDate)
   const _setCurrentMonth = useEvent(setCurrentMonth)
   const _showVacationModal = useEvent(showVacationModal)
+
+  useGate(CalendarGate)
 
   const countPadStartDays = monthDayStart.weekday()
   const countPadEndDays = monthDayEnd.weekday() === 0 ? 0 : 6 - monthDayEnd.weekday()
