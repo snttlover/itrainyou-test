@@ -24,7 +24,7 @@ const LandingCoachPageMarkUp = () => (
     <MainWrapper>
       <Hero />
       <Advantages />
-      {/* <Features /> */}
+      <Features />
       {/* <Payment /> */}
       {/* <Calendar /> */}
       {/* <BeforeAfter /> */}
