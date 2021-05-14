@@ -10,7 +10,7 @@ const StyledContainer = styled(Container)`
   color: white;
 
   @media (min-width: 768px) {
-    padding: 40px 0 57px;
+    padding: 40px 0 104px;
   }
 `
 
@@ -40,6 +40,21 @@ const List = styled.ul`
   width: 100%;
 `
 
+const MobileImage = styled.img`
+  display: block;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`
+const TabletImage = styled.img`
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+`
+
 const ListItem = styled.li`
   margin: 0;
   padding: 0;
@@ -55,7 +70,7 @@ const ListItem = styled.li`
 
       img {
         top: 0;
-        right: 0;
+        right: -30px;
         width: 416px;
       }
     }
@@ -68,7 +83,7 @@ const ListItem = styled.li`
       }
 
       img {
-        top: 0;
+        top: -130px;
         left: 0;
         width: 369px;
       }
@@ -116,7 +131,6 @@ const ListItem = styled.li`
   }
 
   img {
-    display: block;
     position: relative;
 
     @media (max-width: 767px) {
@@ -142,7 +156,8 @@ export const Mobile = ({ className }: any) => (
             {item.id}. {item.title}
           </h3>
           <p>{item.descr}</p>
-          <img src={item.imageMobile} alt={item.title} title={item.title} />
+          <MobileImage src={item.imageMobile} alt={item.title} title={item.title} />
+          <TabletImage src={item.imageTablet} alt={item.title} title={item.title} />
         </ListItem>
       ))}
     </List>
