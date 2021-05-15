@@ -1,77 +1,138 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 
+import { content as messages } from "./before-after/content"
+
 import { Container } from "../common/Container"
 
-import beforeImg from "../assets/before-after/before.svg"
-import afterImg from "../assets/before-after/after.svg"
+import beforeImg from "../assets/before-after/before.png"
+import afterImg from "../assets/before-after/after.png"
 
 const Wrapper = styled.section`
   background: #4858cc;
 
-  margin-bottom: 122px;
+  margin-bottom: 40px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 80px;
+  }
+
+  @media (min-width: 1140px) {
+    margin-bottom: 120px;
+  }
 `
 
 const StyledContainer = styled(Container)`
-  padding: 91px 0 106px;
   display: flex;
+  flex-direction: column;
   color: white;
+  padding: 58px 0 24px;
+
+  @media (min-width: 768px) {
+    padding: 60px 0 117px;
+  }
+
+  @media (min-width: 1140px) {
+    padding: 91px 0 122px;
+    flex-direction: row;
+  }
 `
 
-const Card = styled.p`
-  padding: 16px;
-  width: 348px;
-  min-height: 128px;
-  background: #ffffff;
+const Section = styled.div`
   position: relative;
-  z-index: 2;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  display: flex;
-  align-items: center;
+`
+
+const BeforeSection = styled(Section)`
+  width: 288px;
+  margin: 0 auto;
+  margin-bottom: 42px;
+
+  @media (min-width: 768px) {
+    width: 348px;
+    margin: 0;
+    margin-bottom: 86px;
+  }
+
+  @media (min-width: 1140px) {
+    margin-right: 210px;
+  }
+`
+
+const AfterSection = styled(Section)`
+  width: 288px;
+  margin: 0 auto;
+
+  @media (min-width: 768px) {
+    width: 348px;
+    margin: 0;
+  }
 `
 
 const Title = styled.h2`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: bold;
-  font-size: 32px;
-  line-height: 44px;
+  font-size: 24px;
+  line-height: 32px;
   color: #ffffff;
-`
 
-const BeforeSection = styled.div`
-  margin-right: 210px;
-  position: relative;
+  @media (min-width: 768px) {
+    font-size: 32px;
+    line-height: 44px;
+  }
 `
 
 const BeforeTitle = styled(Title)`
-  width: 206px;
-  margin-bottom: 24px;
-`
+  margin-bottom: 50px;
 
-const BeforeCard = styled(Card)`
-  border-radius: 8px 8px 0px 8px;
-  color: #ff6b00;
-`
-
-const BeforeImage = styled.img`
-  display: block;
-  position: absolute;
-  bottom: -40px;
-  right: -95px;
-`
-
-const AfterSection = styled.div`
-  position: relative;
+  @media (min-width: 768px) {
+    margin-bottom: 24px;
+  }
 `
 
 const AfterTitle = styled(Title)`
-  width: 261px;
-  margin-bottom: 119px;
+  margin-bottom: 50px;
+  max-width: 117px;
+
+  @media (min-width: 768px) {
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+
+  @media (min-width: 1140px) {
+    margin-bottom: 119px;
+  }
+`
+
+const Card = styled.p`
+  padding: 16px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  min-height: 140px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  background: #ffffff;
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+    line-height: 24px;
+    min-height: 128px;
+  }
+`
+
+const BeforeCard = styled(Card)`
+  border-radius: 8px 0px 8px 8px;
+  color: #ff6b00;
+
+  @media (min-width: 768px) {
+    border-radius: 8px 8px 0px 8px;
+  }
 `
 
 const AfterCard = styled(Card)`
@@ -79,63 +140,56 @@ const AfterCard = styled(Card)`
   color: #4858cc;
 `
 
-const AfterImage = styled.img`
+const Image = styled.img`
   display: block;
   position: absolute;
-  top: -94px;
-  right: -207px;
+  top: 0;
+  right: 0;
+  width: 100px;
+
+  @media (min-width: 768px) {
+    width: 200px;
+    right: -260px;
+  }
 `
 
-const messages = [
-  {
-    before: "Мне приходится самому искать клиентов 🤔",
-    after: "Клиенты сами находят меня с помощью iTrainYou 🚀",
-  },
-  {
-    before: "На поиск кабинета уходит много времени, а на аренду — дополнительные деньги 🙄",
-    after: "Я работаю в удобное мне время из любой точки мира 🌍",
-  },
-  {
-    before: "Мне не с кем посоветоваться или поделиться результатами своей работы 📈",
-    after: "На платформе классное комьюнити коучей и мы на связи 📱",
-  },
-  {
-    before: "Иногда я не знаю, как поступить в спорных ситуациях 😬",
-    after:
-      "Спорные и конфликтные ситуации на платформе решает администратор — беспристрастно и честно для обеих сторон 👍",
-  },
-  {
-    before: "Нужно всегда иметь при себе блокнот/ежедневник, чтобы записывать планы или заметки о сессиях 🗒️",
-    after: "Вся информация о моей практике систематизирована и находится в электронном виде на платформе iTrainYou 🖥️",
-  },
-  {
-    before: "Мне нужно дополнительно следить за получением оплаты от клиентов 💰",
-    after:
-      "Я привязал карту в личном кабинете iTrainYou и больше не переживаю о том, что оплата поступит позже или не поступит вообще 💳",
-  },
-  {
-    before: "Административная работа тоже входит в мои обязанности: я сам напоминаю клиентам о предстоящих сессиях 📨",
-    after:
-      "Платформа автоматически направляет уведомления об изменениях и предстоящих сессиях и клиенту, и мне. Я ничего не забываю! 👍",
-  },
-  {
-    before:
-      "На моем телефоне все приложения — для работы. WhatsApp, Телеграм, Viber — во всех мессенджерах я переписываюсь с клиентами. Так легко запутаться! 🗯️",
-    after:
-      "А у меня мессенджеры — для личных переписок. Все дела с клиентами я веду во внутренних чатах на платформе iTrainYou 💪",
-  },
-]
+const BeforeImage = styled(Image)`
+  z-index: 2;
+  top: -30px;
+
+  @media (min-width: 768px) {
+    top: 30px;
+  }
+
+  @media (min-width: 1140px) {
+    width: 162px;
+    top: 160px;
+    right: -95px;
+  }
+`
+
+const AfterImage = styled(Image)`
+  top: -18px;
+
+  @media (min-width: 768px) {
+    top: 31px;
+  }
+
+  @media (min-width: 1140px) {
+    width: 255px;
+    top: -24px;
+    right: -184px;
+  }
+`
 
 export const BeforeAfter = () => {
-  const [i, setI] = useState(0)
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (i === messages.length - 1) {
-        setI(0)
-      } else {
-        setI(i + 1)
-      }
+      currentMessageIndex === messages.length - currentMessageIndex
+        ? setCurrentMessageIndex(0)
+        : setCurrentMessageIndex(currentMessageIndex + 1)
     }, 3000)
 
     return function cleanup() {
@@ -148,12 +202,12 @@ export const BeforeAfter = () => {
       <StyledContainer>
         <BeforeSection>
           <BeforeTitle>До ITrainYou</BeforeTitle>
-          <BeforeCard>{messages[i].before}</BeforeCard>
+          <BeforeCard>{messages[currentMessageIndex].before}</BeforeCard>
           <BeforeImage src={beforeImg} />
         </BeforeSection>
         <AfterSection>
           <AfterTitle>После ITrainYou</AfterTitle>
-          <AfterCard>{messages[i].after}</AfterCard>
+          <AfterCard>{messages[currentMessageIndex].after}</AfterCard>
           <AfterImage src={afterImg} />
         </AfterSection>
       </StyledContainer>
