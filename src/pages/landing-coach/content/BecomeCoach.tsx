@@ -3,13 +3,23 @@ import styled from "styled-components"
 
 import { routeNames } from "@/pages/route-names"
 
+import { schools, extraSchools, values } from "./become-coach/content"
+
 import { Container } from "../common/Container"
 import { RegisterButton } from "../common/RegisterButton"
 
 const Wrapper = styled.section`
   background: white;
 
-  margin-bottom: 82px;
+  margin-bottom: 40px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 80px;
+  }
+
+  @media (min-width: 1140px) {
+    margin-bottom: 60px;
+  }
 `
 
 const StyledContainer = styled(Container)`
@@ -20,30 +30,72 @@ const Title = styled.h2`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: bold;
-  font-size: 32px;
-  line-height: 44px;
+  font-size: 24px;
+  line-height: 32px;
   color: #4858cc;
-  margin-bottom: 46px;
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+    line-height: 44px;
+    margin-bottom: 24px;
+  }
+
+  @media (min-width: 1140px) {
+    margin-bottom: 46px;
+  }
 `
 
 const StyledRegisterButton = styled(RegisterButton)`
-  position: absolute;
-  top: 0;
-  right: 0;
-
+  font-weight: 500;
   font-size: 16px;
   line-height: 24px;
   padding: 12px 24px;
+  margin-bottom: 24px;
+  width: 205px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 52px;
+  }
+
+  @media (min-width: 1140px) {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    margin-bottom: 0;
+  }
 `
 
 const SectionsWrapper = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+
+  @media (min-width: 1140px) {
+    display: flex;
+    justify-content: space-between;
+  }
 `
 
 const Section = styled.div`
-  width: 534px;
+  width: 100%;
+
+  &:first-child {
+    margin-bottom: 24px;
+  }
+
+  @media (min-width: 768px) {
+    &:first-child {
+      margin-bottom: 44px;
+    }
+  }
+
+  @media (min-width: 1140px) {
+    width: 534px;
+
+    &:first-child {
+      margin-bottom: 0;
+    }
+  }
 `
 
 const SectionTitle = styled.h3`
@@ -54,8 +106,14 @@ const SectionTitle = styled.h3`
   line-height: 26px;
   color: #4858cc;
   margin-bottom: 16px;
-  min-height: 52px;
+
   max-width: 360px;
+
+  @media (min-width: 1140px) {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+  }
 `
 
 const List = styled.ul`
@@ -63,7 +121,6 @@ const List = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  margin-bottom: 16px;
 `
 
 const ListItem = styled.li`
@@ -107,6 +164,7 @@ const ShowMore = styled.button`
   border: none;
   background: white;
   cursor: pointer;
+  margin-top: 16px;
 `
 
 export const BecomeCoach = () => {
@@ -121,17 +179,14 @@ export const BecomeCoach = () => {
           <Section>
             <SectionTitle>Вы сертифицированы одной из ведущих школ коучинга:</SectionTitle>
             <List>
-              <ListItem>Международная Федерация Коучинга (ICF)</ListItem>
-              <ListItem>Международный Эриксоновский Университет Коучинга</ListItem>
-              <ListItem>INTERNATIONAL COACHING ACADEMY</ListItem>
-              <ListItem>Nova Terra Coach Training & Corporate Development</ListItem>
-              <ListItem>Международный Университет GLOBAL COACHING</ListItem>
-              <ListItem>Международный центр профессионального коучинга ICP Centre</ListItem>
-              <ListItem>CareerWay</ListItem>
+              {schools.map((item, index) => (
+                <ListItem key={index}>{item}</ListItem>
+              ))}
               {showExtraSchools ? (
                 <>
-                  <ListItem>Hidden School 1</ListItem>
-                  <ListItem>Hidden School 2</ListItem>
+                  {extraSchools.map((item, index) => (
+                    <ListItem key={index}>{item}</ListItem>
+                  ))}
                 </>
               ) : (
                 ""
@@ -144,13 +199,9 @@ export const BecomeCoach = () => {
           <Section>
             <SectionTitle>Вы разделяете наши ценности:</SectionTitle>
             <List>
-              <ListItem>Постоянное стремление к развитию</ListItem>
-              <ListItem>Максимальная концентрация на клиенте</ListItem>
-              <ListItem>Ориентация на решения в будущем</ListItem>
-              <ListItem>Системный подход в работе с клиентом</ListItem>
-              <ListItem>Осознанность себя, своей жизни, отношений, своих целей</ListItem>
-              <ListItem>Ценности клиента важны ровно как и действия клиента</ListItem>
-              <ListItem>Партнерство в работе с клиентом</ListItem>
+              {values.map((item, index) => (
+                <ListItem key={index}>{item}</ListItem>
+              ))}
             </List>
           </Section>
         </SectionsWrapper>
