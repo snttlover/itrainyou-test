@@ -29,7 +29,7 @@ const LandingCoachPageMarkUp = () => (
       <Calendar />
       <BeforeAfter />
       <BecomeCoach />
-      {/* <Publications /> */}
+      <Publications />
       <Video />
       <Questions />
     </MainWrapper>
