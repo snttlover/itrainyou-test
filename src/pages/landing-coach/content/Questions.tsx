@@ -9,30 +9,42 @@ import arrowIcon from "../assets/questions/arrow-down.svg"
 
 const Wrapper = styled.section`
   background: #f4f5f7;
+  padding: 24px 0;
   margin-bottom: 0;
-`
 
-const StyledContainer = styled(Container)`
-  padding: 52px 0 38px;
+  @media (min-width: 768px) {
+    padding: 52px 0 38px;
+  }
+
+  @media (min-width: 1140px) {
+    padding: 52px 0 64px;
+  }
 `
 
 const Title = styled.h2`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: bold;
-  font-size: 32px;
-  line-height: 44px;
+  font-size: 24px;
+  line-height: 32px;
   color: #4858cc;
-  margin: 0 auto;
-  text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+    line-height: 44px;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 40px;
+  }
 `
 
 const List = styled.ul`
   margin: 0 auto;
   padding: 0;
   list-style: none;
-  width: 720px;
+  width: 100%;
+  max-width: 720px;
 `
 
 const ListItem = styled.li`
@@ -40,6 +52,7 @@ const ListItem = styled.li`
   background: #ffffff;
   border-radius: 8px;
   padding: 16px;
+  padding-right: 64px;
   position: relative;
   cursor: pointer;
 
@@ -64,7 +77,6 @@ const ListItem = styled.li`
     font-size: 14px;
     line-height: 22px;
     color: #424242;
-    width: 640px;
   }
 `
 
@@ -96,7 +108,7 @@ export const Questions = () => {
 
   return (
     <Wrapper>
-      <StyledContainer>
+      <Container>
         <Title>Есть вопросы? Возможно эти:</Title>
         <List>
           {content.map((item, index) => (
@@ -107,7 +119,7 @@ export const Questions = () => {
             </ListItem>
           ))}
         </List>
-      </StyledContainer>
+      </Container>
     </Wrapper>
   )
 }
