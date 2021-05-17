@@ -5,6 +5,8 @@ import { SwiperOptions } from "swiper"
 
 import { content } from "./publications/content"
 
+import { Container } from "../common/Container"
+
 import arrowLeftIcon from "@/pages/landing-coach/assets/publications/arrow-left.svg"
 
 const swiperOptions: SwiperOptions = {
@@ -23,12 +25,75 @@ const Wrapper = styled.section`
   margin-bottom: 40px;
 
   @media (min-width: 768px) {
+    height: 492px;
+
     margin-bottom: 80px;
   }
 
   @media (min-width: 1140px) {
+    height: 640px;
+
     margin-bottom: 120px;
   }
+`
+
+const StyledContainer = styled(Container)`
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  pointer-events: none;
+
+  padding-top: 44px;
+`
+
+const Title = styled.h2`
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
+  color: #ffffff;
+  margin: 0 auto;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+    line-height: 44px;
+  }
+`
+
+const ArrowButton = styled.div`
+  position: absolute;
+  z-index: 5;
+  width: 24px;
+  height: 24px;
+  bottom: 148px;
+  background: url("${arrowLeftIcon}");
+  background-size: 24px 24px;
+  pointer-events: all;
+  cursor: pointer;
+
+  @media (min-width: 768px) {
+    bottom: 130px;
+    width: 44px;
+    height: 44px;
+    background-size: 44px 44px;
+  }
+
+  @media (min-width: 1140px) {
+    bottom: 200px;
+  }
+`
+
+const PrevButton = styled(ArrowButton)`
+  left: 0;
+`
+const NextButton = styled(ArrowButton)`
+  right: 0;
+  transform: rotate(180deg);
 `
 
 const SliderWrapper = styled.div`
@@ -42,18 +107,22 @@ const SliderWrapper = styled.div`
     height: 460px;
     background: #4858cc;
   }
-`
 
-const Title = styled.h2`
-  font-family: Roboto Slab;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 32px;
-  text-align: center;
-  color: #ffffff;
-  margin: 0 auto;
-  margin-bottom: 16px;
+  @media (min-width: 768px) {
+    height: 492px;
+
+    .swiper-container {
+      height: 492px;
+    }
+  }
+
+  @media (min-width: 1140px) {
+    height: 640px;
+
+    .swiper-container {
+      height: 640px;
+    }
+  }
 `
 
 const Slide = styled.div`
@@ -61,11 +130,21 @@ const Slide = styled.div`
   font-size: 18px;
   background: #4858cc;
   position: relative;
-  padding-top: 44px;
+  padding-top: 92px;
   height: 460px;
+
+  @media (min-width: 768px) {
+    padding-top: 112px;
+    height: 492px;
+  }
+
+  @media (min-width: 1140px) {
+    padding-top: 120px;
+    height: 640px;
+  }
 `
 
-const SliderTitle = styled.a`
+const SlideTitle = styled.a`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -74,8 +153,12 @@ const SliderTitle = styled.a`
   text-align: center;
   text-decoration-line: underline;
   color: #ffffff;
-
   margin: 0 auto;
+
+  @media (min-width: 768px) {
+    font-size: 24px;
+    line-height: 32px;
+  }
 `
 
 const SlideImage = styled.img`
@@ -83,25 +166,28 @@ const SlideImage = styled.img`
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 224px;
   border-radius: 8px 8px 0px 0px;
 `
 
-const Button = styled.div`
-  position: absolute;
-  z-index: 3;
-  width: 24px;
-  height: 24px;
-  bottom: 148px;
-  background: url("${arrowLeftIcon}");
+const SlideImageMobile = styled(SlideImage)`
+  width: 224px;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
 `
 
-const PrevButton = styled(Button)`
-  left: 16px;
-`
-const NextButton = styled(Button)`
-  right: 16px;
-  transform: rotate(180deg);
+const SlideImageDesktop = styled(SlideImage)`
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+    width: 596px;
+  }
+
+  @media (min-width: 1140px) {
+    width: 905px;
+  }
 `
 
 export const Publications = () => {
@@ -113,15 +199,19 @@ export const Publications = () => {
         <ReactIdSwiper {...swiperOptions} ref={swiper}>
           {content.map(item => (
             <Slide key={item.id}>
-              <SliderTitle href={item.sourceURL} target='_blank'>
+              <SlideTitle href={item.sourceURL} target='_blank'>
                 {item.source}
-              </SliderTitle>
-              <SlideImage src={item.imageMobile} />
+              </SlideTitle>
+              <SlideImageMobile src={item.imageMobile} />
+              <SlideImageDesktop src={item.imageDesktop} />
             </Slide>
           ))}
         </ReactIdSwiper>
-        <PrevButton className='photos__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
-        <NextButton className='photos__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
+        <StyledContainer>
+          <Title>Публикации о нас</Title>
+          <PrevButton className='photos__prev-button' onClick={() => swiper.current?.swiper?.slidePrev()} />
+          <NextButton className='photos__next-button' onClick={() => swiper.current?.swiper?.slideNext()} />
+        </StyledContainer>
       </SliderWrapper>
     </Wrapper>
   )
