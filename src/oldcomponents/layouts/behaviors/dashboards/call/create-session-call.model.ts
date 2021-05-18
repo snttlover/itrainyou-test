@@ -522,34 +522,20 @@ export const createTestCallModule = () => {
     handler: (type: "audio" | "video") => {
       agoraData.localStream = agoraLib.getDevices((devices: MediaDeviceInfo[]) => {
 
-        const audioDevices = devices.filter((device) => device.kind === "audioinput" && !!device.deviceId)
-        !!audioDevices ? runInScope(changeGrantedPermissionForMic, true) : runInScope(changeGrantedPermissionForMic, false)
+        const audioDevices = devices.filter((device) => device.kind === "audioinput" && device.deviceId.length > 0)
+        audioDevices.length > 0 ? runInScope(changeGrantedPermissionForMic, true) : runInScope(changeGrantedPermissionForMic, false)
 
-        const videoDevices = devices.filter((device) => device.kind === "videoinput" && !!device.deviceId)
-        !!videoDevices ? runInScope(changeGrantedPermissionForCamera, true) : runInScope(changeGrantedPermissionForCamera, false)
+        const videoDevices = devices.filter((device) => device.kind === "videoinput" && device.deviceId.length > 0)
+        videoDevices.length > 0 ? runInScope(changeGrantedPermissionForCamera, true) : runInScope(changeGrantedPermissionForCamera, false)
 
         const uid = Math.floor(Math.random()*10000)
-        const selectedMicrophoneId = audioDevices[0]
-        const selectedCameraId = videoDevices[0]?.deviceId
+        const selectedMicrophoneId = audioDevices.filter((device) => device.deviceId === "default")
+        const selectedCameraId = videoDevices.filter((device) => device.deviceId === "default")
         test({uid: uid,type: type, selectedDevice: type === "audio" ? selectedMicrophoneId : selectedCameraId })
       })
     },
   })
 
-  /*const selectedMicrophoneId = videoDevices[0]?.deviceId
-
-  const streamSpecs = params.type === "audio" ? {
-    streamID: params.uid,
-    audio: true,
-    video: true,
-    cameraId: params.selectedDevice,
-    screen: false
-  } : {
-    streamID: params.uid,
-    audio: false,
-    video: true,
-    screen: false
-  }*/
 
   const testingDevicesFx = createEffect({
     handler: (params: TestingParams) => {

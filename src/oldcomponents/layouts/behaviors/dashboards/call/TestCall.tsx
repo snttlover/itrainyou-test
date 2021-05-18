@@ -76,6 +76,7 @@ const Description = styled.div`
   line-height: 22px;
   margin-top: 8px;
   margin-bottom: 18px;
+  color: #5B6670;
 `
 
 const VideoTest = styled.div`
@@ -84,6 +85,7 @@ const VideoTest = styled.div`
   height: 240px;
   display: flex;
   background: #424242;
+  border-radius: 8px;
 
   ${MediaRange.lessThan("mobile")`
     width: 250px;
@@ -164,8 +166,7 @@ const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
         {permission.camera ?
           <>
             <Description>Если вы видите свое изображение, значит камера работает.</Description>
-            <VideoTest id='VideoTest' >
-            </VideoTest>
+            <VideoTest id='VideoTest' />
           </>
           :
           <>
