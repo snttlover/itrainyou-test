@@ -118,6 +118,17 @@ const InfoContainer = styled.div`
   cursor: pointer;
 `
 
+const StyledProgressBar = styled(ProgressBar)`
+  margin-top: 16px;
+  margin-bottom: 24px;
+  max-width: 364px;
+  
+  ${MediaRange.lessThan("mobile")`
+    max-width: 256px;
+  `}
+  
+`
+
 const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => {
   return () => {
     const _mounted = useEvent($module.methods.mounted)
@@ -211,7 +222,7 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
           <>
             <Title>Микрофон</Title>
             <Description>Если вы видите зеленый индикатор, то микрофон работает хорошо</Description>
-            <ProgressBar percent={audioLevel} />
+            <StyledProgressBar percent={audioLevel} colorful />
             <Title>Динамик</Title>
             <Description>Если вы слышите звук, то динамик работает</Description>
             <SpeakersCheckButton onClick={handleOnClick}>Проверить динамик</SpeakersCheckButton>
