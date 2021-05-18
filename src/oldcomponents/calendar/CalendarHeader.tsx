@@ -36,8 +36,8 @@ export const LeftIcon = styled(Icon).attrs({ name: "left-calendar-icon" })<LeftB
 `
 
 export const RightIcon = styled(Icon).attrs({ name: "right-calendar-icon" })<LeftButtonTypes>`
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};

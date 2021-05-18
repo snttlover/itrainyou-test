@@ -485,9 +485,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 type TestingParams = {
   uid: number
   type: "audio" | "video"
-  selectedDevice: MediaDeviceInfo | MediaDeviceInfo[] | string
+  selectedDevice?: MediaDeviceInfo | MediaDeviceInfo[] | string
 }
-//config: TestCallModuleConfig
+
 export const createTestCallModule = () => {
 
   const agoraData: Agora = {
@@ -504,15 +504,29 @@ export const createTestCallModule = () => {
 
   const $audioLevel = restore(setAudioLevel, 0)
 
+  const changeGrantedPermissionForCamera = createEvent<boolean>()
+  const changeGrantedPermissionForMic = createEvent<boolean>()
+
+
+  const $userGrantedPermission = createStore({
+    micro: false,
+    camera: false,
+  }).on(changeGrantedPermissionForCamera, (state,payload) => {
+    return {micro: state.micro, camera: payload}
+  }).on(changeGrantedPermissionForMic,(state,payload) => {
+    return {micro: payload, camera: state.camera}
+  })
+
+
   const getDevicesFx = createEffect({
     handler: (type: "audio" | "video") => {
       agoraData.localStream = agoraLib.getDevices((devices: MediaDeviceInfo[]) => {
-        const audioDevices = devices.filter((device) => {
-          return device.kind === "audioinput"
-        })
-        const videoDevices = devices.filter((device) => {
-          return device.kind === "videoinput"
-        })
+
+        const audioDevices = devices.filter((device) => device.kind === "audioinput" && !!device.deviceId)
+        !!audioDevices ? runInScope(changeGrantedPermissionForMic, true) : runInScope(changeGrantedPermissionForMic, false)
+
+        const videoDevices = devices.filter((device) => device.kind === "videoinput" && !!device.deviceId)
+        !!videoDevices ? runInScope(changeGrantedPermissionForCamera, true) : runInScope(changeGrantedPermissionForCamera, false)
 
         const uid = Math.floor(Math.random()*10000)
         const selectedMicrophoneId = audioDevices[0]
@@ -537,7 +551,7 @@ export const createTestCallModule = () => {
     screen: false
   }*/
 
-  const testFx = createEffect({
+  const testingDevicesFx = createEffect({
     handler: (params: TestingParams) => {
       if (agoraLib) {
 
@@ -619,7 +633,7 @@ export const createTestCallModule = () => {
 
   forward({
     from: test,
-    to: testFx,
+    to: testingDevicesFx,
   })
 
   forward({
@@ -631,6 +645,7 @@ export const createTestCallModule = () => {
   return {
     data: {
       $audioLevel,
+      $userGrantedPermission
     },
     methods: {
       play,

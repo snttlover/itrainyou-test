@@ -127,8 +127,8 @@ export const HomePage = () => {
 
       {upcomingSessions.length ? (
         <ContentContainer>
-          <CheckMediaDevices />
           <Block>
+            <CheckMediaDevices />
             <Title>Ближайшие сессии</Title>
             {upcomingSessions.map(session => (
               <TodaySessionCard session={session} key={session.id} />

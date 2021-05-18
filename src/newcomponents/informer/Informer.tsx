@@ -18,10 +18,11 @@ const Container = styled.div`
     `}
 `
 
-const InfoIcon = styled(Icon).attrs({name: "info"})`
-    width: 20px;
-    height: 20px;
-    margin-right: 20px;
+const InfoIcon = styled(Icon).attrs({name: "info"})<{colorful?: boolean}>`
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+  fill: ${({ colorful }) => !!colorful ? "#FF6B00" : "#5B6670"};
 `
 
 const Close = styled(Icon).attrs({ name: "close" })`
@@ -50,13 +51,13 @@ const Content = styled.div`
     `}
 `
 
-export const Informer = styled(({ className, label, error, closable, children, ...props }) => {
+export const Informer = styled(({ className, label, error, closable, colorful, children, ...props }) => {
 
   const [showed, setShowed] = useState(true)
   return (
     <>
       { showed ? <Container>
-        <InfoIcon />
+        <InfoIcon colorful={colorful} />
         <Content>
           {children}
         </Content>

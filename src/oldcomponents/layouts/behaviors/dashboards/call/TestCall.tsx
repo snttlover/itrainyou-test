@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { createTestCallModule, changeCallModal, $testCallModal, testCall, $compatibility } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
 import { useStore, useEvent } from "effector-react"
@@ -10,6 +10,7 @@ import { ProgressBar } from "@/oldcomponents/progress-bar/ProgressBar"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { NotCompatibleDialog } from "@/oldcomponents/layouts/behaviors/dashboards/call/NotCompatibleDialog"
 import { Title as Header } from "@/pages/coach/schedule/CoachSchedulePage"
+import { Informer } from "@/newcomponents/informer/Informer"
 
 
 const StyledTabs = styled(Tabs)`
@@ -90,6 +91,14 @@ const VideoTest = styled.div`
   `}
 `
 
+const StyledLink = styled.div`
+  color: ${props => props.theme.colors.primary};
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 8px;
+`
+
 const CameraIcon = styled(Icon).attrs({ name: "camera" })`
   fill: #424242;
   height: 14px;
@@ -100,7 +109,7 @@ const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #F4EFF7;
+  background-color: ${({ theme }) =>  `${theme.colors.primary}1F`} ;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
@@ -112,6 +121,7 @@ const InfoContainer = styled.div`
 const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => {
   return () => {
     const _mounted = useEvent($module.methods.mounted)
+    const permission = useStore($module.data.$userGrantedPermission)
     const close = useEvent($module.methods.close)
 
     useEffect(() => {
@@ -122,11 +132,36 @@ const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
       }
     }, [])
 
+    const handleOnLinkClick = () => {
+      if ((navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR")) != -1) {
+        window.open("https://help.opera.com/ru/latest/web-preferences/#Управление-доступом-к-камере")
+      } else if (navigator.userAgent.indexOf("Chrome") != -1) {
+        window.open("https://support.google.com/chrome/answer/114662?co=GENIE.Platform%3DDesktop&hl=ru")
+      } else if (navigator.userAgent.indexOf("Safari") != -1) {
+        if (window.innerWidth >= 480) {
+          window.open("https://support.apple.com/ru-ru/guide/safari/ibrw7f78f7fe/mac")
+        } else {
+          window.open("https://ipadstory.ru/kak-upravlyat-nastrojkami-privatnosti-v-safari-na-iphone-i-ipad.html")
+        }
+      } else if (navigator.userAgent.indexOf("Firefox") != -1) {
+        window.open("https://support.mozilla.org/ru/kb/upravlenie-razresheniyami-dlya-kamery-i-mikrofona-")
+      }
+    }
+
     return (
       <Container>
-        <Description>Если вы видите свое изображение, значит камера работает.</Description>
-        <VideoTest id='VideoTest' >
-        </VideoTest>
+        {permission.camera ?
+          <>
+            <Description>Если вы видите свое изображение, значит камера работает.</Description>
+            <VideoTest id='VideoTest' >
+            </VideoTest>
+          </>
+          :
+          <>
+            <Informer colorful>Нет доступа к видеокамере</Informer>
+            <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к видеокамере</StyledLink>
+          </>
+        }
       </Container>
     )
   }
@@ -135,6 +170,7 @@ const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
 const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => {
   return () => {
     const audioLevel = useStore($module.data.$audioLevel)
+    const permission = useStore($module.data.$userGrantedPermission)
     const _mounted = useEvent($module.methods.mounted)
     const close = useEvent($module.methods.close)
 
@@ -153,19 +189,41 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
       !!audioPlayer && audioPlayer.play()
     }
 
+    const handleOnLinkClick = () => {
+      if ((navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR")) != -1) {
+        window.open("https://help.opera.com/ru/latest/web-preferences/#Управление-доступом-к-камере")
+      } else if (navigator.userAgent.indexOf("Chrome") != -1) {
+        window.open("https://support.google.com/chrome/answer/114662?co=GENIE.Platform%3DDesktop&hl=ru")
+      } else if (navigator.userAgent.indexOf("Safari") != -1) {
+        if (window.innerWidth >= 480) {
+          window.open("https://support.apple.com/ru-ru/guide/safari/ibrw7f78f7fe/mac")
+        } else {
+          window.open("https://ipadstory.ru/kak-upravlyat-nastrojkami-privatnosti-v-safari-na-iphone-i-ipad.html")
+        }
+      } else if (navigator.userAgent.indexOf("Firefox") != -1) {
+        window.open("https://support.mozilla.org/ru/kb/upravlenie-razresheniyami-dlya-kamery-i-mikrofona-")
+      }
+    }
+
     return (
       <Container>
-        <Title>Микрофон</Title>
-        <Description>Если вы видите зеленый индикатор, то микрофон работает хорошо</Description>
-        {/*<Progress progress={audioLevel} />*/}
-        <ProgressBar percent={audioLevel} />
-        <Title>Динамик</Title>
-        <Description>Если вы слышите звук, то динамик работает</Description>
-        <SpeakersCheckButton onClick={handleOnClick}>Проверить динамик</SpeakersCheckButton>
-        <audio src="/speakers_test.mp3" id="SpeakersTest">
-          Your browser does not support the
-          <code>audio</code> element.
-        </audio>
+        {permission.micro ?
+          <>
+            <Title>Микрофон</Title>
+            <Description>Если вы видите зеленый индикатор, то микрофон работает хорошо</Description>
+            <ProgressBar percent={audioLevel} />
+            <Title>Динамик</Title>
+            <Description>Если вы слышите звук, то динамик работает</Description>
+            <SpeakersCheckButton onClick={handleOnClick}>Проверить динамик</SpeakersCheckButton>
+            <audio src="/speakers_test.mp3" id="SpeakersTest">
+                    Ваш браузер не поддерживает воспроизведение mp3 файлов.
+            </audio>
+          </>
+          :
+          <>
+            <Informer colorful>Нет доступа к микрофону</Informer>
+            <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к видеокамере</StyledLink>
+          </>}
       </Container>
     )
   }
@@ -203,7 +261,7 @@ export const CheckMediaDevices = () => {
 
   return (
     <InfoContainer onClick={() => showModal(true)}>
-      {!compatibility ? <NotCompatibleDialog visibility={visibility} close={() => toggle(false)} /> :<TestCallModal /> }
+      {!compatibility ? <NotCompatibleDialog visibility={visibility} close={() => toggle(false)} /> : <TestCallModal /> }
       <CameraIcon />
       <div>Проверьте камеру и микрофон до встречи с клиентом</div>
     </InfoContainer>
