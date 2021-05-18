@@ -1,3 +1,6 @@
+import * as React from "react"
+import { RouteConfig } from "react-router-config"
+
 import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { LoginPage } from "@/pages/auth/pages/login/LoginPage"
@@ -21,9 +24,8 @@ import { ClientChatPage } from "@/pages/client/chats/chat/ClientChatPage"
 import ClientChatListPage from "@/pages/client/chats/list/ClientChatListPage"
 import { routeNames } from "@/pages/route-names"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
-import * as React from "react"
-import { RouteConfig } from "react-router-config"
 import { LandingPage } from "./landing/LandingPage"
+import { LandingCoachPage } from "./landing-coach/LandingCoachPage"
 import { SearchPage } from "./search/SearchPage"
 import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
 import { NotFound } from "@/feature/not-found/components/NotFound"
@@ -50,6 +52,12 @@ export const ROUTES: RouteConfig[] = [
     path: routeNames.search(),
     exact: true,
     component: SearchPage,
+    ssr: true,
+  },
+  {
+    path: routeNames.landingCoach(),
+    exact: true,
+    component: LandingCoachPage,
     ssr: true,
   },
   {
