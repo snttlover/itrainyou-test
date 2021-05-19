@@ -67,8 +67,4 @@ const StyledDialog = styled.div`
     padding: 16px;
     width: 90%;
   `}
-  
-  ${MediaRange.greaterThan("tablet")`
-    min-width: 560px;
-  `}
 `

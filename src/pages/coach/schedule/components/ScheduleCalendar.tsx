@@ -48,7 +48,7 @@ const Container = styled.div`
   margin-top: 24px;
 
   ${MediaRange.lessThan("mobile")`
-    min-width: 280px;
+    min-width: 266px;
   `}
 `
 const MobileList = styled.div`
@@ -293,7 +293,7 @@ const DayContainer = styled.div<{presentDay: boolean}>`
   }
 
   ${MediaRange.lessThan("mobile")`
-    min-height: 12px;
+    min-height: 40px;
     padding: 0;
     margin: 0;
   `}
@@ -307,6 +307,7 @@ const TopCellContainer = styled.div`
   
   ${MediaRange.lessThan("mobile")`
     flex-direction: column;
+    padding: 10px 0px 6px;
   `}
 `
 

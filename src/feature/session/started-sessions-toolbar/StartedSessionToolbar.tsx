@@ -14,11 +14,11 @@ export const createStartedSessionsToolbar = ($model: ReturnType<typeof createSta
 
     useEffect(() => {
       load()
-      const timer = setInterval(() => {
+      /*const timer = setInterval(() => {
         load()
-      }, 10000)
+      }, 10000)*/
       return () => {
-        clearInterval(timer)
+        //clearInterval(timer)
         reset()
       }
     }, [])

@@ -20,8 +20,9 @@ const StyledTabs = styled(Tabs)`
 `
 
 const StyledTab = styled(Tab)`
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 400;
   color: #424242;
   flex: 1;
   align-items: center;
@@ -103,7 +104,8 @@ const StyledLink = styled.div`
 
 const CameraIcon = styled(Icon).attrs({ name: "camera" })`
   fill: #424242;
-  height: 14px;
+  width: 22px;
+  height: 24px;
   margin-right: 17px;
 `
 
@@ -111,7 +113,7 @@ const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) =>  `${theme.colors.primary}1F`} ;
+  background-color: #FFFFFF;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
