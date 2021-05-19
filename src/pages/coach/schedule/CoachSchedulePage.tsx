@@ -29,7 +29,7 @@ const StyledTab = styled(Tab)`
   font-size: 16px;
   line-height: 24px;
   color: #424242;
-  flex: 1;
+  flex: 0 2;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -38,7 +38,6 @@ const StyledTab = styled(Tab)`
   border-bottom: 2px solid transparent;
   cursor: pointer;
   white-space: nowrap;
-  max-width: 200px;
   &[data-active="true"] {
     border-bottom: 2px solid ${props => props.theme.colors.primary};
     background: transparent;
