@@ -32,7 +32,7 @@ const Header = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
 
-  height: 234px;
+  height: 260px;
   width: 100%;
 
   ${MediaRange.greaterThan("mobile")`
@@ -41,7 +41,7 @@ const Header = styled.div`
   `}
   ${MediaRange.greaterThan("laptop")`
     background-image: url(${desktop});
-    height: 312px;
+    height: 332px;
   `}
 `
 
@@ -95,17 +95,16 @@ export const Step4ClientLayout = (props: Step4ClientLayoutProps) => (
     <Header>
       <HeaderContent>
         <AuthLayoutLogo />
-        <Steps activeId='4'>
-          <Steps.Step id='1'>1</Steps.Step>
-          <Steps.Step id='2'>2</Steps.Step>
-          <Steps.Step id='3'>3</Steps.Step>
-          <Steps.Step id='4'>4</Steps.Step>
+        <Steps activeId='2'>
+          <Steps.Step id='1'>Роль</Steps.Step>
+          <Steps.Step id='2'>Данные</Steps.Step>
+          <Steps.Step id='3'>Подбор коуча</Steps.Step>
         </Steps>
         {props.renderHeader()}
       </HeaderContent>
     </Header>
-    <BGImage />
-    <BGImageCloud />
+    {/*<BGImage />*/}
+    {/*<BGImageCloud />*/}
     <AuthContainer>{props.children}</AuthContainer>
   </StyledLayout>
 )

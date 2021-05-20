@@ -185,11 +185,10 @@ export const Step1 = () => {
 
   return (
     <AuthLayout>
-      <Steps activeId='1'>
-        <Steps.Step id='1'>1</Steps.Step>
-        <Steps.Step id='2'>2</Steps.Step>
-        <Steps.Step id='3'>3</Steps.Step>
-        <Steps.Step id='4'>4</Steps.Step>
+      <Steps activeId='0'>
+        <Steps.Step id='1'>Роль</Steps.Step>
+        <Steps.Step id='2'>Данные</Steps.Step>
+        <Steps.Step id='3'>Подбор коуча</Steps.Step>
       </Steps>
       <Container>
         <Title>Регистрация</Title>

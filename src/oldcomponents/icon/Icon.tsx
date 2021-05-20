@@ -98,6 +98,7 @@ export type IconName =
   | "google-calendar"
   | "left-calendar-icon"
   | "right-calendar-icon"
+        | "step-done"
 
 type IconProps = {
   name: IconName,
