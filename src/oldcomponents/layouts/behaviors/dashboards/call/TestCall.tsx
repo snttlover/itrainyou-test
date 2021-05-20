@@ -81,16 +81,38 @@ const Description = styled.div`
 `
 
 const VideoTest = styled.div`
-  margin-top: 16px;
   width: 360px;
   height: 240px;
   display: flex;
   background: #424242;
   border-radius: 8px;
+  z-index: 2;
 
   ${MediaRange.lessThan("mobile")`
     width: 250px;
     height: 180px;
+  `}
+`
+
+const VideoPlaceholder = styled(VideoTest)`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: #ffffff;
+  z-index: 1;
+`
+
+const NoCamText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #E1E6EA;
+  text-align: center;
+
+  ${MediaRange.lessThan("mobile")`
+    width: 224px;
   `}
 `
 
@@ -104,7 +126,7 @@ const StyledLink = styled.div`
 
 const CameraIcon = styled(Icon).attrs({ name: "camera" })`
   fill: #424242;
-  width: 22px;
+  width: 24px;
   height: 24px;
   margin-right: 17px;
 `
@@ -120,6 +142,7 @@ const InfoContainer = styled.div`
   padding: 17px 21px;
   margin-bottom: 44px;
   cursor: pointer;
+  color: #5B6670;
 `
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -130,7 +153,6 @@ const StyledProgressBar = styled(ProgressBar)`
   ${MediaRange.lessThan("mobile")`
     max-width: 256px;
   `}
-  
 `
 
 const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => {
@@ -168,11 +190,13 @@ const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
         {permission.camera ?
           <>
             <Description>Если вы видите свое изображение, значит камера работает.</Description>
-            <VideoTest id='VideoTest' />
+            <VideoTest id='VideoTest'>
+              <VideoPlaceholder><NoCamText>Возможно проблемы с камерой</NoCamText></VideoPlaceholder>
+            </VideoTest>
           </>
           :
           <>
-            <Informer colorful>Нет доступа к видеокамере</Informer>
+            <Informer colorful noBack>Нет доступа к видеокамере</Informer>
             <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к видеокамере</StyledLink>
           </>
         }
