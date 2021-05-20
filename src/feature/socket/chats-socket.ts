@@ -91,6 +91,11 @@ export type SessionStarted = {
   data: DashboardSession
 }
 
+export type SessionFinished = {
+  type: "SESSION_FINISHED"
+  data: DashboardSession
+}
+
 export type OnChatCreated = {
   type: "NEW_CHAT_CREATED"
   data: PersonalChat
@@ -106,6 +111,7 @@ type SocketMessageReceive =
   | SessionStarted
   | UserEnteredSessionDone
   | UserLeftSessionDone
+  | SessionFinished
 
 type UserType = "client" | "coach" | "admin" | "support"
 
@@ -122,6 +128,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   const onChatCreated = createEvent<OnChatCreated>()
   const onMessagesReadDone = createEvent<MessagesReadDone>()
   const onSessionStarted = createEvent<SessionStarted>()
+  const onSessionFinished = createEvent<SessionFinished>()
   const onUserEnteredSessionDone = createEvent<UserEnteredSessionDone>()
   const onUserLeftSessionDone = createEvent<UserLeftSessionDone>()
 
@@ -257,6 +264,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       onMessagesReadDone: (payload: SocketMessageReceive) => payload.type === "READ_MESSAGES_DONE",
       changeCountersFromInit: (payload: SocketMessageReceive) => payload.type === "INIT",
       onSessionStarted: (payload: SocketMessageReceive) => payload.type === "SESSION_STARTED",
+      onSessionFinished: (payload: SocketMessageReceive) => payload.type === "SESSION_FINISHED",
       onUserEnteredSessionDone: (payload: SocketMessageReceive) => payload.type === "ENTER_SESSION_DONE",
       onUserLeftSessionDone: (payload: SocketMessageReceive) => payload.type === "LEFT_SESSION_DONE",
       onPong: (payload: PongMessage) => payload.type === "PONG",
@@ -269,6 +277,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       onMessagesReadDone: onMessagesReadDone,
       changeCountersFromInit: changeCountersFromInit,
       onSessionStarted: onSessionStarted,
+      onSessionFinished: onSessionFinished,
       onUserEnteredSessionDone: onUserEnteredSessionDone,
       onUserLeftSessionDone: onUserLeftSessionDone,
       onPong: changePonged.prepend(() => true),
@@ -321,6 +330,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       onMessagesReadDone,
       onChatCreated,
       onSessionStarted,
+      onSessionFinished,
       onUserEnteredSessionDone,
       onUserLeftSessionDone,
     },

@@ -29,8 +29,13 @@ import { $isAddSessionModalShowed, showAddSessionModal } from "@/pages/coach/sch
 
 
 const StyledDialog = styled(Dialog)`
-  max-width: 560px;
+  width: 560px;
   min-height: 300px;
+
+  ${MediaRange.lessThan("mobile")`
+    padding: 16px;
+    width: 90%;
+  `}
 `
 
 const Date = styled.div`
