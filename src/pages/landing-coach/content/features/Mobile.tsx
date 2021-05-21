@@ -61,6 +61,16 @@ const ListItem = styled.li`
   width: 100%;
   position: relative;
 
+  &:nth-child(3) {
+    h3 {
+      padding-right: 80px;
+
+      @media (min-width: 558px) {
+        padding-right: 0;
+      }
+    }
+  }
+
   @media (min-width: 768px) {
     display: flex;
     flex-direction: column;

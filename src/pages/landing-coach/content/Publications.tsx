@@ -147,7 +147,7 @@ const Slide = styled.div`
 const SlideTitle = styled.a`
   font-family: Roboto;
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   text-align: center;

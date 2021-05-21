@@ -47,7 +47,7 @@ const AdvantagesList = styled.ul`
   }
 `
 
-const Advantage = styled.li`
+const Advantage = styled.li<{ visibleDesktopSubtitle: boolean }>`
   margin: 0;
   padding: 0;
   display: flex;
@@ -134,6 +134,26 @@ const Advantage = styled.li`
       width: 80%;
     }
   }
+
+  /* Mobile / Desktop different subtitles */
+
+  .desktopSubtitle {
+    display: none;
+  }
+
+  .mobileSubtitle {
+    display: block;
+  }
+
+  @media (min-width: 1140px) {
+    .desktopSubtitle {
+      display: block;
+    }
+
+    .mobileSubtitle {
+      display: none;
+    }
+  }
 `
 
 export const Advantages = () => (
@@ -141,10 +161,11 @@ export const Advantages = () => (
     <StyledContainer>
       <AdvantagesList>
         {content.map(item => (
-          <Advantage key={item.id}>
+          <Advantage key={item.id} visibleDesktopSubtitle={!item.subtitleMobile}>
             <img src={item.image} />
             <h3>{item.title}</h3>
-            <p>{item.subtitle}</p>
+            <p className='desktopSubtitle'>{item.subtitle}</p>
+            <p className='mobileSubtitle' dangerouslySetInnerHTML={{ __html: item.subtitleMobile }} />
           </Advantage>
         ))}
       </AdvantagesList>
