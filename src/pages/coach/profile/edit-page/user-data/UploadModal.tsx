@@ -91,7 +91,6 @@ const Container = styled.div<{ fullscreen: boolean }>`
   `}
 
   ${MediaRange.greaterThan("mobile")`
-    max-height: 460px;
     height: auto;
   `} 
 `
