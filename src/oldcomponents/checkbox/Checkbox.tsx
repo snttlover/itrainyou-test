@@ -37,10 +37,11 @@ type CheckboxProps = {
   value: boolean
   className?: string
   color?: string
+  filled?: boolean
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = styled(({ value, onChange, color, ...props }: CheckboxProps) => {
+export const Checkbox = styled(({ value, onChange, color,filled, ...props }: CheckboxProps) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(e.target.checked)
@@ -50,7 +51,9 @@ export const Checkbox = styled(({ value, onChange, color, ...props }: CheckboxPr
   return (
     <Label className={props.className}>
       <CheckboxInput checked={value} onChange={change} />
-      <StyledCheckbox color={color} name={value ? "checkbox-active" : "checkbox-border"} />
+      <StyledCheckbox color={color} name={value ? 
+        (filled ? "checkbox-active-filled-border" : "checkbox-active") 
+        : (filled ? "checkbox-border-filled" : "checkbox-border")} />
       <CheckboxContent>{props.children}</CheckboxContent>
     </Label>
   )

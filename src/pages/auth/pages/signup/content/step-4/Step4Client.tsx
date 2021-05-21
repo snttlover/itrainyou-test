@@ -7,10 +7,9 @@ import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { PriceRanges } from "@/pages/auth/pages/signup/content/step-4/client/PriceRanges"
-import { $userData, categoriesChanged, registerUserFx, userRegistered } from "@/pages/auth/pages/signup/models/units"
+import { $userData, categoriesChanged, registerUserFx, userRegistered, $rangeSelected } from "@/pages/auth/pages/signup/models/units"
 
 const Container = styled.div`
-  min-width: 320px;
   max-width: 660px;
   margin: 0 16px 0;
   display: flex;
@@ -140,6 +139,7 @@ export const Step4Client = () => {
   const loading = useStore(registerUserFx.pending)
   const _categoriesChanged = useEvent(categoriesChanged)
   const _userRegistered = useEvent(userRegistered)
+  const rangeSelected = useStore($rangeSelected)
 
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
@@ -170,7 +170,7 @@ export const Step4Client = () => {
         <FormTitle>Выберите комфортную для вас стоимость одной сессии (60 минут)</FormTitle>
         <PriceRanges />
         <ButtonContainer>
-          <RegisterButton disabled={loading} onClick={() => _userRegistered()}>
+          <RegisterButton disabled={loading || !rangeSelected} onClick={() => _userRegistered()}>
             Подобрать коуча
           </RegisterButton>
         </ButtonContainer>
