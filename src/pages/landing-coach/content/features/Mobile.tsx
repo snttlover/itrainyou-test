@@ -76,6 +76,10 @@ const ListItem = styled.li`
         padding-right: 100px;
       }
     }
+
+    img {
+      width: 480px;
+    }
   }
 
   &:nth-child(2) {
@@ -92,6 +96,10 @@ const ListItem = styled.li`
         padding-right: 70px;
       }
     }
+
+    img {
+      width: 480px;
+    }
   }
 
   &:nth-child(3) {
@@ -107,6 +115,10 @@ const ListItem = styled.li`
         max-width: 328px;
         padding-right: 70px;
       }
+    }
+
+    img {
+      width: 400px;
     }
   }
 

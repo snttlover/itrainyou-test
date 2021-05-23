@@ -163,7 +163,7 @@ const SlideTitle = styled.a`
 
 const SlideImage = styled.img`
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
   left: 50%;
   transform: translateX(-50%);
   border-radius: 8px 8px 0px 0px;

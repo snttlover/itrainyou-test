@@ -4,7 +4,6 @@ import styled from "styled-components"
 import { Container } from "../common/Container"
 
 import mainImg from "../assets/calendar/main.png"
-import mainImgMobile from "../assets/calendar/main-mobile.png"
 
 const Wrapper = styled.section`
   background: white;
@@ -69,10 +68,11 @@ const Descr = styled.p`
 `
 
 const MainImage = styled.img`
-  display: none;
+  width: 288px;
+  margin: 0 auto;
 
   @media (min-width: 768px) {
-    display: block;
+    margin: 0;
     position: absolute;
     top: 134px;
     right: 18px;
@@ -87,16 +87,6 @@ const MainImage = styled.img`
   }
 `
 
-const MainImageMobile = styled.img`
-  display: block;
-  width: 288px;
-  margin: 0 auto;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-`
-
 export const Calendar = () => (
   <Wrapper>
     <StyledContainer>
@@ -106,7 +96,6 @@ export const Calendar = () => (
         кабинете на платформе iTrainYou
       </Descr>
       <MainImage src={mainImg} />
-      <MainImageMobile src={mainImgMobile} />
     </StyledContainer>
   </Wrapper>
 )

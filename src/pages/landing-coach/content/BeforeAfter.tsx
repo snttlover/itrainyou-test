@@ -5,8 +5,8 @@ import { content as messages } from "./before-after/content"
 
 import { Container } from "../common/Container"
 
-import beforeImg from "../assets/before-after/before.png"
-import afterImg from "../assets/before-after/after.png"
+import beforeImg from "../assets/before-after/1.png"
+import afterImg from "../assets/before-after/2.png"
 
 const Wrapper = styled.section`
   background: #4858cc;
