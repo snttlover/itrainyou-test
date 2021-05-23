@@ -47,7 +47,7 @@ const List = styled.ul`
   max-width: 720px;
 `
 
-const ListItem = styled.li`
+const ListItem = styled.li<{ isOpen: boolean }>`
   width: 100%;
   background: #ffffff;
   border-radius: 8px;
@@ -65,7 +65,7 @@ const ListItem = styled.li`
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
-    line-height: 18px;
+    line-height: ${props => (props.isOpen ? "18px" : "22px")};
     color: #424242;
   }
 
@@ -112,7 +112,7 @@ export const Questions = () => {
         <Title>Есть вопросы? Возможно эти:</Title>
         <List>
           {content.map((item, index) => (
-            <ListItem key={item.id} onClick={() => toggleQuestions(index)}>
+            <ListItem key={item.id} onClick={() => toggleQuestions(index)} isOpen={openedQuestions.includes(index)}>
               <h3>{item.question}</h3>
               {openedQuestions.includes(index) ? <p>{item.answer}</p> : ""}
               <Arrow reverse={!openedQuestions.includes(index)} />
