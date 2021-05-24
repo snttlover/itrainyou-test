@@ -132,7 +132,7 @@ const ListItem = styled.li`
   font-size: 14px;
   line-height: 22px;
   color: #5b6670;
-  padding-left: 16px;
+  padding-left: 22px;
   position: relative;
 
   &:not(:last-child) {

@@ -56,28 +56,54 @@ const NavLink = styled(Link)`
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
+  color: #e1e6ea;
   cursor: pointer;
-  color: white;
 `
 
-const SearchCoachLink = styled(NavLink)`
-  text-decoration: underline;
-  color: #e1e6ea;
+const FirstNav = styled.nav`
   position: absolute;
   left: 0;
-  bottom: -20px;
+  top: 68px;
+
+  display: flex;
+  flex-direction: column;
+
+  ${NavLink}:not(:last-child) {
+    margin-bottom: 16px;
+  }
 
   @media (min-width: 768px) {
     position: static;
-    margin-left: auto;
+    margin-left: 40px;
+    align-items: center;
+    flex-direction: row;
+
+    ${NavLink}:not(:last-child) {
+      margin-right: 32px;
+      margin-bottom: 0;
+    }
   }
 `
 
-const LoginLink = styled(NavLink)`
+const SecondNav = styled.nav`
   margin-left: auto;
+  display: flex;
+  align-items: center;
 
-  @media (min-width: 768px) {
-    margin-left: 40px;
+  ${NavLink}:nth-child(1) {
+    display: none;
+  }
+
+  ${NavLink}:nth-child(2) {
+    color: #ffffff;
+  }
+
+  @media (min-width: 1600px) {
+    ${NavLink}:nth-child(1) {
+      display: block;
+      margin-right: 40px;
+      text-decoration-line: underline;
+    }
   }
 `
 
@@ -103,8 +129,15 @@ export const Header = () => (
         <Logo src={logoImg} />
       </LogoLink>
 
-      <SearchCoachLink to={{ pathname: routeNames.search() }}>Найти коуча</SearchCoachLink>
-      <LoginLink to={routeNames.login()}>Войти</LoginLink>
+      <FirstNav>
+        <NavLink to={{ pathname: routeNames.search() }}>Наши коучи</NavLink>
+        <NavLink to={routeNames.signup("1")}>Начать обучение</NavLink>
+      </FirstNav>
+
+      <SecondNav>
+        <NavLink to={{ pathname: routeNames.search() }}>Найти коуча</NavLink>
+        <NavLink to={routeNames.login()}>Войти</NavLink>
+      </SecondNav>
 
       <StyledRegisterButton to={routeNames.signup("1")}>Зарегистрироваться</StyledRegisterButton>
     </StyledContainer>

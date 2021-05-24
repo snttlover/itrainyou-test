@@ -31,8 +31,10 @@ const Title = styled.h2`
     line-height: 44px;
     text-align: left;
     margin-bottom: 32px;
+    max-width: 445px;
   }
 `
+
 const List = styled.ul`
   list-style: none;
   margin: 0;
@@ -60,6 +62,65 @@ const ListItem = styled.li`
   padding: 0;
   width: 100%;
   position: relative;
+
+  &:nth-child(1) {
+    h3 {
+      padding-right: 60px;
+
+      @media (min-width: 558px) {
+        padding-right: 0;
+        max-width: 378px;
+      }
+
+      @media (min-width: 768px) {
+        padding-right: 100px;
+      }
+    }
+
+    img {
+      width: 480px;
+    }
+  }
+
+  &:nth-child(2) {
+    h3 {
+      padding-right: 80px;
+
+      @media (min-width: 558px) {
+        padding-right: 0;
+        max-width: 378px;
+      }
+
+      @media (min-width: 768px) {
+        max-width: 328px;
+        padding-right: 70px;
+      }
+    }
+
+    img {
+      width: 480px;
+    }
+  }
+
+  &:nth-child(3) {
+    h3 {
+      padding-right: 80px;
+
+      @media (min-width: 558px) {
+        padding-right: 0;
+        max-width: 378px;
+      }
+
+      @media (min-width: 768px) {
+        max-width: 328px;
+        padding-right: 70px;
+      }
+    }
+
+    img {
+      width: 400px;
+    }
+  }
 
   @media (min-width: 768px) {
     display: flex;
@@ -94,6 +155,33 @@ const ListItem = styled.li`
         top: 0;
         right: 0;
         width: 404px;
+      }
+    }
+  }
+
+  @media (min-width: 1024px) {
+    &:nth-child(1) {
+      margin-bottom: 281px;
+
+      img {
+        top: 0;
+        right: -30px;
+      }
+    }
+
+    &:nth-child(2) {
+      margin-bottom: 74px;
+
+      img {
+        top: -110px;
+        left: 0;
+      }
+    }
+
+    &:nth-child(3) {
+      img {
+        top: -10px;
+        right: -30px;
       }
     }
   }

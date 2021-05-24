@@ -31,7 +31,7 @@ const Wrapper = styled.section`
 `
 
 const StyledContainer = styled(Container)`
-  padding-top: 126px;
+  padding-top: 164px;
   padding-bottom: 270px;
   position: relative;
 
