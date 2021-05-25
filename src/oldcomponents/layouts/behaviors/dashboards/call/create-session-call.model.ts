@@ -523,10 +523,10 @@ export const createTestCallModule = () => {
       agoraData.localStream = agoraLib.getDevices((devices: MediaDeviceInfo[]) => {
 
         const audioDevices = devices.filter((device) => device.kind === "audioinput" && device.deviceId.length > 0)
-        audioDevices.length > 0 ? runInScope(changeGrantedPermissionForMic, true) : runInScope(changeGrantedPermissionForMic, false)
-
         const videoDevices = devices.filter((device) => device.kind === "videoinput" && device.deviceId.length > 0)
+
         videoDevices.length > 0 ? runInScope(changeGrantedPermissionForCamera, true) : runInScope(changeGrantedPermissionForCamera, false)
+        audioDevices.length > 0 && videoDevices.length > 0 ? runInScope(changeGrantedPermissionForMic, true) : runInScope(changeGrantedPermissionForMic, false)
 
         const uid = Math.floor(Math.random()*10000)
         const selectedMicrophoneId = audioDevices.filter((device) => device.deviceId === "default")
