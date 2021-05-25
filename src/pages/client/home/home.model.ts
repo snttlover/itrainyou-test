@@ -2,7 +2,9 @@ import { getClientSessions } from "@/lib/api/client-session"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
+import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { logout } from "@/lib/network/token"
+import { keysToCamel } from "@/lib/network/casing"
 
 export const loadRecommendationsFx = createEffect({
   handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 15 }),
@@ -23,6 +25,9 @@ export const $recommendationsCount = createStore<number>(100).on(
 
 export const mounted = createEvent()
 export const loadMore = createEvent()
+
+const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
+export const $hasFreeSessions = createStore(false).on(userDoneData, (_,payload) => payload.client.hasFreeSessions)
 
 export const $recommendations = createStore<Coach[]>([]).on(loadRecommendationsFx.doneData, (state, payload) => [
   ...state,
