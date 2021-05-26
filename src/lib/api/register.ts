@@ -26,6 +26,7 @@ export interface RegisterAsClientRequest {
   sex: "M" | "F" | ""
   avatar: string | null
   categories: number[]
+  priceRanges: number[]
 }
 
 export interface RegisterAsClientResponse {

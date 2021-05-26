@@ -27,7 +27,11 @@ const Backdrop = styled.div`
   `}
 `
 
-const StyledDialog = styled(Dialog)``
+const StyledDialog = styled(Dialog)`
+  ${MediaRange.greaterThan("tablet")`    
+    max-width: 850px;
+  `}
+`
 
 const Content = styled.div`
   height: 100%;
@@ -67,7 +71,6 @@ const Title = styled.h2<{ small: boolean }>`
 const Container = styled.div<{ fullscreen: boolean }>`
   background: #ffffff;
   border-radius: 4px;
-  margin: ${({ fullscreen }) => (fullscreen ? "0" : "12px")};
   width: 100%;
   height: ${({ fullscreen }) => (fullscreen ? "100%" : "auto")};
   position: relative;
@@ -88,12 +91,8 @@ const Container = styled.div<{ fullscreen: boolean }>`
   `}
 
   ${MediaRange.greaterThan("mobile")`
-    max-height: 460px;
     height: auto;
   `} 
-  ${MediaRange.greaterThan("tablet")`    
-    width: 680px;
-  `}
 `
 
 const Cross = styled.img.attrs({ src: cross })`

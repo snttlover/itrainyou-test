@@ -80,7 +80,7 @@ sample({
     const email = response.data.email || socialNetwork.email
     return {
       type: "client",
-      clientData: { ...response.data, email },
+      clientData: { ...response.data, email, priceRanges: []},
       categories: [],
       coachData: {
         workExperience: "",

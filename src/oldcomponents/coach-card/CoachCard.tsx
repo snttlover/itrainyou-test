@@ -299,9 +299,10 @@ const Arrow = styled.img.attrs<ArrowType>({ src: arrowIcon })`
 type Props = {
   className?: string
   coach: Coach
+  freeSessions?: boolean
 }
 
-const CoachCardLayout = ({ coach, className }: Props) => {
+const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
   const [isActive, changeActive] = useState(false)
   const history = useHistory()
 
@@ -325,7 +326,9 @@ const CoachCardLayout = ({ coach, className }: Props) => {
   }
 
   const redirectToCoach = () => {
-    history.push(`/search/coach/${coach.id}`)
+    //history.push(`/search/coach/${coach.id}`)
+
+    freeSessions ? history.push(`/search/coach/${coach.id}`, {freeSessions: true}) : history.push(`/search/coach/${coach.id}`)
   }
 
   const minimalTimeWithPrice = Object.entries(coach.prices)

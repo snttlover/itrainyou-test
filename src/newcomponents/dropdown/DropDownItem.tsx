@@ -143,7 +143,7 @@ export const DropDown = <T extends Value = Value>({
       }}
       withoutBorder={withoutBorder}
     >
-      {selectedItem ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
+      {selectedItem && !!selectedItem.value ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
     </SelectBox>

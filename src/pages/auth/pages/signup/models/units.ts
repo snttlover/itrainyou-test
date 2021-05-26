@@ -8,6 +8,8 @@ import {
 } from "@/pages/auth/pages/signup/models/types"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { createGate } from "@/scope"
+import { getPriceRanges, PriceRangesType } from "@/lib/api/get-price-ranges"
 
 export const signUpPageMounted = createEvent()
 export const userTypeChanged = createEvent<RegisterUserType>()
@@ -17,16 +19,26 @@ export const categoriesChanged = createEvent<number[]>()
 export const coachDataChanged = createEvent<CoachData>()
 export const userDataReset = createEvent()
 export const userDataSetWithSocials = createEvent<UserData>()
+export const selectPriceRange = createEvent<{id: number}>()
+
+export const priceRangesGate = createGate()
 
 export const $userData = createStore<UserData>({
   type: "client",
-  clientData: { avatar: null, originalAvatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null, middleName: "", },
+  clientData: { avatar: null, originalAvatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null, middleName: "", priceRanges: []},
   coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [],
     inn: "",
     legalForm: "",
     socialNetworks: "",
     supervisions: "" },
   categories: []
+})
+
+export const $priceRanges = createStore<PriceRangesType[]>([])
+export const $rangeSelected = createStore(false)
+
+export const getPriceRangesFx = createEffect({
+  handler: getPriceRanges,
 })
 
 export const saveDataFx = createEffect({

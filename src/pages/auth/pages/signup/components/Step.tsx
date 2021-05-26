@@ -15,23 +15,46 @@ const Arrow = styled(Icon).attrs({ name: "arrow" })`
   `}
 `
 
+const StepDone = styled(Icon).attrs({ name: "step-done" })`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+`
+
 const Container = styled.div<{active?: boolean}>`
   display: flex;
   align-items: center;
-  color: ${({active}) => active ? "#919BE0" : "#fff"};
+  color: #fff;
   font-family: Roboto Slab;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
   margin-left: 5px;
   ${Arrow} {
-    fill: ${({active}) => active ? "#919BE0" : "#fff"};
+    fill: #fff;
   }
   
   ${MediaRange.greaterThan("mobile")`  
     margin-left: 15px;    
-    font-size: 16px;
-    line-height: 21px;
+  `}
+`
+
+const Number = styled.div`
+  width: 24px;
+  line-height: 24px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 15px;
+  background-color: #fff;
+  color: #783D9D;
+  font-weight: 700;
+  margin-right: 8px;
+`
+
+const Mobile = styled.div`
+  display: flex;
+  ${MediaRange.lessThan("mobile")`  
+    display: none    
   `}
 `
 
@@ -45,7 +68,8 @@ export type StepProps = {
 
 export const Step = (props: StepProps) => (
   <Container active={props.active}>
-    шаг {props.children}
+    {props.active ?  <StepDone /> : <Number>{props.id}</Number>}
+    <Mobile>{props.children}</Mobile>
     {!props.isLast && <Arrow />}
   </Container>
 )

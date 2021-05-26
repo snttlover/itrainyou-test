@@ -34,6 +34,7 @@ export const createStartSessionToolbarModel = (config: CreateStartSessionToolbar
   const changeSessionsList = createEvent<DashboardSession[]>()
   const $sessionsList = restore(changeSessionsList, [])
     .on(config.socket.events.onSessionStarted, (sessions, message) => [...sessions, message.data])
+    .on(config.socket.events.onSessionFinished, (sessions, message) => sessions.filter(session => session.id !== message.data.id))
     .reset(reset)
 
   const $lastCallId = restore(config.sessionCallModule.methods.connectToSession, 0).reset(

@@ -15,31 +15,25 @@ export const NotCompatibleDialog = (props: NotCompatibleDialogTypes) => {
 
   return (
     <StyledDialog value={props.visibility} onChange={props.close}>
-      <ModalWrapper>
-        <Container>
-          <Header>
+      <Container>
+        <Header>
                             Браузер не поддерживает видеозвонки
-          </Header>
-          <Description>
+        </Header>
+        <Description>
                             К сожалению, браузер на вашем устройстве не поддерживает видеоконференции. Попробуйте с другого браузера.
 
                             Подробнее о списке поддерживаемых браузерах можно прочитать <a onClick={handleOnClick}>здесь</a>
-          </Description>
-        </Container>
-      </ModalWrapper>
+        </Description>
+      </Container>
     </StyledDialog>
   )
 }
 
-const ModalWrapper = styled.div`
-  width: 100%;
-  margin: 0 auto;
-`
 
 const StyledDialog = styled(Dialog)`
   width: 100%;
   max-width: 536px;
-  padding: 24px 68px;
+  padding: 24px 24px;
     ${MediaRange.lessThan("mobile")`
     padding: 24px 16px;
   `}
@@ -47,19 +41,15 @@ const StyledDialog = styled(Dialog)`
 
 const Header = styled.div`
   font-family: Roboto Slab;
-  font-style: normal;
-  font-weight: normal;
+  font-weight: 700;
+  margin-bottom: 8px;
   font-size: 20px;
   line-height: 28px;
   color: #424242;
-  text-align: center;
-  max-width: 500px;
+  text-align: left;
   
   ${MediaRange.lessThan("mobile")`
-    font-size: 16px;
-    line-height: 24px;
-    max-width: 300px;
-    margin-top: 32px;
+    max-width: 270px;
   `}
 `
 
@@ -67,7 +57,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `
 
 const Description = styled.div`
@@ -77,10 +67,9 @@ const Description = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: #5B6670;
-  text-align: center;
   margin-top: 12px;
   margin-bottom: 24px;
-  max-width: 400px;
+  text-align: left;
 
     & a {
         color: ${({ theme }) => theme.colors.primary};

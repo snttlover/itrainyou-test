@@ -22,6 +22,7 @@ export interface ClientSelfData {
   completedSessionsCount: number
   spentHoursCount: number,
   systemChat: number
+  hasFreeSessions: boolean
 }
 
 export type User = {

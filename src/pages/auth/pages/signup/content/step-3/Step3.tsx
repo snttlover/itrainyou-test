@@ -173,12 +173,11 @@ export const Step3 = () => {
 
   return (
     <AuthLayout>
-      <StyledSteps activeId='3'>
-        <Steps.Step id='1'>1</Steps.Step>
-        <Steps.Step id='2'>2</Steps.Step>
-        <Steps.Step id='3'>3</Steps.Step>
-        <Steps.Step id='4'>4</Steps.Step>
-      </StyledSteps>
+      <Steps activeId='1'>
+        <Steps.Step id='1'>Роль</Steps.Step>
+        <Steps.Step id='2'>Данные</Steps.Step>
+        <Steps.Step id='3'>Подбор коуча</Steps.Step>
+      </Steps>
       <Container>
         <Title>Добавьте информацию о себе</Title>
         <Form onSubmit={handleSubmit}>
