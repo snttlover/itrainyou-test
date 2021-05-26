@@ -16,7 +16,7 @@ import {
   loadMore,
   loadRecommendationsFx,
   loadUpcomingSessionsFx,
-  mounted,
+  freeSessionsPageMounted,
 } from "./home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
@@ -109,7 +109,7 @@ export const FreeSessionsHomePage = () => {
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
   const upcomingSessionsPending = useStore(loadUpcomingSessionsFx.pending)
   const recommendationPending = useStore(loadRecommendationsFx.pending)
-  const _mounted = useEvent(mounted)
+  const _mounted = useEvent(freeSessionsPageMounted)
   const _loadMore = useEvent(loadMore)
 
   useEffect(() => {
@@ -182,7 +182,8 @@ export const FreeSessionsHomePage = () => {
 
         </FreeSessionsContainer>
         {/*Calendar*/}
-        <Datepicker />
+        {/*<Datepicker />*/}
+        <div>Календарь всех бесплатных сессий</div>
       </PageContainer>
 
     </>

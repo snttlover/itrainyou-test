@@ -16,7 +16,7 @@ import {
   loadMore,
   loadRecommendationsFx,
   loadUpcomingSessionsFx,
-  mounted,
+  homePageMounted,
 } from "./home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
@@ -91,7 +91,7 @@ export const StandardHomePage = () => {
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
   const upcomingSessionsPending = useStore(loadUpcomingSessionsFx.pending)
   const recommendationPending = useStore(loadRecommendationsFx.pending)
-  const _mounted = useEvent(mounted)
+  const _mounted = useEvent(homePageMounted)
   const _loadMore = useEvent(loadMore)
 
   useEffect(() => {
