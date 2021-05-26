@@ -24,6 +24,8 @@ import { clientCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/cr
 import { Onboarding } from "@/pages/client/home/Onboarding"
 import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
 import { Calendar } from "@/oldcomponents/calendar/Calendar"
+import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
+import { $coach, $sessionsPickerStore } from "@/pages/search/coach-by-id/models/units"
 
 
 const PageContainer = styled.div`
@@ -88,6 +90,15 @@ const SessionEnterText = styled.p`
     display: none;
   `}
 `
+
+const Datepicker = () => {
+  const coach = useStore($coach)
+
+  if (coach) {
+    return <CoachDatepicker coach={coach} sessionsData={$sessionsPickerStore} />
+  }
+  return null
+}
 
 export const FreeSessionsHomePage = () => {
   const [isFirstRender, setIsFirstRender] = useState(true)
@@ -162,7 +173,7 @@ export const FreeSessionsHomePage = () => {
                     style={{overflow: "hidden"}}
                   >
                     {recommendations.map(coach => (
-                      <RecommendationCoachCard key={coach.id} coach={coach} />
+                      <RecommendationCoachCard key={coach.id} coach={coach} freeSessions />
                     ))}
                   </InfiniteScroll>
                 </Block>
@@ -171,6 +182,7 @@ export const FreeSessionsHomePage = () => {
 
         </FreeSessionsContainer>
         {/*Calendar*/}
+        <Datepicker />
       </PageContainer>
 
     </>
