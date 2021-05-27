@@ -25,8 +25,8 @@ import { Onboarding } from "@/pages/client/home/Onboarding"
 import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
 import { Calendar } from "@/oldcomponents/calendar/Calendar"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
-import { $coach, $sessionsPickerStore } from "@/pages/search/coach-by-id/models/units"
-
+import { $allFreeSessionsStore, $coach, $sessionsPickerStore } from "@/pages/search/coach-by-id/models/units"
+import { HomeCalendar } from "@/pages/client/home/content/HomeCalendar"
 
 const PageContainer = styled.div`
   display: flex;
@@ -95,7 +95,7 @@ const Datepicker = () => {
   const coach = useStore($coach)
 
   if (coach) {
-    return <CoachDatepicker coach={coach} sessionsData={$sessionsPickerStore} />
+    return <HomeCalendar sessionsList={$allFreeSessionsStore} />
   }
   return null
 }
@@ -184,6 +184,7 @@ export const FreeSessionsHomePage = () => {
         {/*Calendar*/}
         {/*<Datepicker />*/}
         <div>Календарь всех бесплатных сессий</div>
+        <HomeCalendar sessionsList={$allFreeSessionsStore} />
       </PageContainer>
 
     </>

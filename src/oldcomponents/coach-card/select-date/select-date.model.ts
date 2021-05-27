@@ -68,7 +68,7 @@ export const genFreeSessions = () => {
     .on(deleteSession, (state, sessionId) => state.filter(id => sessionId !== id))
     .reset(resetSelectedSessions)
 
-  const $coachSessions = restore(fetchFreeSessionsListFx.doneData, [])
+  const $sessions = restore(fetchFreeSessionsListFx.doneData, [])
 
   const $coachSessionsList = combine($coachSessions, selectedSessionIds, (sessions, selected) =>
     sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
@@ -114,12 +114,12 @@ export const genFreeSessions = () => {
     type: "error",
     text: "Недостаточно средств, пополните баланс",
   }
-  sample({ clock: insufficientBalance, source: $id }).watch(id => {
+  /*sample({ clock: insufficientBalance, source: $id }).watch(id => {
     runInScope(toasts.remove, sessionBookFailByInsufficientBalanceToast)
     runInScope(toasts.add, sessionBookFailByInsufficientBalanceToast)
     runInScope(changeShowFundUpDialog, true)
     runInScope(setRedirectUrl, routeNames.searchCoachPage(id.toString()))
-  })
+  })*/
 
   const sessionBookFailToast: Toast = { type: "error", text: "Не удалось забронировать сессию" }
   unknownError.watch(() => {
@@ -127,7 +127,7 @@ export const genFreeSessions = () => {
     runInScope(toasts.add, sessionBookFailToast)
   })
 
-  sample({
+  /*sample({
     clock: buySessionsFx.finally,
     source: $id,
     target: attach({
@@ -135,12 +135,12 @@ export const genFreeSessions = () => {
       effect: fetchFreeSessionsListFx,
       mapParams: (id: number, params) => ({ id, ...params }),
     }),
-  })
+  })*/
 
   const changeDurationTab = createEvent<DurationType>()
   const $durationTab = createStore<DurationType>("D30").on(changeDurationTab, (_, payload) => payload)
 
-  sample({
+  /*sample({
     clock: changeDurationTab,
     source: combine({ durationTab: $durationTab, coachId: $id }),
     fn: ({ durationTab, coachId }) => ({
@@ -150,10 +150,19 @@ export const genFreeSessions = () => {
       },
     }),
     target: loadCoachSessions,
+  })*/
+  
+  forward({
+    from: changeDurationTab.map((durationTab) => ({
+      params: {
+        is_free_session: true,
+        duration_type: durationTab,
+      },
+    })),
+    to: loadCoachSessions,
   })
 
   return {
-    changeId,
     loading: isFetching,
     sessionsList: $coachSessionsList,
     loadData: loadCoachSessions,

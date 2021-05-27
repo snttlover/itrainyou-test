@@ -17,6 +17,11 @@ import { DurationType } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
+import { $tabs } from "@/pages/client/home/home.model"
+import { Coach } from "@/lib/api/coach"
+import { Event, Store } from "effector-root"
+import { CoachSessionWithSelect } from "@/oldcomponents/coach-card/select-date/select-date.model"
+
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -417,22 +422,35 @@ const FooterWrapper = styled.div`
 const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
-export const HomeCalendar = (props: SelectDatetimeTypes) => {
+type FreeSessionTypes = {
+    loading: Store<boolean>
+    sessionsList: Store<CoachSessionWithSelect[]>
+    toggleSession: Event<CoachSessionWithSelect>
+    deleteSession: Event<number>
+    tabs: {
+      $durationTab: Store<DurationType>
+      changeDurationTab: Event<DurationType>
+    }
+}
+
+export const HomeCalendar = (props: FreeSessionTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
 
   const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
 
   const _showCreditCardsModal = () => _toggleCreditCardModal(true)
 
-  const sessions = useStore(props.sessionsData.sessionsList)
-  const loading = useStore(props.sessionsData.loading)
-  const buyLoading = useStore(props.sessionsData.buySessionsLoading)
-  const activeTab = useStore(props.sessionsData.tabs.$durationTab)
-  const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
-  const deleteSession = useEvent(props.sessionsData.deleteSession)
-  const toggleSession = useEvent(props.sessionsData.toggleSession)
-  const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
-  const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
+  const sessions = useStore(props.sessionsList.sessionsList)
+  const loading = useStore(props.sessionsList.loading)
+  const buyLoading = useStore(props.sessionsList.buySessionsLoading)
+  const activeTab = useStore(props.sessionsList.tabs.$durationTab)
+  const changeActiveTab = useEvent(props.sessionsList.tabs.changeDurationTab)
+  const deleteSession = useEvent(props.sessionsLista.deleteSession)
+  const toggleSession = useEvent(props.sessionsList.toggleSession)
+  const buySessionBulk = useEvent(props.sessionsList.buySessionBulk)
+  const lastTabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
+  const tabs = useStore($tabs)
+  const testTab = {timeInMinutes: parseInt(activeTab.replace(/^\D+/g, "")) as number, key: "D30" }
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
@@ -453,9 +471,9 @@ export const HomeCalendar = (props: SelectDatetimeTypes) => {
   const formattedDate = date(headerDate).format("DD MMMM")
   const currentDateEqual = date(headerDate as Date).format(equalDateFormat)
 
-  if (!props.coach.prices[activeTab] && tabs.length) {
+  /*if (!props.coach.prices[activeTab] && tabs.length) {
     changeActiveTab(tabs[0].key)
-  }
+  }*/
 
   const times = sessions
     .filter(session => {
@@ -487,7 +505,7 @@ export const HomeCalendar = (props: SelectDatetimeTypes) => {
   return (
     <Container>
       <StyledTabs value={activeTab} onChange={changeTabHandler}>
-        {tabs.map(tab => (
+        {/*tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
             <TabPrice>
@@ -495,9 +513,12 @@ export const HomeCalendar = (props: SelectDatetimeTypes) => {
               {tab.price} ₽
             </TabPrice>
           </StyledTab>
-        ))}
+        ))*/}
+        <StyledTab  value={testTab.key} onlyOneCard={true}>
+          <TabTime>{tab.timeInMinutes} мин</TabTime>
+        </StyledTab>
       </StyledTabs>
-      <Block onlyOneCard={tabs.length === 1}>
+      <Block onlyOneCard={true}>
         {loading && <Spinner />}
         <Datepicker>
           <StyledCalendar

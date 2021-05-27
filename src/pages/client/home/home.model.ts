@@ -111,7 +111,10 @@ const $currentPage = createStore(0)
   .on(loadRecommendationsFx.done, (_, payload) => payload.params.page)
   .reset(homePageMounted)
 
-export const $tabs = restore(getTabsFX.doneData, null)
+export const $tabs = createStore(null)
+  .on(getTabsFX.doneData, (state, payload) => {
+
+  })
 
 sample({
   source: $currentPage,
