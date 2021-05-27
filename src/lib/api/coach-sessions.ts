@@ -21,6 +21,7 @@ export interface GetCoachSessionsParamsTypes {
   start_date__gte?: string
   start_date?: string
   duration_type?: DurationType
+  is_free_session?: boolean
 }
 
 export const getCoachSessions = (id: number | "me", params: GetCoachSessionsParamsTypes): Promise<CoachSession[]> =>

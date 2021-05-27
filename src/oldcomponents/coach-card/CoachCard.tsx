@@ -309,7 +309,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
   let sessionsListModel: ReturnType<typeof genCoachSessions> | null = null
 
   if (process.env.BUILD_TARGET === "client") {
-    sessionsListModel = useMemo(() => genCoachSessions(coach.id), [coach.id])
+    sessionsListModel = useMemo(() => genCoachSessions(coach.id, !!freeSessions), [coach.id])
 
     if (isActive) {
       sessionsListModel.loadData({

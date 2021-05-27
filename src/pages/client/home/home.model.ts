@@ -2,7 +2,7 @@ import { getClientSessions } from "@/lib/api/client-session"
 import { getTabs, getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
-import { attach, combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
+import { attach, combine, createEffect, createEvent, createStore, forward, guard, sample, restore } from "effector-root"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { logout } from "@/lib/network/token"
 import { keysToCamel } from "@/lib/network/casing"
@@ -110,6 +110,8 @@ const guardedLoadMore = guard({
 const $currentPage = createStore(0)
   .on(loadRecommendationsFx.done, (_, payload) => payload.params.page)
   .reset(homePageMounted)
+
+export const $tabs = restore(getTabsFX.doneData, null)
 
 sample({
   source: $currentPage,

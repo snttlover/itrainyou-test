@@ -29,6 +29,8 @@ export const toggleCreditCardsModal = createEvent<void | boolean>()
 
 export const $sessionsPickerStore = genCoachSessions()
 
+export const $freeSessionsPickerStore = genCoachSessions(0,true)
+
 export const $creditCardsModalVisibility = createStore<boolean>(false)
 
 export const $coach = createStore<Coach | null>(null)
@@ -39,7 +41,13 @@ export const $reviews = createStore<CoachReviewResponse[]>([])
 
 export const changeCoachSessionCoachId = $sessionsPickerStore.changeId.prepend<Coach>(coach => coach.id)
 
+export const changeCoachFreeSessionCoachId = $freeSessionsPickerStore.changeId.prepend<Coach>(coach => coach.id)
+
 export const changeCoachSessionDurationTab = $sessionsPickerStore.tabs.changeDurationTab.prepend<Coach>(
+  coach => Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
+)
+
+export const changeCoachFreeSessionDurationTab = $freeSessionsPickerStore.tabs.changeDurationTab.prepend<Coach>(
   coach => Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
 )
 

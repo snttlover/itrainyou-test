@@ -17,9 +17,11 @@ import {
   $coach,
   $isNotFound,
   $sessionsPickerStore,
+  $freeSessionsPickerStore,
   loadCoachFx,
   mounted
 } from "@/pages/search/coach-by-id/models/units"
+import { useLocation } from "react-router-dom"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -103,18 +105,20 @@ const MainCoachBlock = styled.div`
 
 const Datepicker = () => {
   const coach = useStore($coach)
+  const location = useLocation()
 
   if (coach) {
-    return <CoachDatepicker coach={coach} sessionsData={$sessionsPickerStore} />
+    return <CoachDatepicker coach={coach} sessionsData={!!location.state ? $freeSessionsPickerStore : $sessionsPickerStore} />
   }
   return null
 }
 
 const CardPicker = () => {
   const coach = useStore($coach)
+  const location = useLocation()
 
   if (coach) {
-    return <SelectCreditCardDialog coach={coach} sessionsData={$sessionsPickerStore} />
+    return <SelectCreditCardDialog coach={coach} sessionsData={!!location.state ? $freeSessionsPickerStore : $sessionsPickerStore} />
   }
   return null
 }

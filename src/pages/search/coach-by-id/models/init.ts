@@ -6,7 +6,7 @@ import {
   $isFavourite,
   $isNotFound,
   $reviews,
-  addToFavouriteFx,
+  addToFavouriteFx, changeCoachFreeSessionCoachId, changeCoachFreeSessionDurationTab,
   changeCoachSessionCoachId,
   changeCoachSessionDurationTab,
   loadCoachFx,
@@ -43,7 +43,12 @@ $isFavourite.on(toggleFavourite, state => !state)
 
 forward({
   from: loadCoachFx.doneData,
-  to: [changeCoachSessionCoachId, changeCoachSessionDurationTab],
+  to: [
+    changeCoachSessionCoachId,
+    changeCoachSessionDurationTab,
+    changeCoachFreeSessionCoachId,
+    changeCoachFreeSessionDurationTab
+  ],
 })
 
 forward({
