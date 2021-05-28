@@ -420,6 +420,11 @@ const FilterContainer = styled.div`
   flex-direction: row;
   align-items: center;
   align-self: flex-end;
+  margin-bottom: 25px;
+
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+  `}
 `
 
 type SessionType = {
