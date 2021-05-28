@@ -91,14 +91,25 @@ const SessionEnterText = styled.p`
   `}
 `
 
-const Datepicker = () => {
-  const coach = useStore($coach)
+const CalendarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 276px;
+`
 
-  if (coach) {
-    return <HomeCalendar sessionsList={$allFreeSessionsStore} />
-  }
-  return null
-}
+const CalendarTitle = styled.div`
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #424242;
+  margin-bottom: 16px;
+`
+
 
 export const FreeSessionsHomePage = () => {
   const [isFirstRender, setIsFirstRender] = useState(true)
@@ -183,8 +194,10 @@ export const FreeSessionsHomePage = () => {
         </FreeSessionsContainer>
         {/*Calendar*/}
         {/*<Datepicker />*/}
-        <div>Календарь всех бесплатных сессий</div>
-        <HomeCalendar sessionsList={$allFreeSessionsStore} />
+        <CalendarContainer>
+          <CalendarTitle>Календарь всех бесплатных сессий</CalendarTitle>
+          <HomeCalendar freeSessionsModule={$allFreeSessionsStore} />
+        </CalendarContainer>
       </PageContainer>
 
     </>

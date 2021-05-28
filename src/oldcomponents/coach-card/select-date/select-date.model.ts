@@ -18,7 +18,7 @@ import {
 } from "effector-root"
 import { changeShowFundUpDialog, finishSaveClientCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
-import { getTabs, getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
+import { getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -68,9 +68,9 @@ export const genFreeSessions = () => {
     .on(deleteSession, (state, sessionId) => state.filter(id => sessionId !== id))
     .reset(resetSelectedSessions)
 
-  const $sessions = restore(fetchFreeSessionsListFx.doneData, [])
+  const $freeSessions = restore(fetchFreeSessionsListFx.doneData, [])
 
-  const $coachSessionsList = combine($coachSessions, selectedSessionIds, (sessions, selected) =>
+  const $freeSessionsList = combine($freeSessions, selectedSessionIds, (sessions, selected) =>
     sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
   )
 
@@ -164,7 +164,7 @@ export const genFreeSessions = () => {
 
   return {
     loading: isFetching,
-    sessionsList: $coachSessionsList,
+    sessionsList: $freeSessionsList,
     loadData: loadCoachSessions,
     toggleSession,
     deleteSession,
@@ -281,7 +281,9 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
   })
 
   const changeDurationTab = createEvent<DurationType>()
-  const $durationTab = createStore<DurationType>("D30").on(changeDurationTab, (_, payload) => payload)
+
+  const initialTabState = freeSessions ? "PROMO" : "D30"
+  const $durationTab = createStore<DurationType>(initialTabState).on(changeDurationTab, (_, payload) => payload)
 
   sample({
     clock: changeDurationTab,

@@ -9,8 +9,10 @@ import {
   showAddSessionModal, showMobileSessionInfo, showVacationModal
 } from "@/pages/coach/schedule/models/calendar.model"
 import {
-  $allSessions,
-  CalendarGate
+  $showedSessions,
+  CalendarGate,
+  filterBy,
+  $filterOptions
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore, useGate } from "effector-react"
@@ -34,6 +36,7 @@ import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
+import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
 
 
 const CalendarContainer = styled.div`
@@ -240,7 +243,7 @@ const SessionContent = styled.div<{areAvailable: boolean; googleEvent: boolean}>
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
-  color: ${({ areAvailable })=> !!areAvailable ? "#FFFFFF" : "#424242"};
+  color: ${({ areAvailable })=> areAvailable ? "#FFFFFF" : "#424242"};
   padding: 4px;
   display: flex;
   justify-content: center;
@@ -412,6 +415,13 @@ const Row = styled.div`
   align-items: center;
 `
 
+const FilterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
+`
+
 type SessionType = {
   googleEvent: boolean
   areAvailable: boolean
@@ -537,7 +547,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 
 const MobileSessions = () => {
 
-  const sessions = useStore($allSessions)
+  const sessions = useStore($showedSessions)
   const currentDay = useStore($sessionDate)
 
   const _setMobileSessionInfoShow = useEvent(showMobileSessionInfo)
@@ -574,11 +584,31 @@ const MobileSessions = () => {
   )
 }
 
+const SessionsFilter = () => {
+  const options = useStore($filterOptions)
+  const filterSessionsBy = useEvent(filterBy)
+
+  const handleOnChange = (value: "no-filter" | "only-free" | "only-booked", isSelected: boolean) => {
+    if (isSelected) return
+    filterSessionsBy(value)
+  }
+
+  return (
+    <FilterContainer>
+      {options.map((option,index) =>
+        <Checkbox key={index} value={option.selected} color={"#783D9D"} onChange={() => handleOnChange(option.value, option.selected)}>
+          {option.label}
+        </Checkbox>
+      )}
+    </FilterContainer>
+  )
+}
+
 export const ScheduleCalendar = () => {
   const now = date()
   const currentMonth = date(useStore($currentMonth))
   const monthDayStart = date(useStore($monthStartDate))
-  const sessions = useStore($allSessions)
+  const sessions = useStore($showedSessions)
   const monthDayEnd = date(useStore($monthEndDate))
 
 
@@ -638,17 +668,23 @@ export const ScheduleCalendar = () => {
       <AddVacationModal />
       <AddSessionModal />
       <Container>
-        <StyledHeader>
-          <StyledMonthContainer>
-            <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={handleOnLeftIcon} />
-            <StyledMonthName mobile>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
-            <StyledRightIcon onClick={handleOnRightIcon} />
-            <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
-          </StyledMonthContainer>
-          <AddVacationButton onClick={() => _showVacationModal(true)}>
+
+        <>
+          <StyledHeader>
+            <StyledMonthContainer>
+              <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={handleOnLeftIcon} />
+              <StyledMonthName mobile>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
+              <StyledRightIcon onClick={handleOnRightIcon} />
+              <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
+            </StyledMonthContainer>
+            <AddVacationButton onClick={() => _showVacationModal(true)}>
           Добавить отпуск
-          </AddVacationButton>
-        </StyledHeader>
+            </AddVacationButton>
+          </StyledHeader>
+        </>
+
+        <SessionsFilter />
+
         <HorizontalOverflowScrollContainer>
           <CalendarTable>
             <thead>

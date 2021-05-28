@@ -1,5 +1,5 @@
 import { getClientSessions } from "@/lib/api/client-session"
-import { getTabs, getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
+import { getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
 import { attach, combine, createEffect, createEvent, createStore, forward, guard, sample, restore } from "effector-root"
@@ -20,10 +20,6 @@ export const loadRecommendationsFx = createEffect({
 
 export const getFreeSessionsFx = createEffect({
   handler: ({ from, to }: DateRange) => getFreeSessionsList({ start_date__gte: from, start_date__lte: to })
-})
-
-export const getTabsFX = createEffect({
-  handler: getTabs,
 })
 
 export const getFreeSessionsWithParamsFx = attach({
@@ -111,11 +107,6 @@ const $currentPage = createStore(0)
   .on(loadRecommendationsFx.done, (_, payload) => payload.params.page)
   .reset(homePageMounted)
 
-export const $tabs = createStore(null)
-  .on(getTabsFX.doneData, (state, payload) => {
-
-  })
-
 sample({
   source: $currentPage,
   clock: guardedLoadMore,
@@ -135,7 +126,6 @@ forward({
     loadActiveSessionsFx,
     loadUpcomingSessionsFx,
     loadMore,
-    getTabsFX,
     getFreeSessionsWithParamsFx,
   ],
 })

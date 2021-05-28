@@ -94,6 +94,59 @@ const $repeatedSessions = restore(
 )
 export const sessionAdded = createEvent<CoachSession[]>()
 
+type FilterByType = "no-filter" | "only-free" | "only-booked"
+type FilterOptionsTypes = {
+  value: FilterByType
+  selected: boolean
+  label: string
+}
+
+export const filterBy = createEvent<FilterByType>()
+
+export const $filterOptions = createStore<FilterOptionsTypes[]>([{
+  value: "no-filter",
+  selected: true,
+  label: "Все"
+},
+{
+  value: "only-booked",
+  selected: false,
+  label: "Забронированные"
+},
+{
+  value: "only-free",
+  selected: false,
+  label: "Бесплатные"
+}])
+  .on(filterBy, (state,payload) => {
+    const newState = [...state]
+    const currentElementID = newState.findIndex(item => item.value === payload)
+    newState.map((element, index) => {
+      if (index === currentElementID) {
+        element.selected = true
+      } else {
+        element.selected = false
+      }
+    })
+    return newState
+  })
+  .on(loadCalendarEventsFx.done, (_, payload) => [{
+    value: "no-filter",
+    selected: true,
+    label: "Все"
+  },
+  {
+    value: "only-booked",
+    selected: false,
+    label: "Забронированные"
+  },
+  {
+    value: "only-free",
+    selected: false,
+    label: "Бесплатные"
+  }])
+
+
 const $sessions = createStore<CalendarEvents>({sessions: [], googleCalendarEvents: []})
   .on(loadCalendarEventsFx.doneData, (state, response) => response)
   .on(sessionAdded, (state, session) =>
@@ -101,9 +154,11 @@ const $sessions = createStore<CalendarEvents>({sessions: [], googleCalendarEvent
   .on(sessionRemoved, (state, payload) =>
     ({googleCalendarEvents: state.googleCalendarEvents, sessions: state.sessions.filter(session => session.id !== payload.params.id)}))
 
+const changeFilteredSessions = createEvent<CalendarEvents>()
+const $filteredSessions = $sessions.map(sessions => sessions).on(changeFilteredSessions, (_, payload) => payload)
 
-export const $allSessions = combine(
-  { repeatedSessions: $repeatedSessions, sessions: $sessions },
+export const $showedSessions = combine(
+  { repeatedSessions: $repeatedSessions, sessions: $filteredSessions },
   ({ repeatedSessions, sessions }) => {
     const usualEvents = sessions.sessions.map(session => ({
       googleEvent: false,
@@ -131,6 +186,22 @@ export const $allSessions = combine(
     }
   }
 )
+
+sample({
+  clock: filterBy,
+  source: $sessions,
+  fn: (sessions: CalendarEvents, filterBy) => {
+    if (filterBy === "no-filter") {
+      return sessions
+    } else if (filterBy === "only-booked") {
+      return {googleCalendarEvents: [], sessions: sessions.sessions.filter(session => !!session.clients.length)}
+    } else if (filterBy === "only-free") {
+      return {googleCalendarEvents: [], sessions: sessions.sessions.filter(session => session.isFreeSession)}
+    }
+    return sessions
+  },
+  target: changeFilteredSessions,
+})
 
 export const CalendarGate = createGate()
 const loadSessions = createEvent()

@@ -13,7 +13,7 @@ import { Button } from "@/oldcomponents/button/normal/Button"
 import { genSessionTabs, SelectDatetimeTypes } from "@/oldcomponents/coach-card/select-date/SelectDatetime"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import { DurationType } from "@/lib/api/coach-sessions"
+import { DurationType, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
@@ -423,14 +423,19 @@ const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
 type FreeSessionTypes = {
+  freeSessionsModule: {
     loading: Store<boolean>
+    loadData: Event<{
+      id?: number
+      params: GetCoachSessionsParamsTypes
+    }>
     sessionsList: Store<CoachSessionWithSelect[]>
     toggleSession: Event<CoachSessionWithSelect>
     deleteSession: Event<number>
     tabs: {
       $durationTab: Store<DurationType>
       changeDurationTab: Event<DurationType>
-    }
+    }}
 }
 
 export const HomeCalendar = (props: FreeSessionTypes) => {
@@ -440,17 +445,22 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const _showCreditCardsModal = () => _toggleCreditCardModal(true)
 
-  const sessions = useStore(props.sessionsList.sessionsList)
-  const loading = useStore(props.sessionsList.loading)
-  const buyLoading = useStore(props.sessionsList.buySessionsLoading)
-  const activeTab = useStore(props.sessionsList.tabs.$durationTab)
-  const changeActiveTab = useEvent(props.sessionsList.tabs.changeDurationTab)
-  const deleteSession = useEvent(props.sessionsLista.deleteSession)
-  const toggleSession = useEvent(props.sessionsList.toggleSession)
-  const buySessionBulk = useEvent(props.sessionsList.buySessionBulk)
-  const lastTabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
-  const tabs = useStore($tabs)
-  const testTab = {timeInMinutes: parseInt(activeTab.replace(/^\D+/g, "")) as number, key: "D30" }
+  const sessions = useStore(props.freeSessionsModule.sessionsList)
+  const loading = useStore(props.freeSessionsModule.loading)
+  const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
+  const activeTab = useStore(props.freeSessionsModule.tabs.$durationTab)
+
+  const loadData = useEvent(props.freeSessionsModule.loadData)
+  const changeActiveTab = useEvent(props.freeSessionsModule.tabs.changeDurationTab)
+  const deleteSession = useEvent(props.freeSessionsModule.deleteSession)
+  const toggleSession = useEvent(props.freeSessionsModule.toggleSession)
+  const buySessionBulk = useEvent(props.freeSessionsModule.buySessionBulk)
+  //const lastTabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
+  const tab = {
+    timeInMinutes: "30",
+    key: "PROMO",
+    price: 0
+  }
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
@@ -461,6 +471,11 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
       changeCurrentDate(undefined)
     }
   }, [enabledDates[0]])
+
+
+  useEffect(() => {
+    loadData()
+  },[])
 
   const payForTheSessionHandler = () => {
     _showCreditCardsModal()
@@ -514,7 +529,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
             </TabPrice>
           </StyledTab>
         ))*/}
-        <StyledTab  value={testTab.key} onlyOneCard={true}>
+        <StyledTab  value={tab.key} onlyOneCard={true}>
           <TabTime>{tab.timeInMinutes} мин</TabTime>
         </StyledTab>
       </StyledTabs>

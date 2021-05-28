@@ -26,11 +26,6 @@ type PriceTabs = {
   D90: boolean
 }
 
-export const getTabs = () =>
-  get<PriceTabs, void>(`${config.BACKEND_URL}/api/v1/web/client/free-sessions/prices/`)
-    .then(response => response.data)
-    .then(keysToCamel)
-
 export const getFreeSessionsList = (params: GetFreeSessionsParams) =>
   get<Pagination<DashboardSession>, GetFreeSessionsParams>(
     `${config.BACKEND_URL}/api/v1/web/client/free-sessions/`,

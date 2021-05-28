@@ -25,6 +25,7 @@ export interface CalendarEvents  {
     startDatetime: ISODate // example: "2020-03-31T15:17:37Z"
     endDatetime: string
     durationType: DurationType //example: 01:00:00
+    isFreeSession: boolean
   }[]
   googleCalendarEvents: {
     id: number
