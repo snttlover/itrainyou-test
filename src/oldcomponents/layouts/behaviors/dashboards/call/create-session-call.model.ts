@@ -11,13 +11,20 @@ import { getClientSession } from "@/lib/api/client/get-client-session"
 import { date } from "@/lib/formatting/date"
 import { runInScope } from "@/scope"
 import { clientChatsSocket, coachChatsSocket, createChatsSocket } from "@/feature/socket/chats-socket"
-
+import { createSessionChatModule, CreateSessionChatModuleConfig } from "@/oldcomponents/layouts/behaviors/dashboards/call/chat/create-session-chat-module"
+import { coachChatConfig } from "@/pages/coach/chats/chat/config"
+import { clientChatConfig } from "@/pages/client/chats/chat/config"
+import { PersonalChat } from "@/lib/api/chats/clients/get-chats"
+import { getChatWithCoach } from "@/lib/api/chats/clients/get-chat-with-coach"
+import { getChatWithClient } from "@/lib/api/chats/coach/get-chat-with-client"
 
 type CreateSessionCallModuleConfig = {
   dashboard: "client" | "coach"
   getConnectDataRequest: (id: number) => Promise<VideoTokenData>
   getSessionRequest: (id: number) => Promise<SessionInfo>
   socket: ReturnType<typeof createChatsSocket>
+  chatConfig: CreateSessionChatModuleConfig
+  getChatByUser: (id: number) => Promise<PersonalChat>
 }
 
 type Agora = {
@@ -69,7 +76,15 @@ guard({
 })
 
 export const createSessionCallModule = (config: CreateSessionCallModuleConfig) => {
+  const chatModule = createSessionChatModule(config.chatConfig)
+
   const reset = createEvent()
+
+  forward({
+    from: reset,
+    to: chatModule.methods.reset
+  })
+
   const connectToSession = createEvent<number>()
 
   const changeInterculatorWasConnected = createEvent<boolean>()
@@ -276,6 +291,23 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     handler: config.getSessionRequest,
   })
 
+  const getChatByUserFx = createEffect({
+    handler: config.getChatByUser
+  })
+
+  forward({
+    from: getSessionDataFx.doneData.map((session) => {
+      const userId = config.dashboard === 'coach' ? session.clients[0].id : session.coach.id
+      return userId
+    }),
+    to: getChatByUserFx
+  })
+
+  forward({
+    from: getChatByUserFx.doneData.map(chat => chat.id),
+    to: chatModule.methods.changeChatId
+  })
+
   forward({
     from: connectToSession.map(() => {}),
     to: reset,
@@ -479,6 +511,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       close,
       update,
     },
+    modules: {
+      chat: chatModule
+    }
   }
 }
 
@@ -647,7 +682,11 @@ export const coachCall = createSessionCallModule({
   dashboard: "coach",
   getConnectDataRequest: getCoachSessionVideoToken,
   getSessionRequest: getCoachSession,
-  socket: coachChatsSocket
+  socket: coachChatsSocket,
+  chatConfig: {
+    chatModuleConfig: coachChatConfig
+  },
+  getChatByUser: getChatWithClient
 })
 
 export const CoachSessionCall = createSessionCall(coachCall)
@@ -656,7 +695,11 @@ export const clientCall = createSessionCallModule({
   dashboard: "client",
   getConnectDataRequest: getClientSessionVideoToken,
   getSessionRequest: getClientSession,
-  socket: clientChatsSocket
+  socket: clientChatsSocket,
+  chatConfig: {
+    chatModuleConfig: clientChatConfig
+  },
+  getChatByUser: getChatWithCoach
 })
 
 export const ClientSessionCall = createSessionCall(clientCall)
