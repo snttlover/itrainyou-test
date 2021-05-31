@@ -18,13 +18,6 @@ export interface GetFreeSessionsParams {
   duration_type?: DurationType
 }
 
-type PriceTabs = {
-  D15: boolean
-  D30: boolean
-  D45: boolean
-  D60: boolean
-  D90: boolean
-}
 
 export const getFreeSessionsList = (params: GetFreeSessionsParams) =>
   get<Pagination<DashboardSession>, GetFreeSessionsParams>(

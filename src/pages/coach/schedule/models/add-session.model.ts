@@ -41,6 +41,7 @@ export const $durationList = createStore<{ label: string; value: DurationType }[
   { label: "45 минут", value: "D45" },
   { label: "60 минут", value: "D60" },
   { label: "90 минут", value: "D90" },
+  { label: "% промо", value: "PROMO" },
 ])
 
 export const $durationOptions = $durationList.map((durations) => {
@@ -189,7 +190,7 @@ const $priceIsCorrect = combine(
     return sessionDurations.reduce((isPriceSet, duration) => {
       if (!isPriceSet) return false
 
-      return !!(prices.find(price => price.key === duration)?.value)
+      return !!(prices.find(price => price.key === duration)?.value || duration === "PROMO")
     }, true)
   })
 
