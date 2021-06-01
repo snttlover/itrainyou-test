@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import { routeNames } from "@/pages/route-names"
+
 import { withGuest } from "@/feature/user/with-guest"
 
 import { PageWrapper } from "../common/PageWrapper"
@@ -18,15 +20,16 @@ import { Video } from "./content/Video"
 import { Questions } from "../common/questions/Questions"
 import { Footer } from "../common/footer/Footer"
 
+import { advantages } from "./data/advantages"
 import { publications } from "./data/publications"
 import { questions } from "./data/questions"
 
 const LandingCoachPageMarkUp = () => (
   <PageWrapper>
-    <Header />
+    <Header signUpRoute={routeNames.signup("1")} />
     <MainWrapper>
       <Hero />
-      <Advantages />
+      <Advantages advantages={advantages} />
       <Features />
       <Payment />
       <Calendar />

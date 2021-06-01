@@ -133,7 +133,7 @@ const Advantage = styled.li<{ visibleDesktopSubtitle: boolean }>`
     }
 
     @media (min-width: 1140px) {
-      width: 80%;
+      width: 100%;
     }
   }
 

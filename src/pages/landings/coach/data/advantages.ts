@@ -1,9 +1,9 @@
-import adv1Img from "../../assets/advantages/1.svg"
-import adv2Img from "../../assets/advantages/2.svg"
-import adv3Img from "../../assets/advantages/3.svg"
-import adv4Img from "../../assets/advantages/4.svg"
+import adv1Img from "./advantages/1.svg"
+import adv2Img from "./advantages/2.svg"
+import adv3Img from "./advantages/3.svg"
+import adv4Img from "./advantages/4.svg"
 
-export const content = [
+export const advantages = [
   {
     id: 1,
     image: adv1Img,

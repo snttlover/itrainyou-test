@@ -122,7 +122,11 @@ const StyledRegisterButton = styled(RegisterButton)`
   }
 `
 
-export const Header = () => (
+type Props = {
+  signUpRoute: string
+}
+
+export const Header = ({ signUpRoute }: Props) => (
   <Wrapper>
     <StyledContainer>
       <LogoLink to={{ pathname: routeNames.landing(), search: "" }}>
@@ -139,7 +143,7 @@ export const Header = () => (
         <NavLink to={routeNames.login()}>Войти</NavLink>
       </SecondNav>
 
-      <StyledRegisterButton to={routeNames.signup("1")}>Зарегистрироваться</StyledRegisterButton>
+      <StyledRegisterButton to={signUpRoute}>Зарегистрироваться</StyledRegisterButton>
     </StyledContainer>
   </Wrapper>
 )
