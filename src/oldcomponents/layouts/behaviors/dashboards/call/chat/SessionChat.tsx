@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { createSessionChatModule } from "@/oldcomponents/layouts/behaviors/dashboards/call/chat/create-session-chat-module"
 import { ChatContainer } from "@/pages/client/chats/chat/content/client-chat/content/ChatContainer"
 import { createChatMessages } from "@/feature/chat/view/content/messages/ChatMessages"
-import { createChatMessageBox } from "@/feature/chat/view/content/message-box/ChatMessageBox"
+import { Close, createChatMessageBox, DocInfo } from "@/feature/chat/view/content/message-box/ChatMessageBox"
 import { useEvent, useStore } from "effector-react"
 import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { NotFound } from "@/feature/not-found/components/NotFound"
@@ -56,10 +56,17 @@ export const createSessionChat = ($chatModule: ReturnType<typeof createSessionCh
 }
 
 const StyledChatContainer = styled(ChatContainer)`
+  width: 400px;
   ${MediaRange.lessThan("mobile")`
     position: relative;
     height: calc(100% - 20px);
   `}
+  ${Close} {
+    margin-right: 10px;
+  }
+  ${DocInfo} {
+    max-width: 190px;
+  }
 `
 
 const MobileClose = styled.div`
@@ -68,11 +75,12 @@ const MobileClose = styled.div`
 `
 
 export const SessionChatContainer = styled.div`
+  min-width: 400px;
   width: 400px;
-  flex-basis: 400px;
   display: none;
   position: relative;
   background: #fff;
+  overflow: hidden;
   
   ${ChatMessageContainer} {
     max-width: 100%;
@@ -82,6 +90,7 @@ export const SessionChatContainer = styled.div`
     left: 0;
     top: 0px;
     width: 100%;
+    min-width: 100%;
     height: 100%;
     z-index: 10;
     position: fixed;
@@ -92,6 +101,7 @@ export const SessionChatContainer = styled.div`
     }
     
     ${StyledChatContainer} {
+      width: 100%;
       border-top-right-radius: 5px;
       border-top-left-radius: 5px;
       margin-right: 0;
