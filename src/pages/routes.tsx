@@ -24,8 +24,8 @@ import { ClientChatPage } from "@/pages/client/chats/chat/ClientChatPage"
 import ClientChatListPage from "@/pages/client/chats/list/ClientChatListPage"
 import { routeNames } from "@/pages/route-names"
 import { CoachByIdPage } from "@/pages/search/coach-by-id/CoachByIdPage"
-import { LandingPage } from "./landing/LandingPage"
-import { LandingCoachPage } from "./landing-coach/LandingCoachPage"
+import { LandingClientPage } from "./landings/client/LandingClientPage"
+import { LandingCoachPage } from "./landings/coach/LandingCoachPage"
 import { SearchPage } from "./search/SearchPage"
 import { CoachChatPage } from "@/pages/coach/chats/chat/CoachChatPage"
 import { NotFound } from "@/feature/not-found/components/NotFound"
@@ -40,7 +40,7 @@ export const ROUTES: RouteConfig[] = [
   {
     path: routeNames.landing(),
     exact: true,
-    component: LandingPage,
+    component: LandingClientPage,
     ssr: true,
   },
   {
