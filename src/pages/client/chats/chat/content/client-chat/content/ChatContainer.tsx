@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import {MediaRange} from "@/lib/responsive/media"
+import { MediaRange } from "@/lib/responsive/media"
 
 const Container = styled.div`
   width: 100%;
@@ -9,7 +9,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+
   ${MediaRange.lessThan("mobile")`
     position: fixed;
     left: 0;
@@ -21,6 +21,9 @@ const Container = styled.div`
 
 type ChatContainerTypes = {
   children: React.ReactChild | React.ReactChild[]
+  className?: string
 }
 
-export const ChatContainer = (props: ChatContainerTypes) => <Container>{props.children}</Container>
+export const ChatContainer = (props: ChatContainerTypes) => (
+  <Container className={props.className}>{props.children}</Container>
+)

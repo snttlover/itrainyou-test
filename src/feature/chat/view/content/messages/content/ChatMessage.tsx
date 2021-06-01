@@ -18,7 +18,7 @@ const Time = styled.div`
   color: rgba(66, 66, 66, 0.5);
 `
 
-const Container = styled.div<ContainerTypes>`
+export const ChatMessageContainer = styled.div<ContainerTypes>`
   padding: 5px 8px;
   background: #F4F5F7;
   border-radius: 12px 12px 12px 0px;
@@ -111,7 +111,7 @@ export const ChatMessage = (props: ChatMessageTypes) => (
         avatar={props.user?.avatar || null}
       />
     )}
-    <Container id={props.id} data-self={props["data-self"]}>
+    <ChatMessageContainer id={props.id} data-self={props["data-self"]}>
       {!!props.image && (
         <Image
           src={props.image}
@@ -121,7 +121,7 @@ export const ChatMessage = (props: ChatMessageTypes) => (
       )}
       {!!props.document && (
         <Content onClick={() => downloadByURL(props.document,getFileName(props.document))}>
-          {props["data-self"] ?  
+          {props["data-self"] ?
             <FileIcon />
             :
             <Image
@@ -134,6 +134,6 @@ export const ChatMessage = (props: ChatMessageTypes) => (
       )}
       <MessageText>{props.text}</MessageText>
       <Time>{props.time}</Time>
-    </Container>
+    </ChatMessageContainer>
   </>
 )
