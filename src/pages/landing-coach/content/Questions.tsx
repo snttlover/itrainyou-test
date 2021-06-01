@@ -92,7 +92,7 @@ const Arrow = styled.i<{ reverse: boolean }>`
 `
 
 export const Questions = () => {
-  const [openedQuestions, setOpenedQuestions] = useState([0])
+  const [openedQuestions, setOpenedQuestions] = useState([] as any)
 
   const toggleQuestions = (index: number) => {
     let newQuestions = [...openedQuestions]
