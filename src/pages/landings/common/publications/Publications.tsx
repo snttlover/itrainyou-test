@@ -21,18 +21,12 @@ const Wrapper = styled.section`
   background: #4858cc;
   height: 460px;
 
-  margin-bottom: 40px;
-
   @media (min-width: 768px) {
     height: 492px;
-
-    margin-bottom: 80px;
   }
 
   @media (min-width: 1140px) {
     height: 640px;
-
-    margin-bottom: 120px;
   }
 `
 

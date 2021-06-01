@@ -10,14 +10,14 @@ import bgImg from "../assets/video/bg.jpg"
 
 const Wrapper = styled.section`
   background: white;
-  margin-bottom: 40px;
+  padding: 40px 0;
 
   @media (min-width: 768px) {
-    margin-bottom: 60px;
+    padding: 80px 0 60px;
   }
 
   @media (min-width: 1140px) {
-    margin-bottom: 120px;
+    padding: 120px 0;
   }
 `
 
