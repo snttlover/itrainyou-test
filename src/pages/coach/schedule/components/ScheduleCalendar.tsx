@@ -6,20 +6,23 @@ import {
   $currentMonth, $isMobileSessionInfoShowed,
   $monthEndDate,
   $monthStartDate, setCurrentMonth,
-  showAddSessionModal, showMobileSessionInfo, showVacationModal
+  showAddSessionModal, showMobileSessionInfo, showVacationModal,
+  showMobileFilterModal, $isFilterModalShowed
 } from "@/pages/coach/schedule/models/calendar.model"
 import {
   $showedSessions,
   CalendarGate,
   filterBy,
-  $filterOptions
+  $filterOptions,
+  changeFilterView
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore, useGate } from "effector-react"
-import React, { useRef, useState } from "react"
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
 import { Times, Time } from "@/pages/coach/schedule/components/MobileCalendarManager"
@@ -36,7 +39,7 @@ import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
-import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
+import { Checkbox, CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
 
 
 const CalendarContainer = styled.div`
@@ -54,6 +57,7 @@ const Container = styled.div`
     min-width: 266px;
   `}
 `
+
 const MobileList = styled.div`
   display: none;
   flex-direction: column;
@@ -147,6 +151,11 @@ const ToolTipButton = styled(DashedButton)`
   ${MediaRange.lessThan("mobile")`
     margin-top: 30px;
   `}
+`
+
+const FilterModalButton = styled(Button)`
+  width: 100%;
+  margin-top: 18px;
 `
 
 const StyledMonthContainer = styled(MonthContainer)`
@@ -269,7 +278,7 @@ const SessionContent = styled.div<{areAvailable: boolean; googleEvent: boolean}>
 const ToolTipText = styled.div`
   font-family: Roboto;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 22px;
   color: #424242;
@@ -396,6 +405,13 @@ const StyledDialog = styled(Dialog)`
   min-height: unset;
 `
 
+const StyledSessionsFilterDialog = styled(Dialog)`
+  max-width: 560px;
+  padding: 16px;
+  width: 90%;
+  min-height: unset;
+`
+
 const StyledLink = styled.div`
   color: ${props => props.theme.colors.primary};
   text-decoration: underline;
@@ -415,16 +431,62 @@ const Row = styled.div`
   align-items: center;
 `
 
-const FilterContainer = styled.div`
+const CheckBoxesContainer = styled.div<{showOnMobile: boolean}>`
   display: flex;
   flex-direction: row;
   align-items: center;
   align-self: flex-end;
   margin-bottom: 25px;
+  
+  ${CheckboxContent} {
+    margin-left: 11px;
+    margin-right: 19px;
+  }
 
   ${MediaRange.lessThan("mobile")`
     flex-direction: column;
+    align-items: flex-start;
+    display: ${
+  // @ts-ignore
+  ({ showOnMobile }) => (showOnMobile ? "flex" : "none")};
   `}
+`
+
+const MobileFilterContainer = styled.div`
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  cursor: pointer;
+
+  ${MediaRange.lessThan("mobile")`
+    display: flex;
+    margin-bottom: 22px;
+  `}
+`
+
+const Arrow = styled(Icon).attrs({ name: "arrow" })`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  fill: #424242;
+  margin-left: 14px;
+`
+
+const FreeSessionText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+  margin-bottom: 16px;
+
+  & a {
+    color: ${props => props.theme.colors.primary};
+    font-weight: 500;
+    text-decoration: underline;
+  }
 `
 
 type SessionType = {
@@ -432,7 +494,7 @@ type SessionType = {
   areAvailable: boolean
   client?: [any]
   id: number
-  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  sessionDurationType?: "D30" | "D45" | "D60" | "D90" | "PROMO"
   startTime: Dayjs
   endTime: Dayjs
 }
@@ -475,11 +537,19 @@ const MobileSessionInfoModal = () => {
               <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
             </>
             :
-            <>
-              <Title>Этот слот еще не занят никем в вашем расписании</Title>
-              <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
-              <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-            </>
+            (session.sessionDurationType === "PROMO" ?
+              <>
+                <Title>Этот слот еще не занят никем в вашем расписании</Title>
+                <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+                <FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText>
+                <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+              </> :
+              <>
+                <Title>Этот слот еще не занят никем в вашем расписании</Title>
+                <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+                <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+              </>
+            )
           )}
       </ToolTipContainer>
     </StyledDialog>
@@ -537,10 +607,18 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
                 <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
               </>
               :
-              <>
-                <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
-                <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-              </>
+              (props.session.sessionDurationType === "PROMO" ?
+                <>
+                  <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
+                  <FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText>
+                  <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+                </>
+                :
+                <>
+                  <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
+                  <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+                </>
+              )
             )}
         </ToolTipContainer>
       </ToolTip>
@@ -599,13 +677,58 @@ const SessionsFilter = () => {
   }
 
   return (
-    <FilterContainer>
+    <CheckBoxesContainer showOnMobile={false}>
       {options.map((option,index) =>
         <Checkbox key={index} value={option.selected} color={"#783D9D"} onChange={() => handleOnChange(option.value, option.selected)}>
           {option.label}
         </Checkbox>
       )}
-    </FilterContainer>
+    </CheckBoxesContainer>
+  )
+}
+
+const MobileSessionsFilter = () => {
+  const options = useStore($filterOptions)
+  const visibility = useStore($isFilterModalShowed)
+
+  const filterSessionsBy = useEvent(filterBy)
+  const toggle = useEvent(showMobileFilterModal)
+  const changeFilter = useEvent(changeFilterView)
+
+  const [filterValue, setFilterValue] = useState<"no-filter" | "only-free" | "only-booked">("no-filter")
+
+  useEffect(() => {
+    const selectedOption = options.find(option => option.selected)
+    setFilterValue(selectedOption!.value)
+  },[options])
+
+  const handleOnChange = (value: "no-filter" | "only-free" | "only-booked", isSelected: boolean) => {
+    if (isSelected) return
+    changeFilter(value)
+  }
+
+  const handleOnSubmit = (e: SyntheticEvent) => {
+    filterSessionsBy(filterValue)
+    toggle(false)
+    e.preventDefault()
+  }
+
+  return (
+    <MobileFilterContainer onClick={() => toggle(true)}>
+      <ToolTipHeader>Фильтры</ToolTipHeader>
+      <Arrow />
+      <StyledSessionsFilterDialog value={visibility} onChange={toggle}>
+        <Title>Фильтры</Title>
+        <CheckBoxesContainer showOnMobile={true}>
+          {options.map((option,index) =>
+            <Checkbox key={index} value={option.selected} color={"#783D9D"} onChange={() => handleOnChange(option.value, option.selected)}>
+              {option.label}
+            </Checkbox>
+          )}
+        </CheckBoxesContainer>
+        <FilterModalButton onClick={handleOnSubmit}>Применить</FilterModalButton>
+      </StyledSessionsFilterDialog>
+    </MobileFilterContainer>
   )
 }
 
@@ -682,6 +805,7 @@ export const ScheduleCalendar = () => {
               <StyledRightIcon onClick={handleOnRightIcon} />
               <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
             </StyledMonthContainer>
+            <MobileSessionsFilter />
             <AddVacationButton onClick={() => _showVacationModal(true)}>
           Добавить отпуск
             </AddVacationButton>

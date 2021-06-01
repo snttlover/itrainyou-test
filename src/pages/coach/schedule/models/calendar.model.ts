@@ -34,3 +34,11 @@ export const $isVacationModalShowed = createStore<boolean>(false).on(
     if (payload !== undefined) return payload
     return !state
   })
+
+export const showMobileFilterModal = createEvent<void | boolean>()
+export const $isFilterModalShowed = createStore<boolean>(false).on(
+  showMobileFilterModal,
+  (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })

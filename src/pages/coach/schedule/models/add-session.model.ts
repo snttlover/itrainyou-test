@@ -13,7 +13,7 @@ export const setMobileInfo = createEvent<{
   areAvailable: boolean
   client?: [any]
   id: number
-  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  sessionDurationType?: DurationType
   startTime: Dayjs
   endTime: Dayjs
 }>()
@@ -23,7 +23,7 @@ export const $mobileEventInfo = restore<{
   areAvailable: boolean
   client?: [any]
   id: number
-  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  sessionDurationType?: DurationType
   startTime: Dayjs
   endTime: Dayjs
 }>(setMobileInfo, {

@@ -15,7 +15,6 @@ export interface GetFreeSessionsParams {
   start_date__lte?: string
   start_date__gte?: string
   start_date?: string
-  duration_type?: DurationType
 }
 
 

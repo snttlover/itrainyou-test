@@ -17,7 +17,6 @@ import { DurationType, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessi
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
-import { $tabs } from "@/pages/client/home/home.model"
 import { Coach } from "@/lib/api/coach"
 import { Event, Store } from "effector-root"
 import { CoachSessionWithSelect } from "@/oldcomponents/coach-card/select-date/select-date.model"
@@ -431,11 +430,7 @@ type FreeSessionTypes = {
     }>
     sessionsList: Store<CoachSessionWithSelect[]>
     toggleSession: Event<CoachSessionWithSelect>
-    deleteSession: Event<number>
-    tabs: {
-      $durationTab: Store<DurationType>
-      changeDurationTab: Event<DurationType>
-    }}
+    deleteSession: Event<number> }
 }
 
 export const HomeCalendar = (props: FreeSessionTypes) => {
@@ -447,14 +442,14 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const sessions = useStore(props.freeSessionsModule.sessionsList)
   const loading = useStore(props.freeSessionsModule.loading)
-  const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
-  const activeTab = useStore(props.freeSessionsModule.tabs.$durationTab)
+  //const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
+  //const activeTab = useStore(props.freeSessionsModule.tabs.$durationTab)
 
   const loadData = useEvent(props.freeSessionsModule.loadData)
-  const changeActiveTab = useEvent(props.freeSessionsModule.tabs.changeDurationTab)
+  //const changeActiveTab = useEvent(props.freeSessionsModule.tabs.changeDurationTab)
   const deleteSession = useEvent(props.freeSessionsModule.deleteSession)
   const toggleSession = useEvent(props.freeSessionsModule.toggleSession)
-  const buySessionBulk = useEvent(props.freeSessionsModule.buySessionBulk)
+  //const buySessionBulk = useEvent(props.freeSessionsModule.buySessionBulk)
   //const lastTabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
   const tab = {
     timeInMinutes: "30",
@@ -467,15 +462,13 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
     changeCurrentDate((prevState) => {
       return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
     })
+    //changeActiveTab("PROMO")
+    //loadData({params:})
     return () => {
       changeCurrentDate(undefined)
     }
   }, [enabledDates[0]])
 
-
-  useEffect(() => {
-    loadData()
-  },[])
 
   const payForTheSessionHandler = () => {
     _showCreditCardsModal()
@@ -510,7 +503,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
 
   const changeTabHandler = (durationType: DurationType) => {
-    changeActiveTab(durationType)
+    //changeActiveTab(durationType)
     changeCurrentDate(null)
   }
 
@@ -519,8 +512,8 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   return (
     <Container>
-      <StyledTabs value={activeTab} onChange={changeTabHandler}>
-        {/*tabs.map(tab => (
+      {/*<StyledTabs value={activeTab} onChange={changeTabHandler}>
+        tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
             <TabPrice>
@@ -528,13 +521,14 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
               {tab.price} ₽
             </TabPrice>
           </StyledTab>
-        ))*/}
+        ))
         <StyledTab  value={tab.key} onlyOneCard={true}>
           <TabTime>{tab.timeInMinutes} мин</TabTime>
         </StyledTab>
-      </StyledTabs>
+      </StyledTabs>*/}
+      <div>Бесплатные сессии</div>
       <Block onlyOneCard={true}>
-        {loading && <Spinner />}
+        {false && <Spinner />}
         <Datepicker>
           <StyledCalendar
             value={currentDate}
@@ -583,9 +577,10 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
           <ButtonContainer>
             <IsAuthed>
               <StyledBuyButton
-                disabled={buyLoading || selected.length === 0}
+                disabled={true}
                 onClick={payForTheSessionHandler}
               >
+                {/*buyLoading || selected.length === 0*/}
                       Забронировать
               </StyledBuyButton>
             </IsAuthed>

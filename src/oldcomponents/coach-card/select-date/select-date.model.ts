@@ -42,14 +42,14 @@ export const genFreeSessions = () => {
     CoachSession[]
   >().use((params) => getFreeSessionsList(params))
 
-  const loadCoachSessions = createEvent<RequestType>()
+  const loadAllFreeSessions = createEvent<RequestType>()
   const loadParams = restore(
-    loadCoachSessions.map(req => req.params),
+    loadAllFreeSessions.map(req => req.params),
     {}
   )
 
   const isFetching = createStore(false)
-    .on(loadCoachSessions, () => true)
+    .on(loadAllFreeSessions, () => true)
     .on(fetchFreeSessionsListFx, () => true)
     .on(fetchFreeSessionsListFx.finally, () => false)
 
@@ -85,7 +85,7 @@ export const genFreeSessions = () => {
   })*/
 
   forward({
-    from: loadCoachSessions.map((req) => ({
+    from: loadAllFreeSessions.map((req) => ({
       ...req.params,
     })),
     to: fetchFreeSessionsListFx,
@@ -114,6 +114,7 @@ export const genFreeSessions = () => {
     type: "error",
     text: "Недостаточно средств, пополните баланс",
   }
+
   /*sample({ clock: insufficientBalance, source: $id }).watch(id => {
     runInScope(toasts.remove, sessionBookFailByInsufficientBalanceToast)
     runInScope(toasts.add, sessionBookFailByInsufficientBalanceToast)
@@ -137,8 +138,8 @@ export const genFreeSessions = () => {
     }),
   })*/
 
-  const changeDurationTab = createEvent<DurationType>()
-  const $durationTab = createStore<DurationType>("D30").on(changeDurationTab, (_, payload) => payload)
+  /*const changeDurationTab = createEvent<DurationType>()
+  const $durationTab = createStore<DurationType>("PROMO").on(changeDurationTab, (_, payload) => payload)*/
 
   /*sample({
     clock: changeDurationTab,
@@ -152,26 +153,22 @@ export const genFreeSessions = () => {
     target: loadCoachSessions,
   })*/
   
-  forward({
+  /*forward({
     from: changeDurationTab.map((durationTab) => ({
       params: {
         is_free_session: true,
         duration_type: durationTab,
       },
     })),
-    to: loadCoachSessions,
-  })
+    to: loadAllFreeSessions,
+  })*/
 
   return {
     loading: isFetching,
     sessionsList: $freeSessionsList,
-    loadData: loadCoachSessions,
+    loadData: loadAllFreeSessions,
     toggleSession,
     deleteSession,
-    tabs: {
-      $durationTab,
-      changeDurationTab,
-    },
     buySessionsLoading: combine(
       buySessionsFx.pending,
       finishSaveClientCardFx.pending,
