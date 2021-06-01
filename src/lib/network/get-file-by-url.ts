@@ -31,4 +31,4 @@ export const getFileName = (path: string) => {
 
 export const downloadByURL = (URL: string, filename: string) =>
   axios.request<Blob>({url: URL, method: "GET", responseType: "blob"})
-    .then(response => download(response.data, filename))
+    .then(response => download(response.data, filename, response.data.type))
