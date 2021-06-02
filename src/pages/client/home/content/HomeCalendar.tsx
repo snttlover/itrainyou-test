@@ -13,13 +13,16 @@ import { Button } from "@/oldcomponents/button/normal/Button"
 import { genSessionTabs, SelectDatetimeTypes } from "@/oldcomponents/coach-card/select-date/SelectDatetime"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import { DurationType, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
+import { CoachSession, DurationType, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 import { Coach } from "@/lib/api/coach"
 import { Event, Store } from "effector-root"
 import { CoachSessionWithSelect } from "@/oldcomponents/coach-card/select-date/select-date.model"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import starIcon from "@/oldcomponents/coach-card/images/star.svg"
 
 
 type StyledTabTypes = {
@@ -37,11 +40,56 @@ const Container = styled.div`
   `}
 `
 
+const RowBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`
+
+const SessionInfo = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 17px;
+`
+
+const StyledAvatar = styled(Avatar)`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+`
+
+const CoachName = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  color: #424242;
+`
+
+const Star = styled.img.attrs({ src: starIcon })`
+  width: 14px;
+  height: 14px;
+`
+
+const Rating = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: ${props => props.theme.colors.primary};
+`
+
 const Block = styled.div<StyledTabTypes>`
   display: flex;
   flex-direction: column;
   background: #fff;
-  padding: 24px 8px;
+  padding: 8px 12px;
   ${MediaRange.between("mobile", "laptop")`
     flex-direction: row;   
   `}
@@ -81,7 +129,6 @@ const Times = styled.div`
   margin-top: 12px;
   padding-left: 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid #dbdee0;
 `
 
 const Tag = styled.div<{ active?: boolean }>`
@@ -281,6 +328,27 @@ const Amount = styled.div`
   `}
 `
 
+const CalendarSubTitle = styled.div`
+  text-align: right;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: #5B6670;
+`
+
+const Description = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: right;
+  color: #9AA0A6;
+  margin-top: 24px;
+`
+
 const AmountText = styled.div`
   font-weight: 500;
   font-size: 16px;
@@ -421,6 +489,10 @@ const FooterWrapper = styled.div`
 const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
+type Test = DashboardSession & {
+  selected: boolean
+}
+
 type FreeSessionTypes = {
   freeSessionsModule: {
     loading: Store<boolean>
@@ -428,8 +500,8 @@ type FreeSessionTypes = {
       id?: number
       params: GetCoachSessionsParamsTypes
     }>
-    sessionsList: Store<CoachSessionWithSelect[]>
-    toggleSession: Event<CoachSessionWithSelect>
+    sessionsList: Store<Test[]>
+    toggleSession: Event<Test>
     deleteSession: Event<number> }
 }
 
@@ -459,11 +531,10 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
+    loadData({params:{}})
     changeCurrentDate((prevState) => {
       return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
     })
-    //changeActiveTab("PROMO")
-    //loadData({params:})
     return () => {
       changeCurrentDate(undefined)
     }
@@ -478,10 +549,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
   const currentDateEqual = date(headerDate as Date).format(equalDateFormat)
-
-  /*if (!props.coach.prices[activeTab] && tabs.length) {
-    changeActiveTab(tabs[0].key)
-  }*/
 
   const times = sessions
     .filter(session => {
@@ -502,40 +569,23 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
 
-  const changeTabHandler = (durationType: DurationType) => {
-    //changeActiveTab(durationType)
-    changeCurrentDate(null)
-  }
 
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
 
   return (
     <Container>
-      {/*<StyledTabs value={activeTab} onChange={changeTabHandler}>
-        tabs.map(tab => (
-          <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
-            <TabTime>{tab.timeInMinutes} мин</TabTime>
-            <TabPrice>
-              <Delemiter> / </Delemiter>
-              {tab.price} ₽
-            </TabPrice>
-          </StyledTab>
-        ))
-        <StyledTab  value={tab.key} onlyOneCard={true}>
-          <TabTime>{tab.timeInMinutes} мин</TabTime>
-        </StyledTab>
-      </StyledTabs>*/}
       <Block onlyOneCard={true}>
-        <div>Бесплатные сессии</div>
+        <CalendarSubTitle>Бесплатные сессии</CalendarSubTitle>
         {false && <Spinner />}
+        <Description>Выберите день</Description>
         <Datepicker>
           <StyledCalendar
             value={currentDate}
             enabledDates={enabledDates}
             onChange={changeCurrentDate}
             isBig={true}
-            // startFrom={new Date(date(currentDate || undefined).toDate())}
+            startFrom={new Date(date(currentDate || undefined).toDate())}
           />
 
           {/*<FooterWrapper>*/}
@@ -544,6 +594,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
         </Datepicker>
         <SelectTimeContainer>
           <WidthCurrentDateConditionWrapper>
+            <Description>Выберите время</Description>
             <StyledDateHeader>{formattedDate}</StyledDateHeader>
             <Times>
               {times.map(session => (
@@ -553,27 +604,30 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
               ))}
             </Times>
           </WidthCurrentDateConditionWrapper>
-          <WidthAmountConditionWrapper>
-            <SelectedSessions>
-              {selected.map(session => (
-                <SelectedSession key={session.id}>
-                  <SessionDate>{session.date}</SessionDate>
-                  <SessionTime>{session.time}</SessionTime>
-                  <SessionPrice>
-                    {session.clientPrice}
-                    <RubleIcon />
-                  </SessionPrice>
-                  <DeleteIcon onClick={() => deleteSession(session.id)} />
-                </SelectedSession>
-              ))}
-            </SelectedSessions>
-            <Amount>
+          <Description>Коуч</Description>
+          <SessionInfo>
+            {selected.map(session => (
+              <>
+                <RowBlock>
+                  <StyledAvatar src={session.coach.avatar} />
+                  <CoachName>{session.coach!.firstName} {session.coach!.lastName}</CoachName>
+                </RowBlock>
+                <RowBlock>
+                  <Star />
+
+                  {// @ts-ignore
+                    session.coach.rating !== null && <Rating>{session.coach.rating}</Rating>}
+                </RowBlock>
+              </>
+            ))}
+          </SessionInfo>
+          {/*<Amount>
               <AmountText>Итого:</AmountText>
               <Summary>
                 {amount} <SummaryRuble />
               </Summary>
-            </Amount>
-          </WidthAmountConditionWrapper>
+            </Amount>*/}
+
           <ButtonContainer>
             <IsAuthed>
               <StyledBuyButton

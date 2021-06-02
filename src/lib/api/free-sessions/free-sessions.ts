@@ -1,9 +1,7 @@
 import { config } from "@/config"
-import { Pagination } from "@/lib/api/interfaces/utils.interface"
 import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
-import { DurationType } from "@/lib/api/coach-sessions"
 
 /*export interface GetFreeSessionsParams {
   startDate?: string

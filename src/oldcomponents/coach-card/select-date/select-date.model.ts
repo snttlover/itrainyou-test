@@ -1,5 +1,6 @@
 import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
+import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { bulkBookSessions, BulkBookSessionsRequest } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { isAxiosError } from "@/lib/network/network"
 import { routeNames } from "@/pages/route-names"
@@ -62,7 +63,7 @@ export const genFreeSessions = () => {
       if (state.includes(selectedSession.id)) {
         return state.filter(id => id !== selectedSession.id)
       } else {
-        return [...state, selectedSession.id]
+        return [selectedSession.id]
       }
     })
     .on(deleteSession, (state, sessionId) => state.filter(id => sessionId !== id))
@@ -73,6 +74,10 @@ export const genFreeSessions = () => {
   const $freeSessionsList = combine($freeSessions, selectedSessionIds, (sessions, selected) =>
     sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
   )
+
+  $freeSessionsList.watch(payload => console.log("$freeSessionsList", payload))
+  $freeSessions.watch(payload => console.log("$freeSessions", payload))
+  selectedSessionIds.watch(payload => console.log("selectedSessionIds", payload))
 
   /*sample({
     clock: loadCoachSessions,
