@@ -33,7 +33,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const send = useEvent($module.methods.sendTextMessage)
 
   const input = useRef<HTMLInputElement>(null)
-    
+
   const images = useStore($module.data.$images)
   const documents = useStore($module.data.$documents)
   const deleteDocument = useEvent($module.methods.delete.deleteDocument)
@@ -54,10 +54,10 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
       change("")
     }
   }
-  
+
   const handleOnClick = () => {
     send(value)
-    change("") 
+    change("")
   }
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   )
 }
 
-const DocInfo = styled.div`
+export const DocInfo = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 240px;
@@ -195,7 +195,7 @@ const SendDocument = styled(Icon).attrs((props: any) => ({
   }
 `
 
-const Close = styled(Icon).attrs({ name: "close" })`
+export const Close = styled(Icon).attrs({ name: "close" })`
   width: 32px;
   cursor: pointer;
   fill: #9AA0A6;
