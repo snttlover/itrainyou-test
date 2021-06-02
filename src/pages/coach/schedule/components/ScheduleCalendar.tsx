@@ -162,15 +162,37 @@ const StyledMonthContainer = styled(MonthContainer)`
   padding: 0;
 `
 
-const StyledLeftIcon = styled(LeftIcon)`
+type LeftButtonTypes = {
+  disabled?: boolean
+}
+
+const StyledLeftIcon = styled(Icon).attrs({ name: "left-calendar-icon" })<LeftButtonTypes>`
   width: 40px;
   height: 40px;
+  fill: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${props => (props.disabled ? "none" : "auto")};
+  margin-right: 2px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-right: 30px;
+  `}
 `
 
-const StyledRightIcon = styled(RightIcon)`
+const StyledRightIcon = styled(Icon).attrs({ name: "right-calendar-icon" })<LeftButtonTypes>`
   width: 40px;
   height: 40px;
   margin-left: 8px;
+  fill: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${props => (props.disabled ? "none" : "auto")};
+  margin-left: 2px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-left: 30px;
+  `}
 `
 
 const StyledMonthName = styled(MonthName)`

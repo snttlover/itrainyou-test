@@ -7,6 +7,7 @@ import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { logout } from "@/lib/network/token"
 import { keysToCamel } from "@/lib/network/casing"
 import { $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"
+import { loginFx } from "@/pages/auth/pages/login/login.model"
 
 
 type DateRange = {
@@ -128,4 +129,9 @@ forward({
     loadMore,
     getFreeSessionsWithParamsFx,
   ],
+})
+
+forward({
+  from: loginFx.done,
+  to: getMyUserFx,
 })

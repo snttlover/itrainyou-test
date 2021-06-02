@@ -19,7 +19,7 @@ export interface GetFreeSessionsParams {
 
 
 export const getFreeSessionsList = (params: GetFreeSessionsParams) =>
-  get<Pagination<DashboardSession>, GetFreeSessionsParams>(
+  get<DashboardSession[], GetFreeSessionsParams>(
     `${config.BACKEND_URL}/api/v1/web/client/free-sessions/`,
     keysToSnake(params)
   )

@@ -21,28 +21,30 @@ type LeftButtonTypes = {
   disabled?: boolean
 }
 
-export const LeftIcon = styled(Icon).attrs({ name: "left-calendar-icon" })<LeftButtonTypes>`
-  width: 32px;
-  height: 32px;
+export const LeftIcon = styled(Icon).attrs({ name: "arrow" })<LeftButtonTypes>`
+  width: 20px;
+  height: 20px;
   fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? "none" : "auto")};
   margin-right: 2px;
+  transform: rotate(90deg);
   
   ${MediaRange.lessThan("mobile")`
     margin-right: 30px;
   `}
 `
 
-export const RightIcon = styled(Icon).attrs({ name: "right-calendar-icon" })<LeftButtonTypes>`
-  width: 32px;
-  height: 32px;
+export const RightIcon = styled(Icon).attrs({ name: "arrow" })<LeftButtonTypes>`
+  width: 20px;
+  height: 20px;
   fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? "none" : "auto")};
   margin-left: 2px;
+  transform: rotate(-90deg);
 
   ${MediaRange.lessThan("mobile")`
     margin-left: 30px;

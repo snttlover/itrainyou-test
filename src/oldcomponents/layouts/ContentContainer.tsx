@@ -19,8 +19,8 @@ export const ContentContainer = styled.div`
 export const FreeSessionsContainer = styled.div`
   max-width: 576px;
   min-width: 320px;
-  margin: 0 auto;
   padding: 0 8px 16px;
+  margin-left: auto;
 
   ${MediaRange.lessThan("tablet")`
     padding: 0 36px 16px;

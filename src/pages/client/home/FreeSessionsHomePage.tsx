@@ -31,6 +31,9 @@ import { HomeCalendar } from "@/pages/client/home/content/HomeCalendar"
 const PageContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 24px;
 `
 
 const Block = styled.div`
@@ -96,6 +99,7 @@ const CalendarContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   max-width: 276px;
+  margin-right: auto;
 `
 
 const CalendarTitle = styled.div`

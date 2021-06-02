@@ -526,8 +526,8 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
           <TabTime>{tab.timeInMinutes} мин</TabTime>
         </StyledTab>
       </StyledTabs>*/}
-      <div>Бесплатные сессии</div>
       <Block onlyOneCard={true}>
+        <div>Бесплатные сессии</div>
         {false && <Spinner />}
         <Datepicker>
           <StyledCalendar
