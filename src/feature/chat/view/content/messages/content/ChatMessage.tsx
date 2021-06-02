@@ -30,7 +30,7 @@ export const ChatMessageContainer = styled.div<ContainerTypes>`
   white-space: pre-wrap;
   word-wrap: break-word;
   
-  display: flex;
+  display: block;
   flex-direction: column;
   align-items: flex-end;
   position: relative;
@@ -85,6 +85,7 @@ const FileIcon = styled(Icon).attrs({ name: "file-preview" })`
   background: white;  
   cursor: pointer;
   width: 40px;
+  min-width: 40px;
   height: 40px;
 `
 
