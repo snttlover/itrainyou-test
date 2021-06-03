@@ -444,6 +444,10 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     }
   }, [enabledDates[0]])
 
+  useEffect(() => {
+    changeActiveTab(activeTab)
+  }, [])
+
   const payForTheSessionHandler = () => {
     _showCreditCardsModal()
     changeCurrentDate(null)
@@ -453,7 +457,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const formattedDate = date(headerDate).format("DD MMMM")
   const currentDateEqual = date(headerDate as Date).format(equalDateFormat)
 
-  if (!props.coach.prices[activeTab] && tabs.length) {
+  if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) {
     changeActiveTab(tabs[0].key)
   }
 
@@ -486,7 +490,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   return (
     <Container>
-      <StyledTabs value={activeTab} onChange={changeTabHandler}>
+      {activeTab === "PROMO" ? null : <StyledTabs value={activeTab} onChange={changeTabHandler}>
         {tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
             <TabTime>{tab.timeInMinutes} мин</TabTime>
@@ -496,7 +500,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
             </TabPrice>
           </StyledTab>
         ))}
-      </StyledTabs>
+      </StyledTabs>}
       <Block onlyOneCard={tabs.length === 1}>
         {loading && <Spinner />}
         <Datepicker>

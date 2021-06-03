@@ -238,9 +238,13 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const enabledDates = sessions.map(session => session.startDatetime)
   const [currentDate, changeCurrentDate] = useState<Date | null>(null)
 
-  /*useEffect(() => {
+  useEffect(() => {
     changeCurrentDate(date(enabledDates[0]).toDate())
-  }, [activeTab, enabledDates[0]])*/
+  }, [activeTab, enabledDates[0]])
+
+  useEffect(() => {
+    changeActiveTab(activeTab)
+  }, [])
 
   const payForTheSessionHandler = () => {
     _toggleCreditCardsModal(true)
@@ -250,8 +254,8 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const formattedDate = date(currentDate || date()).format("DD MMMM")
   const currentDateEqual = date(currentDate || date()).format(equalDateFormat)
 
-  if (!props.coach.prices[activeTab] && tabs.length) {
-    //activeTab === "PROMO" ? changeActiveTab("PROMO") : changeActiveTab(tabs[0].key)
+  if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) {
+    changeActiveTab(tabs[0].key)
   }
 
   const times = sessions
@@ -278,7 +282,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   return (
     <>
       <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
-      {/*activeTab === "PROMO" ? null :
+      {activeTab === "PROMO" ? null :
               <StyledTabs value={activeTab} onChange={changeActiveTab}>
         {tabs.map(tab => (
                 <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
@@ -286,7 +290,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
                   <TabPrice>/{tab.price} ₽</TabPrice>
                 </StyledTab>
         ))}
-      </StyledTabs>*/}
+      </StyledTabs>}
       <Block onlyOneCard={tabs.length === 1}>
         {loading && <Spinner />}
         <Datepicker>

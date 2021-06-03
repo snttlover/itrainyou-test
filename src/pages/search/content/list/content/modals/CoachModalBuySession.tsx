@@ -63,7 +63,7 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const currentDateEqual = date(currentDate as Date).format(equalDateFormat)
 
   if (!props.coach.prices[activeTab] && tabs.length) {
-    changeActiveTab(tabs[0].key)
+    //changeActiveTab(tabs[0].key)
   }
 
   const times = allSessions
