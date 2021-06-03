@@ -1,7 +1,6 @@
 import { Button } from "@/oldcomponents/button/normal/Button"
 import { CoachCard } from "@/oldcomponents/coach-card/CoachCard"
-import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
-import { ContentContainer, FreeSessionsContainer } from "@/oldcomponents/layouts/ContentContainer"
+import { FreeSessionsContainer } from "@/oldcomponents/layouts/ContentContainer"
 import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { SessionCard } from "@/pages/client/home/SessionCard"
@@ -17,16 +16,14 @@ import {
   loadRecommendationsFx,
   loadUpcomingSessionsFx,
   freeSessionsPageMounted,
-} from "./home.model"
+} from "../home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { clientCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
-import { Onboarding } from "@/pages/client/home/Onboarding"
 import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
-import { Calendar } from "@/oldcomponents/calendar/Calendar"
-import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
-import { $allFreeSessionsStore, $coach, $sessionsPickerStore } from "@/pages/search/coach-by-id/models/units"
+import { $allFreeSessionsStore } from "@/pages/search/coach-by-id/models/units"
 import { HomeCalendar } from "@/pages/client/home/content/HomeCalendar"
+import { Icon } from "@/oldcomponents/icon/Icon"
 
 const PageContainer = styled.div`
   display: flex;
@@ -100,6 +97,10 @@ const CalendarContainer = styled.div`
   align-items: flex-start;
   max-width: 276px;
   margin-right: auto;
+
+  ${MediaRange.lessThan("tablet")`
+    display: none;
+  `}
 `
 
 const CalendarTitle = styled.div`
@@ -114,9 +115,76 @@ const CalendarTitle = styled.div`
   margin-bottom: 16px;
 `
 
+const TabletCalendarContainer = styled.div`
+  background-color: white;
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 32px;
+
+  ${MediaRange.lessThan("tablet")`
+    display: flex;
+  `}
+`
+
+const Arrow = styled(Icon).attrs({ name: "arrow" })`
+  height: 20px;
+  width: 20px;
+  fill: #424242;
+  margin-left: auto;
+`
+
+const CalendarIcon = styled(Icon).attrs({ name: "calendar" })`
+  height: 20px;
+  width: 20px;
+  margin-right: 24px;
+  fill: ${props => props.theme.colors.primary};
+`
+
+const Description = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #5B6670;
+`
+
+const TabletPageContainer = styled.div`
+  max-width: 576px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 auto;
+`
+
+const ContentContainer = styled.div`
+  max-width: 1060px;
+  margin: 0 auto;
+
+  ${MediaRange.lessThan("mobile")`
+    max-width: 288px;
+  `}
+`
+
+
+const TabletCalendar = ({ setShowed }: any) => {
+
+  return (
+    <TabletPageContainer>
+      <div onClick={() => setShowed(false)}>Назад</div>
+      <CalendarTitle>Календарь всех бесплатных сессий</CalendarTitle>
+      <HomeCalendar freeSessionsModule={$allFreeSessionsStore} />
+    </TabletPageContainer>
+  )
+}
+
 
 export const FreeSessionsHomePage = () => {
   const [isFirstRender, setIsFirstRender] = useState(true)
+  const [tabletCalendarShowed, setShowed] = useState(false)
+
   const activeSessions = useStore($activeSessions)
   const upcomingSessions = useStore($upcomingSessions)
   const recommendations = useStore($recommendations)
@@ -141,44 +209,55 @@ export const FreeSessionsHomePage = () => {
 
   return (
     <>
-      <PageContainer>
-        <FreeSessionsContainer>
 
-          <ContentContainer>
-            {activeSessions.length > 0 &&(
-              <Block>
-                <Title>Сессия уже началась!</Title>
-                {activeSessions.map(session => (
-                  <ActiveSessionCard session={session} key={session.id}>
-                    <div onClick={(e) => startSessionClickHandler(e, session.id)}>
-                      <SessionEnterButton data-slim>Зайти в сессию</SessionEnterButton>
-                      <SessionEnterText>Зайти в сессию</SessionEnterText>
-                    </div>
-                  </ActiveSessionCard>
-                ))}
-                {activeSessionsPending && <Loader />}
-              </Block>
-            )}
-          </ContentContainer>
+      { tabletCalendarShowed ?
+        <TabletCalendar setShowed={setShowed} />
+        :
+        <PageContainer>
+          <FreeSessionsContainer>
 
-          {upcomingSessions.length ? (
+            <CheckMediaDevices />
+
             <ContentContainer>
-              <Block>
-                <CheckMediaDevices />
-                <Title>Ближайшие сессии</Title>
-                {upcomingSessions.map(session => (
-                  <TodaySessionCard session={session} key={session.id} />
-                ))}
-              </Block>
+              {activeSessions.length > 0 &&(
+                <Block>
+                  <Title>Сессия уже началась!</Title>
+                  {activeSessions.map(session => (
+                    <ActiveSessionCard session={session} key={session.id}>
+                      <div onClick={(e) => startSessionClickHandler(e, session.id)}>
+                        <SessionEnterButton data-slim>Зайти в сессию</SessionEnterButton>
+                        <SessionEnterText>Зайти в сессию</SessionEnterText>
+                      </div>
+                    </ActiveSessionCard>
+                  ))}
+                  {activeSessionsPending && <Loader />}
+                </Block>
+              )}
             </ContentContainer>
 
-          ) : null}
-
-          {
-            !(upcomingSessionsPending || isFirstRender) &&
+            {upcomingSessions.length ? (
               <ContentContainer>
                 <Block>
                   <CheckMediaDevices />
+                  <Title>Ближайшие сессии</Title>
+                  {upcomingSessions.map(session => (
+                    <TodaySessionCard session={session} key={session.id} />
+                  ))}
+                </Block>
+              </ContentContainer>
+
+            ) : null}
+
+            <TabletCalendarContainer onClick={() => setShowed(true)}>
+              <CalendarIcon />
+              <Description>Календарь бесплатных сессий</Description>
+              <Arrow />
+            </TabletCalendarContainer>
+
+            {
+              !(upcomingSessionsPending || isFirstRender) &&
+              <ContentContainer>
+                <Block>
                   <Title>Подобранные коучи</Title>
                   <InfiniteScroll
                     loader={<Loader />}
@@ -193,16 +272,17 @@ export const FreeSessionsHomePage = () => {
                   </InfiniteScroll>
                 </Block>
               </ContentContainer>
-          }
+            }
 
-        </FreeSessionsContainer>
-        {/*Calendar*/}
-        {/*<Datepicker />*/}
-        <CalendarContainer>
-          <CalendarTitle>Календарь всех бесплатных сессий</CalendarTitle>
-          <HomeCalendar freeSessionsModule={$allFreeSessionsStore} />
-        </CalendarContainer>
-      </PageContainer>
+          </FreeSessionsContainer>
+          {/*Calendar*/}
+          {/*<Datepicker />*/}
+          <CalendarContainer>
+            <CalendarTitle>Календарь всех бесплатных сессий</CalendarTitle>
+            <HomeCalendar freeSessionsModule={$allFreeSessionsStore} />
+          </CalendarContainer>
+        </PageContainer>
+      }
 
     </>
   )

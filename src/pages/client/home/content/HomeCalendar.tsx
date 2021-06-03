@@ -489,7 +489,7 @@ const FooterWrapper = styled.div`
 const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
-type Test = DashboardSession & {
+type Types = CoachSession & {
   selected: boolean
 }
 
@@ -500,8 +500,8 @@ type FreeSessionTypes = {
       id?: number
       params: GetCoachSessionsParamsTypes
     }>
-    sessionsList: Store<Test[]>
-    toggleSession: Event<Test>
+    sessionsList: Store<Types[]>
+    toggleSession: Event<Types>
     deleteSession: Event<number> }
 }
 
@@ -609,8 +609,12 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
             {selected.map(session => (
               <>
                 <RowBlock>
-                  <StyledAvatar src={session.coach.avatar} />
-                  <CoachName>{session.coach!.firstName} {session.coach!.lastName}</CoachName>
+                  <StyledAvatar src={
+                    // @ts-ignore
+                    session.coach?.avatar} />
+                  <CoachName>{
+                    // @ts-ignore
+                    session.coach?.firstName} {session.coach?.lastName}</CoachName>
                 </RowBlock>
                 <RowBlock>
                   <Star />

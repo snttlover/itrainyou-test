@@ -75,10 +75,6 @@ export const genFreeSessions = () => {
     sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
   )
 
-  $freeSessionsList.watch(payload => console.log("$freeSessionsList", payload))
-  $freeSessions.watch(payload => console.log("$freeSessions", payload))
-  selectedSessionIds.watch(payload => console.log("selectedSessionIds", payload))
-
   /*sample({
     clock: loadCoachSessions,
     source: $id,

@@ -20,12 +20,14 @@ export const FreeSessionsContainer = styled.div`
   max-width: 576px;
   min-width: 320px;
   margin-left: auto;
+  margin-right: 24px;
 
   ${MediaRange.lessThan("tablet")`
     padding: 0 36px 16px;
   `}
 
   ${MediaRange.lessThan("mobile")`
+    max-width: 288px;
     padding: 0 40px 16px;
   `}
 `
