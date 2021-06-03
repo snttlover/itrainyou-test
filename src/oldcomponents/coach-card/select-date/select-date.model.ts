@@ -15,6 +15,7 @@ import {
   restore,
   sample,
   split,
+  guard,
   Store
 } from "effector-root"
 import { changeShowFundUpDialog, finishSaveClientCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
@@ -226,7 +227,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     source: $id,
     fn: (id, req) => ({
       id,
-      is_free_session: freeSessions,
+      //is_free_session: freeSessions,
       ...req.params,
     }),
     target: fetchCoachSessionsListFx,
@@ -281,7 +282,17 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
   const changeDurationTab = createEvent<DurationType>()
 
   const initialTabState = freeSessions ? "PROMO" : "D30"
-  const $durationTab = createStore<DurationType>(initialTabState).on(changeDurationTab, (_, payload) => payload)
+  const $isFree = createStore<boolean>(freeSessions)
+  const $durationTab = createStore<DurationType>("PROMO").on(changeDurationTab, (_, payload) => payload)
+
+  $durationTab.watch(payload => console.log("$durationTab",payload))
+  changeDurationTab.watch(payload => console.log("changeDurationTab",payload))
+
+
+  //guard({
+  //       source: changeDurationTab,
+  //       filter: $isFree,
+  //     })
 
   sample({
     clock: changeDurationTab,

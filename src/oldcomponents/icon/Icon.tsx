@@ -102,6 +102,7 @@ export type IconName =
         | "step-done"
         | "checkbox-active-filled-border"
         | "checkbox-border-filled"
+        | "go-back"
 
 type IconProps = {
   name: IconName,

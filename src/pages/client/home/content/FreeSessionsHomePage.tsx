@@ -31,6 +31,10 @@ const PageContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   margin: 24px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin: 16px;
+  `}
 `
 
 const Block = styled.div`
@@ -62,6 +66,7 @@ const TodaySessionCard = styled(SessionCard)`
 
 const RecommendationCoachCard = styled(CoachCard)`
   margin-top: 12px;
+  max-width: unset;
 
   ${MediaRange.greaterThan("mobile")`
     margin-top: 24px;
@@ -98,7 +103,7 @@ const CalendarContainer = styled.div`
   max-width: 276px;
   margin-right: auto;
 
-  ${MediaRange.lessThan("tablet")`
+  ${MediaRange.lessThan("laptop")`
     display: none;
   `}
 `
@@ -123,7 +128,7 @@ const TabletCalendarContainer = styled.div`
   padding: 16px;
   margin-bottom: 32px;
 
-  ${MediaRange.lessThan("tablet")`
+  ${MediaRange.lessThan("laptop")`
     display: flex;
   `}
 `
@@ -157,15 +162,34 @@ const TabletPageContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   margin: 0 auto;
+
+  ${MediaRange.lessThan("mobile")`
+    align-items: center;
+  `}
 `
 
 const ContentContainer = styled.div`
   max-width: 1060px;
   margin: 0 auto;
+`
 
-  ${MediaRange.lessThan("mobile")`
-    max-width: 288px;
-  `}
+const GoBackIcon = styled(Icon).attrs({ name: "go-back" })`
+  height: 20px;
+  width: 20px;
+  fill: ${props => props.theme.colors.primary};
+`
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${props => props.theme.colors.primary};
 `
 
 
@@ -173,7 +197,10 @@ const TabletCalendar = ({ setShowed }: any) => {
 
   return (
     <TabletPageContainer>
-      <div onClick={() => setShowed(false)}>Назад</div>
+      <Row onClick={() => setShowed(false)}>
+        <GoBackIcon />
+        <div>Назад</div>
+      </Row>
       <CalendarTitle>Календарь всех бесплатных сессий</CalendarTitle>
       <HomeCalendar freeSessionsModule={$allFreeSessionsStore} />
     </TabletPageContainer>

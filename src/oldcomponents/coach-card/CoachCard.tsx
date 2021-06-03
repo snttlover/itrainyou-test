@@ -311,13 +311,13 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
   if (process.env.BUILD_TARGET === "client") {
     sessionsListModel = useMemo(() => genCoachSessions(coach.id, !!freeSessions), [coach.id])
 
-    if (isActive) {
+    /*if (isActive) {
       sessionsListModel.loadData({
         params: {
-          duration_type: "D30",
+          duration_type: !!freeSessions ? "PROMO" : "D30",
         },
       })
-    }
+    }*/
   }
 
   const toggleCalendar = (e: React.SyntheticEvent) => {
