@@ -10,6 +10,7 @@ import { MainWrapper } from "../common/MainWrapper"
 import { Header } from "../common/header/Header"
 import { Hero } from "./content/Hero"
 import { Advantages } from "./content/Advantages"
+import { FirstFree } from "./content/FirstFree"
 import { Publications } from "../common/publications/Publications"
 import { Questions } from "../common/questions/Questions"
 import { Footer } from "../common/footer/Footer"
@@ -24,6 +25,7 @@ const LandingClientPageMarkUp = () => (
     <MainWrapper>
       <Hero />
       <Advantages advantages={advantages} />
+      <FirstFree />
       <Publications publications={publications} />
       <Questions questions={questions} />
     </MainWrapper>
