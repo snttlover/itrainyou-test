@@ -18,6 +18,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
+import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -249,6 +250,7 @@ export type SelectDatetimeTypes = {
     }
     buySessionsLoading: Store<boolean>
     buySessionBulk: Event<BulkBookSessionsRequest>
+    bulkFreeSession: Event<SessionRequestParams>
   }
 }
 
@@ -261,6 +263,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
+  const bulkFreeSession = useEvent(props.sessionsData.bulkFreeSession)
 
   const enabledDates = sessions.map(session => session.startDatetime)
   const [currentDate, changeCurrentDate] = useState<Date | null>(null)
@@ -273,10 +276,6 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     changeActiveTab(activeTab)
   }, [])
 
-  const payForTheSessionHandler = () => {
-    _toggleCreditCardsModal(true)
-    changeCurrentDate(null)
-  }
 
   const formattedDate = date(currentDate || date()).format("DD MMMM")
   const currentDateEqual = date(currentDate || date()).format(equalDateFormat)
@@ -305,6 +304,11 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
   
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
+
+  const payForTheSessionHandler = () => {
+    activeTab === "PROMO" ? bulkFreeSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardsModal(true)
+    changeCurrentDate(null)
+  }
 
   return (
     <>

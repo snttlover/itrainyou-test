@@ -458,7 +458,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
 
-  const _showCreditCardsModal = () => _toggleCreditCardModal(true)
+  //const _showCreditCardsModal = () => _toggleCreditCardModal(true)
 
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
@@ -467,7 +467,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
   const toggleSession = useEvent(props.sessionsData.toggleSession)
-  const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
+  const bulkFreeSession = useEvent(props.sessionsData.bulkFreeSession)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const enabledDates = sessions.map(session => session.startDatetime)
@@ -480,14 +480,9 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     }
   }, [enabledDates[0]])
 
-  useEffect(() => {
+  /*useEffect(() => {
     changeActiveTab(activeTab)
-  }, [])
-
-  const payForTheSessionHandler = () => {
-    _showCreditCardsModal()
-    changeCurrentDate(null)
-  }
+  }, [])*/
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
@@ -524,6 +519,11 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
 
+  const payForTheSessionHandler = () => {
+    activeTab === "PROMO" ? bulkFreeSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardModal(true)
+    changeCurrentDate(null)
+  }
+
   return (
     <Container>
       {activeTab === "PROMO" ? null : <StyledTabs value={activeTab} onChange={changeTabHandler}>
@@ -554,9 +554,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
             // startFrom={new Date(date(currentDate || undefined).toDate())}
             />
 
-            {/*<FooterWrapper>*/}
-            {/*  <TabletFooter />*/}
-            {/*</FooterWrapper>*/}
           </Datepicker>
           <SelectTimeContainer>
             <WidthCurrentDateConditionWrapper>

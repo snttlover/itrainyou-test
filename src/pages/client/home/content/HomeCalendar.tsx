@@ -23,6 +23,7 @@ import { CoachSessionWithSelect } from "@/oldcomponents/coach-card/select-date/s
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import starIcon from "@/oldcomponents/coach-card/images/star.svg"
+import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
 
 
 type StyledTabTypes = {
@@ -346,7 +347,10 @@ type FreeSessionTypes = {
     }>
     sessionsList: Store<any[]>
     toggleSession: Event<any>
-    deleteSession: Event<number> }
+    deleteSession: Event<number>
+    bulkFreeSession: Event<SessionRequestParams>
+    buySessionsLoading: Store<boolean>
+  }
 }
 
 export const HomeCalendar = (props: FreeSessionTypes) => {
@@ -358,20 +362,15 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const sessions = useStore(props.freeSessionsModule.sessionsList)
   const loading = useStore(props.freeSessionsModule.loading)
-  //const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
+  const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
   //const activeTab = useStore(props.freeSessionsModule.tabs.$durationTab)
 
   const loadData = useEvent(props.freeSessionsModule.loadData)
   //const changeActiveTab = useEvent(props.freeSessionsModule.tabs.changeDurationTab)
   const deleteSession = useEvent(props.freeSessionsModule.deleteSession)
   const toggleSession = useEvent(props.freeSessionsModule.toggleSession)
-  //const buySessionBulk = useEvent(props.freeSessionsModule.buySessionBulk)
-  //const lastTabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
-  const tab = {
-    timeInMinutes: "30",
-    key: "PROMO",
-    price: 0
-  }
+  const bulkFreeSession = useEvent(props.freeSessionsModule.bulkFreeSession)
+
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
@@ -384,11 +383,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
     }
   }, [enabledDates[0]])
 
-
-  const payForTheSessionHandler = () => {
-    _showCreditCardsModal()
-    changeCurrentDate(null)
-  }
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
@@ -416,6 +410,12 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
+
+
+  const payForTheSessionHandler = () => {
+    bulkFreeSession({session: selected[0].id, type: "BOOK"})
+    changeCurrentDate(null)
+  }
 
   return (
     <Container>
@@ -465,10 +465,9 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
             <ButtonContainer>
               <IsAuthed>
                 <StyledBuyButton
-                  disabled={true}
+                  disabled={buyLoading || selected.length === 0}
                   onClick={payForTheSessionHandler}
                 >
-                  {/*buyLoading || selected.length === 0*/}
                       Забронировать
                 </StyledBuyButton>
               </IsAuthed>

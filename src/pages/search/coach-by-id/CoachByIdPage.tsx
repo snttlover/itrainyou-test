@@ -107,8 +107,10 @@ const Datepicker = () => {
   const coach = useStore($coach)
   const location = useLocation()
 
+  const data = !!location.state ? $freeSessionsPickerStore : $sessionsPickerStore
+
   if (coach) {
-    return <CoachDatepicker coach={coach} sessionsData={!!location.state ? $freeSessionsPickerStore : $sessionsPickerStore} />
+    return <CoachDatepicker coach={coach} sessionsData={data} />
   }
   return null
 }
@@ -117,8 +119,10 @@ const CardPicker = () => {
   const coach = useStore($coach)
   const location = useLocation()
 
+  const data = !!location.state ? $freeSessionsPickerStore : $sessionsPickerStore
+
   if (coach) {
-    return <SelectCreditCardDialog coach={coach} sessionsData={!!location.state ? $freeSessionsPickerStore : $sessionsPickerStore} />
+    return <SelectCreditCardDialog coach={coach} sessionsData={data} />
   }
   return null
 }

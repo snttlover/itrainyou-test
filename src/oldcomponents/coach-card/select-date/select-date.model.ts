@@ -21,6 +21,9 @@ import {
 import { changeShowFundUpDialog, finishSaveClientCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 import { getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
+import { createClientSessionRequest } from "@/lib/api/client/create-client-session-request"
+import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
+import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -45,10 +48,10 @@ export const genFreeSessions = () => {
   >().use((params) => getFreeSessionsList(params))
 
   const loadAllFreeSessions = createEvent<RequestType>()
-  const loadParams = restore(
-    loadAllFreeSessions.map(req => req.params),
-    {}
-  )
+
+  const bulkFreeSessionFx = createEffect({
+    handler: (params: SessionRequestParams) => createClientSessionRequest(params)
+  })
 
   const isFetching = createStore(false)
     .on(loadAllFreeSessions, () => true)
@@ -76,16 +79,6 @@ export const genFreeSessions = () => {
     sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
   )
 
-  /*sample({
-    clock: loadCoachSessions,
-    source: $id,
-    fn: (id, req) => ({
-      id,
-      ...req.params,
-    }),
-    target: fetchCoachSessionsListFx,
-  })*/
-
   forward({
     from: loadAllFreeSessions.map((req) => ({
       ...req.params,
@@ -93,29 +86,33 @@ export const genFreeSessions = () => {
     to: fetchFreeSessionsListFx,
   })
 
-  const buySessionBulk = createEvent<BulkBookSessionsRequest>()
+  const bulkFreeSession = createEvent<SessionRequestParams>()
+
 
   forward({
-    from: buySessionBulk.map((params) => {
-      localStorage.removeItem("sessions")
-      return params
-    }),
-    to: buySessionsFx,
+    from: bulkFreeSessionFx.done,
+    to: resetSelectedSessions,
+  })
+
+  /*forward({
+    from: bulkFreeSessionFx.done.map((params) => ({})),
+    to: fetchFreeSessionsListFx,
+  })*/
+
+  forward({
+    from: bulkFreeSessionFx.done,
+    to: getMyUserFx,
   })
 
   forward({
-    from: buySessionsFx,
-    to: resetSelectedSessions
+    from: bulkFreeSession,
+    to: bulkFreeSessionFx,
   })
 
-  const { insufficientBalance, __: unknownError } = split(buySessionsFx.fail, {
+  const { insufficientBalance, __: unknownError } = split(bulkFreeSessionFx.fail, {
     insufficientBalance: ({ error }) => isAxiosError(error) && error.response?.data.code === "INSUFFICIENT_BALANCE",
   })
 
-  const sessionBookFailByInsufficientBalanceToast: Toast = {
-    type: "error",
-    text: "Недостаточно средств, пополните баланс",
-  }
 
   /*sample({ clock: insufficientBalance, source: $id }).watch(id => {
     runInScope(toasts.remove, sessionBookFailByInsufficientBalanceToast)
@@ -130,54 +127,14 @@ export const genFreeSessions = () => {
     runInScope(toasts.add, sessionBookFailToast)
   })
 
-  /*sample({
-    clock: buySessionsFx.finally,
-    source: $id,
-    target: attach({
-      source: loadParams,
-      effect: fetchFreeSessionsListFx,
-      mapParams: (id: number, params) => ({ id, ...params }),
-    }),
-  })*/
-
-  /*const changeDurationTab = createEvent<DurationType>()
-  const $durationTab = createStore<DurationType>("PROMO").on(changeDurationTab, (_, payload) => payload)*/
-
-  /*sample({
-    clock: changeDurationTab,
-    source: combine({ durationTab: $durationTab, coachId: $id }),
-    fn: ({ durationTab, coachId }) => ({
-      id: coachId,
-      params: {
-        duration_type: durationTab,
-      },
-    }),
-    target: loadCoachSessions,
-  })*/
-  
-  /*forward({
-    from: changeDurationTab.map((durationTab) => ({
-      params: {
-        is_free_session: true,
-        duration_type: durationTab,
-      },
-    })),
-    to: loadAllFreeSessions,
-  })*/
-
   return {
     loading: isFetching,
     sessionsList: $freeSessionsList,
     loadData: loadAllFreeSessions,
     toggleSession,
     deleteSession,
-    buySessionsLoading: combine(
-      buySessionsFx.pending,
-      finishSaveClientCardFx.pending,
-      (buySessionsPending, finishSaveCardPending) => buySessionsPending || finishSaveCardPending
-    ),
-    buySessionBulk,
-    buySessionsFx
+    buySessionsLoading: bulkFreeSessionFx.pending,
+    bulkFreeSession,
   }
 }
 
@@ -196,6 +153,10 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     {}
   )
 
+  const bulkFreeSessionFx = createEffect({
+    handler: (params: SessionRequestParams) => createClientSessionRequest(params)
+  })
+
   const isFetching = createStore(false)
     .on(loadCoachSessions, () => true)
     .on(fetchCoachSessionsListFx, () => true)
@@ -210,7 +171,12 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
       if (state.includes(selectedSession.id)) {
         return state.filter(id => id !== selectedSession.id)
       } else {
-        return [...state, selectedSession.id]
+        if (freeSessions) {
+          return [selectedSession.id]
+        }
+        else {
+          return [...state, selectedSession.id]
+        }
       }
     })
     .on(deleteSession, (state, sessionId) => state.filter(id => sessionId !== id))
@@ -222,16 +188,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
   )
 
-  sample({
-    clock: loadCoachSessions,
-    source: $id,
-    fn: (id, req) => ({
-      id,
-      //is_free_session: freeSessions,
-      ...req.params,
-    }),
-    target: fetchCoachSessionsListFx,
-  })
+  const bulkFreeSession = createEvent<SessionRequestParams>()
 
   const buySessionBulk = createEvent<BulkBookSessionsRequest>()
 
@@ -243,10 +200,21 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     to: buySessionsFx,
   })
 
-  forward({
-    from: buySessionsFx,
+  /*forward({
+    from: buySessionsFx.done,
     to: resetSelectedSessions
+  })*/
+
+  forward({
+    from: bulkFreeSession,
+    to: bulkFreeSessionFx,
   })
+
+  forward({
+    from: bulkFreeSessionFx.done,
+    to: getMyUserFx,
+  })
+
 
   const { insufficientBalance, __: unknownError } = split(buySessionsFx.fail, {
     insufficientBalance: ({ error }) => isAxiosError(error) && error.response?.data.code === "INSUFFICIENT_BALANCE",
@@ -269,8 +237,10 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     runInScope(toasts.add, sessionBookFailToast)
   })
 
+  const $isId = $id.map(state => state > 0)
+
   sample({
-    clock: buySessionsFx.finally,
+    clock: guard({source: buySessionsFx.finally, filter: $isId}),
     source: $id,
     target: attach({
       source: loadParams,
@@ -279,20 +249,23 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     }),
   })
 
+  sample({
+    clock: guard({source: loadCoachSessions, filter: $isId}),
+    source: $id,
+    fn: (id, req) => ({
+      id,
+      ...req.params,
+    }),
+    target: fetchCoachSessionsListFx,
+  })
+
   const changeDurationTab = createEvent<DurationType>()
 
   const initialTabState = freeSessions ? "PROMO" : "D30"
-  const $isFree = createStore<boolean>(freeSessions)
   const $durationTab = createStore<DurationType>(initialTabState).on(changeDurationTab, (_, payload) => payload)
 
   $durationTab.watch(payload => console.log("$durationTab",payload))
   changeDurationTab.watch(payload => console.log("changeDurationTab",payload))
-
-
-  //guard({
-  //       source: changeDurationTab,
-  //       filter: $isFree,
-  //     })
 
   sample({
     clock: changeDurationTab,
@@ -320,9 +293,11 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     buySessionsLoading: combine(
       buySessionsFx.pending,
       finishSaveClientCardFx.pending,
-      (buySessionsPending, finishSaveCardPending) => buySessionsPending || finishSaveCardPending
+      bulkFreeSessionFx.pending,
+      (buySessionsPending, finishSaveCardPending, bulkFreeSessionFx) => buySessionsPending || finishSaveCardPending || bulkFreeSessionFx
     ),
     buySessionBulk,
+    bulkFreeSession,
     buySessionsFx
   }
 }
