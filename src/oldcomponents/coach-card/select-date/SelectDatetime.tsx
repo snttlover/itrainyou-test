@@ -34,6 +34,7 @@ const Block = styled.div<StyledTabTypes>`
   padding: 24px 24px 20px;
   padding-top: ${props => (props.onlyOneCard ? 0 : 24)}px;
   display: flex;
+  flex-direction: column;
   min-height: 300px;
   position: relative;
   @media screen and (max-width: 600px) {
@@ -45,10 +46,36 @@ const Block = styled.div<StyledTabTypes>`
   }
 `
 
+const CalendarDirectionBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const CalendarSubTitle = styled.div`
+  text-align: right;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #5B6670;
+`
+
+const Description = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: right;
+  color: #9AA0A6;
+  margin-top: 24px;
+`
+
 const Datepicker = styled.div`
   width: 50%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
   border-right: 1px solid #dbdee0;
   padding-right: 32px;
@@ -282,67 +309,78 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   return (
     <>
       <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
+
       {activeTab === "PROMO" ? null :
-              <StyledTabs value={activeTab} onChange={changeActiveTab}>
-        {tabs.map(tab => (
-                <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
-                  <TabTime>{tab.timeInMinutes} мин</TabTime>
-                  <TabPrice>/{tab.price} ₽</TabPrice>
-                </StyledTab>
-        ))}
-      </StyledTabs>}
+        <StyledTabs value={activeTab} onChange={changeActiveTab}>
+          {tabs.map(tab => (
+            <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
+              <TabTime>{tab.timeInMinutes} мин</TabTime>
+              <TabPrice>/{tab.price} ₽</TabPrice>
+            </StyledTab>
+          ))}
+        </StyledTabs>}
+
       <Block onlyOneCard={tabs.length === 1}>
+        {activeTab === "PROMO" ? <CalendarSubTitle>Бесплатные сессии</CalendarSubTitle> : null}
         {loading && <Spinner />}
-        <Datepicker>
-          <StyledCalendar
-            value={currentDate}
-            startFrom={new Date(date(currentDate || undefined).valueOf())}
-            enabledDates={enabledDates}
-            onChange={changeCurrentDate}
-            isBig={true}
-          />
-        </Datepicker>
-        <SelectTimeContainer>
-          <SelectDateHeader>{formattedDate}</SelectDateHeader>
-          <Times>
-            {times.map(session => (
-              <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>
-                {session.start_datetime}
-              </Tag>
-            ))}
-          </Times>
-          <Divider />
-          <WidthAmountConditionWrapper>
-            <SelectedDatetimeTable>
-              <tbody>
-                {selected.map(session => (
-                  <tr key={session.id}>
-                    <td>{session.date}</td>
-                    <TimeColumn>{session.time}</TimeColumn>
-                  </tr>
-                ))}
-              </tbody>
-            </SelectedDatetimeTable>
-            <Text>Итого: {amount} ₽</Text>
-          </WidthAmountConditionWrapper>
-          <ButtonContainer>
-            <ButtonWrapper>
-              <IsAuthed>
-                <Button
-                  disabled={buyLoading || selected.length === 0}
-                  onClick={payForTheSessionHandler}
-                >
+        <CalendarDirectionBlock>
+          <Datepicker>
+            {activeTab === "PROMO" ?  <Description>Выберите день</Description> : null}
+            <StyledCalendar
+              value={currentDate}
+              startFrom={new Date(date(currentDate || undefined).valueOf())}
+              enabledDates={enabledDates}
+              onChange={changeCurrentDate}
+              isBig={true}
+            />
+          </Datepicker>
+
+          <SelectTimeContainer>
+            {activeTab === "PROMO" ?  <Description>Выберите время</Description> : null}
+            <SelectDateHeader>{formattedDate}</SelectDateHeader>
+
+            <Times>
+              {times.map(session => (
+                <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>
+                  {session.start_datetime}
+                </Tag>
+              ))}
+            </Times>
+
+            <Divider />
+
+            <WidthAmountConditionWrapper>
+              <SelectedDatetimeTable>
+                <tbody>
+                  {selected.map(session => (
+                    <tr key={session.id}>
+                      <td>{session.date}</td>
+                      <TimeColumn>{session.time}</TimeColumn>
+                    </tr>
+                  ))}
+                </tbody>
+              </SelectedDatetimeTable>
+              <Text>Итого: {amount} ₽</Text>
+            </WidthAmountConditionWrapper>
+            <ButtonContainer>
+              <ButtonWrapper>
+                <IsAuthed>
+                  <Button
+                    disabled={buyLoading || selected.length === 0}
+                    onClick={payForTheSessionHandler}
+                  >
                   Забронировать
-                </Button>
-              </IsAuthed>
-              <IsGuest>
-                <Link to='/auth/signup/1'>
-                  <Button>Зарегистрироваться</Button>
-                </Link>
-              </IsGuest>
-            </ButtonWrapper>
-          </ButtonContainer>
-        </SelectTimeContainer>
+                  </Button>
+                </IsAuthed>
+                <IsGuest>
+                  <Link to='/auth/signup/1'>
+                    <Button>Зарегистрироваться</Button>
+                  </Link>
+                </IsGuest>
+              </ButtonWrapper>
+            </ButtonContainer>
+          </SelectTimeContainer>
+        </CalendarDirectionBlock>
       </Block>
     </>
   )

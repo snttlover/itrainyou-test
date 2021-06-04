@@ -38,12 +38,46 @@ const Block = styled.div<StyledTabTypes>`
   flex-direction: column;
   background: #fff;
   padding: 24px 8px;
+`
+
+const CalendarSubTitle = styled.div`
+  text-align: right;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: #5B6670;
+`
+
+const Description = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: right;
+  color: #9AA0A6;
+  margin-top: 24px;
+
   ${MediaRange.between("mobile", "laptop")`
-    flex-direction: row;   
+    margin-top: 12px;
+    text-align: unset;
+    margin-left: auto;
   `}
 `
 
+const CalendarDirectionBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${MediaRange.between("mobile", "laptop")`
+    flex-direction: row;
+ `}
+`
+
 const Datepicker = styled.div`
+  display: flex;
+  flex-direction: column;
   border-bottom: 1px solid #dbdee0;
   padding-bottom: 4px;
   ${MediaRange.between("mobile", "laptop")`
@@ -62,6 +96,8 @@ const Datepicker = styled.div`
 `
 
 const SelectTimeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   width: 100%;
 
@@ -501,71 +537,86 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
           </StyledTab>
         ))}
       </StyledTabs>}
-      <Block onlyOneCard={tabs.length === 1}>
-        {loading && <Spinner />}
-        <Datepicker>
-          <StyledCalendar
-            value={currentDate}
-            enabledDates={enabledDates}
-            onChange={changeCurrentDate}
-            isBig={true}
-            // startFrom={new Date(date(currentDate || undefined).toDate())}
-          />
 
-          {/*<FooterWrapper>*/}
-          {/*  <TabletFooter />*/}
-          {/*</FooterWrapper>*/}
-        </Datepicker>
-        <SelectTimeContainer>
-          <WidthCurrentDateConditionWrapper>
-            <StyledDateHeader>{formattedDate}</StyledDateHeader>
-            <Times>
-              {times.map(session => (
-                <Tag active={session.selected} key={session.id} onClick={() => toggleSession(session)}>
-                  {session.start_datetime}
-                </Tag>
-              ))}
-            </Times>
-          </WidthCurrentDateConditionWrapper>
-          <WidthAmountConditionWrapper>
-            <SelectedSessions>
-              {selected.map(session => (
-                <SelectedSession key={session.id}>
-                  <SessionDate>{session.date}</SessionDate>
-                  <SessionTime>{session.time}</SessionTime>
-                  <SessionPrice>
-                    {session.clientPrice}
-                    <RubleIcon />
-                  </SessionPrice>
-                  <DeleteIcon onClick={() => deleteSession(session.id)} />
-                </SelectedSession>
-              ))}
-            </SelectedSessions>
-            <Amount>
-              <AmountText>Итого:</AmountText>
-              <Summary>
-                {amount} <SummaryRuble />
-              </Summary>
-            </Amount>
-          </WidthAmountConditionWrapper>
-          <ButtonContainer>
-            <IsAuthed>
-              <StyledBuyButton
-                disabled={buyLoading || selected.length === 0}
-                onClick={payForTheSessionHandler}
-              >
+      <Block onlyOneCard={tabs.length === 1}>
+        {activeTab === "PROMO" ? <CalendarSubTitle>Бесплатные сессии</CalendarSubTitle> : null}
+        {loading && <Spinner />}
+        <CalendarDirectionBlock>
+          
+        
+          <Datepicker>
+            {activeTab === "PROMO" ?  <Description>Выберите день</Description> : null}
+            <StyledCalendar
+              value={currentDate}
+              enabledDates={enabledDates}
+              onChange={changeCurrentDate}
+              isBig={true}
+            // startFrom={new Date(date(currentDate || undefined).toDate())}
+            />
+
+            {/*<FooterWrapper>*/}
+            {/*  <TabletFooter />*/}
+            {/*</FooterWrapper>*/}
+          </Datepicker>
+          <SelectTimeContainer>
+            <WidthCurrentDateConditionWrapper>
+              <>
+
+                {activeTab === "PROMO" ?  <Description>Выберите время</Description> : null}
+                <StyledDateHeader>{formattedDate}</StyledDateHeader>
+
+                <Times>
+                  {times.map(session => (
+                    <Tag active={session.selected} key={session.id} onClick={() => toggleSession(session)}>
+                      {session.start_datetime}
+                    </Tag>
+                  ))}
+                </Times>
+
+              </>
+            </WidthCurrentDateConditionWrapper>
+            <WidthAmountConditionWrapper>
+              <SelectedSessions>
+                {selected.map(session => (
+                  <SelectedSession key={session.id}>
+                    <SessionDate>{session.date}</SessionDate>
+                    <SessionTime>{session.time}</SessionTime>
+                    <SessionPrice>
+                      {session.clientPrice}
+                      <RubleIcon />
+                    </SessionPrice>
+                    <DeleteIcon onClick={() => deleteSession(session.id)} />
+                  </SelectedSession>
+                ))}
+              </SelectedSessions>
+              <Amount>
+                <AmountText>Итого:</AmountText>
+                <Summary>
+                  {amount} <SummaryRuble />
+                </Summary>
+              </Amount>
+            </WidthAmountConditionWrapper>
+            <ButtonContainer>
+              <IsAuthed>
+                <StyledBuyButton
+                  disabled={buyLoading || selected.length === 0}
+                  onClick={payForTheSessionHandler}
+                >
                 Забронировать
-              </StyledBuyButton>
-            </IsAuthed>
-            <IsGuest>
-              <Link to={routeNames.signup("1")}>
-                <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
-              </Link>
-            </IsGuest>
-          </ButtonContainer>
-          {/*<DesktopFooter />*/}
-        </SelectTimeContainer>
+                </StyledBuyButton>
+              </IsAuthed>
+              <IsGuest>
+                <Link to={routeNames.signup("1")}>
+                  <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
+                </Link>
+              </IsGuest>
+            </ButtonContainer>
+            {/*<DesktopFooter />*/}
+          </SelectTimeContainer>
+        </CalendarDirectionBlock>
+        
       </Block>
+      
     </Container>
   )
 }
