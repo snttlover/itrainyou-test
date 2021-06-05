@@ -47,10 +47,10 @@ const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
       })
     })
   }, [])
-    
+
   const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif",".heic"]
   const maxSize = 104857600
-    
+
   const options = title === "Фотографии" ? ({
     onDropAccepted,
     onDropRejected,
@@ -91,7 +91,7 @@ export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChat
   const documents = useStore(module.data.$documents)
 
   const [visibility, setVisibility] = useState(false)
-    
+
   const menuItems = [
     {title: "Фотографии", iconName: "photos-icon", add: addImage, visible: !documents.length},
     {title: "Документы", iconName: "documents-icon", add: addDocument, visible: !images.length},
@@ -209,6 +209,7 @@ const UploadMenuContainer = styled.div`
   left: 0;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
+  z-index: 100;
 `
 
 const MenuItem = styled.div`
