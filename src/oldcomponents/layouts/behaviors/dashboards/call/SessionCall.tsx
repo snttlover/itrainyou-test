@@ -15,7 +15,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
   const Chat = createSessionChat($module.modules.chat)
 
   return () => {
-    const _update = useEvent($module.methods.update)
     const _toggleModal = useEvent(togglePermissionGrantedModal)
     const toggleChat = useEvent($module.modules.chat.methods.toggleVisibility)
 
@@ -40,11 +39,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
 
     useEffect(() => {
-      const timer = setInterval(() => {
-        if (time.minutesLeft > 0) {
-          _update()
-        }
-      }, 60000)
       window.addEventListener("beforeunload", function() {
         const x = 200
         const a = (new Date()).getTime() + x
@@ -53,7 +47,6 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
         while ((new Date()).getTime() < a) {}
       }, false)
       return () => {
-        clearInterval(timer)
         _toggleModal(false)
       }
     }, [])
