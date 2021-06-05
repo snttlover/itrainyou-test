@@ -56,7 +56,7 @@ export const createSessionChat = ($chatModule: ReturnType<typeof createSessionCh
 }
 
 const StyledChatContainer = styled(ChatContainer)`
-  width: 400px;
+  width: 320px;
   ${MediaRange.lessThan("mobile")`
     position: relative;
     height: calc(100% - 20px);
@@ -75,8 +75,8 @@ const MobileClose = styled.div`
 `
 
 export const SessionChatContainer = styled.div`
-  min-width: 400px;
-  width: 400px;
+  min-width: 320px;
+  width: 320px;
   display: none;
   position: relative;
   background: #fff;
