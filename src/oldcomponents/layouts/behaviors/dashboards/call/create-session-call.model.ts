@@ -17,6 +17,7 @@ import { clientChatConfig } from "@/pages/client/chats/chat/config"
 import { PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { getChatWithCoach } from "@/lib/api/chats/clients/get-chat-with-coach"
 import { getChatWithClient } from "@/lib/api/chats/coach/get-chat-with-client"
+import { createTicker } from "@/lib/effector/tick"
 
 type CreateSessionCallModuleConfig = {
   dashboard: "client" | "coach"
@@ -79,6 +80,13 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const chatModule = createSessionChatModule(config.chatConfig)
 
   const reset = createEvent()
+
+  const ticker = createTicker(1000)
+
+  forward({
+    from: reset,
+    to: ticker.stop
+  })
 
   forward({
     from: reset,
@@ -331,18 +339,18 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: config.socket.methods.userEnteredSession,
   })
 
-  const update = createEvent()
+  forward({
+    from: getTokenDataFx.doneData,
+    to: ticker.start
+  })
+
   const $sessionTokenData = restore<VideoTokenData>(getTokenDataFx.doneData, null).reset(reset)
-  const $minutesLeft = $sessionTokenData.map(data => {
+  const $minutesLeft = combine($sessionTokenData, ticker.$date, (data) => {
     if (!data) {
       return false
     }
     return date(data.sessionTerminationDatetime).diff(date(), "minute") + 1
-  }).on(update, (state,payload) => {
-    // @ts-ignore
-    const test: any = state - 1
-    return test})
-  //костыль
+  })
 
   const $isCloseToTerminate = combine($sessionTokenData, $minutesLeft, (tokenData, minutes) => {
     if (!tokenData || !minutes) {
@@ -509,7 +517,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       changeVideo,
       connectToSession,
       close,
-      update,
     },
     modules: {
       chat: chatModule
