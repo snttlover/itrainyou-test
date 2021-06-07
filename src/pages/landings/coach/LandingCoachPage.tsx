@@ -16,12 +16,13 @@ import { Calendar } from "./content/Calendar"
 import { BeforeAfter } from "./content/BeforeAfter"
 import { BecomeCoach } from "./content/BecomeCoach"
 import { Publications } from "../common/publications/Publications"
-import { Video } from "./content/Video"
+import { Video } from "../common/video/Video"
 import { Questions } from "../common/questions/Questions"
 import { Footer } from "../common/footer/Footer"
 
 import { advantages } from "./data/advantages"
 import { publications } from "./data/publications"
+import { videoData } from "./data/videoData"
 import { questions } from "./data/questions"
 
 const LandingCoachPageMarkUp = () => (
@@ -36,7 +37,7 @@ const LandingCoachPageMarkUp = () => (
       <BeforeAfter />
       <BecomeCoach />
       <Publications publications={publications} />
-      <Video />
+      <Video videoData={videoData} />
       <Questions questions={questions} />
     </MainWrapper>
     <Footer />

@@ -1,12 +1,9 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
-import { Container } from "../../common/Container"
+import { Container } from "../Container"
 
-import playIcon from "../assets/video/play.svg"
-
-// @ts-ignore
-import bgImg from "../assets/video/bg.jpg"
+import playIcon from "./assets/play.svg"
 
 const Wrapper = styled.section`
   background: white;
@@ -27,12 +24,12 @@ const StyledContainer = styled(Container)`
   }
 `
 
-const VideoContainer = styled.div`
+const VideoContainer = styled.div<{ bgImage: any }>`
   width: 100%;
   padding-bottom: 56.25%;
   height: 0;
   background-color: #5c5c5c;
-  background: url("${bgImg}");
+  background: url("${props => props.bgImage}");
   background-size: cover;
   border-radius: 8px;
   position: relative;
@@ -58,7 +55,7 @@ const Title = styled.h2`
   max-width: 190px;
 
   @media (min-width: 558px) {
-    max-width: 100%;
+    max-width: 690px;
   }
 
   @media (min-width: 768px) {
@@ -80,19 +77,23 @@ const PlayButton = styled.i`
   cursor: pointer;
 `
 
-export const Video = () => {
+type Props = {
+  videoData: any
+}
+
+export const Video = ({ videoData }: Props) => {
   const [isVideoOpen, openVideo] = useState(false)
 
   return (
     <Wrapper>
       <StyledContainer>
-        <Title>Кто мы такие и почему мы это делаем?</Title>
-        <VideoContainer>
+        <Title>{videoData.title}</Title>
+        <VideoContainer bgImage={videoData.bgImage}>
           {isVideoOpen ? (
             <iframe
               width='716'
               height='402'
-              src='https://www.youtube.com/embed/6at5gBa4ZbI?controls=1&autoplay=1'
+              src={`https://www.youtube.com/embed/${videoData.videoId}?controls=1&autoplay=1`}
               title='YouTube video player'
               frameBorder='0'
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
