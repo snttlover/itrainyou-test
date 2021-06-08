@@ -65,7 +65,7 @@ const StyledChatContainer = styled(ChatContainer)`
     margin-right: 10px;
   }
   ${DocInfo} {
-    max-width: 190px;
+    max-width: 140px;
   }
 `
 
