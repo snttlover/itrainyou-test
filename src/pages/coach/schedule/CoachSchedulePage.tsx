@@ -13,7 +13,6 @@ import { GoogleCalendar } from "@/pages/coach/schedule/GoogleCalendar"
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { Prices } from "@/pages/coach/schedule/Prices"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
-import { CalendarGate } from "@/pages/coach/schedule/models/sessions.model"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
@@ -30,7 +29,7 @@ const StyledTab = styled(Tab)`
   font-size: 16px;
   line-height: 24px;
   color: #424242;
-  flex: 1;
+  flex: 0 2;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -39,7 +38,6 @@ const StyledTab = styled(Tab)`
   border-bottom: 2px solid transparent;
   cursor: pointer;
   white-space: nowrap;
-  max-width: 200px;
   &[data-active="true"] {
     border-bottom: 2px solid ${props => props.theme.colors.primary};
     background: transparent;
@@ -87,7 +85,6 @@ export const CoachSchedulePage = () => {
   const coachAccess = useStore($coachAccess)
 
   useGate(ScheduleGate)
-  useGate(CalendarGate)
 
   const [tab, changeTab] = useState<"calendar" | "schedule" | "google_calendar" | "prices">("calendar")
 

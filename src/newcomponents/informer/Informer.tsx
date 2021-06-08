@@ -4,13 +4,13 @@ import { Icon } from "@/oldcomponents/icon/Icon"
 import { useState } from "react"
 import { MediaRange } from "@/lib/responsive/media"
 
-const Container = styled.div`
+const Container = styled.div<{noBack?: boolean}>`
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 16px;
-  background: #F8F8FD;
+  background: ${({ noBack }) => noBack ? "unset" : "#F8F8FD"};
   border-radius: 8px;
 
   ${MediaRange.lessThan("mobile")`
@@ -18,10 +18,11 @@ const Container = styled.div`
     `}
 `
 
-const InfoIcon = styled(Icon).attrs({name: "info"})`
-    width: 20px;
-    height: 20px;
-    margin-right: 20px;
+const InfoIcon = styled(Icon).attrs({name: "info"})<{colorful?: boolean}>`
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+  fill: ${({ colorful }) => colorful ? "#FF6B00" : "#5B6670"};
 `
 
 const Close = styled(Icon).attrs({ name: "close" })`
@@ -33,7 +34,7 @@ const Close = styled(Icon).attrs({ name: "close" })`
   margin-left: auto; 
 `
 
-const Content = styled.div`
+const Content = styled.div<{closable?: boolean}>`
     max-width: 85%;
     font-family: Roboto;
     font-style: normal;
@@ -45,19 +46,21 @@ const Content = styled.div`
     align-items: center;
 
     ${MediaRange.lessThan("mobile")`
-      max-width: 77%;
+      max-width:${
+  // @ts-ignore
+  ({ closable }) => closable ? "77%" : "85%"};
       flex-direction: column;
     `}
 `
 
-export const Informer = styled(({ className, label, error, closable, children, ...props }) => {
+export const Informer = styled(({ className, label, error, closable, colorful, noBack, children, ...props }) => {
 
   const [showed, setShowed] = useState(true)
   return (
     <>
-      { showed ? <Container>
-        <InfoIcon />
-        <Content>
+      { showed ? <Container noBack={noBack}>
+        <InfoIcon colorful={colorful} />
+        <Content closable={closable}>
           {children}
         </Content>
         {closable ? <Close onClick={() => setShowed(false)}/> : null}

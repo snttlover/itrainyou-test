@@ -63,17 +63,16 @@ const DragText = styled.div`
   margin-top: 24px;
   font-size: 16px;
   line-height: 22px;
-  margin-bottom: 60px;
 
   ${MediaRange.greaterThan("mobile")`    
     display: block;
   `}
 `
 
-const BlueText = styled.div`
+const InfoText = styled.div`
   font-size: 16px;
   line-height: 22px;
-  color: #4858cc;
+  color: ${({ theme }) => theme.colors.primary};
 `
 
 export const SelectImage = ({ open, error }: { open: () => void; error: "large-file" | "mime-type" | null }) => (
@@ -88,7 +87,7 @@ export const SelectImage = ({ open, error }: { open: () => void; error: "large-f
     <SelectPhotoButton onClick={open}>Выберите фотографию</SelectPhotoButton>
     <DragText>
       или <br />
-      <BlueText>Перетащите ее на экран</BlueText>
+      <InfoText>Перетащите ее на экран</InfoText>
     </DragText>
   </>
 )

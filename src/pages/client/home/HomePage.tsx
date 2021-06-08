@@ -22,6 +22,7 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { clientCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Onboarding } from "@/pages/client/home/Onboarding"
+import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
 
 const Block = styled.div`
   position: relative;
@@ -127,6 +128,7 @@ export const HomePage = () => {
       {upcomingSessions.length ? (
         <ContentContainer>
           <Block>
+            <CheckMediaDevices />
             <Title>Ближайшие сессии</Title>
             {upcomingSessions.map(session => (
               <TodaySessionCard session={session} key={session.id} />

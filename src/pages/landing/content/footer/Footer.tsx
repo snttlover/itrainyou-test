@@ -11,8 +11,8 @@ import footerBgMobile from "./images/mobile-background.svg"
 import instagram from "../../assets/instagram.svg"
 import telegram from "../../assets/telegram.svg"
 import facebook from "../../assets/facebook.svg"
-import {Icon} from "@/oldcomponents/icon/Icon"
-import {MediaRange} from "@/lib/responsive/media"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { MediaRange } from "@/lib/responsive/media"
 
 const StyledFooter = styled.div`
   background-color: #4858cc;
@@ -119,19 +119,19 @@ const StyledContainer = styled(LandingPageContainer)`
   }
 `
 
-const MirLogo = styled(Icon).attrs({name: "MIR"})`
-    margin-left: 16px;    
-    width: 32px;
-    height: 22px;
-`
-
-const VisaLogo = styled(Icon).attrs({name: "Visa"})`
-  margin-left: 16px;      
+const MirLogo = styled(Icon).attrs({ name: "MIR" })`
+  margin-left: 16px;
   width: 32px;
   height: 22px;
 `
 
-const MasterCardLogo = styled(Icon).attrs({name: "MasterCard"})`
+const VisaLogo = styled(Icon).attrs({ name: "Visa" })`
+  margin-left: 16px;
+  width: 32px;
+  height: 22px;
+`
+
+const MasterCardLogo = styled(Icon).attrs({ name: "MasterCard" })`
   width: 32px;
   height: 22px;
 `
@@ -153,7 +153,7 @@ export const Footer = () => (
         <Title>
           Вы коуч?<ComeHere>Вам сюда</ComeHere>
         </Title>
-        <StyledLink to={routeNames.signup("1")}>
+        <StyledLink to={routeNames.landingCoach()}>
           <RegisterButton>Узнать подробнее</RegisterButton>
         </StyledLink>
       </Header>

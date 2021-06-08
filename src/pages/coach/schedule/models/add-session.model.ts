@@ -210,7 +210,7 @@ forward({
   to: [toasts.remove, toasts.add, showAddSessionModal.prepend(_ => false)],
 })
 
-const failToastMessage: Toast = { type: "error", text: "Ошибка создания сессии" }
+const failToastMessage: Toast = { type: "error", text: "Невозможно создать сессию. Слот уже занят в вашем календаре" }
 forward({
   from: createSessionsFx.fail.map(_ => failToastMessage),
   to: [toasts.remove, toasts.add],

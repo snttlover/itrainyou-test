@@ -61,19 +61,19 @@ export const Year = styled.div`
   color: #5b6670;
 `
 
-export const MonthName = styled.div<{mobile?: boolean}>`
+export const MonthName = styled.div<{mobile?: boolean; showed?: boolean}>`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   color: #5b6670;
   text-transform: capitalize;
   text-align: center;
-  display: ${({ mobile }) => (mobile ? "none" : "unset")};
+  display: ${({ mobile, showed }) => !!showed ? "unset" : (!!mobile ? "none" : "unset")};
 
   ${MediaRange.lessThan("mobile")`
     display: ${
   // @ts-ignore
-  ({ mobile }) => (mobile ? "unset" : "none")};
+  ({ mobile, showed }) => !!showed ? "unset" : (!!mobile ? "unset" : "none")};
   `}
 `
 
@@ -88,7 +88,7 @@ export const CalendarHeader: React.FC<CalendarHeaderTypes> = (props: CalendarHea
   <Header>
     <MonthContainer>
       <LeftIcon disabled={props.lessThanTheCurrentMonth} onClick={props.prevMonth} />
-      <MonthName>{date(props.currentDate).format("MMMM")},{"  "}</MonthName>
+      <MonthName showed>{date(props.currentDate).format("MMMM")},{"  "}</MonthName>
       <Year>{date(props.currentDate).format("YYYY")}</Year>
       <RightIcon onClick={props.nextMonth} />
     </MonthContainer>
