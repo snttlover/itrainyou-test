@@ -143,6 +143,7 @@ const InfoContainer = styled.div`
   margin-bottom: 44px;
   cursor: pointer;
   color: #5B6670;
+  max-width: 600px;
 `
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -260,7 +261,7 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
           :
           <>
             <Informer colorful noBack>Нет доступа к микрофону</Informer>
-            <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к видеокамере</StyledLink>
+            <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к микрофону</StyledLink>
           </>}
       </Container>
     )
@@ -290,7 +291,7 @@ const TestCallModal = () => {
   )
 }
 
-export const CheckMediaDevices = () => {
+export const CheckMediaDevices = (props: {type: "coach" | "client"}) => {
 
   const showModal = useEvent(changeCallModal)
   const toggle = useEvent(changeCallModal)
@@ -301,7 +302,7 @@ export const CheckMediaDevices = () => {
     <InfoContainer onClick={() => showModal(true)}>
       {!compatibility ? <NotCompatibleDialog visibility={visibility} close={() => toggle(false)} /> : <TestCallModal /> }
       <CameraIcon />
-      <div>Проверьте камеру и микрофон до встречи с клиентом</div>
+      <div>Проверьте камеру и микрофон до встречи с {props.type === "client" ? "коучем" : "клиентом"}</div>
     </InfoContainer>
   )
 }

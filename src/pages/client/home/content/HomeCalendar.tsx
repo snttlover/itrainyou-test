@@ -2,25 +2,19 @@ import { IsAuthed } from "@/feature/user/IsAuthed"
 import { IsGuest } from "@/feature/user/IsGuest"
 import { date } from "@/lib/formatting/date"
 import { routeNames } from "@/pages/route-names"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
 import { Calendar } from "@/oldcomponents/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
-import { Tabs, Tab } from "@/oldcomponents/tabs/Tabs"
 import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { Button } from "@/oldcomponents/button/normal/Button"
-import { genSessionTabs, SelectDatetimeTypes } from "@/oldcomponents/coach-card/select-date/SelectDatetime"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { CoachSession, DurationType, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
-import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
-import { Coach } from "@/lib/api/coach"
 import { Event, Store } from "effector-root"
-import { CoachSessionWithSelect } from "@/oldcomponents/coach-card/select-date/select-date.model"
-import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import starIcon from "@/oldcomponents/coach-card/images/star.svg"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
@@ -163,13 +157,6 @@ const Tag = styled.div<{ active?: boolean }>`
   `}
 `
 
-const DeleteIcon = styled(Icon).attrs({ name: "delete" })`
-  fill: #4858cc;
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
-`
-
 const RubleIcon = styled(Icon).attrs({ name: "ruble" })`
   width: 15px;
   height: 15px;
@@ -193,7 +180,6 @@ const Summary = styled.span`
 
 const ButtonContainer = styled.div`
   padding-top: 10px;
-  margin-left: auto;
   display: flex;
   justify-content: center;
   margin-top: 25px;
@@ -356,10 +342,6 @@ type FreeSessionTypes = {
 export const HomeCalendar = (props: FreeSessionTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
 
-  const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
-
-  const _showCreditCardsModal = () => _toggleCreditCardModal(true)
-
   const sessions = useStore(props.freeSessionsModule.sessionsList)
   const loading = useStore(props.freeSessionsModule.loading)
   const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
@@ -374,7 +356,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
-    loadData({params:{}})
     changeCurrentDate((prevState) => {
       return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
     })
@@ -382,6 +363,10 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
       changeCurrentDate(undefined)
     }
   }, [enabledDates[0]])
+
+  useEffect(() => {
+    loadData({params:{}})
+  }, [])
 
 
   const headerDate = currentDate || new Date()
@@ -421,7 +406,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
     <Container>
       <Block onlyOneCard={true}>
         <CalendarSubTitle>Бесплатные сессии</CalendarSubTitle>
-        {false && <Spinner />}
+        {loading && <Spinner />}
         <CalendarDirectionBlock>
 
           <Datepicker>

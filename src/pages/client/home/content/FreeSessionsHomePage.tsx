@@ -127,6 +127,7 @@ const TabletCalendarContainer = styled.div`
   align-items: center;
   padding: 16px;
   margin-bottom: 32px;
+  margin-top: 24px;
 
   ${MediaRange.lessThan("laptop")`
     display: flex;
@@ -165,6 +166,7 @@ const TabletPageContainer = styled.div`
 
   ${MediaRange.lessThan("mobile")`
     align-items: center;
+    max-width: 288px;
   `}
 `
 
@@ -183,6 +185,8 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-top: 24px;
+  align-self: flex-start;
   
   font-family: Roboto;
   font-style: normal;
@@ -190,6 +194,10 @@ const Row = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: ${props => props.theme.colors.primary};
+
+  ${MediaRange.lessThan("mobile")`
+    margin-top: 16px;
+  `}
 `
 
 
@@ -243,7 +251,7 @@ export const FreeSessionsHomePage = () => {
         <PageContainer>
           <FreeSessionsContainer>
 
-            <CheckMediaDevices />
+            <CheckMediaDevices type={"client"} />
 
             <ContentContainer>
               {activeSessions.length > 0 &&(
@@ -265,7 +273,7 @@ export const FreeSessionsHomePage = () => {
             {upcomingSessions.length ? (
               <ContentContainer>
                 <Block>
-                  <CheckMediaDevices />
+
                   <Title>Ближайшие сессии</Title>
                   {upcomingSessions.map(session => (
                     <TodaySessionCard session={session} key={session.id} />

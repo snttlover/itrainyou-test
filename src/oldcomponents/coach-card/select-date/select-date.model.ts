@@ -94,11 +94,6 @@ export const genFreeSessions = () => {
     to: resetSelectedSessions,
   })
 
-  /*forward({
-    from: bulkFreeSessionFx.done.map((params) => ({})),
-    to: fetchFreeSessionsListFx,
-  })*/
-
   forward({
     from: bulkFreeSessionFx.done,
     to: getMyUserFx,
@@ -137,6 +132,7 @@ export const genFreeSessions = () => {
     bulkFreeSession,
   }
 }
+
 
 export const genCoachSessions = (id = 0, freeSessions = false) => {
   const changeId = createEvent<number>()
@@ -200,10 +196,10 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     to: buySessionsFx,
   })
 
-  /*forward({
+  forward({
     from: buySessionsFx.done,
     to: resetSelectedSessions
-  })*/
+  })
 
   forward({
     from: bulkFreeSession,
@@ -277,6 +273,11 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
       },
     }),
     target: loadCoachSessions,
+  })
+
+  forward({
+    from: bulkFreeSessionFx.done,
+    to: loadCoachSessions.prepend(_ => ({params: {},})),
   })
 
   return {

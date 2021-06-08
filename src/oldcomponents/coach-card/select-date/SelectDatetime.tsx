@@ -152,10 +152,6 @@ const Text = styled.div`
   padding-left: 11px;
 `
 
-const Summary = styled.span`
-  color: #544274;
-  font-weight: 600;
-`
 
 const ButtonContainer = styled.div`
   flex: 1;
@@ -166,10 +162,9 @@ const ButtonContainer = styled.div`
 const ButtonWrapper = styled.div`
   border-top: 1px solid #dbdee0;
   padding-top: 10px;
-  margin-left: auto;
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 `
 
 const StyledTabs = styled(Tabs)`

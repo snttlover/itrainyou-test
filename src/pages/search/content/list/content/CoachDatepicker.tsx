@@ -167,7 +167,6 @@ const Summary = styled.span`
 
 const ButtonContainer = styled.div`
   padding-top: 10px;
-  margin-left: auto;
   display: flex;
   justify-content: center;
   margin-top: 25px;
@@ -458,8 +457,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
 
-  //const _showCreditCardsModal = () => _toggleCreditCardModal(true)
-
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
@@ -480,9 +477,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     }
   }, [enabledDates[0]])
 
-  /*useEffect(() => {
-    changeActiveTab(activeTab)
-  }, [])*/
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
