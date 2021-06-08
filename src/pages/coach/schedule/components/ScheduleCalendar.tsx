@@ -619,15 +619,28 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
             <div>Этот слот заполнен в вашем google-календаре</div>
             :
             (props.session.areAvailable ?
-              <>
-                <ToolTipHeader>Сессия забронирована</ToolTipHeader>
-                <UserInfo>
-                  <StyledAvatar src={client?.avatar || null} />
-                  <UserName>{client?.firstName} {client?.lastName}</UserName>
-                </UserInfo>
-                <StyledLink onClick={() => navigate({ url: routeNames.coachSession(id.toString())})}>На страницу сессии</StyledLink>
-                <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
-              </>
+              (props.session.sessionDurationType === "PROMO" ?
+                <>
+                  <ToolTipHeader>Сессия забронирована</ToolTipHeader>
+                  <FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText>
+                  <UserInfo>
+                    <StyledAvatar src={client?.avatar || null} />
+                    <UserName>{client?.firstName} {client?.lastName}</UserName>
+                  </UserInfo>
+                  <StyledLink onClick={() => navigate({ url: routeNames.coachSession(id.toString())})}>На страницу сессии</StyledLink>
+                  <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+                </>
+                :
+                <>
+                  <ToolTipHeader>Сессия забронирована</ToolTipHeader>
+                  <UserInfo>
+                    <StyledAvatar src={client?.avatar || null} />
+                    <UserName>{client?.firstName} {client?.lastName}</UserName>
+                  </UserInfo>
+                  <StyledLink onClick={() => navigate({ url: routeNames.coachSession(id.toString())})}>На страницу сессии</StyledLink>
+                  <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+                </>
+              )
               :
               (props.session.sessionDurationType === "PROMO" ?
                 <>

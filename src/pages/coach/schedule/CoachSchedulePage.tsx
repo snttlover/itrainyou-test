@@ -81,6 +81,12 @@ export const Description = styled.div`
   max-width: 552px;  
 `
 
+const InstructionContainer = styled.div`
+  position: absolute;
+  top: 28px;
+  right: 24px;
+`
+
 export const CoachSchedulePage = () => {
   const coachAccess = useStore($coachAccess)
 
@@ -94,6 +100,7 @@ export const CoachSchedulePage = () => {
         {coachAccess.isApproved ?
           <>
             <Header>Расписание</Header>
+            <InstructionContainer>Инструкция</InstructionContainer>
             <HorizontalOverflowScrollContainer>
               <StyledTabs value={tab} onChange={changeTab}>
                 <StyledTab value='calendar'>Календарь</StyledTab>
