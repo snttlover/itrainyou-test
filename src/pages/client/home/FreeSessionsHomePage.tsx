@@ -129,6 +129,8 @@ export const FreeSessionsHomePage = () => {
       <PageContainer>
         <FreeSessionsContainer>
 
+          <CheckMediaDevices type={"client"} />
+
           <ContentContainer>
             {activeSessions.length > 0 &&(
               <Block>
@@ -149,7 +151,6 @@ export const FreeSessionsHomePage = () => {
           {upcomingSessions.length ? (
             <ContentContainer>
               <Block>
-                <CheckMediaDevices />
                 <Title>Ближайшие сессии</Title>
                 {upcomingSessions.map(session => (
                   <TodaySessionCard session={session} key={session.id} />
@@ -163,7 +164,6 @@ export const FreeSessionsHomePage = () => {
             !(upcomingSessionsPending || isFirstRender) &&
               <ContentContainer>
                 <Block>
-                  <CheckMediaDevices />
                   <Title>Подобранные коучи</Title>
                   <InfiniteScroll
                     loader={<Loader />}

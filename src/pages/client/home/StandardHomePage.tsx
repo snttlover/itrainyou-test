@@ -109,6 +109,9 @@ export const StandardHomePage = () => {
   return (
     <>
       <ContentContainer>
+        <CheckMediaDevices type={"client"} />
+      </ContentContainer>
+      <ContentContainer>
         {activeSessions.length > 0 &&(
           <Block>
             <Title>Сессия уже началась!</Title>
@@ -128,7 +131,6 @@ export const StandardHomePage = () => {
       {upcomingSessions.length ? (
         <ContentContainer>
           <Block>
-            <CheckMediaDevices />
             <Title>Ближайшие сессии</Title>
             {upcomingSessions.map(session => (
               <TodaySessionCard session={session} key={session.id} />
