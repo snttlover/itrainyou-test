@@ -7,8 +7,9 @@ import { Container } from "../../common/Container"
 import mainImg from "../assets/first-free/main.jpg"
 
 const Wrapper = styled.section`
+  background: #e4e3e3;
+
   @media (min-width: 1140px) {
-    background: #e4e3e3;
     position: relative;
     height: 600px;
   }
