@@ -1,6 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 
+import { useStore } from "effector-react"
+
+import { $coachesList } from "./coach-list/model"
+
 import { Container } from "../../common/Container"
 import { Slider } from "./coach-list/Slider"
 
@@ -61,120 +65,9 @@ const SliderWrapper = styled.div`
   }
 `
 
-const coaches = [
-  {
-    id: 1,
-    first_name: "Денис",
-    last_name: "Денисов",
-    rating: 3.62,
-    reviews_count: 13,
-    avatar: "#b00b69",
-    categories: [
-      {
-        id: 1,
-        name: "Бизнес коучинг",
-      },
-      {
-        id: 2,
-        name: "Лайф коучинг",
-      },
-      {
-        id: 3,
-        name: "Семейный коучинг",
-      },
-    ],
-  },
-  {
-    id: 2,
-    first_name: "Денис",
-    last_name: "Денисов",
-    rating: 3.62,
-    reviews_count: 13,
-    avatar: "#b00b69",
-    categories: [
-      {
-        id: 1,
-        name: "Бизнес коучинг",
-      },
-      {
-        id: 2,
-        name: "Лайф коучинг",
-      },
-      {
-        id: 3,
-        name: "Семейный коучинг",
-      },
-    ],
-  },
-  {
-    id: 3,
-    first_name: "Денис",
-    last_name: "Денисов",
-    rating: 3.62,
-    reviews_count: 13,
-    avatar: "#b00b69",
-    categories: [
-      {
-        id: 1,
-        name: "Бизнес коучинг",
-      },
-      {
-        id: 2,
-        name: "Лайф коучинг",
-      },
-      {
-        id: 3,
-        name: "Семейный коучинг",
-      },
-    ],
-  },
-  {
-    id: 4,
-    first_name: "Денис",
-    last_name: "Денисов",
-    rating: 3.62,
-    reviews_count: 13,
-    avatar: "#b00b69",
-    categories: [
-      {
-        id: 1,
-        name: "Бизнес коучинг",
-      },
-      {
-        id: 2,
-        name: "Лайф коучинг",
-      },
-      {
-        id: 3,
-        name: "Семейный коучинг",
-      },
-    ],
-  },
-  {
-    id: 5,
-    first_name: "Денис",
-    last_name: "Денисов",
-    rating: 3.62,
-    reviews_count: 13,
-    avatar: "#b00b69",
-    categories: [
-      {
-        id: 1,
-        name: "Бизнес коучинг",
-      },
-      {
-        id: 2,
-        name: "Лайф коучинг",
-      },
-      {
-        id: 3,
-        name: "Семейный коучинг",
-      },
-    ],
-  },
-]
-
 export const CoachList = () => {
+  const coaches = useStore($coachesList)
+
   return (
     <Wrapper>
       <StyledContainer>

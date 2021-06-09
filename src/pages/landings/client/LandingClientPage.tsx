@@ -1,4 +1,7 @@
 import * as React from "react"
+import { START } from "@/lib/effector"
+
+import * as ourCoachesModel from "./content/coach-list/model"
 
 import { routeNames } from "@/pages/route-names"
 
@@ -56,3 +59,5 @@ const LandingClientPageMarkUp = () => (
 )
 
 export const LandingClientPage = withGuest({ to: "/client" })(LandingClientPageMarkUp)
+
+LandingClientPage[START] = ourCoachesModel.loadCoaches

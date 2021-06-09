@@ -4,6 +4,9 @@ import styled from "styled-components"
 import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import { SwiperOptions } from "swiper"
 
+import { Link } from "react-router-dom"
+import { routeNames } from "@/pages/route-names"
+
 import { Category } from "./Category"
 
 import starIcon from "../../assets/coach-list/star.svg"
@@ -34,7 +37,7 @@ const SliderWrapper = styled.div`
   }
 `
 
-const Slide = styled.div`
+const Slide = styled(Link)`
   background: white;
 
   width: 264px;
@@ -77,9 +80,9 @@ const CoachAvatar = styled.div<{ avatar: string }>`
   width: 120px;
   border-radius: 50%;
   background-color: #e4e3e3;
-  background: ${props => props.avatar};
+  background-image: url('${props => props.avatar}');
+  background-size: cover;
   margin-bottom: 24px;
-  /* Сделать background-image */
 `
 
 const CoachName = styled.h3`
@@ -153,13 +156,13 @@ export const Slider = ({ coaches }: Props) => {
       <SliderWrapper>
         <ReactIdSwiper {...swiperOptions} ref={swiper}>
           {coaches.map((coach, index) => (
-            <Slide key={index}>
+            <Slide key={index} to={routeNames.searchCoachPage(coach.id)}>
               <CoachAvatar avatar={coach.avatar} />
               <CoachName>
-                {coach.first_name} {coach.last_name}
+                {coach.firstName} {coach.lastName}
               </CoachName>
               <CoachRating>
-                {coach.rating} <span>({coach.reviews_count})</span>
+                {coach.rating} <span>({coach.reviewsCount})</span>
               </CoachRating>
               <CoachCategories>
                 {coach.categories.map((cat: { id: number; name: string }) => (
