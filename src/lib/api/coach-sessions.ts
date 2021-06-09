@@ -14,7 +14,7 @@ export interface CoachSession {
   durationType: DurationType //example: 01:00:00
 }
 
-export type DurationType = "D30" | "D45" | "D60" | "D90"
+export type DurationType = "D15" |"D30" | "D45" | "D60" | "D90"
 
 export interface GetCoachSessionsParamsTypes {
   start_date__lte?: string

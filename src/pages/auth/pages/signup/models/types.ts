@@ -7,6 +7,7 @@ export type ClientData = {
   avatar: string | null
   originalAvatar: string | null
   email: string | null
+  priceRanges: number[]
 }
 
 export type CoachData = {

@@ -12,7 +12,8 @@ import {
   registerUserFx,
   saveDataFx,
   signUpPageMounted, userDataChanged, userDataReset, userDataSetWithSocials,
-  userType, userTypeChanged,
+  userType, userTypeChanged, getPriceRangesFx, priceRangesGate,
+  $priceRanges, selectPriceRange, $rangeSelected
 } from "@/pages/auth/pages/signup/models/units"
 
 $userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
@@ -21,7 +22,30 @@ $userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
   .on(userDataChanged, (_, payload) => payload)
   .on(userDataSetWithSocials, (_, payload) => payload)
+  .on($priceRanges, (state, payload) => {
+    const prices = payload.filter(item => item.selected).map(item => item.id)
+    return {...state, clientData: {...state.clientData, priceRanges: prices}}
+  })
   .reset(userDataReset)
+
+$priceRanges.on(getPriceRangesFx.doneData,(state,payload) => payload.map((option: {
+  id: number
+  rangeFrom: number
+  rangeTo: number
+  selected?: boolean
+}) =>
+  ({...option, selected: false})))
+  .on(selectPriceRange, (state,payload) => {
+    const newState = [...state]
+    const currentElementID = newState.findIndex(item => item.id === payload.id)
+    newState[currentElementID] = {...newState[currentElementID], selected: !newState[currentElementID].selected}
+    return newState
+  })
+
+$rangeSelected.on($priceRanges, (state, payload) => {
+  const selected = payload.filter(range => range.selected)
+  return selected.length > 0
+})
 
 forward({
   from: $userData.updates,
@@ -70,4 +94,9 @@ sample({
   source: $userData,
   clock: $isLoggedIn.updates,
   target: registerUserFx,
+})
+
+forward({
+  from: priceRangesGate.open,
+  to: getPriceRangesFx,
 })

@@ -20,6 +20,7 @@ export interface DashboardSession {
   hasAwaitingRescheduleRequests: boolean
   materials: []
   mutualSessionsCount: number
+  isFreeSession: boolean
 }
 
 type getDashboardSessionsParams = {

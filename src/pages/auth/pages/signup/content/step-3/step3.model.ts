@@ -7,7 +7,7 @@ import { combine, createEffect, createEvent, createStore, forward, sample } from
 import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
-import { $userData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
+import { $userData, clientDataChanged, signUpPageMounted, $priceRanges } from "@/pages/auth/pages/signup/models/units"
 
 
 export const step3FormSubmitted = createEvent()
@@ -121,6 +121,7 @@ export const $step3Form = combine({
   sex: $sex,
   email: $email,
   originalAvatar: $originalAvatar,
+  priceRanges: [],
 })
 
 sample({
@@ -135,6 +136,7 @@ sample({
     sex: data.sex,
     email: data.email,
     originalAvatar: data.originalAvatar.file || null,
+    priceRanges: data.priceRanges
   }),
   target: clientDataChanged,
 })
