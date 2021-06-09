@@ -31,7 +31,8 @@ export const freeSessionsPageMounted = createEvent()
 export const loadMore = createEvent()
 
 const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
-export const $hasFreeSessions = createStore(false).on(userDoneData, (_,payload) => payload.client.hasFreeSessions)
+export const $hasFreeSessions = createStore(false)
+  .on(userDoneData, (_,payload) => payload.client ? payload.client.hasFreeSessions : false)
 
 export const $recommendations = createStore<Coach[]>([]).on(loadRecommendationsFx.doneData, (state, payload) => [
   ...state,

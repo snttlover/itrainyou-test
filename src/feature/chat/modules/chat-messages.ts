@@ -159,6 +159,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
           let user: CoachUser | Client | null = null
 
+          console.log(message)
+
           if (message.type === "SUPPORT") {
             const user = message?.supportTicket?.support
             return {

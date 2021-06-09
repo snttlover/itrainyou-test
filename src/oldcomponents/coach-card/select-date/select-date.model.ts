@@ -252,8 +252,6 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
   const initialTabState = freeSessions ? "PROMO" : "D30"
   const $durationTab = createStore<DurationType>(initialTabState).on(changeDurationTab, (_, payload) => payload)
 
-  $durationTab.watch(payload => console.log("$durationTab",payload))
-  changeDurationTab.watch(payload => console.log("changeDurationTab",payload))
 
   sample({
     clock: changeDurationTab,

@@ -188,7 +188,16 @@ const getText = (
     }
 
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return `${request.receiverCoach?.firstName} подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
+
+      if (request.session.durationType === "PROMO") {
+
+        return <p>{request.receiverCoach?.firstName} подтвердил{
+          request.receiverCoach?.sex === "F" ? "a" : ""
+        } бронирование <b>бесплатной</b> сессии </p>
+      } else {
+        return `${request.receiverCoach?.firstName} подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
+      }
+
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
@@ -262,7 +271,12 @@ const getText = (
     }
 
     if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
-      return "Сессия прошла успешно?"
+      if (request.session.durationType === "PROMO") {
+
+        return "Вам понравилась сессия?"
+      } else {
+        return "Сессия прошла успешно?"
+      }
     }
 
     if (is("CANCEL", "APPROVED", "COMPLETED")) {
@@ -323,9 +337,18 @@ const getText = (
     }
 
     if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED") && request.initiatorClient) {
-      return `${request.initiatorClient?.firstName} отправил${
-        request.initiatorClient?.sex === "F" ? "a" : ""
-      } запрос на подтверждение сессии`
+
+      if (request.session.durationType === "PROMO") {
+
+        return <p>{request.initiatorClient?.firstName} отправил{
+          request.initiatorClient?.sex === "F" ? "a" : ""
+        } запрос на подтверждение <b>бесплатной</b> сессии </p>
+      } else {
+        return `${request.initiatorClient?.firstName} отправил${
+                request.initiatorClient?.sex === "F" ? "a" : ""
+        } запрос на подтверждение сессии`
+      }
+
     }
 
     if (is("BOOK", "DENIED", "COMPLETED")) {
@@ -355,7 +378,23 @@ const getText = (
     }
 
     if (is("BOOK", "APPROVED", "COMPLETED")) {
-      return "Вы подтвердили бронирование сессии"
+
+      if (request.session.durationType === "PROMO") {
+        return <p>
+          Вы подтвердили бронирование <b>бесплатной</b> сессии.
+        <br />
+        <br />
+          За 10 минут до начала сессии в личном кабинете на платформе вы сможете открыть видеочат с клиентом.
+        </p>
+      } else {
+        return <p>
+          Вы подтвердили бронирование сессии.
+          <br />
+          <br />
+          За 10 минут до начала сессии в личном кабинете на платформе вы сможете открыть видеочат с клиентом.
+        </p>
+      }
+
     }
 
     if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
@@ -464,6 +503,14 @@ type SystemMessageTypes = {
 }
 
 const SystemMessage = (props: SystemMessageTypes) => {
+  //const [firstLine, secondLine] = props.text.split('n/')
+  //{firstLine}
+  //         {!!secondLine &&
+  //         <>
+  //           <br />
+  //           <br />
+  //           {secondLine}
+  //         </>}
   return (
     <StyledSystemMessage id={props.id as never}>
       <SessionDate>

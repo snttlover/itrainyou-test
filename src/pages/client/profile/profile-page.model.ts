@@ -88,8 +88,6 @@ export const $ProfileSessions = createStore<SessionTransaction[]>([]).on(
   (state, payload) => [...state, ...payload.results]
 ).reset(ClientProfileGate.close)
 
-$ProfileSessions.watch(paylo => console.log("test", paylo))
-
 const $ProfileSessionsLoadFailed = createStore(false).on(loadProfileSessionsFx.fail, () => true)
 
 export const $isHasMoreProfileSessions = combine(
