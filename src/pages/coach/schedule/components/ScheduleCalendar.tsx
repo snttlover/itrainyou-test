@@ -40,6 +40,7 @@ import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
 import { Checkbox, CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
+import { config } from "@/config"
 
 
 const CalendarContainer = styled.div`
@@ -530,8 +531,13 @@ const MobileSessionInfoModal = () => {
 
   const _removeSession = useEvent(removeSession)
 
-  const {id, client} = fixAvatarAndImageUrl(session)
+  let client: any
 
+  if ( config.SERVER_TYPE === "production") {
+    client = session.client
+  } else {
+    client = fixAvatarAndImageUrl(session.client)
+  }
 
   const handleOnClick = () => {
     _removeSession(session)
@@ -555,7 +561,7 @@ const MobileSessionInfoModal = () => {
                 <StyledAvatar src={client?.avatar || null} />
                 <UserName>{client?.firstName} {client?.lastName}</UserName>
               </UserInfo>
-              <StyledLink onClick={() => navigate({ url: routeNames.coachSession(id.toString())})}>На страницу сессии</StyledLink>
+              <StyledLink onClick={() => navigate({ url: routeNames.coachSession(session.id.toString())})}>На страницу сессии</StyledLink>
               <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
             </>
             :
@@ -585,7 +591,14 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
   const navigate = useEvent(navigatePush)
 
   const [showed, setShowed] = useState(false)
-  const {id, client} = fixAvatarAndImageUrl(props.session)
+
+  let client: any
+
+  if ( config.SERVER_TYPE === "production") {
+    client = props.session.client
+  } else {
+    client = fixAvatarAndImageUrl(props.session.client)
+  }
 
   const toolTipRef = useRef<HTMLDivElement>(null)
 
@@ -627,7 +640,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
                     <StyledAvatar src={client?.avatar || null} />
                     <UserName>{client?.firstName} {client?.lastName}</UserName>
                   </UserInfo>
-                  <StyledLink onClick={() => navigate({ url: routeNames.coachSession(id.toString())})}>На страницу сессии</StyledLink>
+                  <StyledLink onClick={() => navigate({ url: routeNames.coachSession(props.session.id.toString())})}>На страницу сессии</StyledLink>
                   <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
                 </>
                 :
@@ -637,7 +650,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
                     <StyledAvatar src={client?.avatar || null} />
                     <UserName>{client?.firstName} {client?.lastName}</UserName>
                   </UserInfo>
-                  <StyledLink onClick={() => navigate({ url: routeNames.coachSession(id.toString())})}>На страницу сессии</StyledLink>
+                  <StyledLink onClick={() => navigate({ url: routeNames.coachSession(props.session.id.toString())})}>На страницу сессии</StyledLink>
                   <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
                 </>
               )

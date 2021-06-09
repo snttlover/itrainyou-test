@@ -7,6 +7,7 @@ import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 import { $prices } from "@/pages/coach/schedule/models/price-settings/units"
 import { showAddSessionModal } from "@/pages/coach/schedule/models/calendar.model"
+import { changeFilterView } from "@/pages/coach/schedule/models/sessions.model"
 
 export const setMobileInfo = createEvent<{
   googleEvent: boolean
@@ -202,7 +203,7 @@ export const createSessionsFx = createEffect({
 
 forward({
   from: createSessionsFx.doneData,
-  to: sessionAdded,
+  to: [sessionAdded, changeFilterView.prepend(_ => "no-filter")],
 })
 
 const successToastMessage: Toast = { type: "info", text: "Сессия создана" }
