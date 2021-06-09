@@ -13,6 +13,7 @@ const Container = styled.div`
 const StyledPriceInput = styled(PriceInput)`
     width: 100%;
     border: 1px solid #D3D7F3;
+    border-radius: 8px;
 `
 
 const SummaryPriceFormItem = styled(FormItem)`
