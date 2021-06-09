@@ -76,8 +76,10 @@ const CoachAvatar = styled.div<{ avatar: string }>`
   height: 120px;
   width: 120px;
   border-radius: 50%;
+  background-color: #e4e3e3;
   background: ${props => props.avatar};
   margin-bottom: 24px;
+  /* Сделать background-image */
 `
 
 const CoachName = styled.h3`

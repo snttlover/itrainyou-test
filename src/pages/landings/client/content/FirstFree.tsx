@@ -1,6 +1,9 @@
 import React from "react"
 import styled from "styled-components"
 
+import { Link } from "react-router-dom"
+import { routeNames } from "@/pages/route-names"
+
 import { Container } from "../../common/Container"
 
 // @ts-ignore
@@ -130,7 +133,7 @@ const ListItem = styled.li`
   }
 `
 
-const Button = styled.a`
+const Button = styled(Link)`
   display: inline-block;
 
   background: #4858cc;
@@ -175,7 +178,7 @@ export const FirstFree = () => (
         <ListItem>Заполнить короткую анкету и получить подборку коучей</ListItem>
         <ListItem>Выбрать удобное время и забронировать сессию</ListItem>
       </List>
-      <Button href='#'>Выбрать коуча</Button>
+      <Button to={{ pathname: routeNames.search() }}>Выбрать коуча</Button>
     </StyledContainer>
   </Wrapper>
 )

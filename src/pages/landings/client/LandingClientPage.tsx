@@ -29,7 +29,14 @@ import { questions } from "./data/questions"
 
 const LandingClientPageMarkUp = () => (
   <PageWrapper>
-    <Header signUpRoute={routeNames.signup("1")} />
+    <Header
+      signUpRoute={routeNames.signup("1")}
+      additionalButton={{
+        title: "Стать клиентом",
+        route: routeNames.signup("1"),
+      }}
+      showExtraButton={false}
+    />
     <MainWrapper>
       <Hero />
       <Advantages advantages={advantages} />

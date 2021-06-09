@@ -27,7 +27,14 @@ import { questions } from "./data/questions"
 
 const LandingCoachPageMarkUp = () => (
   <PageWrapper>
-    <Header signUpRoute={routeNames.signup("1")} />
+    <Header
+      signUpRoute={routeNames.signup("1")}
+      additionalButton={{
+        title: "Начать обучение",
+        route: routeNames.signup("1"),
+      }}
+      showExtraButton={true}
+    />
     <MainWrapper>
       <Hero />
       <Advantages advantages={advantages} />
