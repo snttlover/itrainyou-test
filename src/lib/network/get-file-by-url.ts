@@ -29,6 +29,7 @@ export const getFileName = (path: string) => {
   }
 }
 
-export const downloadByURL = (URL: string, filename: string) =>
-  axios.request<Blob>({url: URL, method: "GET", responseType: "blob"})
-    .then(response => download(response.data, filename))
+export const downloadByURL = (URL: string, filename: string) => {
+  return axios.request<Blob>({url: URL.replace('http://', 'https://'), method: "GET", responseType: "blob"})
+    .then(response => download(response.data, filename, response.data.type))
+}

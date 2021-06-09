@@ -6,25 +6,25 @@ import { CategoryCard } from "./client/CategoryCard"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import { $userData, categoriesChanged, registerUserFx, userRegistered } from "@/pages/auth/pages/signup/models/units"
+import { PriceRanges } from "@/pages/auth/pages/signup/content/step-4/client/PriceRanges"
+import { $userData, categoriesChanged, registerUserFx, userRegistered, $rangeSelected } from "@/pages/auth/pages/signup/models/units"
 
 const Container = styled.div`
-  min-width: 320px;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 660px;
+  margin: 0 16px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   ${MediaRange.greaterThan("mobile")`    
-    margin: 20px 32px 0;
+    margin: 0 32px 0;
   `}
   
   ${MediaRange.greaterThan("tablet")`
-    margin: 20px auto 0;
+    margin: 0 auto 0;
   `}
 
   ${MediaRange.greaterThan("laptop")`
-    margin: 20px auto 0;
+    margin: 0 auto 0;
   `}
 `
 
@@ -45,22 +45,22 @@ const Title = styled.h2`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 24px;
   color: #fff;
 
   ${MediaRange.greaterThan("mobile")`    
-    width: 432px;
-    font-weight: bold;
+    max-width: 528px; 
+    font-weight: 700;
     font-size: 24px;
-    line-height: 26px;
+    line-height: 32px;
   `}
 
   ${MediaRange.greaterThan("laptop")`    
-    width: 565px;
-    font-weight: normal;
-    font-size: 32px;
-    line-height: 40px;
+    max-width: 660px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
   `}
 `
 
@@ -82,6 +82,20 @@ const Description = styled.p`
 
   ${MediaRange.greaterThan("laptop")`
     margin-top: 32px;
+  `}
+`
+
+const FormTitle = styled.div`
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 32px;
+  color: #424242;
+  margin-top: 32px;
+
+  ${MediaRange.lessThan("mobile")`    
+    margin-top: 16px;
   `}
 `
 
@@ -125,7 +139,9 @@ export const Step4Client = () => {
   const loading = useStore(registerUserFx.pending)
   const _categoriesChanged = useEvent(categoriesChanged)
   const _userRegistered = useEvent(userRegistered)
+  const rangeSelected = useStore($rangeSelected)
 
+  //loading || !rangeSelected
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
       key={category.id}
@@ -142,16 +158,21 @@ export const Step4Client = () => {
     <Step4ClientLayout
       renderHeader={() => (
         <Header>
-          <Title>Выберите направления, в которых вы хотели бы развиваться</Title>
-          <Description>Потом вы сможете изменить интересы в своем профиле</Description>
+          <Title>Расскажите о своих пожеланиях, а мы подберем
+            для вас наиболее подходящих коучей</Title>
+          <Description>Вам откроется возможность пройти бесплатную сессию
+            для формирования запроса с коучем из нашей подборки</Description>
         </Header>
       )}
     >
       <Container>
+        <FormTitle>Выберите направления</FormTitle>
         {categories}
+        {/*<FormTitle>Выберите комфортную для вас стоимость одной сессии (60 минут)</FormTitle>*/}
+        {/*<PriceRanges />*/}
         <ButtonContainer>
           <RegisterButton disabled={loading} onClick={() => _userRegistered()}>
-            Зарегистрироваться
+            Подобрать коуча
           </RegisterButton>
         </ButtonContainer>
       </Container>

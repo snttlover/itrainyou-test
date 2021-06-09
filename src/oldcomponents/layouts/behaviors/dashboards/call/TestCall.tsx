@@ -131,7 +131,7 @@ const CameraIcon = styled(Icon).attrs({ name: "camera" })`
   margin-right: 17px;
 `
 
-const InfoContainer = styled.div`
+const InfoContainer = styled.div<{type: "coach" | "client"}>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -140,9 +140,11 @@ const InfoContainer = styled.div`
   font-size: 14px;
   line-height: 22px;
   padding: 17px 21px;
-  margin-bottom: 44px;
+  margin-bottom: 24px;
+  margin-top: ${({ type }) => type === "client" ? "16px" : "0"};
   cursor: pointer;
   color: #5B6670;
+  max-width: 600px;
 `
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -260,7 +262,7 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
           :
           <>
             <Informer colorful noBack>Нет доступа к микрофону</Informer>
-            <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к видеокамере</StyledLink>
+            <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к микрофону</StyledLink>
           </>}
       </Container>
     )
@@ -290,7 +292,7 @@ const TestCallModal = () => {
   )
 }
 
-export const CheckMediaDevices = () => {
+export const CheckMediaDevices = (props: {type: "coach" | "client"}) => {
 
   const showModal = useEvent(changeCallModal)
   const toggle = useEvent(changeCallModal)
@@ -298,10 +300,10 @@ export const CheckMediaDevices = () => {
   const compatibility = useStore($compatibility)
 
   return (
-    <InfoContainer onClick={() => showModal(true)}>
+    <InfoContainer type={props.type} onClick={() => showModal(true)}>
       {!compatibility ? <NotCompatibleDialog visibility={visibility} close={() => toggle(false)} /> : <TestCallModal /> }
       <CameraIcon />
-      <div>Проверьте камеру и микрофон до встречи с клиентом</div>
+      <div>Проверьте камеру и микрофон до встречи с {props.type === "client" ? "коучем" : "клиентом"}</div>
     </InfoContainer>
   )
 }

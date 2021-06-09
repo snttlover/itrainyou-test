@@ -99,11 +99,10 @@ export const Step2 = () => {
   const navigate = useEvent(navigatePush)
   return (
     <AuthLayout>
-      <Steps activeId='2'>
-        <Steps.Step id='1'>1</Steps.Step>
-        <Steps.Step id='2'>2</Steps.Step>
-        <Steps.Step id='3'>3</Steps.Step>
-        <Steps.Step id='4'>4</Steps.Step>
+      <Steps activeId='0'>
+        <Steps.Step id='1'>Роль</Steps.Step>
+        <Steps.Step id='2'>Данные</Steps.Step>
+        <Steps.Step id='3'>{type === "client" ? "Подбор коуча" : "О себе"}</Steps.Step>
       </Steps>
       <Container>
         <Title>Вы хотите стать:</Title>

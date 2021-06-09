@@ -91,11 +91,13 @@ export const CoachSessionsPage = () => {
 
   return (
     <>
+      <ContentContainer>
+        <CheckMediaDevices type={"coach"} />
+      </ContentContainer>
       {/*{showComponentOrLoader(Onbordings)}*/}
       {!(pageLoading || isFirstRender) && <Onbordings/>}
       <ContentContainer>
         <Container nosessions={noHasSessions}>
-          <CheckMediaDevices />
           {showComponentOrLoader(MainSessions)}
         </Container>
       </ContentContainer>

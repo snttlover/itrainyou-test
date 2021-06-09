@@ -99,6 +99,9 @@ export type IconName =
   | "google-calendar"
   | "left-calendar-icon"
   | "right-calendar-icon"
+        | "step-done"
+        | "checkbox-active-filled-border"
+        | "checkbox-border-filled"
 
 type IconProps = {
   name: IconName,

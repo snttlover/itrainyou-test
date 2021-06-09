@@ -3,7 +3,7 @@ import { config } from "@/config"
 
 // рекурсивно добавляет урл к картинкам сообщений из сокетов
 export const fixAvatarAndImageUrl = (o: any): any => {
-  const imageAttrs = ["image", "avatar"]
+  const imageAttrs = ["image", "avatar", "document"]
   if (isObject(o)) {
     return Object.keys(o).reduce<any>((acc, key: string) => {
       acc[key] = o[key]

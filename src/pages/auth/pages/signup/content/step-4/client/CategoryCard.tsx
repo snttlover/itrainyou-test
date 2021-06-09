@@ -5,23 +5,21 @@ import { Category } from "@/feature/categories/categories.store"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
+import { useState } from "react"
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 20px 8px 0;
+  margin: 16px 0 0;
   background: #ffffff;
-  padding: 12px 8px;
+  padding: 16px;
   border-radius: 2px;
   cursor: pointer;
   user-select: none;
   ${MediaRange.greaterThan("mobile")`
-    padding: 24px 36px;
-    margin: 36px auto 0;
-  `}
-  ${MediaRange.greaterThan("tablet")`    
-    margin: 52px auto 0;
-    width: 664px;
+    padding: 24px;
+    margin: 24px auto 0;
+    width: 100%;
   `}
 `
 
@@ -29,88 +27,89 @@ const Title = styled.h3`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
-  line-height: 26px;
+  font-size: 20px;
+  line-height: 28px;
   color: #424242;
   display: flex;
   align-items: center;
-
-  ${MediaRange.greaterThan("mobile")`
-    font-size: 24px;
-    line-height: 26px;
+  justify-content: center;
+  
+  
+  ${MediaRange.lessThan("mobile")`
+    font-size: 16px;
+    line-height: 24px;
+    justify-content: space-between;
+    width: 100%;
+    align-self: flex-start;
   `}
 `
 
 const TabletkaIcon = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   width: 16px;
   height: 16px;
-  margin-right: 8px;
+  margin-left: auto;
+  margin-right: 14px;
   fill: ${({ color }) => color};
   ${MediaRange.greaterThan("mobile")`
-    margin-right: 12px;        
-    width: 36px;
-    height: 36px;
+    margin-left: 12px;
+    margin-right: 30px;        
   `}
 `
 
 const Description = styled.p`
-  margin-top: 8px;
+  margin-top: 16px;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 22px;
   color: #424242;
-  ${MediaRange.greaterThan("mobile")`    
-    margin-top: 16px;
-    font-size: 16px;
-    line-height: 22px;
-  `}
 `
 
-const ButtonsContainer = styled.div`
+const ButtonsDesktop = styled.div`
   width: auto;
   margin-left: auto;
   display: flex;
   flex-direction: column;
-  margin-top: 4px;
 
-  ${MediaRange.greaterThan("mobile")`
-    width: 160px;
-    margin-top: 24px;
+  ${MediaRange.lessThan("mobile")`
+    width: 116px;
+    display: none;
+  `}
+`
+
+const ButtonsMobile = styled.div`
+  width: auto;
+  margin-left: auto;
+  display: none;
+  flex-direction: column;
+
+  ${MediaRange.lessThan("mobile")`
+    width: 116px;
+    display: flex;
+    margin-top: 16px;
   `}
 `
 
 const DefaultButton = styled(Button)<{ color: string }>`
-  height: 26px;
-  padding: 0;
-  display: none;
-  background: ${({ color }) => color};
-
-  ${MediaRange.greaterThan("mobile")`
-    display: block;
-  `}
+  padding: 12px 24px;
+  display: block;
+  background: ${({ color, theme }) => theme.colors.primary};
 `
 
 const StyledDashedButton = styled(DashedButton)<{ color: string }>`
-  height: 26px;
-  padding: 0;
-  display: none;
-  border: 1px solid ${({ color }) => color};
-  color: ${({ color }) => color};
-
-  ${MediaRange.greaterThan("mobile")`
-    display: block;
-  `}
+  padding: 12px 24px;
+  display: block;
+  border: 1px solid ${({ color, theme }) => theme.colors.primary};
+  color: ${({ color, theme }) => theme.colors.primary};
 `
 
-const TextButton = styled.div<{ color: string }>`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: ${({ color }) => color};
-  ${MediaRange.greaterThan("mobile")`
-    display: none;
-  `}
+type ArrowType = { reverse?: boolean }
+
+const Arrow = styled(Icon).attrs({ name: "arrow" })`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  fill: #424242;
+  transition: transform 200ms ease;
+  ${({ reverse }: ArrowType) => reverse && "transform: rotate(180deg)"}
 `
 
 type CategoryCardProps = {
@@ -121,21 +120,38 @@ type CategoryCardProps = {
 }
 
 export const CategoryCard = styled(({ category, className, onSelect, selected }: CategoryCardProps) => {
+
+  const [isShowed, changeisShow] = useState(false)
+
+  const _toggle = (e: React.SyntheticEvent) => {
+    changeisShow(!isShowed)
+    e.stopPropagation()
+  }
+
+  const handleOnButtonClick = (e: React.SyntheticEvent) => {
+    changeisShow(true)
+    onSelect(category.id)
+    e.stopPropagation()
+  }
+
   const ButtonComponent = selected ? DefaultButton : StyledDashedButton
   return (
-    <Container className={className} onClick={() => onSelect(category.id)}>
+    <Container className={className} onClick={_toggle}>
       <Title>
-        <TabletkaIcon color={category.color} /> {category.name}
+        {category.name} <TabletkaIcon color={category.color} />
+        <Arrow reverse={isShowed} onClick={_toggle} />
+        <ButtonsDesktop>
+          <ButtonComponent color={category.color} onClick={handleOnButtonClick}>
+            {selected ? "Выбрано" : "Выбрать"}
+          </ButtonComponent>
+        </ButtonsDesktop>
       </Title>
-      <Description>{category.description}</Description>
-      <ButtonsContainer>
-        <ButtonComponent color={category.color} onClick={() => onSelect(category.id)}>
+      {isShowed && <Description>{category.description}</Description>}
+      <ButtonsMobile>
+        <ButtonComponent color={category.color} onClick={handleOnButtonClick}>
           {selected ? "Выбрано" : "Выбрать"}
         </ButtonComponent>
-        <TextButton color={category.color} onClick={() => onSelect(category.id)}>
-          {selected ? "Выбрано" : "Выбрать"}
-        </TextButton>
-      </ButtonsContainer>
+      </ButtonsMobile>
     </Container>
   )
 })``
