@@ -108,14 +108,6 @@ export const genFreeSessions = () => {
     insufficientBalance: ({ error }) => isAxiosError(error) && error.response?.data.code === "INSUFFICIENT_BALANCE",
   })
 
-
-  /*sample({ clock: insufficientBalance, source: $id }).watch(id => {
-    runInScope(toasts.remove, sessionBookFailByInsufficientBalanceToast)
-    runInScope(toasts.add, sessionBookFailByInsufficientBalanceToast)
-    runInScope(changeShowFundUpDialog, true)
-    runInScope(setRedirectUrl, routeNames.searchCoachPage(id.toString()))
-  })*/
-
   const sessionBookFailToast: Toast = { type: "error", text: "Не удалось забронировать сессию" }
   unknownError.watch(() => {
     runInScope(toasts.remove, sessionBookFailToast)
