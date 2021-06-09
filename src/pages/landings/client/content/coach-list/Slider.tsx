@@ -4,7 +4,9 @@ import styled from "styled-components"
 import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import { SwiperOptions } from "swiper"
 
-import { getCategoryColorById } from "@/feature/categories/categories.store"
+import { Category } from "./Category"
+
+import starIcon from "../../assets/coach-list/star.svg"
 
 const swiperOptions: SwiperOptions = {
   loop: false,
@@ -66,6 +68,7 @@ const Slide = styled.div`
     right: 0;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.14);
     border-radius: 8px;
+    pointer-events: none;
   }
 `
 
@@ -88,13 +91,52 @@ const CoachName = styled.h3`
   margin-bottom: 16px;
 `
 
-const CoachRating = styled.p``
+const CoachRating = styled.p`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #444444;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
 
-const CoachCategories = styled.ul``
+  span {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 14px;
+    line-height: 24px;
+    color: #9399ab;
+  }
 
-const Category = styled.li<{ catColor: string }>`
-  padding: 5px 8px;
-  color: ${props => props.catColor};
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: "";
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background-image: url('${starIcon}');
+    background-size: 16px 16px;
+  }
+`
+
+const CoachCategories = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 350px;
+  }
 `
 
 type Props = {
@@ -115,11 +157,11 @@ export const Slider = ({ coaches }: Props) => {
                 {coach.first_name} {coach.last_name}
               </CoachName>
               <CoachRating>
-                {coach.rating} <span>{coach.reviews_count}</span>
+                {coach.rating} <span>({coach.reviews_count})</span>
               </CoachRating>
               <CoachCategories>
                 {coach.categories.map((cat: { id: number; name: string }) => (
-                  <Category catColor={getCategoryColorById(cat.id)}>{cat.name}</Category>
+                  <Category key={cat.id} id={cat.id} name={cat.name} />
                 ))}
               </CoachCategories>
             </Slide>
