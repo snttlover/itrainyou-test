@@ -131,7 +131,7 @@ const CameraIcon = styled(Icon).attrs({ name: "camera" })`
   margin-right: 17px;
 `
 
-const InfoContainer = styled.div`
+const InfoContainer = styled.div<{type: "coach" | "client"}>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -140,7 +140,8 @@ const InfoContainer = styled.div`
   font-size: 14px;
   line-height: 22px;
   padding: 17px 21px;
-  margin-bottom: 44px;
+  margin-bottom: 24px;
+  margin-top: ${({ type }) => type === "client" ? "16px" : "0"};
   cursor: pointer;
   color: #5B6670;
   max-width: 600px;
@@ -299,7 +300,7 @@ export const CheckMediaDevices = (props: {type: "coach" | "client"}) => {
   const compatibility = useStore($compatibility)
 
   return (
-    <InfoContainer onClick={() => showModal(true)}>
+    <InfoContainer type={props.type} onClick={() => showModal(true)}>
       {!compatibility ? <NotCompatibleDialog visibility={visibility} close={() => toggle(false)} /> : <TestCallModal /> }
       <CameraIcon />
       <div>Проверьте камеру и микрофон до встречи с {props.type === "client" ? "коучем" : "клиентом"}</div>
