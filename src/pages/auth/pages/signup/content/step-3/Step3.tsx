@@ -159,6 +159,7 @@ export const Step3 = () => {
   const _middleNameChanged = useEvent(middleNameChanged)
   const [nextDisabled, setNextDisabled] = useState(false)
 
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
   }
@@ -176,7 +177,7 @@ export const Step3 = () => {
       <Steps activeId='1'>
         <Steps.Step id='1'>Роль</Steps.Step>
         <Steps.Step id='2'>Данные</Steps.Step>
-        <Steps.Step id='3'>Подбор коуча</Steps.Step>
+        <Steps.Step id='3'>{userType === "client" ? "Подбор коуча" : "О себе"}</Steps.Step>
       </Steps>
       <Container>
         <Title>Добавьте информацию о себе</Title>

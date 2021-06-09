@@ -168,7 +168,7 @@ export const Step4Client = () => {
       <Container>
         <FormTitle>Выберите направления</FormTitle>
         {categories}
-        <FormTitle>Выберите комфортную для вас стоимость одной сессии (60 минут)</FormTitle>
+        {/*<FormTitle>Выберите комфортную для вас стоимость одной сессии (60 минут)</FormTitle>*/}
         {/*<PriceRanges />*/}
         <ButtonContainer>
           <RegisterButton disabled={loading} onClick={() => _userRegistered()}>
