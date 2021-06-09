@@ -262,7 +262,7 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
           :
           <>
             <Informer colorful noBack>Нет доступа к микрофону</Informer>
-            <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к видеокамере</StyledLink>
+            <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к микрофону</StyledLink>
           </>}
       </Container>
     )
