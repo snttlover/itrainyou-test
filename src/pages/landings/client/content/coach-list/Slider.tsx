@@ -135,6 +135,7 @@ const CoachCategories = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   @media (min-width: 768px) {
     flex-direction: row;
