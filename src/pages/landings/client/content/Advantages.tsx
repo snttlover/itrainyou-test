@@ -170,7 +170,7 @@ export const Advantages = ({ advantages }: Props) => (
           <Advantage key={item.id} visibleDesktopSubtitle={!item.subtitleMobile}>
             <img src={item.image} />
             <h3>{item.title}</h3>
-            <p className='desktopSubtitle'>{item.subtitle}</p>
+            <p className='desktopSubtitle' dangerouslySetInnerHTML={{ __html: item.subtitle }} />
             <p className='mobileSubtitle' dangerouslySetInnerHTML={{ __html: item.subtitleMobile }} />
           </Advantage>
         ))}
