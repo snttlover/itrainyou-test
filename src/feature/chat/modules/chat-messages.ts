@@ -7,7 +7,8 @@ import {
   MessageSessionRequestStatuses,
   SupportTicketType,
   TransActionProperties,
-  TransActionsStatus
+  TransActionsStatus,
+  FreeSessionClientMessage
 } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
@@ -48,7 +49,7 @@ export type ChatSystemMessage = {
   showButtons: boolean
   date: string
   isReadByYou: boolean
-  systemMessageType: "" | "CHOOSE_NEW_COACH" | "BOOK_PAID_SESSION" | "FREE_SESSIONS_LIMIT_ENDED"
+  systemMessageType: FreeSessionClientMessage
 }
 
 export type PersonalChatMessage = {
@@ -160,7 +161,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
           let user: CoachUser | Client | null = null
 
-          console.log(message)
 
           if (message.type === "SUPPORT") {
             const user = message?.supportTicket?.support

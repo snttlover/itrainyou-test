@@ -1,4 +1,4 @@
-import { combine, createEvent, forward, guard, restore, sample } from "effector-root"
+import { combine, createEvent, createStore, forward, guard, restore, sample } from "effector-root"
 import { SessionRequest } from "@/lib/api/coach/get-sessions-requests"
 import { Coach } from "@/lib/api/coach"
 import { clientSessionRequests } from "@/feature/session-request/createSessionRequestsModule"
@@ -38,7 +38,8 @@ export const $currentDenyCompletationProblem = restore<DenySessionRequestProblem
   ""
 ).reset(reset)
 
-export const denyCompletationProblems: Problems = [
+export const changeDenyOptions = createEvent<"limited" | "unlimited">()
+export const denyCompletationProblems = createStore<Problems>([
   {
     value: "COACH_ABSENT",
     label: "Коуч отсутствует",
@@ -48,10 +49,23 @@ export const denyCompletationProblems: Problems = [
     label: "Некорректное поведение коуча",
   },
   {
+    value: "TECHNICAL_ISSUES",
+    label: "Технические проблемы",
+  },
+  {
+    value: "CLIENT_WANTS_NEW_COACH",
+    label: "Хочу выбрать другого коуча",
+  },
+  {
+    value: "CLIENT_WANTS_DIFFERENT_WORKFLOW",
+    label: "Мне нужен другой формат работы",
+  },
+  {
     value: "OTHER",
     label: "Другое",
   },
-]
+]).on(changeDenyOptions, (state, payload) =>
+  payload === "limited" ? state.filter(element => element.value !== "CLIENT_WANTS_NEW_COACH" || "CLIENT_WANTS_DIFFERENT_WORKFLOW") : state)
 
 sample({
   source: combine(
