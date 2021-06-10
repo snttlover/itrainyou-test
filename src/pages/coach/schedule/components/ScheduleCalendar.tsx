@@ -72,7 +72,7 @@ const MobileList = styled.div`
 `
 
 const ToolTip = styled.div<{show: boolean; bottomDirection: boolean; leftDirection: boolean; rightDirection: boolean }>`
-  width: 240px;
+  width: 280px;
   height: auto;
   position: absolute;
   z-index: 1000;
@@ -195,6 +195,11 @@ const StyledRightIcon = styled(Icon).attrs({ name: "right-calendar-icon" })<Left
   ${MediaRange.lessThan("mobile")`
     margin-left: 30px;
   `}
+`
+
+const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
+  width: 24px;
+  height: 24px;
 `
 
 const StyledMonthName = styled(MonthName)`
@@ -504,7 +509,7 @@ const FreeSessionText = styled.div`
   font-size: 14px;
   line-height: 22px;
   color: #424242;
-  margin-bottom: 16px;
+  max-width: 90%;
 
   & a {
     color: ${props => props.theme.colors.primary};
@@ -555,22 +560,35 @@ const MobileSessionInfoModal = () => {
           </>
           :
           (session.areAvailable ?
-            <>
-              <Title>Сессия забронирована</Title>
-              <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
-              <UserInfo>
-                <StyledAvatar src={client?.avatar || null} />
-                <UserName>{client?.firstName} {client?.lastName}</UserName>
-              </UserInfo>
-              <StyledLink onClick={() => navigate({ url: routeNames.coachSession(session.id.toString())})}>На страницу сессии</StyledLink>
-              <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
-            </>
+            (session.sessionDurationType === "PROMO" ?
+              <>
+                <Title>Сессия забронирована</Title>
+                <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+                <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText></Row>
+                <UserInfo>
+                  <StyledAvatar src={client?.avatar || null} />
+                  <UserName>{client?.firstName} {client?.lastName}</UserName>
+                </UserInfo>
+                <StyledLink onClick={() => navigate({ url: routeNames.coachSession(session.id.toString())})}>На страницу сессии</StyledLink>
+                <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+              </>
+              : 
+              <>
+                <Title>Сессия забронирована</Title>
+                <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+                <UserInfo>
+                  <StyledAvatar src={client?.avatar || null} />
+                  <UserName>{client?.firstName} {client?.lastName}</UserName>
+                </UserInfo>
+                <StyledLink onClick={() => navigate({ url: routeNames.coachSession(session.id.toString())})}>На страницу сессии</StyledLink>
+                <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+              </>)
             :
             (session.sessionDurationType === "PROMO" ?
               <>
                 <Title>Этот слот еще не занят никем в вашем расписании</Title>
                 <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
-                <FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText>
+                <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText></Row>
                 <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
               </> :
               <>
@@ -637,7 +655,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
               (props.session.sessionDurationType === "PROMO" ?
                 <>
                   <ToolTipHeader>Сессия забронирована</ToolTipHeader>
-                  <FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText>
+                  <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText></Row>
                   <UserInfo>
                     <StyledAvatar src={client?.avatar || null} />
                     <UserName>{client?.firstName} {client?.lastName}</UserName>
@@ -661,7 +679,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
               (props.session.sessionDurationType === "PROMO" ?
                 <>
                   <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
-                  <FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText>
+                  <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText></Row>
                   <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
                 </>
                 :

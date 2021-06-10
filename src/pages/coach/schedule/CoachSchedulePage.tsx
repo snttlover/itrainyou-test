@@ -13,6 +13,8 @@ import { GoogleCalendar } from "@/pages/coach/schedule/GoogleCalendar"
 import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { Prices } from "@/pages/coach/schedule/Prices"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { OnBoardingFreeSessions } from "@/pages/coach/schedule/components/OnBoarding/OnBoarding"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
@@ -85,6 +87,25 @@ const InstructionContainer = styled.div`
   position: absolute;
   top: 28px;
   right: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`
+
+const InstructionText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${props => props.theme.colors.primary};
+`
+
+const QuestionIcon = styled(Icon).attrs({ name: "question-mark" })`
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 `
 
 export const CoachSchedulePage = () => {
@@ -100,7 +121,10 @@ export const CoachSchedulePage = () => {
         {coachAccess.isApproved ?
           <>
             <Header>Расписание</Header>
-            <InstructionContainer>Инструкция</InstructionContainer>
+            <InstructionContainer>
+              <QuestionIcon />
+              <InstructionText>Инструкция</InstructionText>
+            </InstructionContainer>
             <HorizontalOverflowScrollContainer>
               <StyledTabs value={tab} onChange={changeTab}>
                 <StyledTab value='calendar'>Календарь</StyledTab>
@@ -113,6 +137,7 @@ export const CoachSchedulePage = () => {
             {tab === "google_calendar" ? (<GoogleCalendar />) : null}
             {tab === "calendar" ? (<CalendarPart />) : null}
             {tab === "prices" ? (<Prices />) : null}
+            <OnBoardingFreeSessions />
           </>
           : <CoachSchedulePlaceholder />
         }
