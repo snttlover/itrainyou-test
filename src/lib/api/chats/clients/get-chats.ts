@@ -65,6 +65,7 @@ export type ChatMessage = {
     type: MessageTypes
     text: string
     image: string
+    coachToBookSession: number | null
     document: string
     chat: number
     transaction: TransActionProperties | null
@@ -83,6 +84,7 @@ export type ChatMessage = {
     creationDatetime: ISODate
     systemTicketType: SupportTicketType
     isReadByYou: boolean
+    systemMessageType: "" | "CHOOSE_NEW_COACH" | "BOOK_PAID_SESSION" | "FREE_SESSIONS_LIMIT_ENDED"
 }
 
 

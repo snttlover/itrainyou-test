@@ -26,6 +26,7 @@ import {
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import { changeCurrentDenyCompletationRequest } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
 import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
+import { Link } from "react-router-dom"
 
 const dateFormat = "DD MMM YYYY"
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -40,10 +41,11 @@ const formatSessionDate = (start?: ISODate, end?: ISODate) => {
 }
 
 const getText = (
+  systemMessageType: "" | "CHOOSE_NEW_COACH" | "BOOK_PAID_SESSION" | "FREE_SESSIONS_LIMIT_ENDED",
   request: SessionRequest | TransActionProperties,
   status: MessageSessionRequestStatuses | ConflictStatus | TransActionsStatus,
   chatType: "coach" | "client",
-  commonSystemMessages?: boolean
+  commonSystemMessages?: boolean,
 ) => {
   const is = (
     requestType: SessionRequestTypes | SessionRequestTypes[],
@@ -272,6 +274,16 @@ const getText = (
 
     if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
       if (request.session.durationType === "PROMO") {
+        if (systemMessageType === "BOOK_PAID_SESSION") {
+          return `Выберете удобное для вас время.
+          Коуч ${request.initiatorCoach?.firstName} ${request.initiatorCoach?.lastName} ждет новое бронирование и готов работать на результат.`
+        } else if (systemMessageType === "CHOOSE_NEW_COACH") {
+          return "Забронируйте новую бесплатную сессию с другим коучем"
+        } else if (systemMessageType === "FREE_SESSIONS_LIMIT_ENDED") {
+          return <p>Вы использовали все доступные бесплатные сессии. Ознакомьтесь с полным списком коучей можно
+            <UnderLine to='/client'>здесь.</UnderLine>
+            Будем рады, если вы найдете того, кто вам подходит. </p>
+        }
 
         return "Вам понравилась сессия?"
       } else {
@@ -345,7 +357,7 @@ const getText = (
         } запрос на подтверждение <b>бесплатной</b> сессии </p>
       } else {
         return `${request.initiatorClient?.firstName} отправил${
-                request.initiatorClient?.sex === "F" ? "a" : ""
+          request.initiatorClient?.sex === "F" ? "a" : ""
         } запрос на подтверждение сессии`
       }
 
@@ -382,8 +394,8 @@ const getText = (
       if (request.session.durationType === "PROMO") {
         return <p>
           Вы подтвердили бронирование <b>бесплатной</b> сессии.
-        <br />
-        <br />
+          <br />
+          <br />
           За 10 минут до начала сессии в личном кабинете на платформе вы сможете открыть видеочат с клиентом.
         </p>
       } else {
@@ -469,7 +481,8 @@ export const SystemMessageSwitcher = ({
   message: ChatSystemMessage
   commonSystemMessages?: boolean
 }) => {
-  const text = getText(message.request, message.status, message.chatType, commonSystemMessages)
+  console.log("message",message)
+  const text = getText(message.systemMessageType, message.request, message.status, message.chatType, commonSystemMessages)
   let Buttons = getSystemButtons(message.request, message.chatType, message.showButtons, message.status, {
     name: message.userName,
     avatar: message.userAvatar || "",
@@ -503,14 +516,6 @@ type SystemMessageTypes = {
 }
 
 const SystemMessage = (props: SystemMessageTypes) => {
-  //const [firstLine, secondLine] = props.text.split('n/')
-  //{firstLine}
-  //         {!!secondLine &&
-  //         <>
-  //           <br />
-  //           <br />
-  //           {secondLine}
-  //         </>}
   return (
     <StyledSystemMessage id={props.id as never}>
       <SessionDate>
@@ -525,6 +530,12 @@ const SystemMessage = (props: SystemMessageTypes) => {
 
 const SessionDay = styled.div`
   margin-right: 2px;
+`
+
+const UnderLine = styled(Link)`
+  text-decoration: underline;
+  color: ${props => props.theme.colors.primary};
+  font-weight: 500;
 `
 
 const SessionTime = styled.div`

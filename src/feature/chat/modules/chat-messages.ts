@@ -48,6 +48,7 @@ export type ChatSystemMessage = {
   showButtons: boolean
   date: string
   isReadByYou: boolean
+  systemMessageType: "" | "CHOOSE_NEW_COACH" | "BOOK_PAID_SESSION" | "FREE_SESSIONS_LIMIT_ENDED"
 }
 
 export type PersonalChatMessage = {
@@ -196,6 +197,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 status: message.transactionType,
                 date: message.creationDatetime,
                 isReadByYou: message.isReadByYou,
+                systemMessageType: message.systemMessageType
               }
             }
             else {
@@ -210,6 +212,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 status: message?.conflict?.status || message.sessionRequestStatus,
                 date: message.creationDatetime,
                 isReadByYou: message.isReadByYou,
+                systemMessageType: message.systemMessageType
               }
             }
           }
