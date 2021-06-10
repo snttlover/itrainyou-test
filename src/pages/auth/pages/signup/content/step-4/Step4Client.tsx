@@ -141,7 +141,6 @@ export const Step4Client = () => {
   const _userRegistered = useEvent(userRegistered)
   const rangeSelected = useStore($rangeSelected)
 
-  //loading || !rangeSelected
   const categories = useStore($categoriesList).map(category => (
     <CategoryCard
       key={category.id}
@@ -168,10 +167,10 @@ export const Step4Client = () => {
       <Container>
         <FormTitle>Выберите направления</FormTitle>
         {categories}
-        {/*<FormTitle>Выберите комфортную для вас стоимость одной сессии (60 минут)</FormTitle>*/}
-        {/*<PriceRanges />*/}
+        <FormTitle>Выберите комфортную для вас стоимость одной сессии (60 минут)</FormTitle>
+        <PriceRanges />
         <ButtonContainer>
-          <RegisterButton disabled={loading} onClick={() => _userRegistered()}>
+          <RegisterButton disabled={loading || !rangeSelected} onClick={() => _userRegistered()}>
             Подобрать коуча
           </RegisterButton>
         </ButtonContainer>
