@@ -5,7 +5,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"
-import {CategoryDescription} from "@/pages/landing/content/top-bar/categories-picker/CategoryDescription"
+import { CategoryDescription } from "@/pages/landing-old/content/top-bar/categories-picker/CategoryDescription"
 
 const Container = styled.div<{ disabled?: boolean }>`
   background: #ffffff;
@@ -23,28 +23,27 @@ const Tabletka = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
   min-width: 16px;
   width: 16px;
   height: 16px;
-  margin-left: 8px;  
+  margin-left: 8px;
 `
 
 const Title = styled.div`
-    font-family: Roboto Slab;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-    color: #424242;
-    margin-left: 12px;
-    
-    ${MediaRange.lessThan("mobile")`
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #424242;
+  margin-left: 12px;
+
+  ${MediaRange.lessThan("mobile")`
     font-size: 14px;
     line-height: 22px;
   `}
-    
 `
 
 const Category = styled.div`
   display: flex;
-  align-items: center;  
+  align-items: center;
   margin-bottom: 10px;
 `
 
@@ -61,7 +60,6 @@ type CategoryCardProps = {
 }
 
 export const CategoryCard = styled(({ category, selected, onSelect, className, disabled }: CategoryCardProps) => {
-
   const realDisabled = !selected && disabled
 
   return (

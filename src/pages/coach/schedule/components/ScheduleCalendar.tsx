@@ -40,6 +40,7 @@ import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
 import { Checkbox, CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
+
 import { config } from "@/config"
 
 
@@ -632,6 +633,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
             <div>Этот слот заполнен в вашем google-календаре</div>
             :
             (props.session.areAvailable ?
+
               (props.session.sessionDurationType === "PROMO" ?
                 <>
                   <ToolTipHeader>Сессия забронирована</ToolTipHeader>
@@ -654,6 +656,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
                   <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
                 </>
               )
+
               :
               (props.session.sessionDurationType === "PROMO" ?
                 <>

@@ -11,7 +11,7 @@ export const HomePage = () => {
 
   return (
     <ClientDashboardLayout>
-      {hasFreeSessions ? <FreeSessionsHomePage /> : <StandardHomePage/>}
+      {!hasFreeSessions ? <FreeSessionsHomePage /> :<StandardHomePage/>}
     </ClientDashboardLayout>
   )
 }
