@@ -211,6 +211,16 @@ const SelectDateHeader = styled.div`
   color: #5b6670;
 `
 
+const StyledBuyButton = styled(Button)`
+  text-align: center;
+  padding: 4px 35px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  width: 100%;
+`
+
 const StyledCalendar = styled(Calendar)`
   max-width: 252px;
 `
@@ -364,12 +374,12 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
             <ButtonContainer>
               <ButtonWrapper>
                 <IsAuthed>
-                  <Button
+                  <StyledBuyButton
                     disabled={buyLoading || selected.length === 0}
                     onClick={payForTheSessionHandler}
                   >
-                  Забронировать
-                  </Button>
+                    {activeTab === "PROMO" ? "Забронировать бесплатно" : "Забронировать"}
+                  </StyledBuyButton>
                 </IsAuthed>
                 <IsGuest>
                   <Link to='/auth/signup/1'>

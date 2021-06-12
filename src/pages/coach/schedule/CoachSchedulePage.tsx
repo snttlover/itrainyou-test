@@ -1,7 +1,7 @@
 import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { $coachAccess } from "@/feature/user/user.model"
 import { CoachSchedulePlaceholder } from "@/pages/coach/schedule/CoachSchedulePlaceholder"
-import { useStore, useGate } from "effector-react"
+import { useStore, useGate, useEvent } from "effector-react"
 import * as React from "react"
 import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
 import styled from "styled-components"
@@ -15,6 +15,7 @@ import { Prices } from "@/pages/coach/schedule/Prices"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { OnBoardingFreeSessions } from "@/pages/coach/schedule/components/OnBoarding/OnBoarding"
+import { showOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
@@ -49,10 +50,17 @@ const StyledTab = styled(Tab)`
 const Header = styled.div`
   font-family: Roboto Slab;
   font-weight: 700;  
-  margin-bottom: 12px;
   font-size: 24px;
   line-height: 32px;
   color: #424242;
+`
+
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
   ${MediaRange.lessThan("mobile")`
       margin-bottom: 34px;
       margin-top: 10px;
@@ -84,13 +92,11 @@ export const Description = styled.div`
 `
 
 const InstructionContainer = styled.div`
-  position: absolute;
-  top: 28px;
-  right: 24px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `
 
 const InstructionText = styled.div`
@@ -100,6 +106,11 @@ const InstructionText = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: ${props => props.theme.colors.primary};
+  display: block;
+
+  ${MediaRange.lessThan("mobile")`
+    display: none;
+  `}
 `
 
 const QuestionIcon = styled(Icon).attrs({ name: "question-mark" })`
@@ -110,6 +121,7 @@ const QuestionIcon = styled(Icon).attrs({ name: "question-mark" })`
 
 export const CoachSchedulePage = () => {
   const coachAccess = useStore($coachAccess)
+  const _showOnBoarding = useEvent(showOnBoarding)
 
   useGate(ScheduleGate)
 
@@ -120,11 +132,13 @@ export const CoachSchedulePage = () => {
       <Container>
         {coachAccess.isApproved ?
           <>
-            <Header>Расписание</Header>
-            <InstructionContainer>
-              <QuestionIcon />
-              <InstructionText>Инструкция</InstructionText>
-            </InstructionContainer>
+            <HeaderContainer>
+              <Header>Расписание</Header>
+              <InstructionContainer onClick={() => _showOnBoarding(true)}>
+                <QuestionIcon />
+                <InstructionText>Инструкция</InstructionText>
+              </InstructionContainer>
+            </HeaderContainer>
             <HorizontalOverflowScrollContainer>
               <StyledTabs value={tab} onChange={changeTab}>
                 <StyledTab value='calendar'>Календарь</StyledTab>

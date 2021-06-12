@@ -17,7 +17,7 @@ export const Dialog = (props: DialogProps) => {
   const close = () => props.onChange(false)
 
   const documentKeypressHandler = (e: KeyboardEvent) => {
-    if (e.keyCode === 27) {
+    if (e.keyCode === 27 && !props.notClosable) {
       close()
     }
   }

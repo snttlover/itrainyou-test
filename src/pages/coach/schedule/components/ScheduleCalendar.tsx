@@ -40,8 +40,8 @@ import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
 import { Checkbox, CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
-
 import { config } from "@/config"
+import { showOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 
 const CalendarContainer = styled.div`
@@ -531,6 +531,7 @@ type SessionType = {
 const MobileSessionInfoModal = () => {
   const toggle = useEvent(showMobileSessionInfo)
   const navigate = useEvent(navigatePush)
+  const _showOnBoarding = useEvent(showOnBoarding)
 
   const visibility = useStore($isMobileSessionInfoShowed)
   const session = useStore($mobileEventInfo)
@@ -549,6 +550,11 @@ const MobileSessionInfoModal = () => {
     _removeSession(session)
   }
 
+  const handleOnShowInfo = () => {
+    toggle()
+    _showOnBoarding(true)
+  }
+
   return (
     <StyledDialog value={visibility} onChange={toggle}>
       <ToolTipContainer>
@@ -564,7 +570,7 @@ const MobileSessionInfoModal = () => {
               <>
                 <Title>Сессия забронирована</Title>
                 <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
-                <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText></Row>
+                <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
                 <UserInfo>
                   <StyledAvatar src={client?.avatar || null} />
                   <UserName>{client?.firstName} {client?.lastName}</UserName>
@@ -588,7 +594,7 @@ const MobileSessionInfoModal = () => {
               <>
                 <Title>Этот слот еще не занят никем в вашем расписании</Title>
                 <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
-                <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText></Row>
+                <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
                 <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
               </> :
               <>
@@ -608,6 +614,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 
   const _removeSession = useEvent(removeSession)
   const navigate = useEvent(navigatePush)
+  const _showOnBoarding = useEvent(showOnBoarding)
 
   const [showed, setShowed] = useState(false)
 
@@ -628,6 +635,11 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
   const handleOnSessionClick = (e: React.SyntheticEvent, session: SessionType) => {
     setShowed(true)
     e.stopPropagation()
+  }
+
+  const handleOnShowInfo = () => {
+    setShowed(false)
+    _showOnBoarding(true)
   }
 
   useClickOutside(toolTipRef, () => {
@@ -655,7 +667,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
               (props.session.sessionDurationType === "PROMO" ?
                 <>
                   <ToolTipHeader>Сессия забронирована</ToolTipHeader>
-                  <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText></Row>
+                  <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
                   <UserInfo>
                     <StyledAvatar src={client?.avatar || null} />
                     <UserName>{client?.firstName} {client?.lastName}</UserName>
@@ -679,7 +691,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
               (props.session.sessionDurationType === "PROMO" ?
                 <>
                   <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
-                  <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a>Подробнее</a></FreeSessionText></Row>
+                  <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
                   <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
                 </>
                 :

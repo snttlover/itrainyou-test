@@ -1,17 +1,36 @@
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
-import { DurationType } from "@/lib/api/coach-sessions"
-import { createSession } from "@/lib/api/coaching-sessions/create-session"
-import { date } from "@/lib/formatting/date"
-import { $showedSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
-import { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
-import { $prices } from "@/pages/coach/schedule/models/price-settings/units"
-import { changeFilterView } from "@/pages/coach/schedule/models/sessions.model"
+import { createEffect, createEvent, createStore, forward, restore } from "effector-root"
+import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
+
+
+const checkUserFx = createEffect({
+  handler: () => {
+    const stringData = localStorage.getItem(USER_KEY)
+    const isOldUser = JSON.parse(stringData!)
+    return !isOldUser
+  }
+})
+
+export const USER_KEY = "is_old_user"
 
 export const showOnBoarding = createEvent<void | boolean>()
-export const $onBoardingvisibility = createStore<boolean>(false).on(
+export const $onBoardingVisibility = createStore<boolean>(false).on(
   showOnBoarding,
   (state, payload) => {
     if (payload !== undefined) return payload
     return !state
   })
+
+export const $isOldUser = restore(checkUserFx.doneData, false)
+
+forward({
+  from: ScheduleGate.open,
+  to: checkUserFx,
+})
+
+forward({
+  from: checkUserFx.doneData.map(data => {
+    localStorage.setItem(USER_KEY, "true")
+    return data
+  }),
+  to: showOnBoarding,
+})

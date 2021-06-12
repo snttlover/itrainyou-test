@@ -11,7 +11,7 @@ import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { Button } from "@/oldcomponents/button/normal/Button"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import { CoachSession, DurationType, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
+import { CoachSession, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { Event, Store } from "effector-root"
@@ -163,21 +163,6 @@ const RubleIcon = styled(Icon).attrs({ name: "ruble" })`
   fill: #4858cc;
 `
 
-const SummaryRuble = styled(RubleIcon)`
-  width: 20px;
-  height: 20px;
-`
-
-const Summary = styled.span`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #4858cc;
-  display: flex;
-  align-items: center;
-`
-
 const ButtonContainer = styled.div`
   padding-top: 10px;
   display: flex;
@@ -198,64 +183,14 @@ const StyledDateHeader = styled.div`
   `}
 `
 
-const OnlyOneTabStyles = css`
-  justify-content: flex-end;
-  padding-top: 16px;
-  padding-bottom: 8px;
-`
-
-const SelectedSession = styled.div`
-  display: flex;
-  margin-top: 12px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid #efefef;
-  width: 216px;
-  align-items: center;
-  &:first-child {
-    margin-top: 0;
-  }
-
-  ${MediaRange.lessThan("mobile")`
-    width: 252px;
-  `}
-`
-
-const SessionDate = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: #424242;
-  margin-right: 8px;
-`
-
-const SessionTime = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  text-align: left;
-  color: #424242;
-  flex: 1;
-`
-
-const SessionPrice = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  text-align: right;
-  color: #424242;
-  margin-right: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
 const StyledBuyButton = styled(Button)`
   text-align: center;
-  padding: 4px 24px;
+  padding: 4px 35px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  width: 160px;
+  width: 100%;
 `
 
 const StyledRegisterButton = styled(Button)`
@@ -320,9 +255,6 @@ const CalendarDirectionBlock = styled.div`
 const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
-type Types = CoachSession & {
-  selected: boolean
-}
 
 type FreeSessionTypes = {
   freeSessionsModule: {
@@ -345,11 +277,8 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   const sessions = useStore(props.freeSessionsModule.sessionsList)
   const loading = useStore(props.freeSessionsModule.loading)
   const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
-  //const activeTab = useStore(props.freeSessionsModule.tabs.$durationTab)
 
   const loadData = useEvent(props.freeSessionsModule.loadData)
-  //const changeActiveTab = useEvent(props.freeSessionsModule.tabs.changeDurationTab)
-  const deleteSession = useEvent(props.freeSessionsModule.deleteSession)
   const toggleSession = useEvent(props.freeSessionsModule.toggleSession)
   const bulkFreeSession = useEvent(props.freeSessionsModule.bulkFreeSession)
 
@@ -390,10 +319,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
       time: date(session.startDatetime).format(equalTimeFormat),
     }))
 
-  const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
-
-
-  const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
 
 
@@ -453,7 +378,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
                   disabled={buyLoading || selected.length === 0}
                   onClick={payForTheSessionHandler}
                 >
-                      Забронировать
+                      Забронировать бесплатно
                 </StyledBuyButton>
               </IsAuthed>
               <IsGuest>

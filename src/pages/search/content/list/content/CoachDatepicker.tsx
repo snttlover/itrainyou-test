@@ -16,7 +16,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
-import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
+import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -191,12 +191,6 @@ const StyledDateHeader = styled.div`
   `}
 `
 
-const OnlyOneTabStyles = css`
-  justify-content: flex-end;
-  padding-top: 16px;
-  padding-bottom: 8px;
-`
-// ${props => props.onlyOneCard && OnlyOneTabStyles}
 const StyledTab = styled(Tab)<StyledTabTypes>`
   display: flex;
   flex-direction: column;
@@ -283,12 +277,12 @@ const SessionPrice = styled.div`
 
 const StyledBuyButton = styled(Button)`
   text-align: center;
-  padding: 4px 24px;
+  padding: 4px 40px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  width: 160px;
+  width: 100%;
 `
 
 const StyledRegisterButton = styled(Button)`
@@ -319,111 +313,6 @@ const AmountText = styled.div`
   color: #424242;
 `
 
-const SessionPackagesStatWrapper = styled.div`
-  margin-top: 24px;
-  border-top: 1px solid #dbdee0;
-  padding-top: 20px;
-  width: 216px;
-  margin: 0 auto;
-
-  ${MediaRange.between("mobile", "laptop")`
-    border-top: none;
- `}
-
-  ${MediaRange.lessThan("mobile")`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  `}
-`
-
-const SessionPackagePercent = styled.div`
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: right;
-  color: #424242;
-  margin-bottom: 12px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-`
-
-const SessionPackage = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  ${MediaRange.lessThan("mobile")`
-    width: 252px;
-  `}
-`
-
-const SessionPackageText = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 16px;
-  color: #424242;
-`
-
-const SessionPackagesDescription = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  color: #5b6670;
-  margin-top: 16px;
-
-  ${MediaRange.lessThan("mobile")`
-    width: 212px;
-  `}
-`
-
-const SessionsPackagesTitle = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #424242;
-  margin-bottom: 7px;
-
-  ${MediaRange.lessThan("mobile")`
-    width: 252px;
-  `}
-`
-
-const Footer = ({ className }: { className?: string }) => (
-  <SessionPackagesStatWrapper className={className}>
-    <SessionsPackagesTitle>Пакеты сессий</SessionsPackagesTitle>
-    <SessionPackage>
-      <SessionPackageText>2 сессии</SessionPackageText>
-      <SessionPackagePercent>15%</SessionPackagePercent>
-    </SessionPackage>
-    <SessionPackagesDescription>Просто выберите сессии и акция автоматически активизируется</SessionPackagesDescription>
-  </SessionPackagesStatWrapper>
-)
-
-const TabletFooter = styled(Footer)`
-  display: none;
-  ${MediaRange.between("mobile", "laptop")`
-    display: block;
-    
-    ${SessionPackagesDescription} {
-      color: #4858CC;
-    }
- `}
-`
-
-const DesktopFooter = styled(Footer)`
-  display: flex;
-  margin-top: 24px;
-  ${MediaRange.between("mobile", "laptop")`
-    display: none;
- `}
-`
-
 const StyledCalendar = styled(Calendar)`
   ${MediaRange.between("mobile", "laptop")`
     max-width: 252px;
@@ -436,17 +325,6 @@ const Delemiter = styled.div`
   ${MediaRange.between("mobile", "laptop")`
     display: flex;
   `}
-`
-
-const FooterWrapper = styled.div`
-  display: none;
-  width: 100%;
-  border-top: 1px solid #dbdee0;
-  ${MediaRange.between("mobile", "laptop")`
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
- `}
 `
 
 const equalDateFormat = "DDMMYYYY"
@@ -593,7 +471,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
                   disabled={buyLoading || selected.length === 0}
                   onClick={payForTheSessionHandler}
                 >
-                Забронировать
+                  {activeTab === "PROMO" ? "Забронировать бесплатно" : "Забронировать"}
                 </StyledBuyButton>
               </IsAuthed>
               <IsGuest>

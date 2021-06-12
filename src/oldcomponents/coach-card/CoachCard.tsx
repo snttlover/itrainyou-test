@@ -13,7 +13,6 @@ import { Icon } from "@/oldcomponents/icon/Icon"
 import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
 import { useHistory } from "react-router-dom"
 import { parseFloatToString } from "@/lib/formatting/parsenumbers"
-import { BookSessionsStatusModalDialog } from "@/pages/search/content/list/content/modals/BookSessionsStatusModalDialog"
 
 const MainInfoContainer = styled.div`
   position: relative;
@@ -77,15 +76,6 @@ const Info = styled.div`
   display: flex;
   margin-top: 12px;
   align-items: center;
-`
-
-const Category = styled.img`
-  height: 16px;
-  width: 16px;
-  ${MediaRange.greaterThan("tablet")`
-    height: 24px;
-    width: 24px;
-  `}
 `
 
 const PriceContainer = styled.div`
@@ -156,10 +146,6 @@ const Block = styled.div<BlockTypes>`
   `}
 `
 
-const Duration = styled.span`
-  position: relative;
-`
-
 const Price = styled.span`
   font-family: Roboto;
   font-size: 8px;
@@ -211,11 +197,6 @@ const Rating = styled.span`
   ${MediaRange.lessThan("tablet")`  
     font-size: 20px;
   `}
-`
-
-const PriceContainerDelemiter = styled.div`
-  margin-right: 5px;
-  margin-left: 5px;
 `
 
 const Star = styled.img.attrs({ src: starIcon })`
@@ -310,14 +291,6 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
 
   if (process.env.BUILD_TARGET === "client") {
     sessionsListModel = useMemo(() => genCoachSessions(coach.id, !!freeSessions), [coach.id])
-
-    /*if (isActive) {
-      sessionsListModel.loadData({
-        params: {
-          duration_type: !!freeSessions ? "PROMO" : "D30",
-        },
-      })
-    }*/
   }
 
   const toggleCalendar = (e: React.SyntheticEvent) => {
@@ -326,7 +299,6 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
   }
 
   const redirectToCoach = () => {
-    //history.push(`/search/coach/${coach.id}`)
 
     freeSessions ? history.push(`/search/coach/${coach.id}`, {freeSessions: true}) : history.push(`/search/coach/${coach.id}`)
   }

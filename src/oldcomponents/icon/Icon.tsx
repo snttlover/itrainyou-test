@@ -105,6 +105,7 @@ export type IconName =
         | "go-back"
         | "question-mark"
         | "percents"
+        | "gift"
 
 type IconProps = {
   name: IconName,

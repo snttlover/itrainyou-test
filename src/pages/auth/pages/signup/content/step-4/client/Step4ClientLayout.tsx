@@ -32,16 +32,16 @@ const Header = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
 
-  height: 260px;
+  height: 200px;
   width: 100%;
 
   ${MediaRange.greaterThan("mobile")`
     background-image: url(${tablet});
-    height: 370px;
+    height: 300px;
   `}
   ${MediaRange.greaterThan("laptop")`
     background-image: url(${desktop});
-    height: 332px;
+    height: 312px;
   `}
 `
 
