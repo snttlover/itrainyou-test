@@ -127,7 +127,7 @@ const ListItem = styled.li`
 export const CoachStats = () => (
   <Wrapper>
     <StyledContainer>
-      <Title>Коучи ITrainYou —</Title>
+      <Title>Коучи iTrainYou —</Title>
       <MainImage src={mainImage} />
       <QualityImage src={qualityImage} />
       <List>
