@@ -187,6 +187,7 @@ const Row = styled.div`
   align-items: center;
   margin-top: 24px;
   align-self: flex-start;
+  margin-bottom: 24px;
   
   font-family: Roboto;
   font-style: normal;

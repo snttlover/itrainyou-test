@@ -20,7 +20,7 @@ export const $onBoardingVisibility = createStore<boolean>(false).on(
     return !state
   })
 
-export const $isOldUser = restore(checkUserFx.doneData, false)
+export const $onBoarding = restore(checkUserFx.doneData, false)
 
 forward({
   from: ScheduleGate.open,

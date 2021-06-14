@@ -212,6 +212,11 @@ const CalendarSubTitle = styled.div`
   font-size: 12px;
   line-height: 18px;
   color: #5B6670;
+
+  ${MediaRange.lessThan("tablet")`
+    font-size: 16px;
+    line-height: 24px;
+ `}
 `
 
 const Description = styled.div`
@@ -272,6 +277,7 @@ type FreeSessionTypes = {
 }
 
 export const HomeCalendar = (props: FreeSessionTypes) => {
+  const now = date()
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
 
   const sessions = useStore(props.freeSessionsModule.sessionsList)
@@ -283,14 +289,10 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   const bulkFreeSession = useEvent(props.freeSessionsModule.bulkFreeSession)
 
 
-  const enabledDates = sessions.map(session => session.startDatetime)
+  const enabledDates = sessions.map(session => session.startDatetime).filter(session => date(session).isAfter(now))
+
   useEffect(() => {
-    changeCurrentDate((prevState) => {
-      return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
-    })
-    return () => {
-      changeCurrentDate(undefined)
-    }
+    changeCurrentDate(now.toDate())
   }, [enabledDates[0]])
 
   useEffect(() => {
@@ -330,7 +332,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   return (
     <Container>
       <Block onlyOneCard={true}>
-        <CalendarSubTitle>Бесплатные сессии</CalendarSubTitle>
+        <CalendarSubTitle>Бесплатная сессия</CalendarSubTitle>
         {loading && <Spinner />}
         <CalendarDirectionBlock>
 
@@ -341,7 +343,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
               enabledDates={enabledDates}
               onChange={changeCurrentDate}
               isBig={true}
-              startFrom={new Date(date(currentDate || undefined).toDate())}
             />
 
           </Datepicker>

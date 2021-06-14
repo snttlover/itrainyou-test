@@ -125,7 +125,7 @@ export const CoachSessionCard = (props: CoachSessionCardTypes) => {
       <StyledAvatar src={props.avatar} />
       <NameContainer>
         <Name>{props.name}</Name>
-        <Duration>{props.duration}</Duration>
+        <Duration>{props.duration === "ROMO мин" ? "бесплатная сессия" : props.duration}</Duration>
       </NameContainer>
       <ActionsContainer>
         <Time>{props.time}</Time>

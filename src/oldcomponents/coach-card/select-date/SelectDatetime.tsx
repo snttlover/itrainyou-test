@@ -230,7 +230,8 @@ export const genSessionTabs = (coach: Coach) => {
     .filter(
       key =>
         coach.prices[key as DurationType] !== null &&
-        ((coach.prices[key as DurationType] as unknown) as string) !== "None"
+        ((coach.prices[key as DurationType] as unknown) as string) !== "None" &&
+              coach.prices[key] > 0
     )
     .map(key => ({
       timeInMinutes: parseInt(key.replace(/^\D+/g, "")) as number,

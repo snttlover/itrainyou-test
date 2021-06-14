@@ -71,6 +71,7 @@ export const MonthName = styled.div<{mobile?: boolean; showed?: boolean}>`
   text-transform: capitalize;
   text-align: center;
   display: ${({ mobile, showed }) => !!showed ? "unset" : (!!mobile ? "none" : "unset")};
+  margin-right: 4px;
 
   ${MediaRange.lessThan("mobile")`
     display: ${
@@ -90,7 +91,7 @@ export const CalendarHeader: React.FC<CalendarHeaderTypes> = (props: CalendarHea
   <Header>
     <MonthContainer>
       <LeftIcon disabled={props.lessThanTheCurrentMonth} onClick={props.prevMonth} />
-      <MonthName showed>{date(props.currentDate).format("MMMM")},{"  "}</MonthName>
+      <MonthName showed>{date(props.currentDate).format("MMMM")},</MonthName>
       <Year>{date(props.currentDate).format("YYYY")}</Year>
       <RightIcon onClick={props.nextMonth} />
     </MonthContainer>

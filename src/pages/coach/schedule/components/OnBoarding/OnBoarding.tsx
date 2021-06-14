@@ -3,7 +3,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { useState } from "react"
-import { $onBoardingVisibility, showOnBoarding, $isOldUser } from "@/pages/coach/schedule/models/onboarding.model"
+import { $onBoardingVisibility, showOnBoarding, $onBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import firstSlide from "./FirstSlide.svg"
@@ -193,7 +193,7 @@ const Slides = ({ options }: any) => {
 }
 
 export const OnBoardingFreeSessions = () => {
-  const firstTime = useStore($isOldUser)
+  const firstTime = useStore($onBoarding)
   const visibility = useStore($onBoardingVisibility)
   const toggle = useEvent(showOnBoarding)
 

@@ -70,10 +70,10 @@ const getText = (
       return `Выберете удобное для вас время.
           Коуч ${request.session.coach.firstName} ${request.session.coach.lastName} ждет новое бронирование и готов работать на результат.`
     } else if (systemMessageType === "CHOOSE_NEW_COACH") {
-      return "Забронируйте новую бесплатную сессию с другим коучем"
+      return "Не подошел коуч? Забронируйте бесплатную сессию с другим"
     } else if (systemMessageType === "FREE_SESSION_LIMIT_ENDED") {
-      return <p>Вы использовали все доступные бесплатные сессии. Ознакомьтесь с полным списком коучей можно <UnderLine to='/client'>здесь.</UnderLine>
-         Будем рады, если вы найдете того, кто вам подходит. </p>
+      return <p>Вы использовали все доступные бесплатные сессии. Теперь вы знаете, над чем вам нужно работать. Найдите своего коуча <UnderLine to='/client'>здесь.</UnderLine>
+        и забронируйте платную сессию. </p>
     }
     
   } else {
@@ -283,7 +283,11 @@ const getText = (
       }
 
       if (is("CONFIRMATION_COMPLETION", ["APPROVED", "AUTOMATICALLY_APPROVED"], "COMPLETED")) {
-        return "Сессия прошла успешно. Средства были списаны с карты. Оставьте отзыв!"
+        if (request.session.durationType === "PROMO") {
+          return "Сессия прошла успешно. Оставьте отзыв!"
+        } else {
+          return "Сессия прошла успешно. Средства были списаны с карты. Оставьте отзыв!"
+        }
       }
 
       if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
@@ -331,12 +335,23 @@ const getText = (
       }
 
       if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
-        return "Ожидаем, когда клиент подтвердит, что сессия завершена успешно, после чего вы получите оплату на следующий рабочий день.\n" +
-                "У клиента есть 24 часа на подтверждение. Если в течение 24 часов клиент не даст подтверждение, система сделает это автоматически."
+        if (request.session.durationType === "PROMO") {
+          return "Ожидаем, когда клиент подтвердит, что бесплатная сессия прошла успешно"
+        } else {
+          return "Ожидаем, когда клиент подтвердит, что сессия завершена успешно, после чего вы получите оплату на следующий рабочий день.\n" +
+                  "У клиента есть 24 часа на подтверждение. Если в течение 24 часов клиент не даст подтверждение, система сделает это автоматически."
+        }
       }
 
       if (is("CONFIRMATION_COMPLETION", ["APPROVED", "AUTOMATICALLY_APPROVED"], "COMPLETED")) {
-        return "Клиент подтвердил, что сессия прошла успешно! Вы получите оплату на следующий рабочий день"
+
+        if (request.session.durationType === "PROMO") {
+          return <p>
+            Клиент подтвердил, что <b>бесплатная</b> сессия прошла успешно!
+          </p>
+        } else {
+          return "Клиент подтвердил, что сессия прошла успешно! Вы получите оплату на следующий рабочий день"
+        }
       }
 
       if (is("CONFIRMATION_COMPLETION", "DENIED", "COMPLETED")) {
