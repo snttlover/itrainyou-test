@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
-import { CategoryDescription } from "@/pages/landing/content/top-bar/categories-picker/CategoryDescription"
+import { CategoryDescription } from "@/pages/landing-old/content/top-bar/categories-picker/CategoryDescription"
 import { useEvent, useList } from "effector-react"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { MediaRange } from "@/lib/responsive/media"
