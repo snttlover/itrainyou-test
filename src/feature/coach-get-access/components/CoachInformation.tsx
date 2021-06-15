@@ -251,8 +251,8 @@ export const CoachInformation = ({
           <CheckStep description='Супервизор одобрит вашу заявку' />
           <CheckStepIcon checkstep={"checkstep2"} />
           <CheckStepArrow />
-          <CheckStep description='Вы зарегистрируетесь в ЮKassa' />
-          <CheckStepIcon checkstep={"checkstep3-yandex"} />
+          <CheckStep description='Вы привяжете карту' />
+          <CheckStepIcon checkstep={"checkstep3-tinkoff"} />
           <CheckStepArrow />
           <CheckStep description='Вы получите доступ к платформе' />
           <CheckStepIcon checkstep={"checkstep4"} />
