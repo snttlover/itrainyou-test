@@ -45,7 +45,7 @@ const AdvantagesList = styled.ul`
   }
 `
 
-const Advantage = styled.li<{ visibleDesktopSubtitle: boolean }>`
+const Advantage = styled.li<{ visibleDesktopSubtitle: boolean; textColor: string }>`
   margin: 0;
   padding: 0;
   display: flex;
@@ -95,7 +95,7 @@ const Advantage = styled.li<{ visibleDesktopSubtitle: boolean }>`
   img {
     display: block;
     margin-bottom: 8px;
-    height: 60px;
+    height: 44px;
   }
 
   h3 {
@@ -108,7 +108,7 @@ const Advantage = styled.li<{ visibleDesktopSubtitle: boolean }>`
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #4858cc;
+    color: ${props => props.textColor};
     margin-bottom: 8px;
     min-height: 40px;
     width: 100%;
@@ -167,7 +167,7 @@ export const Advantages = ({ advantages }: Props) => (
     <StyledContainer>
       <AdvantagesList>
         {advantages.map(item => (
-          <Advantage key={item.id} visibleDesktopSubtitle={!item.subtitleMobile}>
+          <Advantage key={item.id} visibleDesktopSubtitle={!item.subtitleMobile} textColor={item.color}>
             <img src={item.image} />
             <h3>{item.title}</h3>
             <p className='desktopSubtitle' dangerouslySetInnerHTML={{ __html: item.subtitle }} />
