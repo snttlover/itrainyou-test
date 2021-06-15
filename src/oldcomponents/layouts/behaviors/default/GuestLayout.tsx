@@ -1,12 +1,12 @@
 import * as React from "react"
 import { Layout } from "@/oldcomponents/layouts/behaviors/default/Layout"
 import styled from "styled-components"
-import { TopBar } from "@/pages/landing/content/top-bar/TopBar"
+import { TopBar } from "@/pages/landing-old/content/top-bar/TopBar"
 import { ClientTheme } from "@/oldcomponents/layouts/themes"
 import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
 
 const StyledLayout = styled(Layout)`
-  background: #F4F5F7;
+  background: #f4f5f7;
   height: 100vh;
   overflow: hidden;
   display: flex;
