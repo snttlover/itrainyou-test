@@ -86,7 +86,7 @@ export const $ProfileSessionsCount = createStore<number>(100).on(
 export const $ProfileSessions = createStore<SessionTransaction[]>([]).on(
   loadProfileSessionsFx.doneData,
   (state, payload) => [...state, ...payload.results]
-)
+).reset(ClientProfileGate.close)
 
 const $ProfileSessionsLoadFailed = createStore(false).on(loadProfileSessionsFx.fail, () => true)
 
@@ -104,7 +104,9 @@ const guardedProfileSessionsLoadMore = guard({
   filter: loadProfileSessionsFx.pending.map(pending => !pending),
 })
 
-const $participantsCurrentPage = createStore(0).on(loadProfileSessionsFx.done, (_, payload) => payload.params.page)
+const $participantsCurrentPage = createStore(0)
+  .on(loadProfileSessionsFx.done, (_, payload) => payload.params.page)
+  .reset(ClientProfileGate.close)
 
 sample({
   source: $participantsCurrentPage,

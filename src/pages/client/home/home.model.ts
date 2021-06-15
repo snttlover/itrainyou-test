@@ -1,58 +1,16 @@
 import { getClientSessions } from "@/lib/api/client-session"
-import { getTabs, getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
-import { attach, combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard, sample, restore } from "effector-root"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
-import { logout } from "@/lib/network/token"
 import { keysToCamel } from "@/lib/network/casing"
-import { $monthEndDate, $monthStartDate } from "@/pages/coach/schedule/models/calendar.model"
+import { loginFx } from "@/pages/auth/pages/login/login.model"
 
-
-type DateRange = {
-  from: string
-  to: string
-}
 
 export const loadRecommendationsFx = createEffect({
   handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 15 }),
 })
 
-export const getFreeSessionsFx = createEffect({
-  handler: ({ from, to }: DateRange) => getFreeSessionsList({ start_date__gte: from, start_date__lte: to })
-})
-
-export const getTabsFX = createEffect({
-  handler: getTabs,
-})
-
-export const getFreeSessionsWithParamsFx = attach({
-  effect: getFreeSessionsFx,
-  // @ts-ignore
-  source: combine(
-    {
-      from: $monthStartDate,
-      to: $monthEndDate,
-    },
-    ({ from, to }) => {
-      // @ts-ignore
-      if( isNaN(from) || isNaN(to) ) {
-        return {
-          from: true,
-          to: true,
-        }
-      }
-      else {
-        const weekBefore = from.subtract(1, "week")
-        const weekAfter = to.add(1, "week")
-        return {
-          from: weekBefore.toISOString().substring(0, 10),
-          to: weekAfter.toISOString().substring(0, 10),
-        }
-      }}
-  ),
-  mapParams: (_, data) => ({ ...data }),
-})
 
 export const loadActiveSessionsFx = createEffect({
   handler: () => getClientSessions({ active: true, excludePast: true }),
@@ -73,7 +31,8 @@ export const freeSessionsPageMounted = createEvent()
 export const loadMore = createEvent()
 
 const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
-export const $hasFreeSessions = createStore(false).on(userDoneData, (_,payload) => payload.client.hasFreeSessions)
+export const $hasFreeSessions = createStore(false)
+  .on(userDoneData, (_,payload) => payload.client ? payload.client.hasFreeSessions : false)
 
 export const $recommendations = createStore<Coach[]>([]).on(loadRecommendationsFx.doneData, (state, payload) => [
   ...state,
@@ -130,7 +89,10 @@ forward({
     loadActiveSessionsFx,
     loadUpcomingSessionsFx,
     loadMore,
-    getTabsFX,
-    getFreeSessionsWithParamsFx,
   ],
+})
+
+forward({
+  from: loginFx.done,
+  to: getMyUserFx,
 })

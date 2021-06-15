@@ -3,7 +3,7 @@ import { useStore } from "effector-react"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import styled from "styled-components"
 import { useEvent } from "effector-react"
-import { genSessionTabs, SelectDatetimeTypes } from "@/oldcomponents/coach-card/select-date/SelectDatetime"
+import { SelectDatetimeTypes } from "@/oldcomponents/coach-card/select-date/SelectDatetime"
 import { date } from "@/lib/formatting/date"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { Button } from "@/oldcomponents/button/normal/Button"
@@ -21,7 +21,6 @@ type SetValue = {
     isPrimary: boolean | null
 }
 
-const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
 export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
@@ -46,34 +45,10 @@ export const SelectCreditCardDialog = (props: SelectDatetimeTypes) => {
   const _addCard = useEvent(addCard)
 
   const allSessions = useStore(props.sessionsData.sessionsList)
-  const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
-  const activeTab = useStore(props.sessionsData.tabs.$durationTab)
-  const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
-  const deleteSession = useEvent(props.sessionsData.deleteSession)
-  const toggleSession = useEvent(props.sessionsData.toggleSession)
   const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
-  const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
-  const [currentDate, changeCurrentDate] = useState<Date | null>()
-  const enabledDates = allSessions.map(session => session.startDatetime)
 
-  const headerDate = currentDate ? currentDate : new Date()
-  const formattedDate = date(headerDate).format("DD MMMM")
-  const currentDateEqual = date(currentDate as Date).format(equalDateFormat)
-
-  if (!props.coach.prices[activeTab] && tabs.length) {
-    changeActiveTab(tabs[0].key)
-  }
-
-  const times = allSessions
-    .filter(session => {
-      return date(session.startDatetime).format(equalDateFormat) === currentDateEqual
-    })
-    .map(session => ({
-      ...session,
-      start_datetime: date(session.startDatetime).format(equalTimeFormat),
-    }))
   const selected = allSessions
     .filter(session => session.selected)
     .map(session => ({

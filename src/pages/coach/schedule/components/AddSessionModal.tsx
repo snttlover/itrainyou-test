@@ -267,7 +267,7 @@ export const AddSessionModal = () => {
                 {formSessions.length > 1 ? <DeleteIcon onClick={() => _onDelete(item.id)} /> : null}
 
               </RowBlock>
-              {!(prices.find(price => price.key === item.duration)?.value)?
+              {(!prices.find(price => price.key === item.duration)?.value && item.duration !== "PROMO") ?
                 <SetPrice durationType={item.duration} /> : null}
             </div>
           ))}

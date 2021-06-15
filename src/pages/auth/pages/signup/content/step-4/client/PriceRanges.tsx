@@ -35,7 +35,7 @@ export const PriceRanges = () => {
     <Container>
       {options.map((option,index) =>
         <Checkbox key={index} value={option.selected} color={"#4858CC"} filled onChange={() => selectRange({id: option.id})}>
-          {option.rangeTo ? `${option.rangeFrom} - ${option.rangeTo}  ₽` : `${option.rangeFrom} и выше`}
+          {option.rangeTo ? `${option.rangeFrom} - ${option.rangeTo}  ₽` : `${option.rangeFrom} ₽ и выше`}
         </Checkbox>
       )}
     </Container>

@@ -41,17 +41,6 @@ const Title = styled.div`
   `}
 `
 
-type ArrowType = { reverse: boolean }
-
-const Arrow = styled(Icon).attrs({ name: "arrow" })<ArrowType>`
-  position: absolute;
-  fill: #4858cc;
-  top: 50%;
-  right: 0;
-  transform: translate(0, -50%) ${({ reverse }: ArrowType) => reverse && "rotate(180deg)"};
-  transition: transform 200ms ease;
-`
-
 const Category = styled.div`
   display: flex;
   align-items: center;
