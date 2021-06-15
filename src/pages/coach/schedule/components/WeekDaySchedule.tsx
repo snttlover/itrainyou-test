@@ -132,6 +132,11 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
   }
 `
 
+const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
+  width: 16px;
+  height: 16px;
+`
+
 const MinusIcon = styled(Icon).attrs({ name: "minus" })`
   width: 14px;
   margin-right: 4px;
@@ -201,7 +206,7 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
             <Prefix>Начало</Prefix>
             <Value>{session.startTime}</Value>
             <Prefix style={{ marginLeft: "10px" }}>Тип</Prefix>
-            <Value>{session.duration === "ROMO" ? "ПРОМО" : `${session.duration} мин`}</Value>
+            <Value>{session.duration === "ROMO" ? <><PercentsIcon /> ПРОМО</> : `${session.duration} мин`}</Value>
           </div>
           <MinusIcon onClick={() => deleteSlot({ weekday, slotId: session.id })} />
         </Row>

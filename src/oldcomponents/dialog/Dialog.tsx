@@ -42,11 +42,12 @@ export const Dialog = (props: DialogProps) => {
 }
 
 export const Close = styled(Icon).attrs({ name: "close" })`
-  width: 20px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
   position: absolute;
-  top: 24px;
-  right: 21px;
+  top: 16px;
+  right: 14px;
   fill: ${props => props.theme.colors.primary};
   z-index: 1;
 `

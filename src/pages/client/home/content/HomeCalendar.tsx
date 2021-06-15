@@ -289,10 +289,11 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   const bulkFreeSession = useEvent(props.freeSessionsModule.bulkFreeSession)
 
 
-  const enabledDates = sessions.map(session => session.startDatetime).filter(session => date(session).isAfter(now))
+  const enabledDates = sessions.map(session => session.startDatetime)
+  //.filter(session => date(session).isAfter(now))
 
   useEffect(() => {
-    changeCurrentDate(now.toDate())
+    changeCurrentDate(date(enabledDates[0]).toDate())
   }, [enabledDates[0]])
 
   useEffect(() => {

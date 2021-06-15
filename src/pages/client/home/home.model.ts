@@ -78,19 +78,10 @@ sample({
 })
 
 forward({
-  from: homePageMounted,
-  to: [loadActiveSessionsFx, loadUpcomingSessionsFx, loadMore],
+  from: [homePageMounted, freeSessionsPageMounted],
+  to: [loadActiveSessionsFx, loadUpcomingSessionsFx, loadMore, getMyUserFx],
 })
 
-
-forward({
-  from: freeSessionsPageMounted,
-  to: [
-    loadActiveSessionsFx,
-    loadUpcomingSessionsFx,
-    loadMore,
-  ],
-})
 
 forward({
   from: loginFx.done,

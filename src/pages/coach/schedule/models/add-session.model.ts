@@ -203,7 +203,7 @@ export const createSessionsFx = createEffect({
 
 forward({
   from: createSessionsFx.doneData,
-  to: [sessionAdded, changeFilterView.prepend(_ => "no-filter")],
+  to: sessionAdded,
 })
 
 const successToastMessage: Toast = { type: "info", text: "Сессия создана" }

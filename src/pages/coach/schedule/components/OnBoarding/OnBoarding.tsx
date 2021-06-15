@@ -148,7 +148,7 @@ const firstComponentContent: PropsType[] = [
 
 const notFirstComponentContent: PropsType[] = [
   { image: fifthSlide,
-    description: <Description>Бесплатные сессии по формированию запроса — это один из главных этапов привлечения клиенто</Description>},
+    description: <Description>Бесплатные сессии по формированию запроса — это один из главных этапов привлечения клиентов</Description>},
 
   { image: sixthSlide,
     description: <Description>Вам важно познакомиться
