@@ -60,7 +60,7 @@ const MainImage = styled.img`
 
 const QualityImage = styled.img`
   position: absolute;
-  bottom: 20px;
+  bottom: 0;
   right: 0;
   width: 110px;
 
@@ -105,7 +105,7 @@ const ListItem = styled.li`
   @media (min-width: 768px) {
     font-size: 16px;
     line-height: 24px;
-    width: 382px;
+    width: 402px;
 
     &:not(:last-child) {
       margin-bottom: 32px;
@@ -127,7 +127,7 @@ const ListItem = styled.li`
 export const CoachStats = () => (
   <Wrapper>
     <StyledContainer>
-      <Title>Коучи iTrainYou —</Title>
+      <Title>Коучи ITrainYou —</Title>
       <MainImage src={mainImage} />
       <QualityImage src={qualityImage} />
       <List>

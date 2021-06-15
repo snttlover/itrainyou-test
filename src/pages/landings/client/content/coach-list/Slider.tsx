@@ -12,8 +12,6 @@ import { Category } from "./Category"
 import starIcon from "../../assets/coach-list/star.svg"
 
 const swiperOptions: SwiperOptions = {
-  observer: true,
-  observeParents: true,
   loop: false,
   slidesPerView: "auto",
   spaceBetween: 20,

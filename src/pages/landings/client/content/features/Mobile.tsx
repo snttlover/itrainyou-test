@@ -27,9 +27,6 @@ const Title = styled.h2`
 
   span {
     display: block;
-    font-family: Roboto Slab;
-    font-style: normal;
-    font-weight: bold;
   }
 
   @media (min-width: 768px) {

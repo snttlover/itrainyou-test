@@ -125,7 +125,7 @@ export const Footer = () => (
             <img src={igLogo} />
           </Social>
         </Socials>
-        <CopyRight>© Все права защищены iTrainYou</CopyRight>
+        <CopyRight>© Все права защищены ITrainYou</CopyRight>
       </SocialsCopySection>
     </StyledContainer>
   </Wrapper>
