@@ -95,7 +95,7 @@ const Advantage = styled.li<{ visibleDesktopSubtitle: boolean; textColor: string
   img {
     display: block;
     margin-bottom: 8px;
-    height: 60px;
+    height: 44px;
   }
 
   h3 {

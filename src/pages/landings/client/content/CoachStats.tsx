@@ -60,7 +60,7 @@ const MainImage = styled.img`
 
 const QualityImage = styled.img`
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   right: 0;
   width: 110px;
 
@@ -105,7 +105,7 @@ const ListItem = styled.li`
   @media (min-width: 768px) {
     font-size: 16px;
     line-height: 24px;
-    width: 402px;
+    width: 382px;
 
     &:not(:last-child) {
       margin-bottom: 32px;
