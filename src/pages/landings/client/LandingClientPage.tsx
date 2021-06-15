@@ -35,8 +35,8 @@ const LandingClientPageMarkUp = () => (
     <Header
       signUpRoute={routeNames.signup("1")}
       additionalButton={{
-        title: "Стать клиентом",
-        route: routeNames.signup("1"),
+        title: "Стать коучем",
+        route: routeNames.landingCoach(),
       }}
       showExtraButton={false}
     />
