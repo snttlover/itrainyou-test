@@ -201,12 +201,12 @@ export const BeforeAfter = () => {
     <Wrapper>
       <StyledContainer>
         <BeforeSection>
-          <BeforeTitle>До ITrainYou</BeforeTitle>
+          <BeforeTitle>До iTrainYou</BeforeTitle>
           <BeforeCard>{messages[currentMessageIndex].before}</BeforeCard>
           <BeforeImage src={beforeImg} />
         </BeforeSection>
         <AfterSection>
-          <AfterTitle>После ITrainYou</AfterTitle>
+          <AfterTitle>После iTrainYou</AfterTitle>
           <AfterCard>{messages[currentMessageIndex].after}</AfterCard>
           <AfterImage src={afterImg} />
         </AfterSection>

@@ -144,7 +144,7 @@ export const Header = ({ signUpRoute, additionalButton, showExtraButton }: Props
       </FirstNav>
 
       <SecondNav>
-        {showExtraButton ? <NavLink to={{ pathname: routeNames.search() }}>Найти коуча</NavLink> : <></>}
+        {showExtraButton ? <NavLink to={{ pathname: routeNames.search() }}>Найти коуча</NavLink> : <NavLink to='' />}
         <NavLink to={routeNames.login()}>Войти</NavLink>
       </SecondNav>
 
