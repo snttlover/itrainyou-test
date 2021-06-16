@@ -11,6 +11,7 @@ export const content = [
     image: feat1Img,
     desktopTopOffset: 112,
     desktopWidth: 516,
+    desktopDescrPaddingRight: 70,
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ export const content = [
     image: feat2Img,
     desktopTopOffset: 115,
     desktopWidth: 573,
+    desktopDescrPaddingRight: 0,
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ export const content = [
     image: feat3Img,
     desktopTopOffset: 70,
     desktopWidth: 539,
+    desktopDescrPaddingRight: 0,
   },
   {
     id: 4,
@@ -36,5 +39,6 @@ export const content = [
     desktopTopOffset: 88,
     desktopWidth: 650,
     desktopRightOffset: -81,
+    desktopDescrPaddingRight: 40,
   },
 ]

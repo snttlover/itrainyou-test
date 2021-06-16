@@ -150,7 +150,15 @@ const ListItem = styled.li`
     max-width: 328px;
     margin-bottom: 16px;
 
+    @media (min-width: 558px) {
+      width: 288px;
+      margin: 0 auto;
+      margin-bottom: 16px;
+    }
+
     @media (min-width: 768px) {
+      margin: 0;
+      margin-bottom: 16px;
       font-size: 24px;
       line-height: 32px;
       width: 328px;
@@ -166,7 +174,14 @@ const ListItem = styled.li`
     color: #ffffff;
     margin-bottom: 16px;
 
+    @media (min-width: 558px) {
+      width: 288px;
+      margin: 0 auto;
+      margin-bottom: 16px;
+    }
+
     @media (min-width: 768px) {
+      margin: 0;
       margin-bottom: 0;
       width: 328px;
     }

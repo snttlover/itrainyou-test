@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 import arrowIcon from "../../../assets/features/arrow-down.svg"
 
-const Container = styled.div<{ active: boolean }>`
+const Container = styled.div<{ active: boolean; desktopDescrPaddingRight: number }>`
   position: relative;
   padding-left: 20px;
   cursor: pointer;
@@ -31,6 +31,7 @@ const Container = styled.div<{ active: boolean }>`
     font-size: 14px;
     line-height: 22px;
     color: #ffffff;
+    padding-right: ${props => (props.desktopDescrPaddingRight ? props.desktopDescrPaddingRight + "px" : "0px")};
   }
 `
 
@@ -75,9 +76,20 @@ type NavItemProps = {
   userReachedBlock: boolean
   goToNext: any
   setActive: any
+  desktopDescrPaddingRight: number
 }
 
-export const NavItem = ({ index, id, title, descr, isActive, userReachedBlock, goToNext, setActive }: NavItemProps) => {
+export const NavItem = ({
+  index,
+  id,
+  title,
+  descr,
+  isActive,
+  userReachedBlock,
+  goToNext,
+  setActive,
+  desktopDescrPaddingRight,
+}: NavItemProps) => {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -105,6 +117,7 @@ export const NavItem = ({ index, id, title, descr, isActive, userReachedBlock, g
         setActive(index)
       }}
       active={isActive}
+      desktopDescrPaddingRight={desktopDescrPaddingRight}
     >
       {isActive ? <Progress progress={progress} /> : ""}
       <Arrow reverse={!isActive} />
