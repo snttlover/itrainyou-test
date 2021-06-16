@@ -230,11 +230,10 @@ export const genSessionTabs = (coach: Coach) => {
     .filter(
       key =>
         coach.prices[key as DurationType] !== null &&
-        ((coach.prices[key as DurationType] as unknown) as string) !== "None" &&
-              coach.prices[key] > 0
+        ((coach.prices[key as DurationType] as unknown) as string) !== "None"
     )
     .map(key => ({
-      timeInMinutes: parseInt(key.replace(/^\D+/g, "")) as number,
+      timeInMinutes: key === "PROMO" ? "ПРОМО" : parseInt(key.replace(/^\D+/g, "")) as number,
       key: key as DurationType,
       price: Math.ceil(coach.prices[key as DurationType] as number),
     }))
@@ -324,7 +323,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
         <StyledTabs value={activeTab} onChange={changeActiveTab}>
           {tabs.map(tab => (
             <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
-              <TabTime>{tab.timeInMinutes} мин</TabTime>
+              <TabTime>{tab.key !== "PROMO" ? `${tab.timeInMinutes}  мин` : "ПРОМО"}</TabTime>
               <TabPrice>/{tab.price} ₽</TabPrice>
             </StyledTab>
           ))}

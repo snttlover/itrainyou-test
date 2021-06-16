@@ -41,7 +41,7 @@ import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
 import { Checkbox, CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
 import { config } from "@/config"
-import { showOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 
 const CalendarContainer = styled.div`
@@ -542,7 +542,7 @@ type SessionType = {
 const MobileSessionInfoModal = () => {
   const toggle = useEvent(showMobileSessionInfo)
   const navigate = useEvent(navigatePush)
-  const _showOnBoarding = useEvent(showOnBoarding)
+  const _showOnBoarding = useEvent(showSecondOnBoarding)
 
   const visibility = useStore($isMobileSessionInfoShowed)
   const session = useStore($mobileEventInfo)
@@ -625,7 +625,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 
   const _removeSession = useEvent(removeSession)
   const navigate = useEvent(navigatePush)
-  const _showOnBoarding = useEvent(showOnBoarding)
+  const _showOnBoarding = useEvent(showSecondOnBoarding)
 
   const [showed, setShowed] = useState(false)
 

@@ -9,9 +9,8 @@ import { Calendar } from "@/oldcomponents/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
 import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { Button } from "@/oldcomponents/button/normal/Button"
-import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import { CoachSession, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
+import { GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { Event, Store } from "effector-root"
@@ -73,6 +72,7 @@ const CoachName = styled.div`
 const Star = styled.img.attrs({ src: starIcon })`
   width: 14px;
   height: 14px;
+  margin-right: 5px;
 `
 
 const Rating = styled.div`
@@ -155,12 +155,6 @@ const Tag = styled.div<{ active?: boolean }>`
       color: #fff;
     }
   `}
-`
-
-const RubleIcon = styled(Icon).attrs({ name: "ruble" })`
-  width: 15px;
-  height: 15px;
-  fill: #4858cc;
 `
 
 const ButtonContainer = styled.div`
@@ -277,7 +271,6 @@ type FreeSessionTypes = {
 }
 
 export const HomeCalendar = (props: FreeSessionTypes) => {
-  const now = date()
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
 
   const sessions = useStore(props.freeSessionsModule.sessionsList)
@@ -290,7 +283,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
 
   const enabledDates = sessions.map(session => session.startDatetime)
-  //.filter(session => date(session).isAfter(now))
 
   useEffect(() => {
     changeCurrentDate(date(enabledDates[0]).toDate())

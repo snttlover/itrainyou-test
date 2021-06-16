@@ -79,6 +79,12 @@ const Label = styled.div`
     overflow: hidden;
 `
 
+const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+`
+
 type Value = string | number
 
 export type SelectInputProps<T extends Value> = {
@@ -113,7 +119,7 @@ export const DropDown = <T extends Value = Value>({
   const dropdownItems = options.map((item, index) => {
     return (
       <DropdownItem key={index} onClick={() => onChange(item.value)}>
-        {item.label}
+        {item.label === "промо" ? <><PercentsIcon /> промо</> : item.label}
       </DropdownItem>
     )
   })
