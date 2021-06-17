@@ -782,7 +782,7 @@ const SessionsFilter = () => {
     <CheckBoxesContainer showOnMobile={false}>
       <RadioGroup value={options.find(option => option.selected)?.value} onChange={handleOnChange} name='filter-type'>
         {options.map((option,index) =>
-          <StyledRadioOption value={option.value}>{option.label}</StyledRadioOption>
+          <StyledRadioOption key={index} value={option.value}>{option.label}</StyledRadioOption>
         )}
       </RadioGroup>
     </CheckBoxesContainer>
@@ -824,7 +824,7 @@ const MobileSessionsFilter = () => {
         <CheckBoxesContainer showOnMobile={true}>
           <RadioGroup value={options.find(option => option.selected)?.value} onChange={handleOnChange} name='filter-type'>
             {options.map((option,index) =>
-              <StyledRadioOption value={option.value}>{option.label}</StyledRadioOption>
+              <StyledRadioOption key={index} value={option.value}>{option.label}</StyledRadioOption>
             )}
           </RadioGroup>
         </CheckBoxesContainer>

@@ -44,7 +44,7 @@ export const PriceWithCommisionInput: React.FC<PriceInputGroupType> = ({ title, 
           loading={price?.isLoading}
           value={price?.value.toString() || ""}
           onChange={value => {
-            priceUpdate({ name, value: parseFloat(value) })
+            priceUpdate({ name, value: !!value ? parseFloat(value) : 0 })
           }}
         />
       </FormItem>
