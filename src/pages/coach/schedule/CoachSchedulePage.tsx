@@ -88,7 +88,12 @@ export const Description = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: #5b6670;
-  max-width: 552px;  
+  max-width: 552px;
+  
+  & a {
+    font-weight: 500;
+    color: ${props => props.theme.colors.primary};
+  }
 `
 
 const InstructionContainer = styled.div`

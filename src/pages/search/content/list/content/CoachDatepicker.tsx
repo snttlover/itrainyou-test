@@ -423,7 +423,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               enabledDates={enabledDates}
               onChange={changeCurrentDate}
               isBig={true}
-            // startFrom={new Date(date(currentDate || undefined).toDate())}
+              startFrom={new Date(date(currentDate || undefined).toDate())}
             />
 
           </Datepicker>

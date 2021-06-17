@@ -230,6 +230,11 @@ const InformerTextContainer = styled.div`
   flex-direction: column;
   text-align: left;
   padding: 0 22px;
+  
+  ${MediaRange.lessThan("mobile")`
+    padding: 0 16px;
+    max-width: 85%;
+  `}
 `
 
 const InformerHeader = styled.div`

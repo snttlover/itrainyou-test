@@ -57,6 +57,7 @@ sample({
     return {
       ...(profile as ClientSelfData),
       categories,
+      priceRanges: profile!.priceRanges.map(price => price.id),
     }
   },
 })

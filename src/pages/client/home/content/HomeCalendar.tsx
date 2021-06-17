@@ -336,6 +336,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
               enabledDates={enabledDates}
               onChange={changeCurrentDate}
               isBig={true}
+              startFrom={new Date(date(currentDate || undefined).toDate())}
             />
 
           </Datepicker>

@@ -20,7 +20,7 @@ type StyledTabTypes = {
 }
 
 const Container = styled.div`
-  width: 268px;
+  width: 278px;
   margin-bottom: 20px;
   position: relative;
 
