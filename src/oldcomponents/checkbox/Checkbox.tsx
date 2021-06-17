@@ -41,7 +41,7 @@ type CheckboxProps = {
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = styled(({ value, onChange, color,filled, ...props }: CheckboxProps) => {
+export const Checkbox = styled(({ value, onChange, color, filled, ...props }: CheckboxProps) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(e.target.checked)

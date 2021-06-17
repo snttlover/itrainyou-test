@@ -41,5 +41,3 @@ forward({
   }),
   to: showFirstOnBoarding,
 })
-
-showFirstOnBoarding.watch(payload => console.log("showFirstOnBoarding",payload))

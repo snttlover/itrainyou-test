@@ -42,6 +42,7 @@ import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationM
 import { Checkbox, CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
 import { config } from "@/config"
 import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { RadioGroup, RadioOption } from "@/oldcomponents/radio/Radio"
 
 
 const CalendarContainer = styled.div`
@@ -529,6 +530,16 @@ const StyledTitle = styled.div`
   max-width: 216px;
 `
 
+const StyledRadioOption = styled(RadioOption)`
+  margin-right: 19px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+`
+
 type SessionType = {
   googleEvent: boolean
   areAvailable: boolean
@@ -763,18 +774,17 @@ const SessionsFilter = () => {
   const options = useStore($filterOptions)
   const filterSessionsBy = useEvent(filterBy)
 
-  const handleOnChange = (value: "no-filter" | "only-free" | "only-booked", isSelected: boolean) => {
-    if (isSelected) return
+  const handleOnChange = (value: "no-filter" | "only-free" | "only-booked") => {
     filterSessionsBy(value)
   }
 
   return (
     <CheckBoxesContainer showOnMobile={false}>
-      {options.map((option,index) =>
-        <Checkbox key={index} value={option.selected} color={"#783D9D"} onChange={() => handleOnChange(option.value, option.selected)}>
-          {option.label}
-        </Checkbox>
-      )}
+      <RadioGroup value={options.find(option => option.selected)?.value} onChange={handleOnChange} name='filter-type'>
+        {options.map((option,index) =>
+          <StyledRadioOption value={option.value}>{option.label}</StyledRadioOption>
+        )}
+      </RadioGroup>
     </CheckBoxesContainer>
   )
 }
@@ -794,8 +804,8 @@ const MobileSessionsFilter = () => {
     setFilterValue(selectedOption!.value)
   },[options])
 
-  const handleOnChange = (value: "no-filter" | "only-free" | "only-booked", isSelected: boolean) => {
-    if (isSelected) return
+
+  const handleOnChange = (value: "no-filter" | "only-free" | "only-booked") => {
     changeFilter(value)
   }
 
@@ -812,11 +822,11 @@ const MobileSessionsFilter = () => {
       <StyledSessionsFilterDialog value={visibility} onChange={toggle}>
         <Title>Фильтры</Title>
         <CheckBoxesContainer showOnMobile={true}>
-          {options.map((option,index) =>
-            <Checkbox key={index} value={option.selected} color={"#783D9D"} onChange={() => handleOnChange(option.value, option.selected)}>
-              {option.label}
-            </Checkbox>
-          )}
+          <RadioGroup value={options.find(option => option.selected)?.value} onChange={handleOnChange} name='filter-type'>
+            {options.map((option,index) =>
+              <StyledRadioOption value={option.value}>{option.label}</StyledRadioOption>
+            )}
+          </RadioGroup>
         </CheckBoxesContainer>
         <FilterModalButton onClick={handleOnSubmit}>Применить</FilterModalButton>
       </StyledSessionsFilterDialog>
