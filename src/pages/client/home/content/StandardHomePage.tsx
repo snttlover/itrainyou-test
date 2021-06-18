@@ -22,6 +22,7 @@ import styled from "styled-components"
 import { clientCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Onboarding } from "@/pages/client/home/content/Onboarding"
 import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
+import { Icon } from "@/oldcomponents/icon/Icon"
 
 const Block = styled.div`
   position: relative;
@@ -73,13 +74,94 @@ const SessionEnterText = styled.p`
   font-size: 12px;
   line-height: 16px;
   color: #4858cc;
-  margin-top: auto;
+  margin-top: 28px;
   white-space: nowrap;
 
   ${MediaRange.greaterThan("mobile")`
     display: none;
   `}
 `
+
+const InformerContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 16px 22px;
+  background: linear-gradient(91.34deg, #0A58CC -38.45%, #9E58CC 128.49%), linear-gradient(90deg, #4858CC -50%, #783D9D 150%), #FFFFFF;
+  border-radius: 8px;
+  margin-top: 24px;
+`
+
+const GiftIcon = styled(Icon).attrs({ name: "gift" })`
+  width: 24px;
+  cursor: pointer;
+  fill: white;
+`
+
+const InformerTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 0 22px;
+  
+  ${MediaRange.lessThan("mobile")`
+    padding: 0 16px;
+    max-width: 85%;
+  `}
+`
+
+const InformerHeader = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: #FFFFFF;
+`
+
+const InformerDescription = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #FFFFFF;
+`
+
+const Close = styled(Icon).attrs({ name: "plus" })`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  fill: white;
+  transform: rotate(45deg);
+`
+
+const SocialLink = styled.a`
+  text-decoration: underline;
+`
+
+const Informer = () => {
+
+  const [showed, setShowed] = useState(true)
+
+  return (
+    <>
+      {showed ?
+        <InformerContainer>
+          <GiftIcon />
+          <InformerTextContainer>
+            <InformerHeader>Бесплатная сессия забронирована! </InformerHeader>
+            <InformerDescription>А пока ознакомьтесь с другими коучами нашей платформы и присоединитесь к нам в социальных сетях:
+              <SocialLink href='https://instagram.com/i_trainyou'>Insagram,</SocialLink>
+              <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'>Facebook</SocialLink>
+            </InformerDescription>
+          </InformerTextContainer>
+          <Close onClick={() => setShowed(false)} />
+        </InformerContainer>
+        : null}
+    </>
+  )
+}
 
 export const StandardHomePage = () => {
   const [isFirstRender, setIsFirstRender] = useState(true)

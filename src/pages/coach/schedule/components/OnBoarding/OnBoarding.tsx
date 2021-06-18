@@ -20,10 +20,11 @@ import { Button } from "@/oldcomponents/button/normal/Button"
 const StyledSessionsFilterDialog = styled(Dialog)`
   max-width: 560px;
   width: 90%;
-  height: 400px;
+  height: 420px;
+  padding: 24px;
 
   ${MediaRange.lessThan("mobile")`
-    height: 470px;
+    height: 460px;
   `}
 `
 
@@ -36,6 +37,7 @@ const Title = styled.div`
   color: #424242;
   text-align: center;
   margin-bottom: 8px;
+  max-width: 432px;
 `
 
 const Description = styled.div<{noAlign? : boolean}>`
@@ -46,6 +48,7 @@ const Description = styled.div<{noAlign? : boolean}>`
   line-height: 22px;
   color: #5B6670;
   text-align: ${({ noAlign }) => !!noAlign ? "unset" : "center"};
+  max-width: 432px;
 `
 
 const Image = styled.img`

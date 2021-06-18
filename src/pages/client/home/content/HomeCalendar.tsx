@@ -240,6 +240,7 @@ const StyledCalendar = styled(Calendar)`
   ${MediaRange.lessThan("mobile")`
     border-top: 0;
     border-bottom: 1px solid #dbdee0;
+    margin-top: 12px;
  `}
 `
 

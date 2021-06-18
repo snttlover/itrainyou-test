@@ -1,4 +1,4 @@
-import { Header, LeftIcon, MonthContainer, MonthName, RightIcon } from "@/oldcomponents/calendar/CalendarHeader"
+import { Header, MonthContainer, MonthName } from "@/oldcomponents/calendar/CalendarHeader"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
@@ -39,7 +39,7 @@ import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
-import { Checkbox, CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
+import { CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
 import { config } from "@/config"
 import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 import { RadioGroup, RadioOption } from "@/oldcomponents/radio/Radio"
@@ -614,13 +614,13 @@ const MobileSessionInfoModal = () => {
             :
             (session.sessionDurationType === "PROMO" ?
               <>
-                <StyledTitle>Этот слот еще не занят никем в вашем расписании</StyledTitle>
+                <StyledTitle>Этот слот не занят в вашем расписании</StyledTitle>
                 <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
                 <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
                 <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
               </> :
               <>
-                <StyledTitle>Этот слот еще не занят никем в вашем расписании</StyledTitle>
+                <StyledTitle>Этот слот не занят в вашем расписании</StyledTitle>
                 <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
                 <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
               </>

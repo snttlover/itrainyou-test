@@ -17,7 +17,7 @@ export const ContentContainer = styled.div`
 `
 
 export const FreeSessionsContainer = styled.div`
-  max-width: 576px;
+  width: 576px;
   margin-left: auto;
   margin-right: 24px;
 

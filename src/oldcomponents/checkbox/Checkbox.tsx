@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Icon, IconName } from "../icon/Icon"
+import { Icon } from "../icon/Icon"
 
 export const StyledCheckbox = styled(Icon)<{ color?: string }>`
   width: 24px;
