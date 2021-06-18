@@ -93,6 +93,7 @@ export const Desktop = ({ className }: Props) => {
             userReachedBlock={userReachedBlock}
             goToNext={goToNext}
             setActive={setActiveFeature}
+            desktopDescrPaddingRight={item.desktopDescrPaddingRight}
           />
         ))}
       </Nav>

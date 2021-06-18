@@ -1,6 +1,6 @@
 import { Button } from "@/oldcomponents/button/normal/Button"
 import { Icon } from "@/oldcomponents/icon/Icon"
-import { YandexRegisterSteps } from "@/oldcomponents/register-steps/YandexRegisterSteps"
+import { YandexRegisterSteps, TinkoffRegisterSteps } from "@/oldcomponents/register-steps/YandexRegisterSteps"
 import { Loader } from "@/oldcomponents/spinner/Spinner"
 import { $categoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import {
@@ -17,6 +17,7 @@ import { UploadVideo } from "@/feature/coach-get-access/components/UploadVideo"
 import { useEvent, useStore, useList } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
+import { $coachAccess } from "@/feature/user/user.model"
 
 const Container = styled.div`
   display: flex;
@@ -115,7 +116,17 @@ const LoaderContainer = styled.div`
   align-items: center;
 `
 
-const StyledRegisterSteps = styled(YandexRegisterSteps)`
+const StyledYandexRegisterSteps = styled(YandexRegisterSteps)`
+  margin-top: 52px;
+  margin-bottom: 24px;
+  display: none;
+
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+  `}
+`
+
+const StyledTinkoffRegisterSteps = styled(TinkoffRegisterSteps)`
   margin-top: 52px;
   margin-bottom: 24px;
   display: none;
@@ -202,6 +213,8 @@ export const CoachInformation = ({
   const isVideoUploading = useStore(videoUploadFx.pending)
   const categoriesLoading = useStore(fetchCategoriesListFx.pending)
 
+  const paymentSystem = useStore($coachAccess).paymentSystem
+
   const _toggleCategory = useEvent(toggleCategory)
 
   const Categories =  () => {
@@ -251,14 +264,14 @@ export const CoachInformation = ({
           <CheckStep description='Супервизор одобрит вашу заявку' />
           <CheckStepIcon checkstep={"checkstep2"} />
           <CheckStepArrow />
-          <CheckStep description='Вы зарегистрируетесь в ЮKassa' />
-          <CheckStepIcon checkstep={"checkstep3-yandex"} />
+          <CheckStep description='Вы привяжете карту в Тинькофф' />
+          <CheckStepIcon checkstep={"checkstep3-tinkoff"} />
           <CheckStepArrow />
           <CheckStep description='Вы получите доступ к платформе' />
           <CheckStepIcon checkstep={"checkstep4"} />
         </CheckStepsContainer>
       )}
-      {withoutCheckStep && <StyledRegisterSteps />}
+      {withoutCheckStep && (paymentSystem === "TINKOFF" ? <StyledTinkoffRegisterSteps /> : <StyledYandexRegisterSteps /> )}
       <ButtonContainer>
         <SendRequestButton
           data-secondary

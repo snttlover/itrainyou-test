@@ -9,7 +9,7 @@ import { RegisterButton } from "../../common/RegisterButton"
 import bgImg from "../assets/hero/bg.svg"
 import bgImgMed from "../assets/hero/bg-med.svg"
 import bgImgSmall from "../assets/hero/bg-small.svg"
-import mainImg from "../assets/hero/main-image.png"
+import mainImg from "../assets/hero/main-image.svg"
 
 const Wrapper = styled.section`
   background: url("${bgImgSmall}");

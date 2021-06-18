@@ -105,7 +105,7 @@ export const TinkoffRegisterSteps = styled(({ className }) => (
     </Step>
     <ArrowDelimiter />
     <Step>
-      <StepTitle>Вы привяжете карту</StepTitle>
+      <StepTitle>Вы привяжете карту в Тинькофф</StepTitle>
       <CheckStepIcon checkstep={"checkstep3-tinkoff"} />
     </Step>
     <ArrowDelimiter />
