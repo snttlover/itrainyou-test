@@ -79,6 +79,17 @@ const Label = styled.div`
     overflow: hidden;
 `
 
+const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
+  width: 15px;
+  height: 15px;
+  margin-right: 2px;
+`
+
+const PromoContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 type Value = string | number
 
 export type SelectInputProps<T extends Value> = {
@@ -113,7 +124,7 @@ export const DropDown = <T extends Value = Value>({
   const dropdownItems = options.map((item, index) => {
     return (
       <DropdownItem key={index} onClick={() => onChange(item.value)}>
-        {item.label}
+        {item.label === "промо" ? <PromoContainer><PercentsIcon /> промо</PromoContainer> : item.label}
       </DropdownItem>
     )
   })
@@ -143,7 +154,7 @@ export const DropDown = <T extends Value = Value>({
       }}
       withoutBorder={withoutBorder}
     >
-      {selectedItem && !!selectedItem.value ? <Label>{selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
+      {selectedItem && !!selectedItem.value ? <Label>{selectedItem.label === "промо" ? <PromoContainer><PercentsIcon /> промо</PromoContainer> : selectedItem.label}</Label> : <Placeholder>{placeholder}</Placeholder>}
       <Arrow />
       {isOpen && <Dropdown>{dropdownItems}</Dropdown>}
     </SelectBox>

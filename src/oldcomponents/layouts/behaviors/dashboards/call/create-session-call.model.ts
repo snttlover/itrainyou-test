@@ -335,6 +335,11 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   forward({
+    from: connectToSession.map(() => {return}),
+    to: checkCompatibilityFx,
+  })
+
+  forward({
     from: connectToSession.map(id => ({session: id})),
     to: config.socket.methods.userEnteredSession,
   })

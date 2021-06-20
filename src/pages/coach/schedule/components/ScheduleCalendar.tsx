@@ -1,4 +1,4 @@
-import { Header, LeftIcon, MonthContainer, MonthName, RightIcon } from "@/oldcomponents/calendar/CalendarHeader"
+import { Header, MonthContainer, MonthName } from "@/oldcomponents/calendar/CalendarHeader"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
@@ -6,18 +6,23 @@ import {
   $currentMonth, $isMobileSessionInfoShowed,
   $monthEndDate,
   $monthStartDate, setCurrentMonth,
-  showAddSessionModal, showMobileSessionInfo, showVacationModal
+  showAddSessionModal, showMobileSessionInfo, showVacationModal,
+  showMobileFilterModal, $isFilterModalShowed
 } from "@/pages/coach/schedule/models/calendar.model"
 import {
-  $allSessions,
-  CalendarGate
+  $showedSessions,
+  CalendarGate,
+  filterBy,
+  $filterOptions,
+  changeFilterView
 } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { useEvent, useStore, useGate } from "effector-react"
-import React, { useRef, useState } from "react"
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Button } from "@/oldcomponents/button/normal/Button"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
 import { Times, Time } from "@/pages/coach/schedule/components/MobileCalendarManager"
@@ -34,7 +39,10 @@ import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
+import { CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
 import { config } from "@/config"
+import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { RadioGroup, RadioOption } from "@/oldcomponents/radio/Radio"
 
 
 const CalendarContainer = styled.div`
@@ -52,6 +60,7 @@ const Container = styled.div`
     min-width: 266px;
   `}
 `
+
 const MobileList = styled.div`
   display: none;
   flex-direction: column;
@@ -64,7 +73,7 @@ const MobileList = styled.div`
 `
 
 const ToolTip = styled.div<{show: boolean; bottomDirection: boolean; leftDirection: boolean; rightDirection: boolean }>`
-  width: 240px;
+  width: 280px;
   height: auto;
   position: absolute;
   z-index: 1000;
@@ -147,19 +156,50 @@ const ToolTipButton = styled(DashedButton)`
   `}
 `
 
+const FilterModalButton = styled(Button)`
+  width: 100%;
+  margin-top: 18px;
+`
+
 const StyledMonthContainer = styled(MonthContainer)`
   padding: 0;
 `
 
-const StyledLeftIcon = styled(LeftIcon)`
+type LeftButtonTypes = {
+  disabled?: boolean
+}
+
+const StyledLeftIcon = styled(Icon).attrs({ name: "left-calendar-icon" })<LeftButtonTypes>`
   width: 40px;
   height: 40px;
+  fill: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${props => (props.disabled ? "none" : "auto")};
+  margin-right: 2px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-right: 30px;
+  `}
 `
 
-const StyledRightIcon = styled(RightIcon)`
+const StyledRightIcon = styled(Icon).attrs({ name: "right-calendar-icon" })<LeftButtonTypes>`
   width: 40px;
   height: 40px;
-  margin-left: 8px;
+  fill: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${props => (props.disabled ? "none" : "auto")};
+  margin-left: 2px;
+
+  ${MediaRange.lessThan("mobile")`
+    margin-left: 30px;
+  `}
+`
+
+const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
+  width: 24px;
+  height: 24px;
 `
 
 const StyledMonthName = styled(MonthName)`
@@ -241,7 +281,7 @@ const SessionContent = styled.div<{areAvailable: boolean; googleEvent: boolean}>
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
-  color: ${({ areAvailable })=> !!areAvailable ? "#FFFFFF" : "#424242"};
+  color: ${({ areAvailable })=> areAvailable ? "#FFFFFF" : "#424242"};
   padding: 4px;
   display: flex;
   justify-content: center;
@@ -267,7 +307,7 @@ const SessionContent = styled.div<{areAvailable: boolean; googleEvent: boolean}>
 const ToolTipText = styled.div`
   font-family: Roboto;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 22px;
   color: #424242;
@@ -394,6 +434,13 @@ const StyledDialog = styled(Dialog)`
   min-height: unset;
 `
 
+const StyledSessionsFilterDialog = styled(Dialog)`
+  max-width: 560px;
+  padding: 16px;
+  width: 90%;
+  min-height: unset;
+`
+
 const StyledLink = styled.div`
   color: ${props => props.theme.colors.primary};
   text-decoration: underline;
@@ -401,7 +448,7 @@ const StyledLink = styled.div`
   margin-bottom: 10px;
 
   ${MediaRange.lessThan("mobile")`
-    margin-top: 24px;
+    margin-top: 16px;
     margin-bottom: 0;
   `}
 `
@@ -411,6 +458,86 @@ const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
+`
+
+const CheckBoxesContainer = styled.div<{showOnMobile: boolean}>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
+  margin-bottom: 25px;
+  
+  ${CheckboxContent} {
+    margin-left: 11px;
+    margin-right: 19px;
+  }
+
+  ${MediaRange.lessThan("mobile")`
+    flex-direction: column;
+    align-items: flex-start;
+    display: ${
+  // @ts-ignore
+  ({ showOnMobile }) => (showOnMobile ? "flex" : "none")};
+  `}
+`
+
+const MobileFilterContainer = styled.div`
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  cursor: pointer;
+
+  ${MediaRange.lessThan("mobile")`
+    display: flex;
+    margin-bottom: 22px;
+  `}
+`
+
+const Arrow = styled(Icon).attrs({ name: "arrow" })`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  fill: #424242;
+  margin-left: 14px;
+`
+
+const FreeSessionText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+  max-width: 85%;
+  margin-left: 13px;
+
+  & a {
+    color: ${props => props.theme.colors.primary};
+    font-weight: 500;
+    text-decoration: underline;
+  }
+`
+
+const StyledTitle = styled.div`
+  font-family: Roboto Slab;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 20px;
+  line-height: 28px;
+  color: #424242;
+  max-width: 216px;
+`
+
+const StyledRadioOption = styled(RadioOption)`
+  margin-right: 19px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
 `
 
 type SessionType = {
@@ -418,7 +545,7 @@ type SessionType = {
   areAvailable: boolean
   client?: [any]
   id: number
-  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  sessionDurationType?: "D30" | "D45" | "D60" | "D90" | "PROMO"
   startTime: Dayjs
   endTime: Dayjs
 }
@@ -426,6 +553,7 @@ type SessionType = {
 const MobileSessionInfoModal = () => {
   const toggle = useEvent(showMobileSessionInfo)
   const navigate = useEvent(navigatePush)
+  const _showOnBoarding = useEvent(showSecondOnBoarding)
 
   const visibility = useStore($isMobileSessionInfoShowed)
   const session = useStore($mobileEventInfo)
@@ -444,33 +572,59 @@ const MobileSessionInfoModal = () => {
     _removeSession(session)
   }
 
+  const handleOnShowInfo = () => {
+    toggle()
+    _showOnBoarding(true)
+  }
+
   return (
     <StyledDialog value={visibility} onChange={toggle}>
       <ToolTipContainer>
         {session.googleEvent ?
           <>
-            <Title>Этот слот заполнен в вашем google-календаре</Title>
+            <StyledTitle>Этот слот заполнен в вашем google-календаре</StyledTitle>
             <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
             <ToolTipButton onClick={() => toggle(false)}>Понятно</ToolTipButton>
           </>
           :
           (session.areAvailable ?
-            <>
-              <Title>Сессия забронирована</Title>
-              <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
-              <UserInfo>
-                <StyledAvatar src={client?.avatar || null} />
-                <UserName>{client?.firstName} {client?.lastName}</UserName>
-              </UserInfo>
-              <StyledLink onClick={() => navigate({ url: routeNames.coachSession(session.id.toString())})}>На страницу сессии</StyledLink>
-              <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
-            </>
+            (session.sessionDurationType === "PROMO" ?
+              <>
+                <StyledTitle>Сессия забронирована</StyledTitle>
+                <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+                <UserInfo>
+                  <StyledAvatar src={client?.avatar || null} />
+                  <UserName>{client?.firstName} {client?.lastName}</UserName>
+                </UserInfo>
+                <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
+                <StyledLink onClick={() => navigate({ url: routeNames.coachSession(session.id.toString())})}>На страницу сессии</StyledLink>
+                <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+              </>
+              : 
+              <>
+                <StyledTitle>Сессия забронирована</StyledTitle>
+                <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+                <UserInfo>
+                  <StyledAvatar src={client?.avatar || null} />
+                  <UserName>{client?.firstName} {client?.lastName}</UserName>
+                </UserInfo>
+                <StyledLink onClick={() => navigate({ url: routeNames.coachSession(session.id.toString())})}>На страницу сессии</StyledLink>
+                <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+              </>)
             :
-            <>
-              <Title>Этот слот еще не занят никем в вашем расписании</Title>
-              <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
-              <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-            </>
+            (session.sessionDurationType === "PROMO" ?
+              <>
+                <StyledTitle>Этот слот не занят в вашем расписании</StyledTitle>
+                <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+                <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
+                <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+              </> :
+              <>
+                <StyledTitle>Этот слот не занят в вашем расписании</StyledTitle>
+                <ToolTipHeader>{session.startTime.format("DD MMM YYYY • HH:mm")}-{session.endTime.format("HH:mm")}</ToolTipHeader>
+                <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+              </>
+            )
           )}
       </ToolTipContainer>
     </StyledDialog>
@@ -482,6 +636,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 
   const _removeSession = useEvent(removeSession)
   const navigate = useEvent(navigatePush)
+  const _showOnBoarding = useEvent(showSecondOnBoarding)
 
   const [showed, setShowed] = useState(false)
 
@@ -502,6 +657,11 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
   const handleOnSessionClick = (e: React.SyntheticEvent, session: SessionType) => {
     setShowed(true)
     e.stopPropagation()
+  }
+
+  const handleOnShowInfo = () => {
+    setShowed(false)
+    _showOnBoarding(true)
   }
 
   useClickOutside(toolTipRef, () => {
@@ -525,20 +685,43 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
             <div>Этот слот заполнен в вашем google-календаре</div>
             :
             (props.session.areAvailable ?
-              <>
-                <ToolTipHeader>Сессия забронирована</ToolTipHeader>
-                <UserInfo>
-                  <StyledAvatar src={client?.avatar || null} />
-                  <UserName>{client?.firstName} {client?.lastName}</UserName>
-                </UserInfo>
-                <StyledLink onClick={() => navigate({ url: routeNames.coachSession(props.session.id.toString())})}>На страницу сессии</StyledLink>
-                <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
-              </>
+
+              (props.session.sessionDurationType === "PROMO" ?
+                <>
+                  <ToolTipHeader>Сессия забронирована</ToolTipHeader>
+                  <UserInfo>
+                    <StyledAvatar src={client?.avatar || null} />
+                    <UserName>{client?.firstName} {client?.lastName}</UserName>
+                  </UserInfo>
+                  <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
+                  <StyledLink onClick={() => navigate({ url: routeNames.coachSession(props.session.id.toString())})}>На страницу сессии</StyledLink>
+                  <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+                </>
+                :
+                <>
+                  <ToolTipHeader>Сессия забронирована</ToolTipHeader>
+                  <UserInfo>
+                    <StyledAvatar src={client?.avatar || null} />
+                    <UserName>{client?.firstName} {client?.lastName}</UserName>
+                  </UserInfo>
+                  <StyledLink onClick={() => navigate({ url: routeNames.coachSession(props.session.id.toString())})}>На страницу сессии</StyledLink>
+                  <ToolTipButton onClick={handleOnClick}>Отменить сессию</ToolTipButton>
+                </>
+              )
+
               :
-              <>
-                <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
-                <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
-              </>
+              (props.session.sessionDurationType === "PROMO" ?
+                <>
+                  <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
+                  <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
+                  <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+                </>
+                :
+                <>
+                  <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
+                  <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
+                </>
+              )
             )}
         </ToolTipContainer>
       </ToolTip>
@@ -550,7 +733,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 
 const MobileSessions = () => {
 
-  const sessions = useStore($allSessions)
+  const sessions = useStore($showedSessions)
   const currentDay = useStore($sessionDate)
 
   const _setMobileSessionInfoShow = useEvent(showMobileSessionInfo)
@@ -587,11 +770,75 @@ const MobileSessions = () => {
   )
 }
 
+const SessionsFilter = () => {
+  const options = useStore($filterOptions)
+  const filterSessionsBy = useEvent(filterBy)
+
+  const handleOnChange = (value: "no-filter" | "only-free" | "only-booked") => {
+    filterSessionsBy(value)
+  }
+
+  return (
+    <CheckBoxesContainer showOnMobile={false}>
+      <RadioGroup value={options.find(option => option.selected)?.value} onChange={handleOnChange} name='filter-type'>
+        {options.map((option,index) =>
+          <StyledRadioOption key={index} value={option.value}>{option.label}</StyledRadioOption>
+        )}
+      </RadioGroup>
+    </CheckBoxesContainer>
+  )
+}
+
+const MobileSessionsFilter = () => {
+  const options = useStore($filterOptions)
+  const visibility = useStore($isFilterModalShowed)
+
+  const filterSessionsBy = useEvent(filterBy)
+  const toggle = useEvent(showMobileFilterModal)
+  const changeFilter = useEvent(changeFilterView)
+
+  const [filterValue, setFilterValue] = useState<"no-filter" | "only-free" | "only-booked">("no-filter")
+
+  useEffect(() => {
+    const selectedOption = options.find(option => option.selected)
+    setFilterValue(selectedOption!.value)
+  },[options])
+
+
+  const handleOnChange = (value: "no-filter" | "only-free" | "only-booked") => {
+    changeFilter(value)
+  }
+
+  const handleOnSubmit = (e: SyntheticEvent) => {
+    filterSessionsBy(filterValue)
+    toggle(false)
+    e.preventDefault()
+  }
+
+  return (
+    <MobileFilterContainer onClick={() => toggle(true)}>
+      <ToolTipHeader>Фильтры</ToolTipHeader>
+      <Arrow />
+      <StyledSessionsFilterDialog value={visibility} onChange={toggle}>
+        <Title>Фильтры</Title>
+        <CheckBoxesContainer showOnMobile={true}>
+          <RadioGroup value={options.find(option => option.selected)?.value} onChange={handleOnChange} name='filter-type'>
+            {options.map((option,index) =>
+              <StyledRadioOption key={index} value={option.value}>{option.label}</StyledRadioOption>
+            )}
+          </RadioGroup>
+        </CheckBoxesContainer>
+        <FilterModalButton onClick={handleOnSubmit}>Применить</FilterModalButton>
+      </StyledSessionsFilterDialog>
+    </MobileFilterContainer>
+  )
+}
+
 export const ScheduleCalendar = () => {
   const now = date()
   const currentMonth = date(useStore($currentMonth))
   const monthDayStart = date(useStore($monthStartDate))
-  const sessions = useStore($allSessions)
+  const sessions = useStore($showedSessions)
   const monthDayEnd = date(useStore($monthEndDate))
 
 
@@ -651,17 +898,24 @@ export const ScheduleCalendar = () => {
       <AddVacationModal />
       <AddSessionModal />
       <Container>
-        <StyledHeader>
-          <StyledMonthContainer>
-            <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={handleOnLeftIcon} />
-            <StyledMonthName mobile>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
-            <StyledRightIcon onClick={handleOnRightIcon} />
-            <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
-          </StyledMonthContainer>
-          <AddVacationButton onClick={() => _showVacationModal(true)}>
+
+        <>
+          <StyledHeader>
+            <StyledMonthContainer>
+              <StyledLeftIcon disabled={lessThanTheCurrentMonth} onClick={handleOnLeftIcon} />
+              <StyledMonthName mobile>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
+              <StyledRightIcon onClick={handleOnRightIcon} />
+              <StyledMonthName>{currentMonth.format("MMMM")}, {currentMonth.format("YYYY")}</StyledMonthName>
+            </StyledMonthContainer>
+            <MobileSessionsFilter />
+            <AddVacationButton onClick={() => _showVacationModal(true)}>
           Добавить отпуск
-          </AddVacationButton>
-        </StyledHeader>
+            </AddVacationButton>
+          </StyledHeader>
+        </>
+
+        <SessionsFilter />
+
         <HorizontalOverflowScrollContainer>
           <CalendarTable>
             <thead>

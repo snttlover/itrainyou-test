@@ -71,6 +71,11 @@ const Value = styled.span`
   line-height: 22px;
   color: #424242;
   margin-left: 4px;
+
+  & a {
+    color: ${props => props.theme.colors.primary};
+    font-weight: 1000;
+  }
 `
 
 const OpenCloseIcon = styled(Icon)<{ open?: boolean }>`
@@ -130,6 +135,11 @@ const MarkIconContainer = styled.div<{ active?: boolean | undefined }>`
       transform: unset;
     `}
   }
+`
+
+const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
+  width: 16px;
+  height: 16px;
 `
 
 const MinusIcon = styled(Icon).attrs({ name: "minus" })`
@@ -201,7 +211,7 @@ export const WeekDaySchedule = styled(({ title, className, weekday }: Props) => 
             <Prefix>Начало</Prefix>
             <Value>{session.startTime}</Value>
             <Prefix style={{ marginLeft: "10px" }}>Тип</Prefix>
-            <Value>{session.duration} мин</Value>
+            <Value>{session.duration === "ROMO" ? <> <a>%</a> ПРОМО</> : `${session.duration} мин`}</Value>
           </div>
           <MinusIcon onClick={() => deleteSlot({ weekday, slotId: session.id })} />
         </Row>

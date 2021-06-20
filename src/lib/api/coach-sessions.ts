@@ -12,15 +12,17 @@ export interface CoachSession {
   startDatetime: ISODate // example: "2020-03-31T15:17:37Z"
   endDatetime: string
   durationType: DurationType //example: 01:00:00
+  isFreeSession: boolean
 }
 
-export type DurationType = "D15" |"D30" | "D45" | "D60" | "D90"
+export type DurationType = "PROMO" | "D30" | "D45" | "D60" | "D90"
 
 export interface GetCoachSessionsParamsTypes {
   start_date__lte?: string
   start_date__gte?: string
   start_date?: string
   duration_type?: DurationType
+  is_free_session?: boolean
 }
 
 export const getCoachSessions = (id: number | "me", params: GetCoachSessionsParamsTypes): Promise<CoachSession[]> =>

@@ -26,6 +26,7 @@ import { Informer } from "@/newcomponents/informer/Informer"
 import { Input } from "@/newcomponents/input/Input"
 import { $prices, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings/units"
 import { $isAddSessionModalShowed, showAddSessionModal } from "@/pages/coach/schedule/models/calendar.model"
+import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 
 const StyledDialog = styled(Dialog)`
@@ -115,7 +116,7 @@ const SelectBoxContainer = styled.div`
   margin-right: 10px;
 
   ${MediaRange.lessThan("mobile")`
-    width: 100px;
+    width: 110px;
   `}
 `
 
@@ -156,6 +157,37 @@ const Label = styled.div`
   color: #5B6670;  
 `
 
+const PromoBlock = styled.div`
+  display: flex;
+  padding: 16px;
+  background: #F8F8FD;
+  border-radius: 8px;
+  align-items: center;
+  flex-direction: row;
+`
+
+const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
+  width: 24px;
+  height: 24px;
+  margin-right: 20px;
+`
+
+const PromoText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #5B6670;
+
+  & a {
+    color: ${props => props.theme.colors.primary};
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`
+
 const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) => {
 
   let name: keyof Prices = "d30Price"
@@ -181,29 +213,47 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
 
   const [priceValue, setValue] = useState("")
   const priceUpdate = useEvent(changePrice)
+
+  const _showAddSessionModal = useEvent(showAddSessionModal)
+  const _showOnBoarding = useEvent(showSecondOnBoarding)
+
+  const OnLinkClick = () => {
+    _showAddSessionModal(false)
+    _showOnBoarding(true)
+  }
+
   return (
-    <Informer>
-      <Container>
-        <Label>{title}</Label>
-        <PriceRowBlock>
-          <Input
-            placeholder='0'
-            withoutBorder
-            type='number'
-            value={priceValue}
-            price={true}
-            maxWidth={"144px"}
-            onChange={(value: string) => {
-              setValue(value)
-            }}/>
-          <StyledPriceButton
-            disabled={!priceValue}
-            onClick={() => priceUpdate({ name, value: parseFloat(priceValue)})}>
-        Добавить цену
-          </StyledPriceButton>
-        </PriceRowBlock>
-      </Container>
-    </Informer>
+    <>
+      {durationType === "PROMO" ?
+        <PromoBlock>
+          <PercentsIcon />
+          <PromoText>Выбирайте промо сессии (30 минут) для продвижения. <a onClick={OnLinkClick}>Зачем?</a></PromoText>
+        </PromoBlock>
+        :
+        <Informer>
+          <Container>
+            <Label>{title}</Label>
+            <PriceRowBlock>
+              <Input
+                placeholder='0'
+                withoutBorder
+                type='number'
+                value={priceValue}
+                price={true}
+                maxWidth={"144px"}
+                onChange={(value: string) => {
+                  setValue(value)
+                }}/>
+              <StyledPriceButton
+                disabled={!priceValue}
+                onClick={() => priceUpdate({ name, value: parseFloat(priceValue)})}>
+                            Добавить цену
+              </StyledPriceButton>
+            </PriceRowBlock>
+          </Container>
+        </Informer>
+      }
+    </>
   )
 }
 
@@ -267,7 +317,7 @@ export const AddSessionModal = () => {
                 {formSessions.length > 1 ? <DeleteIcon onClick={() => _onDelete(item.id)} /> : null}
 
               </RowBlock>
-              {!(prices.find(price => price.key === item.duration)?.value)?
+              {(!prices.find(price => price.key === item.duration)?.value) ?
                 <SetPrice durationType={item.duration} /> : null}
             </div>
           ))}

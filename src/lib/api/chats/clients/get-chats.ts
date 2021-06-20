@@ -14,6 +14,7 @@ export type SupportTicketType = "SUPPORT_AGENT_FOUND" | "PROBLEM_SOLVED" | "LOOK
 export type ConflictStatus = "SOLVED_IN_COACH_FAVOUR" | "SOLVED_IN_CLIENT_FAVOUR"
 
 export type TransActionsStatus = "MONEY_SUCCESSFULLY_HELD" | "MONEY_HOLD_UNSUCCESSFUL" | ""
+export type FreeSessionClientMessage = "" | "CHOOSE_NEW_COACH" | "BOOK_PAID_SESSION" | "FREE_SESSION_LIMIT_ENDED"
 
 export type TransActionProperties= {
     id: number
@@ -65,6 +66,7 @@ export type ChatMessage = {
     type: MessageTypes
     text: string
     image: string
+    coachToBookSession: number | null
     document: string
     chat: number
     transaction: TransActionProperties | null
@@ -83,6 +85,7 @@ export type ChatMessage = {
     creationDatetime: ISODate
     systemTicketType: SupportTicketType
     isReadByYou: boolean
+    systemMessageType: FreeSessionClientMessage
 }
 
 

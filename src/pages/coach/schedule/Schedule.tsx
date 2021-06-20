@@ -2,12 +2,14 @@ import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { WeekDaySchedule } from "@/pages/coach/schedule/components/WeekDaySchedule"
 import { saveWeekdaySlotsFx } from "@/pages/coach/schedule/models/weekday-schedule.model"
-import { useGate, useStore } from "effector-react"
+import { useEvent, useGate, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { Informer } from "@/newcomponents/informer/Informer"
 import { InputDurationPriceModal } from "./components/InputDurationPriceModal"
+import { Icon } from "@/oldcomponents/icon/Icon"
+import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 const PriceContainer = styled.div`
   max-width: 320px;
@@ -70,9 +72,48 @@ const StyledInformer = styled.div`
   margin-top: 16px;
 `
 
+
+const PromoBlock = styled.div`
+  margin-top: 16px;
+  display: flex;
+  padding: 16px;
+  background: #F8F8FD;
+  border-radius: 8px;
+  align-items: center;
+  flex-direction: row;
+`
+
+const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
+  width: 24px;
+  height: 24px;
+  margin-right: 20px;
+`
+
+const PromoText = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #5B6670;
+
+  & a {
+    color: ${props => props.theme.colors.primary};
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`
+
 export const Schedule = () => {
 
   const isWeekdaySchedulePending = useStore(saveWeekdaySlotsFx.pending)
+
+  const _showOnBoarding = useEvent(showSecondOnBoarding)
+
+  const OnLinkClick = () => {
+    _showOnBoarding(true)
+  }
 
   return (
     <>
@@ -82,9 +123,10 @@ export const Schedule = () => {
           <Description>
               Выберите дни и временные промежутки, в которые вы можете работать. Клиенты смогут бронировать занятия в это время.
           </Description>
-          <StyledInformer>
-            <Informer closable>Вы можете выбрать несколько сессий в течение одного дня</Informer>
-          </StyledInformer>
+          <PromoBlock>
+            <PercentsIcon />
+            <PromoText>Выбирайте промо сессии (30 минут) для продвижения. <a onClick={OnLinkClick}>Зачем?</a></PromoText>
+          </PromoBlock>
           <PriceListContainer>
             <WeekDaySchedule title='Понедельник' weekday='MONDAY' />
             <WeekDaySchedule title='Вторник' weekday='TUESDAY' />

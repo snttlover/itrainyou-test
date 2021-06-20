@@ -21,37 +21,44 @@ type LeftButtonTypes = {
   disabled?: boolean
 }
 
-export const LeftIcon = styled(Icon).attrs({ name: "left-calendar-icon" })<LeftButtonTypes>`
-  width: 32px;
-  height: 32px;
+export const LeftIcon = styled(Icon).attrs({ name: "arrow" })<LeftButtonTypes>`
+  width: 20px;
+  height: 20px;
   fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? "none" : "auto")};
   margin-right: 2px;
+  transform: rotate(90deg);
   
   ${MediaRange.lessThan("mobile")`
-    margin-right: 30px;
+    margin-right: auto;
   `}
 `
 
-export const RightIcon = styled(Icon).attrs({ name: "right-calendar-icon" })<LeftButtonTypes>`
-  width: 32px;
-  height: 32px;
+export const RightIcon = styled(Icon).attrs({ name: "arrow" })<LeftButtonTypes>`
+  width: 20px;
+  height: 20px;
   fill: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? "none" : "auto")};
   margin-left: 2px;
+  transform: rotate(-90deg);
 
   ${MediaRange.lessThan("mobile")`
-    margin-left: 30px;
+    margin-left: auto;
   `}
 `
 
 export const MonthContainer = styled.div`
   display: flex;
   align-items: center;
+
+  ${MediaRange.lessThan("mobile")`
+    justify-content: center;
+    width: 100%;
+  `}
 `
 
 export const Year = styled.div`
@@ -69,6 +76,7 @@ export const MonthName = styled.div<{mobile?: boolean; showed?: boolean}>`
   text-transform: capitalize;
   text-align: center;
   display: ${({ mobile, showed }) => !!showed ? "unset" : (!!mobile ? "none" : "unset")};
+  margin-right: 4px;
 
   ${MediaRange.lessThan("mobile")`
     display: ${
@@ -88,7 +96,7 @@ export const CalendarHeader: React.FC<CalendarHeaderTypes> = (props: CalendarHea
   <Header>
     <MonthContainer>
       <LeftIcon disabled={props.lessThanTheCurrentMonth} onClick={props.prevMonth} />
-      <MonthName showed>{date(props.currentDate).format("MMMM")},{"  "}</MonthName>
+      <MonthName showed>{date(props.currentDate).format("MMMM")},</MonthName>
       <Year>{date(props.currentDate).format("YYYY")}</Year>
       <RightIcon onClick={props.nextMonth} />
     </MonthContainer>

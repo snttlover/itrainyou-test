@@ -15,7 +15,7 @@ type Price = {
   name: keyof Prices
   key: string
   isLoading: boolean
-  value: number
+  value: number | "None"
 }
 
 export type ChangePriceEvent = { name: keyof Prices; value: number }
@@ -25,9 +25,9 @@ export const setPrices = createEvent<Prices>()
 export const $prices = createStore<Price[]>([
   {
     name: "promo",
-    key: "promo",
+    key: "PROMO",
     isLoading: false,
-    value: 0,
+    value: "None",
   },
   {
     name: "d30Price",
@@ -72,8 +72,9 @@ export const $prices = createStore<Price[]>([
       isLoading: keys.includes(price.name) ? false : price.isLoading,
     }))
   })
+
 export const $pricesWithFee = combine($prices, $feeRatio, (prices, feeRatio) =>
-  prices.map(price => ({ ...price, valueWithFee: price ? price.value + price.value * feeRatio : 0 }))
+  prices.map(price => ({ ...price, valueWithFee: price && price.value !== "None" ? price.value + price.value * feeRatio : 0 }))
 )
 export const savePricesFx = attach({
   effect: updateScheduleFx,

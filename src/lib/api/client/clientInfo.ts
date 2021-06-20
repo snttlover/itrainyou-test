@@ -23,6 +23,11 @@ export interface ClientSelfData {
   spentHoursCount: number,
   systemChat: number
   hasFreeSessions: boolean
+  priceRanges: {
+    id: number
+    rangeFrom: number
+    rangeTo: number
+  }[]
 }
 
 export type User = {

@@ -2,21 +2,22 @@ import { IsAuthed } from "@/feature/user/IsAuthed"
 import { IsGuest } from "@/feature/user/IsGuest"
 import { date } from "@/lib/formatting/date"
 import { routeNames } from "@/pages/route-names"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import * as React from "react"
 import styled, { css } from "styled-components"
 import { Calendar } from "@/oldcomponents/calendar/Calendar"
 import { useEvent, useStore } from "effector-react"
-import { Tabs, Tab } from "@/oldcomponents/tabs/Tabs"
 import { Spinner } from "@/oldcomponents/spinner/Spinner"
 import { Button } from "@/oldcomponents/button/normal/Button"
-import { genSessionTabs, SelectDatetimeTypes } from "@/oldcomponents/coach-card/select-date/SelectDatetime"
-import { Icon } from "@/oldcomponents/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import { DurationType } from "@/lib/api/coach-sessions"
+import { GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
-import { $creditCardsModalVisibility, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
+import { Event, Store } from "effector-root"
+import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import starIcon from "@/oldcomponents/coach-card/images/star.svg"
+import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
+
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -31,19 +32,68 @@ const Container = styled.div`
      width: 100%;
      margin-bottom: 0;
   `}
+
+  ${MediaRange.lessThan("mobile")`
+     width: 288px;
+     margin-bottom: 0;
+  `}
+`
+
+const RowBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`
+
+const SessionInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 17px;
+`
+
+const StyledAvatar = styled(Avatar)`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+`
+
+const CoachName = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  color: #424242;
+`
+
+const Star = styled.img.attrs({ src: starIcon })`
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+`
+
+const Rating = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: ${props => props.theme.colors.primary};
 `
 
 const Block = styled.div<StyledTabTypes>`
   display: flex;
   flex-direction: column;
   background: #fff;
-  padding: 24px 8px;
-  ${MediaRange.between("mobile", "laptop")`
-    flex-direction: row;   
-  `}
+  padding: 8px 12px;
 `
 
 const Datepicker = styled.div`
+  display: flex;
+  flex-direction: column;
   border-bottom: 1px solid #dbdee0;
   padding-bottom: 4px;
   ${MediaRange.between("mobile", "laptop")`
@@ -62,6 +112,8 @@ const Datepicker = styled.div`
 `
 
 const SelectTimeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   width: 100%;
 
@@ -77,7 +129,11 @@ const Times = styled.div`
   margin-top: 12px;
   padding-left: 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid #dbdee0;
+  
+  ${MediaRange.between("mobile", "laptop")`
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dbdee0;
+  `}
 `
 
 const Tag = styled.div<{ active?: boolean }>`
@@ -101,45 +157,11 @@ const Tag = styled.div<{ active?: boolean }>`
   `}
 `
 
-const DeleteIcon = styled(Icon).attrs({ name: "delete" })`
-  fill: #4858cc;
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
-`
-
-const RubleIcon = styled(Icon).attrs({ name: "ruble" })`
-  width: 15px;
-  height: 15px;
-  fill: #4858cc;
-`
-
-const SummaryRuble = styled(RubleIcon)`
-  width: 20px;
-  height: 20px;
-`
-
-const Summary = styled.span`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #4858cc;
-  display: flex;
-  align-items: center;
-`
-
 const ButtonContainer = styled.div`
   padding-top: 10px;
-  margin-left: auto;
   display: flex;
   justify-content: center;
   margin-top: 25px;
-`
-
-const StyledTabs = styled(Tabs)`
-  width: 100%;
-  position: relative;
 `
 
 const StyledDateHeader = styled.div`
@@ -151,109 +173,18 @@ const StyledDateHeader = styled.div`
   padding-top: 16px;
 
   ${MediaRange.lessThan("mobile")`
-    border-top: 1px solid #DBDEE0;
     padding-top: 24px;
   `}
 `
 
-const OnlyOneTabStyles = css`
-  justify-content: flex-end;
-  padding-top: 16px;
-  padding-bottom: 8px;
-`
-// ${props => props.onlyOneCard && OnlyOneTabStyles}
-const StyledTab = styled(Tab)<StyledTabTypes>`
-  display: flex;
-  flex-direction: column;
-  padding: 8px 13px;
-  ${MediaRange.between("mobile", "laptop")`
-    flex-direction: row;
-  `}
-`
-
-const TabTime = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  color: #5b6670;
-  ${MediaRange.between("mobile", "laptop")`
-    font-size: 16px;
-    line-height: 22px;
-  `}
-`
-
-const TabPrice = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  color: #9aa0a6;
-`
-
-const SelectedSessions = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-top: 27px;
-  padding-bottom: 16px;
-`
-
-const SelectedSession = styled.div`
-  display: flex;
-  margin-top: 12px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid #efefef;
-  width: 216px;
-  align-items: center;
-  &:first-child {
-    margin-top: 0;
-  }
-
-  ${MediaRange.lessThan("mobile")`
-    width: 252px;
-  `}
-`
-
-const SessionDate = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: #424242;
-  margin-right: 8px;
-`
-
-const SessionTime = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  text-align: left;
-  color: #424242;
-  flex: 1;
-`
-
-const SessionPrice = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  text-align: right;
-  color: #424242;
-  margin-right: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
 const StyledBuyButton = styled(Button)`
   text-align: center;
-  padding: 4px 24px;
+  padding: 4px 35px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  width: 160px;
+  width: 100%;
 `
 
 const StyledRegisterButton = styled(Button)`
@@ -266,196 +197,106 @@ const StyledRegisterButton = styled(Button)`
   width: 185px;
 `
 
-const Amount = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 216px;
-  margin: 0 auto;
-  ${MediaRange.lessThan("mobile")`
-    width: 252px;
-  `}
-`
 
-const AmountText = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #424242;
-`
-
-const SessionPackagesStatWrapper = styled.div`
-  margin-top: 24px;
-  border-top: 1px solid #dbdee0;
-  padding-top: 20px;
-  width: 216px;
-  margin: 0 auto;
-
-  ${MediaRange.between("mobile", "laptop")`
-    border-top: none;
- `}
-
-  ${MediaRange.lessThan("mobile")`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  `}
-`
-
-const SessionPackagePercent = styled.div`
+const CalendarSubTitle = styled.div`
+  text-align: right;
+  font-family: Roboto;
+  font-style: normal;
   font-weight: 500;
   font-size: 12px;
-  line-height: 16px;
-  text-align: right;
-  color: #424242;
-  margin-bottom: 12px;
-  &:last-child {
-    margin-bottom: 0;
-  }
+  line-height: 18px;
+  color: #5B6670;
+
+  ${MediaRange.lessThan("tablet")`
+    font-size: 16px;
+    line-height: 24px;
+ `}
 `
 
-const SessionPackage = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  ${MediaRange.lessThan("mobile")`
-    width: 252px;
-  `}
-`
-
-const SessionPackageText = styled.div`
+const Description = styled.div`
+  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  line-height: 16px;
-  color: #424242;
-`
-
-const SessionPackagesDescription = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  color: #5b6670;
-  margin-top: 16px;
-
-  ${MediaRange.lessThan("mobile")`
-    width: 212px;
-  `}
-`
-
-const SessionsPackagesTitle = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #424242;
-  margin-bottom: 7px;
-
-  ${MediaRange.lessThan("mobile")`
-    width: 252px;
-  `}
-`
-
-const Footer = ({ className }: { className?: string }) => (
-  <SessionPackagesStatWrapper className={className}>
-    <SessionsPackagesTitle>Пакеты сессий</SessionsPackagesTitle>
-    <SessionPackage>
-      <SessionPackageText>2 сессии</SessionPackageText>
-      <SessionPackagePercent>15%</SessionPackagePercent>
-    </SessionPackage>
-    <SessionPackagesDescription>Просто выберите сессии и акция автоматически активизируется</SessionPackagesDescription>
-  </SessionPackagesStatWrapper>
-)
-
-const TabletFooter = styled(Footer)`
-  display: none;
-  ${MediaRange.between("mobile", "laptop")`
-    display: block;
-    
-    ${SessionPackagesDescription} {
-      color: #4858CC;
-    }
- `}
-`
-
-const DesktopFooter = styled(Footer)`
-  display: flex;
+  line-height: 18px;
+  text-align: right;
+  color: #9AA0A6;
   margin-top: 24px;
+  
   ${MediaRange.between("mobile", "laptop")`
-    display: none;
- `}
+    margin-top: 12px;
+    text-align: unset;
+    margin-left: auto;
+  `}
 `
 
 const StyledCalendar = styled(Calendar)`
   ${MediaRange.between("mobile", "laptop")`
     max-width: 252px;
     margin: 0 auto;
+    border-top: 0;
+ `}
+
+  ${MediaRange.lessThan("mobile")`
+    border-top: 0;
+    border-bottom: 1px solid #dbdee0;
+    margin-top: 12px;
  `}
 `
 
-const Delemiter = styled.div`
-  display: none;
+const CalendarDirectionBlock = styled.div`
+  display: flex;
+  flex-direction: column;
   ${MediaRange.between("mobile", "laptop")`
-    display: flex;
-  `}
-`
-
-const FooterWrapper = styled.div`
-  display: none;
-  width: 100%;
-  border-top: 1px solid #dbdee0;
-  ${MediaRange.between("mobile", "laptop")`
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+    flex-direction: row;
  `}
 `
 
 const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
-export const HomeCalendar = (props: SelectDatetimeTypes) => {
+
+type FreeSessionTypes = {
+  freeSessionsModule: {
+    loading: Store<boolean>
+    loadData: Event<{
+      id?: number
+      params: GetCoachSessionsParamsTypes
+    }>
+    sessionsList: Store<any[]>
+    toggleSession: Event<any>
+    deleteSession: Event<number>
+    bulkFreeSession: Event<SessionRequestParams>
+    buySessionsLoading: Store<boolean>
+  }
+}
+
+export const HomeCalendar = (props: FreeSessionTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
 
-  const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
+  const sessions = useStore(props.freeSessionsModule.sessionsList)
+  const loading = useStore(props.freeSessionsModule.loading)
+  const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
 
-  const _showCreditCardsModal = () => _toggleCreditCardModal(true)
+  const loadData = useEvent(props.freeSessionsModule.loadData)
+  const toggleSession = useEvent(props.freeSessionsModule.toggleSession)
+  const bulkFreeSession = useEvent(props.freeSessionsModule.bulkFreeSession)
 
-  const sessions = useStore(props.sessionsData.sessionsList)
-  const loading = useStore(props.sessionsData.loading)
-  const buyLoading = useStore(props.sessionsData.buySessionsLoading)
-  const activeTab = useStore(props.sessionsData.tabs.$durationTab)
-  const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
-  const deleteSession = useEvent(props.sessionsData.deleteSession)
-  const toggleSession = useEvent(props.sessionsData.toggleSession)
-  const buySessionBulk = useEvent(props.sessionsData.buySessionBulk)
-  const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const enabledDates = sessions.map(session => session.startDatetime)
+
   useEffect(() => {
-    changeCurrentDate((prevState) => {
-      return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
-    })
-    return () => {
-      changeCurrentDate(undefined)
-    }
+    changeCurrentDate(date(enabledDates[0]).toDate())
   }, [enabledDates[0]])
 
-  const payForTheSessionHandler = () => {
-    _showCreditCardsModal()
-    changeCurrentDate(null)
-  }
+  useEffect(() => {
+    loadData({params:{}})
+  }, [])
+
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
   const currentDateEqual = date(headerDate as Date).format(equalDateFormat)
-
-  if (!props.coach.prices[activeTab] && tabs.length) {
-    changeActiveTab(tabs[0].key)
-  }
 
   const times = sessions
     .filter(session => {
@@ -474,93 +315,76 @@ export const HomeCalendar = (props: SelectDatetimeTypes) => {
       time: date(session.startDatetime).format(equalTimeFormat),
     }))
 
-  const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
+  const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
 
-  const changeTabHandler = (durationType: DurationType) => {
-    changeActiveTab(durationType)
+
+  const payForTheSessionHandler = () => {
+    bulkFreeSession({session: selected[0].id, type: "BOOK"})
     changeCurrentDate(null)
   }
 
-  const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
-  const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
-
   return (
     <Container>
-      <StyledTabs value={activeTab} onChange={changeTabHandler}>
-        {tabs.map(tab => (
-          <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
-            <TabTime>{tab.timeInMinutes} мин</TabTime>
-            <TabPrice>
-              <Delemiter> / </Delemiter>
-              {tab.price} ₽
-            </TabPrice>
-          </StyledTab>
-        ))}
-      </StyledTabs>
-      <Block onlyOneCard={tabs.length === 1}>
+      <Block onlyOneCard={true}>
+        <CalendarSubTitle>Бесплатная сессия</CalendarSubTitle>
         {loading && <Spinner />}
-        <Datepicker>
-          <StyledCalendar
-            value={currentDate}
-            enabledDates={enabledDates}
-            onChange={changeCurrentDate}
-            isBig={true}
-            // startFrom={new Date(date(currentDate || undefined).toDate())}
-          />
+        <CalendarDirectionBlock>
 
-          {/*<FooterWrapper>*/}
-          {/*  <TabletFooter />*/}
-          {/*</FooterWrapper>*/}
-        </Datepicker>
-        <SelectTimeContainer>
-          <WidthCurrentDateConditionWrapper>
-            <StyledDateHeader>{formattedDate}</StyledDateHeader>
-            <Times>
-              {times.map(session => (
-                <Tag active={session.selected} key={session.id} onClick={() => toggleSession(session)}>
-                  {session.start_datetime}
-                </Tag>
-              ))}
-            </Times>
-          </WidthCurrentDateConditionWrapper>
-          <WidthAmountConditionWrapper>
-            <SelectedSessions>
+          <Datepicker>
+            <Description>Выберите день</Description>
+            <StyledCalendar
+              value={currentDate}
+              enabledDates={enabledDates}
+              onChange={changeCurrentDate}
+              isBig={true}
+              startFrom={new Date(date(currentDate || undefined).toDate())}
+            />
+
+          </Datepicker>
+          <SelectTimeContainer>
+            <WidthCurrentDateConditionWrapper>
+              <Description>Выберите время</Description>
+              <StyledDateHeader>{formattedDate}</StyledDateHeader>
+              <Times>
+                {times.map(session => (
+                  <Tag active={session.selected} key={session.id} onClick={() => toggleSession(session)}>
+                    {session.start_datetime}
+                  </Tag>
+                ))}
+              </Times>
+            </WidthCurrentDateConditionWrapper>
+            <Description>Коуч</Description>
+            <SessionInfo>
               {selected.map(session => (
-                <SelectedSession key={session.id}>
-                  <SessionDate>{session.date}</SessionDate>
-                  <SessionTime>{session.time}</SessionTime>
-                  <SessionPrice>
-                    {session.clientPrice}
-                    <RubleIcon />
-                  </SessionPrice>
-                  <DeleteIcon onClick={() => deleteSession(session.id)} />
-                </SelectedSession>
+                <>
+                  <RowBlock>
+                    <StyledAvatar src={session.coach?.avatar} />
+                    <CoachName>{session.coach?.firstName} {session.coach?.lastName}</CoachName>
+                  </RowBlock>
+                  <RowBlock>
+                    <Star />
+                    {session.coach.rating !== null && <Rating>{session.coach.rating}</Rating>}
+                  </RowBlock>
+                </>
               ))}
-            </SelectedSessions>
-            <Amount>
-              <AmountText>Итого:</AmountText>
-              <Summary>
-                {amount} <SummaryRuble />
-              </Summary>
-            </Amount>
-          </WidthAmountConditionWrapper>
-          <ButtonContainer>
-            <IsAuthed>
-              <StyledBuyButton
-                disabled={buyLoading || selected.length === 0}
-                onClick={payForTheSessionHandler}
-              >
-                      Забронировать
-              </StyledBuyButton>
-            </IsAuthed>
-            <IsGuest>
-              <Link to={routeNames.signup("1")}>
-                <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
-              </Link>
-            </IsGuest>
-          </ButtonContainer>
-          {/*<DesktopFooter />*/}
-        </SelectTimeContainer>
+            </SessionInfo>
+            <ButtonContainer>
+              <IsAuthed>
+                <StyledBuyButton
+                  disabled={buyLoading || selected.length === 0}
+                  onClick={payForTheSessionHandler}
+                >
+                      Забронировать бесплатно
+                </StyledBuyButton>
+              </IsAuthed>
+              <IsGuest>
+                <Link to={routeNames.signup("1")}>
+                  <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
+                </Link>
+              </IsGuest>
+            </ButtonContainer>
+          </SelectTimeContainer>
+        </CalendarDirectionBlock>
       </Block>
     </Container>
   )

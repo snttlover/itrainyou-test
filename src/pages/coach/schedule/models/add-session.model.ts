@@ -2,18 +2,19 @@ import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/comm
 import { DurationType } from "@/lib/api/coach-sessions"
 import { createSession } from "@/lib/api/coaching-sessions/create-session"
 import { date } from "@/lib/formatting/date"
-import { $allSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
+import { $showedSessions, sessionAdded } from "@/pages/coach/schedule/models/sessions.model"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 import { $prices } from "@/pages/coach/schedule/models/price-settings/units"
 import { showAddSessionModal } from "@/pages/coach/schedule/models/calendar.model"
+import { changeFilterView } from "@/pages/coach/schedule/models/sessions.model"
 
 export const setMobileInfo = createEvent<{
   googleEvent: boolean
   areAvailable: boolean
   client?: [any]
   id: number
-  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  sessionDurationType?: DurationType
   startTime: Dayjs
   endTime: Dayjs
 }>()
@@ -23,7 +24,7 @@ export const $mobileEventInfo = restore<{
   areAvailable: boolean
   client?: [any]
   id: number
-  sessionDurationType?: "D30" | "D45" | "D60" | "D90"
+  sessionDurationType?: DurationType
   startTime: Dayjs
   endTime: Dayjs
 }>(setMobileInfo, {
@@ -41,6 +42,7 @@ export const $durationList = createStore<{ label: string; value: DurationType }[
   { label: "45 минут", value: "D45" },
   { label: "60 минут", value: "D60" },
   { label: "90 минут", value: "D90" },
+  { label: "промо", value: "PROMO" },
 ])
 
 export const $durationOptions = $durationList.map((durations) => {
@@ -54,7 +56,7 @@ const $allTimesOptions = createStore(
     .flat()
 )
 
-const $daySessions = combine($allSessions, $sessionDate, (allSessions, dat) =>
+const $daySessions = combine($showedSessions, $sessionDate, (allSessions, dat) =>
   allSessions.sessions.filter(
     session => date(dat).isSame(session.startTime, "d") || date(dat).isSame(session.endTime, "d")
   )
@@ -189,7 +191,7 @@ const $priceIsCorrect = combine(
     return sessionDurations.reduce((isPriceSet, duration) => {
       if (!isPriceSet) return false
 
-      return !!(prices.find(price => price.key === duration)?.value)
+      return !!(prices.find(price => price.key === duration)?.value || duration === "PROMO")
     }, true)
   })
 

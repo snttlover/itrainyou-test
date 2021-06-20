@@ -186,7 +186,7 @@ sample({
   source: $prices,
   fn: (prices, duration) => {
     return {
-      showModal: !prices.find(price => price.key === duration)?.value,
+      showModal: !prices.find(price => price.key === duration)?.value && duration !== "PROMO",
       duration
     }
   },

@@ -31,7 +31,7 @@ export const CalendarPart = () => {
   return (
     <>
       <CalendarContainer>
-        <Informer closable>Кликните на дату и выберите время, в которые вам удобно работать. В эти временные промежутки клиенты смогут записаться на занятие.</Informer>
+        <Informer closable>Кликните на дату и выберите время, в которые вам удобно работать.</Informer>
         <ScheduleCalendar />
         {(isSessionsLoading || isDeletingSession) && <Spinner />}
       </CalendarContainer>

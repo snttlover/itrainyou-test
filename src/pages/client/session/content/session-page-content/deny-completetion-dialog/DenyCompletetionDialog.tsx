@@ -36,6 +36,7 @@ export const DenyCompletetionDialog = () => {
   const send = useEvent(sendDenyCompletationDialog)
   const problem = useStore($denyCompletationProblem)
   const changeProblem = useEvent(changeDenyCompletationProblem)
+  const options = useStore(denyCompletationProblems)
 
   const problemType = useStore($currentDenyCompletationProblem)
   const changeProblemType = useEvent(changeCurrentDenyCompletationProblem)
@@ -46,7 +47,7 @@ export const DenyCompletetionDialog = () => {
     <StyledDialog value={visibility} onChange={() => hide()}>
       <Container>
         <Header>Что случилось?</Header>
-        <Description>Скажите, что пошло не так. Наш администратор свяжется с вами в поддержке</Description>
+        <Description>Нам важно знать, что именно вас не устроило, чтобы становиться лучше и предложить возможные варианты выхода</Description>
 
         <User>
           <StyledAvatar src={user.avatar} />
@@ -57,7 +58,7 @@ export const DenyCompletetionDialog = () => {
           placeholder='Выберите проблему'
           value={problemType}
           onChange={value => changeProblemType(value as DenySessionRequestProblems)}
-          options={denyCompletationProblems}
+          options={options}
         />
         
         <Label>Опишите проблему</Label>

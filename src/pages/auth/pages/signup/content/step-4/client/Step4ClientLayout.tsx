@@ -1,8 +1,6 @@
 import { AuthLayoutLogo } from "@/oldcomponents/layouts/sections/auth/AuthLayoutLogo"
 import { MediaRange } from "@/lib/responsive/media"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
-import bgImage from "./backgrounds/bg-image.svg"
-import cloud from "./backgrounds/cloud.svg"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -53,38 +51,6 @@ const HeaderContent = styled.div`
   height: 100%;
 `
 
-const BGImage = styled.div`
-  background-image: url(${bgImage});
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: absolute;
-  width: 329.35px;
-  height: 589px;
-  left: 0;
-  top: 356px;
-  display: none;
-
-  ${MediaRange.greaterThan("laptop")`
-    display: block;
-  `}
-`
-
-const BGImageCloud = styled.div`
-  background-image: url(${cloud});
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: absolute;
-  width: 223px;
-  height: 76px;
-  right: 0;
-  top: 416px;
-  display: none;
-
-  ${MediaRange.greaterThan("laptop")`
-    display: block;
-  `}
-`
-
 type Step4ClientLayoutProps = {
   children: React.ReactNode
   renderHeader: () => React.ReactNode
@@ -98,13 +64,11 @@ export const Step4ClientLayout = (props: Step4ClientLayoutProps) => (
         <Steps activeId='2'>
           <Steps.Step id='1'>Роль</Steps.Step>
           <Steps.Step id='2'>Данные</Steps.Step>
-          <Steps.Step id='3'>Подбор коуча</Steps.Step>
+          <Steps.Step id='3'>Выбор направлений</Steps.Step>
         </Steps>
         {props.renderHeader()}
       </HeaderContent>
     </Header>
-    {/*<BGImage />*/}
-    {/*<BGImageCloud />*/}
     <AuthContainer>{props.children}</AuthContainer>
   </StyledLayout>
 )

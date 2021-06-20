@@ -1,8 +1,7 @@
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
-import { useState } from "react"
-import { Checkbox, StyledCheckbox } from "@/oldcomponents/checkbox/Checkbox"
+import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
 import { priceRangesGate, $priceRanges, selectPriceRange } from "@/pages/auth/pages/signup/models/units"
 import { useGate, useStore, useEvent } from "effector-react"
 
@@ -24,6 +23,14 @@ const Container = styled.div`
   `}
 `
 
+const StyledCheckBox = styled(Checkbox)`
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`
+
 export const PriceRanges = () => {
   const options = useStore($priceRanges)
   const selectRange = useEvent(selectPriceRange)
@@ -34,9 +41,9 @@ export const PriceRanges = () => {
   return (
     <Container>
       {options.map((option,index) =>
-        <Checkbox key={index} value={option.selected} color={"#4858CC"} filled onChange={() => selectRange({id: option.id})}>
-          {option.rangeTo ? `${option.rangeFrom} - ${option.rangeTo}  ₽` : `${option.rangeFrom} и выше`}
-        </Checkbox>
+        <StyledCheckBox key={index} value={option.selected} color={"#4858CC"} filled onChange={() => selectRange({id: option.id})}>
+          {option.rangeTo ? `${option.rangeFrom} - ${option.rangeTo}  ₽` : `${option.rangeFrom} ₽ и выше`}
+        </StyledCheckBox>
       )}
     </Container>
   )
