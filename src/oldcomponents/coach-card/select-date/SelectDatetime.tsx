@@ -316,6 +316,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
     activeTab === "PROMO" ? bulkFreeSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardsModal(true)
     if (activeTab === "PROMO") {
       const sessionInfo = selected[0]
+      // @ts-ignore
       sessionInfo.coach = props.coach
       // @ts-ignore
       changeFreeSessionModalInfo(sessionInfo)
