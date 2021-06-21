@@ -16,6 +16,7 @@ import {
   loadRecommendationsFx,
   loadUpcomingSessionsFx,
   homePageMounted,
+  $informerShowed
 } from "../home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
@@ -90,6 +91,7 @@ const InformerContainer = styled.div`
   background: linear-gradient(91.34deg, #0A58CC -38.45%, #9E58CC 128.49%), linear-gradient(90deg, #4858CC -50%, #783D9D 150%), #FFFFFF;
   border-radius: 8px;
   margin-top: 24px;
+  max-width: 600px;
 `
 
 const GiftIcon = styled(Icon).attrs({ name: "gift" })`
@@ -103,6 +105,7 @@ const InformerTextContainer = styled.div`
   flex-direction: column;
   text-align: left;
   padding: 0 22px;
+  max-width: 90%;
   
   ${MediaRange.lessThan("mobile")`
     padding: 0 16px;
@@ -134,15 +137,23 @@ const Close = styled(Icon).attrs({ name: "plus" })`
   cursor: pointer;
   fill: white;
   transform: rotate(45deg);
+  margin-left: auto;
 `
 
 const SocialLink = styled.a`
   text-decoration: underline;
+  color: #FFFFFF;
+  font-weight: 500;
+  margin-right: 2px;
 `
 
 const Informer = () => {
-
   const [showed, setShowed] = useState(true)
+
+  const handleOnCrossClick = () => {
+    setShowed(false)
+    localStorage.setItem("show_informer", "not_show")
+  }
 
   return (
     <>
@@ -150,13 +161,13 @@ const Informer = () => {
         <InformerContainer>
           <GiftIcon />
           <InformerTextContainer>
-            <InformerHeader>Бесплатная сессия забронирована! </InformerHeader>
-            <InformerDescription>А пока ознакомьтесь с другими коучами нашей платформы и присоединитесь к нам в социальных сетях:
-              <SocialLink href='https://instagram.com/i_trainyou'>Insagram,</SocialLink>
+            <InformerHeader>Вы отправили запрос на бронирование бесплатной сессии!</InformerHeader>
+            <InformerDescription>А пока ознакомьтесь с другими коучами нашей платформы и присоединитесь к нам в социальных сетях:&nbsp;
+              <SocialLink href='https://instagram.com/i_trainyou'>Instagram,</SocialLink>
               <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'>Facebook</SocialLink>
             </InformerDescription>
           </InformerTextContainer>
-          <Close onClick={() => setShowed(false)} />
+          <Close onClick={handleOnCrossClick} />
         </InformerContainer>
         : null}
     </>
@@ -174,6 +185,7 @@ export const StandardHomePage = () => {
   const recommendationPending = useStore(loadRecommendationsFx.pending)
   const _mounted = useEvent(homePageMounted)
   const _loadMore = useEvent(loadMore)
+  const informerVisibility = useStore($informerShowed)
 
   useEffect(() => {
     _mounted()
@@ -191,6 +203,7 @@ export const StandardHomePage = () => {
     <>
       <ContentContainer>
         <CheckMediaDevices type={"client"} />
+        {informerVisibility && (<Informer />)}
       </ContentContainer>
 
       <ContentContainer>

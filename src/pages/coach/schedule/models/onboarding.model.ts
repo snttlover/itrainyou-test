@@ -1,11 +1,11 @@
 import { createEffect, createEvent, createStore, forward, split } from "effector-root"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
 
-const USER_KEY = "user_type"
+const STORAGE_KEY = "on_boarding"
 
 const checkUserFx = createEffect({
   handler: () => {
-    const stringData = localStorage.getItem(USER_KEY)
+    const stringData = localStorage.getItem(STORAGE_KEY)
     const isOldUser = JSON.parse(stringData!)
     return isOldUser
   }
@@ -35,8 +35,7 @@ forward({
 
 forward({
   from: checkUserFx.doneData.map(data => {
-    localStorage.setItem(USER_KEY, "old_user")
-    console.log(data)
+    localStorage.setItem(STORAGE_KEY, "old_user")
     return data !== "old_user"
   }),
   to: showFirstOnBoarding,

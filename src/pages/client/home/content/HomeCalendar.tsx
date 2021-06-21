@@ -17,6 +17,7 @@ import { Event, Store } from "effector-root"
 import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import starIcon from "@/oldcomponents/coach-card/images/star.svg"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
+import { changeFreeBookedSession } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 
 
 type StyledTabTypes = {
@@ -281,6 +282,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   const loadData = useEvent(props.freeSessionsModule.loadData)
   const toggleSession = useEvent(props.freeSessionsModule.toggleSession)
   const bulkFreeSession = useEvent(props.freeSessionsModule.bulkFreeSession)
+  const changeModalInfo = useEvent(changeFreeBookedSession)
 
 
   const enabledDates = sessions.map(session => session.startDatetime)
@@ -320,6 +322,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const payForTheSessionHandler = () => {
     bulkFreeSession({session: selected[0].id, type: "BOOK"})
+    changeModalInfo(selected[0])
     changeCurrentDate(null)
   }
 
@@ -355,8 +358,8 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
             </WidthCurrentDateConditionWrapper>
             <Description>Коуч</Description>
             <SessionInfo>
-              {selected.map(session => (
-                <>
+              {selected.map((session, index) => (
+                <React.Fragment key={index}>
                   <RowBlock>
                     <StyledAvatar src={session.coach?.avatar} />
                     <CoachName>{session.coach?.firstName} {session.coach?.lastName}</CoachName>
@@ -365,7 +368,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
                     <Star />
                     {session.coach.rating !== null && <Rating>{session.coach.rating}</Rating>}
                   </RowBlock>
-                </>
+                </React.Fragment>
               ))}
             </SessionInfo>
             <ButtonContainer>

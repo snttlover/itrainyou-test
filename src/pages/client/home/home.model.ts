@@ -6,6 +6,17 @@ import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { keysToCamel } from "@/lib/network/casing"
 import { loginFx } from "@/pages/auth/pages/login/login.model"
 
+const STORAGE_KEY = "show_informer"
+
+const checkUserFx = createEffect({
+  handler: () => {
+    const stringData = localStorage.getItem(STORAGE_KEY)
+    return stringData
+  }
+})
+
+export const $informerShowed = createStore(true)
+  .on(checkUserFx.doneData, (state,payload) => !payload)
 
 export const loadRecommendationsFx = createEffect({
   handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 15 }),
@@ -86,4 +97,9 @@ forward({
 forward({
   from: loginFx.done,
   to: getMyUserFx,
+})
+
+forward({
+  from: homePageMounted,
+  to: checkUserFx,
 })
