@@ -1,6 +1,5 @@
 import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CoachSession, DurationType, getCoachSessions, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
-import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { bulkBookSessions, BulkBookSessionsRequest } from "@/lib/api/sessions-requests/client/bulk-book-sessions"
 import { isAxiosError } from "@/lib/network/network"
 import { routeNames } from "@/pages/route-names"
@@ -16,10 +15,8 @@ import {
   sample,
   split,
   guard,
-  Store
 } from "effector-root"
 import { changeShowFundUpDialog, finishSaveClientCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
-import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 import { getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
 import { createClientSessionRequest } from "@/lib/api/client/create-client-session-request"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
@@ -79,6 +76,8 @@ export const genFreeSessions = () => {
     sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
   )
 
+  const successfulBookedToast: Toast = { text: "Запрос отправлен коучу", type: "info" }
+
   forward({
     from: loadAllFreeSessions.map((req) => ({
       ...req.params,
@@ -97,6 +96,11 @@ export const genFreeSessions = () => {
   forward({
     from: bulkFreeSessionFx.done,
     to: getMyUserFx,
+  })
+
+  forward({
+    from: bulkFreeSessionFx.done.map(_ => successfulBookedToast),
+    to: [toasts.add, toasts.remove],
   })
 
   forward({

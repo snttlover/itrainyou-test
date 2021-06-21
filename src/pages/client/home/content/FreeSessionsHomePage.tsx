@@ -217,6 +217,7 @@ const Close = styled(Icon).attrs({ name: "plus" })`
   cursor: pointer;
   fill: white;
   transform: rotate(45deg);
+  margin-left: auto;
 `
 
 const GiftIcon = styled(Icon).attrs({ name: "gift" })`
