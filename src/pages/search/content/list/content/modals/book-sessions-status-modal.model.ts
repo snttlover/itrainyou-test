@@ -3,19 +3,22 @@ import { mounted, toggleCreditCardsModal } from "@/pages/search/coach-by-id/mode
 import { buySessionsFx, bulkAnySessionFx } from "@/oldcomponents/coach-card/select-date/select-date.model"
 import { finishSaveClientCardFx } from "@/feature/client-funds-up/dialog/models/units"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
+import { Coach } from "@/lib/api/coach"
+import { CoachSessionWithSelect } from "@/oldcomponents/coach-card/select-date/select-date.model"
 
 export type BookedSessionForViewType = {
   id: number
   startDatetime: string
   endDatetime: string
   durationType: string
-  coach: CoachItemType
+  coach: CoachItemType | Coach
   clientPrice: string
 }
 
-export const changeFreeBookedSession = createEvent<BookedSessionForViewType>()
+export const changeFreeBookedSession = createEvent<CoachSessionWithSelect>()
 export const $bookedSessions = createStore<BookedSessionForViewType[]>([])
 
+// @ts-ignore
 $bookedSessions.on(
   buySessionsFx.doneData,
   (state, payload) => payload
