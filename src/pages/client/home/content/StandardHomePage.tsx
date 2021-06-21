@@ -161,7 +161,7 @@ const Informer = () => {
         <InformerContainer>
           <GiftIcon />
           <InformerTextContainer>
-            <InformerHeader>Бесплатная сессия забронирована! </InformerHeader>
+            <InformerHeader>Вы отправили запрос на бронирование бесплатной сессии!</InformerHeader>
             <InformerDescription>А пока ознакомьтесь с другими коучами нашей платформы и присоединитесь к нам в социальных сетях:&nbsp;
               <SocialLink href='https://instagram.com/i_trainyou'>Instagram,</SocialLink>
               <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'>Facebook</SocialLink>

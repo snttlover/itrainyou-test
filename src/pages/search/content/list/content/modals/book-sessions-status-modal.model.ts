@@ -28,10 +28,6 @@ $bookedSessions.on(
   clientPrice: "0",
 }]).reset([mounted])
 
-bulkAnySessionFx.doneData.watch(payload => console.log("vbxcvb",payload))
-$bookedSessions.watch(payload => console.log("asd", payload))
-changeFreeBookedSession.watch(payload => console.log("test", payload))
-
 export const $bookSessionsStatusModalVisibility = createStore<boolean>(false)
 export const toggleBookSessionsStatusModal = createEvent<void | boolean>()
 
