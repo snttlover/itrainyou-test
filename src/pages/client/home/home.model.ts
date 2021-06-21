@@ -1,7 +1,7 @@
 import { getClientSessions } from "@/lib/api/client-session"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
-import { combine, createEffect, createEvent, createStore, forward, guard, sample, restore } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { keysToCamel } from "@/lib/network/casing"
 import { loginFx } from "@/pages/auth/pages/login/login.model"
@@ -10,17 +10,13 @@ const STORAGE_KEY = "show_informer"
 
 const checkUserFx = createEffect({
   handler: () => {
-    console.log("asdgdfsg")
     const stringData = localStorage.getItem(STORAGE_KEY)
-    const isOldUser = JSON.parse(stringData!)
-    console.log(isOldUser)
-    return true
+    return stringData
   }
 })
 
-checkUserFx.doneData.watch(payload => console.log("test",payload))
 export const $informerShowed = createStore(true)
-  .on(checkUserFx.doneData, (state,payload) => payload)
+  .on(checkUserFx.doneData, (state,payload) => !payload)
 
 export const loadRecommendationsFx = createEffect({
   handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 15 }),

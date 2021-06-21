@@ -1,6 +1,6 @@
 import { combine, createEvent, createStore, forward, Store } from "effector-root"
 import { mounted, toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
-import { buySessionsFx } from "@/oldcomponents/coach-card/select-date/select-date.model"
+import { buySessionsFx, bulkAnySessionFx } from "@/oldcomponents/coach-card/select-date/select-date.model"
 import { finishSaveClientCardFx } from "@/feature/client-funds-up/dialog/models/units"
 import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
 
@@ -13,12 +13,24 @@ export type BookedSessionForViewType = {
   clientPrice: string
 }
 
+export const changeFreeBookedSession = createEvent<BookedSessionForViewType>()
 export const $bookedSessions = createStore<BookedSessionForViewType[]>([])
 
 $bookedSessions.on(
   buySessionsFx.doneData,
   (state, payload) => payload
-).reset([mounted])
+).on(changeFreeBookedSession, (state, payload) => [{
+  id: payload.id,
+  startDatetime: payload.startDatetime,
+  endDatetime: payload.endDatetime,
+  durationType: payload.durationType,
+  coach: payload.coach,
+  clientPrice: "0",
+}]).reset([mounted])
+
+bulkAnySessionFx.doneData.watch(payload => console.log("vbxcvb",payload))
+$bookedSessions.watch(payload => console.log("asd", payload))
+changeFreeBookedSession.watch(payload => console.log("test", payload))
 
 export const $bookSessionsStatusModalVisibility = createStore<boolean>(false)
 export const toggleBookSessionsStatusModal = createEvent<void | boolean>()
@@ -30,6 +42,7 @@ $bookSessionsStatusModalVisibility.on(
     return !state
   })
   .on(finishSaveClientCardFx, () => true)
+  .on(bulkAnySessionFx.done, () => true)
   .reset([mounted])
 
 forward({

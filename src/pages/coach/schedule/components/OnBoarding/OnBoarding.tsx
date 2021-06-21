@@ -24,7 +24,7 @@ const StyledSessionsFilterDialog = styled(Dialog)`
   padding: 24px;
 
   ${MediaRange.lessThan("mobile")`
-    height: 460px;
+    height: 510px;
   `}
 `
 

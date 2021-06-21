@@ -37,6 +37,10 @@ export const buySessionsFx = createEffect({
   handler: (params: BulkBookSessionsRequest) => bulkBookSessions(params),
 })
 
+export const bulkAnySessionFx = createEffect({
+  handler: (params: SessionRequestParams) => createClientSessionRequest(params)
+})
+
 export const genFreeSessions = () => {
 
   const fetchFreeSessionsListFx = createEffect<
@@ -45,10 +49,6 @@ export const genFreeSessions = () => {
   >().use((params) => getFreeSessionsList(params))
 
   const loadAllFreeSessions = createEvent<RequestType>()
-
-  const bulkFreeSessionFx = createEffect({
-    handler: (params: SessionRequestParams) => createClientSessionRequest(params)
-  })
 
   const isFetching = createStore(false)
     .on(loadAllFreeSessions, () => true)
@@ -89,26 +89,21 @@ export const genFreeSessions = () => {
 
 
   forward({
-    from: bulkFreeSessionFx.done,
-    to: resetSelectedSessions,
+    from: bulkAnySessionFx.done,
+    to: [resetSelectedSessions,getMyUserFx],
   })
 
   forward({
-    from: bulkFreeSessionFx.done,
-    to: getMyUserFx,
-  })
-
-  forward({
-    from: bulkFreeSessionFx.done.map(_ => successfulBookedToast),
+    from: bulkAnySessionFx.done.map(_ => successfulBookedToast),
     to: [toasts.add, toasts.remove],
   })
 
   forward({
     from: bulkFreeSession,
-    to: bulkFreeSessionFx,
+    to: bulkAnySessionFx,
   })
 
-  const { insufficientBalance, __: unknownError } = split(bulkFreeSessionFx.fail, {
+  const { insufficientBalance, __: unknownError } = split(bulkAnySessionFx.fail, {
     insufficientBalance: ({ error }) => isAxiosError(error) && error.response?.data.code === "INSUFFICIENT_BALANCE",
   })
 
@@ -124,7 +119,7 @@ export const genFreeSessions = () => {
     loadData: loadAllFreeSessions,
     toggleSession,
     deleteSession,
-    buySessionsLoading: bulkFreeSessionFx.pending,
+    buySessionsLoading: bulkAnySessionFx.pending,
     bulkFreeSession,
   }
 }
@@ -144,10 +139,6 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     loadCoachSessions.map(req => req.params),
     {}
   )
-
-  const bulkFreeSessionFx = createEffect({
-    handler: (params: SessionRequestParams) => createClientSessionRequest(params)
-  })
 
   const isFetching = createStore(false)
     .on(loadCoachSessions, () => true)
@@ -199,11 +190,11 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
 
   forward({
     from: bulkFreeSession,
-    to: bulkFreeSessionFx,
+    to: bulkAnySessionFx,
   })
 
   forward({
-    from: bulkFreeSessionFx.done,
+    from: bulkAnySessionFx.done,
     to: getMyUserFx,
   })
 
@@ -270,7 +261,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
   })
 
   forward({
-    from: bulkFreeSessionFx.done,
+    from: bulkAnySessionFx.done,
     to: loadCoachSessions.prepend(_ => ({params: {},})),
   })
 
@@ -288,7 +279,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     buySessionsLoading: combine(
       buySessionsFx.pending,
       finishSaveClientCardFx.pending,
-      bulkFreeSessionFx.pending,
+      bulkAnySessionFx.pending,
       (buySessionsPending, finishSaveCardPending, bulkFreeSessionFx) => buySessionsPending || finishSaveCardPending || bulkFreeSessionFx
     ),
     buySessionBulk,
