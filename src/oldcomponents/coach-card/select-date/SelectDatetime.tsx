@@ -19,6 +19,7 @@ import { SelectCreditCardDialog } from "@/pages/search/content/list/content/moda
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
+import { changeFreeBookedSession } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -269,6 +270,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const bulkFreeSession = useEvent(props.sessionsData.bulkFreeSession)
+  const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
 
   const enabledDates = sessions.map(session => session.startDatetime)
   const [currentDate, changeCurrentDate] = useState<Date | null>(null)
@@ -312,6 +314,12 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
 
   const payForTheSessionHandler = () => {
     activeTab === "PROMO" ? bulkFreeSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardsModal(true)
+    if (activeTab === "PROMO") {
+      const sessionInfo = selected[0]
+      sessionInfo.coach = props.coach
+      // @ts-ignore
+      changeFreeSessionModalInfo(sessionInfo)
+    }
     changeCurrentDate(null)
   }
 
