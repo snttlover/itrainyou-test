@@ -7,7 +7,7 @@ import { Coach } from "@/lib/api/coach"
 export interface CoachSession {
   clients: [any]
   id: number
-  coach: number
+  coach: number | Coach
   clientPrice: string // example: 12.00
   coachPrice: string // example: 10.00
   startDatetime: ISODate // example: "2020-03-31T15:17:37Z"

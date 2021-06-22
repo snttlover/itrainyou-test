@@ -6,7 +6,7 @@ import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { keysToCamel } from "@/lib/network/casing"
 import { loginFx } from "@/pages/auth/pages/login/login.model"
 
-const STORAGE_KEY = "show_informer"
+export const STORAGE_KEY = "show_informer"
 
 const checkUserFx = createEffect({
   handler: () => {
@@ -44,6 +44,9 @@ export const loadMore = createEvent()
 const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
 export const $hasFreeSessions = createStore(false)
   .on(userDoneData, (_,payload) => payload.client ? payload.client.hasFreeSessions : false)
+
+export const $freeSessionsStatus = createStore("")
+  .on(userDoneData, (_,payload) => payload.client.freeSessionUnavailableReason)
 
 export const $recommendations = createStore<Coach[]>([]).on(loadRecommendationsFx.doneData, (state, payload) => [
   ...state,

@@ -23,6 +23,7 @@ export interface ClientSelfData {
   spentHoursCount: number,
   systemChat: number
   hasFreeSessions: boolean
+  freeSessionUnavailableReason: "" | "AWAITING_BOOK_PROMO_REQUEST" | "ACTIVE_PROMO_SESSION" | "AWAITING_COMPLETION_PROMO_REQUEST" | "PROMO_LIMIT_ENDED"
   priceRanges: {
     id: number
     rangeFrom: number

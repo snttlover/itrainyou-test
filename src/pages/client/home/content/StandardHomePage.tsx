@@ -16,7 +16,9 @@ import {
   loadRecommendationsFx,
   loadUpcomingSessionsFx,
   homePageMounted,
-  $informerShowed
+  $informerShowed,
+  $freeSessionsStatus,
+  STORAGE_KEY
 } from "../home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
@@ -150,9 +152,31 @@ const SocialLink = styled.a`
 const Informer = () => {
   const [showed, setShowed] = useState(true)
 
+  const freeSessionsStatus = useStore($freeSessionsStatus)
+
   const handleOnCrossClick = () => {
     setShowed(false)
-    localStorage.setItem("show_informer", "not_show")
+    localStorage.setItem(STORAGE_KEY, "not_show")
+  }
+
+  let header = ""
+
+  switch (freeSessionsStatus) {
+  case "AWAITING_BOOK_PROMO_REQUEST":
+    header = "Вы отправили запрос на бронирование бесплатной сессии!"
+    break
+
+  case "ACTIVE_PROMO_SESSION":
+    header = "Вы забронировали бесплатную сессию!"
+    break
+
+  case "AWAITING_COMPLETION_PROMO_REQUEST":
+    header = "Вы не подтвердили окончание бесплатной сессии!"
+    break
+
+  case "PROMO_LIMIT_ENDED":
+    header = "У вас закончился лимит бесплатных сессий!"
+    break
   }
 
   return (
@@ -161,7 +185,7 @@ const Informer = () => {
         <InformerContainer>
           <GiftIcon />
           <InformerTextContainer>
-            <InformerHeader>Вы отправили запрос на бронирование бесплатной сессии!</InformerHeader>
+            <InformerHeader>{header}</InformerHeader>
             <InformerDescription>А пока ознакомьтесь с другими коучами нашей платформы и присоединитесь к нам в социальных сетях:&nbsp;
               <SocialLink href='https://instagram.com/i_trainyou'>Instagram,</SocialLink>
               <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'>Facebook</SocialLink>
