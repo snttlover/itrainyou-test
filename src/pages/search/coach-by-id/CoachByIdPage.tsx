@@ -9,7 +9,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
-import { useGate, useStore } from "effector-react"
+import { useStore } from "effector-react"
 import { UserLayout } from "@/oldcomponents/layouts/behaviors/user/UserLayout"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { BookSessionsStatusModalDialog } from "@/pages/search/content/list/content/modals/BookSessionsStatusModalDialog"
@@ -22,6 +22,8 @@ import {
   mounted
 } from "@/pages/search/coach-by-id/models/units"
 import { useLocation } from "react-router-dom"
+import { $hasFreeSessions } from "@/pages/client/home/home.model"
+import { useEffect } from "react"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -106,8 +108,13 @@ const MainCoachBlock = styled.div`
 const Datepicker = () => {
   const coach = useStore($coach)
   const location = useLocation()
+  const hasFreeSessions = useStore($hasFreeSessions)
 
-  const data = !!location.state ? $freeSessionsPickerStore : $sessionsPickerStore
+  let data = !!location.state && hasFreeSessions ? $freeSessionsPickerStore : $sessionsPickerStore
+
+  useEffect(() => {
+    data = !!location.state && hasFreeSessions ? $freeSessionsPickerStore : $sessionsPickerStore
+  }, [hasFreeSessions])
 
   if (coach) {
     return <CoachDatepicker coach={coach} sessionsData={data} />
@@ -117,12 +124,9 @@ const Datepicker = () => {
 
 const CardPicker = () => {
   const coach = useStore($coach)
-  const location = useLocation()
-
-  const data = !!location.state ? $freeSessionsPickerStore : $sessionsPickerStore
 
   if (coach) {
-    return <SelectCreditCardDialog coach={coach} sessionsData={data} />
+    return <SelectCreditCardDialog coach={coach} sessionsData={$sessionsPickerStore} />
   }
   return null
 }

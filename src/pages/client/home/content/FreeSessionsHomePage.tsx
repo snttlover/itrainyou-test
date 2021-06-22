@@ -217,6 +217,7 @@ const Close = styled(Icon).attrs({ name: "plus" })`
   cursor: pointer;
   fill: white;
   transform: rotate(45deg);
+  margin-left: auto;
 `
 
 const GiftIcon = styled(Icon).attrs({ name: "gift" })`
@@ -230,6 +231,11 @@ const InformerTextContainer = styled.div`
   flex-direction: column;
   text-align: left;
   padding: 0 22px;
+  
+  ${MediaRange.lessThan("mobile")`
+    padding: 0 16px;
+    max-width: 85%;
+  `}
 `
 
 const InformerHeader = styled.div`

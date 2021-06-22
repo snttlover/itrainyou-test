@@ -1,15 +1,17 @@
 import * as React from "react"
 import styled from "styled-components"
 import { createContext } from "react"
-import borderImage from "./images/border-image.svg"
-import radioBoxActive from "./images/active.svg"
+import borderImageClient from "./images/border-image-client.svg"
+import radioBoxActiveClient from "./images/active-client.svg"
+import borderImageCoach from "./images/border-image-coach.svg"
+import radioBoxActiveCoach from "./images/active-coach.svg"
 
 const RadioContext = createContext<any>({})
 
 type RadioBoxValueType = string | number | null
 
 type RadioGroupTypes = {
-  value: RadioBoxValueType
+  value?: RadioBoxValueType
   name: string
   onChange: (value: any) => void
   children: React.ReactNode | React.ReactNode[]
@@ -35,8 +37,8 @@ const StyledLabel = styled.label`
 `
 
 const CustomRadio = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   position: relative;
   margin-right: 4px;
   &:before,
@@ -50,11 +52,11 @@ const CustomRadio = styled.div`
     background-size: cover;
   }
   &:before {
-    background-image: url(${borderImage});
+    background-image: url(${props => props.theme.type === "client" ? `${borderImageClient}` : `${borderImageCoach}`});
   }
   &:after {
     z-index: 2;
-    background-image: url(${radioBoxActive});
+    background-image: url(${props => props.theme.type === "client" ? `${radioBoxActiveClient}` : `${radioBoxActiveCoach}`});
   }
 `
 

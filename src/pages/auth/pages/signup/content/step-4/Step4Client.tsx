@@ -94,7 +94,9 @@ const FormTitle = styled.div`
   color: #424242;
   margin-top: 32px;
 
-  ${MediaRange.lessThan("mobile")`    
+  ${MediaRange.lessThan("mobile")`
+    font-size: 20px;
+    line-height: 28px;    
     margin-top: 16px;
   `}
 `
@@ -122,9 +124,10 @@ const ButtonContainer = styled.div`
 `
 
 const RegisterButton = styled(Button)`
-  width: 207px;
+  width: 177px;
   margin: 36px auto 30px;
   transition: none;
+  padding: 15px 24px;
 
   ${MediaRange.greaterThan("mobile")`
     margin: 36px 32px 30px auto;
@@ -165,7 +168,7 @@ export const Step4Client = () => {
       <Container>
         <FormTitle>Выберите направления</FormTitle>
         {categories}
-        <FormTitle>Выберите комфортную для вас стоимость одной сессии (60 минут)</FormTitle>
+        <FormTitle>Выберите стоимость сессии (1 сессия – 60 минут)</FormTitle>
         <PriceRanges />
         <ButtonContainer>
           <RegisterButton disabled={loading || !rangeSelected} onClick={() => _userRegistered()}>

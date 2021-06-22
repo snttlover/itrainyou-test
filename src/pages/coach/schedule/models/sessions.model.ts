@@ -131,29 +131,10 @@ export const $filterOptions = createStore<FilterOptionsTypes[]>([{
     const newState = [...state]
     const currentElementID = newState.findIndex(item => item.value === payload)
     newState.map((element, index) => {
-      if (index === currentElementID) {
-        element.selected = true
-      } else {
-        element.selected = false
-      }
+      element.selected = index === currentElementID
     })
     return newState
   })
-  .on(loadCalendarEventsFx.done, (_, payload) => [{
-    value: "no-filter",
-    selected: true,
-    label: "Все"
-  },
-  {
-    value: "only-booked",
-    selected: false,
-    label: "Забронированные"
-  },
-  {
-    value: "only-free",
-    selected: false,
-    label: "Бесплатные"
-  }])
 
 
 const $sessions = createStore<CalendarEvents>({sessions: [], googleCalendarEvents: []})
@@ -164,7 +145,26 @@ const $sessions = createStore<CalendarEvents>({sessions: [], googleCalendarEvent
     ({googleCalendarEvents: state.googleCalendarEvents, sessions: state.sessions.filter(session => session.id !== payload.params.id)}))
 
 const changeFilteredSessions = createEvent<CalendarEvents>()
-const $filteredSessions = $sessions.map(sessions => sessions).on(changeFilteredSessions, (_, payload) => payload)
+const $filteredSessions = createStore<CalendarEvents>({googleCalendarEvents: [], sessions: []})
+  .on(changeFilteredSessions, (_, payload) => payload)
+
+sample({
+  clock: $sessions.updates,
+  source: $filterOptions,
+  fn: (filterOptions, sessions: CalendarEvents) => {
+    const selected = filterOptions.find(item => item.selected)
+
+    if (selected!.value === "no-filter") {
+      return sessions
+    } else if (selected!.value === "only-booked") {
+      return {googleCalendarEvents: [], sessions: sessions.sessions.filter(session => !!session.clients.length)}
+    } else if (selected!.value === "only-free") {
+      return {googleCalendarEvents: [], sessions: sessions.sessions.filter(session => session.durationType === "PROMO")}
+    }
+    return sessions
+  },
+  target: changeFilteredSessions,
+})
 
 export const $showedSessions = combine(
   { repeatedSessions: $repeatedSessions, sessions: $filteredSessions },

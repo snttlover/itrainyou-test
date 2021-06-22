@@ -3,7 +3,7 @@ import * as React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { useState } from "react"
-import { $onBoardingVisibility, showOnBoarding, $onBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { $onBoardingVisibility, showSecondOnBoarding, $onBoarding, showFirstOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import firstSlide from "./FirstSlide.svg"
@@ -20,7 +20,12 @@ import { Button } from "@/oldcomponents/button/normal/Button"
 const StyledSessionsFilterDialog = styled(Dialog)`
   max-width: 560px;
   width: 90%;
-  min-height: unset;
+  height: 420px;
+  padding: 24px;
+
+  ${MediaRange.lessThan("mobile")`
+    height: 510px;
+  `}
 `
 
 const Title = styled.div`
@@ -32,21 +37,24 @@ const Title = styled.div`
   color: #424242;
   text-align: center;
   margin-bottom: 8px;
+  max-width: 432px;
 `
 
-const Description = styled.div`
+const Description = styled.div<{noAlign? : boolean}>`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
   color: #5B6670;
+  text-align: ${({ noAlign }) => !!noAlign ? "unset" : "center"};
+  max-width: 432px;
 `
 
 const Image = styled.img`
   width: 289px;
   margin-bottom: 24px;
-  max-height: 150px;
+  height: 150px;
   
   ${MediaRange.lessThan("mobile")`
     width: 250px;
@@ -57,6 +65,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  height: 100%;
 `
 
 const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })`
@@ -103,7 +113,7 @@ const MarkersContainer = styled.div`
 const BottomContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 66px;
+  margin-top: auto;
   width: 100%;
 
   ${MediaRange.lessThan("mobile")`
@@ -117,6 +127,7 @@ const List = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  text-align: left;
 `
 
 type PropsType = {
@@ -129,8 +140,8 @@ const firstComponentContent: PropsType[] = [
   { image: firstSlide,
     title: "Заполняйте расписание двуми способами",
     description: <List>
-      <Description><MarkerIcon /> Ежедневно, если новые задачи появляются непредсказуемо</Description>
-      <Description><MarkerIcon /> На неделю с возможностью повторения, если рабочие планы цикличны</Description>
+      <Description noAlign><MarkerIcon /> Ежедневно, если новые задачи появляются непредсказуемо</Description>
+      <Description noAlign><MarkerIcon /> На неделю с возможностью повторения, если рабочие планы цикличны</Description>
     </List>},
 
   { image: secondSlide,
@@ -148,7 +159,7 @@ const firstComponentContent: PropsType[] = [
 
 const notFirstComponentContent: PropsType[] = [
   { image: fifthSlide,
-    description: <Description>Бесплатные сессии по формированию запроса — это один из главных этапов привлечения клиенто</Description>},
+    description: <Description>Бесплатные сессии по формированию запроса — это один из главных этапов привлечения клиентов</Description>},
 
   { image: sixthSlide,
     description: <Description>Вам важно познакомиться
@@ -165,7 +176,14 @@ const notFirstComponentContent: PropsType[] = [
 const Slides = ({ options }: any) => {
   const [showedID, setShowed] = useState(0)
   const numbArray = [0,1,2,3]
-  const toggle = useEvent(showOnBoarding)
+
+  const type = useStore($onBoarding)
+  const _showSecondOnBoarding = useEvent(showSecondOnBoarding)
+  const _showFirstOnBoarding = useEvent(showFirstOnBoarding)
+
+  const toggle = (value: boolean) => {
+    type === "first" ? _showFirstOnBoarding(value) : _showSecondOnBoarding(value)
+  }
 
   const handleOnClick = () => {
     showedID === 3 ? toggle(false) : setShowed(showedID + 1)
@@ -174,11 +192,11 @@ const Slides = ({ options }: any) => {
   return (
     <Container>
       {options.map((element: any, index: number) => (
-        index === showedID  && <>
+        index === showedID  && <React.Fragment key={element}>
           <Image src={element.image} />
           {element.title && <Title>{element.title}</Title>}
           {element.description}
-        </>))}
+        </React.Fragment>))}
       <BottomContainer>
         <MarkersContainer>{numbArray.map(el => (
           <SelectableMarkerIcon
@@ -193,13 +211,18 @@ const Slides = ({ options }: any) => {
 }
 
 export const OnBoardingFreeSessions = () => {
-  const firstTime = useStore($onBoarding)
+  const type = useStore($onBoarding)
   const visibility = useStore($onBoardingVisibility)
-  const toggle = useEvent(showOnBoarding)
+  const _showSecondOnBoarding = useEvent(showSecondOnBoarding)
+  const _showFirstOnBoarding = useEvent(showFirstOnBoarding)
+
+  const toggle = (value: boolean) => {
+    type === "first" ? _showFirstOnBoarding(value) : _showSecondOnBoarding(value)
+  }
 
   return (
     <StyledSessionsFilterDialog value={visibility} onChange={toggle} notClosable>
-      <Slides options={firstTime ? firstComponentContent : notFirstComponentContent} />
+      <Slides options={type === "first" ? firstComponentContent : notFirstComponentContent} />
     </StyledSessionsFilterDialog>
   )
 }

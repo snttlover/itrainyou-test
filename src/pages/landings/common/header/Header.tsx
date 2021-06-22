@@ -135,7 +135,7 @@ export const Header = ({ signUpRoute, additionalButton, showExtraButton }: Props
   <Wrapper>
     <StyledContainer>
       <LogoLink to={{ pathname: routeNames.landing(), search: "" }}>
-        <Logo src={logoImg} />
+        <Logo src={logoImg} width='132' height='36' />
       </LogoLink>
 
       <FirstNav>

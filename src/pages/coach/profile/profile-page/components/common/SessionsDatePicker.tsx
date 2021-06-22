@@ -20,7 +20,7 @@ type StyledTabTypes = {
 }
 
 const Container = styled.div`
-  width: 268px;
+  width: 278px;
   margin-bottom: 20px;
   position: relative;
 
@@ -325,7 +325,7 @@ export const SessionsDatePicker = (props: SelectDatetimeTypes) => {
       <StyledTabs value={activeTab} onChange={changeTabHandler}>
         {tabs.map(tab => (
           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
-            <TabTime>{tab.timeInMinutes} мин</TabTime>
+            <TabTime>{tab.key !== "PROMO" ? `${tab.timeInMinutes}  мин` : "ПРОМО"}</TabTime>
             <TabPrice>
               <Delemiter> / </Delemiter>
               {tab.price} ₽

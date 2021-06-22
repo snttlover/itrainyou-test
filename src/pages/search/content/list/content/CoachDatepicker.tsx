@@ -17,6 +17,7 @@ import { DurationType } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
+import { changeFreeBookedSession } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -344,6 +345,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const toggleSession = useEvent(props.sessionsData.toggleSession)
   const bulkFreeSession = useEvent(props.sessionsData.bulkFreeSession)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
+  const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
@@ -393,6 +395,11 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const payForTheSessionHandler = () => {
     activeTab === "PROMO" ? bulkFreeSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardModal(true)
+    if (activeTab === "PROMO") {
+      const sessionInfo = selected[0]
+      sessionInfo.coach = props.coach
+      changeFreeSessionModalInfo(sessionInfo)
+    }
     changeCurrentDate(null)
   }
 
@@ -423,7 +430,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               enabledDates={enabledDates}
               onChange={changeCurrentDate}
               isBig={true}
-            // startFrom={new Date(date(currentDate || undefined).toDate())}
+              startFrom={new Date(date(currentDate || undefined).toDate())}
             />
 
           </Datepicker>
