@@ -47,10 +47,11 @@ const LandingClientPageMarkUp = () => (
       <FirstFree />
       <CoachList />
       <CoachStats />
+      <Video videoData={videoData.first} />
       <Features />
       <HandySearch />
       <HandyCabinet />
-      <Video videoData={videoData} />
+      <Video videoData={videoData.second} />
       <Publications publications={publications} />
       <Questions questions={questions} />
     </MainWrapper>
