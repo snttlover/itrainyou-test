@@ -8,6 +8,7 @@ import { useEvent, useStore } from "effector-react"
 import styled from "styled-components"
 import { SupportChatHeader } from "@/feature/support/SupportChatHeader"
 import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
+import ym from "react-yandex-metrika"
 
 export const createSupportChat = ($chatModule: ReturnType<typeof createSupportChatModel>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
@@ -22,6 +23,7 @@ export const createSupportChat = ($chatModule: ReturnType<typeof createSupportCh
     const support = useStore($chatModule.$support)
 
     useEffect(() => {
+      ym("reachGoal","pushhelpme")
       mounted("support")
       return () => unmounted()
     }, [])

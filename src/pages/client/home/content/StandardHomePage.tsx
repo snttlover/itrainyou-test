@@ -181,7 +181,7 @@ const Informer = () => {
 
   return (
     <>
-      {showed ?
+      {showed && freeSessionsStatus !== "NO_PROMO_AVAILABLE" ?
         <InformerContainer>
           <GiftIcon />
           <InformerTextContainer>

@@ -9,6 +9,7 @@ import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { $userData, userTypeChanged } from "@/pages/auth/pages/signup/models/units"
+import ym from "react-yandex-metrika"
 
 const Container = styled.div`
   min-width: 320px;
@@ -97,6 +98,12 @@ export const Step2 = () => {
   const type = useStore($userData).type
   const changeType = useEvent(userTypeChanged)
   const navigate = useEvent(navigatePush)
+
+  const handleOnNextClick = () => {
+    ym("reachGoal","chooseclientsignin")
+    navigate({ url: routeNames.signup("3") })
+  }
+
   return (
     <AuthLayout>
       <Steps activeId='0'>
@@ -122,7 +129,7 @@ export const Step2 = () => {
             onClick={() => changeType("coach")}
           />
         </Cards>
-        <WhiteNextButton onClick={() => navigate({ url: routeNames.signup("3") })} />
+        <WhiteNextButton onClick={handleOnNextClick} />
       </Container>
     </AuthLayout>
   )
