@@ -8,6 +8,7 @@ import { Container } from "../../common/Container"
 
 // @ts-ignore
 import mainImg from "../assets/first-free/main.jpg"
+import ym from "react-yandex-metrika"
 
 const Wrapper = styled.section`
   background: #f4f5f7;
@@ -193,7 +194,9 @@ export const FirstFree = () => (
         <ListItem>Заполнить короткую анкету и получить подборку коучей</ListItem>
         <ListItem>Выбрать удобное время и забронировать сессию</ListItem>
       </List>
-      <Button to={{ pathname: routeNames.search() }}>Выбрать коуча</Button>
+      <Button
+        to={{ pathname: routeNames.search() }}
+        onClick={() => ym("reachGoal","pushchoosecoach")}>Выбрать коуча</Button>
     </StyledContainer>
   </Wrapper>
 )

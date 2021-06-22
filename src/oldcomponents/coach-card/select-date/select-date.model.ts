@@ -21,6 +21,7 @@ import { getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
 import { createClientSessionRequest } from "@/lib/api/client/create-client-session-request"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
+import ym from "react-yandex-metrika"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -86,6 +87,8 @@ export const genFreeSessions = () => {
   })
 
   const bulkFreeSession = createEvent<SessionRequestParams>()
+
+  bulkFreeSession.watch(payload => ym("reachGoal", "bookingdate"))
 
 
   forward({
@@ -171,9 +174,14 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
     sessions.map(session => ({ ...session, selected: selected.includes(session.id) }))
   )
 
-  const bulkFreeSession = createEvent<SessionRequestParams>()
+  const bulkSession = createEvent<SessionRequestParams>()
 
   const buySessionBulk = createEvent<BulkBookSessionsRequest>()
+
+  buySessionBulk.watch(payload => {
+    const args = freeSessions ? "bookingdate" : "bookingcoach"
+    ym("reachGoal", args)
+  })
 
   forward({
     from: buySessionBulk.map((params) => {
@@ -189,7 +197,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
   })
 
   forward({
-    from: bulkFreeSession,
+    from: bulkSession,
     to: bulkAnySessionFx,
   })
 
@@ -283,7 +291,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
       (buySessionsPending, finishSaveCardPending, bulkFreeSessionFx) => buySessionsPending || finishSaveCardPending || bulkFreeSessionFx
     ),
     buySessionBulk,
-    bulkFreeSession,
+    bulkSession,
     buySessionsFx
   }
 }
