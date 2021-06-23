@@ -24,6 +24,7 @@ import {
 import { useLocation } from "react-router-dom"
 import { $hasFreeSessions } from "@/pages/client/home/home.model"
 import { useEffect } from "react"
+import ym from "react-yandex-metrika"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -135,6 +136,10 @@ export const CoachByIdPage = () => {
   const coach = useStore($coach)
   const pending = useStore(loadCoachFx.pending)
   const isNotFound = useStore($isNotFound)
+
+  useEffect(() => {
+    ym("reachGoal","pushcoachprofile")
+  },[])
 
 
   return (

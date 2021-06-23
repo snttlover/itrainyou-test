@@ -25,6 +25,7 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $userData } from "@/pages/auth/pages/signup/models/units"
+import ym from "react-yandex-metrika"
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -165,6 +166,7 @@ export const Step3 = () => {
   }
 
   const nextOnClick = () => {
+    ym("reachGoal","profilesignin")
     _step3FormSubmitted()
   }
 

@@ -15,6 +15,7 @@ import {
   userType, userTypeChanged, getPriceRangesFx, priceRangesGate,
   $priceRanges, selectPriceRange, $rangeSelected
 } from "@/pages/auth/pages/signup/models/units"
+import ym from "react-yandex-metrika"
 
 $userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
@@ -80,6 +81,8 @@ sample({
   }),
   target: registerUserFx,
 })
+
+registerUserFx.done.map(_ => ym("reachGoal","formsignin"))
 
 sample({
   source: $socialsForm,
