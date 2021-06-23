@@ -3,14 +3,15 @@ import styled from "styled-components"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { useState } from "react"
 import { MediaRange } from "@/lib/responsive/media"
+import { IconName } from "@/oldcomponents/icon/Icon"
 
-const Container = styled.div<{noBack?: boolean}>`
+const Container = styled.div<{backGround?: string}>`
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  padding: 16px;
-  background: ${({ noBack }) => noBack ? "unset" : "#F8F8FD"};
+  align-items: flex-start;
+  padding: 18px;
+  background: ${({ backGround }) => backGround ? backGround : "#F8F8FD"};
   border-radius: 8px;
 
   ${MediaRange.lessThan("mobile")`
@@ -18,18 +19,25 @@ const Container = styled.div<{noBack?: boolean}>`
     `}
 `
 
-const InfoIcon = styled(Icon).attrs({name: "info"})<{colorful?: boolean}>`
-  width: 20px;
-  height: 20px;
-  margin-right: 20px;
+type IconType = {
+  colorful?: boolean
+  iconName: IconName
+}
+
+const InfoIcon = styled(Icon).attrs(({ iconName }: IconType) => ({
+  name: !!iconName ? iconName : "info",
+}))<IconType>`
+  width: 22px;
+  height: 22px;
+  margin-right: 18px;
   fill: ${({ colorful }) => colorful ? "#FF6B00" : "#5B6670"};
 `
 
-const Close = styled(Icon).attrs({ name: "close" })`
+const Close = styled(Icon).attrs({ name: "close" })<{crossColor?: boolean}>`
   width: 24px;
-  heigth: 24px;
+  height: 24px;
   cursor: pointer;
-  fill: #5B6670;
+  fill: ${({ crossColor }) => crossColor ? "#ffffff" : "#5B6670"};
   justify-self: flex-end;
   margin-left: auto; 
 `
@@ -40,7 +48,7 @@ const Content = styled.div<{closable?: boolean}>`
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    line-height: 22px;
+    line-height: 24px;
     color: #5B6670;
     display: flex;
     align-items: center;
@@ -53,17 +61,29 @@ const Content = styled.div<{closable?: boolean}>`
     `}
 `
 
-export const Informer = styled(({ className, label, error, closable, colorful, noBack, children, ...props }) => {
+export const Informer = styled(({ className, error, iconName, onCrossClick, crossColored, closable, colorful, backGround, children, ...props }) => {
 
   const [showed, setShowed] = useState(true)
+
+  const calculateBackGround = () => {
+    if (backGround === "blue") return "linear-gradient(91.34deg, #0A58CC -38.45%, #9E58CC 128.49%), linear-gradient(90deg, #4858CC -50%, #783D9D 150%), #FFFFFF;"
+    if (backGround === "no") return "#ffffff"
+    return "#F8F8FD"
+  }
+
+  const handleOnCrossClick = () => {
+    setShowed(false)
+    if (onCrossClick) onCrossClick()
+  }
+
   return (
     <>
-      { showed ? <Container noBack={noBack}>
-        <InfoIcon colorful={colorful} />
+      { showed ? <Container backGround={calculateBackGround()}>
+        <InfoIcon iconName={iconName} colorful={colorful} />
         <Content closable={closable}>
           {children}
         </Content>
-        {closable ? <Close onClick={() => setShowed(false)}/> : null}
+        {closable ? <Close crossColor={crossColored} onClick={handleOnCrossClick}/> : null}
       </Container> : null}
     </>
   )
