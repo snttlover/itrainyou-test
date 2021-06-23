@@ -32,8 +32,6 @@ build:
   only:
     - development
     - master
-    - free-sessions
-  when: manual
 
 deploy-dev:
   stage: deploy-dev
@@ -46,8 +44,6 @@ deploy-dev:
     - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_APP_NAME
   only:
     - development
-    - free-sessions
-  when: manual
 
 deploy-prod:
   stage: deploy-prod
