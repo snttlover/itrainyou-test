@@ -43,9 +43,7 @@ export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = React.memo((
       }
 
       const jivoTags = document.getElementsByTagName("jdiv")
-      if (jivoTags.length > 0) { // @ts-ignore
-        jivoTags[0].style.display = "none"
-      }
+      if (jivoTags.length > 0) jivoTags[0].style.display = "none"
     }
   })
 

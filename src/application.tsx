@@ -36,7 +36,7 @@ export const Application: React.FC = () => {
             version="2"
           /> : null
         }
-        {!isLoggedIn ? <JivoWidget id={config.JIVO_ID?.toString()} /> : null}
+        {!isLoggedIn && <JivoWidget id={config.JIVO_ID?.toString()} />}
         <Pages />
       </AsyncDataLoader>
     </ClientTheme>
