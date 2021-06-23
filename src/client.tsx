@@ -68,7 +68,7 @@ if (token) {
   ReactDOM.render(
     <Router history={history!}>
       <Application />
-      <JivoWidget id="EcD5Lp21sP" />
+      <JivoWidget id={config.JIVO_ID} />
     </Router>,
     document.getElementById("root")
   )

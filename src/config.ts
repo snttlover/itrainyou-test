@@ -15,4 +15,5 @@ export const config = {
   GOOGLE_CLIENT_ID: dataSource.env.GOOGLE_CLIENT_ID,
   SERVER_TYPE: dataSource.env.SERVER_TYPE,
   SERVER_DEFAULT_PAYMENT_SYSTEM: dataSource.env.SERVER_DEFAULT_PAYMENT_SYSTEM,
+  JIVO_ID: dataSource.env.JIVO_ID,
 }
