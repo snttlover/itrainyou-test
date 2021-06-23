@@ -54,7 +54,7 @@ export const PriceWithoutCommissionInput: React.FC<PriceInputGroupType> = ({ tit
           withoutBorder
           readOnly
           type='number'
-          value={price?.valueWithFee.toString() || ""}
+          value={price?.valueWithoutFee.toString() || ""}
         />
       </SummaryPriceFormItem>
     </Container>

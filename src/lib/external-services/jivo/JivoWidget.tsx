@@ -21,8 +21,8 @@ const mount = (id: string) => {
 
 export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = React.memo(({ id }: JivoWidgetProps) => {
   React.useEffect(() => {
-    const jivoTags = document.getElementsByTagName("jdiv")
-    if (jivoTags.length > 0) { // @ts-ignore
+    const jivoTags = Array.from(document.getElementsByTagName("jdiv") as HTMLCollectionOf<HTMLElement>)
+    if (jivoTags.length > 0) {
       jivoTags[0].style.display = "inherit"
     }
 
@@ -37,12 +37,13 @@ export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = React.memo((
     window.addEventListener("load", onLoad)
 
     return () => {
+      console.log('suka')
       document.removeEventListener("load", onLoad)
       if (unmount) {
         unmount()
       }
 
-      const jivoTags = document.getElementsByTagName("jdiv")
+      const jivoTags = Array.from(document.getElementsByTagName("jdiv") as HTMLCollectionOf<HTMLElement>)
       if (jivoTags.length > 0) jivoTags[0].style.display = "none"
     }
   })

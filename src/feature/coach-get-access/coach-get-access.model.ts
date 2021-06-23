@@ -60,11 +60,11 @@ export const $prices = createStore<Price[]>([
   )
 
 export const $pricesWithoutFee = combine($prices, $feeRatio, (prices, feeRatio) =>
-  prices.map(price => ({ ...price, valueWithFee: price ? price.value - price.value * feeRatio : 0 }))
+  prices.map(price => ({ ...price, valueWithoutFee: price ? price.value - price.value * feeRatio : 0 }))
 )
 
 const $schedule = $pricesWithoutFee.map(state => {
-  const newState = state.reduce((a, key) => Object.assign(a, { [key.name]: key.valueWithFee }), {})
+  const newState = state.reduce((a, key) => Object.assign(a, { [key.name]: key.value }), {})
   const emptyObjectForBackend = {isAvailable: false, weekdaySlots: []}
   Object.assign(newState, emptyObjectForBackend)
   return newState

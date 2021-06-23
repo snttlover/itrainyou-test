@@ -55,7 +55,6 @@ export const UserProfile = () => {
   }
 
   const isRequired = _userHasCoach || isClientBecomingCoach
-  console.log("isRequired", isRequired)
 
   return (
     <Form>
