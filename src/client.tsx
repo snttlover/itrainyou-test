@@ -20,13 +20,6 @@ fixChrome88timeZone()
 if (config.SERVER_TYPE === "production") {
   Sentry.init({
     dsn: `${config.SENTRY_CLIENT_DSN}`,
-    beforeSend(event) {
-      // Check if it is an exception, and if so, show the report dialog
-      if (event.exception) {
-        Sentry.showReportDialog(event)
-      }
-      return event
-    },
     integrations: [
       new Integrations.BrowserTracing(),
     ],
