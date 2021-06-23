@@ -4,7 +4,7 @@ import { get } from "@/lib/network/network"
 
 export interface SystemInfo {
   platformSessionFee: number,
-  defaultPaymentSystem: "TINKOFF" | "YOUKASSA"
+  defaultPaymentSystem: "TINKOFF" | "YOU_KASSA"
 }
 
 export const getSystemInfo = (): Promise<SystemInfo> =>
