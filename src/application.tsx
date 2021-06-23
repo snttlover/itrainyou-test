@@ -11,11 +11,14 @@ import "react-multi-carousel/lib/styles.css"
 import "simplebar/dist/simplebar.min.css"
 import "swiper/css/swiper.min.css"
 import { ApplicationGate } from "@/models"
-import { useGate } from "effector-react"
+import { useGate, useStore } from "effector-react"
 import { config } from "@/config"
+import { $isLoggedIn } from "@/feature/user/user.model"
+import { JivoWidget } from "@/lib/widgets/JivoWidget"
 
 export const Application: React.FC = () => {
   useGate(ApplicationGate)
+  const isLoggedIn = useStore($isLoggedIn)
 
   return (
     <ClientTheme>
@@ -31,6 +34,7 @@ export const Application: React.FC = () => {
           }}
           version="2"
         />
+        {!isLoggedIn ? <JivoWidget id={config.JIVO_ID?.toString()} /> : null}
         <Pages />
       </AsyncDataLoader>
     </ClientTheme>
