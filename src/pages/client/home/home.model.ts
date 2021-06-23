@@ -1,11 +1,22 @@
 import { getClientSessions } from "@/lib/api/client-session"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
-import { combine, createEffect, createEvent, createStore, forward, guard, sample, restore } from "effector-root"
+import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { keysToCamel } from "@/lib/network/casing"
 import { loginFx } from "@/pages/auth/pages/login/login.model"
 
+export const STORAGE_KEY = "show_informer"
+
+const checkUserFx = createEffect({
+  handler: () => {
+    const stringData = localStorage.getItem(STORAGE_KEY)
+    return stringData
+  }
+})
+
+export const $informerShowed = createStore(true)
+  .on(checkUserFx.doneData, (state,payload) => !payload)
 
 export const loadRecommendationsFx = createEffect({
   handler: ({ page }: { page: number }) => getRecommendations({ page, page_size: 15 }),
@@ -34,14 +45,17 @@ const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToC
 export const $hasFreeSessions = createStore(false)
   .on(userDoneData, (_,payload) => payload.client ? payload.client.hasFreeSessions : false)
 
+export const $freeSessionsStatus = createStore("")
+  .on(userDoneData, (_,payload) => payload.client.freeSessionUnavailableReason)
+
 export const $recommendations = createStore<Coach[]>([]).on(loadRecommendationsFx.doneData, (state, payload) => [
   ...state,
   ...payload.results,
-]).reset(homePageMounted)
+]).reset([homePageMounted,freeSessionsPageMounted])
 
 
 const $recommendationsLoadFailed = createStore(false).on(loadRecommendationsFx.fail, () => true)
-  .reset(homePageMounted)
+  .reset([homePageMounted,freeSessionsPageMounted])
 
 export const $isHasMoreRecommendations = combine(
   { count: $recommendationsCount, recommendations: $recommendations, isFailed: $recommendationsLoadFailed },
@@ -54,12 +68,12 @@ export const $activeSessions = createStore<DashboardSession[]>([]).on(
   loadActiveSessionsFx.doneData,
   (state, payload) => payload.results
 )
-  .reset(homePageMounted)
+  .reset([homePageMounted,freeSessionsPageMounted])
 
 export const $upcomingSessions = createStore<DashboardSession[]>([]).on(
   loadUpcomingSessionsFx.doneData,
   (state, payload) => payload.results
-).reset(homePageMounted)
+).reset([homePageMounted,freeSessionsPageMounted])
 
 const guardedLoadMore = guard({
   source: loadMore,
@@ -68,7 +82,7 @@ const guardedLoadMore = guard({
 
 const $currentPage = createStore(0)
   .on(loadRecommendationsFx.done, (_, payload) => payload.params.page)
-  .reset(homePageMounted)
+  .reset([homePageMounted,freeSessionsPageMounted])
 
 sample({
   source: $currentPage,
@@ -78,21 +92,17 @@ sample({
 })
 
 forward({
-  from: homePageMounted,
-  to: [loadActiveSessionsFx, loadUpcomingSessionsFx, loadMore],
+  from: [homePageMounted, freeSessionsPageMounted],
+  to: [loadActiveSessionsFx, loadUpcomingSessionsFx, loadMore, getMyUserFx],
 })
 
-
-forward({
-  from: freeSessionsPageMounted,
-  to: [
-    loadActiveSessionsFx,
-    loadUpcomingSessionsFx,
-    loadMore,
-  ],
-})
 
 forward({
   from: loginFx.done,
   to: getMyUserFx,
+})
+
+forward({
+  from: homePageMounted,
+  to: checkUserFx,
 })

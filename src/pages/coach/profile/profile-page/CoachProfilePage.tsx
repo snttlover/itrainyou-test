@@ -87,22 +87,6 @@ const MainCoachBlock = styled.div`
   }
 `
 
-const InfoText = styled.p`
-  display: none;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 18px;
-  text-align: right;
-
-  color: #9aa0a6;
-
-  ${MediaRange.greaterThan("laptop")`
-    display: block;
-  `}
-`
-
 const Datepicker = () => {
   const coach = useStore($profileData)
 
@@ -115,14 +99,11 @@ const Datepicker = () => {
 export const CoachProfilePage = () => {
   useGate(ProfileGate)
 
-  const coach = useStore($profileData)
-
   return (
     <CoachDashboardLayout>
       <ContentContainer>
         <TabsContainer>
           <ProfileTabs />
-          <InfoText>Так вашу страницу видит клиент</InfoText>
         </TabsContainer>
         <InfoWithSidebar>
           <CoachInfoContainer>

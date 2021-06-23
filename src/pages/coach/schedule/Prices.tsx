@@ -6,6 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useStore } from "effector-react"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { $feeRatio } from "@/pages/coach/schedule/models/schedule/units"
+import { Informer } from "@/newcomponents/informer/Informer"
 
 const StyledPriceInputGroup = styled(PriceInputGroup)``
 
@@ -44,9 +45,11 @@ export const Prices = () => {
     <PriceContainer>
       <Title>Цена за сессию</Title>
       <Description>
-        Укажите стоимость вашей сессии для каждого времени.
-        Цена для клиента — цена вашей сессии с учетом комиссии платформы ({feeRatio*100}%).
+        Укажите стоимость вашей сессии для клиента.
       </Description>
+      <Informer>
+        <Description><a>{feeRatio*100}%</a> от стоимости - комиссия платформы</Description>
+      </Informer>
       <PriceListContainer>
         <StyledPriceInputGroup title='30 минут' name='d30Price' />
         <StyledPriceInputGroup title='45 минут' name='d45Price' />

@@ -15,7 +15,7 @@ import { Prices } from "@/pages/coach/schedule/Prices"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
 import { Icon } from "@/oldcomponents/icon/Icon"
 import { OnBoardingFreeSessions } from "@/pages/coach/schedule/components/OnBoarding/OnBoarding"
-import { showOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { showFirstOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
@@ -88,7 +88,12 @@ export const Description = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: #5b6670;
-  max-width: 552px;  
+  max-width: 552px;
+  
+  & a {
+    font-weight: 500;
+    color: ${props => props.theme.colors.primary};
+  }
 `
 
 const InstructionContainer = styled.div`
@@ -121,7 +126,7 @@ const QuestionIcon = styled(Icon).attrs({ name: "question-mark" })`
 
 export const CoachSchedulePage = () => {
   const coachAccess = useStore($coachAccess)
-  const _showOnBoarding = useEvent(showOnBoarding)
+  const _showOnBoarding = useEvent(showFirstOnBoarding)
 
   useGate(ScheduleGate)
 

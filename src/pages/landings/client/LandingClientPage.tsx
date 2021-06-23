@@ -35,8 +35,8 @@ const LandingClientPageMarkUp = () => (
     <Header
       signUpRoute={routeNames.signup("1")}
       additionalButton={{
-        title: "Стать клиентом",
-        route: routeNames.signup("1"),
+        title: "Стать коучем",
+        route: routeNames.landingCoach(),
       }}
       showExtraButton={false}
     />
@@ -47,10 +47,11 @@ const LandingClientPageMarkUp = () => (
       <FirstFree />
       <CoachList />
       <CoachStats />
+      <Video videoData={videoData.first} />
       <Features />
       <HandySearch />
       <HandyCabinet />
-      <Video videoData={videoData} />
+      <Video videoData={videoData.second} />
       <Publications publications={publications} />
       <Questions questions={questions} />
     </MainWrapper>

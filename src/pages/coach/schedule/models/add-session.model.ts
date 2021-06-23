@@ -42,7 +42,7 @@ export const $durationList = createStore<{ label: string; value: DurationType }[
   { label: "45 минут", value: "D45" },
   { label: "60 минут", value: "D60" },
   { label: "90 минут", value: "D90" },
-  { label: "% промо", value: "PROMO" },
+  { label: "промо", value: "PROMO" },
 ])
 
 export const $durationOptions = $durationList.map((durations) => {
@@ -203,7 +203,7 @@ export const createSessionsFx = createEffect({
 
 forward({
   from: createSessionsFx.doneData,
-  to: [sessionAdded, changeFilterView.prepend(_ => "no-filter")],
+  to: sessionAdded,
 })
 
 const successToastMessage: Toast = { type: "info", text: "Сессия создана" }

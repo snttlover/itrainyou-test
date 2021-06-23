@@ -168,12 +168,13 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     changeCountersFromInit,
     (_, message) => message.data.unreadChats.filter(chat => chat.type === "SUPPORT")[0]?.newMessagesCount)
     .on(onSupportMessage, (counters, message) => counters + 1)
-    .reset(onMessagesReadDone)
+    .reset([onMessagesReadDone,logout])
 
   const changeNotificationsCounter = createEvent<number>()
   const $notificationsCounter = restore(changeNotificationsCounter, 0)
     .on(onNotification, count => count + 1)
     .on(onReadNotification, (count, message) => count - message.data.length)
+    .reset(logout)
 
   forward({
     from: changeCountersFromInit.map(res => res.data.newNotificationsCount),

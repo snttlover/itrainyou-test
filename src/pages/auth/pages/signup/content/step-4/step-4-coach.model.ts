@@ -15,6 +15,7 @@ import { combineEvents, spread } from "patronum"
 import { CoachData, REGISTER_SAVE_KEY, UserData } from "@/pages/auth/pages/signup/models/types"
 import { categoriesChanged, coachDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
 import { loadSystemInfoFx } from "@/feature/coach-get-access/coach-get-access.model"
+import { config } from "@/config"
 
 export const step4CoachMounted = createEvent()
 const waitAllEvents = combineEvents({ events: [step4CoachMounted, signUpPageMounted] })
@@ -49,7 +50,13 @@ forward({
 })
 
 forward({
-  from: $form.updates,
+  // @ts-ignore
+  from: $form.updates.map((coachFormData) => {
+    if (config.SERVER_DEFAULT_PAYMENT_SYSTEM === "TINKOFF") {
+      return {...coachFormData, inn: "", legalForm: ""}
+    }
+    return coachFormData
+  }),
   to: coachDataChanged,
 })
 

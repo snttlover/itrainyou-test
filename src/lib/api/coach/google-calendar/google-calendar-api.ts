@@ -3,6 +3,8 @@ import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 import { post, get } from "@/lib/network/network"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
+import { CoachItemType } from "@/lib/api/wallet/client/get-card-sessions"
+import { Coach } from "@/lib/api/coach"
 
 export interface AddGoogleCalendarParams {
   code: string
@@ -19,7 +21,7 @@ export interface CalendarEvents  {
   sessions: {
     clients: [any]
     id: number
-    coach: number
+    coach: CoachItemType | number | Coach
     clientPrice: string // example: 12.00
     coachPrice: string // example: 10.00
     startDatetime: ISODate // example: "2020-03-31T15:17:37Z"

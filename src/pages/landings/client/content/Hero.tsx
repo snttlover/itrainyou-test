@@ -128,7 +128,7 @@ const StyledRegisterButton = styled(RegisterButton)`
   margin: 0 auto;
 
   @media (min-width: 558px) {
-    width: 185px;
+    width: 220px;
   }
 
   @media (min-width: 768px) {
@@ -143,7 +143,7 @@ const StyledRegisterButton = styled(RegisterButton)`
 const MainImage = styled.img`
   display: block;
   position: absolute;
-  bottom: -54px;
+  bottom: -73px;
   right: 50%;
   transform: translateX(50%);
   width: 278px;

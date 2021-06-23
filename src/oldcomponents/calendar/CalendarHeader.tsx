@@ -32,7 +32,7 @@ export const LeftIcon = styled(Icon).attrs({ name: "arrow" })<LeftButtonTypes>`
   transform: rotate(90deg);
   
   ${MediaRange.lessThan("mobile")`
-    margin-right: 30px;
+    margin-right: auto;
   `}
 `
 
@@ -47,13 +47,18 @@ export const RightIcon = styled(Icon).attrs({ name: "arrow" })<LeftButtonTypes>`
   transform: rotate(-90deg);
 
   ${MediaRange.lessThan("mobile")`
-    margin-left: 30px;
+    margin-left: auto;
   `}
 `
 
 export const MonthContainer = styled.div`
   display: flex;
   align-items: center;
+
+  ${MediaRange.lessThan("mobile")`
+    justify-content: center;
+    width: 100%;
+  `}
 `
 
 export const Year = styled.div`

@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Icon, IconName } from "../icon/Icon"
+import { Icon } from "../icon/Icon"
 
 export const StyledCheckbox = styled(Icon)<{ color?: string }>`
   width: 24px;
@@ -41,7 +41,7 @@ type CheckboxProps = {
   onChange?: (checked: boolean) => void
 }
 
-export const Checkbox = styled(({ value, onChange, color,filled, ...props }: CheckboxProps) => {
+export const Checkbox = styled(({ value, onChange, color, filled, ...props }: CheckboxProps) => {
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(e.target.checked)

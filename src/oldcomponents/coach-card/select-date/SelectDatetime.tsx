@@ -19,6 +19,7 @@ import { SelectCreditCardDialog } from "@/pages/search/content/list/content/moda
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
+import { changeFreeBookedSession } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -230,11 +231,10 @@ export const genSessionTabs = (coach: Coach) => {
     .filter(
       key =>
         coach.prices[key as DurationType] !== null &&
-        ((coach.prices[key as DurationType] as unknown) as string) !== "None" &&
-              coach.prices[key] > 0
+        ((coach.prices[key as DurationType] as unknown) as string) !== "None"
     )
     .map(key => ({
-      timeInMinutes: parseInt(key.replace(/^\D+/g, "")) as number,
+      timeInMinutes: key === "PROMO" ? "ПРОМО" : parseInt(key.replace(/^\D+/g, "")) as number,
       key: key as DurationType,
       price: Math.ceil(coach.prices[key as DurationType] as number),
     }))
@@ -270,6 +270,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const bulkFreeSession = useEvent(props.sessionsData.bulkFreeSession)
+  const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
 
   const enabledDates = sessions.map(session => session.startDatetime)
   const [currentDate, changeCurrentDate] = useState<Date | null>(null)
@@ -313,6 +314,11 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
 
   const payForTheSessionHandler = () => {
     activeTab === "PROMO" ? bulkFreeSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardsModal(true)
+    if (activeTab === "PROMO") {
+      const sessionInfo = selected[0]
+      sessionInfo.coach = props.coach
+      changeFreeSessionModalInfo(sessionInfo)
+    }
     changeCurrentDate(null)
   }
 
@@ -324,7 +330,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
         <StyledTabs value={activeTab} onChange={changeActiveTab}>
           {tabs.map(tab => (
             <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
-              <TabTime>{tab.timeInMinutes} мин</TabTime>
+              <TabTime>{tab.key !== "PROMO" ? `${tab.timeInMinutes}  мин` : "ПРОМО"}</TabTime>
               <TabPrice>/{tab.price} ₽</TabPrice>
             </StyledTab>
           ))}

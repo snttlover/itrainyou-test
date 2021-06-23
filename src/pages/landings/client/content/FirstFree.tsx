@@ -131,6 +131,21 @@ const ListItem = styled.li`
     transform: translateY(-50%);
     background: #4858cc;
   }
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  @media (min-width: 1140px) {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  @media (min-width: 1600px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 `
 
 const Button = styled(Link)`

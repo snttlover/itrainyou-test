@@ -1,26 +1,32 @@
-import { createEffect, createEvent, createStore, forward, restore } from "effector-root"
+import { createEffect, createEvent, createStore, forward, split } from "effector-root"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
 
+const STORAGE_KEY = "on_boarding"
 
 const checkUserFx = createEffect({
   handler: () => {
-    const stringData = localStorage.getItem(USER_KEY)
+    const stringData = localStorage.getItem(STORAGE_KEY)
     const isOldUser = JSON.parse(stringData!)
-    return !isOldUser
+    return isOldUser
   }
 })
 
-export const USER_KEY = "is_old_user"
+export const showFirstOnBoarding = createEvent<void | boolean>()
 
-export const showOnBoarding = createEvent<void | boolean>()
-export const $onBoardingVisibility = createStore<boolean>(false).on(
-  showOnBoarding,
-  (state, payload) => {
+export const showSecondOnBoarding = createEvent<void | boolean>()
+export const $onBoardingVisibility = createStore<boolean>(false)
+  .on(showFirstOnBoarding, (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
+  .on(showSecondOnBoarding, (state, payload) => {
     if (payload !== undefined) return payload
     return !state
   })
 
-export const $onBoarding = restore(checkUserFx.doneData, false)
+export const $onBoarding = createStore("first")
+  .on(showFirstOnBoarding, (state, payload) => "first")
+  .on(showSecondOnBoarding, (state, payload) => "second")
 
 forward({
   from: ScheduleGate.open,
@@ -29,8 +35,8 @@ forward({
 
 forward({
   from: checkUserFx.doneData.map(data => {
-    localStorage.setItem(USER_KEY, "true")
-    return data
+    localStorage.setItem(STORAGE_KEY, "old_user")
+    return data !== "old_user"
   }),
-  to: showOnBoarding,
+  to: showFirstOnBoarding,
 })

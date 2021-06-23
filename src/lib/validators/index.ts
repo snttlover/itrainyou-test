@@ -27,6 +27,7 @@ export const phoneValidator = (value: string) => {
 export const innValidator = (inn: string) => {
   let result = false
   const error = {code: 0, message: ""}
+
   if (!inn.length) {
     error.code = 1
     error.message = "ИНН пуст"
@@ -47,19 +48,23 @@ export const innValidator = (inn: string) => {
     }
     switch (inn.length) {
     case 10:
-      var n10 = checkDigit(inn, [2, 4, 10, 3, 5, 9, 4, 6, 8])
+      // eslint-disable-next-line no-case-declarations
+      const n10 = checkDigit(inn, [2, 4, 10, 3, 5, 9, 4, 6, 8])
       if (n10 === parseInt(inn[9])) {
         result = true
       }
       break
     case 12:
-      var n11 = checkDigit(inn, [7, 2, 4, 10, 3, 5, 9, 4, 6, 8])
-      var n12 = checkDigit(inn, [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8])
+      // eslint-disable-next-line no-case-declarations
+      const n11 = checkDigit(inn, [7, 2, 4, 10, 3, 5, 9, 4, 6, 8])
+      // eslint-disable-next-line no-case-declarations
+      const n12 = checkDigit(inn, [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8])
       if ((n11 === parseInt(inn[10])) && (n12 === parseInt(inn[11]))) {
         result = true
       }
       break
     }
+
     if (!result) {
       error.code = 4
       error.message = "Неправильный ИНН"

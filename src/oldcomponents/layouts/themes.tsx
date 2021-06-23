@@ -2,6 +2,7 @@ import * as React from "react"
 import { ThemeProvider } from "styled-components"
 
 export const clientTheme = {
+  type: "client",
   colors: {
     primaryBackground: "#D3D7F3",
     primary: "#4858CC",
@@ -13,6 +14,7 @@ export const clientTheme = {
 }
 
 const coachTheme: typeof clientTheme = {
+  type: "coach",
   colors: {
     primaryBackground: "#DFD0E7",
     primary: "#783D9D",

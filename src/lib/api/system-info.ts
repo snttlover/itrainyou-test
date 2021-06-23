@@ -3,7 +3,8 @@ import { keysToCamel } from "@/lib/network/casing"
 import { get } from "@/lib/network/network"
 
 export interface SystemInfo {
-  platformSessionFee: number
+  platformSessionFee: number,
+  defaultPaymentSystem: "TINKOFF" | "YOU_KASSA"
 }
 
 export const getSystemInfo = (): Promise<SystemInfo> =>

@@ -1,8 +1,6 @@
 import { AuthLayoutLogo } from "@/oldcomponents/layouts/sections/auth/AuthLayoutLogo"
 import { MediaRange } from "@/lib/responsive/media"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
-import bgImage from "./backgrounds/bg-image.svg"
-import cloud from "./backgrounds/cloud.svg"
 import * as React from "react"
 import styled from "styled-components"
 
@@ -32,16 +30,16 @@ const Header = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
 
-  height: 200px;
+  height: 260px;
   width: 100%;
 
   ${MediaRange.greaterThan("mobile")`
     background-image: url(${tablet});
-    height: 300px;
+    height: 370px;
   `}
   ${MediaRange.greaterThan("laptop")`
     background-image: url(${desktop});
-    height: 312px;
+    height: 332px;
   `}
 `
 
@@ -51,38 +49,6 @@ const HeaderContent = styled.div`
   margin: 0 auto;
   position: relative;
   height: 100%;
-`
-
-const BGImage = styled.div`
-  background-image: url(${bgImage});
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: absolute;
-  width: 329.35px;
-  height: 589px;
-  left: 0;
-  top: 356px;
-  display: none;
-
-  ${MediaRange.greaterThan("laptop")`
-    display: block;
-  `}
-`
-
-const BGImageCloud = styled.div`
-  background-image: url(${cloud});
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: absolute;
-  width: 223px;
-  height: 76px;
-  right: 0;
-  top: 416px;
-  display: none;
-
-  ${MediaRange.greaterThan("laptop")`
-    display: block;
-  `}
 `
 
 type Step4ClientLayoutProps = {
@@ -103,8 +69,6 @@ export const Step4ClientLayout = (props: Step4ClientLayoutProps) => (
         {props.renderHeader()}
       </HeaderContent>
     </Header>
-    {/*<BGImage />*/}
-    {/*<BGImageCloud />*/}
     <AuthContainer>{props.children}</AuthContainer>
   </StyledLayout>
 )
