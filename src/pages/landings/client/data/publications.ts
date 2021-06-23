@@ -1,16 +1,16 @@
-import imageMobile1 from "./publications/mobile/1.png"
-import imageMobile2 from "./publications/mobile/2.png"
-import imageMobile3 from "./publications/mobile/3.png"
-import imageMobile4 from "./publications/mobile/4.png"
-import imageMobile5 from "./publications/mobile/5.png"
-import imageMobile6 from "./publications/mobile/6.png"
+import imageMobile1 from "@/pages/landings/common/publications/assets/mobile/1.png"
+import imageMobile2 from "@/pages/landings/common/publications/assets/mobile/2.png"
+import imageMobile3 from "@/pages/landings/common/publications/assets/mobile/3.png"
+import imageMobile4 from "@/pages/landings/common/publications/assets/mobile/4.png"
+import imageMobile5 from "@/pages/landings/common/publications/assets/mobile/5.png"
+import imageMobile6 from "@/pages/landings/common/publications/assets/mobile/6.png"
 
-import imageDesktop1 from "./publications/desktop/1.png"
-import imageDesktop2 from "./publications/desktop/2.png"
-import imageDesktop3 from "./publications/desktop/3.png"
-import imageDesktop4 from "./publications/desktop/4.png"
-import imageDesktop5 from "./publications/desktop/5.png"
-import imageDesktop6 from "./publications/desktop/6.png"
+import imageDesktop1 from "@/pages/landings/common/publications/assets/desktop/1.png"
+import imageDesktop2 from "@/pages/landings/common/publications/assets/desktop/2.png"
+import imageDesktop3 from "@/pages/landings/common/publications/assets/desktop/3.png"
+import imageDesktop4 from "@/pages/landings/common/publications/assets/desktop/4.png"
+import imageDesktop5 from "@/pages/landings/common/publications/assets/desktop/5.png"
+import imageDesktop6 from "@/pages/landings/common/publications/assets/desktop/6.png"
 
 export const publications = [
   {
