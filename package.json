@@ -53,6 +53,7 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "react-slider": "^1.0.7",
+    "react-yandex-metrika": "^2.6.0",
     "serialize-javascript": "^4.0.0",
     "simplebar-react": "^2.2.1",
     "styled-components": "^5.1.1",

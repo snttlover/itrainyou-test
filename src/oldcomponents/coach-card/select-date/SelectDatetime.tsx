@@ -256,7 +256,7 @@ export type SelectDatetimeTypes = {
     }
     buySessionsLoading: Store<boolean>
     buySessionBulk: Event<BulkBookSessionsRequest>
-    bulkFreeSession: Event<SessionRequestParams>
+    bulkSession: Event<SessionRequestParams>
   }
 }
 
@@ -269,7 +269,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
-  const bulkFreeSession = useEvent(props.sessionsData.bulkFreeSession)
+  const bulkSession = useEvent(props.sessionsData.bulkSession)
   const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
 
   const enabledDates = sessions.map(session => session.startDatetime)
@@ -313,7 +313,7 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
 
   const payForTheSessionHandler = () => {
-    activeTab === "PROMO" ? bulkFreeSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardsModal(true)
+    activeTab === "PROMO" ? bulkSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardsModal(true)
     if (activeTab === "PROMO") {
       const sessionInfo = selected[0]
       sessionInfo.coach = props.coach

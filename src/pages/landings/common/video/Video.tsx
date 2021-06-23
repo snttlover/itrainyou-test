@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { Container } from "../Container"
 
 import playIcon from "./assets/play.svg"
+import ym from "react-yandex-metrika"
 
 const Wrapper = styled.section`
   background: white;
@@ -84,6 +85,11 @@ type Props = {
 export const Video = ({ videoData }: Props) => {
   const [isVideoOpen, openVideo] = useState(false)
 
+  const handleOnPlay = () => {
+    openVideo(true)
+    ym("reachGoal","videoland")
+  }
+
   return (
     <Wrapper>
       <StyledContainer>
@@ -101,7 +107,7 @@ export const Video = ({ videoData }: Props) => {
             ></iframe>
           ) : (
             <>
-              <PlayButton onClick={() => openVideo(true)} />
+              <PlayButton onClick={handleOnPlay} />
             </>
           )}
         </VideoContainer>

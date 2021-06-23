@@ -343,7 +343,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
   const toggleSession = useEvent(props.sessionsData.toggleSession)
-  const bulkFreeSession = useEvent(props.sessionsData.bulkFreeSession)
+  const bulkSession = useEvent(props.sessionsData.bulkSession)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
   const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
 
@@ -394,7 +394,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
 
   const payForTheSessionHandler = () => {
-    activeTab === "PROMO" ? bulkFreeSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardModal(true)
+    activeTab === "PROMO" ? bulkSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardModal(true)
     if (activeTab === "PROMO") {
       const sessionInfo = selected[0]
       sessionInfo.coach = props.coach

@@ -9,6 +9,7 @@ import mirLogo from "./assets/banks/mir.svg"
 
 import fbLogo from "./assets/socials/fb.svg"
 import igLogo from "./assets/socials/ig.svg"
+import ym from "react-yandex-metrika"
 
 const Wrapper = styled.footer`
   background: linear-gradient(101.34deg, #4858cc -7.8%, #7d36a8 114.56%);
@@ -118,10 +119,10 @@ export const Footer = () => (
       </BankSection>
       <SocialsCopySection>
         <Socials>
-          <Social href='https://facebook.com/' target='_blank'>
+          <Social href='https://facebook.com/' target='_blank' onClick={() => ym("reachGoal","fbland")}>
             <img src={fbLogo} />
           </Social>
-          <Social href='https://instagram.com/' target='_blank'>
+          <Social href='https://instagram.com/' target='_blank' onClick={() => ym("reachGoal","instland")}>
             <img src={igLogo} />
           </Social>
         </Socials>
