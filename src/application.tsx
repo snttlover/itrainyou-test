@@ -21,8 +21,8 @@ export const Application: React.FC = () => {
     <ClientTheme>
       <AppStyles />
       <AsyncDataLoader>
-        { config.SERVER_TYPE === "production" ? <YMInitializer
-          accounts={[config.YANDEX_METRIKA_ID]}
+        <YMInitializer
+          accounts={[config.SERVER_TYPE === "production" ? config.YANDEX_METRIKA_ID : ""]}
           options={{
             clickmap:true,
             trackLinks:true,
@@ -30,10 +30,9 @@ export const Application: React.FC = () => {
             webvisor:true
           }}
           version="2"
-        /> : null}
+        />
         <Pages />
       </AsyncDataLoader>
     </ClientTheme>
   )
 }
-
