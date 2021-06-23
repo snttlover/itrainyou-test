@@ -5,7 +5,7 @@ export interface JivoWidgetProps {
 }
 
 const mount = (id: string) => {
-  const script = document.createElement("script");
+  const script = document.createElement("script")
 
   script.type = "text/javascript"
   script.async = true
@@ -22,7 +22,9 @@ const mount = (id: string) => {
 export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = React.memo(({ id }: JivoWidgetProps) => {
   React.useEffect(() => {
     const jivoTags = document.getElementsByTagName("jdiv")
-    if (jivoTags.length > 0) jivoTags[0].style.display = "inherit"
+    if (jivoTags.length > 0) { // @ts-ignore
+      jivoTags[0].style.display = "inherit"
+    }
 
     if (document.readyState === "complete") {
       return mount(id)
@@ -41,7 +43,9 @@ export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = React.memo((
       }
 
       const jivoTags = document.getElementsByTagName("jdiv")
-      if (jivoTags.length > 0) jivoTags[0].style.display = "none"
+      if (jivoTags.length > 0) { // @ts-ignore
+        jivoTags[0].style.display = "none"
+      }
     }
   })
 
