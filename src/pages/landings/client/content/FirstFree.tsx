@@ -9,6 +9,7 @@ import { Container } from "../../common/Container"
 // @ts-ignore
 import mainImg from "../assets/first-free/main.jpg"
 import ym from "react-yandex-metrika"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const Wrapper = styled.section`
   background: #f4f5f7;
@@ -196,7 +197,7 @@ export const FirstFree = () => (
       </List>
       <Button
         to={{ pathname: routeNames.search() }}
-        onClick={() => ym("reachGoal","pushchoosecoach")}>Выбрать коуча</Button>
+        onClick={() => ymLog("reachGoal","pushchoosecoach")}>Выбрать коуча</Button>
     </StyledContainer>
   </Wrapper>
 )

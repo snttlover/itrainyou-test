@@ -24,16 +24,18 @@ export const Application: React.FC = () => {
     <ClientTheme>
       <AppStyles />
       <AsyncDataLoader>
-        <YMInitializer
-          accounts={[config.SERVER_TYPE === "production" ? config.YANDEX_METRIKA_ID : ""]}
-          options={{
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true
-          }}
-          version="2"
-        />
+        { config.SERVER_TYPE === "production" ?
+          <YMInitializer
+            accounts={[config.YANDEX_METRIKA_ID]}
+            options={{
+              clickmap:true,
+              trackLinks:true,
+              accurateTrackBounce:true,
+              webvisor:true
+            }}
+            version="2"
+          /> : null
+        }
         {!isLoggedIn ? <JivoWidget id={config.JIVO_ID?.toString()} /> : null}
         <Pages />
       </AsyncDataLoader>
