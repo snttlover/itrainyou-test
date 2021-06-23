@@ -68,19 +68,9 @@ const PriceListContainer = styled.div`
     `}
   }
 `
-const StyledInformer = styled.div`
-  margin-top: 16px;
-`
-
 
 const PromoBlock = styled.div`
   margin-top: 16px;
-  display: flex;
-  padding: 16px;
-  background: #F8F8FD;
-  border-radius: 8px;
-  align-items: center;
-  flex-direction: row;
 `
 
 const PercentsIcon = styled(Icon).attrs({ name: "percents" })`
@@ -123,10 +113,13 @@ export const Schedule = () => {
           <Description>
               Выберите дни и временные промежутки, в которые вы можете работать. Клиенты смогут бронировать занятия в это время.
           </Description>
+
           <PromoBlock>
-            <PercentsIcon />
-            <PromoText>Выбирайте промо сессии (30 минут) для продвижения. <a onClick={OnLinkClick}>Зачем?</a></PromoText>
+            <Informer iconName={"percents"}>
+              <PromoText>Выбирайте промо сессии (30 минут) для продвижения. <a onClick={OnLinkClick}>Зачем?</a></PromoText>
+            </Informer>
           </PromoBlock>
+
           <PriceListContainer>
             <WeekDaySchedule title='Понедельник' weekday='MONDAY' />
             <WeekDaySchedule title='Вторник' weekday='TUESDAY' />

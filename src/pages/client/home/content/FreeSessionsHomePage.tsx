@@ -24,6 +24,7 @@ import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/
 import { $allFreeSessionsStore } from "@/pages/search/coach-by-id/models/units"
 import { HomeCalendar } from "@/pages/client/home/content/HomeCalendar"
 import { Icon } from "@/oldcomponents/icon/Icon"
+import { Informer } from "@/newcomponents/informer/Informer"
 
 const PageContainer = styled.div`
   display: flex;
@@ -202,40 +203,13 @@ const Row = styled.div`
 `
 
 const InformerContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 16px 22px;
-  background: linear-gradient(91.34deg, #0A58CC -38.45%, #9E58CC 128.49%), linear-gradient(90deg, #4858CC -50%, #783D9D 150%), #FFFFFF;
-  border-radius: 8px;
   margin-top: 24px;
-`
-
-const Close = styled(Icon).attrs({ name: "plus" })`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  fill: white;
-  transform: rotate(45deg);
-  margin-left: auto;
-`
-
-const GiftIcon = styled(Icon).attrs({ name: "gift" })`
-  width: 24px;
-  cursor: pointer;
-  fill: white;
 `
 
 const InformerTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
-  padding: 0 22px;
-  
-  ${MediaRange.lessThan("mobile")`
-    padding: 0 16px;
-    max-width: 85%;
-  `}
 `
 
 const InformerHeader = styled.div`
@@ -269,27 +243,6 @@ const TabletCalendar = ({ setShowed }: any) => {
     </TabletPageContainer>
   )
 }
-
-const Informer = () => {
-
-  const [showed, setShowed] = useState(true)
-
-  return (
-    <>
-      {showed ?
-        <InformerContainer>
-          <GiftIcon />
-          <InformerTextContainer>
-            <InformerHeader>Мы подобрали для вас подходящих коучей! </InformerHeader>
-            <InformerDescription>Забронируйте бесплатную сессию у конкретного коуча или выберите удобную дату и время.</InformerDescription>
-          </InformerTextContainer>
-          <Close onClick={() => setShowed(false)} />
-        </InformerContainer>
-        : null}
-    </>
-  )
-}
-
 
 export const FreeSessionsHomePage = () => {
   const [isFirstRender, setIsFirstRender] = useState(true)
@@ -367,7 +320,20 @@ export const FreeSessionsHomePage = () => {
             {
               !(upcomingSessionsPending || isFirstRender) &&
               <ContentContainer>
-                <Informer />
+
+                <InformerContainer>
+                  <Informer
+                    crossColored
+                    iconName={"gift"}
+                    closable
+                    backGround={"blue"}>
+                    <InformerTextContainer>
+                      <InformerHeader>Мы подобрали для вас подходящих коучей!</InformerHeader>
+                      <InformerDescription>Забронируйте бесплатную сессию у конкретного коуча или выберите удобную дату и время.</InformerDescription>
+                    </InformerTextContainer>
+                  </Informer>
+                </InformerContainer>
+
                 <Block>
                   <Title>Подобранные коучи</Title>
                   <InfiniteScroll

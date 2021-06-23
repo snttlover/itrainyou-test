@@ -198,7 +198,7 @@ const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
           </>
           :
           <>
-            <Informer colorful noBack>Нет доступа к видеокамере</Informer>
+            <Informer colorful backGround={"no"}>Нет доступа к видеокамере</Informer>
             <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к видеокамере</StyledLink>
           </>
         }
@@ -261,7 +261,7 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
           </>
           :
           <>
-            <Informer colorful noBack>Нет доступа к микрофону</Informer>
+            <Informer colorful backGround={"no"}>Нет доступа к микрофону</Informer>
             <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к микрофону</StyledLink>
           </>}
       </Container>

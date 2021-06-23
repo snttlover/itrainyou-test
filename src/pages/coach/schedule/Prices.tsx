@@ -38,6 +38,21 @@ const PriceContainer = styled.div`
   `}
 `
 
+const InformerDescription = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: #5b6670;
+  max-width: 552px;
+  
+  & a {
+    font-weight: 500;
+    color: ${props => props.theme.colors.primary};
+  }
+`
+
 export const Prices = () => {
   const feeRatio = useStore($feeRatio)
 
@@ -48,7 +63,7 @@ export const Prices = () => {
         Укажите стоимость вашей сессии для клиента.
       </Description>
       <Informer>
-        <Description><a>{feeRatio*100}%</a> от стоимости - комиссия платформы</Description>
+        <InformerDescription><a>{feeRatio*100}%</a> от стоимости - комиссия платформы</InformerDescription>
       </Informer>
       <PriceListContainer>
         <StyledPriceInputGroup title='30 минут' name='d30Price' />
