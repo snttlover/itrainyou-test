@@ -17,7 +17,7 @@ import { fixChrome88timeZone } from "@/polyfills/chrome88-dayjs-timezone-fix"
 
 fixChrome88timeZone()
 
-if (config.SERVER_TYPE === "production") {
+if (config.ENVIRONMENT !== "local") {
   Sentry.init({
     dsn: `${config.SENTRY_CLIENT_DSN}`,
     integrations: [
