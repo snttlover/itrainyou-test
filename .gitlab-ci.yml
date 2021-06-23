@@ -65,7 +65,7 @@ deploy-prod:
     - ssh -p22 $USER@$SERVER_IP "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} registry.gitlab.com"
     - ssh -p22 $USER@$SERVER_IP "docker pull ${IMAGE_TAG}"
     - ssh -p22 $USER@$SERVER_IP "docker rm -f ${IMAGE_NAME} || true"
-    - ssh -p22 $USER@$SERVER_IP "docker run --network=itrainyou-backend_default --name ${IMAGE_NAME} -e BACKEND_URL=https://backend.itrainyou.ru -e WS_HOST=wss://backend.itrainyou.ru -e AGORA_ID=ddc00001a79048e98fc21cfeef7efa7c -e SENTRY_CLIENT_DSN=https://f6205d3153964e93afabe2313b1b2ab3@o474760.ingest.sentry.io/5511546 -e SENTRY_SERVER_DSN=https://b359770ce05a40ab86c17dd35faf34c1@o474760.ingest.sentry.io/5514727 -e FACEBOOK_CLIENT_ID=588161764971621 -e VK_CLIENT_ID=7636787 -e GOOGLE_CLIENT_ID=536974560462-812pv0n2s063m7keq9eiluqve3lfelf1.apps.googleusercontent.com -e SERVER_TYPE=production -e PORT=3000  --restart unless-stopped -d ${IMAGE_TAG}"
+    - ssh -p22 $USER@$SERVER_IP "docker run --network=itrainyou-backend_default --name ${IMAGE_NAME} -e BACKEND_URL=https://backend.itrainyou.ru -e WS_HOST=wss://backend.itrainyou.ru -e AGORA_ID=ddc00001a79048e98fc21cfeef7efa7c -e SENTRY_CLIENT_DSN=https://f6205d3153964e93afabe2313b1b2ab3@o474760.ingest.sentry.io/5511546 -e SENTRY_SERVER_DSN=https://b359770ce05a40ab86c17dd35faf34c1@o474760.ingest.sentry.io/5514727 -e FACEBOOK_CLIENT_ID=588161764971621 -e VK_CLIENT_ID=7636787 -e GOOGLE_CLIENT_ID=536974560462-812pv0n2s063m7keq9eiluqve3lfelf1.apps.googleusercontent.com -e SERVER_TYPE=production -e SERVER_DEFAULT_PAYMENT_SYSTEM=TINKOFF -e PORT=3000  --restart unless-stopped -d ${IMAGE_TAG}"
     - ssh -p22 $USER@$SERVER_IP "docker logout registry.gitlab.com"
   only:
     - master
