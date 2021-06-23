@@ -14,7 +14,7 @@ import { ApplicationGate } from "@/models"
 import { useGate, useStore } from "effector-react"
 import { config } from "@/config"
 import { $isLoggedIn } from "@/feature/user/user.model"
-import { JivoWidget } from "@/lib/widgets/JivoWidget"
+import { JivoWidget } from "@/lib/external-services/jivo/JivoWidget"
 
 export const Application: React.FC = () => {
   useGate(ApplicationGate)
