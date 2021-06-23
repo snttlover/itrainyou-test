@@ -17,7 +17,7 @@ export type CoachData = {
   phone: string
   photos: string[]
   videoInterview: string
-  inn: number | string
+  inn: number | string | ""
   legalForm: "SELF_EMPLOYMENT" | "IP_PROFESSIONAL_TAXES" | "IP_OTHER_TAXES" | ""
   socialNetworks: string
   supervisions: string

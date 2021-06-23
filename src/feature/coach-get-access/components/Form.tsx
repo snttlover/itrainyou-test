@@ -28,7 +28,8 @@ import ReactIdSwiper from "react-id-swiper"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
 import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
-import { PriceWithCommisionInput } from "@/feature/coach-get-access/components/PriceWithCommisionInputGroup"
+import { PriceWithoutCommissionInput } from "@/feature/coach-get-access/components/PriceWithCommisionInputGroup"
+import { config } from "@/config"
 
 const InformationContainer = styled.div`
   margin: 10px 16px 0;
@@ -164,7 +165,6 @@ export const Form = () => {
     maxSize,
     accept: ["image/gif", "image/png", "image/jpg", "image/jpeg"],
   })
-  
 
   return (
     <InformationContainer>
@@ -181,29 +181,33 @@ export const Form = () => {
           <Textarea value={values.description} placeholder={"Сюда вы можете добавить свои статьи в журналах и т.д."} onChange={_descriptionChanged} rows={8} />
         </FormItem>
       </FormSection>
-
-      <FormSection>
-        <InformationTitle>Юридические данные</InformationTitle>
-        <Description>Эти данные нужны нам для проверки, они не будут видны клиентам</Description>
-        <FormItem label='ИНН' error={errors.inn}>
-          <Input value={values.inn} onChange={_innChanged} type='number' />
-        </FormItem>
-        <FormItem label='Кем вы являетесь'>
-          {legalForm.map(item => (
-            <LegalForm
-              key={item.id}
-              id={item.id}
-              onSelect={id => _changeLegalDataCheckBox(id)}
-              selected={item.selected}
-              name={item.name}
-            />
-          ))}
-        </FormItem>
-      </FormSection>
+      
+      {
+        config.SERVER_DEFAULT_PAYMENT_SYSTEM !== "TINKOFF" &&
+        <FormSection>
+          <InformationTitle>Юридические данные</InformationTitle>
+          <Description>Эти данные нужны нам для проверки, они не будут видны клиентам</Description>
+          <FormItem label='ИНН' error={errors.inn}>
+            // @ts-ignore
+            <Input value={values.inn!} onChange={_innChanged} type='number' />
+          </FormItem>
+          <FormItem label='Кем вы являетесь'>
+            {legalForm.map(item => (
+              <LegalForm
+                key={item.id}
+                id={item.id}
+                onSelect={id => _changeLegalDataCheckBox(id)}
+                selected={item.selected}
+                name={item.name}
+              />
+            ))}
+          </FormItem>
+        </FormSection>
+      }
         
       <FormSection>
         <InformationTitle>Дополнительная информация</InformationTitle>
-        <Description>Телефон будет виден только администраторам и супервизорам</Description>
+        <Description>Данная информация будет доступна только администраторам и супервизорам</Description>
         <FormItem label='Телефон' error={errors.phone}>
           <Input
             mask='+1 111 111-11-11'
@@ -223,11 +227,11 @@ export const Form = () => {
         
       <FormSection>
         <InformationTitle>Цена за сессию</InformationTitle>
-        <Description>Укажите стоимость вашей сессии для каждого времени. Цена для клиента — цена вашей сессии с учетом комиссии платформы ({feeRatio*100}%).</Description>
-        <PriceWithCommisionInput title='30 минут' name='d30Price' />
-        <PriceWithCommisionInput title='45 минут' name='d45Price' />
-        <PriceWithCommisionInput title='60 минут' name='d60Price' />
-        <PriceWithCommisionInput title='90 минут' name='d90Price' />
+        <Description>Укажите стоимость вашей сессии для каждого времени. Комиссия платформы составляет ({feeRatio*100}%).</Description>
+        <PriceWithoutCommissionInput title='30 минут' name='d30Price' />
+        <PriceWithoutCommissionInput title='45 минут' name='d45Price' />
+        <PriceWithoutCommissionInput title='60 минут' name='d60Price' />
+        <PriceWithoutCommissionInput title='90 минут' name='d90Price' />
       </FormSection>
 
       <FormSection>

@@ -1,6 +1,6 @@
 import { FormItem } from "@/oldcomponents/form-item/FormItem"
 import { PriceInput } from "@/pages/coach/schedule/components/PriceInput"
-import { $pricesWithFee,changePrice, Prices } from "@/feature/coach-get-access/coach-get-access.model"
+import { $pricesWithoutFee,changePrice, Prices } from "@/feature/coach-get-access/coach-get-access.model"
 import { useEvent, useStoreMap } from "effector-react"
 import React from "react"
 import styled from "styled-components"
@@ -25,9 +25,9 @@ type PriceInputGroupType = {
     name: keyof Prices
 }
 
-export const PriceWithCommisionInput: React.FC<PriceInputGroupType> = ({ title, name }) => {
+export const PriceWithoutCommissionInput: React.FC<PriceInputGroupType> = ({ title, name }) => {
   const price = useStoreMap({
-    store: $pricesWithFee,
+    store: $pricesWithoutFee,
     keys: [name],
     fn: (prices, [name]) => prices.find(price => price.name === name),
   })
@@ -48,7 +48,7 @@ export const PriceWithCommisionInput: React.FC<PriceInputGroupType> = ({ title, 
           }}
         />
       </FormItem>
-      <SummaryPriceFormItem label='Цена для клиента'>
+      <SummaryPriceFormItem label='Вы получите'>
         <StyledPriceInput
           placeholder='0'
           withoutBorder

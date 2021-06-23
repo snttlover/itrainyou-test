@@ -4,6 +4,7 @@ import { phoneValidator, trimString, innValidator } from "@/lib/validators"
 import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
 import { getSystemInfo } from "@/lib/api/system-info"
 import { isArray } from "@/lib/network/casing"
+import { config } from "@/config"
 
 export type Prices = {
     d30Price?: number
@@ -58,11 +59,11 @@ export const $prices = createStore<Price[]>([
     state.map(price => ({ ...price, value: price.name === name ? value : price.value }))
   )
 
-export const $pricesWithFee = combine($prices, $feeRatio, (prices, feeRatio) =>
-  prices.map(price => ({ ...price, valueWithFee: price ? price.value + price.value * feeRatio : 0 }))
+export const $pricesWithoutFee = combine($prices, $feeRatio, (prices, feeRatio) =>
+  prices.map(price => ({ ...price, valueWithFee: price ? price.value - price.value * feeRatio : 0 }))
 )
 
-const $schedule = $pricesWithFee.map(state => {
+const $schedule = $pricesWithoutFee.map(state => {
   const newState = state.reduce((a, key) => Object.assign(a, { [key.name]: key.valueWithFee }), {})
   const emptyObjectForBackend = {isAvailable: false, weekdaySlots: []}
   Object.assign(newState, emptyObjectForBackend)
@@ -218,21 +219,23 @@ const $categoriesError = $selectedCategories.map(categories => {
 
 const $isCategoriesCorrect = $categoriesError.map(value => !value)
 
-export const $form = combine({
+let formFields = {
   education: $education,
   workExperience: $workExperience,
   description: $description,
   phone: $phone,
   photos: $photos,
   videoInterview: $videoInterview,
-  legalForm: $legalForm,
   socialNetworks: $socialNetworks,
   supervisions: $supervisions,
-  inn: $inn,
   schedule: $schedule,
-})
+}
+if (config.SERVER_DEFAULT_PAYMENT_SYSTEM !== "TINKOFF") {
+  formFields = {...{legalForm: $legalForm, inn: $inn}, ...formFields}
+}
+export const $form = combine(formFields)
 
-export const $formErrors = combine({
+let formErrors = {
   categories: $categoriesError,
   education: $educationError,
   workExperience: $workExperienceError,
@@ -241,9 +244,13 @@ export const $formErrors = combine({
   socialNetworks: $socialNetworkError,
   supervisions: $supervisionsError,
   inn: $innError,
-})
+}
+if (config.SERVER_DEFAULT_PAYMENT_SYSTEM !== "TINKOFF") {
+  formErrors = {...{inn: $innError,}, ...formErrors}
+}
+export const $formErrors = combine(formErrors)
 
-export const $formValid = combine(
+let formValidFields = {
   $isEducationCorrect,
   $isWorkExperienceCorrect,
   $isDescriptionCorrect,
@@ -252,6 +259,13 @@ export const $formValid = combine(
   $issupervisionsCorrect,
   $isScheduleFilled,
   $isCategoriesCorrect,
+}
+if (config.SERVER_DEFAULT_PAYMENT_SYSTEM !== "TINKOFF") {
+  formValidFields = {...{$isInnCorrect,}, ...formValidFields}
+}
+
+export const $formValid = combine(
+  formValidFields,
   (...args) => args.every(val => val)
 )
 
