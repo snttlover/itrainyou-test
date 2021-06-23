@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { Container } from "../Container"
 
 import playIcon from "./assets/play.svg"
-import ym from "react-yandex-metrika"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const Wrapper = styled.section`
   background: white;
@@ -87,7 +87,7 @@ export const Video = ({ videoData }: Props) => {
 
   const handleOnPlay = () => {
     openVideo(true)
-    ym("reachGoal","videoland")
+    ymLog("reachGoal","videoland")
   }
 
   return (

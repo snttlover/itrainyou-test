@@ -25,6 +25,7 @@ import styled from "styled-components"
 import { userDataReset } from "@/pages/auth/pages/signup/models/units"
 import { Checkbox,StyledCheckbox } from "@/oldcomponents/checkbox/Checkbox"
 import ym from "react-yandex-metrika"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const Container = styled.div`
   min-width: 320px;
@@ -222,7 +223,7 @@ export const Step1 = () => {
               <a href='/oferta.pdf' target='_blank'>Оферты</a>
             </AcceptionText>
           </StyledCheckBox>
-          <NextButton disabled={!isFormValid || isFetching || !agreed} onClick={() => ym("reachGoal","firstsignin")}/>
+          <NextButton disabled={!isFormValid || isFetching || !agreed} onClick={() => ymLog("reachGoal","firstsignin")}/>
         </Form>
       </Container>
       <Footer>

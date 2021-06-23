@@ -14,7 +14,6 @@ import * as Sentry from "@sentry/react"
 import { config } from "@/config"
 import { Integrations } from "@sentry/tracing"
 import { fixChrome88timeZone } from "@/polyfills/chrome88-dayjs-timezone-fix"
-import { Widget as JivoWidget } from "react-jivosite"
 
 fixChrome88timeZone()
 
@@ -68,7 +67,6 @@ if (token) {
   ReactDOM.render(
     <Router history={history!}>
       <Application />
-      <JivoWidget id={config.JIVO_ID} />
     </Router>,
     document.getElementById("root")
   )

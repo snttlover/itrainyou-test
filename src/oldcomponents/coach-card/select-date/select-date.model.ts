@@ -11,17 +11,21 @@ import {
   createEvent,
   createStore,
   forward,
+  guard,
   restore,
   sample,
   split,
-  guard,
 } from "effector-root"
-import { changeShowFundUpDialog, finishSaveClientCardFx, setRedirectUrl } from "@/feature/client-funds-up/dialog/models/units"
+import {
+  changeShowFundUpDialog,
+  finishSaveClientCardFx,
+  setRedirectUrl
+} from "@/feature/client-funds-up/dialog/models/units"
 import { getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
 import { createClientSessionRequest } from "@/lib/api/client/create-client-session-request"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
-import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
-import ym from "react-yandex-metrika"
+import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -88,7 +92,7 @@ export const genFreeSessions = () => {
 
   const bulkFreeSession = createEvent<SessionRequestParams>()
 
-  bulkFreeSession.watch(payload => ym("reachGoal", "bookingdate"))
+  bulkFreeSession.watch(payload => ymLog("reachGoal", "bookingdate"))
 
 
   forward({
@@ -180,7 +184,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
 
   buySessionBulk.watch(payload => {
     const args = freeSessions ? "bookingdate" : "bookingcoach"
-    ym("reachGoal", args)
+    ymLog("reachGoal", args)
   })
 
   forward({

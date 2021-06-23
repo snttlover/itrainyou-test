@@ -8,7 +8,7 @@ import { Container } from "../Container"
 import { RegisterButton } from "../RegisterButton"
 
 import logoImg from "./assets/logo.svg"
-import ym from "react-yandex-metrika"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const Wrapper = styled.header`
   width: 100%;
@@ -149,7 +149,7 @@ export const Header = ({ signUpRoute, additionalButton, showExtraButton }: Props
         <NavLink to={routeNames.login()}>Войти</NavLink>
       </SecondNav>
 
-      <StyledRegisterButton to={signUpRoute} onClick={() => ym("reachGoal","pushsignin")}>Зарегистрироваться</StyledRegisterButton>
+      <StyledRegisterButton to={signUpRoute} onClick={() => ymLog("reachGoal","pushsignin")}>Зарегистрироваться</StyledRegisterButton>
     </StyledContainer>
   </Wrapper>
 )

@@ -9,9 +9,13 @@ import { DeleteModalDialog } from "@/pages/client/profile/content/profile-delete
 import { IndividualSessions } from "@/pages/client/profile/content/sessions-list/IndividualSessions"
 import { $profilePageLoading, $profilePageSessionsCount, ClientProfileGate } from "./profile-page.model"
 import { MediaRange } from "@/lib/responsive/media"
-import { useGate, useStore } from "effector-react"
+import { useEvent, useGate, useStore } from "effector-react"
 import { Loader } from "@/oldcomponents/spinner/Spinner"
-import { ProfileCoachButton } from "@/pages/client/profile/content/coach-button/ProfileCoachButton"
+import { BecomeCoachWarningDialog } from "@/pages/client/profile/content/become-coach-dialog/BecomeCoachWarningDialog"
+import {
+  $becomeCoachWarningDialogVisibility,
+  $userHasCoach, changeCoachWarningDialogVisibility
+} from "@/pages/client/profile/content/become-coach-dialog/models/units"
 
 const Container = styled(ContentContainer)`
   display: flex;
@@ -24,9 +28,19 @@ const Container = styled(ContentContainer)`
   `}
 `
 
+const CoachButton = styled.div`
+  margin-top: 32px;
+  font-size: 16px;
+  line-height: 22px;
+  color: #9aa0a6;
+  cursor: pointer;
+`
+
 const ProfilePage = () => {
   const sessionsCount = useStore($profilePageSessionsCount)
   const pageLoading = useStore($profilePageLoading)
+  const userIsCoach = useStore($userHasCoach)
+  const changeDialogVisibility = useEvent(changeCoachWarningDialogVisibility)
 
   useGate(ClientProfileGate)
 
@@ -38,7 +52,11 @@ const ProfilePage = () => {
           <ProfileInterests />
           <ProfileCreditCards userType={"client"} />
           {sessionsCount && <IndividualSessions />}
-          <ProfileCoachButton />
+          {
+            !userIsCoach &&
+            <CoachButton onClick={() => changeDialogVisibility(true)}>Стать коучем</CoachButton>
+          }
+          <BecomeCoachWarningDialog />
           <DeleteModalDialog />
         </Container>
       ) : (

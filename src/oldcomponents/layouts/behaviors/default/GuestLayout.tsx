@@ -4,7 +4,6 @@ import styled from "styled-components"
 import { TopBar } from "@/pages/landing-old/content/top-bar/TopBar"
 import { ClientTheme } from "@/oldcomponents/layouts/themes"
 import { DashboardPageWrapper } from "@/application/components/layouts/behaviors/dashboards/common/DashboardPageWrapper"
-import { config } from "@/config"
 
 const StyledLayout = styled(Layout)`
   background: #f4f5f7;

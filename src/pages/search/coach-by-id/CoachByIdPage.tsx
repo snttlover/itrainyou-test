@@ -6,6 +6,7 @@ import { AboutCoach } from "@/pages/search/coach-by-id/components/AboutCoach"
 import { BaseCoachInfo } from "@/pages/search/coach-by-id/components/BaseCoachInfo"
 import { Reviews } from "@/pages/search/coach-by-id/components/Reviews"
 import * as React from "react"
+import { useEffect } from "react"
 import styled from "styled-components"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
@@ -15,16 +16,15 @@ import { NotFound } from "@/feature/not-found/components/NotFound"
 import { BookSessionsStatusModalDialog } from "@/pages/search/content/list/content/modals/BookSessionsStatusModalDialog"
 import {
   $coach,
+  $freeSessionsPickerStore,
   $isNotFound,
   $sessionsPickerStore,
-  $freeSessionsPickerStore,
   loadCoachFx,
   mounted
 } from "@/pages/search/coach-by-id/models/units"
 import { useLocation } from "react-router-dom"
 import { $hasFreeSessions } from "@/pages/client/home/home.model"
-import { useEffect } from "react"
-import ym from "react-yandex-metrika"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -138,7 +138,7 @@ export const CoachByIdPage = () => {
   const isNotFound = useStore($isNotFound)
 
   useEffect(() => {
-    ym("reachGoal","pushcoachprofile")
+    ymLog("reachGoal","pushcoachprofile")
   },[])
 
 

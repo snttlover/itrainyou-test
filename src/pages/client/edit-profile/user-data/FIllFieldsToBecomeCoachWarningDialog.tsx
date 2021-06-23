@@ -3,14 +3,14 @@ import styled from "styled-components"
 import { Dialog } from "@/oldcomponents/dialog/Dialog"
 import { useEvent, useStore } from "effector-react"
 import {
-  $clientProfileCoachWarningDilalogVisibility,
-  changeClientProfileCoachWarningDilalogVisibility,
+  $fillFieldsToBecomeCoachWarningDialogVisibility,
+  changeFillFieldsToBecomeCoachWarningDialogVisibility,
 } from "@/pages/client/edit-profile/user-data/client-profile.model"
 import { Button } from "@/oldcomponents/button/normal/Button"
 
-export const BecomeCoachWarningDialog = () => {
-  const visibility = useStore($clientProfileCoachWarningDilalogVisibility)
-  const changeVisibility = useEvent(changeClientProfileCoachWarningDilalogVisibility)
+export const FIllFieldsToBecomeCoachWarningDialog = () => {
+  const visibility = useStore($fillFieldsToBecomeCoachWarningDialogVisibility)
+  const changeVisibility = useEvent(changeFillFieldsToBecomeCoachWarningDialogVisibility)
 
   return (
     <StyledDialog value={visibility} onChange={changeVisibility}>
