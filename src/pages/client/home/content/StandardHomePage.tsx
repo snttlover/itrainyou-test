@@ -26,6 +26,7 @@ import { clientCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/cr
 import { Onboarding } from "@/pages/client/home/content/Onboarding"
 import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
 import { Icon } from "@/oldcomponents/icon/Icon"
+import { Informer } from "@/newcomponents/informer/Informer"
 
 const Block = styled.div`
   position: relative;
@@ -86,116 +87,160 @@ const SessionEnterText = styled.p`
 `
 
 const InformerContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 16px 22px;
-  background: linear-gradient(91.34deg, #0A58CC -38.45%, #9E58CC 128.49%), linear-gradient(90deg, #4858CC -50%, #783D9D 150%), #FFFFFF;
-  border-radius: 8px;
   margin-top: 24px;
   max-width: 600px;
 `
 
-const GiftIcon = styled(Icon).attrs({ name: "gift" })`
-  width: 24px;
+const FacebookIcon = styled(Icon).attrs({ name: "fb" })`
+  width: 16px;
+  height: 16px;
   cursor: pointer;
-  fill: white;
+  fill: #4858CC;
+  margin-right: 12px;
+`
+
+const InstagramIcon = styled(Icon).attrs({ name: "instagram" })`
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  fill: #4858CC;
+  margin-right: 12px;
 `
 
 const InformerTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
-  padding: 0 22px;
-  max-width: 90%;
-  
-  ${MediaRange.lessThan("mobile")`
-    padding: 0 16px;
-    max-width: 85%;
-  `}
 `
 
-const InformerHeader = styled.div`
+const InformerHeader = styled.div<{changeColors: boolean}>`
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
-  color: #FFFFFF;
+  color: ${({ changeColors }) => changeColors ? "#424242" : "#FFFFFF"};
 `
 
-const InformerDescription = styled.div`
+const InformerDescription = styled.div<{changeColors: boolean}>`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
-  color: #FFFFFF;
+  color: ${({ changeColors }) => changeColors ? "#424242" : "#FFFFFF"};
 `
 
-const Close = styled(Icon).attrs({ name: "plus" })`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  fill: white;
-  transform: rotate(45deg);
-  margin-left: auto;
-`
-
-const SocialLink = styled.a`
+const SocialLink = styled.a<{filledColor?: boolean}>`
   text-decoration: underline;
-  color: #FFFFFF;
+  color: ${({ filledColor }) => !!filledColor ? "#FFFFFF" : "#4858CC"};
   font-weight: 500;
-  margin-right: 2px;
+
+  &:last-child {
+    margin-left: 20px;
+  }
 `
 
-const Informer = () => {
-  const [showed, setShowed] = useState(true)
+const SocialsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 12px;
+`
 
+const StyledInformer = () => {
   const freeSessionsStatus = useStore($freeSessionsStatus)
 
   const handleOnCrossClick = () => {
-    setShowed(false)
     localStorage.setItem(STORAGE_KEY, "not_show")
   }
 
   let header = ""
+  let description = "А пока ознакомьтесь с другими коучами нашей платформы и присоединитесь к нам в социальных сетях:"
+  let showSocials = false
+
+  const ContentOption = ({ changeColors }: any) => (
+    <InformerTextContainer>
+      <InformerHeader changeColors>{header}</InformerHeader>
+
+      <InformerDescription changeColors>{description}</InformerDescription>
+      {showSocials ?
+        <SocialsContainer>
+          <SocialLink href='https://instagram.com/i_trainyou'><InstagramIcon />Instagram</SocialLink>
+          <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'><FacebookIcon />Facebook</SocialLink>
+        </SocialsContainer>
+        : null}
+    </InformerTextContainer>
+  )
 
   switch (freeSessionsStatus) {
   case "AWAITING_BOOK_PROMO_REQUEST":
     header = "Вы отправили запрос на бронирование бесплатной сессии!"
-    break
+    showSocials = true
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
 
   case "ACTIVE_PROMO_SESSION":
-    header = "Вы забронировали бесплатную сессию!"
-    break
+    header = "Бесплатная сессия забронирована!"
+    showSocials = true
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
 
   case "AWAITING_COMPLETION_PROMO_REQUEST":
     header = "Вы не подтвердили окончание бесплатной сессии!"
-    break
+    showSocials = true
+
+    return (
+      <InformerContainer>
+        <Informer
+          crossColored
+          iconName={"gift"}
+          closable
+          backGround={"blue"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={false}/>
+        </Informer>
+      </InformerContainer>
+    )
 
   case "PROMO_LIMIT_ENDED":
-    header = "У вас закончился лимит бесплатных сессий!"
-    break
-  }
+    header = "Вы исчерпали лимит бесплатных сессий на платформе."
+    description = "Предлагаем забронировать первую сессию и начать свой путь к цели!"
 
-  return (
-    <>
-      {showed && freeSessionsStatus !== "NO_PROMO_AVAILABLE" ?
-        <InformerContainer>
-          <GiftIcon />
-          <InformerTextContainer>
-            <InformerHeader>{header}</InformerHeader>
-            <InformerDescription>А пока ознакомьтесь с другими коучами нашей платформы и присоединитесь к нам в социальных сетях:&nbsp;
-              <SocialLink href='https://instagram.com/i_trainyou'>Instagram,</SocialLink>
-              <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'>Facebook</SocialLink>
-            </InformerDescription>
-          </InformerTextContainer>
-          <Close onClick={handleOnCrossClick} />
-        </InformerContainer>
-        : null}
-    </>
-  )
+    return (
+      <InformerContainer>
+        <Informer
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
+
+  case "NO_PROMO_AVAILABLE":
+    return null
+
+  default:
+    return null
+  }
 }
 
 export const StandardHomePage = () => {
@@ -227,7 +272,7 @@ export const StandardHomePage = () => {
     <>
       <ContentContainer>
         <CheckMediaDevices type={"client"} />
-        {informerVisibility && (<Informer />)}
+        {informerVisibility && (<StyledInformer />)}
       </ContentContainer>
 
       <ContentContainer>

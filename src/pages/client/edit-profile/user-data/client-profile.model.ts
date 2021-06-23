@@ -1,16 +1,15 @@
 import { $userData, loadUserData } from "@/feature/user/user.model"
-import { Sex } from "@/lib/api/interfaces/utils.interface"
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import dayjs, { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, restore, sample, Event, guard } from "effector-root"
+import { combine, createEffect, createEvent, createStore, Event, forward, restore, sample } from "effector-root"
 import { every, spread } from "patronum"
 import { updateMyClient } from "@/lib/api/client/update"
 import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
-import { becomeCoach } from "@/pages/client/profile/content/coach-button/profile-coach-button"
+import { $isClientBecomingCoach } from "@/pages/client/profile/content/become-coach-dialog/models/units"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
@@ -61,15 +60,26 @@ export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = 
 
 export const [$middleName, middleNameChanged, $middleNameError, $isMiddleNameCorrect] = createEffectorField<
   string,
-  { userData: UnpackedStoreObjectType<typeof $userData>; value: string }
+  {
+    userData: UnpackedStoreObjectType<typeof $userData>,
+    isClientBecomingCoach: boolean,
+    value: string
+  }
   >({
     defaultValue: "",
-    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validatorEnhancer: $store => combine(
+      $userData,
+      $isClientBecomingCoach,
+      $store,
+      (userData, isClientBecomingCoach, value) => ({
+        userData, isClientBecomingCoach, value
+      })),
     validator: obj => {
       const coach = obj.userData.coach
+      const isFieldRequired = coach !== null || obj.isClientBecomingCoach
       const value = obj.value
 
-      if (coach !== null && !value) return "Поле обязательно к заполнению"
+      if (isFieldRequired && !value) return "Поле обязательно к заполнению"
       return null
     },
     eventMapper: event => event.map(trimString),
@@ -77,30 +87,52 @@ export const [$middleName, middleNameChanged, $middleNameError, $isMiddleNameCor
 
 export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<
   Dayjs | "",
-  { userData: UnpackedStoreObjectType<typeof $userData>; value: Dayjs | "" }
+  {
+    userData: UnpackedStoreObjectType<typeof $userData>,
+    isClientBecomingCoach: boolean,
+    value: Dayjs | ""
+  }
   >({
     defaultValue: "",
-    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validatorEnhancer: $store => combine(
+      $userData,
+      $isClientBecomingCoach,
+      $store,
+      (userData, isClientBecomingCoach, value) => ({
+        userData, isClientBecomingCoach, value
+      })),
     validator: obj => {
       const coach = obj.userData.coach
+      const isFieldRequired = coach !== null || obj.isClientBecomingCoach
       const value = obj.value
 
-      if (coach !== null && !value) return "Поле обязательно к заполнению"
+      if (isFieldRequired && !value) return "Поле обязательно к заполнению"
       return null
     },
   })
 
 export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
   "M" | "F" | "",
-  { userData: UnpackedStoreObjectType<typeof $userData>; value: "M" | "F" | "" }
+  {
+    userData: UnpackedStoreObjectType<typeof $userData>,
+    isClientBecomingCoach: boolean,
+    value: "M" | "F" | "",
+  }
   >({
     defaultValue: "",
-    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validatorEnhancer: $store => combine(
+      $userData,
+      $isClientBecomingCoach,
+      $store,
+      (userData, isClientBecomingCoach, value) => ({
+        userData, isClientBecomingCoach, value
+      })),
     validator: obj => {
       const coach = obj.userData.coach
+      const isFieldRequired = coach !== null || obj.isClientBecomingCoach
       const value = obj.value
 
-      if (coach !== null && !value) return "Поле обязательно к заполнению"
+      if (isFieldRequired && !value) return "Поле обязательно к заполнению"
       return null
     },
   })
@@ -154,7 +186,15 @@ export const $clientProfileFormErrors = combine({
 
 export const $isClientProfileFormValid = every({
   predicate: true,
-  stores: [$isNameCorrect, $isLastNameCorrect, $isBirthdayCorrect, $isSexCorrect, $isImageCorrect, $isMiddleNameCorrect],
+  stores: [
+    $originalAvatar.map(({file}) => !!file),
+    $isNameCorrect,
+    $isLastNameCorrect,
+    $isBirthdayCorrect,
+    $isSexCorrect,
+    $isImageCorrect,
+    $isMiddleNameCorrect
+  ],
 })
 
 export const saveClientUserData = createEvent()
@@ -191,14 +231,15 @@ sample({
   target: saveClientUserDataFx,
 })
 
-export const showClientProfileCoachDialog = createEvent()
-export const changeClientProfileCoachWarningDilalogVisibility = createEvent<boolean>()
-export const $clientProfileCoachWarningDilalogVisibility = restore(
-  changeClientProfileCoachWarningDilalogVisibility,
+export const showFillFieldsToBecomeCoachWarningDialog = createEvent()
+export const changeFillFieldsToBecomeCoachWarningDialogVisibility = createEvent<boolean>()
+
+export const $fillFieldsToBecomeCoachWarningDialogVisibility = restore(
+  changeFillFieldsToBecomeCoachWarningDialogVisibility,
   false
 ).reset(userProfileGate.close)
 
 forward({
-  from: showClientProfileCoachDialog,
-  to: changeClientProfileCoachWarningDilalogVisibility.prepend(() => true),
+  from: showFillFieldsToBecomeCoachWarningDialog,
+  to: changeFillFieldsToBecomeCoachWarningDialogVisibility.prepend(() => true),
 })

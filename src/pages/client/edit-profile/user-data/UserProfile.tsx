@@ -6,33 +6,36 @@ import { MediaRange } from "@/lib/responsive/media"
 import { UploadModal } from "./UploadModal"
 import { BirthdayFormGroup } from "./BirthdayFormGroup"
 import {
-  $isClientProfileFormValid,
-  $isUploadModelOpen,
   $clientProfileForm,
   $clientProfileFormErrors,
+  $clientProfileSaving,
+  $isClientProfileFormValid,
+  $isUploadModelOpen,
   lastNameChanged,
   middleNameChanged,
   nameChanged,
-  userProfileGate,
-  toggleUploadModal,
   saveClientUserData,
-  $clientProfileSaving,
+  toggleUploadModal,
+  userProfileGate,
 } from "./client-profile.model"
 import { useEvent, useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { Spinner } from "@/oldcomponents/spinner/Spinner"
-import { useHistory, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import {
-  $userHasCoach, becomeCoach
-} from "@/pages/client/profile/content/coach-button/profile-coach-button"
+  $isClientBecomingCoach,
+  $userHasCoach,
+  becomeCoach
+} from "@/pages/client/profile/content/become-coach-dialog/models/units"
 
 export const UserProfile = () => {
   useGate(userProfileGate)
 
   const values = useStore($clientProfileForm)
   const errors = useStore($clientProfileFormErrors)
+
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
@@ -44,19 +47,21 @@ export const UserProfile = () => {
   const save = useEvent(saveClientUserData)
   const loading = useStore($clientProfileSaving)
 
-  const history = useHistory()
-  const location = useLocation()
+  const isClientBecomingCoach = useStore($isClientBecomingCoach)
+
   const submitChanges = () => {
     save()
-    if (location.state !== undefined) _becomeCoach()
+    if (isClientBecomingCoach) _becomeCoach()
   }
+
+  const isRequired = _userHasCoach || isClientBecomingCoach
 
   return (
     <Form>
       {loading && <StyledSpinner />}
       <Title>Редактирование профиля</Title>
       <AvatarWrapper>
-        <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required={_userHasCoach || location.state !== undefined} />
+        <FormItem label={<UserAvatar src={values.image.file} onClick={() => _toggleUploadModal()} />} required={isRequired} />
         <AvatarHint>
           <h4>Добавить фото</h4>
           <p>Формат: jpg, png. Максимальный размер файла: 100Mb. Рекомендованный размер: 200х200 px.</p>
@@ -68,10 +73,10 @@ export const UserProfile = () => {
       <FormItem label='Фамилия' error={errors.lastName} required>
         <Input withoutBorder value={values.lastName} onChange={_lastNameChanged} />
       </FormItem>
-      <FormItem label='Отчество' error={errors.middleName} required={_userHasCoach || location.state !== undefined}>
+      <FormItem label='Отчество' error={errors.middleName} required={isRequired}>
         <Input withoutBorder value={values.middleName} onChange={_middleNameChanged} />
       </FormItem>
-      <BirthdayFormGroup required={_userHasCoach || location.state !== undefined} />
+      <BirthdayFormGroup required={isRequired} />
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
       <StyledFormItem>
         <StyledSubmit onClick={submitChanges} disabled={!canSendForm}>

@@ -188,8 +188,8 @@ export const Form = () => {
           <InformationTitle>Юридические данные</InformationTitle>
           <Description>Эти данные нужны нам для проверки, они не будут видны клиентам</Description>
           <FormItem label='ИНН' error={errors.inn}>
-            // @ts-ignore
-            <Input value={values.inn!} onChange={_innChanged} type='number' />
+            {/* @ts-ignore */}
+            <Input value={values.inn!} onChange={_innChanged} type='number' />  // @ts-ignore
           </FormItem>
           <FormItem label='Кем вы являетесь'>
             {legalForm.map(item => (

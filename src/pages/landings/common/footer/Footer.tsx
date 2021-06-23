@@ -1,8 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 
-import ym from "react-yandex-metrika"
-
 import { Container } from "../Container"
 
 import mcLogo from "./assets/banks/mc.svg"
@@ -12,6 +10,7 @@ import mirLogo from "./assets/banks/mir.svg"
 import tgLogo from "./assets/socials/tg.svg"
 import fbLogo from "./assets/socials/fb.svg"
 import igLogo from "./assets/socials/ig.svg"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const Wrapper = styled.footer`
   background: linear-gradient(101.34deg, #4858cc -7.8%, #7d36a8 114.56%);
@@ -121,20 +120,20 @@ export const Footer = () => (
       </BankSection>
       <SocialsCopySection>
         <Socials>
-          <Social href='https://t.me/i_trainyou' target='_blank' onClick={() => ym("reachGoal", "tgland")}>
+          <Social href='https://t.me/i_trainyou' target='_blank' onClick={() => ymLog("reachGoal", "tgland")}>
             <img src={tgLogo} />
           </Social>
           <Social
             href='https://www.facebook.com/ITrainYou-107404141044566/'
             target='_blank'
-            onClick={() => ym("reachGoal", "fbland")}
+            onClick={() => ymLog("reachGoal", "fbland")}
           >
             <img src={fbLogo} />
           </Social>
           <Social
             href='https://www.instagram.com/i.trainyou/?hl=ru'
             target='_blank'
-            onClick={() => ym("reachGoal", "instland")}
+            onClick={() => ymLog("reachGoal", "instland")}
           >
             <img src={igLogo} />
           </Social>

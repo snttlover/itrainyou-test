@@ -5,16 +5,17 @@ import { Button } from "@/oldcomponents/button/normal/Button"
 import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
 import { useEvent, useStore } from "effector-react"
 import {
-  $profileCoachButtonVisibility, $userHasCoach, becomeCoach,
-  changeProfileCoachButtonVisibility, reset
-} from "@/pages/client/profile/content/coach-button/profile-coach-button"
+  $becomeCoachWarningDialogVisibility,
+  becomeCoach,
+  changeCoachWarningDialogVisibility,
+  resetChangeCoachWarningDialogVisibility
+} from "@/pages/client/profile/content/become-coach-dialog/models/units"
 
-export const ProfileCoachButton = () => {
-  const userIsCoach = useStore($userHasCoach)
-  const visibility = useStore($profileCoachButtonVisibility)
-  const changeVisibility = useEvent(changeProfileCoachButtonVisibility)
+export const BecomeCoachWarningDialog = () => {
+  const visibility = useStore($becomeCoachWarningDialogVisibility)
+  const changeVisibility = useEvent(changeCoachWarningDialogVisibility)
   const _becomeCoach = useEvent(becomeCoach)
-  const destroyed = useEvent(reset)
+  const destroyed = useEvent(resetChangeCoachWarningDialogVisibility)
 
   useEffect(() => {
     return () => destroyed()
@@ -22,7 +23,6 @@ export const ProfileCoachButton = () => {
 
   return (
     <>
-      { !userIsCoach && <CoachButton onClick={() => changeVisibility(true)}>Стать коучем</CoachButton> }
       <StyledDialog value={visibility} onChange={changeVisibility}>
         <Content>
           <Header>Вы действительно хотите стать коучем?</Header>
@@ -48,14 +48,6 @@ const StyledDialog = styled(Dialog)`
   ${Close} {
     display: none;
   }
-`
-
-const CoachButton = styled.div`
-  margin-top: 32px;
-  font-size: 16px;
-  line-height: 22px;
-  color: #9aa0a6;
-  cursor: pointer;
 `
 
 const Header = styled.div`

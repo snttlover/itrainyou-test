@@ -11,7 +11,6 @@ export type IconName =
   | "tabletka"
   | "arrow"
   | "cross"
-  | "facebook"
   | "notification"
   | "burger"
   | "google"
@@ -106,6 +105,9 @@ export type IconName =
         | "question-mark"
         | "percents"
         | "gift"
+        | "gift-black"
+        | "fb"
+        | "instagram"
 
 type IconProps = {
   name: IconName,

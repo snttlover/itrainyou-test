@@ -12,9 +12,10 @@ import {
   $step3Form,
   $step3FormErrors,
   emailChanged,
-  middleNameChanged,
   lastNameChanged,
-  nameChanged, step3FormSubmitted,
+  middleNameChanged,
+  nameChanged,
+  step3FormSubmitted,
   step3Mounted,
   toggleUploadModal
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
@@ -25,7 +26,7 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $userData } from "@/pages/auth/pages/signup/models/units"
-import ym from "react-yandex-metrika"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -166,7 +167,7 @@ export const Step3 = () => {
   }
 
   const nextOnClick = () => {
-    ym("reachGoal","profilesignin")
+    ymLog("reachGoal","profilesignin")
     _step3FormSubmitted()
   }
 

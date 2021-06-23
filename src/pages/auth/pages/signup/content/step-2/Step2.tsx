@@ -1,5 +1,5 @@
 import { AuthLayout } from "@/oldcomponents/layouts/sections/auth/AuthLayout"
-import { history, navigatePush } from "@/feature/navigation"
+import { navigatePush } from "@/feature/navigation"
 import { MediaRange } from "@/lib/responsive/media"
 import { WhiteNextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
@@ -9,7 +9,7 @@ import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { $userData, userTypeChanged } from "@/pages/auth/pages/signup/models/units"
-import ym from "react-yandex-metrika"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const Container = styled.div`
   min-width: 320px;
@@ -100,7 +100,7 @@ export const Step2 = () => {
   const navigate = useEvent(navigatePush)
 
   const handleOnNextClick = () => {
-    ym("reachGoal","chooseclientsignin")
+    ymLog("reachGoal","chooseclientsignin")
     navigate({ url: routeNames.signup("3") })
   }
 

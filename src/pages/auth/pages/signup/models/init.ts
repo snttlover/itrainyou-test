@@ -1,21 +1,32 @@
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { combine, forward, guard, sample } from "effector-root"
-import { $isSocialSignupInProgress, $isLoggedIn } from "@/feature/user/user.model"
+import { $isLoggedIn, $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $socialsForm, createUserFromSocialsFx } from "@/pages/auth/pages/socials/models/units"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import {
-  $userData, categoriesChanged, clientDataChanged, coachDataChanged,
+  $priceRanges,
+  $rangeSelected,
+  $userData,
+  categoriesChanged,
+  clientDataChanged,
+  coachDataChanged,
   getMyUserDataFx,
+  getPriceRangesFx,
   loadDataFx,
+  priceRangesGate,
   registerStep4Merged,
   registerUserFx,
   saveDataFx,
-  signUpPageMounted, userDataChanged, userDataReset, userDataSetWithSocials,
-  userType, userTypeChanged, getPriceRangesFx, priceRangesGate,
-  $priceRanges, selectPriceRange, $rangeSelected
+  selectPriceRange,
+  signUpPageMounted,
+  userDataChanged,
+  userDataReset,
+  userDataSetWithSocials,
+  userType,
+  userTypeChanged
 } from "@/pages/auth/pages/signup/models/units"
-import ym from "react-yandex-metrika"
+import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 $userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
@@ -82,7 +93,7 @@ sample({
   target: registerUserFx,
 })
 
-registerUserFx.done.map(_ => ym("reachGoal","formsignin"))
+registerUserFx.done.map(_ => ymLog("reachGoal","formsignin"))
 
 sample({
   source: $socialsForm,

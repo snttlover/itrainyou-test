@@ -562,7 +562,7 @@ const MobileSessionInfoModal = () => {
 
   let client: any
 
-  if ( config.SERVER_TYPE === "production") {
+  if ( config.ENVIRONMENT === "production") {
     client = session.client
   } else {
     client = fixAvatarAndImageUrl(session.client)
@@ -642,7 +642,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 
   let client: any
 
-  if ( config.SERVER_TYPE === "production") {
+  if ( config.ENVIRONMENT === "production") {
     client = props.session.client
   } else {
     client = fixAvatarAndImageUrl(props.session.client)
