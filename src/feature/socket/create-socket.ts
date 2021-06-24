@@ -18,7 +18,7 @@ export const createSocket = () => {
       socket.onmessage = e => {
         let message = keysToCamel(JSON.parse(e.data))
 
-        if ( config.SERVER_TYPE !== "production") {
+        if ( config.ENVIRONMENT !== "production") {
           message = fixAvatarAndImageUrl(message)
         }
         runInScope(onMessage, message)

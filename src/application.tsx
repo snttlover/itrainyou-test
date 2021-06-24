@@ -24,7 +24,7 @@ export const Application: React.FC = () => {
     <ClientTheme>
       <AppStyles />
       <AsyncDataLoader>
-        { config.SERVER_TYPE === "production" ?
+        { config.ENVIRONMENT === "production" ?
           <YMInitializer
             accounts={[config.YANDEX_METRIKA_ID]}
             options={{
