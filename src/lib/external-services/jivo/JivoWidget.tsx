@@ -23,6 +23,7 @@ const mount = (id: string) => {
 
 export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = ({ id }: JivoWidgetProps) => {
   const isLoggedIn = useStore($isLoggedIn)
+
   React.useEffect(() => {
 
     let unmount: (() => void) | undefined
@@ -40,13 +41,10 @@ export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = ({ id }: Jiv
         return mount(id)
       }
 
-
       window.addEventListener("load", onLoad)
     }
 
-
     if (isLoggedIn) {
-      console.log("test")
       document.removeEventListener("load", onLoad)
       if (unmount) {
         unmount()
