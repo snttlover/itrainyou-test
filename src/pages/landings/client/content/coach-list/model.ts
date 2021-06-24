@@ -3,7 +3,9 @@ import { createStore } from "effector-root"
 
 import { Coach, getCoaches } from "@/lib/api/coach"
 
-const fetchCoachesListFx = createEffect<void, Coach[]>().use(() => getCoaches({}))
+const fetchCoachesListFx = createEffect<void, Coach[]>().use(() => getCoaches({
+  session_duration_types: "PROMO"
+}))
 
 export const loadCoaches = createEvent()
 
