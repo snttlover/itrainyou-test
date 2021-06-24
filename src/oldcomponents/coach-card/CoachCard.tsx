@@ -320,7 +320,6 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
 
   const rating = !isThereRating || (coach.rating || 0).toFixed(1).replace(".", ",")
 
-  // @ts-ignore
   const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
   const price =
     filledPrices > 1
