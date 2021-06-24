@@ -299,7 +299,6 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
   }
 
   const redirectToCoach = () => {
-
     freeSessions ? history.push(`/search/coach/${coach.id}`, {freeSessions: true}) : history.push(`/search/coach/${coach.id}`)
   }
 
