@@ -10,8 +10,11 @@ const StyledCoachCard = styled(CoachCard)`
   margin-bottom: 24px;
 `
 
-export const CoachList = () => {
-  const list = useStore($coachesList).map(coach => <StyledCoachCard key={coach.id} coach={coach} />)
+type CoachListProps = {
+  freeSessions?: boolean
+}
 
+export const CoachList = ({ freeSessions }: CoachListProps) => {
+  const list = useStore($coachesList).map(coach => <StyledCoachCard key={coach.id} coach={coach} freeSessions={freeSessions} />)
   return <Container>{list}</Container>
 }

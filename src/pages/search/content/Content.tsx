@@ -13,8 +13,12 @@ const Container = styled.div`
   }
 `
 
-export const Content = () => (
+type ContentPros = {
+  freeSessions?: boolean
+}
+
+export const Content = ({ freeSessions }: ContentPros) => (
   <Container>
-    <List />
+    <List freeSessions={freeSessions} />
   </Container>
 )

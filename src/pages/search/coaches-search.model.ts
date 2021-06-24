@@ -3,10 +3,11 @@ import { ServerParams } from "@/lib/effector"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { fetchMaxPriceFx } from "@/pages/search/content/filters/content/price-filter/price-filter.model"
-import { createEffect, createEvent, forward, merge, sample } from "effector-root"
+import { combine, createEffect, createEvent, forward, merge, sample } from "effector-root"
 import { createStore } from "effector-root"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { debounce, throttle } from "patronum"
+import { $isLoggedIn } from "@/feature/user/user.model"
 
 export const setSearchPageQuery = createEvent<GetCoachesParamsTypes>()
 export const addSearchPageQuery = createEvent<GetCoachesParamsTypes>()
@@ -48,12 +49,12 @@ export const $coachesList = createStore<Coach[]>([])
     return payload.map(coach => {
       const prices = coach.prices
 
-      if (query.session_duration_types) {
+      if (query.session_duration_types && query.session_duration_types !== "PROMO") {
+        // Если идет фильтрация по длительности сессии, то показываем только цены, соответстующие фильтрации
+        // Исключение - фильтрация по типу PROMO (бесплатные сессии)
         const durationTypes = decodeURI(query.session_duration_types).split(",") as DurationType[]
         Object.keys(prices).map(key => {
-          // @ts-ignore
-          if (!durationTypes.includes(key)) {
-            // @ts-ignore
+          if (!durationTypes.includes((key as DurationType))) {
             prices[key] = null
           }
         })
@@ -63,7 +64,6 @@ export const $coachesList = createStore<Coach[]>([])
         Object.keys(prices).map(key => {
           // @ts-ignore
           if (+prices[key] < +query.price__gte) {
-            // @ts-ignore
             prices[key] = null
           }
         })
@@ -73,7 +73,6 @@ export const $coachesList = createStore<Coach[]>([])
         Object.keys(prices).map(key => {
           // @ts-ignore
           if (+prices[key] > +query.price__lte) {
-            // @ts-ignore
             prices[key] = null
           }
         })
@@ -98,11 +97,18 @@ sample({
 export const pageLoaded = createEvent<ServerParams>()
 
 forward({
-  from: pageLoaded.map(params => params.query),
-  to: [fetchCoachesListFx, setSearchPageQuery],
-})
-
-forward({
   from: pageLoaded,
   to: fetchMaxPriceFx,
+})
+
+sample({
+  source: $isLoggedIn,
+  clock: pageLoaded,
+  fn: (isLoggedIn, { params }): GetCoachesParamsTypes => {
+    if (!isLoggedIn) {
+      params["session_duration_types"] = "PROMO"
+    }
+    return params
+  },
+  target: fetchCoachesListFx,
 })
