@@ -15,6 +15,7 @@ import SimpleBar from "simplebar-react"
 import { SessionTimeFilter } from "./content/session-time-filter/SessionTimeFilter"
 import { MediaRange } from "@/lib/responsive/media"
 import { useEffect, useRef, useState } from "react"
+import { $isLoggedIn } from "@/feature/user/user.model"
 
 type ModalTypes = {
   showOnMobile: boolean
@@ -90,6 +91,7 @@ const Header = styled.div`
 const MARGIN_TOP = 44 // in px
 
 export const Filters = () => {
+  const isLoggedIn = useStore($isLoggedIn)
   const showOnMobile = useStore($mobileFiltersVisibility)
   const changeVisibility = useEvent(changeMobileFiltersVisibility)
   const [marginTop, changeFiltersMargin] = useState(MARGIN_TOP)
@@ -143,7 +145,7 @@ export const Filters = () => {
         <Container>
           <MobileClose onClick={() => changeVisibility(false)} />
           <Header>Фильтры</Header>
-          <SessionTimeFilter />
+          {isLoggedIn && <SessionTimeFilter />}
           <PriceFilter />
           <ReviewFilter />
           <DateFilter />

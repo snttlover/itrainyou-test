@@ -34,6 +34,7 @@ export type Coach = {
     D45: null | number
     D60: null | number
     D90: null | number
+    PROMO: null | number
   }
   duration: string
   isFavourite: boolean

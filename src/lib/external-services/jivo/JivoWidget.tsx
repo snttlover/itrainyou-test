@@ -37,7 +37,6 @@ export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = React.memo((
     window.addEventListener("load", onLoad)
 
     return () => {
-      console.log('suka')
       document.removeEventListener("load", onLoad)
       if (unmount) {
         unmount()

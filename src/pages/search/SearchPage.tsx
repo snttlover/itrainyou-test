@@ -1,15 +1,9 @@
 import { START } from "@/lib/effector"
 import { parseQueryString } from "@/lib/helpers/query"
-import {
-  resetSearchQuery,
-  pageLoaded,
-  setSearchPageQuery,
-  loadCoaches,
-  $coachesList
-} from "@/pages/search/coaches-search.model"
+import { loadCoaches, pageLoaded, resetSearchQuery, setSearchPageQuery } from "@/pages/search/coaches-search.model"
 import { useEvent, useStore } from "effector-react"
-import { useEffect } from "react"
 import * as React from "react"
+import { useEffect } from "react"
 import { PageContainer } from "@/oldcomponents/page-container/PageContainer"
 import { Content } from "./content/Content"
 import { Sorting } from "./content/list/content/sorting/Sorting"
@@ -19,6 +13,7 @@ import styled from "styled-components"
 import { UserLayout } from "@/oldcomponents/layouts/behaviors/user/UserLayout"
 import { useLocation } from "react-router-dom"
 import { MediaRange } from "@/lib/responsive/media"
+import { $isLoggedIn } from "@/feature/user/user.model"
 
 const StyledPageContainer = styled(PageContainer)`
   display: flex;
@@ -40,6 +35,7 @@ const ContentWrapper = styled.div`
 const FiltersWrapper = styled.div``
 
 export const SearchPage = () => {
+  const isLoggedIn = useStore($isLoggedIn)
   const reset = useEvent(resetSearchQuery)
   const setQueryParams = useEvent(setSearchPageQuery)
   const fetchCoaches = useEvent(loadCoaches)
@@ -48,11 +44,16 @@ export const SearchPage = () => {
   useEffect(() => {
     const query = parseQueryString(location.search)
 
+    // Для незарегистрированных пользователей показываем только коучей с бесплатными сессиями
+    if (!isLoggedIn) {
+      query["session_duration_types"] = "PROMO"
+    }
+
     setQueryParams(query)
     fetchCoaches()
 
     return () => reset()
-  }, [location.search])
+  }, [location.search, isLoggedIn])
 
   return (
     <UserLayout>
@@ -60,7 +61,7 @@ export const SearchPage = () => {
         <ContentWrapper>
           <MobileTabs />
           <Sorting />
-          <Content />
+          <Content freeSessions={!isLoggedIn} />
         </ContentWrapper>
         <FiltersWrapper>
           <Filters />

@@ -299,7 +299,6 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
   }
 
   const redirectToCoach = () => {
-
     freeSessions ? history.push(`/search/coach/${coach.id}`, {freeSessions: true}) : history.push(`/search/coach/${coach.id}`)
   }
 
@@ -321,7 +320,6 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
 
   const rating = !isThereRating || (coach.rating || 0).toFixed(1).replace(".", ",")
 
-  // @ts-ignore
   const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
   const price =
     filledPrices > 1

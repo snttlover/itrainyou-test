@@ -54,7 +54,11 @@ const NotFound = () => (
   </NotFoundText>
 )
 
-export const List = () => {
+type ListProps = {
+  freeSessions?: boolean
+}
+
+export const List = ({ freeSessions }: ListProps) => {
   const loading = useStore(fetchCoachesListFx.pending)
   const list = useStore($coachesList)
   const notFound = !loading && !list.length && <NotFound />
@@ -72,7 +76,7 @@ export const List = () => {
             </SpinnerContainer>
           )}
         </div>
-        <CoachList />
+        <CoachList freeSessions={freeSessions} />
       </ListContainer>
     </Container>
   )
