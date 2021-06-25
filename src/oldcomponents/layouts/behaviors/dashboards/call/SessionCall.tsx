@@ -40,11 +40,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     useEffect(() => {
       window.addEventListener("beforeunload", function() {
-        const x = 200
-        const a = (new Date()).getTime() + x
-
         close()
-        while ((new Date()).getTime() < a) {}
       }, false)
       return () => {
         _toggleModal(false)
@@ -88,6 +84,10 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
       changeFullScreen(!self.fullscreen)
     }
 
+    const handleOnChatButtonClick = () => {
+      toggleChat(true)
+    }
+
     return (
       <div ref={videoCallRef}>
         {!compatibility ? <NotCompatibleDialog visibility={visibility} close={handleOnClose} />
@@ -101,7 +101,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
             <Call>
               <WasNotConnected>Собеседник еще не присоединился</WasNotConnected>
               <NotConnected>Собеседник отключился</NotConnected>
-              <ChatIconButton onClick={() => toggleChat()} visibility={userActive}>
+              <ChatIconButton onClick={handleOnChatButtonClick} visibility={userActive}>
                 <ChatIcon />
               </ChatIconButton>
               {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate} visibility={userActive}>
@@ -163,13 +163,27 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                 </Actions>
               </Footer>
             </Call>
-            {self.fullscreen && <Chat />}
+            <ChatWrapper fullScreen={self.fullscreen} >
+              <Chat />
+            </ChatWrapper>
           </Container>
         }
       </div>
     )
   }
 }
+
+const ChatWrapper = styled.div<{fullScreen: boolean}>`
+  display: ${({ fullScreen }) => fullScreen ? "flex" : "none"};
+  
+  @media screen and (max-width: 900px) and (orientation : landscape) {
+    display: flex;
+  }
+
+  @media screen and (max-width: 480px) and (orientation : portrait) {
+    display: flex;
+  }
+`
 
 const Tooltip = styled.div`
   position: absolute;

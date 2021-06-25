@@ -63,7 +63,7 @@ export const Prices = () => {
         Укажите стоимость вашей сессии для клиента.
       </Description>
       <Informer>
-        <InformerDescription><a>{feeRatio*100}%</a> от стоимости - комиссия платформы</InformerDescription>
+        <InformerDescription>Комиссия платформы <a>{feeRatio*100}%</a>: 4% идет платежному провайдеру, а {feeRatio*100 - 4}% — iTrainYou для развития</InformerDescription>
       </Informer>
       <PriceListContainer>
         <StyledPriceInputGroup title='30 минут' name='d30Price' />

@@ -61,4 +61,6 @@ const LandingClientPageMarkUp = () => (
 
 export const LandingClientPage = withGuest({ to: "/client" })(LandingClientPageMarkUp)
 
-LandingClientPage[START] = ourCoachesModel.loadCoaches
+LandingClientPage[START] = ourCoachesModel.loadCoaches.prepend(
+  () => {return {session_duration_types: "PROMO"}}
+)

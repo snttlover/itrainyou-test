@@ -12,8 +12,11 @@ export const createSessionChatModule = (config: CreateSessionChatModuleConfig) =
   const chatModule = createChatModule(config.chatModuleConfig)
 
   const changeVisibility = createEvent<boolean>()
-  const toggleVisibility = createEvent()
-  const $visibility = restore(changeVisibility, false).on(toggleVisibility, visibility => !visibility)
+  const toggleVisibility = createEvent<boolean | void>()
+  const $visibility = restore(changeVisibility, false).on(toggleVisibility, (state, payload) => {
+    if (payload !== undefined) return payload
+    return !state
+  })
 
   const changeChatId = createEvent<number>()
   const $chatId = restore(changeChatId, 0).reset(reset)

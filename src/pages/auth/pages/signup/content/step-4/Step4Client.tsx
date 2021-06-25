@@ -124,7 +124,7 @@ const ButtonContainer = styled.div`
 `
 
 const RegisterButton = styled(Button)`
-  width: 177px;
+  width: 236px;
   margin: 36px auto 30px;
   transition: none;
   padding: 15px 24px;
@@ -160,8 +160,8 @@ export const Step4Client = () => {
     <Step4ClientLayout
       renderHeader={() => (
         <Header>
-          <Title>Хотите бесплатную сессию?</Title>
-          <Description>Заполните короткую анкету и мы подберем для вас подходящих коучей</Description>
+          <Title>Анкета поможет узнать о вас немного больше</Title>
+          <Description>Выберите, какие направления коучинга вас интересуют, чтобы мы могли порекомендовать подходящих специалистов</Description>
         </Header>
       )}
     >
@@ -172,7 +172,7 @@ export const Step4Client = () => {
         <PriceRanges />
         <ButtonContainer>
           <RegisterButton disabled={loading || !rangeSelected} onClick={() => _userRegistered()}>
-            Подобрать коуча
+            Завершить регистрацию
           </RegisterButton>
         </ButtonContainer>
       </Container>

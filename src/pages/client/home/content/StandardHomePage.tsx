@@ -176,6 +176,7 @@ const StyledInformer = () => {
   case "AWAITING_BOOK_PROMO_REQUEST":
     header = "Вы отправили запрос на бронирование бесплатной сессии!"
     showSocials = true
+
     return (
       <InformerContainer>
         <Informer
@@ -191,6 +192,7 @@ const StyledInformer = () => {
   case "ACTIVE_PROMO_SESSION":
     header = "Бесплатная сессия забронирована!"
     showSocials = true
+
     return (
       <InformerContainer>
         <Informer
@@ -210,12 +212,11 @@ const StyledInformer = () => {
     return (
       <InformerContainer>
         <Informer
-          crossColored
-          iconName={"gift"}
+          iconName={"gift-black"}
           closable
-          backGround={"blue"}
+          backGround={"no"}
           onCrossClick={handleOnCrossClick} >
-          <ContentOption changeColors={false}/>
+          <ContentOption changeColors={true}/>
         </Informer>
       </InformerContainer>
     )

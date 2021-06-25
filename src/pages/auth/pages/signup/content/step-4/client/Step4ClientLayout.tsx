@@ -64,7 +64,7 @@ export const Step4ClientLayout = (props: Step4ClientLayoutProps) => (
         <Steps activeId='2'>
           <Steps.Step id='1'>Роль</Steps.Step>
           <Steps.Step id='2'>Данные</Steps.Step>
-          <Steps.Step id='3'>Выбор направлений</Steps.Step>
+          <Steps.Step id='3'>Анкета</Steps.Step>
         </Steps>
         {props.renderHeader()}
       </HeaderContent>

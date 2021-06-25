@@ -109,7 +109,7 @@ export const Step2 = () => {
       <Steps activeId='0'>
         <Steps.Step id='1'>Роль</Steps.Step>
         <Steps.Step id='2'>Данные</Steps.Step>
-        <Steps.Step id='3'>{type === "client" ? "Выбор направлений" : "О себе"}</Steps.Step>
+        <Steps.Step id='3'>Анкета</Steps.Step>
       </Steps>
       <Container>
         <Title>Вы хотите стать:</Title>

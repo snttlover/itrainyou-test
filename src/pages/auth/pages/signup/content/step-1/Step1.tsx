@@ -190,7 +190,7 @@ export const Step1 = () => {
       <Steps activeId='0'>
         <Steps.Step id='1'>Роль</Steps.Step>
         <Steps.Step id='2'>Данные</Steps.Step>
-        <Steps.Step id='3'>Подбор коуча</Steps.Step>
+        <Steps.Step id='3'>Анкета</Steps.Step>
       </Steps>
       <Container>
         <Title>Регистрация</Title>

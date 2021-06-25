@@ -1,4 +1,6 @@
 import * as React from "react"
+import { $isLoggedIn } from "@/feature/user/user.model"
+import { useStore } from "effector-react"
 
 export interface JivoWidgetProps {
   id: string;
@@ -19,25 +21,30 @@ const mount = (id: string) => {
   }
 }
 
-export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = React.memo(({ id }: JivoWidgetProps) => {
-  React.useEffect(() => {
-    const jivoTags = Array.from(document.getElementsByTagName("jdiv") as HTMLCollectionOf<HTMLElement>)
-    if (jivoTags.length > 0) {
-      jivoTags[0].style.display = "inherit"
-    }
+export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = ({ id }: JivoWidgetProps) => {
+  const isLoggedIn = useStore($isLoggedIn)
 
-    if (document.readyState === "complete") {
-      return mount(id)
-    }
+  React.useEffect(() => {
 
     let unmount: (() => void) | undefined
     const onLoad = () => {
       unmount = mount(id)
     }
-    window.addEventListener("load", onLoad)
 
-    return () => {
-      console.log('suka')
+    if(!isLoggedIn) {
+      const jivoTags = Array.from(document.getElementsByTagName("jdiv") as HTMLCollectionOf<HTMLElement>)
+      if (jivoTags.length > 0) {
+        jivoTags[0].style.display = "inherit"
+      }
+
+      if (document.readyState === "complete") {
+        return mount(id)
+      }
+
+      window.addEventListener("load", onLoad)
+    }
+
+    if (isLoggedIn) {
       document.removeEventListener("load", onLoad)
       if (unmount) {
         unmount()
@@ -46,9 +53,12 @@ export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = React.memo((
       const jivoTags = Array.from(document.getElementsByTagName("jdiv") as HTMLCollectionOf<HTMLElement>)
       if (jivoTags.length > 0) jivoTags[0].style.display = "none"
     }
-  })
+
+    return () => {
+    }
+  }, [isLoggedIn])
 
   return null
-})
+}
 
 JivoWidget.displayName = "JivoWidget"
