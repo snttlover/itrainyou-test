@@ -80,7 +80,7 @@ export const Step4CoachLayout = (props: Step4ClientLayoutProps) => (
         <Steps activeId='2'>
           <Steps.Step id='1'>Роль</Steps.Step>
           <Steps.Step id='2'>Данные</Steps.Step>
-          <Steps.Step id='3'>О себе</Steps.Step>
+          <Steps.Step id='3'>Анкета</Steps.Step>
         </Steps>
         {props.renderHeader()}
       </HeaderContent>

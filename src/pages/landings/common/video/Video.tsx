@@ -72,10 +72,14 @@ const PlayButton = styled.i`
   transform: translate(-50%, -50%);
   position: absolute;
   display: block;
-  width: 44px;
-  height: 44px;
-  background: url("${playIcon}");
+  width: 108px;
+  height: 78px;
+  background-image: url("${playIcon}");
+  background-size: 54px 39px;
+  background-position: center center;
+  background-repeat: no-repeat;
   cursor: pointer;
+  opacity: 0.9;
 `
 
 type Props = {

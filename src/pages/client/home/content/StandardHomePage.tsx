@@ -176,6 +176,7 @@ const StyledInformer = () => {
   case "AWAITING_BOOK_PROMO_REQUEST":
     header = "Вы отправили запрос на бронирование бесплатной сессии!"
     showSocials = true
+
     return (
       <InformerContainer>
         <Informer
@@ -191,6 +192,7 @@ const StyledInformer = () => {
   case "ACTIVE_PROMO_SESSION":
     header = "Бесплатная сессия забронирована!"
     showSocials = true
+
     return (
       <InformerContainer>
         <Informer
@@ -205,6 +207,7 @@ const StyledInformer = () => {
 
   case "AWAITING_COMPLETION_PROMO_REQUEST":
     header = "Вы не подтвердили окончание бесплатной сессии!"
+    showSocials = true
 
     return (
       <InformerContainer>

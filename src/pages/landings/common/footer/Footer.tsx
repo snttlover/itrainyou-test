@@ -7,6 +7,7 @@ import mcLogo from "./assets/banks/mc.svg"
 import visaLogo from "./assets/banks/visa.svg"
 import mirLogo from "./assets/banks/mir.svg"
 
+import tgLogo from "./assets/socials/tg.svg"
 import fbLogo from "./assets/socials/fb.svg"
 import igLogo from "./assets/socials/ig.svg"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
@@ -119,10 +120,21 @@ export const Footer = () => (
       </BankSection>
       <SocialsCopySection>
         <Socials>
-          <Social href='https://facebook.com/' target='_blank' onClick={() => ymLog("reachGoal","fbland")}>
+          <Social href='https://t.me/i_trainyou' target='_blank' onClick={() => ymLog("reachGoal", "tgland")}>
+            <img src={tgLogo} />
+          </Social>
+          <Social
+            href='https://www.facebook.com/ITrainYou-107404141044566/'
+            target='_blank'
+            onClick={() => ymLog("reachGoal", "fbland")}
+          >
             <img src={fbLogo} />
           </Social>
-          <Social href='https://instagram.com/' target='_blank' onClick={() => ymLog("reachGoal","instland")}>
+          <Social
+            href='https://www.instagram.com/i.trainyou/?hl=ru'
+            target='_blank'
+            onClick={() => ymLog("reachGoal", "instland")}
+          >
             <img src={igLogo} />
           </Social>
         </Socials>
