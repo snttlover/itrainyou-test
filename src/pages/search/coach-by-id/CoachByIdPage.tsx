@@ -25,6 +25,7 @@ import {
 import { useLocation } from "react-router-dom"
 import { $hasFreeSessions } from "@/pages/client/home/home.model"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
+import { $isLoggedIn } from "@/feature/user/user.model"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -108,13 +109,16 @@ const MainCoachBlock = styled.div`
 
 const Datepicker = () => {
   const coach = useStore($coach)
+  const isLoggedIn = useStore($isLoggedIn)
   const location = useLocation()
+
   const hasFreeSessions = useStore($hasFreeSessions)
 
-  let data = !!location.state && hasFreeSessions ? $freeSessionsPickerStore : $sessionsPickerStore
+  const showFreeSessionsOnly = hasFreeSessions || !isLoggedIn
+  let data = !!location.state && showFreeSessionsOnly ? $freeSessionsPickerStore : $sessionsPickerStore
 
   useEffect(() => {
-    data = !!location.state && hasFreeSessions ? $freeSessionsPickerStore : $sessionsPickerStore
+    data = !!location.state && showFreeSessionsOnly ? $freeSessionsPickerStore : $sessionsPickerStore
   }, [hasFreeSessions])
 
   if (coach) {

@@ -4,12 +4,14 @@ import styled from "styled-components"
 import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import { SwiperOptions } from "swiper"
 
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { routeNames } from "@/pages/route-names"
 
 import { Category } from "./Category"
 
 import starIcon from "../../assets/coach-list/star.svg"
+import { useStore } from "effector-react"
+import { $isLoggedIn } from "@/feature/user/user.model"
 
 const swiperOptions: SwiperOptions = {
   observer: true,
@@ -152,6 +154,19 @@ type Props = {
 }
 
 export const Slider = ({ coaches }: Props) => {
+  const isLoggedIn = useStore($isLoggedIn)
+
+  const redirectToCoach = (coachId: number) => {
+    if (!isLoggedIn) return {
+      pathname: `/search/coach/${coachId}`,
+      state: { freeSessions: true }
+    }
+
+    return {
+      pathname: `/search/coach/${coachId}`
+    }
+  }
+
   const swiper = useRef<SwiperRefNode>(null)
 
   return (
@@ -159,7 +174,7 @@ export const Slider = ({ coaches }: Props) => {
       <SliderWrapper>
         <ReactIdSwiper {...swiperOptions} ref={swiper}>
           {coaches.map((coach, index) => (
-            <Slide key={index} to={routeNames.searchCoachPage(coach.id)}>
+            <Slide key={index} to={() => redirectToCoach(coach.id)}>
               <CoachAvatar avatar={coach.avatar} />
               <CoachName>
                 {coach.firstName} {coach.lastName}

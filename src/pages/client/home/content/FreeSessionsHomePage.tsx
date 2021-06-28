@@ -254,7 +254,6 @@ export const FreeSessionsHomePage = () => {
   const isHasMoreRecommendations = useStore($isHasMoreRecommendations)
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
   const upcomingSessionsPending = useStore(loadUpcomingSessionsFx.pending)
-  const recommendationPending = useStore(loadRecommendationsFx.pending)
   const _mounted = useEvent(freeSessionsPageMounted)
   const _loadMore = useEvent(loadMore)
 
@@ -272,7 +271,6 @@ export const FreeSessionsHomePage = () => {
 
   return (
     <>
-
       { tabletCalendarShowed ?
         <TabletCalendar setShowed={setShowed} />
         :
@@ -358,7 +356,6 @@ export const FreeSessionsHomePage = () => {
           </CalendarContainer>
         </PageContainer>
       }
-
     </>
   )
 }

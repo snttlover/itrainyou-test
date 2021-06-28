@@ -52,6 +52,7 @@ export type CoachSortingType = "price" | "-price" | "popularity" | "nearest_sess
 
 export interface GetCoachesParamsTypes {
   session_duration_types?: string
+  promo_and_paid_sessions?: boolean
   price__lte?: number
   price__gte?: number
   price?: number

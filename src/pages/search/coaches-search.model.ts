@@ -106,7 +106,9 @@ sample({
   clock: pageLoaded,
   fn: (isLoggedIn, { params }): GetCoachesParamsTypes => {
     if (!isLoggedIn) {
-      params["session_duration_types"] = "PROMO"
+      const coachFilterParams = {...params}
+      delete coachFilterParams.session_duration_types
+      return {...coachFilterParams, promo_and_paid_sessions: true, }
     }
     return params
   },
