@@ -340,12 +340,14 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeTab = useStore(props.sessionsData.tabs.$durationTab)
+
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
   const toggleSession = useEvent(props.sessionsData.toggleSession)
   const bulkSession = useEvent(props.sessionsData.bulkSession)
-  const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
   const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
+
+  const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
@@ -422,7 +424,6 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
         {loading && <Spinner />}
         <CalendarDirectionBlock>
           
-        
           <Datepicker>
             {activeTab === "PROMO" ?  <Description>Выберите день</Description> : null}
             <StyledCalendar

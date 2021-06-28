@@ -14,6 +14,7 @@ import { UserLayout } from "@/oldcomponents/layouts/behaviors/user/UserLayout"
 import { useLocation } from "react-router-dom"
 import { MediaRange } from "@/lib/responsive/media"
 import { $isLoggedIn } from "@/feature/user/user.model"
+import { GetCoachesParamsTypes } from "@/lib/api/coach"
 
 const StyledPageContainer = styled(PageContainer)`
   display: flex;
@@ -42,7 +43,7 @@ export const SearchPage = () => {
   const location = useLocation()
 
   useEffect(() => {
-    const query = parseQueryString(location.search)
+    const query = (parseQueryString(location.search) as GetCoachesParamsTypes)
 
     // Для незарегистрированных пользователей показываем только коучей с бесплатными сессиями
     if (!isLoggedIn) {
