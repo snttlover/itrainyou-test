@@ -21,6 +21,9 @@ export const userDataReset = createEvent()
 export const userDataSetWithSocials = createEvent<UserData>()
 export const selectPriceRange = createEvent<{id: number}>()
 
+export const $coachToRedirectAfterSignUp = createStore<number | null>(null)
+export const setRedirectToCoachAfterSignUp = createEvent<number | null>()
+
 export const priceRangesGate = createGate()
 
 export const $userData = createStore<UserData>({
@@ -56,7 +59,7 @@ export const loadDataFx = createEffect({
   }
 })
 
-export const userRegistered = createEvent()
+export const registerUser = createEvent()
 
 export const registerUserFx = createEffect({
   handler(params: UserData) {
@@ -74,11 +77,14 @@ export const getMyUserDataFx = attach({
   mapParams: () => ({})
 })
 
-const event = sample({ clock: getMyUserDataFx.done, source: registerUserFx.done.map(({ params }) => params) })
+const event = sample({
+  clock: getMyUserDataFx.done,
+  source: registerUserFx.done.map(({ params }) => params)
+})
 
 export const userType = split(event, {
   client: ({ type }) => type === "client",
   coach: ({ type }) => type === "coach"
 })
 
-export const registerStep4Merged = merge([userRegistered, skipCoach])
+export const registerStep4Merged = merge([registerUser, skipCoach])

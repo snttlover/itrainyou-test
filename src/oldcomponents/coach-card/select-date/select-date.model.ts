@@ -132,7 +132,7 @@ export const genFreeSessions = () => {
 }
 
 
-export const genCoachSessions = (id = 0, freeSessions = false) => {
+export const genCoachSessions = (id = 0, onlyFreeSessions = false) => {
   const changeId = createEvent<number>()
   const $id = createStore<number>(id).on(changeId, (_, id) => id)
 
@@ -161,7 +161,8 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
       if (state.includes(selectedSession.id)) {
         return state.filter(id => id !== selectedSession.id)
       } else {
-        if (freeSessions) {
+        // Если сессии бесплатные, то можно выбрать только одну (а не несколько, как в платных)
+        if (onlyFreeSessions) {
           return [selectedSession.id]
         }
         else {
@@ -183,7 +184,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
   const buySessionBulk = createEvent<BulkBookSessionsRequest>()
 
   buySessionBulk.watch(payload => {
-    const args = freeSessions ? "bookingdate" : "bookingcoach"
+    const args = onlyFreeSessions ? "bookingdate" : "bookingcoach"
     ymLog("reachGoal", args)
   })
 
@@ -256,7 +257,7 @@ export const genCoachSessions = (id = 0, freeSessions = false) => {
 
   const changeDurationTab = createEvent<DurationType>()
 
-  const initialTabState = freeSessions ? "PROMO" : "D30"
+  const initialTabState = onlyFreeSessions ? "PROMO" : "D30"
   const $durationTab = createStore<DurationType>(initialTabState).on(changeDurationTab, (_, payload) => payload)
 
 

@@ -389,7 +389,10 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
                   </StyledBuyButton>
                 </IsAuthed>
                 <IsGuest>
-                  <Link to='/auth/signup/1'>
+                  <Link to={{
+                    pathname: "/auth/signup/1",
+                    state: {coachToRedirectAfterSignUp: props.coach.id}}}
+                  >
                     <Button>Зарегистрироваться</Button>
                   </Link>
                 </IsGuest>

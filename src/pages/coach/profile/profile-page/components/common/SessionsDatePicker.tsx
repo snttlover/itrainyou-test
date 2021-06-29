@@ -277,6 +277,7 @@ const FooterWrapper = styled.div`
   display: none;
   width: 100%;
   border-top: 1px solid #dbdee0;
+  
   ${MediaRange.between("mobile", "laptop")`
     display: flex;
     justify-content: center;

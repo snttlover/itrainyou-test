@@ -14,7 +14,7 @@ import {
   split
 } from "effector-root"
 import { $token, logout } from "@/lib/network/token"
-import { $isFullRegistered, $isLoggedIn, $userData } from "@/feature/user/user.model"
+import { $isFullyRegistered, $isLoggedIn, $userData } from "@/feature/user/user.model"
 import { $isClient } from "@/lib/effector"
 import { changePasswordFx } from "@/pages/common/settings/content/password-form.model"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
@@ -141,7 +141,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     $isLoggedIn,
     $isClient,
     $userData,
-    $isFullRegistered,
+    $isFullyRegistered,
     (l, c, user, full) => l && c && !!user && (userType !== "coach" || !!user.coach) && full
   )
 

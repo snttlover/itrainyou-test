@@ -482,8 +482,12 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
                   {activeTab === "PROMO" ? "Забронировать бесплатно" : "Забронировать"}
                 </StyledBuyButton>
               </IsAuthed>
+
               <IsGuest>
-                <Link to={routeNames.signup("1")}>
+                <Link to={{
+                  pathname: "/auth/signup/1",
+                  state: {coachToRedirectAfterSignUp: props.coach.id}}}
+                >
                   <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
                 </Link>
               </IsGuest>

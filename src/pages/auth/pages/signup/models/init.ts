@@ -1,10 +1,11 @@
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
-import { combine, forward, guard, sample } from "effector-root"
-import { $isLoggedIn, $isSocialSignupInProgress } from "@/feature/user/user.model"
+import { combine, forward, guard, merge, sample } from "effector-root"
+import { $isLoggedIn, $isSocialSignupInProgress, $timeZone } from "@/feature/user/user.model"
 import { $socialsForm, createUserFromSocialsFx } from "@/pages/auth/pages/socials/models/units"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import {
+  $coachToRedirectAfterSignUp,
   $priceRanges,
   $rangeSelected,
   $userData,
@@ -18,15 +19,21 @@ import {
   registerStep4Merged,
   registerUserFx,
   saveDataFx,
-  selectPriceRange,
+  selectPriceRange, setRedirectToCoachAfterSignUp,
   signUpPageMounted,
   userDataChanged,
   userDataReset,
-  userDataSetWithSocials,
+  userDataSetWithSocials, registerUser,
   userType,
   userTypeChanged
 } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
+import { condition } from "patronum"
+
+$coachToRedirectAfterSignUp.on(
+  setRedirectToCoachAfterSignUp,
+  (state, payload) => payload
+)
 
 $userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
@@ -74,10 +81,36 @@ registerUserFx.done.watch(_ => {
   localStorage.removeItem(REGISTER_SAVE_KEY)
 })
 
-forward({
-  from: userType.client.map(() => ({ url: routeNames.client() })),
-  to: navigatePush,
-})
+// ToDo: закомментил, т.к. сейчас роутинг после регистрации происходит в компоненте SignUpPage.tsx
+// // Если клиент регистрировался через бронирование сессии на лендинге,
+// // то перенаправляем его на страничку коуча, у которого он хотел забронировать сессию
+// sample({
+//   source: $coachToRedirectAfterSignUp.map(
+//     (coachToRedirectAfterSignUp) => ({
+//       url: routeNames.searchCoachPage(coachToRedirectAfterSignUp as unknown as string),
+//       state: { freeSessions: true }
+//     })
+//   ),
+//   clock: guard({
+//     source: userType.client,
+//     filter: combine(
+//       $coachToRedirectAfterSignUp,
+//       (coachToRedirectAfterSignUp) => !!coachToRedirectAfterSignUp)
+//   }),
+//   target: merge([navigatePush, setRedirectToCoachAfterSignUp.prepend(() => null)])
+// })
+//
+// // Если клиент проходил стандартную регистрацию, то перекидываем его на главную страницу клиента
+// sample({
+//   source: $coachToRedirectAfterSignUp.map(() => ({ url: routeNames.client(), })),
+//   clock: guard({
+//     source: userType.client,
+//     filter: combine(
+//       $coachToRedirectAfterSignUp,
+//       (coachToRedirectAfterSignUp) => !coachToRedirectAfterSignUp)
+//   }),
+//   target: navigatePush
+// })
 
 forward({
   from: userType.coach.map(() => ({ url: routeNames.coach() })),

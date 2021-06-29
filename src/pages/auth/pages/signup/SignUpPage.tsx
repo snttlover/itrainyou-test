@@ -1,6 +1,5 @@
 import { navigateReplace } from "@/feature/navigation"
-import { $isFullRegistered, $isLoggedIn, $isSocialSignupInProgress  } from "@/feature/user/user.model"
-import { withGuest } from "@/feature/user/with-guest"
+import { $isFullyRegistered, $isLoggedIn, $isSocialSignupInProgress  } from "@/feature/user/user.model"
 import { withProtect } from "@/feature/user/with-protect"
 import { routeNames } from "@/pages/route-names"
 import { useEvent, useStore } from "effector-react"
@@ -10,17 +9,25 @@ import { Step1 } from "@/pages/auth/pages/signup/content/step-1/Step1"
 import { Step2 } from "@/pages/auth/pages/signup/content/step-2/Step2"
 import { Step3 } from "@/pages/auth/pages/signup/content/step-3/Step3"
 import { Step4 } from "@/pages/auth/pages/signup/content/step-4/Step4"
-import { useParams } from "react-router-dom"
-import { signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
+import { useLocation, useParams } from "react-router-dom"
+import {
+  signUpPageMounted,
+  setRedirectToCoachAfterSignUp,
+  $coachToRedirectAfterSignUp
+} from "@/pages/auth/pages/signup/models/units"
 import { $dashboard } from "@/feature/dashboard/dashboard"
 
 const ProtectedStep2 = withProtect({ to: routeNames.signup("1") })(Step2)
 const ProtectedStep3 = withProtect({ to: routeNames.signup("1") })(Step3)
 const ProtectedStep4 = withProtect({ to: routeNames.signup("1") })(Step4)
 
+type SignUpPageLocation = {
+  coachToRedirectAfterSignUp?: number
+}
+
 export const SignUpPage = () => {
   const isLoggedIn = useStore($isLoggedIn)
-  const isFullRegistered = useStore($isFullRegistered)
+  const isFullyRegistered = useStore($isFullyRegistered)
   const dashboard = useStore($dashboard)  
   const isLoggedInWithSocials = useStore($isSocialSignupInProgress)
   const navigate = useEvent(navigateReplace)
@@ -28,25 +35,51 @@ export const SignUpPage = () => {
   const params = useParams<{ step: string }>()
   const currentStep = params.step ? +params.step : null
 
+  const _setRedirectToCoachAfterSignUp = useEvent(setRedirectToCoachAfterSignUp)
+  const coachToRedirectAfterSignUp = useStore($coachToRedirectAfterSignUp)
+
+  const location = useLocation()
+
+  useEffect(() => {
+    const locationState = location.state as SignUpPageLocation
+    if (locationState?.coachToRedirectAfterSignUp) {
+      _setRedirectToCoachAfterSignUp(locationState.coachToRedirectAfterSignUp)
+    }
+  }, [location])
+
   useEffect(() => {
     if (!currentStep) navigate({ url: routeNames.signup("1") })
     _pageMounted()
   }, [])
 
-  if (isFullRegistered) {
-    let url
+  // ToDo: вынести роутинг после регистрации в модель
+  // Сейчас роутинг после регистрации происходит в данном компоненте
+  if (isFullyRegistered) {
+    let redirectData
+
     if (dashboard === "coach") {
-      url = routeNames.coach()
+      redirectData = { url: routeNames.coach() }
     } else if (dashboard === "client") {
-      url = routeNames.client()
+      redirectData = { url: routeNames.client() }
+
+      if (coachToRedirectAfterSignUp) {
+        redirectData = {
+          url: routeNames.searchCoachPage(coachToRedirectAfterSignUp.toString()),
+          state: { freeSessions: true }
+        }
+      }
     } else {
-      url = routeNames.client()
+      redirectData = {
+        url: routeNames.client()
+      }
     }
-    navigate({ url: url})
+
+    navigate(redirectData)
   }
+
   switch (currentStep) {
   case 1:
-    if ((isLoggedIn && !isFullRegistered) || isLoggedInWithSocials) {
+    if ((isLoggedIn && !isFullyRegistered) || isLoggedInWithSocials) {
       navigate({ url: routeNames.signup("2") })
     }
     return <Step1 />

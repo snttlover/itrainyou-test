@@ -6,14 +6,14 @@ import { step4CoachMounted } from "@/pages/auth/pages/signup/content/step-4/step
 import { useEvent, useStore } from "effector-react"
 import { useEffect } from "react"
 import * as React from "react"
-import { $userData, registerUserFx, skipCoach, userRegistered } from "@/pages/auth/pages/signup/models/units"
+import { $userData, registerUserFx, skipCoach, registerUser } from "@/pages/auth/pages/signup/models/units"
 
 export const Step4Coach = () => {
   const userData = useStore($userData)
   const loading = useStore(registerUserFx.pending)
   const _step4CoachMounted = useEvent(step4CoachMounted)
   const _skipCoach = useEvent(skipCoach)
-  const _userRegistered = useEvent(userRegistered)
+  const _registerUser = useEvent(registerUser)
 
   const years = getYearsCount(userData.clientData?.birthDate!)
   const sex = { M: "мужской", F: "женский" }[userData.clientData?.sex || "M"]
@@ -31,7 +31,7 @@ export const Step4Coach = () => {
         />
       )}
     >
-      <CoachInformation onRegisterClick={() => _userRegistered()} onSkip={() => _skipCoach()} loading={loading} />
+      <CoachInformation onRegisterClick={() => _registerUser()} onSkip={() => _skipCoach()} loading={loading} />
     </Step4CoachLayout>
   )
 }
