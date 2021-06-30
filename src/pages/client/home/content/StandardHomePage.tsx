@@ -209,7 +209,7 @@ const StyledInformer = () => {
 
   case "AWAITING_COMPLETION_PROMO_REQUEST":
     header = "Вы не подтвердили окончание бесплатной сессии!"
-    description = "Нам важно получить обратной связь о прошедшей сессии, чтобы совершенствоваться."
+    description = "Нам важно получить обратную связь о прошедшей сессии, чтобы совершенствоваться."
     showSocials = false
 
     return (
