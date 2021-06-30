@@ -351,18 +351,30 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
-    changeCurrentDate((prevState) => {
-      return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
-    })
+    if (!props.preSelectedDate) {
+      changeCurrentDate((prevState) => {
+        return enabledDates[0] && prevState === undefined ? date(enabledDates[0]).toDate() : prevState
+      })
+    }
     return () => {
-      changeCurrentDate(undefined)
+      changeCurrentDate(props.preSelectedDate)
     }
   }, [enabledDates[0]])
 
 
   const headerDate = currentDate || new Date()
-  const formattedDate = date(headerDate).format("DD MMMM")
-  const currentDateEqual = date(headerDate as Date).format(equalDateFormat)
+  const formattedDate = date(
+    headerDate,
+    undefined,
+    undefined,
+    true,
+  ).format("DD MMMM")
+  const currentDateEqual = date(
+    headerDate as Date,
+    undefined,
+    undefined,
+    true,
+  ).format(equalDateFormat)
 
   if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) {
     changeActiveTab(tabs[0].key)

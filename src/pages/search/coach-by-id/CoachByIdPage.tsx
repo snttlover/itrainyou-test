@@ -180,9 +180,9 @@ export const CoachByIdPage = () => {
                 <BaseCoachInfo />
                 <BuyBlock>
                   <Datepicker
-                    preSelectedDate={locationState.preSelectedDate}
-                    preSelectedSessions={locationState.preSelectedSessions}
-                    showFreeSessionsOnly={locationState.showFreeSessionsOnly}
+                    preSelectedDate={locationState?.preSelectedDate}
+                    preSelectedSessions={locationState?.preSelectedSessions}
+                    showFreeSessionsOnly={locationState?.showFreeSessionsOnly}
                   />
                 </BuyBlock>
                 <AboutCoach />
@@ -191,9 +191,9 @@ export const CoachByIdPage = () => {
             </CoachInfoContainer>
             <BuySidebar>
               <Datepicker
-                preSelectedDate={locationState.preSelectedDate}
-                preSelectedSessions={locationState.preSelectedSessions}
-                showFreeSessionsOnly={locationState.showFreeSessionsOnly}
+                preSelectedDate={locationState?.preSelectedDate}
+                preSelectedSessions={locationState?.preSelectedSessions}
+                showFreeSessionsOnly={locationState?.showFreeSessionsOnly}
               />
             </BuySidebar>
             <BookSessionsStatusModalDialog />
