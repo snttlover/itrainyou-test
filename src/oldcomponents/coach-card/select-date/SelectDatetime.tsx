@@ -245,8 +245,6 @@ const equalTimeFormat = "HH:mm"
 
 export type SelectDatetimeTypes = {
   coach: Coach
-  preSelectedDate?: Date
-  preSelectedSessions?: number[]
   sessionsData: {
     loading: Store<boolean>
     sessionsList: Store<CoachSessionWithSelect[]>

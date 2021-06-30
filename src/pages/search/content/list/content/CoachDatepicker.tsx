@@ -18,6 +18,7 @@ import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 import { changeFreeBookedSession } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
+import { navigatePush } from "@/feature/navigation"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -331,7 +332,12 @@ const Delemiter = styled.div`
 const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
-export const CoachDatepicker = (props: SelectDatetimeTypes) => {
+export type CoachDatepickerTypes = SelectDatetimeTypes & {
+  preSelectedDate?: Date
+  preSelectedSessions?: number[]
+}
+
+export const CoachDatepicker = (props: CoachDatepickerTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(props.preSelectedDate)
 
   const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
@@ -348,6 +354,8 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
   const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
 
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
+
+  const navigate = useEvent(navigatePush)
 
   const enabledDates = sessions.map(session => session.startDatetime)
   useEffect(() => {
@@ -496,17 +504,20 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               </IsAuthed>
 
               <IsGuest>
-                <Link to={{
-                  pathname: "/auth/signup/1",
-                  state: {
-                    coachToRedirectAfterSignUp: {
-                      coach: props.coach.id,
-                      sessions: selected
+                <StyledRegisterButton
+                  disabled={selected.length === 0}
+                  onClick={() => navigate({
+                    url: "/auth/signup/1",
+                    state: {
+                      coachToRedirectAfterSignUp: {
+                        coach: props.coach.id,
+                        sessions: selected
+                      }
                     }
-                  }}}
+                  })}
                 >
-                  <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
-                </Link>
+                  Зарегистрироваться
+                </StyledRegisterButton>
               </IsGuest>
             </ButtonContainer>
             {/*<DesktopFooter />*/}
