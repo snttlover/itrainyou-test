@@ -28,12 +28,12 @@ import {
   userTypeChanged
 } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
-import { condition } from "patronum"
+import { coachByIdGate } from "@/pages/search/coach-by-id/models/units"
 
 $coachToRedirectAfterSignUp.on(
   setRedirectToCoachAfterSignUp,
   (state, payload) => payload
-)
+).reset(coachByIdGate.close)
 
 $userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))

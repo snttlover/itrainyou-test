@@ -10,7 +10,7 @@ import { useEffect } from "react"
 import styled from "styled-components"
 import { CoachDatepicker } from "@/pages/search/content/list/content/CoachDatepicker"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
-import { useStore } from "effector-react"
+import { useGate, useStore } from "effector-react"
 import { UserLayout } from "@/oldcomponents/layouts/behaviors/user/UserLayout"
 import { NotFound } from "@/feature/not-found/components/NotFound"
 import { BookSessionsStatusModalDialog } from "@/pages/search/content/list/content/modals/BookSessionsStatusModalDialog"
@@ -18,7 +18,7 @@ import {
   $coach,
   $freeSessionsPickerStore,
   $isNotFound,
-  $sessionsPickerStore,
+  $sessionsPickerStore, coachByIdGate,
   loadCoachFx,
   mounted
 } from "@/pages/search/coach-by-id/models/units"
@@ -157,6 +157,8 @@ export type CoachByIdPageLocationStateTypes = {
 }
 
 export const CoachByIdPage = () => {
+  useGate(coachByIdGate)
+
   const coach = useStore($coach)
   const pending = useStore(loadCoachFx.pending)
   const isNotFound = useStore($isNotFound)

@@ -74,9 +74,12 @@ export const SignUpPage = () => {
           state: {
             showFreeSessionsOnly: true,
             preSelectedSessions: [coachToRedirectAfterSignUp.sessions[0].id],
-            preSelectedDate: new Date(
-              coachToRedirectAfterSignUp.sessions[0].startDatetime.split("T")[0],
-            )
+            preSelectedDate: date(
+              coachToRedirectAfterSignUp.sessions[0].startDatetime,
+              undefined,
+              undefined,
+              true
+            ).toDate()
           }
         }
       }

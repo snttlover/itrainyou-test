@@ -20,6 +20,7 @@ import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
 import { changeFreeBookedSession } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
+import { navigatePush } from "@/feature/navigation"
 
 type StyledTabTypes = {
   onlyOneCard: boolean
@@ -273,6 +274,9 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
 
   const enabledDates = sessions.map(session => session.startDatetime)
+
+  const navigate = useEvent(navigatePush)
+
   const [currentDate, changeCurrentDate] = useState<Date | null>(null)
 
   useEffect(() => {
@@ -389,17 +393,19 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
                   </StyledBuyButton>
                 </IsAuthed>
                 <IsGuest>
-                  <Link to={{
-                    pathname: "/auth/signup/1",
-                    state: {
-                      coachToRedirectAfterSignUp: {
-                        coach: props.coach.id,
-                        sessions: selected
+                  <Button
+                    disabled={selected.length === 0}
+                    onClick={() => navigate({
+                      url: "/auth/signup/1",
+                      state: {
+                        coachToRedirectAfterSignUp: {
+                          coach: props.coach.id,
+                          sessions: selected
+                        }
                       }
-                    }}}
-                  >
-                    <Button>Зарегистрироваться</Button>
-                  </Link>
+                    })}>
+                    Зарегистрироваться
+                  </Button>
                 </IsGuest>
               </ButtonWrapper>
             </ButtonContainer>
