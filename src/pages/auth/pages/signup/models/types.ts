@@ -1,3 +1,5 @@
+import { CoachSessionWithSelect } from "@/oldcomponents/coach-card/select-date/select-date.model"
+
 export type ClientData = {
   firstName: string
   lastName: string
@@ -33,3 +35,8 @@ export type UserData = {
 export type RegisterUserType = "client" | "coach"
 
 export const REGISTER_SAVE_KEY = "__register-data__"
+
+export type coachToRedirectAfterSignUpType = {
+  coach: number,
+  sessions: CoachSessionWithSelect[]
+}

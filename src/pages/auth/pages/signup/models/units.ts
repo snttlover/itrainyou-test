@@ -1,7 +1,7 @@
 import { attach, createEffect, createEvent, createStore, guard, merge, sample, split } from "effector-root"
 import {
   ClientData,
-  CoachData,
+  CoachData, coachToRedirectAfterSignUpType,
   REGISTER_SAVE_KEY,
   RegisterUserType,
   UserData
@@ -21,8 +21,8 @@ export const userDataReset = createEvent()
 export const userDataSetWithSocials = createEvent<UserData>()
 export const selectPriceRange = createEvent<{id: number}>()
 
-export const $coachToRedirectAfterSignUp = createStore<number | null>(null)
-export const setRedirectToCoachAfterSignUp = createEvent<number | null>()
+export const $coachToRedirectAfterSignUp = createStore<coachToRedirectAfterSignUpType | null>(null)
+export const setRedirectToCoachAfterSignUp = createEvent<coachToRedirectAfterSignUpType | null>()
 
 export const priceRangesGate = createGate()
 

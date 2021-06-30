@@ -159,7 +159,7 @@ export const Slider = ({ coaches }: Props) => {
   const redirectToCoach = (coachId: number) => {
     if (!isLoggedIn) return {
       pathname: `/search/coach/${coachId}`,
-      state: { freeSessions: true }
+      state: { showFreeSessionsOnly: true }
     }
 
     return {

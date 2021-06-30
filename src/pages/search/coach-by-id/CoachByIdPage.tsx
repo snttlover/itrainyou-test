@@ -26,6 +26,7 @@ import { useLocation } from "react-router-dom"
 import { $hasFreeSessions } from "@/pages/client/home/home.model"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 import { $isLoggedIn } from "@/feature/user/user.model"
+import { coachToRedirectAfterSignUpType } from "@/pages/auth/pages/signup/models/types"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -107,22 +108,35 @@ const MainCoachBlock = styled.div`
   }
 `
 
-const Datepicker = () => {
+export type DatepickerTypes = {
+  showFreeSessionsOnly?: boolean
+  preSelectedDate?: Date
+  preSelectedSessions?: number[]
+}
+
+const Datepicker = (props: DatepickerTypes) => {
   const coach = useStore($coach)
   const isLoggedIn = useStore($isLoggedIn)
   const location = useLocation()
 
   const hasFreeSessions = useStore($hasFreeSessions)
 
-  const showFreeSessionsOnly = hasFreeSessions || !isLoggedIn
-  let data = !!location.state && showFreeSessionsOnly ? $freeSessionsPickerStore : $sessionsPickerStore
+  const shouldShowFreeSessionsOnly = hasFreeSessions || !isLoggedIn
+  let data = !!props.showFreeSessionsOnly && shouldShowFreeSessionsOnly ? 
+    $freeSessionsPickerStore : 
+    $sessionsPickerStore
 
   useEffect(() => {
-    data = !!location.state && showFreeSessionsOnly ? $freeSessionsPickerStore : $sessionsPickerStore
+    data = !!location.state && shouldShowFreeSessionsOnly ? $freeSessionsPickerStore : $sessionsPickerStore
   }, [hasFreeSessions])
 
   if (coach) {
-    return <CoachDatepicker coach={coach} sessionsData={data} />
+    return <CoachDatepicker
+      preSelectedDate={props.preSelectedDate}
+      preSelectedSessions={props.preSelectedSessions}
+      coach={coach}
+      sessionsData={data} 
+    />
   }
   return null
 }
@@ -136,10 +150,18 @@ const CardPicker = () => {
   return null
 }
 
+export type CoachByIdPageLocationStateTypes = {
+  preSelectedDate?: Date
+  showFreeSessionsOnly?: boolean
+  preSelectedSessions?: number[]
+}
+
 export const CoachByIdPage = () => {
   const coach = useStore($coach)
   const pending = useStore(loadCoachFx.pending)
   const isNotFound = useStore($isNotFound)
+
+  const locationState = (useLocation().state as CoachByIdPageLocationStateTypes)
 
   useEffect(() => {
     ymLog("reachGoal","pushcoachprofile")
@@ -157,14 +179,22 @@ export const CoachByIdPage = () => {
               <MainCoachBlock>
                 <BaseCoachInfo />
                 <BuyBlock>
-                  <Datepicker />
+                  <Datepicker
+                    preSelectedDate={locationState.preSelectedDate}
+                    preSelectedSessions={locationState.preSelectedSessions}
+                    showFreeSessionsOnly={locationState.showFreeSessionsOnly}
+                  />
                 </BuyBlock>
                 <AboutCoach />
               </MainCoachBlock>
               <Reviews />
             </CoachInfoContainer>
             <BuySidebar>
-              <Datepicker />
+              <Datepicker
+                preSelectedDate={locationState.preSelectedDate}
+                preSelectedSessions={locationState.preSelectedSessions}
+                showFreeSessionsOnly={locationState.showFreeSessionsOnly}
+              />
             </BuySidebar>
             <BookSessionsStatusModalDialog />
             <CardPicker />

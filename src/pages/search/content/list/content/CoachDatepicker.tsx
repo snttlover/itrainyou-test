@@ -332,7 +332,7 @@ const equalDateFormat = "DDMMYYYY"
 const equalTimeFormat = "HH:mm"
 
 export const CoachDatepicker = (props: SelectDatetimeTypes) => {
-  const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
+  const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(props.preSelectedDate)
 
   const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
 
@@ -378,7 +378,7 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
     }))
 
   const selected = sessions
-    .filter(session => session.selected)
+    .filter(session => session.selected || (props.preSelectedSessions && props.preSelectedSessions.includes(session.id)))
     .map(session => ({
       ...session,
       date: date(session.startDatetime).format("DD.MM.YY"),
@@ -486,7 +486,12 @@ export const CoachDatepicker = (props: SelectDatetimeTypes) => {
               <IsGuest>
                 <Link to={{
                   pathname: "/auth/signup/1",
-                  state: {coachToRedirectAfterSignUp: props.coach.id}}}
+                  state: {
+                    coachToRedirectAfterSignUp: {
+                      coach: props.coach.id,
+                      sessions: selected
+                    }
+                  }}}
                 >
                   <StyledRegisterButton>Зарегистрироваться</StyledRegisterButton>
                 </Link>

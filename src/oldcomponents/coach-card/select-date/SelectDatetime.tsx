@@ -245,6 +245,8 @@ const equalTimeFormat = "HH:mm"
 
 export type SelectDatetimeTypes = {
   coach: Coach
+  preSelectedDate?: Date
+  preSelectedSessions?: number[]
   sessionsData: {
     loading: Store<boolean>
     sessionsList: Store<CoachSessionWithSelect[]>
@@ -391,7 +393,12 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
                 <IsGuest>
                   <Link to={{
                     pathname: "/auth/signup/1",
-                    state: {coachToRedirectAfterSignUp: props.coach.id}}}
+                    state: {
+                      coachToRedirectAfterSignUp: {
+                        coach: props.coach.id,
+                        sessions: selected
+                      }
+                    }}}
                   >
                     <Button>Зарегистрироваться</Button>
                   </Link>

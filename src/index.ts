@@ -25,5 +25,5 @@ export default express()
       console.error(err)
       return
     }
-    console.log(`✅  Started on port ${host}:${port}`)
+    console.log(`✅  Started on port http://${host}:${port}`)
   })
