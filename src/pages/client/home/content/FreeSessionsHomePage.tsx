@@ -219,6 +219,7 @@ const InformerHeader = styled.div`
   font-size: 14px;
   line-height: 22px;
   color: #FFFFFF;
+  margin-bottom: 8px;
 `
 
 const InformerDescription = styled.div`
@@ -318,7 +319,6 @@ export const FreeSessionsHomePage = () => {
             {
               !(upcomingSessionsPending || isFirstRender) &&
               <ContentContainer>
-
                 <InformerContainer>
                   <Informer
                     crossColored
@@ -327,7 +327,9 @@ export const FreeSessionsHomePage = () => {
                     backGround={"blue"}>
                     <InformerTextContainer>
                       <InformerHeader>Мы подобрали для вас подходящих коучей!</InformerHeader>
-                      <InformerDescription>Забронируйте бесплатную сессию у конкретного коуча или выберите удобную дату и время.</InformerDescription>
+                      <InformerDescription>
+                        Забронируйте приветственную сессию бесплатно, чтобы сформировать запрос и познакомиться со специалистом. Выберите удобную дату и время или конкретного коуча.
+                      </InformerDescription>
                     </InformerTextContainer>
                   </Informer>
                 </InformerContainer>

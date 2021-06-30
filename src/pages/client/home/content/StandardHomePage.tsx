@@ -13,7 +13,6 @@ import {
   $upcomingSessions,
   loadActiveSessionsFx,
   loadMore,
-  loadRecommendationsFx,
   loadUpcomingSessionsFx,
   homePageMounted,
   $informerShowed,
@@ -119,6 +118,7 @@ const InformerHeader = styled.div<{changeColors: boolean}>`
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
+  margin-bottom: 8px;
   color: ${({ changeColors }) => changeColors ? "#424242" : "#FFFFFF"};
 `
 
@@ -175,7 +175,8 @@ const StyledInformer = () => {
   switch (freeSessionsStatus) {
   case "AWAITING_BOOK_PROMO_REQUEST":
     header = "Вы отправили запрос на бронирование бесплатной сессии!"
-    showSocials = true
+    description = "За 30 минут вы сможете познакомиться с коучем, определить, над чем хотите работать и наметить дальнейшний план действий."
+    showSocials = false
 
     return (
       <InformerContainer>
@@ -191,7 +192,8 @@ const StyledInformer = () => {
 
   case "ACTIVE_PROMO_SESSION":
     header = "Бесплатная сессия забронирована!"
-    showSocials = true
+    description = "Надеемся, что все пройдет успешно! Приветственная сессия создана для знакомства с коучем и формирования вашего запроса."
+    showSocials = false
 
     return (
       <InformerContainer>
@@ -207,7 +209,8 @@ const StyledInformer = () => {
 
   case "AWAITING_COMPLETION_PROMO_REQUEST":
     header = "Вы не подтвердили окончание бесплатной сессии!"
-    showSocials = true
+    description = "Нам важно получить обратной связь о прошедшей сессии, чтобы совершенствоваться."
+    showSocials = false
 
     return (
       <InformerContainer>
@@ -224,6 +227,7 @@ const StyledInformer = () => {
   case "PROMO_LIMIT_ENDED":
     header = "Вы исчерпали лимит бесплатных сессий на платформе."
     description = "Предлагаем забронировать первую сессию и начать свой путь к цели!"
+    showSocials = false
 
     return (
       <InformerContainer>
@@ -252,7 +256,6 @@ export const StandardHomePage = () => {
   const isHasMoreRecommendations = useStore($isHasMoreRecommendations)
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
   const upcomingSessionsPending = useStore(loadUpcomingSessionsFx.pending)
-  const recommendationPending = useStore(loadRecommendationsFx.pending)
   const _mounted = useEvent(homePageMounted)
   const _loadMore = useEvent(loadMore)
   const informerVisibility = useStore($informerShowed)
