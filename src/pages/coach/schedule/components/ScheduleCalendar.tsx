@@ -41,7 +41,7 @@ import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
 import { CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
 import { config } from "@/config"
-import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { showPromoSessionsOnboarding } from "@/pages/coach/schedule/models/onboarding.model"
 import { RadioGroup, RadioOption } from "@/oldcomponents/radio/Radio"
 
 
@@ -553,7 +553,7 @@ type SessionType = {
 const MobileSessionInfoModal = () => {
   const toggle = useEvent(showMobileSessionInfo)
   const navigate = useEvent(navigatePush)
-  const _showOnBoarding = useEvent(showSecondOnBoarding)
+  const _showOnBoarding = useEvent(showPromoSessionsOnboarding)
 
   const visibility = useStore($isMobileSessionInfoShowed)
   const session = useStore($mobileEventInfo)
@@ -636,7 +636,7 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
 
   const _removeSession = useEvent(removeSession)
   const navigate = useEvent(navigatePush)
-  const _showOnBoarding = useEvent(showSecondOnBoarding)
+  const _showOnBoarding = useEvent(showPromoSessionsOnboarding)
 
   const [showed, setShowed] = useState(false)
 

@@ -14,8 +14,8 @@ import { CalendarPart } from "@/pages/coach/schedule/components/CalendarPart"
 import { Prices } from "@/pages/coach/schedule/Prices"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
 import { Icon } from "@/oldcomponents/icon/Icon"
-import { OnBoardingFreeSessions } from "@/pages/coach/schedule/components/OnBoarding/OnBoarding"
-import { showFirstOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { OnBoardingFreeSessions } from "@/pages/coach/schedule/components/OnBoarding/Onboarding"
+import { showCoachOnboarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 const Container = styled(ContentContainer)`
   margin-top: 16px;
@@ -126,7 +126,7 @@ const QuestionIcon = styled(Icon).attrs({ name: "question-mark" })`
 
 export const CoachSchedulePage = () => {
   const coachAccess = useStore($coachAccess)
-  const _showOnBoarding = useEvent(showFirstOnBoarding)
+  const _showOnBoarding = useEvent(showCoachOnboarding)
 
   useGate(ScheduleGate)
 

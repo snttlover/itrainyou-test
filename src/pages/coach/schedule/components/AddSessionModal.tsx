@@ -26,7 +26,7 @@ import { Informer } from "@/newcomponents/informer/Informer"
 import { Input } from "@/newcomponents/input/Input"
 import { $prices, changePrice, Prices } from "@/pages/coach/schedule/models/price-settings/units"
 import { $isAddSessionModalShowed, showAddSessionModal } from "@/pages/coach/schedule/models/calendar.model"
-import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { showPromoSessionsOnboarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 
 const StyledDialog = styled(Dialog)`
@@ -215,7 +215,7 @@ const SetPrice: React.FC<{ durationType: DurationType }> = ({ durationType }) =>
   const priceUpdate = useEvent(changePrice)
 
   const _showAddSessionModal = useEvent(showAddSessionModal)
-  const _showOnBoarding = useEvent(showSecondOnBoarding)
+  const _showOnBoarding = useEvent(showPromoSessionsOnboarding)
 
   const OnLinkClick = () => {
     _showAddSessionModal(false)

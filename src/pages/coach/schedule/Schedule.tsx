@@ -9,7 +9,7 @@ import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { Informer } from "@/newcomponents/informer/Informer"
 import { InputDurationPriceModal } from "./components/InputDurationPriceModal"
 import { Icon } from "@/oldcomponents/icon/Icon"
-import { showSecondOnBoarding } from "@/pages/coach/schedule/models/onboarding.model"
+import { showPromoSessionsOnboarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 const PriceContainer = styled.div`
   max-width: 320px;
@@ -99,7 +99,7 @@ export const Schedule = () => {
 
   const isWeekdaySchedulePending = useStore(saveWeekdaySlotsFx.pending)
 
-  const _showOnBoarding = useEvent(showSecondOnBoarding)
+  const _showOnBoarding = useEvent(showPromoSessionsOnboarding)
 
   const OnLinkClick = () => {
     _showOnBoarding(true)

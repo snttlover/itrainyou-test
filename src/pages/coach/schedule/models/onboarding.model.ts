@@ -11,22 +11,27 @@ const checkUserFx = createEffect({
   }
 })
 
-export const showFirstOnBoarding = createEvent<void | boolean>()
+export const showCoachOnboarding = createEvent<void | boolean>()
 
-export const showSecondOnBoarding = createEvent<void | boolean>()
+export const showPromoSessionsOnboarding = createEvent<void | boolean>()
 export const $onBoardingVisibility = createStore<boolean>(false)
-  .on(showFirstOnBoarding, (state, payload) => {
+  .on(showCoachOnboarding, (state, payload) => {
     if (payload !== undefined) return payload
     return !state
   })
-  .on(showSecondOnBoarding, (state, payload) => {
+  .on(showPromoSessionsOnboarding, (state, payload) => {
     if (payload !== undefined) return payload
     return !state
   })
 
-export const $onBoarding = createStore("first")
-  .on(showFirstOnBoarding, (state, payload) => "first")
-  .on(showSecondOnBoarding, (state, payload) => "second")
+export enum ONBOARDING_TYPES {
+  COACH = "COACH",
+  PROMO_SESSIONS = "PROMO_SESSIONS"
+}
+
+export const visibleOnboardingType = createStore<ONBOARDING_TYPES>(ONBOARDING_TYPES.COACH)
+  .on(showCoachOnboarding, (state, payload) => ONBOARDING_TYPES.COACH)
+  .on(showPromoSessionsOnboarding, (state, payload) => ONBOARDING_TYPES.PROMO_SESSIONS)
 
 forward({
   from: ScheduleGate.open,
@@ -38,5 +43,5 @@ forward({
     localStorage.setItem(STORAGE_KEY, "old_user")
     return data !== "old_user"
   }),
-  to: showFirstOnBoarding,
+  to: showCoachOnboarding,
 })
