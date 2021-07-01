@@ -1,6 +1,6 @@
 import { attach, createEffect, createEvent, createStore, guard, merge, sample, split } from "effector-root"
 import {
-  ClientData,
+  ClientData, COACH_TO_REDIRECT_AFTER_SIGN_UP,
   CoachData, coachToRedirectAfterSignUpType,
   REGISTER_SAVE_KEY,
   RegisterUserType,
@@ -10,6 +10,7 @@ import { registerAsClient, registerAsCoach } from "@/lib/api/register"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { createGate } from "@/scope"
 import { getPriceRanges, PriceRangesType } from "@/lib/api/get-price-ranges"
+import { persist } from "effector-storage/local"
 
 export const signUpPageMounted = createEvent()
 export const userTypeChanged = createEvent<RegisterUserType>()
@@ -22,6 +23,11 @@ export const userDataSetWithSocials = createEvent<UserData>()
 export const selectPriceRange = createEvent<{id: number}>()
 
 export const $coachToRedirectAfterSignUp = createStore<coachToRedirectAfterSignUpType | null>(null)
+persist({
+  store: $coachToRedirectAfterSignUp,
+  key: COACH_TO_REDIRECT_AFTER_SIGN_UP
+})
+
 export const setRedirectToCoachAfterSignUp = createEvent<coachToRedirectAfterSignUpType | null>()
 
 export const priceRangesGate = createGate()

@@ -15,7 +15,6 @@ const Container = styled.div`
 `
 
 export const SignUpWithSocialsPage = () => {
-
   useGate(signUpWithSocialsPageGate)
 
   return (

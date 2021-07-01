@@ -36,6 +36,8 @@ export type RegisterUserType = "client" | "coach"
 
 export const REGISTER_SAVE_KEY = "__register-data__"
 
+export const COACH_TO_REDIRECT_AFTER_SIGN_UP = "__coach_to_redirect_after_sign_up__"
+
 export type coachToRedirectAfterSignUpType = {
   coach: number,
   sessions: CoachSessionWithSelect[]
