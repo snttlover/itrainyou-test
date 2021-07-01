@@ -369,6 +369,14 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
     }
   }, [enabledDates[0]])
 
+  useEffect(() => {
+    return () => {
+      if (activeTab !== "PROMO" && tabs.length) {
+        changeActiveTab(tabs[0].key)
+      }
+    }
+  }, [])
+
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(
