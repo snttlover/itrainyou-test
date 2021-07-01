@@ -1,15 +1,7 @@
-import { createEffect, createEvent, createStore, forward, split } from "effector-root"
+import { createEffect, createEvent, createStore, forward } from "effector-root"
 import { ScheduleGate } from "@/pages/coach/schedule/models/schedule/units"
 
-const STORAGE_KEY = "on_boarding"
-
-const checkUserFx = createEffect({
-  handler: () => {
-    const stringData = localStorage.getItem(STORAGE_KEY)
-    const isOldUser = JSON.parse(stringData!)
-    return isOldUser
-  }
-})
+const ONBOARDGING_SHOWED_STORAGE_KEY = "__onboarding_showed__"
 
 export const showCoachOnboarding = createEvent<void | boolean>()
 
@@ -33,15 +25,26 @@ export const visibleOnboardingType = createStore<ONBOARDING_TYPES>(ONBOARDING_TY
   .on(showCoachOnboarding, (state, payload) => ONBOARDING_TYPES.COACH)
   .on(showPromoSessionsOnboarding, (state, payload) => ONBOARDING_TYPES.PROMO_SESSIONS)
 
+const checkUserFx = createEffect({
+  handler: () => {
+    const stringData = localStorage.getItem(ONBOARDGING_SHOWED_STORAGE_KEY)
+
+    if (!stringData) return false
+
+    return JSON.parse(stringData)
+  }
+})
+
 forward({
   from: ScheduleGate.open,
   to: checkUserFx,
 })
 
 forward({
-  from: checkUserFx.doneData.map(data => {
-    localStorage.setItem(STORAGE_KEY, "old_user")
-    return data !== "old_user"
+  from: checkUserFx.doneData.map(isShowed => {
+    console.log(isShowed)
+    localStorage.setItem(ONBOARDGING_SHOWED_STORAGE_KEY, "true")
+    return !isShowed
   }),
   to: showCoachOnboarding,
 })
