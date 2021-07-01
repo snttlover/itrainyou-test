@@ -23,6 +23,7 @@ export const userDataSetWithSocials = createEvent<UserData>()
 export const selectPriceRange = createEvent<{id: number}>()
 
 export const $coachToRedirectAfterSignUp = createStore<coachToRedirectAfterSignUpType | null>(null)
+// Без сохранения не будет работать редирект при регистрации через социальные сети (т.к. стор сбросится после редиректа)
 persist({
   store: $coachToRedirectAfterSignUp,
   key: COACH_TO_REDIRECT_AFTER_SIGN_UP
