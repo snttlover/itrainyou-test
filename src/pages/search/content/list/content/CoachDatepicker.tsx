@@ -39,17 +39,7 @@ const Block = styled.div<StyledTabTypes>`
   display: flex;
   flex-direction: column;
   background: #fff;
-  padding: 24px 8px;
-`
-
-const CalendarSubTitle = styled.div`
-  text-align: right;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-  color: #5B6670;
+  padding: 16px 8px;
 `
 
 const Description = styled.div`
@@ -60,12 +50,18 @@ const Description = styled.div`
   line-height: 18px;
   text-align: right;
   color: #9AA0A6;
-  margin-top: 24px;
 
   ${MediaRange.between("mobile", "laptop")`
-    margin-top: 12px;
     text-align: unset;
     margin-left: auto;
+  `}
+`
+
+const ChooseTime = styled(Description)`
+  margin-top: 0;
+  
+  ${MediaRange.greaterThan("desktop")`
+    margin-top: 16px;
   `}
 `
 
@@ -448,7 +444,6 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
       </StyledTabs>}
 
       <Block onlyOneCard={tabs.length === 1}>
-        {activeTab === "PROMO" ? <CalendarSubTitle>Бесплатные сессии</CalendarSubTitle> : null}
         {loading && <Spinner />}
         <CalendarDirectionBlock>
           
@@ -467,7 +462,7 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
             <WidthCurrentDateConditionWrapper>
               <>
 
-                {activeTab === "PROMO" ?  <Description>Выберите время</Description> : null}
+                {activeTab === "PROMO" ?  <ChooseTime>Выберите время</ChooseTime> : null}
                 <StyledDateHeader>{formattedDate}</StyledDateHeader>
 
                 <Times>

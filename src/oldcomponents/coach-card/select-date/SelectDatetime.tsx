@@ -54,16 +54,6 @@ const CalendarDirectionBlock = styled.div`
   flex-direction: row;
 `
 
-const CalendarSubTitle = styled.div`
-  text-align: right;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  color: #5B6670;
-`
-
 const Description = styled.div`
   font-family: Roboto;
   font-style: normal;
@@ -341,7 +331,6 @@ export const SelectDatetime = (props: SelectDatetimeTypes) => {
         </StyledTabs>}
 
       <Block onlyOneCard={tabs.length === 1}>
-        {activeTab === "PROMO" ? <CalendarSubTitle>Бесплатные сессии</CalendarSubTitle> : null}
         {loading && <Spinner />}
         <CalendarDirectionBlock>
           <Datepicker>

@@ -232,14 +232,13 @@ const InformerDescription = styled.div`
 `
 
 const TabletCalendar = ({ setShowed }: any) => {
-
   return (
     <TabletPageContainer>
       <Row onClick={() => setShowed(false)}>
         <GoBackIcon />
         <div>Назад</div>
       </Row>
-      <CalendarTitle>Календарь всех бесплатных сессий</CalendarTitle>
+      <CalendarTitle>Выберите удобное время</CalendarTitle>
       <HomeCalendar freeSessionsModule={$allFreeSessionsStore} />
     </TabletPageContainer>
   )
@@ -312,7 +311,7 @@ export const FreeSessionsHomePage = () => {
 
             <TabletCalendarContainer onClick={() => setShowed(true)}>
               <CalendarIcon />
-              <Description>Календарь бесплатных сессий</Description>
+              <Description>Выберите удобное время</Description>
               <Arrow />
             </TabletCalendarContainer>
 
@@ -353,7 +352,7 @@ export const FreeSessionsHomePage = () => {
 
           </FreeSessionsContainer>
           <CalendarContainer>
-            <CalendarTitle>Календарь всех бесплатных сессий</CalendarTitle>
+            <CalendarTitle>Выберите удобное время</CalendarTitle>
             <HomeCalendar freeSessionsModule={$allFreeSessionsStore} />
           </CalendarContainer>
         </PageContainer>

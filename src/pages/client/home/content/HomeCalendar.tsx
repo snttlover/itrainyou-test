@@ -89,7 +89,7 @@ const Block = styled.div<StyledTabTypes>`
   display: flex;
   flex-direction: column;
   background: #fff;
-  padding: 8px 12px;
+  padding: 16px 8px;
 `
 
 const Datepicker = styled.div`
@@ -198,22 +198,6 @@ const StyledRegisterButton = styled(Button)`
   width: 185px;
 `
 
-
-const CalendarSubTitle = styled.div`
-  text-align: right;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-  color: #5B6670;
-
-  ${MediaRange.lessThan("tablet")`
-    font-size: 16px;
-    line-height: 24px;
- `}
-`
-
 const Description = styled.div`
   font-family: Roboto;
   font-style: normal;
@@ -222,12 +206,18 @@ const Description = styled.div`
   line-height: 18px;
   text-align: right;
   color: #9AA0A6;
-  margin-top: 24px;
   
   ${MediaRange.between("mobile", "laptop")`
-    margin-top: 12px;
     text-align: unset;
     margin-left: auto;
+  `}
+`
+
+const ChooseTime = styled(Description)`
+  margin-top: 0;
+  
+  ${MediaRange.greaterThan("desktop")`
+    margin-top: 16px;
   `}
 `
 
@@ -329,7 +319,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   return (
     <Container>
       <Block onlyOneCard={true}>
-        <CalendarSubTitle>Бесплатная сессия</CalendarSubTitle>
         {loading && <Spinner />}
         <CalendarDirectionBlock>
 
@@ -346,7 +335,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
           </Datepicker>
           <SelectTimeContainer>
             <WidthCurrentDateConditionWrapper>
-              <Description>Выберите время</Description>
+              <ChooseTime>Выберите время</ChooseTime>
               <StyledDateHeader>{formattedDate}</StyledDateHeader>
               <Times>
                 {times.map(session => (
@@ -356,21 +345,26 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
                 ))}
               </Times>
             </WidthCurrentDateConditionWrapper>
-            <Description>Коуч</Description>
-            <SessionInfo>
-              {selected.map((session, index) => (
-                <React.Fragment key={index}>
-                  <RowBlock>
-                    <StyledAvatar src={session.coach?.avatar} />
-                    <CoachName>{session.coach?.firstName} {session.coach?.lastName}</CoachName>
-                  </RowBlock>
-                  <RowBlock>
-                    <Star />
-                    {session.coach.rating !== null && <Rating>{session.coach.rating}</Rating>}
-                  </RowBlock>
-                </React.Fragment>
-              ))}
-            </SessionInfo>
+            {selected.length !== 0 ?
+              <>
+                <Description>Коуч</Description>
+                <SessionInfo>
+                  {selected.map((session, index) => (
+                    <React.Fragment key={index}>
+                      <RowBlock>
+                        <StyledAvatar src={session.coach?.avatar}/>
+                        <CoachName>{session.coach?.firstName} {session.coach?.lastName}</CoachName>
+                      </RowBlock>
+                      <RowBlock>
+                        <Star/>
+                        {session.coach.rating !== null && <Rating>{session.coach.rating}</Rating>}
+                      </RowBlock>
+                    </React.Fragment>
+                  ))}
+                </SessionInfo>
+              </>
+              : null
+            }
             <ButtonContainer>
               <IsAuthed>
                 <StyledBuyButton
