@@ -1,8 +1,8 @@
-import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
+import { ContentContainer } from "@/old-components/layouts/ContentContainer"
 import { CoachSectionPlaceholder } from "@/feature/coach-placeholder/CoachSectionPlaceholder"
 import { GirlWithClock } from "@/feature/coach-placeholder/right-images/GirlWithClock"
 import * as React from "react"
-import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { CoachDashboardLayout } from "@/old-components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 
 const features = ["Откликаться на заявку на сессию здесь и сейчас", "Находить клиентов для сессии здесь и сейчас"]
 

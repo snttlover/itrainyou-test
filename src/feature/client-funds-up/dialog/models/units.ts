@@ -1,5 +1,5 @@
 import { createEffect, createEvent, restore } from "effector-root"
-import { Toast } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { startSaveClientCard, StartSaveClientCardParams } from "@/lib/api/wallet/client/start-save-card"
 import { startSaveCoachCard, StartSaveCoachCardParams  } from "@/lib/api/wallet/coach/start-save-card"
 import { finishSaveClientCard } from "@/lib/api/wallet/client/finish-save-card"

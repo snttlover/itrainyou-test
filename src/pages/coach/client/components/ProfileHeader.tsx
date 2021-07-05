@@ -1,5 +1,5 @@
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Avatar } from "@/old-components/avatar/Avatar"
+import { Button } from "@/old-components/button/normal/Button"
 import { writeToClient } from "@/feature/chat/modules/write-to-coach"
 import { date, getYearsCount } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"

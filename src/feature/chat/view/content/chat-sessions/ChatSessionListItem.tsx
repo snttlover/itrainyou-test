@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { Link } from "react-router-dom"
 
 type ChatSessionListItemTypes = {

@@ -11,7 +11,7 @@ import dayjs from "dayjs"
 import { chatSessionIsStarted } from "@/feature/chats-list/modules/chat-session-is-started"
 import { logout } from "@/lib/network/token"
 import { config as globalConfig } from "@/config"
-import { createSessionCallModule } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
+import { createSessionCallModule } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"

@@ -1,12 +1,12 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
-import { Textarea } from "@/oldcomponents/textarea/Textarea"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
-import { RatingPicker } from "@/oldcomponents/rating/RatingPicker"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Dialog } from "@/old-components/dialog/Dialog"
+import { Textarea } from "@/old-components/textarea/Textarea"
+import { Avatar } from "@/old-components/avatar/Avatar"
+import { RatingPicker } from "@/old-components/rating/RatingPicker"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 import { useEvent, useStore } from "effector-react"
-import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { Loader } from "@/old-components/spinner/Spinner"
 import {
   $rating,
   $resume,

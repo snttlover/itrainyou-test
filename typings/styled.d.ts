@@ -1,4 +1,4 @@
-import { clientTheme } from "@/oldcomponents/layouts/themes"
+import { clientTheme } from "@/old-components/layouts/themes"
 import "styled-components"
 
 declare module "styled-components" {

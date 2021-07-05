@@ -1,7 +1,7 @@
 import { AsyncDataLoader } from "@/lib/AsyncDataLoader"
 import * as React from "react"
 import { AppStyles } from "./AppStyles"
-import { ClientTheme } from "./oldcomponents/layouts/themes"
+import { ClientTheme } from "./old-components/layouts/themes"
 import { Pages } from "./pages"
 import "./init"
 import { YMInitializer } from "react-yandex-metrika"

@@ -12,13 +12,13 @@ import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySe
 import { useEvent, useStore } from "effector-react"
 import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
 import { $hasStartedSessions } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
-import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { Loader } from "@/old-components/spinner/Spinner"
 import { $hasNewestParticipantsList } from "@/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
 import { EmptySessions } from "@/pages/coach/home/sessions/content/empty-sessions/EmptySessions"
 import { FillOutSchedule } from "@/pages/coach/home/sessions/content/empty-sessions/FillOutSchedule"
-import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
+import { ContentContainer } from "@/old-components/layouts/ContentContainer"
 import { FilledOutNoResponses } from "@/pages/coach/home/sessions/content/empty-sessions/FilledOutNoResponses"
-import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
+import { CheckMediaDevices } from "@/old-components/layouts/behaviors/dashboards/call/TestCall"
 
 const Container = styled.div<{ nosessions: boolean }>`
   width: 100%;

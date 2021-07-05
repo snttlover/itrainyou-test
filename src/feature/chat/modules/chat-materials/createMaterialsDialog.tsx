@@ -2,14 +2,14 @@ import React from "react"
 import { useEvent, useList, useStore } from "effector-react"
 import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
 import styled from "styled-components"
-import { Close, Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Close, Dialog } from "@/old-components/dialog/Dialog"
 import { createInfinityScroll } from "@/feature/pagination"
 import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"
 import { MediaRange } from "@/lib/responsive/media"
-import { Tab, Tabs } from "@/oldcomponents/tabs/Tabs"
+import { Tab, Tabs } from "@/old-components/tabs/Tabs"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 import { getFileName, downloadByURL } from "@/lib/network/get-file-by-url"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 
 type MaterialProps = {
     material: {

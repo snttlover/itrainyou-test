@@ -1,5 +1,5 @@
-import { Icon } from "@/oldcomponents/icon/Icon"
-import { DropDown } from "@/newcomponents/dropdown/DropDownItem"
+import { Icon } from "@/old-components/icon/Icon"
+import { DropDown } from "@/new-components/dropdown/DropDownItem"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { WeekDayName } from "@/lib/api/coaching-sessions/types"
 import { $durationOptions } from "@/pages/coach/schedule/models/add-session.model"

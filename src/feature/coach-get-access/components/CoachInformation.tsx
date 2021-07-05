@@ -1,7 +1,7 @@
-import { Button } from "@/oldcomponents/button/normal/Button"
-import { Icon } from "@/oldcomponents/icon/Icon"
-import { YandexRegisterSteps, TinkoffRegisterSteps } from "@/oldcomponents/register-steps/YandexRegisterSteps"
-import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { Button } from "@/old-components/button/normal/Button"
+import { Icon } from "@/old-components/icon/Icon"
+import { YandexRegisterSteps, TinkoffRegisterSteps } from "@/old-components/register-steps/YandexRegisterSteps"
+import { Loader } from "@/old-components/spinner/Spinner"
 import { $categoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import {
   $formValid,

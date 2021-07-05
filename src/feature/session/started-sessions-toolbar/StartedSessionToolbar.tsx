@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Avatar } from "@/old-components/avatar/Avatar"
 import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
 import { useEvent, useList, useStore } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"

@@ -1,4 +1,4 @@
-import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { ClientDashboardLayout } from "@/old-components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import React from "react"
 import { FreeSessionsHomePage } from "./content/FreeSessionsHomePage"
 import { StandardHomePage } from "./content/StandardHomePage"

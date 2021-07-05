@@ -1,4 +1,4 @@
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { useState } from "react"
 import * as React from "react"
 import styled from "styled-components"

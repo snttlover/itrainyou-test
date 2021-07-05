@@ -3,7 +3,7 @@ import { ISODate } from "@/lib/api/interfaces/utils.interface"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { createEffect, createEvent, forward, restore, combine } from "effector-root"
 import { date } from "@/lib/formatting/date"
-import { createSessionCallModule } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
+import { createSessionCallModule } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { Client } from "@/lib/api/client/clientInfo"
 

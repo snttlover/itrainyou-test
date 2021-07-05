@@ -4,7 +4,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, sample
 import { $categoriesList, fetchCategoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import { getMyTransactions, SessionTransaction } from "@/lib/api/transactions/client/list-transaction"
 import { UpdateClientRequest, updateMyClient } from "@/lib/api/client/update"
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { createGate } from "@/scope"
 
 export const loadProfileFx = createEffect({

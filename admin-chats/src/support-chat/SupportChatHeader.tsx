@@ -1,10 +1,10 @@
 import React from "react"
 import { ChatHeaderTitle as Title } from "@/feature/chat/view/content/headers/common/ChatHeaderTitle"
 import styled from "styled-components"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Avatar } from "@/old-components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
 import { ChatHeaderContainer } from "@/feature/chat/view/content/headers/common/ChatHeaderContainer"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 
 type ChatHeaderTypes = {
   avatar: string | null,

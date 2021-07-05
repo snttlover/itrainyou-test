@@ -1,9 +1,9 @@
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
+import { Checkbox } from "@/old-components/checkbox/Checkbox"
 import { $searchPageQuery, addSearchPageQuery, removeSearchPageQuery } from "@/pages/search/coaches-search.model"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 
 const Container = styled.div`
   padding-top: 42px;

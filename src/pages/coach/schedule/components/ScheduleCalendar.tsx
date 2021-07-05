@@ -1,5 +1,5 @@
-import { Header, MonthContainer, MonthName } from "@/oldcomponents/calendar/CalendarHeader"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Header, MonthContainer, MonthName } from "@/old-components/calendar/CalendarHeader"
+import { Icon } from "@/old-components/icon/Icon"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import {
@@ -21,14 +21,14 @@ import { useEvent, useStore, useGate } from "effector-react"
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
-import { Button } from "@/oldcomponents/button/normal/Button"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
+import { Button } from "@/old-components/button/normal/Button"
+import { Avatar } from "@/old-components/avatar/Avatar"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
 import { Times, Time } from "@/pages/coach/schedule/components/MobileCalendarManager"
-import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
+import { useClickOutside } from "@/old-components/click-outside/use-click-outside"
 import { AddSessionModal } from "@/pages/coach/schedule/components/AddSessionModal"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Dialog } from "@/old-components/dialog/Dialog"
 import {
   setAddSessionDate,
   setMobileInfo,
@@ -39,10 +39,10 @@ import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { AddVacationModal } from "@/pages/coach/schedule/components/AddVacationModal"
-import { CheckboxContent } from "@/oldcomponents/checkbox/Checkbox"
+import { CheckboxContent } from "@/old-components/checkbox/Checkbox"
 import { config } from "@/config"
 import { showPromoSessionsOnboarding } from "@/pages/coach/schedule/models/onboarding.model"
-import { RadioGroup, RadioOption } from "@/oldcomponents/radio/Radio"
+import { RadioGroup, RadioOption } from "@/old-components/radio/Radio"
 
 
 const CalendarContainer = styled.div`

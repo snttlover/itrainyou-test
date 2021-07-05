@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
-import { Button } from "@/oldcomponents/button/normal/Button"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Dialog } from "@/old-components/dialog/Dialog"
+import { Button } from "@/old-components/button/normal/Button"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 import { MediaRange } from "@/lib/responsive/media"
 
 type CancelSessionDialogTypes = {

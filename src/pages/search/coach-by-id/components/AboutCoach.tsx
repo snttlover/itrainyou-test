@@ -1,4 +1,4 @@
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
 import { ImagesViewModal } from "@/pages/search/coach-by-id/ImagesViewModal"

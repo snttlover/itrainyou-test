@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Dialog } from "@/old-components/dialog/Dialog"
 import { MediaRange } from "@/lib/responsive/media"
 import { RemoveSessionsDateRangePicker } from "@/pages/coach/schedule/components/RemoveSessionsDateRangePicker"
 import { useEvent, useStore } from "effector-react"
@@ -10,7 +10,7 @@ import {
   changePickedDeleteRange,
   removeSessionsRange
 } from "@/pages/coach/schedule/models/sessions.model"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Button } from "@/old-components/button/normal/Button"
 import { Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { showVacationModal, $isVacationModalShowed } from "@/pages/coach/schedule/models/calendar.model"
 

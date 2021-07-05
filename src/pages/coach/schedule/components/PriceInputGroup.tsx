@@ -6,7 +6,7 @@ import {
   changePrice,
   Prices
 } from "@/pages/coach/schedule/models/price-settings/units"
-import { Input } from "@/newcomponents/input/Input"
+import { Input } from "@/new-components/input/Input"
 
 const Container = styled.div`
   display: flex;

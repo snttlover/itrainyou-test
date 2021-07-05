@@ -8,7 +8,7 @@ import dayjs, { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, Event, forward, restore, sample } from "effector-root"
 import { every, spread } from "patronum"
 import { updateMyClient } from "@/lib/api/client/update"
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { $isClientBecomingCoach } from "@/pages/client/profile/content/become-coach-dialog/models/units"
 
 export const imageUploaded = createEvent<UploadMediaResponse>()

@@ -1,4 +1,4 @@
-import { AuthLayout } from "@/oldcomponents/layouts/sections/auth/AuthLayout"
+import { AuthLayout } from "@/old-components/layouts/sections/auth/AuthLayout"
 import { navigatePush } from "@/feature/navigation"
 import { MediaRange } from "@/lib/responsive/media"
 import { WhiteNextButton } from "@/pages/auth/pages/signup/components/NextButton"
