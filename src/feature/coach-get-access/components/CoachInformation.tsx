@@ -244,7 +244,7 @@ export const CoachInformation = ({
         { onSkip ? <SkipRegistration>
           <Title>Пропустить заполнение</Title>
           <Description>Вы сможете заполнить эту информацию позже</Description>
-          <StyledButton data-secondary onClick={onSkip}>Пропустить</StyledButton>
+          <StyledButton data-secondary onClick={onSkip}>Заполнить позже</StyledButton>
         </SkipRegistration> : null}
         {categoriesLoading ? (
           <LoaderContainer>
