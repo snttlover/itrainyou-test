@@ -1,4 +1,5 @@
 import React from "react"
+// у этого компонента дока в github pages неверная, лучше ориентироваться по коду
 import Linkify from "react-linkify"
 
 const BlockWithLinksDecorator = (href: string, text: string) => (
