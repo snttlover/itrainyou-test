@@ -11,6 +11,7 @@ type CoachCategoryListItemType = {
 }
 
 export type CoachItemType = {
+    id?: number
     firstName: string
     lastName: string
     birthDate: string
