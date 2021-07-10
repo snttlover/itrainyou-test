@@ -8,6 +8,7 @@ import React, { useRef, useState } from "react"
 import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
+import { BlockWithLinks } from "@/components/block-with-links/BlockWithLinks"
 
 const StyledBlock = styled(Block)`
   ${MediaRange.between("mobile", "laptop")`
@@ -34,7 +35,7 @@ const Title = styled.h3`
   `}
 `
 
-const Description = styled.h3`
+const Description = styled(BlockWithLinks)`
   margin-top: 8px;
   font-family: Roboto;
   font-style: normal;
@@ -140,6 +141,7 @@ export const AboutCoach = styled(props => {
         <>
           <Title>О себе</Title>
           <Description>{coach.description}</Description>
+          hello
         </>
       )}
       {coach?.workExperience && (
