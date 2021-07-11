@@ -141,7 +141,6 @@ export const AboutCoach = styled(props => {
         <>
           <Title>О себе</Title>
           <Description>{coach.description}</Description>
-          hello
         </>
       )}
       {coach?.workExperience && (
