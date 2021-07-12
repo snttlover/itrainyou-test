@@ -12,6 +12,7 @@ import { useStore } from "effector-react"
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { declOfNum } from "@/lib/formatting/numerals"
+import { CopyLinkIcon } from "@/pages/search/coach-by-id/components/CopyIcon"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
@@ -36,7 +37,7 @@ const Name = styled.p`
   font-size: 16px;
   line-height: 26px;
   color: #424242;
-  padding-right: 30px;
+  padding-right: 10px;
 
   display: flex;
   flex-wrap: wrap;
@@ -50,6 +51,7 @@ const Name = styled.p`
 
 const Year = styled.span`
   color: #9aa0a6;
+  flex: 1;
 `
 
 const Rating = styled.div`
@@ -145,6 +147,14 @@ const MobileEditButton = styled(EditButton)`
   `}
 `
 
+const CopyLink = styled(CopyLinkIcon)`
+  width: 24px;
+  cursor: pointer;
+  stroke: #9aa0a6;
+  align-self: flex-end;
+  margin-left: 5px;
+`
+
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($profileData)
 
@@ -155,7 +165,10 @@ export const BaseCoachInfo = styled(({ ...props }) => {
         <UserInfo>
           <Name>
             {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-            <Year>{getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate),["год", "года", "лет"])}</Year>
+            <Year>
+              {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate), ["год", "года", "лет"])}
+            </Year>
+            <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
           </Name>
           <Rating>
             <StarIcon name='star' />

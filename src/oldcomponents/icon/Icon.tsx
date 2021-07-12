@@ -97,20 +97,21 @@ export type IconName =
   | "download"
   | "google-calendar"
   | "left-calendar-icon"
+  | "copy"
   | "right-calendar-icon"
-        | "step-done"
-        | "checkbox-active-filled-border"
-        | "checkbox-border-filled"
-        | "go-back"
-        | "question-mark"
-        | "percents"
-        | "gift"
-        | "gift-black"
-        | "fb"
-        | "instagram"
+  | "step-done"
+  | "checkbox-active-filled-border"
+  | "checkbox-border-filled"
+  | "go-back"
+  | "question-mark"
+  | "percents"
+  | "gift"
+  | "gift-black"
+  | "fb"
+  | "instagram"
 
 type IconProps = {
-  name: IconName,
+  name: IconName
   disabled?: boolean
 } & React.SVGProps<SVGSVGElement>
 

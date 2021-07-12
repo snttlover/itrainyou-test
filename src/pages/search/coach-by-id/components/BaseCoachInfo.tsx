@@ -13,15 +13,16 @@ import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 import { $coach, $isFavourite, toggleFavourite } from "@/pages/search/coach-by-id/models/units"
 import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
 import { declOfNum } from "@/lib/formatting/numerals"
+import { CopyLinkIcon } from "@/pages/search/coach-by-id/components/CopyIcon"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
-  
+
   width: 80px;
   min-width: 80px;
   height: 80px;
   min-height: 80px;
-    
+
   ${MediaRange.greaterThan("tablet")`        
     width: 120px;
     min-width: 120px;
@@ -42,7 +43,7 @@ const Name = styled.p`
   font-size: 16px;
   line-height: 26px;
   color: #424242;
-  padding-right: 30px;
+  padding-right: 10px;
 
   display: flex;
   flex-wrap: wrap;
@@ -56,6 +57,7 @@ const Name = styled.p`
 
 const Year = styled.span`
   color: #9aa0a6;
+  flex: 1;
 `
 
 const Rating = styled.div`
@@ -163,6 +165,14 @@ const MobileWriteButton = styled(WriteButton)`
   `}
 `
 
+const CopyLink = styled(CopyLinkIcon)`
+  width: 24px;
+  cursor: pointer;
+  stroke: #9aa0a6;
+  align-self: flex-end;
+  margin-left: 5px;
+`
+
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($coach)
   const isFavourite = useStore($isFavourite)
@@ -176,10 +186,13 @@ export const BaseCoachInfo = styled(({ ...props }) => {
         <UserInfo>
           <Name>
             {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-            <Year>{getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!),["год", "года", "лет"])}</Year>
+            <Year>
+              {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!), ["год", "года", "лет"])}
+            </Year>
             {/*<IsAuthed>*/}
             {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
             {/*</IsAuthed>*/}
+            <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
           </Name>
           <Rating>
             <StarIcon name='star' />
@@ -187,10 +200,11 @@ export const BaseCoachInfo = styled(({ ...props }) => {
           </Rating>
           <CategoriesAndButtonContainer>
             <CategoriesContainer>
-              {coach?.isTopCoach && 
-              <GrayTooltip text={"Топ-коуч"}>
-                <TopCoachIcon/>
-              </GrayTooltip>}
+              {coach?.isTopCoach && (
+                <GrayTooltip text={"Топ-коуч"}>
+                  <TopCoachIcon />
+                </GrayTooltip>
+              )}
               {coach?.categories.map(cat => (
                 <GrayTooltip text={cat.name} key={cat.id}>
                   <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
