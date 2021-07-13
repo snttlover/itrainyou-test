@@ -6,10 +6,10 @@ import { step4CoachMounted } from "@/pages/auth/pages/signup/content/step-4/step
 import { useEvent, useStore } from "effector-react"
 import { useEffect } from "react"
 import * as React from "react"
-import { $userData, registerUserFx, skipCoach, registerUser } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData, registerUserFx, skipCoach, registerUser } from "@/pages/auth/pages/signup/models/units"
 
 export const Step4Coach = () => {
-  const userData = useStore($userData)
+  const userData = useStore($registerUserData)
   const loading = useStore(registerUserFx.pending)
   const _step4CoachMounted = useEvent(step4CoachMounted)
   const _skipCoach = useEvent(skipCoach)

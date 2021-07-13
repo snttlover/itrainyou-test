@@ -7,7 +7,7 @@ import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { PriceRanges } from "@/pages/auth/pages/signup/content/step-4/client/PriceRanges"
-import { $userData, categoriesChanged, registerUserFx, registerUser, $rangeSelected } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData, categoriesChanged, registerUserFx, registerUser, $rangeSelected } from "@/pages/auth/pages/signup/models/units"
 
 const Container = styled.div`
   max-width: 660px;
@@ -138,7 +138,7 @@ const RegisterButton = styled(Button)`
 `
 
 export const Step4Client = () => {
-  const selectedCategories = useStore($userData).categories
+  const selectedCategories = useStore($registerUserData).categories
   const loading = useStore(registerUserFx.pending)
   const _categoriesChanged = useEvent(categoriesChanged)
   const _registerUser = useEvent(registerUser)

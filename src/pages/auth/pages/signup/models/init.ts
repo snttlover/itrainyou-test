@@ -8,7 +8,7 @@ import {
   $coachToRedirectAfterSignUp,
   $priceRanges,
   $rangeSelected,
-  $userData,
+  $registerUserData,
   categoriesChanged,
   clientDataChanged,
   coachDataChanged,
@@ -35,7 +35,7 @@ $coachToRedirectAfterSignUp.on(
   (state, payload) => payload
 ).reset(coachByIdGate.close)
 
-$userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
+$registerUserData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
@@ -67,11 +67,11 @@ $rangeSelected.on($priceRanges, (state, payload) => {
 })
 
 forward({
-  from: $userData.updates,
+  from: $registerUserData.updates,
   to: saveDataFx,
 })
 
-forward({ from: loadDataFx.doneData, to: $userData })
+forward({ from: loadDataFx.doneData, to: $registerUserData })
 
 forward({ from: signUpPageMounted, to: loadDataFx })
 
@@ -118,7 +118,7 @@ forward({
 })
 
 sample({
-  source: $userData,
+  source: $registerUserData,
   clock: guard({
     source: registerStep4Merged,
     filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
@@ -138,7 +138,7 @@ sample({
 })
 
 sample({
-  source: $userData,
+  source: $registerUserData,
   clock: $isLoggedIn.updates,
   target: registerUserFx,
 })
