@@ -34,7 +34,7 @@ const Title = styled.h3`
   `}
 `
 
-const Description = styled.h3`
+const Description = styled.p`
   margin-top: 8px;
   font-family: Roboto;
   font-style: normal;
@@ -44,6 +44,7 @@ const Description = styled.h3`
   color: #424242;
   word-break: break-word;
   word-wrap: break-word;
+  white-space: pre-line;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 16px;
