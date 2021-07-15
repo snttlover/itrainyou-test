@@ -36,6 +36,8 @@ export type IconName =
   | "chat-files"
   | "search"
   | "close"
+  | "yellow-star-circle"
+  | "yellow-star"
   | "enabled-video"
   | "disabled-video"
   | "enabled-micro"
