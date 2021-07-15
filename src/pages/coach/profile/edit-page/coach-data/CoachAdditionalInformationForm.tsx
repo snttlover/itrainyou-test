@@ -122,10 +122,10 @@ export const CoachAdditionalInformationForm: React.FC = () => {
     <InformationContainer>
 
       <FormSection>
-        <InformationTitle>Личная данные</InformationTitle>
+        <InformationTitle>Личные данные</InformationTitle>
         <FormItem label='Место обучения' error={errors.education}>
           <Input value={values.education} onChange={_educationChanged} />
-        </FormItem>
+        </FormItem>gi
         <FormItem label='Опыт работы' error={errors.workExperience}>
           <Textarea value={values.workExperience} onChange={_workExperienceChanged} rows={8} />
         </FormItem>
