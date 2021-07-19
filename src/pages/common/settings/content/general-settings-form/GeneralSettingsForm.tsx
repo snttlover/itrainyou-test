@@ -72,6 +72,7 @@ export const GeneralSettingsForm = () => {
   const changeGeneralSettings = useEvent(changeGeneralSettingsFx)
   const _mounted = useEvent(mounted)
   const emailChange = useEvent(emailChanged)
+  const _phoneChanged = useEvent(_phoneChanged)
   const timeZoneChange = useEvent(timeZoneChanged)
 
   useGate(SettingsGate)
@@ -91,6 +92,17 @@ export const GeneralSettingsForm = () => {
       <StyledFormItem label='Почта' error={errors.email}>
         <Input value={form.email} onChange={emailChange} />
       </StyledFormItem>
+
+      <StyledFormItem label='Телефон' error={errors.email}>
+        <Input
+          mask='+7 (111) 111-11-11'
+          placeholder='+7 (900) 000-00-00'
+          value={form.phone}
+          onChange={_phoneChanged}
+          type='tel'
+        />
+      </StyledFormItem>
+          
       <StyledFormItem label='Часовой пояс'>
         <StyledSelectInput
           value={form.timeZone}
