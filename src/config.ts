@@ -16,5 +16,6 @@ export const config = {
   ENVIRONMENT: dataSource.env.ENVIRONMENT,
   SERVER_DEFAULT_PAYMENT_SYSTEM: dataSource.env.SERVER_DEFAULT_PAYMENT_SYSTEM,
   JIVO_ID: dataSource.env.JIVO_ID,
-  YANDEX_METRIKA_ID: dataSource.env.YANDEX_METRIKA_ID
+  YANDEX_METRIKA_ID: dataSource.env.YANDEX_METRIKA_ID,
+  DEBUG: dataSource.env.DEBUG,
 }
