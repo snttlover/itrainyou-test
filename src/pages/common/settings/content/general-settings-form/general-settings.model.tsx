@@ -1,7 +1,7 @@
 import { setUserData } from "@/feature/user/user.model"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { updateMyUser } from "@/lib/api/users/update-my-user"
-import { createEffectorField } from "@/lib/generators/efffector"
+import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
 import { emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
@@ -57,6 +57,21 @@ const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToC
 
 $email.on(userDoneData, (state, user) => user.email)
 
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<
+  string,
+  { userData: UnpackedStoreObjectType<typeof $userData>; value: string }
+  >({
+    defaultValue: "",
+    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validator: obj => {
+      const type = obj.userData.type
+      const value = obj.value
+      if (type === "coach" && !value) return "Поле обязательно к заполнению"
+      return phoneValidator(obj.value)
+    },
+    eventMapper: event => event.map(trimString),
+})
+
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
   defaultValue: "",
   validator: v => {
@@ -73,18 +88,21 @@ $timeZone.on(userDoneData, (state, user) => user.timeZone)
 
 export const $changeGeneralSettingsForm = createStoreObject({
   email: $email,
+  phone: $phone,
   timeZone: $timeZone,
 })
 
 export const $changeGeneralSettingsFormErrors = createStoreObject({
   email: $emailError,
+  phone: $phone,
   timeZone: $timeZoneError,
 })
 
 export const $isGeneralSettingsFormFormValid = combine(
   $isEmailCorrect,
+  $isPhoneCorrect,
   $isTimeZoneCorrect,
-  (isEmailCorrect, isTimeZoneCorrect) => isEmailCorrect && isTimeZoneCorrect
+  (isEmailCorrect, isPhoneCorrect, isTimeZoneCorrect) => isEmailCorrect && isPhoneCorrect && isTimeZoneCorrect
 )
 
 forward({

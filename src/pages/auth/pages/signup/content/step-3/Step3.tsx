@@ -213,8 +213,8 @@ export const Step3 = () => {
 
           <FormItem label='Телефон' error={errors.phone} required={userType === "coach"}>
             <Input
-              mask='+1 (111) 111-11-11'
-              placeholder='+7 900 000-00-00'
+              mask='+7 (111) 111-11-11'
+              placeholder='+7 (900) 000-00-00'
               value={values.phone}
               onChange={_phoneChanged}
               type='tel'

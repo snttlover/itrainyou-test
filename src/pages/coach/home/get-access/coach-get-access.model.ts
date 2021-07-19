@@ -4,7 +4,6 @@ import {
   $selectedCategories,
   descriptionChanged,
   educationChanged,
-  phoneChanged,
   restorePhotos,
   setCategories,
   videoInterviewChanged,
@@ -83,7 +82,6 @@ spread({
   targets: {
     description: descriptionChanged,
     education: educationChanged,
-    phone: phoneChanged,
     photos: restorePhotos,
     videoInterview: videoInterviewChanged,
     workExperience: workExperienceChanged,
