@@ -4,14 +4,14 @@ import { useEffect } from "react"
 import { Step4Client } from "./Step4Client"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
-import { $userData } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 
 function throwCompileTimeError(x: never): never {
   throw new Error(`Unknown kind ${x}`)
 }
 
 export const Step4 = () => {
-  const userData = useStore($userData)
+  const userData = useStore($registerUserData)
   const fetchCategories = useEvent(fetchCategoriesList)
 
   useEffect(() => {

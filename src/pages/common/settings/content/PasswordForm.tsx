@@ -1,9 +1,9 @@
-import { PasswordInput } from "@/oldcomponents/input/PasswordInput"
+import { PasswordInput } from "@/old-components/input/PasswordInput"
 import React, { FormEvent } from "react"
 import styled from "styled-components"
-import { FormItem } from "@/oldcomponents/form-item/FormItem"
-import { Input } from "@/oldcomponents/input/Input"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { FormItem } from "@/old-components/form-item/FormItem"
+import { Input } from "@/old-components/input/Input"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 import { useEvent, useGate, useStore } from "effector-react"
 import {
   $changePasswordForm,
@@ -15,7 +15,7 @@ import {
   changePasswordFx,
   PasswordFormGate,
 } from "@/pages/common/settings/content/password-form.model"
-import { Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 
 const StyledForm = styled.form`

@@ -2,7 +2,7 @@ import { routeNames } from "@/pages/route-names"
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Button } from "@/old-components/button/normal/Button"
 
 const LoginLink = styled(Link)`
   font-style: normal;

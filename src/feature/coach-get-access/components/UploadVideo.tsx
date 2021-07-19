@@ -1,5 +1,5 @@
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
-import { ProgressBar } from "@/oldcomponents/progress-bar/ProgressBar"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
+import { ProgressBar } from "@/old-components/progress-bar/ProgressBar"
 import {
   $form,
   $videoUploadProgress,

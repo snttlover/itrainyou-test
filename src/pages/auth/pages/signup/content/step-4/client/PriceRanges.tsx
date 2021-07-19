@@ -1,7 +1,7 @@
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 import styled from "styled-components"
-import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
+import { Checkbox } from "@/old-components/checkbox/Checkbox"
 import { priceRangesGate, $priceRanges, selectPriceRange } from "@/pages/auth/pages/signup/models/units"
 import { useGate, useStore, useEvent } from "effector-react"
 

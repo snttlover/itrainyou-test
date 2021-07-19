@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Dialog } from "@/old-components/dialog/Dialog"
+import { Avatar } from "@/old-components/avatar/Avatar"
+import { Button } from "@/old-components/button/normal/Button"
 import { createStartSessionDialogModel } from "@/feature/session/start-session-dialog/create-start-session-dialog.model"
 import { useEvent, useStore } from "effector-react"
 

@@ -1,4 +1,4 @@
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CoachSession, getCoachSessions } from "@/lib/api/coach-sessions"
 import { googleCalendarApi, endSyncCalendar, startSyncCalendar, CalendarEvents, deleteGoogleCalendar, getCalendarEvents } from "@/lib/api/coach/google-calendar/google-calendar-api"
 import { removeCoachSession, removeCoachSessionRange } from "@/lib/api/coaching-sessions/remove-coach-session"

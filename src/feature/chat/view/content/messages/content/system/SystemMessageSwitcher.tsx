@@ -18,13 +18,13 @@ import {
   createSessionRequestsModule,
 } from "@/feature/session-request/createSessionRequestsModule"
 import { useEvent, useStore } from "effector-react"
-import { Loader, Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Loader, Spinner } from "@/old-components/spinner/Spinner"
 import {
   $revocated,
   changeRevocationSessionId,
   changeRevocationUser,
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Avatar } from "@/old-components/avatar/Avatar"
 import { changeCurrentDenyCompletationRequest, changeDenyOptions } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
 import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 import { Link, useHistory } from "react-router-dom"

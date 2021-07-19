@@ -7,7 +7,7 @@ import { combine, createEffect, createEvent, createStore, forward, sample } from
 import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
-import { $userData, clientDataChanged, signUpPageMounted, $priceRanges } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData, clientDataChanged, signUpPageMounted, $priceRanges } from "@/pages/auth/pages/signup/models/units"
 
 
 export const step3FormSubmitted = createEvent()
@@ -24,7 +24,7 @@ export const $originalAvatar = createStore<UploadMediaResponse>({ id: -1, type: 
 
 const $isImageError = combine(
   $image,
-  $userData.map(userData => userData.type),
+  $registerUserData.map(userData => userData.type),
   (img, type) => {
     if (type === "coach" && !img.file) return "Изображение обязательно к загрузке"
 
@@ -83,10 +83,10 @@ export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = 
 
 export const [$middleName, middleNameChanged, $middleNameError, $isMiddleNameCorrect] = createEffectorField<
   string,
-  { userData: UnpackedStoreObjectType<typeof $userData>; value: string }
+  { userData: UnpackedStoreObjectType<typeof $registerUserData>; value: string }
   >({
     defaultValue: "",
-    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validatorEnhancer: $store => combine($registerUserData, $store, (userData, value) => ({ userData, value })),
     validator: obj => {
       const type = obj.userData.type
       const value = obj.value
@@ -99,10 +99,10 @@ export const [$middleName, middleNameChanged, $middleNameError, $isMiddleNameCor
 
 export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = createEffectorField<
   Dayjs | null,
-  { userData: UnpackedStoreObjectType<typeof $userData>; value: Dayjs | null }
+  { userData: UnpackedStoreObjectType<typeof $registerUserData>; value: Dayjs | null }
 >({
   defaultValue: null,
-  validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+  validatorEnhancer: $store => combine($registerUserData, $store, (userData, value) => ({ userData, value })),
   validator: obj => {
     const type = obj.userData.type
     const value = obj.value
@@ -114,10 +114,10 @@ export const [$birthday, birthdayChanged, $birthdayError, $isBirthdayCorrect] = 
 
 export const [$sex, sexChanged, $sexError, $isSexCorrect] = createEffectorField<
   "M" | "F" | "",
-  { userData: UnpackedStoreObjectType<typeof $userData>; value: "M" | "F" | "" }
+  { userData: UnpackedStoreObjectType<typeof $registerUserData>; value: "M" | "F" | "" }
 >({
   defaultValue: "",
-  validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+  validatorEnhancer: $store => combine($registerUserData, $store, (userData, value) => ({ userData, value })),
   validator: obj => {
     const type = obj.userData.type
     const value = obj.value

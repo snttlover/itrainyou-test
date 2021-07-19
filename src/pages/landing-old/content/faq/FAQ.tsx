@@ -1,10 +1,10 @@
 import * as React from "react"
 import styled from "styled-components"
 import { LandingPageContainer } from "@/pages/landing-old/common/LandingPageContainer"
-import { ExpansionPanel } from "@/oldcomponents/expansion-panel/ExpansionPanel"
+import { ExpansionPanel } from "@/old-components/expansion-panel/ExpansionPanel"
 import peopleImage from "./images/people.svg"
 import questions from "./questions"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Button } from "@/old-components/button/normal/Button"
 
 const Title = styled.h3`
   font-family: Roboto Slab;

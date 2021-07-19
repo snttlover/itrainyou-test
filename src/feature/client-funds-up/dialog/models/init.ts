@@ -15,7 +15,7 @@ import {
   reportUnknownTypeFx,
   PAYMENT_KEY
 } from "@/feature/client-funds-up/dialog/models/units"
-import { toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { loadClientCardsFx, loadCoachCardsFx } from "@/pages/client/wallet/cards/cards.model"
 import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
 import { $sessionsPickerStore, mounted as CoachByIdMounted } from "@/pages/search/coach-by-id/models/units"

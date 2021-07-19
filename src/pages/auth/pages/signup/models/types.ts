@@ -1,4 +1,4 @@
-import { CoachSessionWithSelect } from "@/oldcomponents/coach-card/select-date/select-date.model"
+import { CoachSessionWithSelect } from "@/old-components/coach-card/select-date/select-date.model"
 
 export type ClientData = {
   firstName: string

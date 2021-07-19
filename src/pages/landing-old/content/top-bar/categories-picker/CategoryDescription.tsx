@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 
 const Tooltip = styled.div`

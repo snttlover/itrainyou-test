@@ -1,7 +1,7 @@
-import { Avatar, AvatarPlaceholder } from "@/oldcomponents/avatar/Avatar"
-import { FormItem } from "@/oldcomponents/form-item/FormItem"
-import { Input } from "@/oldcomponents/input/Input"
-import { AuthLayout } from "@/oldcomponents/layouts/sections/auth/AuthLayout"
+import { Avatar, AvatarPlaceholder } from "@/old-components/avatar/Avatar"
+import { FormItem } from "@/old-components/form-item/FormItem"
+import { Input } from "@/old-components/input/Input"
+import { AuthLayout } from "@/old-components/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/lib/responsive/media"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
@@ -26,7 +26,7 @@ import * as React from "react"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
-import { $userData } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const StyledSteps = styled(Steps)`
@@ -149,7 +149,7 @@ export const Step3 = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
   const isFormValid = useStore($isStep3FormValid)
-  const userType = useStore($userData).type
+  const userType = useStore($registerUserData).type
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 

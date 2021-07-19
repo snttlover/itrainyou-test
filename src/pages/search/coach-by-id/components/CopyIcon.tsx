@@ -1,6 +1,6 @@
 import React from "react"
-import { Icon } from "@/oldcomponents/icon/Icon"
-import { toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Icon } from "@/old-components/icon/Icon"
+import { toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export type CopyLinkIconProps = {
   className?: string

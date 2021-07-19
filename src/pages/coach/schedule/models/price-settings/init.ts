@@ -1,4 +1,4 @@
-import { toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { forward, merge, sample, split } from "effector-root"
 import { debounce } from "patronum"
 import {

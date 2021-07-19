@@ -2,12 +2,12 @@ import * as React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { useGoogleLogin } from "react-google-login"
 import { config } from "@/config"
 import { getRefreshToken, $syncedEmail, $isSynced, $isGoogleCalendarAdded, syncGoogleCalendar, deleteSynchronization } from "@/pages/coach/schedule/models/sessions.model"
 import { useEvent, useStore } from "effector-react"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 
 const GoogleButton = styled.div`
     border: 2px solid #F4F5F7;

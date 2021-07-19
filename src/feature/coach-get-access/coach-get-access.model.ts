@@ -127,7 +127,7 @@ export const [$description, descriptionChanged, $descriptionError, $isDescriptio
   }
 )
 
-export const [$socialNetworks, socialNetworkChanged, $socialNetworkError, $issocialNetworkCorrect] = createEffectorField<string>(
+export const [$socialNetworks, socialNetworkChanged, $socialNetworkError, $isSocialNetworkCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
     validator: value => {
@@ -137,7 +137,7 @@ export const [$socialNetworks, socialNetworkChanged, $socialNetworkError, $issoc
   }
 )
 
-export const [$supervisions, supervisionsChanged, $supervisionsError, $issupervisionsCorrect] = createEffectorField<string>(
+export const [$supervisions, supervisionsChanged, $supervisionsError, $isSupervisionsCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
     validator: value => {
@@ -174,14 +174,6 @@ export const $videoInterview = createStore("")
   .on(videoInterviewChanged, (state, payload) => payload)
   .on(videoUploadFx.doneData, (state, payload) => payload.file)
   .reset(videoUploadFx)
-
-const $videoInterviewError = $videoInterview.map(video => {
-  if (!video) return "Необходимо загрузить видео с интервью"
-
-  return null
-})
-
-const $isVideoInterviewCorrect = $videoInterviewError.map(value => !value)
 
 export const photoUploadFx = createEffect({
   handler: (file: File) => {
@@ -247,7 +239,7 @@ let formValidFields = {
   $isWorkExperienceCorrect,
   $isDescriptionCorrect,
   $isInnCorrect,
-  $issupervisionsCorrect,
+  $isSupervisionsCorrect,
   $isScheduleFilled,
   $isCategoriesCorrect,
 }

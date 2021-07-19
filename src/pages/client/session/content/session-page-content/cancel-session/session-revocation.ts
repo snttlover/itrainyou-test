@@ -1,6 +1,6 @@
 import { combine, createEffect, createEvent, createStore, forward, restore, sample } from "effector-root"
 import { createClientReview } from "@/lib/api/client/create-review"
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { loadUserData } from "@/feature/user/user.model"
 import { Coach, CoachUser } from "@/lib/api/coach"
 

@@ -1,11 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Avatar } from "@/old-components/avatar/Avatar"
 import { MediaRange } from "@/lib/responsive/media"
 import { ChatHeaderMobileBackButton as MobileBackButton } from "@/feature/chat/view/content/headers/common/ChatHeaderMobileBackButton"
 import { ChatHeaderTitle as Title } from "@/feature/chat/view/content/headers/common/ChatHeaderTitle"
 import { ChatHeaderContainer } from "@/feature/chat/view/content/headers/common/ChatHeaderContainer"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 
 const StyledAvatar = styled(Avatar)`
   width: 40px;

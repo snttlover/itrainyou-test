@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import * as React from "react"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 
 

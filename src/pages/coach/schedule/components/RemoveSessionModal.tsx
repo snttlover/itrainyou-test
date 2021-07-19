@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Dialog } from "@/old-components/dialog/Dialog"
+import { Avatar } from "@/old-components/avatar/Avatar"
 import { useEvent, useStore } from "effector-react"
 import {
   $sessionToDelete,
@@ -11,8 +11,8 @@ import {
 import { removeSession } from "@/pages/coach/schedule/models/sessions.model"
 import { date } from "@/lib/formatting/date"
 import { fixAvatarAndImageUrl } from "@/lib/helpers/fix-avatar-and-image-url"
-import { Button } from "@/oldcomponents/button/normal/Button"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Button } from "@/old-components/button/normal/Button"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 import { MediaRange } from "@/lib/responsive/media"
 
 export const RemoveSessionModal = () => {

@@ -1,6 +1,6 @@
-import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
+import { ContentContainer } from "@/old-components/layouts/ContentContainer"
 import React, { useEffect } from "react"
-import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { ClientDashboardLayout } from "@/old-components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
 import styled from "styled-components"
 import { ProfileHeader } from "./content/profile-header/ProfileHeader"
 import { ProfileInterests } from "@/pages/client/profile/content/interests/Interests"
@@ -10,7 +10,7 @@ import { IndividualSessions } from "@/pages/client/profile/content/sessions-list
 import { $profilePageLoading, $profilePageSessionsCount, ClientProfileGate } from "./profile-page.model"
 import { MediaRange } from "@/lib/responsive/media"
 import { useEvent, useGate, useStore } from "effector-react"
-import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { Loader } from "@/old-components/spinner/Spinner"
 import { BecomeCoachWarningDialog } from "@/pages/client/profile/content/become-coach-dialog/BecomeCoachWarningDialog"
 import {
   $becomeCoachWarningDialogVisibility,

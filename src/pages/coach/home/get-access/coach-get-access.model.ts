@@ -8,6 +8,8 @@ import {
   setCategories,
   videoInterviewChanged,
   workExperienceChanged,
+  socialNetworkChanged,
+  supervisionsChanged,
 } from "@/feature/coach-get-access/coach-get-access.model"
 import { $userData, loadUserData } from "@/feature/user/user.model"
 import { updateMyCoach } from "@/lib/api/coach/update-my-coach"
@@ -80,6 +82,8 @@ const userDataLoaded = sample({
 spread({
   source: userDataLoaded.map(data => data.coach) as Event<any>,
   targets: {
+    socialNetworks: socialNetworkChanged,
+    supervisions: supervisionsChanged,
     description: descriptionChanged,
     education: educationChanged,
     photos: restorePhotos,

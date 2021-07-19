@@ -5,9 +5,9 @@ import {
 } from "@/pages/landing-old/content/top-bar/categories-picker/categories-picker.model"
 import * as React from "react"
 import styled from "styled-components"
-import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
+import { Checkbox } from "@/old-components/checkbox/Checkbox"
 import { useState } from "react"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { MediaRange } from "@/lib/responsive/media"
 

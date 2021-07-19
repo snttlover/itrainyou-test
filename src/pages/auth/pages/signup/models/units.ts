@@ -33,14 +33,32 @@ export const setRedirectToCoachAfterSignUp = createEvent<coachToRedirectAfterSig
 
 export const priceRangesGate = createGate()
 
-export const $userData = createStore<UserData>({
+export const $registerUserData = createStore<UserData>({
   type: "client",
-  clientData: { avatar: null, originalAvatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null, phone: "", middleName: "", priceRanges: []},
-  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [],
+  clientData: {
+    avatar: null,
+    originalAvatar: null,
+    birthDate: null,
+    lastName: "",
+    sex: "",
+    firstName: "",
+    email: null,
+    phone: "",
+    middleName: "",
+    priceRanges: []
+  },
+  coachData: {
+    description: "",
+    education: "",
+    phone: "",
+    videoInterview: "",
+    workExperience: "",
+    photos: [],
     inn: "",
     legalForm: "",
     socialNetworks: "",
-    supervisions: "" },
+    supervisions: ""
+  },
   categories: []
 })
 
@@ -54,6 +72,7 @@ export const getPriceRangesFx = createEffect({
 export const saveDataFx = createEffect({
   handler: (userData: UserData) => {
     const data = JSON.stringify(userData)
+    console.log("Обновляем", data)
     localStorage.setItem(REGISTER_SAVE_KEY, data)
   }
 })

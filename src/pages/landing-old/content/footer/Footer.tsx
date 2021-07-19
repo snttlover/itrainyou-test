@@ -11,7 +11,7 @@ import footerBgMobile from "./images/mobile-background.svg"
 import instagram from "../../assets/instagram.svg"
 import telegram from "../../assets/telegram.svg"
 import facebook from "../../assets/facebook.svg"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 
 const StyledFooter = styled.div`
