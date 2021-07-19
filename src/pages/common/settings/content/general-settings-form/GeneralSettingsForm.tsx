@@ -10,6 +10,7 @@ import {
   $isGeneralSettingsFormFormValid,
   changeGeneralSettingsFx,
   emailChanged,
+  phoneChanged,
   SettingsGate,
   timeZoneChanged,
 } from "@/pages/common/settings/content/general-settings-form/general-settings.model"
@@ -72,13 +73,14 @@ export const GeneralSettingsForm = () => {
   const changeGeneralSettings = useEvent(changeGeneralSettingsFx)
   const _mounted = useEvent(mounted)
   const emailChange = useEvent(emailChanged)
-  const _phoneChanged = useEvent(_phoneChanged)
+  const phoneChange = useEvent(phoneChanged)
   const timeZoneChange = useEvent(timeZoneChanged)
 
   useGate(SettingsGate)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    changeGeneralSettings({ email: form.email, timeZone: form.timeZone })
+    changeGeneralSettings({ email: form.email, phone: form.phone, timeZone: form.timeZone })
+
     e.preventDefault()
   }
 
@@ -93,12 +95,12 @@ export const GeneralSettingsForm = () => {
         <Input value={form.email} onChange={emailChange} />
       </StyledFormItem>
 
-      <StyledFormItem label='Телефон' error={errors.email}>
+      <StyledFormItem label='Телефон' error={errors.phone}>
         <Input
           mask='+7 (111) 111-11-11'
           placeholder='+7 (900) 000-00-00'
           value={form.phone}
-          onChange={_phoneChanged}
+          onChange={phoneChange}
           type='tel'
         />
       </StyledFormItem>

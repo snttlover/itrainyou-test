@@ -19,7 +19,7 @@ export const trimString = (value: string | null) => value === null ? "" : value.
 
 export const phoneValidator = (value: string) => {
   const clearValue = value.replace(/[^0-9]/g, "")
-  if (clearValue.length !== 11 && clearValue.length !== 0) return "Неверный формат номера телефона"
+  if (clearValue.length !== 11) return "Неверный формат номера телефона"
 
   return null
 }

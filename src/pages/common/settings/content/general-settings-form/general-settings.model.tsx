@@ -3,7 +3,7 @@ import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { updateMyUser } from "@/lib/api/users/update-my-user"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
-import { emailValidator, trimString } from "@/lib/validators"
+import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
@@ -12,11 +12,12 @@ export const SettingsGate = createGate()
 
 type ResetRType = {
   email: string
+  phone: string
   timeZone: string
 }
 
 export const changeGeneralSettingsFx = createEffect({
-  handler: ({ email, timeZone }: ResetRType) => updateMyUser({ email, timeZone }),
+  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ email, phone, timeZone }),
 })
 
 export const mounted = createEvent()
@@ -57,20 +58,15 @@ const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToC
 
 $email.on(userDoneData, (state, user) => user.email)
 
-export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<
-  string,
-  { userData: UnpackedStoreObjectType<typeof $userData>; value: string }
-  >({
-    defaultValue: "",
-    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
-    validator: obj => {
-      const type = obj.userData.type
-      const value = obj.value
-      if (type === "coach" && !value) return "Поле обязательно к заполнению"
-      return phoneValidator(obj.value)
-    },
-    eventMapper: event => event.map(trimString),
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
+  defaultValue: "",
+  validator: phoneValidator,
+  eventMapper: event => event.map(trimString),
 })
+
+// $phone.on(userDoneData, (state, user) => console.log('user: ', user))
+// Пока работает только для коуча
+$phone.on(userDoneData, (state, user) => user.coach.phone)
 
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -94,7 +90,7 @@ export const $changeGeneralSettingsForm = createStoreObject({
 
 export const $changeGeneralSettingsFormErrors = createStoreObject({
   email: $emailError,
-  phone: $phone,
+  phone: $phoneError,
   timeZone: $timeZoneError,
 })
 

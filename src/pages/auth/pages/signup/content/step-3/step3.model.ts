@@ -59,15 +59,15 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
 
 export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<
   string,
-  { userData: UnpackedStoreObjectType<typeof $userData>; value: string }
+  { userData: UnpackedStoreObjectType<typeof $registerUserData>; value: string }
   >({
     defaultValue: "",
-    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validatorEnhancer: $store => combine($registerUserData, $store, (userData, value) => ({ userData, value })),
     validator: obj => {
       const type = obj.userData.type
       const value = obj.value
       if (type === "coach" && !value) return "Поле обязательно к заполнению"
-      return phoneValidator(obj.value)
+      return obj.value.length === 0 ? null : phoneValidator(obj.value)
     },
     eventMapper: event => event.map(trimString),
 })
