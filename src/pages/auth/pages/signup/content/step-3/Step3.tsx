@@ -12,6 +12,7 @@ import {
   $step3Form,
   $step3FormErrors,
   emailChanged,
+  phoneChanged,
   lastNameChanged,
   middleNameChanged,
   nameChanged,
@@ -157,10 +158,10 @@ export const Step3 = () => {
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
+  const _phoneChanged = useEvent(phoneChanged)
   const _step3FormSubmitted = useEvent(step3FormSubmitted)
   const _middleNameChanged = useEvent(middleNameChanged)
   const [nextDisabled, setNextDisabled] = useState(false)
-
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -209,6 +210,17 @@ export const Step3 = () => {
               <Input value={values.email} onChange={_emailChanged} />
             </FormItem>
           )}
+
+          <FormItem label='Телефон' error={errors.phone} required={userType === "coach"}>
+            <Input
+              mask='+1 (111) 111-11-11'
+              placeholder='+7 900 000-00-00'
+              value={values.phone}
+              onChange={_phoneChanged}
+              type='tel'
+            />
+          </FormItem>
+
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
 
           <NextButton onClick={nextOnClick} disabled={!isFormValid || nextDisabled} />

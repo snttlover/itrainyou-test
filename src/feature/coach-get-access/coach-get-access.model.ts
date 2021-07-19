@@ -1,6 +1,6 @@
 import { uploadMedia } from "@/lib/api/media"
 import { createEffectorField } from "@/lib/generators/efffector"
-import { phoneValidator, trimString, innValidator } from "@/lib/validators"
+import { trimString, innValidator } from "@/lib/validators"
 import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
 import { getSystemInfo } from "@/lib/api/system-info"
 import { isArray } from "@/lib/network/casing"
@@ -155,12 +155,6 @@ export const [$inn, innChanged, $innError, $isInnCorrect] = createEffectorField<
   }
 )
 
-export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
-  defaultValue: "",
-  validator: phoneValidator,
-  eventMapper: event => event.map(trimString),
-})
-
 export const videoUploadProgressChanged = createEvent<number>()
 
 export const videoUploadFx = createEffect({
@@ -223,7 +217,6 @@ let formFields = {
   education: $education,
   workExperience: $workExperience,
   description: $description,
-  phone: $phone,
   photos: $photos,
   videoInterview: $videoInterview,
   socialNetworks: $socialNetworks,
@@ -240,7 +233,6 @@ let formErrors = {
   education: $educationError,
   workExperience: $workExperienceError,
   description: $descriptionError,
-  phone: $phoneError,
   socialNetworks: $socialNetworkError,
   supervisions: $supervisionsError,
   inn: $innError,
@@ -254,7 +246,6 @@ let formValidFields = {
   $isEducationCorrect,
   $isWorkExperienceCorrect,
   $isDescriptionCorrect,
-  $isPhoneCorrect,
   $isInnCorrect,
   $issupervisionsCorrect,
   $isScheduleFilled,

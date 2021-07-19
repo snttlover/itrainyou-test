@@ -35,7 +35,7 @@ export const priceRangesGate = createGate()
 
 export const $userData = createStore<UserData>({
   type: "client",
-  clientData: { avatar: null, originalAvatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null, middleName: "", priceRanges: []},
+  clientData: { avatar: null, originalAvatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null, phone: "", middleName: "", priceRanges: []},
   coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [],
     inn: "",
     legalForm: "",

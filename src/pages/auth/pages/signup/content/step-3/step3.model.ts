@@ -1,7 +1,7 @@
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
-import { emailValidator, trimString } from "@/lib/validators"
+import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
@@ -56,6 +56,21 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
     validator: obj => obj.isSocialSignupInProgress ? emailValidator(obj.value) : null,
     eventMapper: event => event.map(trimString),
   })
+
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<
+  string,
+  { userData: UnpackedStoreObjectType<typeof $userData>; value: string }
+  >({
+    defaultValue: "",
+    validatorEnhancer: $store => combine($userData, $store, (userData, value) => ({ userData, value })),
+    validator: obj => {
+      const type = obj.userData.type
+      const value = obj.value
+      if (type === "coach" && !value) return "Поле обязательно к заполнению"
+      return phoneValidator(obj.value)
+    },
+    eventMapper: event => event.map(trimString),
+})
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",
@@ -120,6 +135,7 @@ export const $step3Form = combine({
   middleName: $middleName,
   sex: $sex,
   email: $email,
+  phone: $phone,
   originalAvatar: $originalAvatar,
   priceRanges: [],
 })
@@ -135,6 +151,7 @@ sample({
     middleName: data.middleName,
     sex: data.sex,
     email: data.email,
+    phone: data.phone,
     originalAvatar: data.originalAvatar.file || null,
     priceRanges: data.priceRanges
   }),
@@ -163,6 +180,7 @@ spread({
     lastName: lastNameChanged,
     middleName: middleNameChanged,
     email: emailChanged,
+    phone: phoneChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
       date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
     ),
@@ -178,6 +196,7 @@ export const $step3FormErrors = combine({
   birthday: $birthdayError,
   sex: $sexError,
   email: $emailError,
+  phone: $phoneError,
   middleName: $middleNameError,
 })
 
@@ -188,6 +207,7 @@ export const $isStep3FormValid = combine(
   $isSexCorrect,
   $isImageCorrect,
   $isEmailCorrect,
+  $isPhoneCorrect,
   $isMiddleNameCorrect,
   (...args) => args.every(val => val)
 )

@@ -9,6 +9,7 @@ export type ClientData = {
   avatar: string | null
   originalAvatar: string | null
   email: string | null
+  phone: string
   priceRanges: number[]
 }
 

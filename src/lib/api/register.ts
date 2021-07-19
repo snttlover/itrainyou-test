@@ -22,6 +22,7 @@ export const registerAsUser = (data: RegisterAsUserRequest) =>
 export interface RegisterAsClientRequest {
   firstName: string
   lastName: string
+  phone: string
   birthDate: string | null
   sex: "M" | "F" | ""
   avatar: string | null
@@ -35,6 +36,7 @@ export interface RegisterAsClientResponse {
     email: string
     creationDatetime: string
   }
+  phone: string
   firstName: string
   lastName: string
   birthDate: string | null
@@ -79,6 +81,7 @@ export interface RegisterAsCoachResponse {
   }
   firstName: string
   lastName: string
+  phone: string
   birthDate: string | null
   sex: "M" | "F" | ""
   avatar: string | null

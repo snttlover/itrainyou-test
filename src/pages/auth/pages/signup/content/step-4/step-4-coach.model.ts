@@ -2,7 +2,6 @@
 import {
   descriptionChanged,
   educationChanged,
-  phoneChanged,
   restorePhotos,
   videoInterviewChanged,
   workExperienceChanged,
@@ -37,7 +36,6 @@ spread({
   targets: {
     description: descriptionChanged,
     education: educationChanged,
-    phone: phoneChanged,
     photos: restorePhotos,
     videoInterview: videoInterviewChanged,
     workExperience: workExperienceChanged,
