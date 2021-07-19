@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Input } from "@/oldcomponents/input/Input"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Input } from "@/old-components/input/Input"
+import { Icon } from "@/old-components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 
 type ChatsSearchProps = {

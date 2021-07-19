@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 
 type SessionInfoProps = {
   duration: string

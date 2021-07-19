@@ -1,6 +1,6 @@
 import { attach, combine, createEvent, createStore } from "effector-root"
 import { UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
-import { Toast } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { $feeRatio, updateScheduleFx } from "@/pages/coach/schedule/models/schedule/units"
 
 export type Prices = {

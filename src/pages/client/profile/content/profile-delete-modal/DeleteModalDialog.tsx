@@ -1,6 +1,6 @@
 import React from "react"
 import { useStore } from "effector-react"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Dialog } from "@/old-components/dialog/Dialog"
 import styled from "styled-components"
 import { useEvent } from "effector-react"
 import { $cardsSessionsForView } from "@/pages/client/wallet/cards/cards.model"

@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
+import { GrayTooltip } from "@/old-components/gray-tooltip/GrayTooltip"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { MediaRange } from "@/lib/responsive/media"
-import starIcon from "@/oldcomponents/coach-card/images/star.svg"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import starIcon from "@/old-components/coach-card/images/star.svg"
+import { Icon } from "@/old-components/icon/Icon"
 import { Coach } from "@/lib/api/coach"
 
 type RescheduleSessionCoach = {

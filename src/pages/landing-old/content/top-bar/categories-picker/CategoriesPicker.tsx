@@ -3,7 +3,7 @@ import { parseQueryString } from "@/lib/helpers/query"
 import { useEffect } from "react"
 import * as React from "react"
 import styled from "styled-components"
-import { Dropdown } from "@/oldcomponents/dropdown/Dropdown"
+import { Dropdown } from "@/old-components/dropdown/Dropdown"
 import {
   $categoriesList,
   $categoriesPickerVisibility,

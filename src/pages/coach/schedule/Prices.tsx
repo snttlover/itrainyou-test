@@ -6,7 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { useStore } from "effector-react"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
 import { $feeRatio } from "@/pages/coach/schedule/models/schedule/units"
-import { Informer } from "@/newcomponents/informer/Informer"
+import { Informer } from "@/new-components/informer/Informer"
 
 const StyledPriceInputGroup = styled(PriceInputGroup)``
 

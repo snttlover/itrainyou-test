@@ -6,7 +6,7 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { Title } from "@/pages/coach/home/awaiting-approval/common/Title"
 import { SubTitle } from "@/pages/coach/home/awaiting-approval/common/SubTitle"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Button } from "@/old-components/button/normal/Button"
 import { MediaRange } from "@/lib/responsive/media"
 import { Timer } from "@/pages/coach/home/approval-timer/content/Timer"
 

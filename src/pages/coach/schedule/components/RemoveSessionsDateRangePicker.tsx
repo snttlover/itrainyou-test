@@ -1,5 +1,5 @@
-import { Calendar } from "@/oldcomponents/calendar/Calendar"
-import { useClickOutside } from "@/oldcomponents/click-outside/use-click-outside"
+import { Calendar } from "@/old-components/calendar/Calendar"
+import { useClickOutside } from "@/old-components/click-outside/use-click-outside"
 import { date } from "@/lib/formatting/date"
 import { DatePicker } from "@/pages/coach/schedule/components/DatePicker"
 import dayjs, { Dayjs } from "dayjs"

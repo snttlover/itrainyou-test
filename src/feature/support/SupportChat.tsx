@@ -1,13 +1,13 @@
 import { createSupportChatModel } from "@/feature/support/create-support-chat.model"
 import { createChatMessages } from "@/feature/chat/view/content/messages/ChatMessages"
-import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { Loader } from "@/old-components/spinner/Spinner"
 import { ChatContainer } from "@/feature/chat/view/content/ChatContainer"
 import { createChatMessageBox } from "@/feature/chat/view/content/message-box/ChatMessageBox"
 import React, { useEffect } from "react"
 import { useEvent, useStore } from "effector-react"
 import styled from "styled-components"
 import { SupportChatHeader } from "@/feature/support/SupportChatHeader"
-import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
+import { ContentContainer } from "@/old-components/layouts/ContentContainer"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 export const createSupportChat = ($chatModule: ReturnType<typeof createSupportChatModel>) => {

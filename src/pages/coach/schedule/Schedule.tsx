@@ -1,4 +1,4 @@
-import { Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { WeekDaySchedule } from "@/pages/coach/schedule/components/WeekDaySchedule"
 import { saveWeekdaySlotsFx } from "@/pages/coach/schedule/models/weekday-schedule.model"
@@ -6,9 +6,9 @@ import { useEvent, useGate, useStore } from "effector-react"
 import React from "react"
 import styled from "styled-components"
 import { Description, Title } from "@/pages/coach/schedule/CoachSchedulePage"
-import { Informer } from "@/newcomponents/informer/Informer"
+import { Informer } from "@/new-components/informer/Informer"
 import { InputDurationPriceModal } from "./components/InputDurationPriceModal"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { showPromoSessionsOnboarding } from "@/pages/coach/schedule/models/onboarding.model"
 
 const PriceContainer = styled.div`

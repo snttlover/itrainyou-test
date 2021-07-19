@@ -1,4 +1,4 @@
-import { AuthLayout } from "@/oldcomponents/layouts/sections/auth/AuthLayout"
+import { AuthLayout } from "@/old-components/layouts/sections/auth/AuthLayout"
 import { navigatePush } from "@/feature/navigation"
 import { MediaRange } from "@/lib/responsive/media"
 import { WhiteNextButton } from "@/pages/auth/pages/signup/components/NextButton"
@@ -8,7 +8,7 @@ import { routeNames } from "@/pages/route-names"
 import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
-import { $userData, userTypeChanged } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData, userTypeChanged } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 
 const Container = styled.div`
@@ -95,7 +95,7 @@ const Title = styled.h1`
 `
 
 export const Step2 = () => {
-  const type = useStore($userData).type
+  const type = useStore($registerUserData).type
   const changeType = useEvent(userTypeChanged)
   const navigate = useEvent(navigatePush)
 

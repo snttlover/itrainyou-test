@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
 import { useEvent, useList } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 
 export const createStartedSessionsToolbar = ($model: ReturnType<typeof createStartSessionToolbarModel>) => {
   return () => {

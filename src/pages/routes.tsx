@@ -1,8 +1,8 @@
 import * as React from "react"
 import { RouteConfig } from "react-router-config"
 
-import { ClientDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/client/ClientDashboardLayout"
-import { CoachDashboardLayout } from "@/oldcomponents/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
+import { ClientDashboardLayout } from "@/old-components/layouts/behaviors/dashboards/client/ClientDashboardLayout"
+import { CoachDashboardLayout } from "@/old-components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { LoginPage } from "@/pages/auth/pages/login/LoginPage"
 import RecoveryPage from "@/pages/auth/pages/recovery/RecoveryPage"
 import { ResetPasswordPage } from "@/pages/auth/pages/reset-password/ResetPasswordPage"

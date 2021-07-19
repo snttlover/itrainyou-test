@@ -6,7 +6,7 @@ import { Client } from "@/lib/api/client/clientInfo"
 import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 import { downloadByURL, getFileName } from "@/lib/network/get-file-by-url"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 
 type ContainerTypes = {
   "data-self": boolean

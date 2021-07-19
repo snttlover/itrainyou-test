@@ -1,5 +1,5 @@
-import cross from "@/oldcomponents/modal/cross.svg"
-import { ProgressBar } from "@/oldcomponents/progress-bar/ProgressBar"
+import cross from "@/old-components/modal/cross.svg"
+import { ProgressBar } from "@/old-components/progress-bar/ProgressBar"
 import { MediaRange } from "@/lib/responsive/media"
 import { $uploadPercent, uploadImageFx, uploadOriginalAvatarFx } from "@/pages/auth/pages/signup/content/step-3/upload-modal.model"
 import { ProcessingImage } from "@/pages/auth/pages/signup/content/step-3/upload-steps/ProcessingImage"

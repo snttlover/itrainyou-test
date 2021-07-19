@@ -1,12 +1,12 @@
 import React from "react"
 import styled from "styled-components"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Dialog } from "@/old-components/dialog/Dialog"
 import { useEvent, useStore } from "effector-react"
 import {
   $fillFieldsToBecomeCoachWarningDialogVisibility,
   changeFillFieldsToBecomeCoachWarningDialogVisibility,
 } from "@/pages/client/edit-profile/user-data/client-profile.model"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Button } from "@/old-components/button/normal/Button"
 
 export const FIllFieldsToBecomeCoachWarningDialog = () => {
   const visibility = useStore($fillFieldsToBecomeCoachWarningDialogVisibility)

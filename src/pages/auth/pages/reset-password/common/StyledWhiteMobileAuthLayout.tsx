@@ -1,7 +1,7 @@
 import styled from "styled-components"
-import { AuthLayout } from "@/oldcomponents/layouts/sections/auth/AuthLayout"
-import { AuthLogoLink } from "@/oldcomponents/layouts/sections/auth/AuthLayoutLogo"
-import mobileLayoutLogo from "@/oldcomponents/layouts/sections/auth/images/mobile-logo-with-dark-lines.svg"
+import { AuthLayout } from "@/old-components/layouts/sections/auth/AuthLayout"
+import { AuthLogoLink } from "@/old-components/layouts/sections/auth/AuthLayoutLogo"
+import mobileLayoutLogo from "@/old-components/layouts/sections/auth/images/mobile-logo-with-dark-lines.svg"
 import { WhiteContainer } from "@/pages/auth/components/WhiteContainer"
 
 export const WhiteMobileAuthLayout = styled(AuthLayout)`

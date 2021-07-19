@@ -1,7 +1,7 @@
-import { Button } from "@/oldcomponents/button/normal/Button"
-import { CoachCard } from "@/oldcomponents/coach-card/CoachCard"
-import { FreeSessionsContainer } from "@/oldcomponents/layouts/ContentContainer"
-import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { Button } from "@/old-components/button/normal/Button"
+import { CoachCard } from "@/old-components/coach-card/CoachCard"
+import { FreeSessionsContainer } from "@/old-components/layouts/ContentContainer"
+import { Loader } from "@/old-components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { SessionCard } from "@/pages/client/home/SessionCard"
 import { useEvent, useStore } from "effector-react"
@@ -19,12 +19,12 @@ import {
 } from "../home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { clientCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
-import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
+import { clientCall } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { CheckMediaDevices } from "@/old-components/layouts/behaviors/dashboards/call/TestCall"
 import { $allFreeSessionsStore } from "@/pages/search/coach-by-id/models/units"
 import { HomeCalendar } from "@/pages/client/home/content/HomeCalendar"
-import { Icon } from "@/oldcomponents/icon/Icon"
-import { Informer } from "@/newcomponents/informer/Informer"
+import { Icon } from "@/old-components/icon/Icon"
+import { Informer } from "@/new-components/informer/Informer"
 
 const PageContainer = styled.div`
   display: flex;

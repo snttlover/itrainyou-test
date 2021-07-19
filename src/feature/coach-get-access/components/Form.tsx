@@ -1,7 +1,7 @@
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
-import { FormItem } from "@/oldcomponents/form-item/FormItem"
-import { Input } from "@/oldcomponents/input/Input"
-import { Textarea } from "@/oldcomponents/textarea/Textarea"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
+import { FormItem } from "@/old-components/form-item/FormItem"
+import { Input } from "@/old-components/input/Input"
+import { Textarea } from "@/old-components/textarea/Textarea"
 import {
   $form,
   $formErrors,
@@ -27,7 +27,7 @@ import { useDropzone } from "react-dropzone"
 import ReactIdSwiper from "react-id-swiper"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
-import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
+import { Checkbox } from "@/old-components/checkbox/Checkbox"
 import { PriceWithoutCommissionInput } from "@/feature/coach-get-access/components/PriceWithCommisionInputGroup"
 import { config } from "@/config"
 

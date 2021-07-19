@@ -1,4 +1,4 @@
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { CardResponse, getClientCardsList } from "@/lib/api/wallet/client/get-cards-list"
 import { createEffect, createEvent, forward, restore, split, guard } from "effector-root"
 import { deleteCard as deleteClientCard } from "@/lib/api/wallet/client/delete-card"

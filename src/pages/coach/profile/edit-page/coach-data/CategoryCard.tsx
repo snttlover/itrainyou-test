@@ -1,5 +1,5 @@
-import { Checkbox } from "@/oldcomponents/checkbox/Checkbox"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Checkbox } from "@/old-components/checkbox/Checkbox"
+import { Icon } from "@/old-components/icon/Icon"
 import { Category } from "@/feature/categories/categories.store"
 import { MediaRange } from "@/lib/responsive/media"
 import { useState } from "react"
