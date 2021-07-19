@@ -71,6 +71,7 @@ export const getPriceRangesFx = createEffect({
 export const saveDataFx = createEffect({
   handler: (userData: UserData) => {
     const data = JSON.stringify(userData)
+    console.log("Обновляем", data)
     localStorage.setItem(REGISTER_SAVE_KEY, data)
   }
 })

@@ -8,7 +8,7 @@ import {
   workExperienceChanged,
   $form,
   $selectedCategories,
-  setCategories,
+  setCategories, socialNetworkChanged, supervisionsChanged,
 } from "@/feature/coach-get-access/coach-get-access.model"
 import { createEffect, createEvent, forward, Event } from "effector-root"
 import { combineEvents, spread } from "patronum"
@@ -33,12 +33,17 @@ forward({
 })
 
 spread({
-  source: loadDataFx.doneData.map(data => data.coachData) as Event<CoachData>,
+  source: loadDataFx.doneData.map((data) => {
+    console.log("keK", data)
+    return data.coachData
+  }) as Event<CoachData>,
   targets: {
     description: descriptionChanged,
     education: educationChanged,
     phone: phoneChanged,
     photos: restorePhotos,
+    socialNetworks: socialNetworkChanged,
+    supervisions: supervisionsChanged,
     videoInterview: videoInterviewChanged,
     workExperience: workExperienceChanged,
   },
