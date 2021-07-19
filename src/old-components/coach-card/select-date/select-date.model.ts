@@ -97,7 +97,7 @@ export const genFreeSessions = () => {
 
   forward({
     from: bulkAnySessionFx.done,
-    to: [resetSelectedSessions,getMyUserFx],
+    to: [resetSelectedSessions, getMyUserFx],
   })
 
   forward({
