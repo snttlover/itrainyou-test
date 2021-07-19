@@ -93,7 +93,7 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop | null): Promise
   const canvas = document.createElement("canvas")
   const scaleX = image.naturalWidth / image.width
   const scaleY = image.naturalHeight / image.height
-  console.log(image.naturalWidth, image.width, crop)
+
   if (crop === null) {
     canvas.width = image.naturalWidth
     canvas.height = image.naturalHeight

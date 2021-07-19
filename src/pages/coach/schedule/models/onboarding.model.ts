@@ -42,7 +42,6 @@ forward({
 
 forward({
   from: checkUserFx.doneData.map(isShowed => {
-    console.log(isShowed)
     localStorage.setItem(ONBOARDGING_SHOWED_STORAGE_KEY, "true")
     return !isShowed
   }),
