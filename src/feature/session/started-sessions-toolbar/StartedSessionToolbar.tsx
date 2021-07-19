@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
 import { createStartSessionToolbarModel } from "@/feature/session/started-sessions-toolbar/create-start-session-toolbar.model"
-import { useEvent, useList, useStore } from "effector-react"
+import { useEvent, useList } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
-import { $startedSessionsList } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
+import { Icon } from "@/oldcomponents/icon/Icon"
 
 export const createStartedSessionsToolbar = ($model: ReturnType<typeof createStartSessionToolbarModel>) => {
   return () => {
@@ -23,15 +22,17 @@ export const createStartedSessionsToolbar = ($model: ReturnType<typeof createSta
       <div>
         {useList($model.data.$sessions, session => (
           <Container>
-            <Toolbar>
-              <StartedText>{session.sessionIsStarted ? "Сессия уже началась!" : "До сессии осталось меньше 5 минут!"}</StartedText>
-              <User>
-                <StyledAvatar src={session.avatar} />
-                <Name>{session.name}</Name>
-              </User>
-              <Info>
+            <Toolbar onClick={() => connectToSession(session.id)}>
+              <CircleIcon />
+              <Message>
+                <StartedText>
+                  {session.sessionIsStarted ? "Сессия началась" : "До сессии осталось меньше 5 минут!"}
+                </StartedText>
                 <Time>{session.time}</Time>
-                <StartButton onClick={() => connectToSession(session.id)}>Зайти в сессию</StartButton>
+              </Message>
+              <Info>
+                <StartButton>Присоединиться</StartButton>
+                <RightArrow />
               </Info>
             </Toolbar>
           </Container>
@@ -40,6 +41,25 @@ export const createStartedSessionsToolbar = ($model: ReturnType<typeof createSta
     )
   }
 }
+
+const CircleIcon = styled(Icon).attrs({ name: "circle" })`
+  width: 20px;
+  height: 20px;
+  margin-right: 16px;
+`
+
+const RightArrow = styled(Icon).attrs({ name: "right-arrow" })`
+  display: none;
+  ${MediaRange.lessThan("mobile")`
+    display: block;
+  `}
+`
+
+const Message = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`
 
 const Toolbar = styled.div`
   display: flex;
@@ -55,56 +75,36 @@ const Toolbar = styled.div`
 
 const Container = styled.div`
   padding: 10px 24px;
-  background: ${({ theme }) => theme.colors.primary};
+  background: #3eb273;
   color: #ffffff;
   display: flex;
   justify-content: center;
   ${MediaRange.lessThan("mobile")`
-      padding: 10px;
+      padding: 8px;
   `}
 `
 
 const StartedText = styled.div`
-  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
   line-height: 22px;
-  ${MediaRange.lessThan("mobile")`
-      display: none;
-  `}
+  color: #ffffff;
 `
 
-const User = styled.div`
-  display: flex;
-  align-items: center;
-`
-const StyledAvatar = styled(Avatar)`
-  width: 24px;
-  height: 24px;
-`
-const Name = styled.div`
-  margin-left: 8px;
-
-  font-size: 16px;
-  line-height: 22px;
-  ${MediaRange.lessThan("mobile")`
-      display: none;
-  `}
-`
 const Info = styled.div`
   display: flex;
   align-items: center;
 `
+
 const Time = styled.div`
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
-  margin-right: 20px;
-  ${MediaRange.lessThan("mobile")`
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 22px;
-    margin-right: 7px;
-  `}
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  color: #ffffff;
 `
+
 const StartButton = styled.div`
   background: #fff;
   border-radius: 32px;
@@ -112,9 +112,12 @@ const StartButton = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
+  color: #3eb273;
   &:hover {
     opacity: 0.9;
   }
+  ${MediaRange.lessThan("mobile")`
+    display: none;
+  `}
 `
