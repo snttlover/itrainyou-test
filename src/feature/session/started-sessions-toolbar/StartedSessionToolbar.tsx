@@ -46,10 +46,12 @@ const CircleIcon = styled(Icon).attrs({ name: "circle" })`
   width: 20px;
   height: 20px;
   margin-right: 16px;
+  animation: pulse 1.4s infinite;
 `
 
 const RightArrow = styled(Icon).attrs({ name: "right-arrow" })`
   display: none;
+  height: 12px;
   ${MediaRange.lessThan("mobile")`
     display: block;
   `}
@@ -80,7 +82,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   ${MediaRange.lessThan("mobile")`
-      padding: 8px;
+      padding: 8px 16px;
   `}
 `
 
