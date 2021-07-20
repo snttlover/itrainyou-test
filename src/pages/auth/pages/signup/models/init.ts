@@ -14,11 +14,9 @@ import {
   coachDataChanged,
   getMyUserDataFx,
   getPriceRangesFx,
-  loadDataFx,
   priceRangesGate,
   registerStep4Merged,
   registerUserFx,
-  saveDataFx,
   selectPriceRange,
   setRedirectToCoachAfterSignUp,
   signUpPageMounted,
@@ -66,15 +64,6 @@ $rangeSelected.on($priceRanges, (state, payload) => {
   const selected = payload.filter(range => range.selected)
   return selected.length > 0
 })
-
-forward({
-  from: $registerUserData.updates,
-  to: saveDataFx,
-})
-
-forward({ from: loadDataFx.doneData, to: $registerUserData })
-
-forward({ from: signUpPageMounted, to: loadDataFx })
 
 forward({ from: registerUserFx.done, to: getMyUserDataFx })
 

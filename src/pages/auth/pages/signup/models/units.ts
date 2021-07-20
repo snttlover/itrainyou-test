@@ -62,27 +62,16 @@ export const $registerUserData = createStore<UserData>({
   },
   categories: []
 })
+persist({
+  store: $registerUserData,
+  key: REGISTER_SAVE_KEY
+})
 
 export const $priceRanges = createStore<PriceRangesType[]>([])
 export const $rangeSelected = createStore(false)
 
 export const getPriceRangesFx = createEffect({
   handler: getPriceRanges,
-})
-
-export const saveDataFx = createEffect({
-  handler: (userData: UserData) => {
-    const data = JSON.stringify(userData)
-    localStorage.setItem(REGISTER_SAVE_KEY, data)
-  }
-})
-
-export const loadDataFx = createEffect({
-  handler: () => {
-    const data = localStorage.getItem(REGISTER_SAVE_KEY)
-    if (!data) return
-    return JSON.parse(data)
-  }
 })
 
 export const registerUser = createEvent()
