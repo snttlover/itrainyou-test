@@ -133,7 +133,7 @@ const InformerDescription = styled.div<{changeColors: boolean}>`
 
 const SocialLink = styled.a<{filledColor?: boolean}>`
   text-decoration: underline;
-  color: ${({ filledColor }) => !!filledColor ? "#FFFFFF" : "#4858CC"};
+  color: ${({ filledColor }) => filledColor ? "#FFFFFF" : "#4858CC"};
   font-weight: 500;
 
   &:last-child {
@@ -193,6 +193,23 @@ const StyledInformer = () => {
   case "ACTIVE_PROMO_SESSION":
     header = "Бесплатная сессия забронирована!"
     description = "Надеемся, что все пройдет успешно! Приветственная сессия создана для знакомства с коучем и формирования вашего запроса."
+    showSocials = false
+
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
+
+  case "ACTIVE_PAID_SESSION":
+    header = "Сессия забронирована!"
+    description = "Надеемся, что все пройдет успешно!"
     showSocials = false
 
     return (
