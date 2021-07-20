@@ -67,10 +67,6 @@ $rangeSelected.on($priceRanges, (state, payload) => {
 
 forward({ from: registerUserFx.done, to: getMyUserDataFx })
 
-registerUserFx.done.watch(_ => {
-  localStorage.removeItem(REGISTER_SAVE_KEY)
-})
-
 // ToDo: закомментил, т.к. сейчас роутинг после регистрации происходит в компоненте SignUpPage.tsx
 // // Если клиент регистрировался через бронирование сессии на лендинге,
 // // то перенаправляем его на страничку коуча, у которого он хотел забронировать сессию
