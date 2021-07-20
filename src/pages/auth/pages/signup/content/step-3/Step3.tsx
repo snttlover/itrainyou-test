@@ -210,8 +210,7 @@ export const Step3 = () => {
               <Input value={values.email} onChange={_emailChanged} />
             </FormItem>
           )}
-
-          <FormItem label='Телефон' error={errors.phone} required={userType === "coach"}>
+          <FormItem label='Телефон' error={errors.phone} required>
             <Input
               mask='+7 (111) 111-11-11'
               placeholder='+7 (900) 000-00-00'
@@ -220,9 +219,7 @@ export const Step3 = () => {
               type='tel'
             />
           </FormItem>
-
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
-
           <NextButton onClick={nextOnClick} disabled={!isFormValid || nextDisabled} />
         </Form>
       </Container>

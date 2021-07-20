@@ -7,7 +7,7 @@ import { combine, createEffect, createEvent, createStore, forward, sample } from
 import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
-import { $registerUserData, clientDataChanged, signUpPageMounted, $priceRanges } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
 
 
 export const step3FormSubmitted = createEvent()
@@ -57,19 +57,10 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
     eventMapper: event => event.map(trimString),
   })
 
-export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<
-  string,
-  { userData: UnpackedStoreObjectType<typeof $registerUserData>; value: string }
-  >({
-    defaultValue: "",
-    validatorEnhancer: $store => combine($registerUserData, $store, (userData, value) => ({ userData, value })),
-    validator: obj => {
-      const type = obj.userData.type
-      const value = obj.value
-      if (type === "coach" && !value) return "Поле обязательно к заполнению"
-      return obj.value.length === 0 ? null : phoneValidator(obj.value)
-    },
-    eventMapper: event => event.map(trimString),
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
+  defaultValue: "",
+  validator: value => !!value ? phoneValidator(value) : "Поле обязательно к заполнению",
+  eventMapper: event => event.map(trimString),
 })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({

@@ -1,7 +1,11 @@
 import { setUserData } from "@/feature/user/user.model"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
+
+import { $userData } from "@/feature/user/user.model"
 import { updateMyUser } from "@/lib/api/users/update-my-user"
-import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
+import { updateMyCoach, UpdateMyCoachRequest } from "@/lib/api/coach/update-my-coach"
+
+import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
 import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
@@ -17,12 +21,28 @@ type ResetRType = {
 }
 
 export const changeGeneralSettingsFx = createEffect({
-  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ email, phone, timeZone }),
+  handler: ({ email, phone, timeZone }: ResetRType) => {
+    $userData.watch(userData => {
+      const dataForPut: UpdateMyCoachRequest = {
+        avatar: userData.coach.avatar,
+        birthDate: userData.coach.birthDate,
+        categories: userData.coach.categories.map(e => e.id),
+        firstName: userData.coach.firstName,
+        lastName: userData.coach.lastName,
+        sex: userData.coach.sex,
+        phone: phone,
+      }
+      console.log(userData)
+      updateMyCoach(dataForPut)
+      updateMyUser({ email, timeZone })
+    })
+  },
 })
+
 
 export const mounted = createEvent()
 
-const successToast: Toast = {
+const successTаoast: Toast = {
   type: "info",
   text: "Данные профиля сохранены",
 }
@@ -54,17 +74,16 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   reset: SettingsGate.open,
 })
 
-const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
-
-$email.on(userDoneData, (state, user) => user.email)
-
 export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
   defaultValue: "",
   validator: phoneValidator,
   eventMapper: event => event.map(trimString),
+  reset: SettingsGate.open,
 })
 
-// $phone.on(userDoneData, (state, user) => console.log('user: ', user))
+const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
+
+$email.on(userDoneData, (state, user) => user.email)
 // Пока работает только для коуча
 $phone.on(userDoneData, (state, user) => user.coach.phone)
 

@@ -5,7 +5,6 @@ import { patch } from "@/lib/network/network"
 
 export type UpdateMyUserRequest = {
   email?: string
-  phone?: string 
   timeZone?: string
 }
 
