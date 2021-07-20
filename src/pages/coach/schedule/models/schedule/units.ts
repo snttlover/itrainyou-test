@@ -1,18 +1,16 @@
-import { attach, createEffect, createEvent, createStore, restore } from "effector-root"
+import { attach, createEffect, createEvent, createStore } from "effector-root"
 import { getCoachSchedule } from "@/lib/api/coaching-sessions/get-coach-schedule"
 import { CreateCoachSchedule, UpdateCoachSchedule } from "@/lib/api/coaching-sessions/types"
 import { updateCoachSchedule } from "@/lib/api/coaching-sessions/update-coach-schedule"
 import { createCoachSchedule } from "@/lib/api/coaching-sessions/create-coach-schedule"
-import { getSystemInfo } from "@/lib/api/system-info"
 import { createGate } from "@/scope"
 import { DurationType } from "@/lib/api/coach-sessions"
+import { loadSystemInfoFx } from "@/models/units"
 
 export const loadScheduleFx = createEffect({
   handler: getCoachSchedule,
 })
-export const loadSystemInfoFx = createEffect({
-  handler: getSystemInfo,
-})
+
 export const $isEdit = createStore(false).on(loadScheduleFx.doneData, () => true)
 export const $feeRatio = createStore(0).on(
   loadSystemInfoFx.doneData, (_, data) => data.platformSessionFee
