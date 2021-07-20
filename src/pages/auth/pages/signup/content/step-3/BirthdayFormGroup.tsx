@@ -77,10 +77,6 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
   const [isDirty, setIsDirty] = useState(false)
 
   useEffect(() => {
-    console.log("day", values.birthday ? values.birthday.date().toString() : "")
-    console.log("month", values.birthday ? values.birthday.month() + 1 : -1)
-    console.log("year", values.birthday ? values.birthday.year().toString() : "")
-
     if (values.birthday?.date())
       setDay(values.birthday.date().toString())
     if (values.birthday?.month() || values.birthday?.month() === 0)

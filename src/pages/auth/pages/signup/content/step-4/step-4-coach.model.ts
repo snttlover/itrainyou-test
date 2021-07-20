@@ -1,4 +1,3 @@
-
 import {
   descriptionChanged,
   educationChanged,
@@ -33,7 +32,6 @@ forward({
 
 spread({
   source: loadDataFx.doneData.map((data) => {
-    console.log("keK", data)
     return data.coachData
   }) as Event<CoachData>,
   targets: {

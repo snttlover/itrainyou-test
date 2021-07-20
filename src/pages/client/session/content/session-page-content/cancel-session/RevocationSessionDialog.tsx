@@ -33,13 +33,10 @@ export const RevocationSessionDialog = () => {
     setNoRatingError(false)
   }
 
-  const chat = useStore(clientChat.chat.$chat)
-
   const submit = () => {
     if(rating){
       useEvent(sendReview)()
     } else{
-      console.log("error")
       setNoRatingError(true)
     }
   }

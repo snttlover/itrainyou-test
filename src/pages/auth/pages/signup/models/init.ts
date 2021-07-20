@@ -1,7 +1,7 @@
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
-import { combine, forward, guard, merge, sample } from "effector-root"
-import { $isLoggedIn, $isSocialSignupInProgress, $timeZone } from "@/feature/user/user.model"
+import { combine, forward, guard, sample } from "effector-root"
+import { $isLoggedIn, $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $socialsForm, createUserFromSocialsFx } from "@/pages/auth/pages/socials/models/units"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import {
@@ -19,11 +19,12 @@ import {
   registerStep4Merged,
   registerUserFx,
   saveDataFx,
-  selectPriceRange, setRedirectToCoachAfterSignUp,
+  selectPriceRange,
+  setRedirectToCoachAfterSignUp,
   signUpPageMounted,
   userDataChanged,
   userDataReset,
-  userDataSetWithSocials, registerUser,
+  userDataSetWithSocials,
   userType,
   userTypeChanged
 } from "@/pages/auth/pages/signup/models/units"

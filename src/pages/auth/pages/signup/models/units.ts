@@ -1,7 +1,9 @@
-import { attach, createEffect, createEvent, createStore, guard, merge, sample, split } from "effector-root"
+import { attach, createEffect, createEvent, createStore, merge, sample, split } from "effector-root"
 import {
-  ClientData, COACH_TO_REDIRECT_AFTER_SIGN_UP,
-  CoachData, coachToRedirectAfterSignUpType,
+  ClientData,
+  COACH_TO_REDIRECT_AFTER_SIGN_UP,
+  CoachData,
+  coachToRedirectAfterSignUpType,
   REGISTER_SAVE_KEY,
   RegisterUserType,
   UserData
@@ -72,7 +74,6 @@ export const getPriceRangesFx = createEffect({
 export const saveDataFx = createEffect({
   handler: (userData: UserData) => {
     const data = JSON.stringify(userData)
-    console.log("Обновляем", data)
     localStorage.setItem(REGISTER_SAVE_KEY, data)
   }
 })
