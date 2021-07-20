@@ -4,6 +4,7 @@ import { Input } from "@/old-components/input/Input"
 import { AuthLayout } from "@/old-components/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/lib/responsive/media"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { BirthdayFormGroup } from "@/pages/auth/pages/signup/content/step-3/BirthdayFormGroup"
 import {
@@ -16,7 +17,7 @@ import {
   lastNameChanged,
   middleNameChanged,
   nameChanged,
-  step3FormSubmitted,
+  setUserDataFx,
   step3Mounted,
   toggleUploadModal
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
@@ -145,6 +146,10 @@ const AvatarHint = styled.div`
   `}
 `
 
+const StyledSpinner = styled(Spinner)`
+  background: rgba(236, 239, 241, 0.24);
+`
+
 export const Step3 = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -153,13 +158,15 @@ export const Step3 = () => {
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 
+  const isFetching = useStore(setUserDataFx.pending)
+  const setUserData = useEvent(setUserDataFx)
+
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
   const _phoneChanged = useEvent(phoneChanged)
-  const _step3FormSubmitted = useEvent(step3FormSubmitted)
   const _middleNameChanged = useEvent(middleNameChanged)
   const [nextDisabled, setNextDisabled] = useState(false)
 
@@ -169,7 +176,7 @@ export const Step3 = () => {
 
   const nextOnClick = () => {
     ymLog("reachGoal","profilesignin")
-    _step3FormSubmitted()
+    setUserData(values)
   }
 
   useEffect(() => {
@@ -224,6 +231,7 @@ export const Step3 = () => {
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
+      {isFetching && <StyledSpinner />}
     </AuthLayout>
   )
 }

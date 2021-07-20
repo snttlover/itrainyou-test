@@ -8,6 +8,7 @@ import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import { $registerUserData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 
 export const step3FormSubmitted = createEvent()
@@ -37,6 +38,48 @@ export const toggleUploadModal = createEvent()
 export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
+
+
+
+
+type ResetRType = {
+  email: string
+  phone: string
+  timeZone: string
+}
+
+export const setUserDataFx = createEffect({
+  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ email, phone, timeZone }),
+})
+
+const successToast: Toast = {
+  type: "info",
+  text: "Данные профиля сохранены",
+}
+
+forward({
+  from: setUserDataFx.done.map(_ => successToast),
+  to: [toasts.remove, toasts.add],
+})
+
+forward({
+  from: setUserDataFx.doneData,
+  to: step3FormSubmitted,
+})
+
+const errorToast: Toast = {
+  type: "error",
+  text: "Произошла ошибка при изменении профиля",
+}
+
+
+forward({
+  from: setUserDataFx.fail.map(_ => errorToast),
+  to: [toasts.remove, toasts.add],
+})
+
+
+
 
 export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorField({
   defaultValue: "",
