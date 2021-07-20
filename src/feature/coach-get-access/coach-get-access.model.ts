@@ -7,6 +7,7 @@ import { config } from "@/config"
 import { loadSystemInfoFx } from "@/models/units"
 import { createGate } from "@/scope"
 import { persist } from "effector-storage/local"
+import { logout } from "@/lib/network/token"
 
 export type Prices = {
     d30Price?: number
@@ -104,6 +105,7 @@ const $isScheduleFilled = $schedule.map(
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",
+  reset: logout,
   storageSaveKey: COACH_EDUCATION_SAVE_KEY,
   validator: value => {
     if (!value) return "Поле не должно быть пустым"
@@ -138,6 +140,7 @@ export const [
   $isWorkExperienceCorrect,
 ] = createEffectorField<string>({
   defaultValue: "",
+  reset: logout,
   storageSaveKey: COACH_WORK_EXPERIENCE_SAVE_KEY,
   validator: value => {
     if (!value) return "Поле не должно быть пустым"
@@ -148,6 +151,7 @@ export const [
 export const [$description, descriptionChanged, $descriptionError, $isDescriptionCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
+    reset: logout,
     storageSaveKey: COACH_DESCRIPTION_SAVE_KEY,
     validator: value => {
       if (!value) return "Поле не должно быть пустым"
@@ -159,6 +163,7 @@ export const [$description, descriptionChanged, $descriptionError, $isDescriptio
 export const [$socialNetworks, socialNetworkChanged, $socialNetworkError, $isSocialNetworkCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
+    reset: logout,
     storageSaveKey: COACH_SOCIAL_NETWORKS_SAVE_KEY,
     validator: value => {
       if (!value) return "Поле не должно быть пустым"
@@ -170,6 +175,7 @@ export const [$socialNetworks, socialNetworkChanged, $socialNetworkError, $isSoc
 export const [$supervisions, supervisionsChanged, $supervisionsError, $isSupervisionsCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
+    reset: logout,
     storageSaveKey: COACH_SUPERVISIONS_NETWORKS_SAVE_KEY,
     validator: value => {
       if (!value) return "Поле не должно быть пустым"
@@ -181,6 +187,7 @@ export const [$supervisions, supervisionsChanged, $supervisionsError, $isSupervi
 export const [$inn, innChanged, $innError, $isInnCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
+    reset: logout,
     storageSaveKey: COACH_INN_NETWORKS_SAVE_KEY,
     validator: innValidator,
     eventMapper: event => event.map(trimString),
@@ -189,6 +196,7 @@ export const [$inn, innChanged, $innError, $isInnCorrect] = createEffectorField<
 
 export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
   defaultValue: "",
+  reset: logout,
   storageSaveKey: COACH_PHONE_SAVE_KEY,
   validator: phoneValidator,
   eventMapper: event => event.map(trimString),
