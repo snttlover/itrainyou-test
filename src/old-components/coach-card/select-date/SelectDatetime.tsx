@@ -250,7 +250,7 @@ export type SelectDatetimeTypes = {
     bulkSession: Event<SessionRequestParams>
   }
 }
-
+// ToDo: компонент не используется, т.к. каледари были убраны из карточки коуча (удалить?)
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
   const _toggleCreditCardsModal = useEvent(toggleCreditCardsModal)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])

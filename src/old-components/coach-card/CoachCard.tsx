@@ -117,8 +117,21 @@ const YellowStar = styled(Icon).attrs({ name: "yellow-star-circle" })`
 
 type BlockTypes = {
   isTopCoach: boolean
-  isActive: boolean
 }
+
+const ReserveButton = styled(Button)`
+  transition: visibility 100ms ease;
+  width: 150px;
+  visibility: hidden;
+  height: 40px;
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 10px;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
+`
 
 const Block = styled.div<BlockTypes>`
   display: inline-table;
@@ -130,7 +143,7 @@ const Block = styled.div<BlockTypes>`
   flex-direction: column;
   border-radius: 8px;
   background: transparent;
-  transition: border 200ms ease;
+  transition: all 200ms ease;
   cursor: pointer;
 
   ${AvatarBorder} {
@@ -162,7 +175,13 @@ const Block = styled.div<BlockTypes>`
   ${MainInfoContainer} {
     border: 2px solid #fff;
   }
-
+  
+  &:hover {
+    ${ReserveButton} {
+      visibility: visible;
+    }
+  }
+  
   @media screen and (max-width: 600px) {
     background: #fff;
     height: auto;
@@ -203,18 +222,6 @@ const Rating = styled.span`
     font-size: 16px;
     line-height: 24px;
   `}
-`
-
-const ReserveButton = styled(Button)`
-  width: 150px;
-  height: 40px;
-  font-size: 14px;
-  line-height: 22px;
-  margin-bottom: 10px;
-
-  @media screen and (max-width: 600px) {
-    width: 100%;
-  }
 `
 
 const Star = styled(Icon).attrs({ name: "yellow-star" })`
@@ -329,29 +336,12 @@ type Props = {
 }
 
 const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
-  const [isActive, changeActive] = useState(false)
   const history = useHistory()
-
-  let sessionsListModel: ReturnType<typeof genCoachSessions> | null = null
-
-  if (process.env.BUILD_TARGET === "client") {
-    sessionsListModel = useMemo(() => genCoachSessions(coach.id, !!freeSessions), [coach.id])
-  }
 
   const redirectToCoach = () => {
     freeSessions
       ? history.push(`/search/coach/${coach.id}`, { showFreeSessionsOnly: true })
       : history.push(`/search/coach/${coach.id}`)
-  }
-
-  const toggleCalendar = (e: React.SyntheticEvent) => {
-    // only tablets
-    if (window.innerWidth < 768) {
-      redirectToCoach()
-    }
-
-    changeActive(!isActive)
-    e.stopPropagation()
   }
 
   const isThereRating = coach.rating !== null
@@ -361,7 +351,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
   const prices = getCoachPrices(coach)
 
   return (
-    <Block className={className} isActive={isActive} isTopCoach={coach.isTopCoach}>
+    <Block className={className} isTopCoach={coach.isTopCoach}>
       <MainInfoContainer onClick={redirectToCoach}>
         <AvatarBorder isMobile={false}>
           <YellowStar />
@@ -403,11 +393,10 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
                 </Price>
               ))}
             </PricesContainer>
-            <ReserveButton onClick={toggleCalendar}>{isActive ? "Свернуть" : "Забронировать"}</ReserveButton>
+            <ReserveButton onClick={redirectToCoach}>{"Забронировать"}</ReserveButton>
           </Actions>
         </NameContainer>
       </MainInfoContainer>
-      {isActive && <SelectDatetime coach={coach} sessionsData={sessionsListModel!} />}
     </Block>
   )
 }
