@@ -40,19 +40,8 @@ export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
 
-// ToDo: разобраться какие данные отправлять на бэк при сабмите 3го пункта (пока только phone)
 export const setUserDataFx = createEffect({
   handler: (phone: string) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
-})
-
-const successToast: Toast = {
-  type: "info",
-  text: "Данные профиля сохранены",
-}
-
-forward({
-  from: setUserDataFx.done.map(_ => successToast),
-  to: [toasts.remove, toasts.add],
 })
 
 forward({
@@ -64,7 +53,6 @@ const errorToast: Toast = {
   type: "error",
   text: "Произошла ошибка при добавлении профиля",
 }
-
 
 forward({
   from: setUserDataFx.fail.map(_ => errorToast),

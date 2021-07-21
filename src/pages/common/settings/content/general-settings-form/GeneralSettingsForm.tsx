@@ -79,7 +79,7 @@ export const GeneralSettingsForm = () => {
   useGate(SettingsGate)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {    
-    changeGeneralSettings({ email: form.email, phone: form.phone, timeZone: form.timeZone})
+    changeGeneralSettings({ email: form.email, phone: form.phone, timeZone: form.timeZone })
 
     e.preventDefault()
   }
@@ -92,7 +92,7 @@ export const GeneralSettingsForm = () => {
     <StyledForm onSubmit={submitHandler}>
       <Title>Общие</Title>
       <StyledFormItem label='Почта' error={errors.email}>
-        <Input value={form.email} onChange={emailChange} />
+        <Input value={form.email} onChange={emailChange}/>
       </StyledFormItem>
 
       <StyledFormItem label='Телефон' error={errors.phone}>

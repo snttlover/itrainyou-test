@@ -10,7 +10,7 @@ import {
   $isFormValid,
   $loginForm,
   $loginFormErrors,
-  loginChanged,
+  phoneOrEmailChanged,
   passwordChanged,
   loginFx,
   loginFormSent,
@@ -44,18 +44,18 @@ export const LoginForm = () => {
   const isFetching = useStore(loginFx.pending)
 
   const _loginFormSent = useEvent(loginFormSent)
-  const _loginChanged = useEvent(loginChanged)
+  const _phoneOrEmailChanged = useEvent(phoneOrEmailChanged)
   const _passwordChanged = useEvent(passwordChanged)
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {    
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     _loginFormSent()
     e.preventDefault()
   }
 
   return (
     <StyledForm onSubmit={submitHandler}>
-      <FormItem label='Телефон или адрес эл. почты' error={errors.login}>
-        <Input value={form.login} name='login' onChange={_loginChanged} />
+      <FormItem label='Телефон или адрес эл. почты' error={errors.phoneOrEmail}>
+        <Input value={form.phoneOrEmail} name='phoneOrEmail' onChange={_phoneOrEmailChanged} />
       </FormItem>
       <FormItem label='Пароль' error={errors.password}>
         <PasswordInput value={form.password} name='password' onChange={_passwordChanged} />
