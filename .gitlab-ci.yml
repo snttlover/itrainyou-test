@@ -17,7 +17,7 @@ stages:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
     - docker pull $LATEST_IMAGE || true
-    - docker build -t $IMAGE -t $LATEST_IMAGE -t $HEROKU_IMAGE_DEV $HEROKU_IMAGE_STAGING .
+    - docker build -t $IMAGE -t $LATEST_IMAGE -t $HEROKU_IMAGE_DEV -t $HEROKU_IMAGE_STAGING .
     - docker push $IMAGE
     - docker push $LATEST_IMAGE
     - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
