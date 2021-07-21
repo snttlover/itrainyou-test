@@ -1,10 +1,13 @@
 import { uploadMedia } from "@/lib/api/media"
 import { createEffectorField } from "@/lib/generators/efffector"
-import { trimString, innValidator } from "@/lib/validators"
+import { innValidator, phoneValidator, trimString } from "@/lib/validators"
 import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
-import { getSystemInfo } from "@/lib/api/system-info"
 import { isArray } from "@/lib/network/casing"
 import { config } from "@/config"
+import { loadSystemInfoFx } from "@/models/units"
+import { createGate } from "@/scope"
+import { persist } from "effector-storage/local"
+import { logout } from "@/lib/network/token"
 
 export type Prices = {
     d30Price?: number
@@ -22,13 +25,35 @@ type Price = {
 
 type ChangePriceEvent = { name: keyof Prices; value: number }
 
+type LegalDataType = {
+  id: number
+  selected: boolean
+  name: string
+  value: "SELF_EMPLOYMENT" | "IP_PROFESSIONAL_TAXES" | "IP_OTHER_TAXES"
+}
+
+const COACH_PRICES_SAVE_KEY = "__coach-prices-save-key__"
+const COACH_CATEGORIES_SAVE_KEY = "__coach-categories-save-key__"
+const COACH_EDUCATION_SAVE_KEY = "__coach_education-save-key__"
+const COACH_WORK_EXPERIENCE_SAVE_KEY = "__coach-work-experience-save-key__"
+const COACH_DESCRIPTION_SAVE_KEY = "__coach-description-save-key__"
+const COACH_PHONE_SAVE_KEY = "__coach-phone-save-key__"
+const COACH_PHOTOS_INTERVIEW_SAVE_KEY = "__coach-photos-interview-save-key__"
+const COACH_VIDEO_INTERVIEW_SAVE_KEY = "__coach-video-interview-save-key__"
+const COACH_SOCIAL_NETWORKS_SAVE_KEY = "__coach-social-networks-save-key__"
+const COACH_SUPERVISIONS_NETWORKS_SAVE_KEY = "__coach-supervisions-networks-save-key__"
+const COACH_INN_NETWORKS_SAVE_KEY = "__coach-inn-networks-save-key__"
+const COACH_LEGAL_FORM_NETWORKS_SAVE_KEY = "__coach-legal-form-networks-save-key__"
+
+export const coachInformationGate = createGate()
+
 export const changePrice = createEvent<ChangePriceEvent>()
 
-export const loadSystemInfoFx = createEffect({
-  handler: getSystemInfo,
-})
+export const $feeRatio = createStore(0).on(
+  loadSystemInfoFx.doneData,
+  (_, data) => data.platformSessionFee
+)
 
-export const $feeRatio = createStore(0).on(loadSystemInfoFx.doneData, (_, data) => data.platformSessionFee)
 export const $prices = createStore<Price[]>([
   {
     name: "d30Price",
@@ -58,6 +83,10 @@ export const $prices = createStore<Price[]>([
   .on(changePrice, (state, { name, value }) =>
     state.map(price => ({ ...price, value: price.name === name ? value : price.value }))
   )
+persist({
+  store: $prices,
+  key: COACH_PRICES_SAVE_KEY
+})
 
 export const $pricesWithoutFee = combine($prices, $feeRatio, (prices, feeRatio) =>
   prices.map(price => ({ ...price, valueWithoutFee: price ? price.value - price.value * feeRatio : 0 }))
@@ -65,7 +94,7 @@ export const $pricesWithoutFee = combine($prices, $feeRatio, (prices, feeRatio) 
 
 const $schedule = $pricesWithoutFee.map(state => {
   const newState = state.reduce((a, key) => Object.assign(a, { [key.name]: key.value }), {})
-  const emptyObjectForBackend = {isAvailable: false, weekdaySlots: []}
+  const emptyObjectForBackend = { isAvailable: false, weekdaySlots: [] }
   Object.assign(newState, emptyObjectForBackend)
   return newState
 })
@@ -76,18 +105,14 @@ const $isScheduleFilled = $schedule.map(
 
 export const [$education, educationChanged, $educationError, $isEducationCorrect] = createEffectorField<string>({
   defaultValue: "",
+  reset: logout,
+  storageSaveKey: COACH_EDUCATION_SAVE_KEY,
   validator: value => {
     if (!value) return "Поле не должно быть пустым"
     return null
   },
 })
 
-type LegalDataType = {
-    id: number
-    selected: boolean
-    name: string
-    value: "SELF_EMPLOYMENT" | "IP_PROFESSIONAL_TAXES" | "IP_OTHER_TAXES"
-}
 export const changeLegalDataCheckBox = createEvent<number>()
 
 export const $selectLegalForm = createStore<LegalDataType[]>([
@@ -97,6 +122,10 @@ export const $selectLegalForm = createStore<LegalDataType[]>([
 ]).on(changeLegalDataCheckBox, (state, payload) => {
   const newState = state.map(item => (payload === item.id ? {...item, selected: true } : {...item, selected: false }))
   return newState
+})
+persist({
+  store: $selectLegalForm,
+  key: COACH_LEGAL_FORM_NETWORKS_SAVE_KEY
 })
 
 export const $legalForm = $selectLegalForm.map(state => {
@@ -111,6 +140,8 @@ export const [
   $isWorkExperienceCorrect,
 ] = createEffectorField<string>({
   defaultValue: "",
+  reset: logout,
+  storageSaveKey: COACH_WORK_EXPERIENCE_SAVE_KEY,
   validator: value => {
     if (!value) return "Поле не должно быть пустым"
     return null
@@ -120,6 +151,8 @@ export const [
 export const [$description, descriptionChanged, $descriptionError, $isDescriptionCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
+    reset: logout,
+    storageSaveKey: COACH_DESCRIPTION_SAVE_KEY,
     validator: value => {
       if (!value) return "Поле не должно быть пустым"
       return null
@@ -130,6 +163,8 @@ export const [$description, descriptionChanged, $descriptionError, $isDescriptio
 export const [$socialNetworks, socialNetworkChanged, $socialNetworkError, $isSocialNetworkCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
+    reset: logout,
+    storageSaveKey: COACH_SOCIAL_NETWORKS_SAVE_KEY,
     validator: value => {
       if (!value) return "Поле не должно быть пустым"
       return null
@@ -140,6 +175,8 @@ export const [$socialNetworks, socialNetworkChanged, $socialNetworkError, $isSoc
 export const [$supervisions, supervisionsChanged, $supervisionsError, $isSupervisionsCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
+    reset: logout,
+    storageSaveKey: COACH_SUPERVISIONS_NETWORKS_SAVE_KEY,
     validator: value => {
       if (!value) return "Поле не должно быть пустым"
       return null
@@ -150,11 +187,24 @@ export const [$supervisions, supervisionsChanged, $supervisionsError, $isSupervi
 export const [$inn, innChanged, $innError, $isInnCorrect] = createEffectorField<string>(
   {
     defaultValue: "",
+    reset: logout,
+    storageSaveKey: COACH_INN_NETWORKS_SAVE_KEY,
     validator: innValidator,
     eventMapper: event => event.map(trimString),
   }
 )
 
+<<<<<<< HEAD
+=======
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
+  defaultValue: "",
+  reset: logout,
+  storageSaveKey: COACH_PHONE_SAVE_KEY,
+  validator: phoneValidator,
+  eventMapper: event => event.map(trimString),
+})
+
+>>>>>>> development
 export const videoUploadProgressChanged = createEvent<number>()
 
 export const videoUploadFx = createEffect({
@@ -174,6 +224,10 @@ export const $videoInterview = createStore("")
   .on(videoInterviewChanged, (state, payload) => payload)
   .on(videoUploadFx.doneData, (state, payload) => payload.file)
   .reset(videoUploadFx)
+persist({
+  store: $videoInterview,
+  key: COACH_VIDEO_INTERVIEW_SAVE_KEY
+})
 
 export const photoUploadFx = createEffect({
   handler: (file: File) => {
@@ -188,6 +242,10 @@ export const $photos = createStore<string[]>([])
   .on(photoUploadFx.doneData, (state, payload) => [...state, payload.file])
   .on(restorePhotos, (_, payload) => payload)
   .on(photoRemoved, (state, index) => [...state.slice(0, index), ...state.slice(index + 1)])
+persist({
+  store: $photos,
+  key: COACH_PHOTOS_INTERVIEW_SAVE_KEY
+})
 
 export const toggleCategory = createEvent<number>()
 export const setCategories = createEvent<number[]>()
@@ -196,6 +254,11 @@ export const $selectedCategories = restore(setCategories, []).on(toggleCategory,
   if (state.includes(payload)) return state.filter(category => category !== payload)
   return [...state, payload]
 })
+persist({
+  store: $selectedCategories,
+  key: COACH_CATEGORIES_SAVE_KEY
+})
+
 
 const $categoriesError = $selectedCategories.map(categories => {
   if (categories.length < 1) return "Должна быть выбрана хоть одна категория"

@@ -14,11 +14,9 @@ import {
   coachDataChanged,
   getMyUserDataFx,
   getPriceRangesFx,
-  loadDataFx,
   priceRangesGate,
   registerStep4Merged,
   registerUserFx,
-  saveDataFx,
   selectPriceRange,
   setRedirectToCoachAfterSignUp,
   signUpPageMounted,
@@ -67,20 +65,7 @@ $rangeSelected.on($priceRanges, (state, payload) => {
   return selected.length > 0
 })
 
-forward({
-  from: $registerUserData.updates,
-  to: saveDataFx,
-})
-
-forward({ from: loadDataFx.doneData, to: $registerUserData })
-
-forward({ from: signUpPageMounted, to: loadDataFx })
-
 forward({ from: registerUserFx.done, to: getMyUserDataFx })
-
-registerUserFx.done.watch(_ => {
-  localStorage.removeItem(REGISTER_SAVE_KEY)
-})
 
 // ToDo: закомментил, т.к. сейчас роутинг после регистрации происходит в компоненте SignUpPage.tsx
 // // Если клиент регистрировался через бронирование сессии на лендинге,

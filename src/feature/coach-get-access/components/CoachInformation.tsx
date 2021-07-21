@@ -5,7 +5,7 @@ import { Loader } from "@/old-components/spinner/Spinner"
 import { $categoriesList, fetchCategoriesListFx } from "@/feature/categories/categories.store"
 import {
   $formValid,
-  $selectedCategories,
+  $selectedCategories, coachInformationGate,
   toggleCategory,
   videoUploadFx,
 } from "@/feature/coach-get-access/coach-get-access.model"
@@ -14,7 +14,7 @@ import { CategoryCard } from "@/feature/coach-get-access/components/CategoryCard
 import { CheckStep } from "@/feature/coach-get-access/components/check-step/CheckStep"
 import { Form } from "@/feature/coach-get-access/components/Form"
 import { UploadVideo } from "@/feature/coach-get-access/components/UploadVideo"
-import { useEvent, useStore, useList } from "effector-react"
+import { useEvent, useStore, useList, useGate } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
 import { $coachAccess } from "@/feature/user/user.model"
@@ -29,6 +29,7 @@ const Container = styled.div`
 `
 
 const CategoriesContainer = styled.div`
+  width: 100%;
   margin: 0 16px;
 
   ${CategoryCard} {
@@ -207,6 +208,8 @@ export const CoachInformation = ({
   withoutCheckStep = false,
   className,
 }: CoachInformationProps) => {
+  useGate(coachInformationGate)
+
   const selectedCategories = useStore($selectedCategories)
 
   const isFormValid = useStore($formValid)
