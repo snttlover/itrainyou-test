@@ -12,10 +12,9 @@ import { routeNames } from "@/pages/route-names"
 import { navigatePush } from "@/feature/navigation"
 import { parseFloatToString } from "@/lib/formatting/parsenumbers"
 import { $userData } from "@/feature/user/user.model"
+import { Link } from "react-router-dom"
+import { $coach } from "@/pages/search/coach-by-id/models/units"
 
-type SuccesType = { 
-  closeDialog: (payload: boolean | void) => boolean | void 
-}
 
 const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, endDatetime, clientPrice}) => {
   return (
@@ -31,11 +30,12 @@ const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, 
   )
 }
 
-const Success = ({ closeDialog }: SuccesType) => {
+const Success = () => {
   const bookedSessions = useStore($bookedSessions)
   const navigate = useEvent(navigatePush)
   const toggle = useEvent(toggleBookSessionsStatusModal)
   const userData = useStore($userData)
+  const coach = useStore($coach)
 
   const pluralize = (plural: string, singular="") => bookedSessions.length > 1 ? plural: singular
 
@@ -55,7 +55,9 @@ const Success = ({ closeDialog }: SuccesType) => {
         При подтверждении или отклонении запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
       </Description>
       <CoachContainer>
-        <StyledAvatar src={bookedSessions[0].coach.avatar} onClick={() => closeDialog()} />
+        <Link to={`/search/coach/${coach.id}`}>
+          <StyledAvatar src={bookedSessions[0].coach.avatar} />
+        </Link>
         <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
       </CoachContainer>
       {useList($bookedSessions, session => (
@@ -85,9 +87,9 @@ const Failure = () => {
   )
 }
 
-export const BookedModal = ({ closeDialog }: SuccesType): JSX.Element => {
+export const BookedModal = (): JSX.Element => {
   const bookedSessions = useStore($bookedSessions)
-  return bookedSessions.length > 0 ? <Success closeDialog={closeDialog} /> : <Failure />
+  return bookedSessions.length > 0 ? <Success /> : <Failure />
 }
 
 const Header = styled.div`

@@ -19,7 +19,7 @@ export const BookSessionsStatusModalDialog = () => {
   return (
     <StyledDialog isLoaded={!isLoading} value={visibility} onChange={toggle}>
       <Container>
-        {isLoading ? <Spinner /> : <BookedModal closeDialog={toggle} />}
+        {isLoading ? <Spinner /> : <BookedModal />}
       </Container>
     </StyledDialog>
   )
