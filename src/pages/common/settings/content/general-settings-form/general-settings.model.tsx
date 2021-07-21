@@ -1,9 +1,11 @@
 import { setUserData } from "@/feature/user/user.model"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
+
 import { updateMyUser } from "@/lib/api/users/update-my-user"
+
 import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
-import { emailValidator, trimString } from "@/lib/validators"
+import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
@@ -12,11 +14,12 @@ export const SettingsGate = createGate()
 
 type ResetRType = {
   email: string
+  phone: string
   timeZone: string
 }
 
 export const changeGeneralSettingsFx = createEffect({
-  handler: ({ email, timeZone }: ResetRType) => updateMyUser({ email, timeZone }),
+  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ email, timeZone, phone: "+"+phone.replace(/\D+/g,"") })
 })
 
 export const mounted = createEvent()
@@ -53,9 +56,12 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   reset: SettingsGate.open,
 })
 
-const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
-
-$email.on(userDoneData, (state, user) => user.email)
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
+  defaultValue: "",
+  validator: phoneValidator,
+  eventMapper: event => event.map(trimString),
+  reset: SettingsGate.open,
+})
 
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -69,22 +75,29 @@ export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = 
   reset: SettingsGate.open,
 })
 
+const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
+
+$email.on(userDoneData, (state, user) => user.email)
+$phone.on(userDoneData, (state, user) => user.phone)
 $timeZone.on(userDoneData, (state, user) => user.timeZone)
 
 export const $changeGeneralSettingsForm = createStoreObject({
   email: $email,
+  phone: $phone,
   timeZone: $timeZone,
 })
 
 export const $changeGeneralSettingsFormErrors = createStoreObject({
   email: $emailError,
+  phone: $phoneError,
   timeZone: $timeZoneError,
 })
 
 export const $isGeneralSettingsFormFormValid = combine(
   $isEmailCorrect,
+  $isPhoneCorrect,
   $isTimeZoneCorrect,
-  (isEmailCorrect, isTimeZoneCorrect) => isEmailCorrect && isTimeZoneCorrect
+  (isEmailCorrect, isPhoneCorrect, isTimeZoneCorrect) => isEmailCorrect && isPhoneCorrect && isTimeZoneCorrect
 )
 
 forward({

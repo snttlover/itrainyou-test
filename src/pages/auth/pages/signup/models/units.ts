@@ -51,7 +51,6 @@ export const $registerUserData = createStore<UserData>({
   coachData: {
     description: "",
     education: "",
-    phone: "",
     videoInterview: "",
     workExperience: "",
     photos: [],

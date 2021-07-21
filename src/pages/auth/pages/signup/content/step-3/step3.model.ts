@@ -1,14 +1,16 @@
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
-import { emailValidator, trimString } from "@/lib/validators"
+import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { Dayjs } from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
-import { $registerUserData, clientDataChanged, signUpPageMounted, $priceRanges } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 
+import { updateMyUser } from "@/lib/api/users/update-my-user"
 
 export const step3FormSubmitted = createEvent()
 export const imageUploaded = createEvent<UploadMediaResponse>()
@@ -38,6 +40,25 @@ export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
 
+export const setUserDataFx = createEffect({
+  handler: (phone: string) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
+})
+
+forward({
+  from: setUserDataFx.doneData,
+  to: step3FormSubmitted,
+})
+
+const errorToast: Toast = {
+  type: "error",
+  text: "Произошла ошибка при добавлении профиля",
+}
+
+forward({
+  from: setUserDataFx.fail.map(_ => errorToast),
+  to: [toasts.remove, toasts.add],
+})
+
 export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorField({
   defaultValue: "",
   validator: value => {
@@ -56,6 +77,12 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
     validator: obj => obj.isSocialSignupInProgress ? emailValidator(obj.value) : null,
     eventMapper: event => event.map(trimString),
   })
+
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
+  defaultValue: "",
+  validator: value => !!value ? phoneValidator(value) : "Поле обязательно к заполнению",
+  eventMapper: event => event.map(trimString),
+})
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",
@@ -120,6 +147,7 @@ export const $step3Form = combine({
   middleName: $middleName,
   sex: $sex,
   email: $email,
+  phone: $phone,
   originalAvatar: $originalAvatar,
   priceRanges: [],
 })
@@ -163,6 +191,7 @@ spread({
     lastName: lastNameChanged,
     middleName: middleNameChanged,
     email: emailChanged,
+    phone: phoneChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
       date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
     ),
@@ -178,6 +207,7 @@ export const $step3FormErrors = combine({
   birthday: $birthdayError,
   sex: $sexError,
   email: $emailError,
+  phone: $phoneError,
   middleName: $middleNameError,
 })
 
@@ -188,6 +218,7 @@ export const $isStep3FormValid = combine(
   $isSexCorrect,
   $isImageCorrect,
   $isEmailCorrect,
+  $isPhoneCorrect,
   $isMiddleNameCorrect,
   (...args) => args.every(val => val)
 )

@@ -3,7 +3,6 @@ import { videoInterviewChanged } from "@/feature/coach-get-access/coach-get-acce
 import { $userData } from "@/feature/user/user.model"
 import { uploadMedia } from "@/lib/api/media"
 import { createEffectorField } from "@/lib/generators/efffector"
-import { phoneValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
 import {
   combine,
