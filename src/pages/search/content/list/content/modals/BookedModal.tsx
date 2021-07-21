@@ -35,8 +35,6 @@ const Success = () => {
   const navigate = useEvent(navigatePush)
   const toggle = useEvent(toggleBookSessionsStatusModal)
   const userData = useStore($userData)
-  const coach = useStore($coach)
-
   const pluralize = (plural: string, singular="") => bookedSessions.length > 1 ? plural: singular
 
   const handleOnClick = () => {
@@ -55,7 +53,7 @@ const Success = () => {
         При подтверждении или отклонении запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
       </Description>
       <CoachContainer>
-        <Link to={`/search/coach/${coach.id}`}>
+        <Link to={`/search/coach/${bookedSessions[0].coach.id}`}>
           <StyledAvatar src={bookedSessions[0].coach.avatar} />
         </Link>
         <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
