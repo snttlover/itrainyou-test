@@ -123,12 +123,6 @@ sample({
   target: createUserFromSocialsFx,
 })
 
-sample({
-  source: $registerUserData,
-  clock: $isLoggedIn.updates,
-  target: registerUserFx,
-})
-
 forward({
   from: priceRangesGate.open,
   to: getPriceRangesFx,
