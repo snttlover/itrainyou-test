@@ -29,6 +29,8 @@ import styled from "styled-components"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
+import { ToastsContainer } from "@/old-components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
+
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -185,6 +187,8 @@ export const Step3 = () => {
 
   return (
     <AuthLayout>
+      <ToastsContainer />
+      
       <Steps activeId='1'>
         <Steps.Step id='1'>Роль</Steps.Step>
         <Steps.Step id='2'>Данные</Steps.Step>

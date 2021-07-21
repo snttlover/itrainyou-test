@@ -45,14 +45,12 @@ export const $registerUserData = createStore<UserData>({
     sex: "",
     firstName: "",
     email: null,
-    phone: "",
     middleName: "",
     priceRanges: []
   },
   coachData: {
     description: "",
     education: "",
-    phone: "",
     videoInterview: "",
     workExperience: "",
     photos: [],
@@ -91,7 +89,7 @@ export const registerUser = createEvent()
 export const registerUserFx = createEffect({
   handler(params: UserData) {
     if (params.type === "client") {
-      return registerAsClient({ ...params.clientData!, categories: params.categories })
+      return registerAsClient({ ...params.clientData!, categories: params.categories})
     } else {
       return registerAsCoach({ ...params.clientData!, categories: params.categories, ...params.coachData! })
     }

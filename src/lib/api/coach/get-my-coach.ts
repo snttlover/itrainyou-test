@@ -38,7 +38,6 @@ export interface CoachSelfData {
   workExperience: string
   education: string
   videoInterview: string
-  phone: string
   categories: Category[]
   bannedClients: number[]
   restrictedClients: number[]

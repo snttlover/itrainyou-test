@@ -9,7 +9,6 @@ export type ClientData = {
   avatar: string | null
   originalAvatar: string | null
   email: string | null
-  phone: string
   priceRanges: number[]
 }
 
@@ -17,7 +16,6 @@ export type CoachData = {
   workExperience: string
   education: string
   description: string
-  phone: string
   photos: string[]
   videoInterview: string
   inn: number | string | ""

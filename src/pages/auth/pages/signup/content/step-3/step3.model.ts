@@ -10,6 +10,7 @@ import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import { $registerUserData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 
+import { updateMyUser } from "@/lib/api/users/update-my-user"
 
 export const step3FormSubmitted = createEvent()
 export const imageUploaded = createEvent<UploadMediaResponse>()
@@ -39,17 +40,15 @@ export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
 
-
-
-
 type ResetRType = {
   email: string
   phone: string
   timeZone: string
 }
 
+// ToDo: разобраться какие данные отправлять на бэк при сабмите 3го пункта (пока только phone)
 export const setUserDataFx = createEffect({
-  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ email, phone, timeZone }),
+  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ phone }),
 })
 
 const successToast: Toast = {
@@ -69,7 +68,7 @@ forward({
 
 const errorToast: Toast = {
   type: "error",
-  text: "Произошла ошибка при изменении профиля",
+  text: "Произошла ошибка при добавлении профиля",
 }
 
 
@@ -77,9 +76,6 @@ forward({
   from: setUserDataFx.fail.map(_ => errorToast),
   to: [toasts.remove, toasts.add],
 })
-
-
-
 
 export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorField({
   defaultValue: "",
@@ -185,7 +181,6 @@ sample({
     middleName: data.middleName,
     sex: data.sex,
     email: data.email,
-    phone: data.phone,
     originalAvatar: data.originalAvatar.file || null,
     priceRanges: data.priceRanges
   }),
