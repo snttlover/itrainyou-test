@@ -1,9 +1,9 @@
 import { $dashboard } from "@/feature/dashboard/dashboard"
 import { loggedIn, setUserData } from "@/feature/user/user.model"
-import { login, LoginResponse } from "@/lib/api/login"
+import { loginPost, LoginResponse } from "@/lib/api/login"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { navigateReplace } from "@/feature/navigation"
-import { emailValidator, trimString } from "@/lib/validators"
+import { trimString } from "@/lib/validators"
 import { routeNames } from "@/pages/route-names"
 import { AxiosError } from "axios"
 import { combine, createEffect, createEvent, createStoreObject, forward, sample, merge } from "effector-root"
@@ -11,20 +11,20 @@ import { userFound } from "@/pages/auth/pages/socials/models/units"
 
 export const loginFormSent = createEvent()
 
-export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, LoginResponse, AxiosError>({
-  handler: ({ email, password }) => login({ email, password }),
+export const loginFx = createEffect<UnpackedStoreObjectType<{login: string, password: string}>, LoginResponse, AxiosError>({
+  handler: ({ login, password }) => loginPost({ email: login, password }),
 })
 
 export const resetLoginForm = createEvent()
 
-export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
+export const [$login, loginChanged, $loginError, $isloginCorrect] = createEffectorField<string>({
   defaultValue: "",
-  validator: emailValidator,
+  validator: () => null,
   eventMapper: event => event.map(trimString),
   reset: resetLoginForm,
 })
 
-$emailError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => "Неверные данные")
+$loginError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => "Неверные почта, телефон или пароль")
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -34,19 +34,19 @@ export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = 
 })
 
 export const $loginForm = createStoreObject({
-  email: $email,
+  login: $login,
   password: $password,
 })
 
 export const $loginFormErrors = createStoreObject({
-  email: $emailError,
+  login: $loginError,
   password: $passwordError,
 })
 
 export const $isFormValid = combine(
   $isPasswordCorrect,
-  $isEmailCorrect,
-  (isPasswordCorrect, isEmailCorrect) => isPasswordCorrect && isEmailCorrect
+  $isloginCorrect,
+  (isPasswordCorrect, isloginCorrect) => isPasswordCorrect && isloginCorrect
 )
 
 sample({

@@ -8,6 +8,7 @@ import { post } from "@/lib/network/network"
 export interface UserSelfData {
   id: number
   email: string
+  phone: string
   creationDatetime: ISODate
   timeZone: string
 }
@@ -25,7 +26,7 @@ export interface LoginRequest {
   password: string
 }
 
-export const login = (data: LoginRequest): Promise<LoginResponse> =>
+export const loginPost = (data: LoginRequest): Promise<LoginResponse> =>
   post<LoginResponse, LoginRequest>(`${config.BACKEND_URL}/api/v1/web/auth/login/`, data)
     .then(response => response.data)
     .then(keysToCamel)
