@@ -194,8 +194,6 @@ export const [$inn, innChanged, $innError, $isInnCorrect] = createEffectorField<
   }
 )
 
-<<<<<<< HEAD
-=======
 export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
   defaultValue: "",
   reset: logout,
@@ -204,7 +202,6 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
   eventMapper: event => event.map(trimString),
 })
 
->>>>>>> development
 export const videoUploadProgressChanged = createEvent<number>()
 
 export const videoUploadFx = createEffect({
