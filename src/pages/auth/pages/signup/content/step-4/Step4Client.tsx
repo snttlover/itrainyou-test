@@ -102,39 +102,18 @@ const FormTitle = styled.div`
 `
 
 const ButtonContainer = styled.div`
-  min-width: 320px;
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  ${MediaRange.greaterThan("mobile")`    
-    margin: 20px 32px 0;
-  `}
-  
-  ${MediaRange.greaterThan("tablet")`
-    width: 664px;
-    margin: 20px auto 0;
-  `}
-
-  ${MediaRange.greaterThan("laptop")`
-    margin: 20px auto 0;
-  `}
+  justify-content: flex-end;
 `
 
 const RegisterButton = styled(Button)`
-  width: 236px;
-  margin: 36px auto 30px;
+  width: 177px;
+  margin: 32px 0 46px 0;
   transition: none;
-  padding: 15px 24px;
-
-  ${MediaRange.greaterThan("mobile")`
-    margin: 36px 32px 30px auto;
-  `}
-  ${MediaRange.greaterThan("tablet")`
-    margin: 36px 0 30px auto;
-  `}
+  padding: 12px 24px;
 `
 
 export const Step4Client = () => {
@@ -172,7 +151,7 @@ export const Step4Client = () => {
         <PriceRanges />
         <ButtonContainer>
           <RegisterButton disabled={loading || !rangeSelected} onClick={() => _registerUser()}>
-            Завершить регистрацию
+            Подобрать коуча
           </RegisterButton>
         </ButtonContainer>
       </Container>
