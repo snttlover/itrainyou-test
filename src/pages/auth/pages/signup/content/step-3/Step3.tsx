@@ -178,7 +178,7 @@ export const Step3 = () => {
 
   const nextOnClick = () => {
     ymLog("reachGoal","profilesignin")
-    setUserData(values)
+    setUserData(values.phone)
   }
 
   useEffect(() => {

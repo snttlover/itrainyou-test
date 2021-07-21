@@ -19,7 +19,7 @@ type ResetRType = {
 }
 
 export const changeGeneralSettingsFx = createEffect({
-  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ email, timeZone, phone }),
+  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ email, timeZone, phone: "+"+phone.replace(/\D+/g,"") })
 })
 
 export const mounted = createEvent()

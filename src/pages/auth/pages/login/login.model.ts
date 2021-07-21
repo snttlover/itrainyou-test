@@ -12,7 +12,10 @@ import { userFound } from "@/pages/auth/pages/socials/models/units"
 export const loginFormSent = createEvent()
 
 export const loginFx = createEffect<UnpackedStoreObjectType<{login: string, password: string}>, LoginResponse, AxiosError>({
-  handler: ({ login, password }) => loginPost({ email: login, password }),
+  handler: ({ login, password }) => {
+    const email: string = login.includes('@') ? login : login[0] === "8" ? "+7" + login.substr(1) : login[0] === "7" ? "+7" + login.substr(1) : login
+    return loginPost({ email, password })
+  },
 })
 
 export const resetLoginForm = createEvent()

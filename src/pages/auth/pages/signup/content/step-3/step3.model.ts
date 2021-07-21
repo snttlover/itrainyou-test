@@ -40,15 +40,9 @@ export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
 
-type ResetRType = {
-  email: string
-  phone: string
-  timeZone: string
-}
-
 // ToDo: разобраться какие данные отправлять на бэк при сабмите 3го пункта (пока только phone)
 export const setUserDataFx = createEffect({
-  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ phone }),
+  handler: (phone: string) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
 })
 
 const successToast: Toast = {

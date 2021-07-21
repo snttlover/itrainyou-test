@@ -47,7 +47,7 @@ export const LoginForm = () => {
   const _loginChanged = useEvent(loginChanged)
   const _passwordChanged = useEvent(passwordChanged)
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {    
     _loginFormSent()
     e.preventDefault()
   }

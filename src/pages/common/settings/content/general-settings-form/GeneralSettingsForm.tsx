@@ -78,7 +78,7 @@ export const GeneralSettingsForm = () => {
 
   useGate(SettingsGate)
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {    
     changeGeneralSettings({ email: form.email, phone: form.phone, timeZone: form.timeZone})
 
     e.preventDefault()
