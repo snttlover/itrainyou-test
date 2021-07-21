@@ -10,6 +10,7 @@ stages:
   - build
   - deploy-dev
   - deploy-prod
+  - deploy-staging
 
 .build:
   stage: build
@@ -32,6 +33,7 @@ build:
   only:
     - development
     - master
+    - staging
 
 deploy-dev:
   stage: deploy-dev
@@ -44,6 +46,18 @@ deploy-dev:
     - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_APP_NAME
   only:
     - development
+
+deploy-staging:
+  stage: deploy-staging
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    IMAGE_NAME: itrainyoufrontend
+    HEROKU_APP_NAME: stage-itrainyou
+  script:
+    - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_APP_NAME
+  only:
+    - staging
 
 deploy-prod:
   stage: deploy-prod
