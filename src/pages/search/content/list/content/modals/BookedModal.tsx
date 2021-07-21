@@ -13,6 +13,10 @@ import { navigatePush } from "@/feature/navigation"
 import { parseFloatToString } from "@/lib/formatting/parsenumbers"
 import { $userData } from "@/feature/user/user.model"
 
+type SuccesType = { 
+  closeDialog: (payload: boolean | void) => boolean | void 
+}
+
 const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, endDatetime, clientPrice}) => {
   return (
     <Item>
@@ -27,7 +31,7 @@ const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, 
   )
 }
 
-const Success = () => {
+const Success = ({ closeDialog }: SuccesType) => {
   const bookedSessions = useStore($bookedSessions)
   const navigate = useEvent(navigatePush)
   const toggle = useEvent(toggleBookSessionsStatusModal)
@@ -51,7 +55,7 @@ const Success = () => {
         При подтверждении или отклонении запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
       </Description>
       <CoachContainer>
-        <StyledAvatar src={bookedSessions[0].coach.avatar} />
+        <StyledAvatar src={bookedSessions[0].coach.avatar} onClick={() => closeDialog()} />
         <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
       </CoachContainer>
       {useList($bookedSessions, session => (
@@ -81,9 +85,9 @@ const Failure = () => {
   )
 }
 
-export const BookedModal = () => {
+export const BookedModal = ({ closeDialog }: SuccesType): JSX.Element => {
   const bookedSessions = useStore($bookedSessions)
-  return bookedSessions.length > 0 ? <Success /> : <Failure />
+  return bookedSessions.length > 0 ? <Success closeDialog={closeDialog} /> : <Failure />
 }
 
 const Header = styled.div`
@@ -195,6 +199,7 @@ const StyledAvatar = styled(Avatar)`
   height: 40px;
   min-width: 40px;
   margin-left: 16px;
+  cursor: pointer;
 `
 
 const Name = styled.div`

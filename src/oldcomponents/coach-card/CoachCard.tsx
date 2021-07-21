@@ -13,6 +13,7 @@ import { Icon } from "@/oldcomponents/icon/Icon"
 import { GrayTooltip } from "@/oldcomponents/gray-tooltip/GrayTooltip"
 import { useHistory } from "react-router-dom"
 import { parseFloatToString } from "@/lib/formatting/parsenumbers"
+import { smartRound } from "@/lib/formatting/smartRound"
 
 const MainInfoContainer = styled.div`
   position: relative;
@@ -320,7 +321,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
 
   const isThereRating = coach.rating !== null
 
-  const rating = !isThereRating || (coach.rating || 0).toFixed(1).replace(".", ",")
+  const rating = isThereRating && smartRound(coach.rating)
 
   const filledPrices = Object.keys(coach.prices).filter(key => !!coach.prices[key]).length
   const price =
