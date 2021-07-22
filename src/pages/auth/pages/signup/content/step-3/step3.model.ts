@@ -169,6 +169,7 @@ sample({
     middleName: data.middleName,
     sex: data.sex,
     email: data.email,
+    phone: data.phone,
     originalAvatar: data.originalAvatar.file || null,
     priceRanges: data.priceRanges
   }),
