@@ -53,6 +53,10 @@ const Description = styled(BlockWithLinks)`
   `}
 `
 
+const DescriptionTextWrap = styled.span`
+  white-space: pre-wrap;
+`
+
 const Photos = styled.div`
   margin-top: 8px;
   display: flex;
@@ -141,13 +145,21 @@ export const AboutCoach = styled(props => {
       {coach?.description && (
         <>
           <Title>О себе</Title>
-          <Description>{coach.description}</Description>
+          <Description>
+            <DescriptionTextWrap>
+              {coach.description}
+            </DescriptionTextWrap>
+          </Description>
         </>
       )}
       {coach?.workExperience && (
         <>
           <Title>Опыт работы</Title>
-          <Description>{coach.workExperience}</Description>
+          <Description>
+            <DescriptionTextWrap>
+              {coach.workExperience}
+            </DescriptionTextWrap>
+          </Description>
         </>
       )}
       {coach?.education && (
