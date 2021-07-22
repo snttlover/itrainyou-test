@@ -1,6 +1,6 @@
-import { FormItem } from "@/oldcomponents/form-item/FormItem"
-import { Input } from "@/oldcomponents/input/Input"
-import { Textarea } from "@/oldcomponents/textarea/Textarea"
+import { FormItem } from "@/old-components/form-item/FormItem"
+import { Input } from "@/old-components/input/Input"
+import { Textarea } from "@/old-components/textarea/Textarea"
 import {
   $form,
   $formErrors,
@@ -17,8 +17,8 @@ import { useCallback } from "react"
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
 import styled from "styled-components"
-import { Icon } from "@/oldcomponents/icon/Icon"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { Icon } from "@/old-components/icon/Icon"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 import ReactIdSwiper from "react-id-swiper"
 import { SwiperOptions } from "swiper"
 
@@ -122,10 +122,10 @@ export const CoachAdditionalInformationForm: React.FC = () => {
     <InformationContainer>
 
       <FormSection>
-        <InformationTitle>Личная данные</InformationTitle>
+        <InformationTitle>Личные данные</InformationTitle>
         <FormItem label='Место обучения' error={errors.education}>
           <Input value={values.education} onChange={_educationChanged} />
-        </FormItem>
+        </FormItem>gi
         <FormItem label='Опыт работы' error={errors.workExperience}>
           <Textarea value={values.workExperience} onChange={_workExperienceChanged} rows={8} />
         </FormItem>

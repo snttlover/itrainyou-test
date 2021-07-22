@@ -1,8 +1,8 @@
 import React, { FormEvent, useEffect } from "react"
 import styled from "styled-components"
-import { FormItem } from "@/oldcomponents/form-item/FormItem"
-import { Input } from "@/oldcomponents/input/Input"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { FormItem } from "@/old-components/form-item/FormItem"
+import { Input } from "@/old-components/input/Input"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 import { useEvent, useGate, useStore } from "effector-react"
 import {
   $changeGeneralSettingsForm,
@@ -13,9 +13,9 @@ import {
   SettingsGate,
   timeZoneChanged,
 } from "@/pages/common/settings/content/general-settings-form/general-settings.model"
-import { Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
-import { DropdownItem, useSelectInput, SelectInputProps } from "@/oldcomponents/select-input/SelectInput"
+import { DropdownItem, useSelectInput, SelectInputProps } from "@/old-components/select-input/SelectInput"
 import { timeZones } from "@/pages/common/settings/content/general-settings-form/time-zones"
 import { mounted } from "@/pages/common/settings/content/general-settings-form/general-settings.model"
 

@@ -14,6 +14,7 @@ import * as Sentry from "@sentry/react"
 import { config } from "@/config"
 import { Integrations } from "@sentry/tracing"
 import { fixChrome88timeZone } from "@/polyfills/chrome88-dayjs-timezone-fix"
+import { enableDebugger } from "@/lib/effector/debug"
 
 fixChrome88timeZone()
 
@@ -29,10 +30,14 @@ if (config.ENVIRONMENT !== "local") {
       `${config.BACKEND_URL}/api/v1/web/clients/`,
       "canvas.contentDocument",
     ],
-    debug: true,
+    debug: false,
     sampleRate: 1.0,
     tracesSampleRate: 1.0,
   })
+}
+
+if (config.ENVIRONMENT === "local" && config.DEBUG === "1") {
+  enableDebugger()
 }
 
 const token = Cookies.get(TOKEN_COOKIE_KEY)

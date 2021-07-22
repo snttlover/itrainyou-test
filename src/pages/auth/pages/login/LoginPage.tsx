@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { AuthLayout } from "@/oldcomponents/layouts/sections/auth/AuthLayout"
+import { AuthLayout } from "@/old-components/layouts/sections/auth/AuthLayout"
 import { LoginForm } from "@/pages/auth/pages/login/content/LoginForm"
 import { Socials } from "@/pages/auth/pages/socials/components/Socials"
 import { WhiteContainer } from "@/pages/auth/components/WhiteContainer"

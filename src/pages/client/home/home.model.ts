@@ -43,10 +43,10 @@ export const loadMore = createEvent()
 
 const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
 export const $hasFreeSessions = createStore(false)
-  .on(userDoneData, (_,payload) => payload.client ? payload.client.hasFreeSessions : false)
+  .on(userDoneData, (_, payload) => payload.client ? payload.client.hasFreeSessions : false)
 
 export const $freeSessionsStatus = createStore("")
-  .on(userDoneData, (_,payload) => payload.client.freeSessionUnavailableReason)
+  .on(userDoneData, (_, payload) => payload.client ? payload.client.freeSessionUnavailableReason : "")
 
 export const $recommendations = createStore<Coach[]>([]).on(loadRecommendationsFx.doneData, (state, payload) => [
   ...state,

@@ -3,23 +3,27 @@ import { useEvent, useList, useStore } from "effector-react"
 import styled from "styled-components"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Link } from "react-router-dom"
+import { Avatar } from "@/old-components/avatar/Avatar"
 import {
   $bookedSessions,
-  BookedSessionForViewType, toggleBookSessionsStatusModal
+  BookedSessionForViewType,
+  toggleBookSessionsStatusModal,
 } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 import { routeNames } from "@/pages/route-names"
 import { navigatePush } from "@/feature/navigation"
 import { parseFloatToString } from "@/lib/formatting/parsenumbers"
 import { $userData } from "@/feature/user/user.model"
 
-const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, endDatetime, clientPrice}) => {
+const StyledSessionItem: React.FC<BookedSessionForViewType> = ({ startDatetime, endDatetime, clientPrice }) => {
   return (
     <Item>
       <ListContainer>
         <TimeGroup>
           <Date>{date(startDatetime).format("D MMMM YYYY")}</Date>
-          <Time>{date(startDatetime).format("HH:mm")}-{date(endDatetime).format("HH:mm")}</Time>
+          <Time>
+            {date(startDatetime).format("HH:mm")}-{date(endDatetime).format("HH:mm")}
+          </Time>
         </TimeGroup>
         <Price>{parseFloatToString(clientPrice)} ₽</Price>
       </ListContainer>
@@ -33,50 +37,47 @@ const Success = () => {
   const toggle = useEvent(toggleBookSessionsStatusModal)
   const userData = useStore($userData)
 
-  const pluralize = (plural: string, singular="") => bookedSessions.length > 1 ? plural: singular
+  const pluralize = (plural: string, singular = "") => (bookedSessions.length > 1 ? plural : singular)
 
   const handleOnClick = () => {
     toggle()
     // @ts-ignore
-    navigate({ url: routeNames.clientChat(userData.client.systemChat.toString())})
+    navigate({ url: routeNames.clientChat(userData.client.systemChat.toString()) })
   }
 
   return (
     <Container>
       <Header>
-        Коучу был{`${pluralize("и")}`} отправлен{`${pluralize("ы")}`} запрос{`${pluralize("ы")}`}
-        {" "}на бронирование сесси{`${pluralize("й", "и")}`}
+        Коучу был{`${pluralize("и")}`} отправлен{`${pluralize("ы")}`} запрос{`${pluralize("ы")}`} на бронирование сесси
+        {`${pluralize("й", "и")}`}
       </Header>
       <Description>
         При подтверждении или отклонении запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
       </Description>
       <CoachContainer>
-        <StyledAvatar src={bookedSessions[0].coach.avatar} />
-        <Name>{bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}</Name>
+        <Link to={routeNames.searchCoachPage(`${bookedSessions[0].coach.id}`)}>
+          <StyledAvatar src={bookedSessions[0].coach.avatar} />
+        </Link>
+        <Name>
+          {bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}
+        </Name>
       </CoachContainer>
       {useList($bookedSessions, session => (
         <StyledSessionItem {...session} />
       ))}
       <WarningTitle>
-        Вы можете следить за статусом запрос{`${pluralize("ов", "а")}`}
-        {" "}в чате <StyledLink onClick={handleOnClick}>«Уведомления о сессиях»</StyledLink>
+        Вы можете следить за статусом запрос{`${pluralize("ов", "а")}`} в чате{" "}
+        <StyledLink onClick={handleOnClick}>«Уведомления о сессиях»</StyledLink>
       </WarningTitle>
     </Container>
   )
-  
 }
 
 const Failure = () => {
-  
   return (
     <Container>
-      <Header>
-        Что-то пошло не так
-      </Header>
-      <Description>
-        Не удалось произвести бронирование сессии.
-        Пожалуйста, попробуйте еще раз позже.
-      </Description>
+      <Header>Что-то пошло не так</Header>
+      <Description>Не удалось произвести бронирование сессии. Пожалуйста, попробуйте еще раз позже.</Description>
     </Container>
   )
 }
@@ -95,7 +96,7 @@ const Header = styled.div`
   color: #424242;
   text-align: center;
   max-width: 500px;
-  
+
   ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 24px;
@@ -128,7 +129,7 @@ const Description = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #5B6670;
+  color: #5b6670;
   text-align: center;
   margin-top: 12px;
   margin-bottom: 24px;
@@ -148,7 +149,7 @@ const WarningTitle = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #5B6670;
+  color: #5b6670;
   margin-top: 32px;
   text-align: center;
   max-width: 400px;

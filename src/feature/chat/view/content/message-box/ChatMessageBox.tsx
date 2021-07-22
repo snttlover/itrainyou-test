@@ -5,7 +5,7 @@ import { ImagesLimitDialog, DocumentsLimitDialog } from "@/feature/chat/view/con
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
 import { createChatMessageBoxModule, ChatFile } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { useStore, useEvent } from "effector-react"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
 type ChatMessageBoxTypes = {

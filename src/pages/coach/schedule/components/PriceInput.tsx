@@ -1,4 +1,4 @@
-import { Input, InputTypes } from "@/newcomponents/input/Input"
+import { Input, InputTypes } from "@/new-components/input/Input"
 import React from "react"
 import styled from "styled-components"
 

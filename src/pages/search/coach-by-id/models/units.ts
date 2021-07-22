@@ -4,7 +4,7 @@ import { Coach, getCoach } from "@/lib/api/coach"
 import { CoachReviewResponse, getCoachReviews } from "@/lib/api/reviews"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { addCoachToFavourites } from "@/lib/api/coach/add-coach-to-favourites"
-import { genCoachSessions, genFreeSessions } from "@/oldcomponents/coach-card/select-date/select-date.model"
+import { genCoachSessions, genFreeSessions } from "@/old-components/coach-card/select-date/select-date.model"
 import { createGate } from "@/scope"
 
 export const coachByIdGate = createGate()

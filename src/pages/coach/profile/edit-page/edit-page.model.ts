@@ -1,4 +1,4 @@
-import { Toast, toasts } from "@/oldcomponents/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { loadUserData, setUserData } from "@/feature/user/user.model"
 import { updateMyCoach } from "@/lib/api/coach/update-my-coach"
 import { $isStep3FormValid, $step3Form } from "@/pages/coach/profile/edit-page/user-data/step3.model"

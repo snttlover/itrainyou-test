@@ -1,4 +1,4 @@
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 import { $profileData } from "../profile.model"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
@@ -8,6 +8,7 @@ import React, { useRef, useState } from "react"
 import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
+import { BlockWithLinks } from "@/components/block-with-links/BlockWithLinks"
 
 const StyledBlock = styled(Block)`
   ${MediaRange.between("mobile", "laptop")`
@@ -34,7 +35,7 @@ const Title = styled.h3`
   `}
 `
 
-const Description = styled.h3`
+const Description = styled(BlockWithLinks)`
   margin-top: 8px;
   font-family: Roboto;
   font-style: normal;
@@ -44,6 +45,7 @@ const Description = styled.h3`
   color: #424242;
   word-break: break-word;
   word-wrap: break-word;
+  white-space: pre-line;
 
   ${MediaRange.greaterThan("mobile")`
     font-size: 16px;

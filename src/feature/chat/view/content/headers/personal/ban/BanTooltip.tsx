@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Icon } from "@/oldcomponents/icon/Icon"
-import { ClickOutside } from "@/oldcomponents/click-outside/ClickOutside"
+import { Icon } from "@/old-components/icon/Icon"
+import { ClickOutside } from "@/old-components/click-outside/ClickOutside"
 import { BanDialog } from "@/feature/chat/view/content/headers/personal/ban/BanDialog"
 import { useEvent, useStore } from "effector-react"
 import { $banClientLoading, toggleClientBan, toggleClientRestrict } from "@/feature/chat/modules/ban-client"
-import { Loader, Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Loader, Spinner } from "@/old-components/spinner/Spinner"
 
 type BanTooltipTypes = {
   blocked: boolean

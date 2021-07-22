@@ -1,9 +1,9 @@
 import * as React from "react"
 import styled from "styled-components"
-import { Input } from "@/oldcomponents/input/Input"
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
-import { FormItem } from "@/oldcomponents/form-item/FormItem"
-import { Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Input } from "@/old-components/input/Input"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
+import { FormItem } from "@/old-components/form-item/FormItem"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import { useStore, useEvent } from "effector-react"
 import { FormEvent } from "react"
 import {

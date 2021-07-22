@@ -1,16 +1,16 @@
 import React from "react"
 import styled from "styled-components"
-import { DialogOverlay } from "@/oldcomponents/dialog/DialogOverlay"
+import { DialogOverlay } from "@/old-components/dialog/DialogOverlay"
 import { RescheduleSessionCoach as Coach } from "@/pages/client/session/content/session-page-content/reschedule-session/dialog/content/RescheduleSessionCoach"
 import { RescheduleSessionDatepicker as Datepicker } from "@/pages/client/session/content/session-page-content/reschedule-session/dialog/content/ RescheduleSessionDatepicker"
 import { MediaRange } from "@/lib/responsive/media"
-import { Icon } from "@/oldcomponents/icon/Icon"
+import { Icon } from "@/old-components/icon/Icon"
 import { useStore } from "effector-react"
 import {
   $rescheduleCoach,
   $rescheduleInitLoading,
 } from "@/pages/client/session/content/session-page-content/reschedule-session/reschedule-session"
-import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { Loader } from "@/old-components/spinner/Spinner"
 
 type RescheduleSessionCardTypes = {
   onChangeVisibility: (value: boolean) => void

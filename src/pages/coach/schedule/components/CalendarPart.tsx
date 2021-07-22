@@ -1,4 +1,4 @@
-import { Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { ScheduleCalendar } from "@/pages/coach/schedule/components/ScheduleCalendar"
 import {
@@ -9,7 +9,7 @@ import React from "react"
 import styled from "styled-components"
 import { RemoveSessionModal } from "@/pages/coach/schedule/components/RemoveSessionModal"
 import { $showRemoveSessionModal } from "@/pages/coach/schedule/models/remove-session.model"
-import { Informer } from "@/newcomponents/informer/Informer"
+import { Informer } from "@/new-components/informer/Informer"
 
 const CalendarContainer = styled.div`
   position: relative;

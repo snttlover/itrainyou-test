@@ -1,7 +1,9 @@
-import { attach, createEffect, createEvent, createStore, guard, merge, sample, split } from "effector-root"
+import { attach, createEffect, createEvent, createStore, merge, sample, split } from "effector-root"
 import {
-  ClientData, COACH_TO_REDIRECT_AFTER_SIGN_UP,
-  CoachData, coachToRedirectAfterSignUpType,
+  ClientData,
+  COACH_TO_REDIRECT_AFTER_SIGN_UP,
+  CoachData,
+  coachToRedirectAfterSignUpType,
   REGISTER_SAVE_KEY,
   RegisterUserType,
   UserData
@@ -33,15 +35,36 @@ export const setRedirectToCoachAfterSignUp = createEvent<coachToRedirectAfterSig
 
 export const priceRangesGate = createGate()
 
-export const $userData = createStore<UserData>({
+export const $registerUserData = createStore<UserData>({
   type: "client",
-  clientData: { avatar: null, originalAvatar: null, birthDate: null, lastName: "", sex: "", firstName: "", email: null, middleName: "", priceRanges: []},
-  coachData: { description: "", education: "", phone: "", videoInterview: "", workExperience: "", photos: [],
+  clientData: {
+    avatar: null,
+    originalAvatar: null,
+    birthDate: null,
+    lastName: "",
+    sex: "",
+    firstName: "",
+    email: null,
+    middleName: "",
+    priceRanges: []
+  },
+  coachData: {
+    description: "",
+    education: "",
+    phone: "",
+    videoInterview: "",
+    workExperience: "",
+    photos: [],
     inn: "",
     legalForm: "",
     socialNetworks: "",
-    supervisions: "" },
+    supervisions: ""
+  },
   categories: []
+})
+persist({
+  store: $registerUserData,
+  key: REGISTER_SAVE_KEY
 })
 
 export const $priceRanges = createStore<PriceRangesType[]>([])
@@ -49,21 +72,6 @@ export const $rangeSelected = createStore(false)
 
 export const getPriceRangesFx = createEffect({
   handler: getPriceRanges,
-})
-
-export const saveDataFx = createEffect({
-  handler: (userData: UserData) => {
-    const data = JSON.stringify(userData)
-    localStorage.setItem(REGISTER_SAVE_KEY, data)
-  }
-})
-
-export const loadDataFx = createEffect({
-  handler: () => {
-    const data = localStorage.getItem(REGISTER_SAVE_KEY)
-    if (!data) return
-    return JSON.parse(data)
-  }
 })
 
 export const registerUser = createEvent()

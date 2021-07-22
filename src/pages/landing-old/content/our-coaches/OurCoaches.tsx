@@ -1,6 +1,6 @@
 import { routeNames } from "@/pages/route-names"
 import { Link } from "react-router-dom"
-import { CoachCard } from "@/oldcomponents/coach-card/CoachCard"
+import { CoachCard } from "@/old-components/coach-card/CoachCard"
 import * as React from "react"
 import styled from "styled-components"
 import { $coachesList } from "./model"

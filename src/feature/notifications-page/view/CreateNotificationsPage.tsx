@@ -6,7 +6,7 @@ import { LeftPageContainer } from "@/pages/common/settings/content/LeftPageConta
 import styled from "styled-components"
 import { NotificationSwitcher } from "@/feature/notifications-page/view/content/NotificationSwitcher"
 import { MediaRange } from "@/lib/responsive/media"
-import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
+import { ContentContainer } from "@/old-components/layouts/ContentContainer"
 
 export const createNotificationsPage = ($module: ReturnType<typeof createNotificationsPageModel>) => {
   const Infinity = createInfinityScroll($module.modules.pagination)

@@ -1,10 +1,10 @@
 import { useEvent, useStore } from "effector-react"
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Dialog } from "@/old-components/dialog/Dialog"
 import { MediaRange } from "@/lib/responsive/media"
 import { PriceInputGroup } from "@/pages/coach/schedule/components/PriceInputGroup"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Button } from "@/old-components/button/normal/Button"
 import { changePrice, Prices } from "@/pages/coach/schedule/models/price-settings/units"
 import {
   $feeRatio,

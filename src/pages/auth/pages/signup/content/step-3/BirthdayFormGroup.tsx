@@ -1,6 +1,6 @@
-import { FormItem, Label } from "@/oldcomponents/form-item/FormItem"
-import { Input } from "@/oldcomponents/input/Input"
-import { useSelectInput } from "@/oldcomponents/select-input/SelectInput"
+import { FormItem, Label } from "@/old-components/form-item/FormItem"
+import { Input } from "@/old-components/input/Input"
+import { useSelectInput } from "@/old-components/select-input/SelectInput"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { FormGroup } from "@/pages/auth/pages/signup/content/step-3/FormGroup"
@@ -15,7 +15,7 @@ import { useEvent, useStore } from "effector-react"
 import * as React from "react"
 import { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { $userData } from "@/pages/auth/pages/signup/models/units"
+import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 
 const StyledFormItem = styled(FormItem)`
   color: #424242;
@@ -62,18 +62,28 @@ export const BirthdayFormGroup = ({ setNextDisabled }: { setNextDisabled: (value
   const {SelectInput: MonthSelectInput, openSelect: openMonthSelect} = useSelectInput()
   const {SelectInput: SexSelectInput, openSelect: openSexSelect} = useSelectInput()
 
-  const userType = useStore($userData).type
+  const userData = useStore($registerUserData)
+  const userType = userData.type
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
 
   const _birthdayChanged = useEvent(birthdayChanged)
   const _sexChanged = useEvent(sexChanged)
 
-  const [day, setDay] = useState("")
+  const [day, setDay] = useState( "")
   const [month, setMonth] = useState(-1)
   const [year, setYear] = useState("")
   const [birthdayError, setBirthdayError] = useState<string | null>(null)
   const [isDirty, setIsDirty] = useState(false)
+
+  useEffect(() => {
+    if (values.birthday?.date())
+      setDay(values.birthday.date().toString())
+    if (values.birthday?.month() || values.birthday?.month() === 0)
+      setMonth(values.birthday.month() + 1)
+    if (values.birthday?.year())
+      setYear(values.birthday.year().toString())
+  }, [values.birthday])
 
   useEffect(() => {
     if (!isDirty) return

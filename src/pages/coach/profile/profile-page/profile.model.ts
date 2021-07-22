@@ -1,4 +1,4 @@
-import { genCoachSessions } from "@/oldcomponents/coach-card/select-date/select-date.model"
+import { genCoachSessions } from "@/old-components/coach-card/select-date/select-date.model"
 import { $userData, loadUserData } from "@/feature/user/user.model"
 import { DurationType } from "@/lib/api/coach-sessions"
 import { CoachSelfData } from "@/lib/api/coach/get-my-coach"

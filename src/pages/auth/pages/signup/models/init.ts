@@ -1,29 +1,28 @@
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
-import { combine, forward, guard, merge, sample } from "effector-root"
-import { $isLoggedIn, $isSocialSignupInProgress, $timeZone } from "@/feature/user/user.model"
+import { combine, forward, guard, sample } from "effector-root"
+import { $isLoggedIn, $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $socialsForm, createUserFromSocialsFx } from "@/pages/auth/pages/socials/models/units"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import {
   $coachToRedirectAfterSignUp,
   $priceRanges,
   $rangeSelected,
-  $userData,
+  $registerUserData,
   categoriesChanged,
   clientDataChanged,
   coachDataChanged,
   getMyUserDataFx,
   getPriceRangesFx,
-  loadDataFx,
   priceRangesGate,
   registerStep4Merged,
   registerUserFx,
-  saveDataFx,
-  selectPriceRange, setRedirectToCoachAfterSignUp,
+  selectPriceRange,
+  setRedirectToCoachAfterSignUp,
   signUpPageMounted,
   userDataChanged,
   userDataReset,
-  userDataSetWithSocials, registerUser,
+  userDataSetWithSocials,
   userType,
   userTypeChanged
 } from "@/pages/auth/pages/signup/models/units"
@@ -35,7 +34,7 @@ $coachToRedirectAfterSignUp.on(
   (state, payload) => payload
 ).reset(coachByIdGate.close)
 
-$userData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
+$registerUserData.on(userTypeChanged, (state, payload) => ({ ...state, type: payload }))
   .on(clientDataChanged, (state, payload) => ({ ...state, clientData: payload }))
   .on(coachDataChanged, (state, payload) => ({ ...state, coachData: payload }))
   .on(categoriesChanged, (state, payload) => ({ ...state, categories: payload }))
@@ -66,20 +65,7 @@ $rangeSelected.on($priceRanges, (state, payload) => {
   return selected.length > 0
 })
 
-forward({
-  from: $userData.updates,
-  to: saveDataFx,
-})
-
-forward({ from: loadDataFx.doneData, to: $userData })
-
-forward({ from: signUpPageMounted, to: loadDataFx })
-
 forward({ from: registerUserFx.done, to: getMyUserDataFx })
-
-registerUserFx.done.watch(_ => {
-  localStorage.removeItem(REGISTER_SAVE_KEY)
-})
 
 // ToDo: закомментил, т.к. сейчас роутинг после регистрации происходит в компоненте SignUpPage.tsx
 // // Если клиент регистрировался через бронирование сессии на лендинге,
@@ -118,7 +104,7 @@ forward({
 })
 
 sample({
-  source: $userData,
+  source: $registerUserData,
   clock: guard({
     source: registerStep4Merged,
     filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
@@ -135,12 +121,6 @@ sample({
     filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
   }),
   target: createUserFromSocialsFx,
-})
-
-sample({
-  source: $userData,
-  clock: $isLoggedIn.updates,
-  target: registerUserFx,
 })
 
 forward({

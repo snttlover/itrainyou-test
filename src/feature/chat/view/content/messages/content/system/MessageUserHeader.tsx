@@ -1,7 +1,7 @@
 import { date } from "@/lib/formatting/date"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { Avatar } from "@/oldcomponents/avatar/Avatar"
+import { Avatar } from "@/old-components/avatar/Avatar"
 import React from "react"
 
 type UserHeaderProps = {

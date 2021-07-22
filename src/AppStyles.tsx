@@ -24,4 +24,18 @@ export const AppStyles = createGlobalStyle`
     -webkit-tap-highlight-color:  transparent;
     user-select: none;
   }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+
+    70% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
 `

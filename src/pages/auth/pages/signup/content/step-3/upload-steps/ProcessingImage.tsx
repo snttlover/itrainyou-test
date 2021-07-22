@@ -1,4 +1,4 @@
-import { DashedButton } from "@/oldcomponents/button/dashed/DashedButton"
+import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 import { MediaRange } from "@/lib/responsive/media"
 import { uploadImage, uploadOriginalAvatar } from "@/pages/auth/pages/signup/content/step-3/upload-modal.model"
 import { useEvent } from "effector-react"
@@ -93,7 +93,7 @@ const cropAndUploadImage = (image: HTMLImageElement, crop: Crop | null): Promise
   const canvas = document.createElement("canvas")
   const scaleX = image.naturalWidth / image.width
   const scaleY = image.naturalHeight / image.height
-  console.log(image.naturalWidth, image.width, crop)
+
   if (crop === null) {
     canvas.width = image.naturalWidth
     canvas.height = image.naturalHeight

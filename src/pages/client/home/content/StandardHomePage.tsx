@@ -1,7 +1,7 @@
-import { Button } from "@/oldcomponents/button/normal/Button"
-import { CoachCard } from "@/oldcomponents/coach-card/CoachCard"
-import { ContentContainer } from "@/oldcomponents/layouts/ContentContainer"
-import { Loader } from "@/oldcomponents/spinner/Spinner"
+import { Button } from "@/old-components/button/normal/Button"
+import { CoachCard } from "@/old-components/coach-card/CoachCard"
+import { ContentContainer } from "@/old-components/layouts/ContentContainer"
+import { Loader } from "@/old-components/spinner/Spinner"
 import { MediaRange } from "@/lib/responsive/media"
 import { SessionCard } from "@/pages/client/home/SessionCard"
 import { useEvent, useStore } from "effector-react"
@@ -21,11 +21,11 @@ import {
 } from "../home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { clientCall } from "@/oldcomponents/layouts/behaviors/dashboards/call/create-session-call.model"
+import { clientCall } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Onboarding } from "@/pages/client/home/content/Onboarding"
-import { CheckMediaDevices } from "@/oldcomponents/layouts/behaviors/dashboards/call/TestCall"
-import { Icon } from "@/oldcomponents/icon/Icon"
-import { Informer } from "@/newcomponents/informer/Informer"
+import { CheckMediaDevices } from "@/old-components/layouts/behaviors/dashboards/call/TestCall"
+import { Icon } from "@/old-components/icon/Icon"
+import { Informer } from "@/new-components/informer/Informer"
 
 const Block = styled.div`
   position: relative;
@@ -133,7 +133,7 @@ const InformerDescription = styled.div<{changeColors: boolean}>`
 
 const SocialLink = styled.a<{filledColor?: boolean}>`
   text-decoration: underline;
-  color: ${({ filledColor }) => !!filledColor ? "#FFFFFF" : "#4858CC"};
+  color: ${({ filledColor }) => filledColor ? "#FFFFFF" : "#4858CC"};
   font-weight: 500;
 
   &:last-child {
@@ -193,6 +193,23 @@ const StyledInformer = () => {
   case "ACTIVE_PROMO_SESSION":
     header = "Бесплатная сессия забронирована!"
     description = "Надеемся, что все пройдет успешно! Приветственная сессия создана для знакомства с коучем и формирования вашего запроса."
+    showSocials = false
+
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
+
+  case "ACTIVE_PAID_SESSION":
+    header = "Сессия забронирована!"
+    description = "Надеемся, что все пройдет успешно!"
     showSocials = false
 
     return (

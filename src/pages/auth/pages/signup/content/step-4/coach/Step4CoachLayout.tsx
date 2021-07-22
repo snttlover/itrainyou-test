@@ -1,4 +1,4 @@
-import { AuthLayoutLogo } from "@/oldcomponents/layouts/sections/auth/AuthLayoutLogo"
+import { AuthLayoutLogo } from "@/old-components/layouts/sections/auth/AuthLayoutLogo"
 import { MediaRange } from "@/lib/responsive/media"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import bgImage from "@/pages/auth/pages/signup/content/step-4/coach/backgrounds/bg-image.svg"

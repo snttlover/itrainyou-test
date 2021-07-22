@@ -10,8 +10,8 @@ import {
   showCoachOnboarding,
   ONBOARDING_TYPES
 } from "@/pages/coach/schedule/models/onboarding.model"
-import { Icon } from "@/oldcomponents/icon/Icon"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Icon } from "@/old-components/icon/Icon"
+import { Dialog } from "@/old-components/dialog/Dialog"
 import Schedule from "./Schedule.svg"
 import clientAttracting from "./ClientAttracting.svg"
 import googleSynchronization from "./GoogleSynchronization.svg"
@@ -21,7 +21,7 @@ import getToKnowClient from "./GetToKnowClient.svg"
 import createPromoSession from "./CreatePromoSession.svg"
 import promoSessionDuration from "./PromoSessionDuration.svg"
 import vacation from "./Vacation.svg"
-import { Button } from "@/oldcomponents/button/normal/Button"
+import { Button } from "@/old-components/button/normal/Button"
 
 
 const StyledSessionsFilterDialog = styled(Dialog)`

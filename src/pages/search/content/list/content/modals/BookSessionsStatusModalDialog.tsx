@@ -1,10 +1,10 @@
 import React from "react"
 import { useEvent, useStore } from "effector-react"
-import { Dialog } from "@/oldcomponents/dialog/Dialog"
+import { Dialog } from "@/old-components/dialog/Dialog"
 import styled from "styled-components"
 import { BookedModal } from "./BookedModal"
 import { MediaRange } from "@/lib/responsive/media"
-import { Spinner } from "@/oldcomponents/spinner/Spinner"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import {
   $bookSessionsStatusModalVisibility,
   $buySessionsLoading,
