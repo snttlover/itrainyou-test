@@ -51,11 +51,17 @@ forward({
 
 const errorToast: Toast = {
   type: "error",
-  text: "Произошла ошибка при добавлении профиля",
+  text: "",
 }
 
 forward({
-  from: setUserDataFx.fail.map(_ => errorToast),
+  from: setUserDataFx.fail.map(error => {
+    const uncnownError = "Произошла ошибка при добавлении профиля"
+    const errorToastAlert = ": полльзователь с таким телефоном уже существует"
+    const errorText = "user with this phone already exists."
+    errorToast.text = error.error.response.data.phone[0] === errorText ? uncnownError+errorToastAlert : uncnownError
+    return errorToast
+  }),
   to: [toasts.remove, toasts.add],
 })
 
