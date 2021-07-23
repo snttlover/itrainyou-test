@@ -11,6 +11,8 @@ import { SwiperOptions } from "swiper"
 import { BlockWithLinks } from "@/components/block-with-links/BlockWithLinks"
 
 const StyledBlock = styled(Block)`
+  white-space: pre-wrap;
+
   ${MediaRange.between("mobile", "laptop")`
     padding: 20px 16px;
   `}

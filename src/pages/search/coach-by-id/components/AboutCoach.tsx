@@ -11,6 +11,8 @@ import { $coach } from "@/pages/search/coach-by-id/models/units"
 import { BlockWithLinks } from "@/components/block-with-links/BlockWithLinks"
 
 const StyledBlock = styled(Block)`
+  white-space: pre-wrap;
+
   ${MediaRange.between("mobile", "laptop")`
     padding: 20px 16px;
   `}
