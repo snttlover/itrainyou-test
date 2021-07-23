@@ -13,6 +13,7 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { declOfNum } from "@/lib/formatting/numerals"
 import { CopyLinkIcon } from "@/pages/search/coach-by-id/components/CopyIcon"
+import { Tooltip } from "@/new-components/tooltip/Tooltip"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
@@ -150,9 +151,15 @@ const MobileEditButton = styled(EditButton)`
 const CopyLink = styled(CopyLinkIcon)`
   width: 24px;
   cursor: pointer;
+  position: relative;
+  z-index: 1000;
   stroke: #9aa0a6;
+`
+
+const TooltipWrapper = styled(Tooltip)`
   align-self: flex-end;
   margin-left: 5px;
+
 `
 
 export const BaseCoachInfo = styled(({ ...props }) => {
@@ -168,7 +175,9 @@ export const BaseCoachInfo = styled(({ ...props }) => {
             <Year>
               {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate), ["год", "года", "лет"])}
             </Year>
-            <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
+            <TooltipWrapper text={"Скопировать ссылку профиля"}>
+              <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
+            </TooltipWrapper>
           </Name>
           <Rating>
             <StarIcon name='star' />
