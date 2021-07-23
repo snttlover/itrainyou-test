@@ -11,6 +11,8 @@ import { SwiperOptions } from "swiper"
 import { BlockWithLinks } from "@/components/block-with-links/BlockWithLinks"
 
 const StyledBlock = styled(Block)`
+  white-space: pre-wrap;
+
   ${MediaRange.between("mobile", "laptop")`
     padding: 20px 16px;
   `}
@@ -51,10 +53,6 @@ const Description = styled(BlockWithLinks)`
     font-size: 16px;
     line-height: 22px;
   `}
-`
-
-const DescriptionTextWrap = styled.span`
-  white-space: pre-wrap;
 `
 
 const Photos = styled.div`
@@ -145,21 +143,13 @@ export const AboutCoach = styled(props => {
       {coach?.description && (
         <>
           <Title>О себе</Title>
-          <Description>
-            <DescriptionTextWrap>
-              {coach.description}
-            </DescriptionTextWrap>
-          </Description>
+          <Description>{coach.description}</Description>
         </>
       )}
       {coach?.workExperience && (
         <>
           <Title>Опыт работы</Title>
-          <Description>
-            <DescriptionTextWrap>
-              {coach.workExperience}
-            </DescriptionTextWrap>
-          </Description>
+          <Description>{coach.workExperience}</Description>
         </>
       )}
       {coach?.education && (
