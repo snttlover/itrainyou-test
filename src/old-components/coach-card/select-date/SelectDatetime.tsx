@@ -199,6 +199,7 @@ const TimeColumn = styled.td`
 
 const SelectDateHeader = styled.div`
   padding-left: 11px;
+  
   font-size: 14px;
   color: #5b6670;
 `

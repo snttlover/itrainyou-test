@@ -129,10 +129,10 @@ const Times = styled.div`
   flex-wrap: wrap;
   margin-top: 12px;
   padding-left: 12px;
-  padding-bottom: 8px;
+  padding-bottom: -2px;
   
   ${MediaRange.between("mobile", "laptop")`
-    padding-bottom: 12px;
+    padding-bottom: 2px;
     border-bottom: 1px solid #dbdee0;
   `}
 `
@@ -140,7 +140,7 @@ const Times = styled.div`
 const Tag = styled.div<{ active?: boolean }>`
   cursor: pointer;
   width: 46px;
-  margin-right: 8px;
+  margin: 0 8px 10px 0;
   display: flex;
   flex-direction: row;
   padding: 2px 8px;
