@@ -372,11 +372,11 @@ const getText = (
 
           return <p>{request.initiatorClient?.firstName} отправил{
             request.initiatorClient?.sex === "F" ? "a" : ""
-          } запрос на подтверждение <b>бесплатной</b> сессии </p>
+          } запрос на подтверждение бронирования <b>бесплатной</b> сессии </p>
         } else {
           return `${request.initiatorClient?.firstName} отправил${
             request.initiatorClient?.sex === "F" ? "a" : ""
-          } запрос на подтверждение сессии`
+          } запрос на подтверждение бронирования сессии`
         }
 
       }
