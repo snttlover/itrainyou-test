@@ -52,6 +52,7 @@ const CircleIcon = styled(Icon).attrs({ name: "circle" })`
 const RightArrow = styled(Icon).attrs({ name: "right-arrow" })`
   display: none;
   height: 12px;
+  stroke: #9bdcb9;
   ${MediaRange.lessThan("mobile")`
     display: block;
   `}
