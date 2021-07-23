@@ -196,7 +196,7 @@ const getText = (
       }
 
       if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
-        return "Вы отправили запрос на бронирование сессии"
+        return "Вы отправили запрос на бронирование бесплатной сессии"
       }
 
       if (is("BOOK", "CANCELLED", "COMPLETED")) {
