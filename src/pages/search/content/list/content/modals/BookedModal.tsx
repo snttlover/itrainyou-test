@@ -37,7 +37,7 @@ const Success = () => {
   const toggle = useEvent(toggleBookSessionsStatusModal)
   const userData = useStore($userData)
 
-  const pluralize = (plural: string, singular = "") => (bookedSessions.length > 1 ? plural : singular)
+  const pluralize = (plural: string, singular= "") => bookedSessions.length > 1 ? plural: singular
 
   const handleOnClick = () => {
     toggle()
@@ -82,7 +82,7 @@ const Failure = () => {
   )
 }
 
-export const BookedModal = () => {
+export const BookedModal = (): JSX.Element => {
   const bookedSessions = useStore($bookedSessions)
   return bookedSessions.length > 0 ? <Success /> : <Failure />
 }
@@ -196,6 +196,7 @@ const StyledAvatar = styled(Avatar)`
   height: 40px;
   min-width: 40px;
   margin-left: 16px;
+  cursor: pointer;
 `
 
 const Name = styled.div`

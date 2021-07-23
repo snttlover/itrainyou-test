@@ -1,15 +1,13 @@
-import { SelectDatetime } from "@/old-components/coach-card/select-date/SelectDatetime"
 import { Coach } from "@/lib/api/coach"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
-import { useMemo, useState } from "react"
 import styled, { css } from "styled-components"
-import { genCoachSessions } from "@/old-components/coach-card/select-date/select-date.model"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { Icon } from "@/old-components/icon/Icon"
 import { useHistory } from "react-router-dom"
 import { Button } from "@/old-components/button/normal/Button"
 import { getCoachPrices } from "@/old-components/coach-card/get-coach-prices"
+import { smartRound } from "@/lib/formatting/smartRound"
 
 const MainInfoContainer = styled.div`
   position: relative;
@@ -346,7 +344,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
 
   const isThereRating = coach.rating !== null
 
-  const rating = !isThereRating || (coach.rating || 0).toFixed(1).replace(".", ",")
+  const rating = isThereRating && smartRound(coach.rating)
 
   const prices = getCoachPrices(coach)
 
