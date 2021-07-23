@@ -156,7 +156,7 @@ const CopyLink = styled(CopyLinkIcon)`
   stroke: #9aa0a6;
 `
 
-const TooltipContainer = styled(Tooltip)`
+const TooltipWrapper = styled(Tooltip)`
   align-self: flex-end;
   margin-left: 5px;
 
@@ -175,9 +175,9 @@ export const BaseCoachInfo = styled(({ ...props }) => {
             <Year>
               {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate), ["год", "года", "лет"])}
             </Year>
-            <TooltipContainer text={"Скопировать ссылку профиля"}>
+            <TooltipWrapper text={"Скопировать ссылку профиля"}>
               <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
-            </TooltipContainer>
+            </TooltipWrapper>
           </Name>
           <Rating>
             <StarIcon name='star' />
