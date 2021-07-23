@@ -4,6 +4,7 @@ import { Input } from "@/old-components/input/Input"
 import { AuthLayout } from "@/old-components/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/lib/responsive/media"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { BirthdayFormGroup } from "@/pages/auth/pages/signup/content/step-3/BirthdayFormGroup"
 import {
@@ -12,10 +13,11 @@ import {
   $step3Form,
   $step3FormErrors,
   emailChanged,
+  phoneChanged,
   lastNameChanged,
   middleNameChanged,
   nameChanged,
-  step3FormSubmitted,
+  setUserDataFx,
   step3Mounted,
   toggleUploadModal
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
@@ -27,6 +29,8 @@ import styled from "styled-components"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
+import { ToastsContainer } from "@/old-components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
+
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -144,6 +148,10 @@ const AvatarHint = styled.div`
   `}
 `
 
+const StyledSpinner = styled(Spinner)`
+  background: rgba(236, 239, 241, 0.24);
+`
+
 export const Step3 = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -152,15 +160,17 @@ export const Step3 = () => {
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 
+  const isFetching = useStore(setUserDataFx.pending)
+  const setUserData = useEvent(setUserDataFx)
+
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
-  const _step3FormSubmitted = useEvent(step3FormSubmitted)
+  const _phoneChanged = useEvent(phoneChanged)
   const _middleNameChanged = useEvent(middleNameChanged)
   const [nextDisabled, setNextDisabled] = useState(false)
-
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -168,7 +178,7 @@ export const Step3 = () => {
 
   const nextOnClick = () => {
     ymLog("reachGoal","profilesignin")
-    _step3FormSubmitted()
+    setUserData(values.phone)
   }
 
   useEffect(() => {
@@ -177,6 +187,8 @@ export const Step3 = () => {
 
   return (
     <AuthLayout>
+      <ToastsContainer />
+      
       <Steps activeId='1'>
         <Steps.Step id='1'>Роль</Steps.Step>
         <Steps.Step id='2'>Данные</Steps.Step>
@@ -209,12 +221,21 @@ export const Step3 = () => {
               <Input value={values.email} onChange={_emailChanged} />
             </FormItem>
           )}
+          <FormItem label='Телефон' error={errors.phone} required>
+            <Input
+              mask='+7 (111) 111-11-11'
+              placeholder='+7 (900) 000-00-00'
+              value={values.phone}
+              onChange={_phoneChanged}
+              type='tel'
+            />
+          </FormItem>
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
-
           <NextButton onClick={nextOnClick} disabled={!isFormValid || nextDisabled} />
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
+      {isFetching && <StyledSpinner />}
     </AuthLayout>
   )
 }

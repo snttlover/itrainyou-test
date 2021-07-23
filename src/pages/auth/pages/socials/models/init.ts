@@ -86,7 +86,6 @@ sample({
         workExperience: "",
         education: "",
         description: "",
-        phone: "",
         photos: [],
         videoInterview: "",
         inn: "",
