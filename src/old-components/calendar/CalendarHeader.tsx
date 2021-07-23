@@ -22,30 +22,28 @@ type LeftButtonTypes = {
 }
 
 export const LeftIcon = styled(Icon).attrs({ name: "arrow" })<LeftButtonTypes>`
-  width: 20px;
-  height: 20px;
-  fill: ${({ theme }) => theme.colors.primary};
+  width: 14px;
+  height: 14px;
+  fill: #424242;
   cursor: pointer;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? "none" : "auto")};
   margin: 0 12px 0 0;
   transform: rotate(90deg);
-  
   ${MediaRange.lessThan("mobile")`
     margin-right: auto;
   `}
 `
 
 export const RightIcon = styled(Icon).attrs({ name: "arrow" })<LeftButtonTypes>`
-  width: 20px;
-  height: 20px;
-  fill: ${({ theme }) => theme.colors.primary};
+  width: 14px;
+  height: 14px;
   cursor: pointer;
+  fill: #424242;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   pointer-events: ${props => (props.disabled ? "none" : "auto")};
   margin: 0 0 0 12px;
   transform: rotate(-90deg);
-
   ${MediaRange.lessThan("mobile")`
     margin-left: auto;
   `}
