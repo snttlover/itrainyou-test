@@ -16,6 +16,7 @@ const Container = styled.div`
   border-radius: 2px;
   cursor: pointer;
   user-select: none;
+  border-radius: 8px;
   ${MediaRange.greaterThan("mobile")`
     padding: 24px;
     margin: 24px auto 0;
