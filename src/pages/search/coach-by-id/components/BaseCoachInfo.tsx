@@ -7,13 +7,14 @@ import { getYearsCount } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
 import { useEvent, useStore } from "effector-react"
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 import { $coach, $isFavourite, toggleFavourite } from "@/pages/search/coach-by-id/models/units"
 import { GrayTooltip } from "@/old-components/gray-tooltip/GrayTooltip"
 import { declOfNum } from "@/lib/formatting/numerals"
 import { CopyLinkIcon } from "@/pages/search/coach-by-id/components/CopyIcon"
+import { smartRound } from "@/lib/formatting/smartRound"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
@@ -196,7 +197,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
           </Name>
           <Rating>
             <StarIcon name='star' />
-            {coach?.rating?.toFixed(1)}
+            {smartRound(coach?.rating, ".")}
           </Rating>
           <CategoriesAndButtonContainer>
             <CategoriesContainer>

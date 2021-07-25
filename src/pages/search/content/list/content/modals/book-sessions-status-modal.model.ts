@@ -18,7 +18,7 @@ export type BookedSessionForViewType = {
 export const changeFreeBookedSession = createEvent<CoachSessionWithSelect>()
 export const $bookedSessions = createStore<BookedSessionForViewType[]>([])
 
-// export const
+// export const 
 
 // @ts-ignore
 $bookedSessions.on(
