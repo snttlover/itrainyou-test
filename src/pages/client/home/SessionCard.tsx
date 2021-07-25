@@ -20,10 +20,8 @@ export const SessionCard = ({ session, className }: SessionCardProps) => {
   const startDate = date(session.startDatetime)
   const endDate = date(session.endDatetime)
   const isStarted = now.isBetween(startDate, endDate, "minute")
-  const isStartIsNowDay = now.isSame(startDate, "d")
 
   const minutesDiffText = `${endDate.diff(startDate, "minute")} мин`
-  const dateText = isStartIsNowDay ? "" : `${startDate.format("DD MMMM")}, `
 
   const clickHandler = () => {
     if (isStarted) {
@@ -36,14 +34,14 @@ export const SessionCard = ({ session, className }: SessionCardProps) => {
   return (
     <SessionCardContainer className={className} data-is-started={isStarted} onClick={clickHandler}>
       <MobileTimeContainer>
-        {dateText} {getTimeText(startDate)} – {getTimeText(endDate)}
+        {getTimeText(startDate)} – {getTimeText(endDate)}
         <RightArrow />
       </MobileTimeContainer>
       <DesktopTimeContainer>{getTimeText(startDate)}</DesktopTimeContainer>
       <SessionDescription>
         <Info>
           <DesktopExtendedTime>
-            {dateText} до {getTimeText(endDate)}, {minutesDiffText}
+            до {getTimeText(endDate)}, {minutesDiffText}
           </DesktopExtendedTime>
           <MobileExtendedTime>{minutesDiffText}</MobileExtendedTime>
           <Name>
