@@ -111,10 +111,10 @@ const Time = styled.div`
 const StartButton = styled.div`
   background: #fff;
   border-radius: 32px;
-  padding: 4px 24px;
+  padding: 5px 24px;
   font-weight: 500;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 22px;
   cursor: pointer;
   color: #3eb273;
   &:hover {

@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom"
 import { Avatar } from "@/old-components/avatar/Avatar"
 import { Dayjs } from "dayjs"
 import { Icon } from "@/old-components/icon/Icon"
-import { Button } from "@/old-components/button/normal/Button"
+import { Button } from "@/new-components/button/Button"
 import { connectToSession } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 
 type SessionCardProps = { session: DashboardSession; children?: React.ReactNode; className?: string }
@@ -59,7 +59,7 @@ export const SessionCard = ({ session, className }: SessionCardProps) => {
   )
 }
 
-const AboutButton = styled(Button).attrs({ "data-secondary": true })`
+const AboutButton = styled(Button).attrs({ color: "secondary" })`
   display: none;
   justify-content: center;
 `
