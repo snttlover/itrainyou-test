@@ -101,7 +101,7 @@ const DefaultButton = styled(Button)<{ color: string }>`
 `
 
 const StyledDashedButton = styled(DashedButton)<{ color: string }>`
-  padding: 12.5px 24px;
+  padding: 11.5px 24px 12.5px 24px;
   display: block;
   color: ${({ color, theme }) => theme.colors.primary};
   background: #F8F8FD;

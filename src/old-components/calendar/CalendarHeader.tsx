@@ -77,7 +77,6 @@ export const MonthName = styled.div<{mobile?: boolean; showed?: boolean}>`
   text-transform: capitalize;
   text-align: center;
   display: ${({ mobile, showed }) => !!showed ? "unset" : (!!mobile ? "none" : "unset")};
-  /* margin-right: 4px; */
 
   ${MediaRange.lessThan("mobile")`
     display: ${

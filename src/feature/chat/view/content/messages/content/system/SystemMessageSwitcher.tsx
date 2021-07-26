@@ -72,8 +72,7 @@ const getText = (
     } else if (systemMessageType === "CHOOSE_NEW_COACH") {
       return "Не подошел коуч? Забронируйте бесплатную сессию с другим"
     } else if (systemMessageType === "FREE_SESSION_LIMIT_ENDED") {
-      return <p>Вы использовали все доступные бесплатные сессии. Теперь вы знаете, над чем вам нужно работать. Найдите своего коуча <UnderLine to='/client'>здесь</UnderLine>.
-        и забронируйте платную сессию. </p>
+      return <p>Вы использовали все доступные бесплатные сессии. Теперь вы знаете, над чем вам нужно работать. Найдите своего коуча <UnderLine to='/client'>здесь</UnderLine> и забронируйте платную сессию. </p>
     }
     
   } else {
