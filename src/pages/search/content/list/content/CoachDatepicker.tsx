@@ -79,7 +79,7 @@ const Datepicker = styled.div`
   border-bottom: 1px solid #dbdee0;
   padding-bottom: 4px;
 
-  > div${Description} {
+  > ${Description} {
     margin-bottom: 12px;
   }
 

@@ -97,7 +97,8 @@ const Datepicker = styled.div`
   flex-direction: column;
   border-bottom: 1px solid #dbdee0;
   padding-bottom: 4px;
-  > div${Description} {
+  
+  > ${Description} {
     margin-bottom: 12px;
   }
   ${MediaRange.between("mobile", "laptop")`
