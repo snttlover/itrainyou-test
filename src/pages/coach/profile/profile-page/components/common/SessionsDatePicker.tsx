@@ -108,7 +108,7 @@ const StyledDateHeader = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #424242;
-  padding-left: 12px;
+  padding-left: 19px;
   padding-top: 16px;
 
   ${MediaRange.lessThan("mobile")`
