@@ -73,10 +73,11 @@ const Datepicker = styled.div`
   border-right: 1px solid #dbdee0;
   padding-right: 32px;
   padding-left: 5px;
-  
-  > ${Description} {
+
+  > div${Description} {
     margin-bottom: 12px;
   }
+  
   @media screen and (max-width: 560px) {
     margin-bottom: 20px;
   }
