@@ -13,18 +13,18 @@ import {
   $upcomingSessions,
   loadActiveSessionsFx,
   loadMore,
-  loadRecommendationsFx,
   loadUpcomingSessionsFx,
   freeSessionsPageMounted,
 } from "../home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { clientCall } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { CheckMediaDevices } from "@/old-components/layouts/behaviors/dashboards/call/TestCall"
 import { $allFreeSessionsStore } from "@/pages/search/coach-by-id/models/units"
 import { HomeCalendar } from "@/pages/client/home/content/HomeCalendar"
 import { Icon } from "@/old-components/icon/Icon"
 import { Informer } from "@/new-components/informer/Informer"
+import { useSplittedStore } from "@/lib/effector/use-split-store"
+import { date } from "@/lib/formatting/date"
 
 const PageContainer = styled.div`
   display: flex;
@@ -155,7 +155,7 @@ const Description = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
-  color: #5B6670;
+  color: #5b6670;
 `
 
 const TabletPageContainer = styled.div`
@@ -189,7 +189,7 @@ const Row = styled.div`
   margin-top: 24px;
   align-self: flex-start;
   margin-bottom: 24px;
-  
+
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -218,7 +218,7 @@ const InformerHeader = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
-  color: #FFFFFF;
+  color: #ffffff;
   margin-bottom: 8px;
 `
 
@@ -228,7 +228,7 @@ const InformerDescription = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
-  color: #FFFFFF;
+  color: #ffffff;
 `
 
 const TabletCalendar = ({ setShowed }: any) => {
@@ -249,7 +249,6 @@ export const FreeSessionsHomePage = () => {
   const [tabletCalendarShowed, setShowed] = useState(false)
 
   const activeSessions = useStore($activeSessions)
-  const upcomingSessions = useStore($upcomingSessions)
   const recommendations = useStore($recommendations)
   const isHasMoreRecommendations = useStore($isHasMoreRecommendations)
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
@@ -257,57 +256,54 @@ export const FreeSessionsHomePage = () => {
   const _mounted = useEvent(freeSessionsPageMounted)
   const _loadMore = useEvent(loadMore)
 
+  const upcomingSessions = useSplittedStore({
+    store: $upcomingSessions,
+    splitter: session =>
+      date().isSame(session.startDatetime, "d") ? "Сегодня" : date(session.startDatetime).format("DD MMMM"),
+  })
+
   useEffect(() => {
     _mounted()
     setIsFirstRender(false)
   }, [])
 
-  const startSession = useEvent(clientCall.methods.connectToSession)
-
-  const startSessionClickHandler = (e: React.SyntheticEvent, sessionId: number) => {
-    startSession(sessionId)
-    e.preventDefault()
-  }
-
   return (
     <>
-      { tabletCalendarShowed ?
+      {tabletCalendarShowed ? (
         <TabletCalendar setShowed={setShowed} />
-        :
+      ) : (
         <PageContainer>
           <FreeSessionsContainer>
-
             <CheckMediaDevices type={"client"} />
 
             <ContentContainer>
-              {activeSessions.length > 0 &&(
+              {activeSessions.length > 0 && (
                 <Block>
                   <Title>Сессия уже началась!</Title>
                   {activeSessions.map(session => (
-                    <ActiveSessionCard session={session} key={session.id}>
-                      <div onClick={(e) => startSessionClickHandler(e, session.id)}>
-                        <SessionEnterButton data-slim>Зайти в сессию</SessionEnterButton>
-                        <SessionEnterText>Зайти в сессию</SessionEnterText>
-                      </div>
-                    </ActiveSessionCard>
+                    <ActiveSessionCard session={session} key={session.id} />
                   ))}
                   {activeSessionsPending && <Loader />}
                 </Block>
               )}
             </ContentContainer>
 
-            {upcomingSessions.length ? (
+            {upcomingSessions.items.length && (
               <ContentContainer>
                 <Block>
-
-                  <Title>Ближайшие сессии</Title>
-                  {upcomingSessions.map(session => (
-                    <TodaySessionCard session={session} key={session.id} />
-                  ))}
+                  {upcomingSessions.keys.map(day => {
+                    return (
+                      <>
+                        <Title>{day}</Title>
+                        {upcomingSessions.splitted(day).map(session => (
+                          <TodaySessionCard session={session} key={session.id} />
+                        ))}
+                      </>
+                    )
+                  })}
                 </Block>
               </ContentContainer>
-
-            ) : null}
+            )}
 
             <TabletCalendarContainer onClick={() => setShowed(true)}>
               <CalendarIcon />
@@ -315,19 +311,15 @@ export const FreeSessionsHomePage = () => {
               <Arrow />
             </TabletCalendarContainer>
 
-            {
-              !(upcomingSessionsPending || isFirstRender) &&
+            {!(upcomingSessionsPending || isFirstRender) && (
               <ContentContainer>
                 <InformerContainer>
-                  <Informer
-                    crossColored
-                    iconName={"gift"}
-                    closable
-                    backGround={"blue"}>
+                  <Informer crossColored iconName={"gift"} closable backGround={"blue"}>
                     <InformerTextContainer>
                       <InformerHeader>Мы подобрали для вас подходящих коучей!</InformerHeader>
                       <InformerDescription>
-                        Забронируйте приветственную сессию бесплатно, чтобы сформировать запрос и познакомиться со специалистом. Выберите удобную дату и время или конкретного коуча.
+                        Забронируйте приветственную сессию бесплатно, чтобы сформировать запрос и познакомиться со
+                        специалистом. Выберите удобную дату и время или конкретного коуча.
                       </InformerDescription>
                     </InformerTextContainer>
                   </Informer>
@@ -340,7 +332,7 @@ export const FreeSessionsHomePage = () => {
                     next={_loadMore as any}
                     hasMore={isHasMoreRecommendations}
                     dataLength={recommendations.length}
-                    style={{overflow: "hidden"}}
+                    style={{ overflow: "hidden" }}
                   >
                     {recommendations.map(coach => (
                       <RecommendationCoachCard key={coach.id} coach={coach} freeSessions />
@@ -348,15 +340,14 @@ export const FreeSessionsHomePage = () => {
                   </InfiniteScroll>
                 </Block>
               </ContentContainer>
-            }
-
+            )}
           </FreeSessionsContainer>
           <CalendarContainer>
             <CalendarTitle>Выберите удобное время</CalendarTitle>
             <HomeCalendar freeSessionsModule={$allFreeSessionsStore} />
           </CalendarContainer>
         </PageContainer>
-      }
+      )}
     </>
   )
 }

@@ -5,7 +5,7 @@ import styled, { css } from "styled-components"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { Icon } from "@/old-components/icon/Icon"
 import { useHistory } from "react-router-dom"
-import { Button } from "@/old-components/button/normal/Button"
+import { Button } from "@/new-components/button/Button"
 import { getCoachPrices } from "@/old-components/coach-card/get-coach-prices"
 import { smartRound } from "@/lib/formatting/smartRound"
 
@@ -117,13 +117,8 @@ type BlockTypes = {
   isTopCoach: boolean
 }
 
-const ReserveButton = styled(Button)`
-  transition: visibility 100ms ease;
-  width: 150px;
+const ReserveButton = styled(Button).attrs({ size: "large" })`
   visibility: hidden;
-  height: 40px;
-  font-size: 14px;
-  line-height: 22px;
   margin-bottom: 10px;
 
   @media screen and (max-width: 600px) {
@@ -152,8 +147,8 @@ const Block = styled.div<BlockTypes>`
   }
   ${Avatar} {
     ${props =>
-    props.isTopCoach
-      ? css`
+      props.isTopCoach
+        ? css`
             width: 54px;
             height: 54px;
 
@@ -162,7 +157,7 @@ const Block = styled.div<BlockTypes>`
               height: 38px;
             }
           `
-      : css`
+        : css`
             @media screen and (max-width: 600px) {
               width: 40px;
               height: 40px;
@@ -173,13 +168,13 @@ const Block = styled.div<BlockTypes>`
   ${MainInfoContainer} {
     border: 2px solid #fff;
   }
-  
+
   &:hover {
     ${ReserveButton} {
       visibility: visible;
     }
   }
-  
+
   @media screen and (max-width: 600px) {
     background: #fff;
     height: auto;
@@ -391,7 +386,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
                 </Price>
               ))}
             </PricesContainer>
-            <ReserveButton onClick={redirectToCoach}>{"Забронировать"}</ReserveButton>
+            <ReserveButton onClick={redirectToCoach}>Забронировать</ReserveButton>
           </Actions>
         </NameContainer>
       </MainInfoContainer>

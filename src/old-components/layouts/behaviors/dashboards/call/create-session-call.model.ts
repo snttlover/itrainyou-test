@@ -11,13 +11,17 @@ import { getClientSession } from "@/lib/api/client/get-client-session"
 import { date } from "@/lib/formatting/date"
 import { runInScope } from "@/scope"
 import { clientChatsSocket, coachChatsSocket, createChatsSocket } from "@/feature/socket/chats-socket"
-import { createSessionChatModule, CreateSessionChatModuleConfig } from "@/old-components/layouts/behaviors/dashboards/call/chat/create-session-chat-module"
+import {
+  createSessionChatModule,
+  CreateSessionChatModuleConfig,
+} from "@/old-components/layouts/behaviors/dashboards/call/chat/create-session-chat-module"
 import { coachChatConfig } from "@/pages/coach/chats/chat/config"
 import { clientChatConfig } from "@/pages/client/chats/chat/config"
 import { PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { getChatWithCoach } from "@/lib/api/chats/clients/get-chat-with-coach"
 import { getChatWithClient } from "@/lib/api/chats/coach/get-chat-with-client"
 import { createTicker } from "@/lib/effector/tick"
+import { $dashboard, DashboardType } from "@/feature/dashboard/dashboard"
 
 type CreateSessionCallModuleConfig = {
   dashboard: "client" | "coach"
@@ -41,17 +45,16 @@ const agoraHandleFail = (e: any, payload?: any) => {
 const videoConfig: VideoEncoderConfiguration = {
   resolution: {
     width: 1280,
-    height: 720
+    height: 720,
   },
   frameRate: {
     min: 15,
-    max: 30
+    max: 30,
   },
   bitrate: {
     min: 900,
-    max: 2000
-  }
-
+    max: 2000,
+  },
 }
 
 let agoraLib: any = null
@@ -65,10 +68,10 @@ const checkCompatibilityFx = createEffect({
       const isAgora = agoraLib.checkSystemRequirements()
       return isAgora
     }
-  }
+  },
 })
 
-export const $compatibility = createStore(false).on(checkCompatibilityFx.doneData, (_,payload) => payload)
+export const $compatibility = createStore(false).on(checkCompatibilityFx.doneData, (_, payload) => payload)
 
 guard({
   source: $isClient,
@@ -85,12 +88,12 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   forward({
     from: reset,
-    to: ticker.stop
+    to: ticker.stop,
   })
 
   forward({
     from: reset,
-    to: chatModule.methods.reset
+    to: chatModule.methods.reset,
   })
 
   const connectToSession = createEvent<number>()
@@ -113,11 +116,13 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const $userGrantedPermission = createStore({
     micro: false,
     camera: false,
-  }).on(changeGrantedPermissionForCamera, (state,payload) => {
-    return {micro: state.micro, camera: payload}
-  }).on(changeGrantedPermissionForMic,(state,payload) => {
-    return {micro: payload, camera: state.camera}
   })
+    .on(changeGrantedPermissionForCamera, (state, payload) => {
+      return { micro: state.micro, camera: payload }
+    })
+    .on(changeGrantedPermissionForMic, (state, payload) => {
+      return { micro: payload, camera: state.camera }
+    })
 
   const checkDevicePermission = createEvent()
   const close = createEvent()
@@ -157,7 +162,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
       agoraData.client?.getCameras(devices => {
         const isDeviceID = devices.find(device => !!device.deviceId)
-        isDeviceID ? runInScope(changeGrantedPermissionForCamera, true) : runInScope(changeGrantedPermissionForCamera, false)
+        isDeviceID
+          ? runInScope(changeGrantedPermissionForCamera, true)
+          : runInScope(changeGrantedPermissionForCamera, false)
       })
     },
   })
@@ -169,13 +176,11 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   forward({
     from: play,
-    to: [playAgoraFx,userPermissionFx],
+    to: [playAgoraFx, userPermissionFx],
   })
-
 
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(config.socket.methods.userLeftSession)
-
 
   const initAgoraFx = createEffect({
     handler: () => {
@@ -196,7 +201,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           runInScope(changeInterculatorIsConnected, true)
         })
 
-        agoraData.client.on("peer-leave", (e) => {
+        agoraData.client.on("peer-leave", e => {
           if (e.uid === agoraData.remoteStream?.getId()) {
             runInScope(changeInterculatorIsConnected, false)
             agoraData.remoteStream = null
@@ -208,15 +213,14 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         })
 
         agoraData.client.on("mute-audio", () => runInScope(changeInterlocutorMicrophoneStatus, false))
-        agoraData.client.on("unmute-audio", () => runInScope(changeInterlocutorMicrophoneStatus,true))
-        agoraData.client.on("mute-video", () => runInScope(changeInterlocutorVideoStatus,false))
+        agoraData.client.on("unmute-audio", () => runInScope(changeInterlocutorMicrophoneStatus, true))
+        agoraData.client.on("mute-video", () => runInScope(changeInterlocutorVideoStatus, false))
         agoraData.client.on("unmute-video", () => runInScope(changeInterlocutorVideoStatus, true))
 
         agoraData.client.on("stream-subscribed", e => {
           agoraData.remoteStream = e.stream
 
           play()
-
 
           runInScope(changeInterculatorWasConnected, true)
           runInScope(changeInterculatorIsConnected, true)
@@ -230,7 +234,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     filter: $isClient,
     target: initAgoraFx.prepend(() => {}),
   })
-
 
   const agoraData: Agora = {
     client: null,
@@ -248,7 +251,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
           undefined,
 
           // create streams
-          (uid:number) => {
+          (uid: number) => {
             agoraData.localStream = agoraLib.createStream({
               streamID: credentials.userAccount,
               audio: true,
@@ -256,24 +259,25 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
               screen: false,
             }) as Stream
 
-            agoraData.localStream?.on("accessAllowed", (event) => {
-              runInScope(checkDevicePermission)})
-
-            agoraData.localStream?.on("accessDenied", (event) => {
-              runInScope(checkDevicePermission)})
-
-            agoraData.localStream?.on("videoTrackEnded", (event) => {
+            agoraData.localStream?.on("accessAllowed", event => {
               runInScope(checkDevicePermission)
             })
 
-            agoraData.localStream?.on("audioTrackEnded", (event) => {
+            agoraData.localStream?.on("accessDenied", event => {
               runInScope(checkDevicePermission)
             })
 
-            agoraData.localStream?.on("audioMixingPlayed", (event) => {
+            agoraData.localStream?.on("videoTrackEnded", event => {
               runInScope(checkDevicePermission)
             })
 
+            agoraData.localStream?.on("audioTrackEnded", event => {
+              runInScope(checkDevicePermission)
+            })
+
+            agoraData.localStream?.on("audioMixingPlayed", event => {
+              runInScope(checkDevicePermission)
+            })
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
 
@@ -300,20 +304,20 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   const getChatByUserFx = createEffect({
-    handler: config.getChatByUser
+    handler: config.getChatByUser,
   })
 
   forward({
-    from: getSessionDataFx.doneData.map((session) => {
-      const userId = config.dashboard === 'coach' ? session.clients[0].id : session.coach.id
+    from: getSessionDataFx.doneData.map(session => {
+      const userId = config.dashboard === "coach" ? session.clients[0].id : session.coach.id
       return userId
     }),
-    to: getChatByUserFx
+    to: getChatByUserFx,
   })
 
   forward({
     from: getChatByUserFx.doneData.map(chat => chat.id),
-    to: chatModule.methods.changeChatId
+    to: chatModule.methods.changeChatId,
   })
 
   forward({
@@ -335,22 +339,24 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   forward({
-    from: connectToSession.map(() => {return}),
+    from: connectToSession.map(() => {
+      return
+    }),
     to: checkCompatibilityFx,
   })
 
   forward({
-    from: connectToSession.map(id => ({session: id})),
+    from: connectToSession.map(id => ({ session: id })),
     to: config.socket.methods.userEnteredSession,
   })
 
   forward({
     from: getTokenDataFx.doneData,
-    to: ticker.start
+    to: ticker.start,
   })
 
   const $sessionTokenData = restore<VideoTokenData>(getTokenDataFx.doneData, null).reset(reset)
-  const $minutesLeft = combine($sessionTokenData, ticker.$date, (data) => {
+  const $minutesLeft = combine($sessionTokenData, ticker.$date, data => {
     if (!data) {
       return false
     }
@@ -370,7 +376,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   forward({
-    from: getTokenDataFx.doneData.map(data => (config.dashboard !== "coach" ? data.isCoachConnected : data.connectedClients.length > 0)),
+    from: getTokenDataFx.doneData.map(data =>
+      config.dashboard !== "coach" ? data.isCoachConnected : data.connectedClients.length > 0
+    ),
     to: [changeInterculatorIsConnected, changeInterculatorWasConnected],
   })
 
@@ -428,17 +436,17 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   sample({
     source: $sessionId,
     clock: leaveAgoraFx.doneData,
-    fn: (sessionId, closeId) => ({session: sessionId}),
+    fn: (sessionId, closeId) => ({ session: sessionId }),
     target: config.socket.methods.userLeftSession,
   })
 
   forward({
-    from: config.socket.events.onUserEnteredSessionDone.map((data)=> true),
-    to: [changeInterculatorIsConnected,changeInterculatorWasConnected],
+    from: config.socket.events.onUserEnteredSessionDone.map(data => true),
+    to: [changeInterculatorIsConnected, changeInterculatorWasConnected],
   })
 
   forward({
-    from: config.socket.events.onUserLeftSessionDone.map((data)=> false),
+    from: config.socket.events.onUserLeftSessionDone.map(data => false),
     to: changeInterculatorIsConnected,
   })
 
@@ -472,7 +480,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   guard({
     source: $minutesLeft,
     filter: minutes => minutes !== false && minutes <= 0,
-    target: close
+    target: close,
   })
 
   const $transformedInterlocutor = $interlocutorData.map(user =>
@@ -502,7 +510,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   const $time = combine($minutesLeft, $isCloseToTerminate, (minutesLeft, isCloseToTerminate) => ({
     minutesLeft,
-    isCloseToTerminate
+    isCloseToTerminate,
   }))
 
   return {
@@ -513,7 +521,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       $interlocutor,
       $time,
       $userGrantedPermission,
-      dashboardType: config.dashboard
+      dashboardType: config.dashboard,
     },
     methods: {
       play,
@@ -524,8 +532,8 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       close,
     },
     modules: {
-      chat: chatModule
-    }
+      chat: chatModule,
+    },
   }
 }
 
@@ -536,7 +544,6 @@ type TestingParams = {
 }
 
 export const createTestCallModule = () => {
-
   const agoraData: Agora = {
     client: null,
     localStream: null,
@@ -554,60 +561,63 @@ export const createTestCallModule = () => {
   const changeGrantedPermissionForCamera = createEvent<boolean>()
   const changeGrantedPermissionForMic = createEvent<boolean>()
 
-
   const $userGrantedPermission = createStore({
     micro: false,
     camera: false,
-  }).on(changeGrantedPermissionForCamera, (state,payload) => {
-    return {micro: state.micro, camera: payload}
-  }).on(changeGrantedPermissionForMic,(state,payload) => {
-    return {micro: payload, camera: state.camera}
   })
-
+    .on(changeGrantedPermissionForCamera, (state, payload) => {
+      return { micro: state.micro, camera: payload }
+    })
+    .on(changeGrantedPermissionForMic, (state, payload) => {
+      return { micro: payload, camera: state.camera }
+    })
 
   const getDevicesFx = createEffect({
     handler: (type: "audio" | "video") => {
       agoraData.localStream = agoraLib.getDevices((devices: MediaDeviceInfo[]) => {
+        const audioDevices = devices.filter(device => device.kind === "audioinput" && device.deviceId.length > 0)
+        const videoDevices = devices.filter(device => device.kind === "videoinput" && device.deviceId.length > 0)
 
-        const audioDevices = devices.filter((device) => device.kind === "audioinput" && device.deviceId.length > 0)
-        const videoDevices = devices.filter((device) => device.kind === "videoinput" && device.deviceId.length > 0)
+        videoDevices.length > 0
+          ? runInScope(changeGrantedPermissionForCamera, true)
+          : runInScope(changeGrantedPermissionForCamera, false)
+        audioDevices.length > 0 && videoDevices.length > 0
+          ? runInScope(changeGrantedPermissionForMic, true)
+          : runInScope(changeGrantedPermissionForMic, false)
 
-        videoDevices.length > 0 ? runInScope(changeGrantedPermissionForCamera, true) : runInScope(changeGrantedPermissionForCamera, false)
-        audioDevices.length > 0 && videoDevices.length > 0 ? runInScope(changeGrantedPermissionForMic, true) : runInScope(changeGrantedPermissionForMic, false)
-
-        const uid = Math.floor(Math.random()*10000)
-        const selectedMicrophoneId = audioDevices.filter((device) => device.deviceId === "default")
-        const selectedCameraId = videoDevices.filter((device) => device.deviceId === "default")
-        test({uid: uid,type: type, selectedDevice: type === "audio" ? selectedMicrophoneId : selectedCameraId })
+        const uid = Math.floor(Math.random() * 10000)
+        const selectedMicrophoneId = audioDevices.filter(device => device.deviceId === "default")
+        const selectedCameraId = videoDevices.filter(device => device.deviceId === "default")
+        test({ uid: uid, type: type, selectedDevice: type === "audio" ? selectedMicrophoneId : selectedCameraId })
       })
     },
   })
 
-
   const testingDevicesFx = createEffect({
     handler: (params: TestingParams) => {
       if (agoraLib) {
-
         //microphoneId: params.selectedDevice,
         //cameraId: params.selectedDevice,
-        const streamSpecs = params.type === "audio" ? {
-          streamID: params.uid,
-          audio: true,
-          video: true,
-          screen: false
-        } : {
-          streamID: params.uid,
-          audio: false,
-          video: true,
-          screen: false
-        }
+        const streamSpecs =
+          params.type === "audio"
+            ? {
+                streamID: params.uid,
+                audio: true,
+                video: true,
+                screen: false,
+              }
+            : {
+                streamID: params.uid,
+                audio: false,
+                video: true,
+                screen: false,
+              }
 
         agoraData.localStream = agoraLib.createStream(streamSpecs)
 
         agoraData?.localStream?.init(() => {
           play(params.type)
         })
-
       }
     },
   })
@@ -617,9 +627,7 @@ export const createTestCallModule = () => {
   const playFx = createEffect({
     handler: (type: "audio" | "video") => {
       if (agoraData.localStream) {
-
         if (type === "audio") {
-
           if (agoraData.localStream.isPlaying()) {
             agoraData.localStream.stop()
           }
@@ -628,9 +636,7 @@ export const createTestCallModule = () => {
             // @ts-ignore
             setAudioLevel(Math.floor(agoraData.localStream.getAudioLevel() * 100))
           }, 50)
-
         } else {
-
           if (agoraData.localStream.isPlaying()) {
             agoraData.localStream.stop()
           }
@@ -674,16 +680,15 @@ export const createTestCallModule = () => {
     to: getDevicesFx,
   })
 
-
   return {
     data: {
       $audioLevel,
-      $userGrantedPermission
+      $userGrantedPermission,
     },
     methods: {
       play,
       mounted,
-      close
+      close,
     },
   }
 }
@@ -696,9 +701,9 @@ export const coachCall = createSessionCallModule({
   getSessionRequest: getCoachSession,
   socket: coachChatsSocket,
   chatConfig: {
-    chatModuleConfig: coachChatConfig
+    chatModuleConfig: coachChatConfig,
   },
-  getChatByUser: getChatWithClient
+  getChatByUser: getChatWithClient,
 })
 
 export const CoachSessionCall = createSessionCall(coachCall)
@@ -709,13 +714,12 @@ export const clientCall = createSessionCallModule({
   getSessionRequest: getClientSession,
   socket: clientChatsSocket,
   chatConfig: {
-    chatModuleConfig: clientChatConfig
+    chatModuleConfig: clientChatConfig,
   },
-  getChatByUser: getChatWithCoach
+  getChatByUser: getChatWithCoach,
 })
 
 export const ClientSessionCall = createSessionCall(clientCall)
-
 
 export const togglePermissionGrantedModal = createEvent<void | boolean>()
 export const $permissionGrantedModalVisibility = createStore<boolean>(false).on(
@@ -723,16 +727,36 @@ export const $permissionGrantedModalVisibility = createStore<boolean>(false).on(
   (state, payload) => {
     if (payload !== undefined) return payload
     return !state
-  })
+  }
+)
 
 export const changeModalInfo = createEvent<"video" | "mic">()
-export const $modalInfo = restore(changeModalInfo,"video")
-
+export const $modalInfo = restore(changeModalInfo, "video")
 
 export const changeCallModal = createEvent<void | boolean>()
-export const $testCallModal = createStore<boolean>(false).on(
-  changeCallModal,
-  (state, payload) => {
-    if (payload !== undefined) return payload
-    return !state
-  })
+export const $testCallModal = createStore<boolean>(false).on(changeCallModal, (state, payload) => {
+  if (payload !== undefined) return payload
+  return !state
+})
+
+type ConnectToSessionParams = {
+  dashboard: DashboardType
+  sessionId: number
+}
+
+const connectToSessionFx = createEffect<ConnectToSessionParams, void>(({ dashboard, sessionId }) => {
+  if (dashboard === "coach") {
+    coachCall.methods.connectToSession(sessionId)
+  } else {
+    clientCall.methods.connectToSession(sessionId)
+  }
+})
+
+export const connectToSession = createEvent<number>()
+
+sample({
+  clock: connectToSession,
+  source: $dashboard,
+  fn: (dashboard, sessionId) => ({ dashboard, sessionId }),
+  target: connectToSessionFx,
+})
