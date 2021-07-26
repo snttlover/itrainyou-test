@@ -92,6 +92,21 @@ const Block = styled.div<StyledTabTypes>`
   padding: 16px 8px;
 `
 
+const Description = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: right;
+  color: #9AA0A6;
+  
+  ${MediaRange.between("mobile", "laptop")`
+    text-align: unset;
+    margin-left: auto;
+  `}
+`
+
 const Datepicker = styled.div`
   display: flex;
   flex-direction: column;
@@ -201,21 +216,6 @@ const StyledRegisterButton = styled(Button)`
   font-size: 14px;
   line-height: 18px;
   width: 185px;
-`
-
-const Description = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: right;
-  color: #9AA0A6;
-  
-  ${MediaRange.between("mobile", "laptop")`
-    text-align: unset;
-    margin-left: auto;
-  `}
 `
 
 const ChooseTime = styled(Description)`

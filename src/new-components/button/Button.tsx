@@ -84,8 +84,8 @@ const whiteColorStyles = css`
 `
 
 type ButtonTypes = {
-  size: ButtonSize
-  color: ButtonColors
+  size?: ButtonSize
+  color?: ButtonColors
 }
 
 // large size by default

@@ -147,22 +147,22 @@ const Block = styled.div<BlockTypes>`
   }
   ${Avatar} {
     ${props =>
-      props.isTopCoach
-        ? css`
-            width: 54px;
-            height: 54px;
+    props.isTopCoach
+      ? css`
+          width: 54px;
+          height: 54px;
 
-            @media screen and (max-width: 600px) {
-              width: 38px;
-              height: 38px;
-            }
+          @media screen and (max-width: 600px) {
+            width: 38px;
+            height: 38px;
+          }
           `
-        : css`
-            @media screen and (max-width: 600px) {
-              width: 40px;
-              height: 40px;
-            }
-          `}
+      : css`
+          @media screen and (max-width: 600px) {
+            width: 40px;
+            height: 40px;
+          }
+        `}
   }
 
   ${MainInfoContainer} {
