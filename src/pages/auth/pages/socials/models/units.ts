@@ -5,14 +5,15 @@ import {
   AuthWithVK,
   createUserFromSocials,
   checkEmail,
-  checkPhone,
   CreateUserWithSocialsResponse,
   RegisterAsUserFromSocialsResponse,
   RegisterAsUserFromSocialsResponseNotFound,
   SocialsDataFound,
   CheckEmailResponse,
-  CheckPhoneResponse
 } from "@/lib/api/auth-socials"
+
+import {checkPhone, CheckPhoneResponse } from "@/lib/api/checkPhone"
+
 import { AxiosError } from "axios"
 import { UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { createGate } from "@/scope"
@@ -23,8 +24,8 @@ import { $email, $phone } from "@/pages/auth/pages/signup/content/step-3/step3.m
 export const signUpWithSocialsPageGate = createGate()
 export const socialsGate = createGate()
 
-export const setEmailError = createEvent<string | null>()
-export const setPhoneError = createEvent<string | null>()
+export const setEmailError = createEvent<string>()
+export const setPhoneError = createEvent<string>()
 export const authWithSocialNetwork = createEvent<string>()
 export const userFound = createEvent<{
   token: string
@@ -80,7 +81,7 @@ export const registerWithGoogleFx = createEffect<string, RegisterAsUserFromSocia
 })
 
 export const createUserFromSocialsFx = createEffect<UnpackedStoreObjectType<typeof $socialsForm>, CreateUserWithSocialsResponse, AxiosError>({
-  handler: ({ accessToken, email, socialNetwork }) => createUserFromSocials({ accessToken, email, socialNetwork }),
+  handler: ({ accessToken, email, phone, socialNetwork }) => createUserFromSocials({ accessToken, email, phone, socialNetwork }),
 })
 
 export const checkEmailFx = createEffect<UnpackedStoreObjectType<typeof $socialsForm>, CheckEmailResponse, AxiosError>({

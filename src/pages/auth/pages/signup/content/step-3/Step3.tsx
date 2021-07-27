@@ -17,7 +17,10 @@ import {
   lastNameChanged,
   middleNameChanged,
   nameChanged,
-  setUserDataFx,
+  // setUserPhoneFx,
+  // step3FormSubmitted,
+  // step3CheckPhoneFx,
+  step3FormSubmit,
   step3Mounted,
   toggleUploadModal
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
@@ -30,7 +33,6 @@ import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 import { ToastsContainer } from "@/old-components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
-
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -160,8 +162,10 @@ export const Step3 = () => {
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 
-  const isFetching = useStore(setUserDataFx.pending)
-  const setUserData = useEvent(setUserDataFx)
+  // const isFetching = useStore(step3FormSubmit.pending)
+  const _step3FormSubmit = useEvent(step3FormSubmit)
+  // const _setUserPhoneFx = useEvent(setUserPhoneFx)
+  // const _step3CheckPhoneFx = useEvent(step3CheckPhoneFx)
 
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
@@ -178,7 +182,7 @@ export const Step3 = () => {
 
   const nextOnClick = () => {
     ymLog("reachGoal","profilesignin")
-    setUserData(values.phone)
+    _step3FormSubmit({ phone: "+"+values.phone.replace(/\D+/g,"") })
   }
 
   useEffect(() => {
@@ -235,7 +239,7 @@ export const Step3 = () => {
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
-      {isFetching && <StyledSpinner />}
+      {/* {isFetching && <StyledSpinner />} */}
     </AuthLayout>
   )
 }

@@ -8,15 +8,7 @@ export type CheckEmailRequest = {
   email: string
 }
 
-export type CheckPhoneRequest = {
-  phone: string
-}
-
 export type CheckEmailResponse = {
-  isReserved: boolean
-}
-
-export type CheckPhoneResponse = {
   isReserved: boolean
 }
 
@@ -64,12 +56,11 @@ export interface RegisterWithSocialsRequest {
 export interface CreateUserWithSocialsRequest {
   accessToken: string
   email: string
+  phone: string
   socialNetwork: string | null
 }
 
-
 export type RegisterAsUserFromSocialsResponse = RegisterAsUserFromSocialsResponseNotFound | RegisterAsUserFromSocialsResponseFound
-
 
 export const AuthWithVK = (accessToken: RegisterWithSocialsRequest): Promise<RegisterAsUserFromSocialsResponse> =>
   post<RegisterAsUserFromSocialsResponse, RegisterWithSocialsRequest>(`${config.BACKEND_URL}/api/v1/web/auth/vk/`,
@@ -97,12 +88,6 @@ export const createUserFromSocials = (data: CreateUserWithSocialsRequest): Promi
 
 export const checkEmail = (data: CheckEmailRequest): Promise<CheckEmailResponse> =>
   post<CheckEmailResponse, CheckEmailRequest>(`${config.BACKEND_URL}/api/v1/web/auth/check-email/`,
-    keysToSnake(data))
-    .then(response => response.data)
-    .then(keysToCamel)
-
-export const checkPhone = (data: CheckPhoneRequest): Promise<CheckPhoneResponse> =>
-  post<CheckPhoneResponse, CheckPhoneRequest>(`${config.BACKEND_URL}/api/v1/web/auth/check-phone/`,
     keysToSnake(data))
     .then(response => response.data)
     .then(keysToCamel)

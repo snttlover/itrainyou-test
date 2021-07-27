@@ -164,7 +164,7 @@ forward({
   from: checkEmailFx.doneData.filter({
     fn: (response) => response.isReserved,
   }),
-  to: setEmailError.prepend(() => { return "Этот email занят другим пользователем" }),
+  to: setEmailError.prepend(() => { return "Эта почта занята другим пользователем" }),
 })
 
 forward({
@@ -176,8 +176,13 @@ forward({
 
 $emailError.on(setEmailError,(state,payload) => payload)
 
-
-
+// $emailError.on(registerFx.fail, (state, { error }) => {
+//   if (error.response?.data.email) {
+//     return "Пользователь с данным email уже существует"
+//   }
+//   return state
+// })
+ 
 
 guard({
   source: step3FormSubmitted,
