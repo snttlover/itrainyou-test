@@ -26,6 +26,7 @@ export const socialsGate = createGate()
 
 export const setEmailError = createEvent<string>()
 export const setPhoneError = createEvent<string>()
+
 export const authWithSocialNetwork = createEvent<string>()
 export const userFound = createEvent<{
   token: string
@@ -61,7 +62,7 @@ export const $socialNetwork = createStoreObject<SocialNetwork>({
 })
 
 export const $socialsForm = combine($socialNetwork, $email, $phone, (token, email, phone) => ({
-  accessToken: token.accessToken, email: email, phone: phone, socialNetwork: token.name,
+  accessToken: token.accessToken, email: email, phone: "+"+phone.replace(/\D+/g,""), socialNetwork: token.name,
 })).reset(reset)
 
 export const reportUnknownTypeFx = createEffect<any, any, AxiosError>({

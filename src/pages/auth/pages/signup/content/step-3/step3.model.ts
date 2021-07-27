@@ -99,7 +99,7 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
 export const step3FormSubmit = createEvent<string>()
 
 export const setUserPhoneFx = createEffect({
-  handler: (phone: string) => updateMyUser({ phone })
+  handler: (phone: string) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
 })
 
 forward({
@@ -115,8 +115,6 @@ forward({
 })
 
 $phoneError.on(setPhoneError,(state,payload) => payload)
-
-
 
 guard({
   source: step3FormSubmit,

@@ -182,7 +182,7 @@ export const Step3 = () => {
 
   const nextOnClick = () => {
     ymLog("reachGoal","profilesignin")
-    _step3FormSubmit({ phone: "+"+values.phone.replace(/\D+/g,"") })
+    _step3FormSubmit({ phone: values.phone })
   }
 
   useEffect(() => {
