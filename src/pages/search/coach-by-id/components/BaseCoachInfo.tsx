@@ -15,6 +15,7 @@ import { GrayTooltip } from "@/old-components/gray-tooltip/GrayTooltip"
 import { declOfNum } from "@/lib/formatting/numerals"
 import { CopyLinkIcon } from "@/pages/search/coach-by-id/components/CopyIcon"
 import { smartRound } from "@/lib/formatting/smartRound"
+import { Tooltip } from "@/new-components/tooltip/Tooltip"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
@@ -174,6 +175,11 @@ const CopyLink = styled(CopyLinkIcon)`
   margin-left: 5px;
 `
 
+const TooltipWrapper = styled(Tooltip)`
+  align-self: flex-end;
+  margin-left: 5px;
+`
+
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($coach)
   const isFavourite = useStore($isFavourite)
@@ -193,7 +199,9 @@ export const BaseCoachInfo = styled(({ ...props }) => {
             {/*<IsAuthed>*/}
             {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
             {/*</IsAuthed>*/}
-            <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
+            <TooltipWrapper text={"Скопировать ссылку профиля"}>
+              <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
+            </TooltipWrapper>
           </Name>
           <Rating>
             <StarIcon name='star' />
