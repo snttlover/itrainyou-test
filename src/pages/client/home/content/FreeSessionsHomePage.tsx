@@ -288,7 +288,7 @@ export const FreeSessionsHomePage = () => {
               )}
             </ContentContainer>
 
-            {upcomingSessions.items.length && (
+            {upcomingSessions.items.length ? (
               <ContentContainer>
                 <Block>
                   {upcomingSessions.keys.map(day => {
@@ -302,8 +302,9 @@ export const FreeSessionsHomePage = () => {
                     )
                   })}
                 </Block>
+
               </ContentContainer>
-            )}
+            ) : null}
 
             <TabletCalendarContainer onClick={() => setShowed(true)}>
               <CalendarIcon />
