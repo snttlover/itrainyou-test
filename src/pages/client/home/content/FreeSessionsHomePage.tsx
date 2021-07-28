@@ -281,7 +281,15 @@ export const FreeSessionsHomePage = () => {
                 <Block>
                   <Title>Сессия уже началась!</Title>
                   {activeSessions.map(session => (
-                    <ActiveSessionCard session={session} key={session.id} />
+                    <ActiveSessionCard
+                      id={session.id}
+                      aboutLink={`/client/sessions/${session.id}`}
+                      avatar={session.coach.avatar}
+                      name={`${session.coach.firstName} ${session.coach.lastName}`}
+                      startDatetime={session.startDatetime}
+                      endDatetime={session.endDatetime}
+                      key={session.id}
+                    />
                   ))}
                   {activeSessionsPending && <Loader />}
                 </Block>
@@ -296,7 +304,15 @@ export const FreeSessionsHomePage = () => {
                       <>
                         <Title>{day}</Title>
                         {upcomingSessions.splitted(day).map(session => (
-                          <TodaySessionCard session={session} key={session.id} />
+                          <TodaySessionCard
+                            id={session.id}
+                            aboutLink={`/client/sessions/${session.id}`}
+                            avatar={session.coach.avatar}
+                            name={`${session.coach.firstName} ${session.coach.lastName}`}
+                            startDatetime={session.startDatetime}
+                            endDatetime={session.endDatetime}
+                            key={session.id}
+                          />
                         ))}
                       </>
                     )

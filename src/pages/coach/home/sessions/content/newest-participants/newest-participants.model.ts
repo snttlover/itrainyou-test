@@ -6,11 +6,11 @@ export const $newestParticipantsList = newestParticipants.data.$list.map(partici
     const { client, session } = participant
     return {
       id: session.id,
-      link: `/coach/sessions/${session.id}`,
+      aboutLink: `/coach/sessions/${session.id}`,
       avatar: client.avatar,
+      startDatetime: participant.session.startDatetime,
+      endDatetime: participant.session.startDatetime,
       name: `${client.firstName} ${client.lastName}`,
-      duration: `${session.durationType.slice(1, session.durationType.length)} мин`,
-      time: date(session.startDatetime).format("DD MMM HH:mm"),
     }
   })
 )
