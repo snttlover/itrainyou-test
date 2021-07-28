@@ -8,12 +8,14 @@ import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import { $registerUserData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
 
 import { updateMyUser } from "@/lib/api/users/update-my-user"
 
 // import { checkPhone } from "@/lib/api/checkPhone"
 // import { AxiosError } from "axios"
-// import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export const step3FormSubmitted = createEvent()
 export const imageUploaded = createEvent<UploadMediaResponse>()
@@ -43,6 +45,30 @@ export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
 
+// export const setUserDataFx = createEffect({
+//   handler: (phone: string) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
+// })
+
+// forward({
+//   from: setUserDataFx.doneData,
+//   to: step3FormSubmitted,
+// })
+
+// const errorToast: Toast = {
+//   type: "error",
+//   text: "",
+// }
+
+// forward({
+//   from: setUserDataFx.fail.map((error: any)=> {
+//     const uncnownError = "Произошла ошибка при добавлении профиля"
+//     const errorToastAlert = ": полльзователь с таким телефоном уже существует"
+//     console.log(error)
+//     errorToast.text = error.error.response.data.phone[0].includes("phone") ? uncnownError+errorToastAlert : uncnownError
+//     return errorToast
+//   }),
+//   to: [toasts.remove, toasts.add],
+// })
 // export type CheckPhoneRequest = {
 //   phone: string
 // }
@@ -99,12 +125,12 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
 export const step3FormSubmit = createEvent<string>()
 
 export const setUserPhoneFx = createEffect({
-  handler: (phone: string) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
+  handler: ({phone}: {phone: string}) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
 })
 
 forward({
   from: setUserPhoneFx.doneData,
-  to: step3FormSubmitted,
+  to: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
 })
 
 export const setPhoneError = createEvent<string | null>()
@@ -127,6 +153,8 @@ guard({
   filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
   target: step3FormSubmitted,
 })
+
+
 // export const step3CheckPhoneFx = createEffect<UnpackedStoreObjectType<typeof $phone>, CheckPhoneResponse, AxiosError>({
 //   handler: ({phone: string}) => checkPhone({ phone: "+"+phone.replace(/\D+/g,"") })
 // })
