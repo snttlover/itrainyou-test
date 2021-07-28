@@ -9,7 +9,7 @@ export const $newestParticipantsList = newestParticipants.data.$list.map(partici
       aboutLink: `/coach/sessions/${session.id}`,
       avatar: client.avatar,
       startDatetime: participant.session.startDatetime,
-      endDatetime: participant.session.startDatetime,
+      endDatetime: participant.session.endDatetime,
       name: `${client.firstName} ${client.lastName}`,
     }
   })

@@ -9,7 +9,7 @@ export const $todaySessionsList = $todayCoachSessions.map(sessions => {
       avatar: client.avatar,
       name: `${client.firstName} ${client.lastName}`,
       startDatetime: session.startDatetime,
-      endDatetime: session.startDatetime,
+      endDatetime: session.endDatetime,
     }
   })
 })
