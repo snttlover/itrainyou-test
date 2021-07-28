@@ -17,9 +17,6 @@ import {
   lastNameChanged,
   middleNameChanged,
   nameChanged,
-  // setUserPhoneFx,
-  // step3FormSubmitted,
-  // step3CheckPhoneFx,
   step3FormSubmit,
   step3Mounted,
   toggleUploadModal
@@ -150,10 +147,6 @@ const AvatarHint = styled.div`
   `}
 `
 
-const StyledSpinner = styled(Spinner)`
-  background: rgba(236, 239, 241, 0.24);
-`
-
 export const Step3 = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -162,11 +155,7 @@ export const Step3 = () => {
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 
-  // const isFetching = useStore(step3FormSubmit.pending)
   const _step3FormSubmit = useEvent(step3FormSubmit)
-  // const _setUserPhoneFx = useEvent(setUserPhoneFx)
-  // const _step3CheckPhoneFx = useEvent(step3CheckPhoneFx)
-
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
@@ -239,7 +228,6 @@ export const Step3 = () => {
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
-      {/* {isFetching && <StyledSpinner />} */}
     </AuthLayout>
   )
 }

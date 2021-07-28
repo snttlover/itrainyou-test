@@ -12,6 +12,14 @@ export type CheckEmailResponse = {
   isReserved: boolean
 }
 
+export type CheckPhoneRequest = {
+  phone: string
+}
+
+export type CheckPhoneResponse = {
+  isReserved: boolean
+}
+
 export type SocialsDataFound = User & {
   coach: null | CoachSelfData
   client: null | ClientSelfData
@@ -88,6 +96,12 @@ export const createUserFromSocials = (data: CreateUserWithSocialsRequest): Promi
 
 export const checkEmail = (data: CheckEmailRequest): Promise<CheckEmailResponse> =>
   post<CheckEmailResponse, CheckEmailRequest>(`${config.BACKEND_URL}/api/v1/web/auth/check-email/`,
+    keysToSnake(data))
+    .then(response => response.data)
+    .then(keysToCamel)
+
+export const checkPhone = (data: CheckPhoneRequest): Promise<CheckPhoneResponse> =>
+  post<CheckPhoneResponse, CheckPhoneRequest>(`${config.BACKEND_URL}/api/v1/web/auth/check-phone/`,
     keysToSnake(data))
     .then(response => response.data)
     .then(keysToCamel)

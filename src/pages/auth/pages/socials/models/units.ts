@@ -5,15 +5,14 @@ import {
   AuthWithVK,
   createUserFromSocials,
   checkEmail,
+  checkPhone,
   CreateUserWithSocialsResponse,
   RegisterAsUserFromSocialsResponse,
   RegisterAsUserFromSocialsResponseNotFound,
   SocialsDataFound,
   CheckEmailResponse,
+  CheckPhoneResponse,
 } from "@/lib/api/auth-socials"
-
-import {checkPhone, CheckPhoneResponse } from "@/lib/api/checkPhone"
-
 import { AxiosError } from "axios"
 import { UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { createGate } from "@/scope"

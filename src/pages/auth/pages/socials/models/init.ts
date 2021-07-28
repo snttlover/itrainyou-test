@@ -147,56 +147,6 @@ forward({
   to: setIsSocialSignupInProgress,
 })
 
-// guard({
-//   source: step3FormSubmitted,
-//   filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
-//   target: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
-// })
-
-// $emailError.on(registerFx.fail, (state, { error }) => {
-//   if (error.response?.data.email) {
-//     return "Пользователь с данным email уже существует"
-//   }
-//   return state
-// })
- 
-
-
-
-// forward({
-//   from: checkPhoneFx.doneData.filter({
-//     fn: (response) => response.isReserved,
-//   }),
-//   to: setPhoneError.prepend(() => { return "Этот телефон занят другим пользователем" }),
-// })
-
-// forward({
-//   from: checkPhoneFx.doneData.filter({
-//     fn: (response) => !response.isReserved,
-//   }),
-//   to: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
-// })
-
-// forward({
-//   from: checkEmailFx.doneData.filter({
-//     fn: (response) => !response.isReserved,
-//   }),
-//   to: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
-// })
-
-
-// export const $errors = combine({
-//   email: $emailError,
-//   phone: $phoneError,
-// })
-
-// const errorsTarget = createEvent()
-
-// forward({
-//   from: $errors,
-//   to: errorsTarget
-// })
-
 guard({
   source: step3FormSubmitted,
   filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
@@ -239,5 +189,3 @@ guard({
   filter: ({ phoneError, emailError }) => !phoneError && !emailError,
   target: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
 })
-
-// navigatePush.prepend(() => ({ url: routeNames.signup("4") }))

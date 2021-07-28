@@ -10,14 +10,10 @@ import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import { $registerUserData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
-
 import { updateMyUser } from "@/lib/api/users/update-my-user"
 
-// import { checkPhone } from "@/lib/api/checkPhone"
-// import { AxiosError } from "axios"
-import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
-
 export const step3FormSubmitted = createEvent()
+export const step3FormSubmit = createEvent<string>()
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -28,73 +24,21 @@ export const $originalAvatar = createStore<UploadMediaResponse>({ id: -1, type: 
   originalAvatarUploaded,
   (state, payload) => payload
 )
-
 const $isImageError = combine(
   $image,
   $registerUserData.map(userData => userData.type),
   (img, type) => {
     if (type === "coach" && !img.file) return "Изображение обязательно к загрузке"
-
     return null
   }
 )
+
 const $isImageCorrect = $isImageError.map(error => !error)
 
 export const toggleUploadModal = createEvent()
 export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
-
-// export const setUserDataFx = createEffect({
-//   handler: (phone: string) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
-// })
-
-// forward({
-//   from: setUserDataFx.doneData,
-//   to: step3FormSubmitted,
-// })
-
-// const errorToast: Toast = {
-//   type: "error",
-//   text: "",
-// }
-
-// forward({
-//   from: setUserDataFx.fail.map((error: any)=> {
-//     const uncnownError = "Произошла ошибка при добавлении профиля"
-//     const errorToastAlert = ": полльзователь с таким телефоном уже существует"
-//     console.log(error)
-//     errorToast.text = error.error.response.data.phone[0].includes("phone") ? uncnownError+errorToastAlert : uncnownError
-//     return errorToast
-//   }),
-//   to: [toasts.remove, toasts.add],
-// })
-// export type CheckPhoneRequest = {
-//   phone: string
-// }
-
-// export type CheckPhoneResponse = {
-//   isReserved: boolean
-// }
-
-// export const step3CheckPhoneFx = createEffect({
-//   handler: (phone: string) => checkPhoneFx({ phone: "+"+phone.replace(/\D+/g,"") })
-// })
-
-// const errorToast: Toast = {
-//   type: "error",
-//   text: "",
-// }
-
-// forward({
-//   from: setUserDataFx.fail.map((error: any)=> {
-//     const uncnownError = "Произошла ошибка при добавлении профиля"
-//     const errorToastAlert = ": полльзователь с таким телефоном уже существует"
-//     errorToast.text = error.error.response.data.phone[0].includes("phone") ? uncnownError+errorToastAlert : uncnownError
-//     return errorToast
-//   }),
-//   to: [toasts.remove, toasts.add],
-// })
 
 export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorField({
   defaultValue: "",
@@ -121,9 +65,6 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
   eventMapper: event => event.map(trimString),
 })
 
-
-export const step3FormSubmit = createEvent<string>()
-
 export const setUserPhoneFx = createEffect({
   handler: ({phone}: {phone: string}) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
 })
@@ -133,14 +74,7 @@ forward({
   to: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
 })
 
-export const setPhoneError = createEvent<string | null>()
-
-forward({
-  from: setUserPhoneFx.fail,
-  to: setPhoneError.prepend(() => { return "Этот телефон занят другим пользователем" }),
-})
-
-$phoneError.on(setPhoneError,(state,payload) => payload)
+$phoneError.on(setUserPhoneFx.fail, () => "Этот телефон занят другим пользователем")
 
 guard({
   source: step3FormSubmit,
@@ -153,25 +87,6 @@ guard({
   filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
   target: step3FormSubmitted,
 })
-
-
-// export const step3CheckPhoneFx = createEffect<UnpackedStoreObjectType<typeof $phone>, CheckPhoneResponse, AxiosError>({
-//   handler: ({phone: string}) => checkPhone({ phone: "+"+phone.replace(/\D+/g,"") })
-// })
-
-// forward({
-//   from: step3CheckPhoneFx.doneData.filter({
-//     fn: (response) => response.isReserved,
-//   }),
-//   to: setPhoneError.prepend(() => { return "Этот телефон занят другим пользователем" }),
-// })
-
-// forward({
-//   from: step3CheckPhoneFx.doneData.filter({
-//     fn: (response) => !response.isReserved,
-//   }),
-//   to: step3FormSubmitted,
-// })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",
