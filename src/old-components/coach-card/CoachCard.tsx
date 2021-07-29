@@ -63,6 +63,7 @@ const Name = styled.span`
   line-height: 20px;
   display: flex;
   width: 100%;
+  font-weight: 500;
 
   @media screen and (max-width: 600px) {
     font-size: 16px;
@@ -193,6 +194,7 @@ const Meta = styled.div`
   align-items: center;
   flex: 1;
   justify-content: flex-end;
+  font-weight: normal;
 
   @media screen and (max-width: 600px) {
     justify-content: flex-start;
