@@ -41,6 +41,10 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #424242;
+  margin-top: 24px;
+  &:first-child {
+    margin-top: 0;
+  }
 `
 
 const ActiveSessionCard = styled(SessionCard)`
