@@ -38,7 +38,7 @@ const UserInfo = styled.div`
   width: 100%;
 `
 
-const Name = styled.p`
+const NameWrapper = styled.p`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
@@ -49,11 +49,20 @@ const Name = styled.p`
 
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
 
   ${MediaRange.greaterThan("mobile")`        
     font-size: 20px;
     line-height: 26px;
+  `}
+`
+
+const Name = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${MediaRange.greaterThan("mobile")`        
+    flex-direction: row;
   `}
 `
 
@@ -191,18 +200,20 @@ export const BaseCoachInfo = styled(({ ...props }) => {
       <UserInfoWrapper>
         <StyledAvatar src={coach?.avatar!} isTopCoach={!!coach?.isTopCoach} />
         <UserInfo>
-          <Name>
-            {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-            <Year>
-              {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!), ["год", "года", "лет"])}
-            </Year>
+          <NameWrapper>
+            <Name>
+              {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
+              <Year>
+                {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!), ["год", "года", "лет"])}
+              </Year>
+            </Name>
             {/*<IsAuthed>*/}
             {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
             {/*</IsAuthed>*/}
             <TooltipWrapper text={"Скопировать ссылку профиля"}>
               <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
             </TooltipWrapper>
-          </Name>
+          </NameWrapper>
           <Rating>
             <StarIcon name='star' />
             {smartRound(coach?.rating, ".")}
