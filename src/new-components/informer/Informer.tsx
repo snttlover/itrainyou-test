@@ -5,7 +5,7 @@ import { useState } from "react"
 import { MediaRange } from "@/lib/responsive/media"
 import { IconName } from "@/old-components/icon/Icon"
 
-const Container = styled.div<{backGround?: string}>`
+export const Container = styled.div<{backGround?: string}>`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -42,7 +42,7 @@ const Close = styled(Icon).attrs({ name: "close" })<{crossColor?: boolean}>`
   margin-left: auto; 
 `
 
-const Content = styled.div<{closable?: boolean}>`
+export const Content = styled.div<{closable?: boolean}>`
     max-width: 85%;
     font-family: Roboto;
     font-style: normal;
