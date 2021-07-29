@@ -37,7 +37,7 @@ const Success = () => {
   const toggle = useEvent(toggleBookSessionsStatusModal)
   const userData = useStore($userData)
 
-  const pluralize = (plural: string, singular= "") => bookedSessions.length > 1 ? plural: singular
+  const pluralize = (plural: string, singular = "") => (bookedSessions.length > 1 ? plural : singular)
 
   const handleOnClick = () => {
     toggle()
@@ -48,8 +48,10 @@ const Success = () => {
   return (
     <Container>
       <Header>
-        Коучу был{`${pluralize("и")}`} отправлен{`${pluralize("ы")}`} запрос{`${pluralize("ы")}`} на бронирование сесси
-        {`${pluralize("й", "и")}`}
+        {pluralize(
+          "Коучу были отправлены запросы на бронирование сессий",
+          "Коучу был отправлен запрос на бронировние сессии"
+        )}
       </Header>
       <Description>
         При подтверждении или отклонении запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
