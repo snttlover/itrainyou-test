@@ -13,7 +13,7 @@ import { routeNames } from "@/pages/route-names"
 import { updateMyUser } from "@/lib/api/users/update-my-user"
 
 export const step3FormSubmitted = createEvent()
-export const step3FormSubmit = createEvent<string>()
+export const step3SetUserPhone = createEvent<string>()
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -77,13 +77,13 @@ forward({
 $phoneError.on(setUserPhoneFx.fail, () => "Этот телефон занят другим пользователем")
 
 guard({
-  source: step3FormSubmit,
+  source: step3SetUserPhone,
   filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
   target: setUserPhoneFx,
 })
 
 guard({
-  source: step3FormSubmit,
+  source: step3SetUserPhone,
   filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
   target: step3FormSubmitted,
 })

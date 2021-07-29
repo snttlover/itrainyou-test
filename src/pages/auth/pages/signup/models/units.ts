@@ -78,7 +78,7 @@ export const registerUser = createEvent()
 export const registerUserFx = createEffect({
   handler(params: UserData) {
     if (params.type === "client") {
-      return registerAsClient({ ...params.clientData!, categories: params.categories})
+      return registerAsClient({ ...params.clientData!, categories: params.categories })
     } else {
       return registerAsCoach({ ...params.clientData!, categories: params.categories, ...params.coachData! })
     }

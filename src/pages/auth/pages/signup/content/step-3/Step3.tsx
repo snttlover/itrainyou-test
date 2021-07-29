@@ -17,7 +17,7 @@ import {
   lastNameChanged,
   middleNameChanged,
   nameChanged,
-  step3FormSubmit,
+  step3SetUserPhone,
   step3Mounted,
   toggleUploadModal
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
@@ -155,7 +155,7 @@ export const Step3 = () => {
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 
-  const _step3FormSubmit = useEvent(step3FormSubmit)
+  const _step3SetUserPhone = useEvent(step3SetUserPhone)
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
@@ -171,7 +171,7 @@ export const Step3 = () => {
 
   const nextOnClick = () => {
     ymLog("reachGoal","profilesignin")
-    _step3FormSubmit({ phone: values.phone })
+    _step3SetUserPhone({ phone: values.phone })
   }
 
   useEffect(() => {
