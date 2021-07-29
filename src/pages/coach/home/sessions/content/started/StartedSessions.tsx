@@ -7,9 +7,9 @@ import { SessionCardListItem } from "@/pages/coach/home/sessions/content/common/
 
 export const StartedSessions = () => (
   <Container>
-    <Title>Сессия уже началась!</Title>
+    <Title>Сессия началась</Title>
     {useList($startedSessionsList, session => (
-      <SessionCardListItem {...session} />
+      <SessionCardListItem {...session} inProgress />
     ))}
   </Container>
 )

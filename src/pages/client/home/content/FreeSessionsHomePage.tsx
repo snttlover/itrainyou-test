@@ -279,7 +279,7 @@ export const FreeSessionsHomePage = () => {
             <ContentContainer>
               {activeSessions.length > 0 && (
                 <Block>
-                  <Title>Сессия уже началась!</Title>
+                  <Title>Сессия началась</Title>
                   {activeSessions.map(session => (
                     <ActiveSessionCard
                       id={session.id}
@@ -289,6 +289,7 @@ export const FreeSessionsHomePage = () => {
                       startDatetime={session.startDatetime}
                       endDatetime={session.endDatetime}
                       key={session.id}
+                      inProgress
                     />
                   ))}
                   {activeSessionsPending && <Loader />}

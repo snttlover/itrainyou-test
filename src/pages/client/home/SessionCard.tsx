@@ -18,6 +18,7 @@ type SessionCardProps = {
   endDatetime: ISODate
   id: number
   aboutLink: string
+  inProgress?: boolean // в некоторых списках сессия появляется до ее начала, параметр применяет стили начатой сессии принудительно
 }
 
 const getTimeText = (date: Dayjs) => date.format("HH:mm")
@@ -29,12 +30,13 @@ export const SessionCard = ({
   name,
   startDatetime,
   endDatetime,
+  inProgress,
 }: SessionCardProps) => {
   const history = useHistory()
   const now = date()
   const startDate = date(startDatetime)
   const endDate = date(endDatetime)
-  const isStarted = now.isBetween(startDate, endDate, "minute")
+  const isStarted = inProgress || now.isBetween(startDate, endDate, "minute")
 
   const minutesDiffText = `${endDate.diff(startDate, "minute")} мин`
 

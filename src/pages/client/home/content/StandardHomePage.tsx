@@ -41,7 +41,6 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 26px;
   color: #424242;
-  margin-top: 24px;
 `
 
 const ActiveSessionCard = styled(SessionCard)`
@@ -288,7 +287,7 @@ export const StandardHomePage = () => {
       <ContentContainer>
         {activeSessions.length > 0 && (
           <Block>
-            <Title>Сессия уже началась!</Title>
+            <Title>Сессия началась</Title>
             {activeSessions.map(session => (
               <ActiveSessionCard
                 id={session.id}
@@ -298,6 +297,7 @@ export const StandardHomePage = () => {
                 startDatetime={session.startDatetime}
                 endDatetime={session.endDatetime}
                 key={session.id}
+                inProgress
               />
             ))}
             {activeSessionsPending && <Loader />}
