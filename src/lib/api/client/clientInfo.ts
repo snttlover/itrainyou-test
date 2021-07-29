@@ -34,6 +34,7 @@ export interface ClientSelfData {
 export type User = {
   id: number
   email: string
+  phone: string
   creation_datetime: string // iso date
   time_zone: string // time zone name
 }

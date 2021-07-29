@@ -84,6 +84,7 @@ export const registerUserFx = createEffect({
     }
   }
 })
+
 export const skipCoach = createEvent()
 
 export const getMyUserDataFx = attach({
