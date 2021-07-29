@@ -42,6 +42,9 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
   margin-top: 24px;
+  &:first-child {
+    margin-top: 0;
+  }
 `
 
 const ActiveSessionCard = styled(SessionCard)`
@@ -278,13 +281,6 @@ export const StandardHomePage = () => {
     setIsFirstRender(false)
   }, [])
 
-  const startSession = useEvent(clientCall.methods.connectToSession)
-
-  const startSessionClickHandler = (e: React.SyntheticEvent, sessionId: number) => {
-    startSession(sessionId)
-    e.preventDefault()
-  }
-
   return (
     <>
       <ContentContainer>
@@ -295,14 +291,18 @@ export const StandardHomePage = () => {
       <ContentContainer>
         {activeSessions.length > 0 && (
           <Block>
-            <Title>Сессия уже началась!</Title>
+            <Title>Сессия началась</Title>
             {activeSessions.map(session => (
-              <ActiveSessionCard session={session} key={session.id}>
-                <div onClick={e => startSessionClickHandler(e, session.id)}>
-                  <SessionEnterButton data-slim>Зайти в сессию</SessionEnterButton>
-                  <SessionEnterText>Зайти в сессию</SessionEnterText>
-                </div>
-              </ActiveSessionCard>
+              <ActiveSessionCard
+                id={session.id}
+                aboutLink={`/client/sessions/${session.id}`}
+                avatar={session.coach.avatar}
+                name={`${session.coach.firstName} ${session.coach.lastName}`}
+                startDatetime={session.startDatetime}
+                endDatetime={session.endDatetime}
+                key={session.id}
+                inProgress
+              />
             ))}
             {activeSessionsPending && <Loader />}
           </Block>
@@ -317,7 +317,15 @@ export const StandardHomePage = () => {
                 <>
                   <Title>{day}</Title>
                   {upcomingSessions.splitted(day).map(session => (
-                    <TodaySessionCard session={session} key={session.id} />
+                    <TodaySessionCard
+                      id={session.id}
+                      aboutLink={`/client/sessions/${session.id}`}
+                      avatar={session.coach.avatar}
+                      name={`${session.coach.firstName} ${session.coach.lastName}`}
+                      startDatetime={session.startDatetime}
+                      endDatetime={session.endDatetime}
+                      key={session.id}
+                    />
                   ))}
                 </>
               )
