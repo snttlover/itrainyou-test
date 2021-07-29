@@ -30,6 +30,7 @@ import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 import { ToastsContainer } from "@/old-components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
+import { Informer } from "@/new-components/informer/Informer"
 
 
 const StyledSteps = styled(Steps)`
@@ -119,7 +120,6 @@ const AvatarWrapper = styled.div`
 
 const AvatarHint = styled.div`
   margin-left: 30px;
-  display: none;
   flex-direction: column;
   color: #424242;
   width: 360px;
@@ -131,6 +131,7 @@ const AvatarHint = styled.div`
     font-size: 12px;
     line-height: 16px;
     color: #424242;
+    display: none;
   }
 
   p {
@@ -141,15 +142,30 @@ const AvatarHint = styled.div`
     font-size: 12px;
     line-height: 16px;
     color: #9aa0a6;
+    display: none;
   }
 
   ${MediaRange.greaterThan("mobile")`
     display: flex;
+    > h4, p {
+      display: flex;
+    }
   `}
 `
 
 const StyledSpinner = styled(Spinner)`
   background: rgba(236, 239, 241, 0.24);
+`
+
+const InformerContainer = styled.div`
+  margin-top: 8px;
+  div{
+    background: #FFF8F2;
+    color: #FF6B00;
+    svg {
+      color: #FF6B00;
+    }
+  }
 `
 
 export const Step3 = () => {
@@ -205,6 +221,11 @@ export const Step3 = () => {
             <AvatarHint>
               <h4>Добавить фото</h4>
               <p>Формат: jpg, png. Максимальный размер файла: 100Mb. Рекомендованный размер: 200х200 px.</p>
+              <InformerContainer>
+                <Informer colorful>
+                  Добавьте свое фото
+                </Informer>
+              </InformerContainer>
             </AvatarHint>
           </AvatarWrapper>
           <FormItem label='Имя' error={errors.name} required>
