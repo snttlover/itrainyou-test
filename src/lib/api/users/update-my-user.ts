@@ -9,6 +9,13 @@ export type UpdateMyUserRequest = {
   timeZone?: string
 }
 
+export type UpdateMyUserResponse = GetMyUserResponse
+
+export type UpdateMyUserResponseError = {
+  phone?: string[]
+  email?: string[]
+}
+
 export const updateMyUser = (data: UpdateMyUserRequest): Promise<GetMyUserResponse> =>
   patch(`${config.BACKEND_URL}/api/v1/web/users/me/`, keysToSnake(data))
     .then(response => response.data)

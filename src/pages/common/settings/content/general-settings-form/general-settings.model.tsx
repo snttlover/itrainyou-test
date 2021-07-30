@@ -1,14 +1,20 @@
 import { setUserData } from "@/feature/user/user.model"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 
-import { updateMyUser } from "@/lib/api/users/update-my-user"
+import { updateMyUser, UpdateMyUserResponse, UpdateMyUserResponseError } from "@/lib/api/users/update-my-user"
 
 import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
 import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
-import { combine, createEffect, createEvent, createStoreObject, forward, guard} from "effector-root"
+import { combine, createEffect, createEvent, createStoreObject, forward, guard, split } from "effector-root"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { AxiosError } from "axios"
+import {
+  finishSaveClientCardFx,
+  finishSaveCoachCardFx,
+  getPaymentIdFx, reportUnknownTypeFx
+} from "@/feature/client-funds-up/dialog/models/units"
 
 export const SettingsGate = createGate()
 
@@ -18,8 +24,14 @@ type ResetRType = {
   timeZone: string
 }
 
-export const changeGeneralSettingsFx = createEffect({
-  handler: ({ email, phone, timeZone }: ResetRType) => updateMyUser({ email, timeZone, phone: "+"+phone.replace(/\D+/g,"") })
+export const changeGeneralSettingsFx = createEffect<
+  ResetRType,
+  UpdateMyUserResponse,
+  AxiosError<UpdateMyUserResponseError>
+>({
+  handler: ({ email, phone, timeZone }) => updateMyUser({
+    email, timeZone, phone: "+"+phone.replace(/\D+/g,"")
+  })
 })
 
 export const mounted = createEvent()
@@ -64,17 +76,18 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
   reset: SettingsGate.open,
 })
 
-guard({
-  source: changeGeneralSettingsFx.fail.map(error => error.error.response.data.email[0]),
-  filter: emailError => emailError,
-  target: $emailError,
+forward({
+  from: changeGeneralSettingsFx.failData.filterMap(
+    (error) => error?.response?.data?.email?.[0] && "Данный email уже занят"
+  ),
+  to: $emailError,
 })
 
-
-guard({
-  source: changeGeneralSettingsFx.fail.map(error => error.error.response.data.phone[0]),
-  filter: phoneError => phoneError,
-  target: $phoneError,
+forward({
+  from: changeGeneralSettingsFx.failData.filterMap(
+    (error) => error?.response?.data?.phone?.[0] && "Данный телефон уже занят"
+  ),
+  to: $phoneError,
 })
 
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
