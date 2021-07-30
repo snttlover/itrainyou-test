@@ -39,6 +39,12 @@ $socialNetwork.on(socialNetworkDataFx.doneData, (state, payload) =>
   ({ name: payload.name, accessToken: payload.accessToken, email: payload.email }))
   .reset(reset)
 
+
+forward({
+  from: socialNetworkDataFx.doneData,
+  to: loggedIn,
+})
+
 forward({
   from: signUpWithSocialsPageGate.open,
   to: socialNetworkDataFx,
