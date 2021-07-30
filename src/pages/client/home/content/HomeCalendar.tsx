@@ -19,7 +19,6 @@ import starIcon from "@/old-components/coach-card/images/star.svg"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
 import { changeFreeBookedSession } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 
-
 type StyledTabTypes = {
   onlyOneCard: boolean
 }
@@ -269,7 +268,8 @@ type FreeSessionTypes = {
 
 export const HomeCalendar = (props: FreeSessionTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
-
+  const [startDate, changeActiveStartDate] = useState(new Date())
+  
   const sessions = useStore(props.freeSessionsModule.sessionsList)
   const loading = useStore(props.freeSessionsModule.loading)
   const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
@@ -287,9 +287,16 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   }, [enabledDates[0]])
 
   useEffect(() => {
-    loadData({params:{}})
-  }, [])
-
+    const jsDate = new Date(startDate);
+    const firstMonthDay = new Date(jsDate.getFullYear(), jsDate.getMonth(), 1);
+    const lastMonthDay = new Date(jsDate.getFullYear(), jsDate.getMonth() + 1, 0);
+    loadData({
+      params: {
+        start_date__gte: date(firstMonthDay).format("YYYY-MM-DD"),
+        start_date__lte: date(lastMonthDay).format("YYYY-MM-DD"),
+      }
+    })
+  }, [startDate])
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
@@ -333,6 +340,8 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
               value={currentDate}
               enabledDates={enabledDates}
               onChange={changeCurrentDate}
+              startDate={startDate}
+              changeActiveStartDate={changeActiveStartDate}
               isBig={true}
               startFrom={new Date(date(currentDate || undefined).toDate())}
             />

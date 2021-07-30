@@ -9,7 +9,7 @@ import {
 } from "@/old-components/calendar/CalendarHeader"
 import { date } from "@/lib/formatting/date"
 import * as React from "react"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState, useCallback} from "react"
 import styled, { css } from "styled-components"
 
 export type CalendarDateType = Date | Date[] | undefined | null
@@ -164,11 +164,10 @@ const isEqualDates = (first: Date, second: Date, format = equalFormat) =>
   date(first).format(format) === date(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
-  const [startDate, changeActiveStartDate] = useState(new Date())
 
-  useEffect(() => {
-    if (props.startFrom && date().format(equalFormat) === date(startDate).format(equalFormat)) {
-      changeActiveStartDate(props.startFrom)
+  useCallback(() => {
+    if (props.startFrom && date().format(equalFormat) === date(props.startDate).format(equalFormat)) {
+      props.changeActiveStartDate(props.startFrom)
     }
   }, [props.startFrom])
 
@@ -233,7 +232,7 @@ export const Calendar = (props: CalendarTypes) => {
       classes.push("day--weekend")
     }
 
-    if (!isEqualDates(dat, startDate, "MMYYYY")) {
+    if (!isEqualDates(dat, props.startDate, "MMYYYY")) {
       classes.push("not-current-month")
     }
 
@@ -245,33 +244,33 @@ export const Calendar = (props: CalendarTypes) => {
   }
 
   const prevMonth = () => {
-    const prevMonthDate = new Date(date(startDate).subtract(1, "month").valueOf())
-    changeActiveStartDate(prevMonthDate)
+    const prevMonthDate = new Date(date(props.startDate).subtract(1, "month").valueOf())
+    props.changeActiveStartDate(prevMonthDate)
     props.onPrevMonth?.(prevMonthDate)
   }
 
   const nextMonth = () => {
-    const nextMonthDate = new Date(date(startDate).add(1, "month").valueOf())
-    changeActiveStartDate(nextMonthDate)
+    const nextMonthDate = new Date(date(props.startDate).add(1, "month").valueOf())
+    props.changeActiveStartDate(nextMonthDate)
     props.onNextMonth?.(nextMonthDate)
   }
 
   const formatter = "YYYYMM"
-  const lessThanTheCurrentMonth = +date(startDate).format(formatter) <= +date(new Date()).format(formatter)
+  const lessThanTheCurrentMonth = +date(props.startDate).format(formatter) <= +date(new Date()).format(formatter)
   return (
     <CalendarWrapper className={props.className} isBig={props.isBig}>
       <CalendarHeader
         lessThanTheCurrentMonth={lessThanTheCurrentMonth}
         prevMonth={prevMonth}
         nextMonth={nextMonth}
-        currentDate={startDate}
+        currentDate={props.startDate}
       />
       <ReactCalendar
         tileClassName={customClassNames}
         locale='ru-RU'
         value={props.value}
         onChange={props.onChange}
-        activeStartDate={firsDayOfMonth(startDate.getMonth() + 1, startDate.getFullYear())}
+        activeStartDate={firsDayOfMonth(props.startDate.getMonth() + 1, props.startDate.getFullYear())}
         selectRange={props.selectRange || false}
         showNavigation={false}
         returnValue={"end"}
