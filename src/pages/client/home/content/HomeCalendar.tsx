@@ -268,7 +268,7 @@ type FreeSessionTypes = {
 
 export const HomeCalendar = (props: FreeSessionTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
-  const [startDate, changeActiveStartDate] = useState(new Date())
+  const [startDate, changeActiveStartDate] = useState<Date>(new Date())
   
   const sessions = useStore(props.freeSessionsModule.sessionsList)
   const loading = useStore(props.freeSessionsModule.loading)
@@ -278,7 +278,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   const toggleSession = useEvent(props.freeSessionsModule.toggleSession)
   const bulkFreeSession = useEvent(props.freeSessionsModule.bulkFreeSession)
   const changeModalInfo = useEvent(changeFreeBookedSession)
-
 
   const enabledDates = sessions.map(session => session.startDatetime)
 
@@ -340,7 +339,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
               value={currentDate}
               enabledDates={enabledDates}
               onChange={changeCurrentDate}
-              startDate={startDate}
               changeActiveStartDate={changeActiveStartDate}
               isBig={true}
               startFrom={new Date(date(currentDate || undefined).toDate())}
