@@ -7,7 +7,7 @@ import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
 import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
-import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
+import { combine, createEffect, createEvent, createStoreObject, forward, guard} from "effector-root"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 
 export const SettingsGate = createGate()
@@ -44,9 +44,10 @@ const errorToast: Toast = {
   text: "Произошла ошибка при изменении профиля",
 }
 
-forward({
-  from: changeGeneralSettingsFx.fail.map(_ => errorToast),
-  to: [toasts.remove, toasts.add],
+guard({
+  source: changeGeneralSettingsFx.fail.map(_ => errorToast),
+  filter: changeGeneralSettingsFx.fail.map(error => !error.error.response.data.email[0] && !error.error.response.data.phone[0]),
+  target: [toasts.remove, toasts.add],
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
@@ -61,6 +62,19 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
   validator: phoneValidator,
   eventMapper: event => event.map(trimString),
   reset: SettingsGate.open,
+})
+
+guard({
+  source: changeGeneralSettingsFx.fail.map(error => error.error.response.data.email[0]),
+  filter: emailError => emailError,
+  target: $emailError,
+})
+
+
+guard({
+  source: changeGeneralSettingsFx.fail.map(error => error.error.response.data.phone[0]),
+  filter: phoneError => phoneError,
+  target: $phoneError,
 })
 
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
