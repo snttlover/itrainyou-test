@@ -219,7 +219,7 @@ const StyledInput = styled.input`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
-  padding: 7px 15px;
+  padding: 7px 42px 7px 15px;
   border-radius: 18px;
   background: #fff;
   border: none;
@@ -238,8 +238,4 @@ const StyledInput = styled.input`
   &:disabled::placeholder {
     color: #ff6b00;
   }
-
-  ${MediaRange.lessThan("mobile")`
-    padding: 7px 15px;
-  `}
 `
