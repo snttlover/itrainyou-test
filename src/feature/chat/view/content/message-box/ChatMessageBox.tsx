@@ -213,23 +213,26 @@ const FileIcon = styled.img`
 
 const InputContainer = styled.div`
   width: 100%;
+  border-radius: 18px;
+  background: #fff;
+
 `
 
-const StyledInput = styled.input`
+const StyledInput = styled.textarea`
   font-size: 16px;
   line-height: 22px;
   color: #424242;
-  padding: 7px 15px;
-  border-radius: 18px;
-  background: #fff;
+  margin: 7px 42px 7px 15px;
   border: none;
   outline: none;
   flex: 1;
   white-space: normal;
   word-wrap: break-word;
   word-break: break-word;  
-  width: 100%;
-  height: auto;  
+  width: calc(100% - 57px);
+  height: 1.1em;
+  resize: none;
+  transition: .3s;
 
   &::placeholder {
     color: #9aa0a6;
@@ -239,7 +242,7 @@ const StyledInput = styled.input`
     color: #ff6b00;
   }
 
-  ${MediaRange.lessThan("mobile")`
-    padding: 7px 15px;
-  `}
+  &:focus {
+    height: 7em;
+  }
 `
