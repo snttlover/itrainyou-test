@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from "react"
-import styled, {ThemeProps} from "styled-components"
+import React, { useEffect, useRef } from "react"
+import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import { ImagesLimitDialog, DocumentsLimitDialog } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
+import {
+  DocumentsLimitDialog,
+  ImagesLimitDialog
+} from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
-import { createChatMessageBoxModule, ChatFile } from "@/feature/chat/view/content/message-box/create-message-box.module"
-import { useStore, useEvent } from "effector-react"
+import { ChatFile, createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { useEvent, useStore } from "effector-react"
 import { Icon } from "@/old-components/icon/Icon"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
@@ -32,7 +35,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const change = useEvent($module.methods.changeMessage)
   const send = useEvent($module.methods.sendTextMessage)
 
-  const input = useRef<HTMLInputElement>(null)
+  const input = useRef<HTMLTextAreaElement>(null)
 
   const images = useStore($module.data.$images)
   const documents = useStore($module.data.$documents)
@@ -215,7 +218,6 @@ const InputContainer = styled.div`
   width: 100%;
   border-radius: 18px;
   background: #fff;
-
 `
 
 const StyledInput = styled.textarea`

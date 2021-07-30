@@ -66,7 +66,9 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
 })
 
 export const setUserPhoneFx = createEffect({
-  handler: ({phone}: {phone: string}) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
+  handler: (phone: string) => updateMyUser({
+    phone: "+"+phone.replace(/\D+/g,"")
+  })
 })
 
 forward({

@@ -7,7 +7,7 @@ import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
 import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
-import { combine, createEffect, createEvent, createStoreObject, forward, guard, split } from "effector-root"
+import { combine, createEffect, createEvent, createStoreObject, forward, guard, merge, split } from "effector-root"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { AxiosError } from "axios"
 import {
@@ -57,9 +57,9 @@ const errorToast: Toast = {
 }
 
 guard({
-  source: changeGeneralSettingsFx.fail.map(_ => errorToast),
-  filter: changeGeneralSettingsFx.fail.map(error => !error.error.response.data.email[0] && !error.error.response.data.phone[0]),
-  target: [toasts.remove, toasts.add],
+  source: changeGeneralSettingsFx.failData,
+  filter: (error) => !error?.response?.data?.email?.[0] && !error?.response?.data?.phone?.[0],
+  target: merge([toasts.remove.prepend(() => errorToast), toasts.add.prepend(() => errorToast)]),
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({

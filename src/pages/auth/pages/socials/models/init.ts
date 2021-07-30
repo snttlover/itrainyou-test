@@ -1,15 +1,17 @@
 import { $isSocialSignupInProgress, loggedIn, setIsSocialSignupInProgress } from "@/feature/user/user.model"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
-import { createEvent } from "effector"
-import { combine, forward, guard, merge, sample, split, attach} from "effector-root"
+import { attach, combine, forward, guard, merge, sample, split } from "effector-root"
 import {
   RegisterAsUserFromSocialsResponseFound,
   RegisterAsUserFromSocialsResponseNotFound
 } from "@/lib/api/auth-socials"
 import {
   $socialNetwork,
+  $socialsForm,
   authWithSocialNetwork,
+  checkEmailFx,
+  checkPhoneFx,
   createUserFromSocialsFx,
   deleteSocialNetworkNameFx,
   registerWithFacebookFx,
@@ -18,21 +20,18 @@ import {
   reportUnknownTypeFx,
   reset,
   saveSocialNetworkNameFx,
+  setEmailError,
+  setPhoneError,
   signUpWithSocialsPageGate,
   socialNetworkDataFx,
   socialsGate,
   userFound,
   userNotFound,
-  checkEmailFx,
-  checkPhoneFx,
-  $socialsForm,
-  setEmailError,
-  setPhoneError,
 } from "@/pages/auth/pages/socials/models/units"
 import { SocialNetwork } from "@/pages/auth/pages/socials/models/types"
 import { UserData } from "@/pages/auth/pages/signup/models/types"
 import { userDataSetWithSocials } from "@/pages/auth/pages/signup/models/units"
-import { step3FormSubmitted, $emailError, $phoneError } from "@/pages/auth/pages/signup/content/step-3/step3.model"
+import { $emailError, $phoneError, step3FormSubmitted } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 import { combineEvents } from "patronum"
 
 $socialNetwork.on(socialNetworkDataFx.doneData, (state, payload) =>
@@ -41,7 +40,7 @@ $socialNetwork.on(socialNetworkDataFx.doneData, (state, payload) =>
 
 
 forward({
-  from: socialNetworkDataFx.doneData,
+  from: socialNetworkDataFx.doneData.map(response => ({token: response.accessToken})),
   to: loggedIn,
 })
 
@@ -189,9 +188,13 @@ forward({
 
 $phoneError.on(setPhoneError,(state,payload) => payload)
 
-guard({
-  source: { phoneError: $phoneError, emailError: $emailError },
+sample({
+  source: guard({
+    source: combine($phoneError, $emailError, (phoneError, emailError) => ({
+      phoneError, emailError
+    })),
+    filter: ({ phoneError, emailError }) => !phoneError && !emailError,
+  }),
   clock: combineEvents({ events: [checkPhoneFx.doneData, checkEmailFx.doneData] }),
-  filter: ({ phoneError, emailError }) => !phoneError && !emailError,
   target: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
 })
