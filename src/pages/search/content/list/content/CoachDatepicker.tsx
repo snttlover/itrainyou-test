@@ -340,6 +340,7 @@ export type CoachDatepickerTypes = SelectDatetimeTypes & {
 
 export const CoachDatepicker = (props: CoachDatepickerTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(props.preSelectedDate)
+  const [startDate, changeActiveStartDate] = useState<Date>(new Date())
 
   const _toggleCreditCardModal = useEvent(toggleCreditCardsModal)
 
@@ -458,6 +459,7 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
               value={currentDate}
               enabledDates={enabledDates}
               onChange={changeCurrentDate}
+              changeActiveStartDate={changeActiveStartDate}
               isBig={true}
               startFrom={new Date(date(currentDate || undefined).toDate())}
             />
