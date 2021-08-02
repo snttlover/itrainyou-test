@@ -30,6 +30,7 @@ import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 import { ToastsContainer } from "@/old-components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
+import { Informer } from "@/new-components/informer/Informer"
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -118,30 +119,37 @@ const AvatarWrapper = styled.div`
 
 const AvatarHint = styled.div`
   margin-left: 30px;
-  display: none;
   flex-direction: column;
   color: #424242;
   width: 360px;
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+  `}
+`
 
-  h4 {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 16px;
-    color: #424242;
-  }
+const AvatarHintTitle = styled.h4`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #424242;
+  display: none;
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+  `}
+`
 
-  p {
-    margin-top: 8px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 16px;
-    color: #9aa0a6;
-  }
-
+const AvatarHintText = styled.p`
+  margin-top: 8px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: #9aa0a6;
+  display: none;
+  margin-bottom: 8px;
   ${MediaRange.greaterThan("mobile")`
     display: flex;
   `}
@@ -196,8 +204,15 @@ export const Step3 = () => {
               required={userType === "coach"}
             />
             <AvatarHint>
-              <h4>Добавить фото</h4>
-              <p>Формат: jpg, png. Максимальный размер файла: 100Mb. Рекомендованный размер: 200х200 px.</p>
+              <AvatarHintTitle>Добавить фото</AvatarHintTitle>
+              <AvatarHintText>Формат: jpg, png. Максимальный размер файла: 100Mb. Рекомендованный размер: 200х200 px.</AvatarHintText>
+              <Informer
+                colorful 
+                backGround={"orange"}
+                color={"orange"}
+              >
+                Добавьте свое фото
+              </Informer>
             </AvatarHint>
           </AvatarWrapper>
           <FormItem label='Имя' error={errors.name} required>

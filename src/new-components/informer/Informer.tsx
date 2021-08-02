@@ -5,18 +5,18 @@ import { useState } from "react"
 import { MediaRange } from "@/lib/responsive/media"
 import { IconName } from "@/old-components/icon/Icon"
 
-const Container = styled.div<{backGround?: string}>`
+const Container = styled.div<{backGround: string}>`
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   padding: 18px;
-  background: ${({ backGround }) => backGround ? backGround : "#F8F8FD"};
+  background: ${({ backGround }) => backGround};
   border-radius: 8px;
 
   ${MediaRange.lessThan("mobile")`
-      padding: 8px;
-    `}
+    padding: 8px;
+  `}
 `
 
 type IconType = {
@@ -42,14 +42,14 @@ const Close = styled(Icon).attrs({ name: "close" })<{crossColor?: boolean}>`
   margin-left: auto; 
 `
 
-const Content = styled.div<{closable?: boolean}>`
+const Content = styled.div<{closable?: boolean, color: string}>`
     max-width: 85%;
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 24px;
-    color: #5B6670;
+    color: ${({ color }) => color};
     display: flex;
     align-items: center;
 
@@ -61,14 +61,32 @@ const Content = styled.div<{closable?: boolean}>`
     `}
 `
 
-export const Informer = styled(({ className, error, iconName, onCrossClick, crossColored, closable, colorful, backGround, children, ...props }) => {
+export const Informer = styled(({ iconName, onCrossClick, crossColored, closable, colorful, backGround, color, children }) => {
 
   const [showed, setShowed] = useState(true)
 
+  enum backGroundColors {
+    orange = "#FFF8F2",
+    blue = "linear-gradient(91.34deg, #0A58CC -38.45%, #9E58CC 128.49%), linear-gradient(90deg, #4858CC -50%, #783D9D 150%), #FFFFFF",
+    no = "#ffffff",
+    default = "#F8F8FD",
+  }
+
+  enum colors {
+    orange = "#FF6B00",
+    default = "#5B6670",
+  }
+
   const calculateBackGround = () => {
-    if (backGround === "blue") return "linear-gradient(91.34deg, #0A58CC -38.45%, #9E58CC 128.49%), linear-gradient(90deg, #4858CC -50%, #783D9D 150%), #FFFFFF;"
-    if (backGround === "no") return "#ffffff"
-    return "#F8F8FD"
+    if (backGround === "orange") return backGroundColors.orange
+    if (backGround === "blue") return backGroundColors.blue
+    if (backGround === "no") return backGroundColors.no
+    return backGroundColors.default
+  }
+
+  const calculateColor = () => {
+    if (color === "orange") return colors.orange
+    return colors.default
   }
 
   const handleOnCrossClick = () => {
@@ -80,7 +98,7 @@ export const Informer = styled(({ className, error, iconName, onCrossClick, cros
     <>
       { showed ? <Container backGround={calculateBackGround()}>
         <InfoIcon iconName={iconName} colorful={colorful} />
-        <Content closable={closable}>
+        <Content closable={closable} color={calculateColor()}>
           {children}
         </Content>
         {closable ? <Close crossColor={crossColored} onClick={handleOnCrossClick}/> : null}
