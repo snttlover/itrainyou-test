@@ -46,4 +46,27 @@ describe("request module", () => {
       headers: headers
     })
   })
+
+  test("should set base url and concatenate with passed url", async () => {
+    const baseUrl = "https://api.itrainyou.ru/"
+    const scope = fork(domain, {
+      handlers: new Map().set(module.__requestFx, requestHandlerMock)
+    })
+
+    await allSettled(module.setBaseUrl, {
+      scope,
+      params: baseUrl
+    })
+
+    await allSettled(module.requestFx, {
+      scope,
+      params: requestParams
+    })
+
+    expect(requestHandlerMock).toBeCalledWith({
+      ...requestParams,
+      headers: {},
+      url: `${baseUrl}${requestParams.url}`
+    })
+  })
 })

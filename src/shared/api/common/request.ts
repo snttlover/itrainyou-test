@@ -64,8 +64,11 @@ type CreateRequestModule = {
 export const createRequestModule = (options?: CreateRequestModule) => {
   const { createStore, createEvent } = options?.domain ? options?.domain : root.createDomain("request-module")
 
-  const setDefaultHeaders = createEvent<RequestHeaders>()
+  const setBaseUrl = createEvent<string>()
+  const $baseUrl = createStore<string>("")
+    .on(setBaseUrl, setPayload)
 
+  const setDefaultHeaders = createEvent<RequestHeaders>()
   const $defaultHeaders = createStore<RequestHeaders>({})
     .on(setDefaultHeaders, setPayload)
 
@@ -73,14 +76,18 @@ export const createRequestModule = (options?: CreateRequestModule) => {
 
   const requestFx = attach<
     RequestParams,
-    typeof $defaultHeaders,
+    { headers: typeof $defaultHeaders, baseUrl: typeof $baseUrl },
     Effect<RequestParams, Response, Response>
   >({
     effect: __requestFx,
-    source: $defaultHeaders,
-    mapParams: (params, headers) => {
+    source: {
+      headers: $defaultHeaders,
+      baseUrl: $baseUrl
+    },
+    mapParams: (params, { headers, baseUrl }) => {
       return {
         ...params,
+        url: `${baseUrl}${params.url}`,
         headers: {
           ...headers,
           ...params.headers
@@ -91,6 +98,7 @@ export const createRequestModule = (options?: CreateRequestModule) => {
 
   return {
     setDefaultHeaders,
+    setBaseUrl,
     __requestFx,
     requestFx
   }
