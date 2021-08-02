@@ -3,10 +3,10 @@ import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { updateMyUser } from "@/lib/api/users/update-my-user"
 import { keysToCamel } from "@/lib/network/casing"
-import { $token, changeToken, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { $token, changeToken, logout } from "@/lib/network/token"
 import dayjs from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, guard, restore } from "effector-root"
-import Cookies from "js-cookie"
+import { sessionToken } from "@/feature/user/session-token"
 
 export type UserData = {
   coach: CoachSelfData | null
@@ -34,10 +34,10 @@ export const $coachAccess = $userData.map(userData => ({
   isYandexRegistrationApproved: userData.coach?.isYandexRegistrationApproved,
   isApplicationApproved: userData.coach?.isApplicationApproved,
   isYandexRegistrationCompleted: userData.coach?.isYandexRegistrationCompleted,
-  paymentSystem: userData.coach?.paymentSystem
+  paymentSystem: userData.coach?.paymentSystem,
 }))
 
-export const $isSocialSignupInProgress = restore(setIsSocialSignupInProgress,false)
+export const $isSocialSignupInProgress = restore(setIsSocialSignupInProgress, false)
 export const $isLoggedIn = $token.map(token => !!token)
 
 export const $timeZone = $userData.map(data => data.client?.user.timeZone || data.coach?.user.timeZone || data.timeZone)
@@ -54,7 +54,7 @@ guard({
 })
 
 if (process.env.BUILD_TARGET === "client") {
-  $token.updates.watch(token => Cookies.set(TOKEN_COOKIE_KEY, token))
+  $token.updates.watch(sessionToken.set)
 
   const setUserTimezoneFx = createEffect({
     handler: async () => {
