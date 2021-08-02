@@ -42,4 +42,9 @@ module.exports = {
     config.resolve.modules.unshift(path.resolve(__dirname, "src"))
     return config
   },
+  modifyJestConfig({ jestConfig }) {
+    jestConfig.moduleNameMapper["^@/(.*)$"] = "<rootDir>/src/$1"
+
+    return jestConfig
+  }
 }

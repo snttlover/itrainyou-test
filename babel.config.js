@@ -15,5 +15,10 @@ module.exports = api => {
   return {
     presets: ["razzle/babel"],
     plugins,
+    env: {
+      test: {
+        plugins: [["effector/babel-plugin"]]
+      }
+    }
   }
 }
