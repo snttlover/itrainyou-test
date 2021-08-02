@@ -17,7 +17,7 @@ import {
   lastNameChanged,
   middleNameChanged,
   nameChanged,
-  setUserDataFx,
+  step3SetUserPhone,
   step3Mounted,
   toggleUploadModal
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
@@ -31,7 +31,6 @@ import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 import { ToastsContainer } from "@/old-components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
 import * as InformerComponent from "@/new-components/informer/Informer"
-
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -166,10 +165,6 @@ const AvatarHintInformer = styled.div`
   }
 `
 
-const StyledSpinner = styled(Spinner)`
-  background: rgba(236, 239, 241, 0.24);
-`
-
 export const Step3 = () => {
   const values = useStore($step3Form)
   const errors = useStore($step3FormErrors)
@@ -178,9 +173,7 @@ export const Step3 = () => {
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 
-  const isFetching = useStore(setUserDataFx.pending)
-  const setUserData = useEvent(setUserDataFx)
-
+  const _step3SetUserPhone = useEvent(step3SetUserPhone)
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
@@ -196,7 +189,7 @@ export const Step3 = () => {
 
   const nextOnClick = () => {
     ymLog("reachGoal","profilesignin")
-    setUserData(values.phone)
+    _step3SetUserPhone(values.phone)
   }
 
   useEffect(() => {
@@ -258,7 +251,6 @@ export const Step3 = () => {
         </Form>
       </Container>
       {isUploadModalShowed && <UploadModal onClose={() => _toggleUploadModal()} />}
-      {isFetching && <StyledSpinner />}
     </AuthLayout>
   )
 }

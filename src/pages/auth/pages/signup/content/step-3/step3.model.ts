@@ -3,16 +3,17 @@ import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
+import { combine, createEffect, createEvent, guard, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
 import { $registerUserData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
-import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
-
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
 import { updateMyUser } from "@/lib/api/users/update-my-user"
 
 export const step3FormSubmitted = createEvent()
+export const step3SetUserPhone = createEvent<string>()
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -23,46 +24,21 @@ export const $originalAvatar = createStore<UploadMediaResponse>({ id: -1, type: 
   originalAvatarUploaded,
   (state, payload) => payload
 )
-
 const $isImageError = combine(
   $image,
   $registerUserData.map(userData => userData.type),
   (img, type) => {
     if (type === "coach" && !img.file) return "Изображение обязательно к загрузке"
-
     return null
   }
 )
+
 const $isImageCorrect = $isImageError.map(error => !error)
 
 export const toggleUploadModal = createEvent()
 export const $isUploadModelOpen = createStore(false)
   .on(toggleUploadModal, store => !store)
   .on(imageUploaded, () => false)
-
-export const setUserDataFx = createEffect({
-  handler: (phone: string) => updateMyUser({ phone: "+"+phone.replace(/\D+/g,"") })
-})
-
-forward({
-  from: setUserDataFx.doneData,
-  to: step3FormSubmitted,
-})
-
-const errorToast: Toast = {
-  type: "error",
-  text: "",
-}
-
-forward({
-  from: setUserDataFx.fail.map((error: any)=> {
-    const uncnownError = "Произошла ошибка при добавлении профиля"
-    const errorToastAlert = ": полльзователь с таким телефоном уже существует"
-    errorToast.text = error.error.response.data.phone[0].includes("phone") ? uncnownError+errorToastAlert : uncnownError
-    return errorToast
-  }),
-  to: [toasts.remove, toasts.add],
-})
 
 export const [$name, nameChanged, $nameError, $isNameCorrect] = createEffectorField({
   defaultValue: "",
@@ -87,6 +63,31 @@ export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffect
   defaultValue: "",
   validator: value => !!value ? phoneValidator(value) : "Поле обязательно к заполнению",
   eventMapper: event => event.map(trimString),
+})
+
+export const setUserPhoneFx = createEffect({
+  handler: (phone: string) => updateMyUser({
+    phone: "+"+phone.replace(/\D+/g,"")
+  })
+})
+
+forward({
+  from: setUserPhoneFx.doneData,
+  to: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
+})
+
+$phoneError.on(setUserPhoneFx.fail, () => "Этот телефон занят другим пользователем")
+
+guard({
+  source: step3SetUserPhone,
+  filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
+  target: setUserPhoneFx,
+})
+
+guard({
+  source: step3SetUserPhone,
+  filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
+  target: step3FormSubmitted,
 })
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({

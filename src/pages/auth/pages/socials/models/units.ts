@@ -5,22 +5,27 @@ import {
   AuthWithVK,
   createUserFromSocials,
   checkEmail,
+  checkPhone,
   CreateUserWithSocialsResponse,
   RegisterAsUserFromSocialsResponse,
   RegisterAsUserFromSocialsResponseNotFound,
-  SocialsDataFound, CheckEmailResponse
+  SocialsDataFound,
+  CheckEmailResponse,
+  CheckPhoneResponse,
 } from "@/lib/api/auth-socials"
 import { AxiosError } from "axios"
 import { UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { createGate } from "@/scope"
 import { parseQueryString } from "@/lib/helpers/query"
 import { SOCIAL_NETWORK_SAVE_KEY, SocialNetwork, SocialNetworkNameType } from "@/pages/auth/pages/socials/models/types"
-import { $email } from "@/pages/auth/pages/signup/content/step-3/step3.model"
+import { $email, $phone } from "@/pages/auth/pages/signup/content/step-3/step3.model"
 
 export const signUpWithSocialsPageGate = createGate()
 export const socialsGate = createGate()
 
-export const setEmailError = createEvent<string | null>()
+export const setEmailError = createEvent<string>()
+export const setPhoneError = createEvent<string>()
+
 export const authWithSocialNetwork = createEvent<string>()
 export const userFound = createEvent<{
   token: string
@@ -55,8 +60,8 @@ export const $socialNetwork = createStoreObject<SocialNetwork>({
   email: "",
 })
 
-export const $socialsForm = combine($socialNetwork, $email, (token, email) => ({
-  accessToken: token.accessToken, email: email, socialNetwork: token.name,
+export const $socialsForm = combine($socialNetwork, $email, $phone, (token, email, phone) => ({
+  accessToken: token.accessToken, email: email, phone: "+"+phone.replace(/\D+/g,""), socialNetwork: token.name,
 })).reset(reset)
 
 export const reportUnknownTypeFx = createEffect<any, any, AxiosError>({
@@ -76,11 +81,15 @@ export const registerWithGoogleFx = createEffect<string, RegisterAsUserFromSocia
 })
 
 export const createUserFromSocialsFx = createEffect<UnpackedStoreObjectType<typeof $socialsForm>, CreateUserWithSocialsResponse, AxiosError>({
-  handler: ({ accessToken, email, socialNetwork }) => createUserFromSocials({ accessToken, email, socialNetwork }),
+  handler: ({ accessToken, email, phone, socialNetwork }) => createUserFromSocials({ accessToken, email, phone, socialNetwork }),
 })
 
 export const checkEmailFx = createEffect<UnpackedStoreObjectType<typeof $socialsForm>, CheckEmailResponse, AxiosError>({
   handler: ({email}) => checkEmail({ email }),
+})
+
+export const checkPhoneFx = createEffect<UnpackedStoreObjectType<typeof $socialsForm>, CheckPhoneResponse, AxiosError>({
+  handler: ({phone}) => checkPhone({ phone }),
 })
 
 export const saveSocialNetworkNameFx = createEffect({
