@@ -58,11 +58,17 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     }
   }
 
+  const onChange = e => {
+    input.current?.style.height = "auto";
+    input.current?.style.height = input.current?.scrollHeight+"px";
+    console.log(input.current?.scrollHeight)
+    return change(e.target.value)
+  }
+
   const handleOnClick = () => {
     send(value)
     change("")
   }
-
   useEffect(() => {
     if (input.current && window.innerWidth > 768) {
       input.current.focus()
@@ -72,16 +78,14 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   return (
     <Container>
       <MessageContainer>
-
         <MessageBoxUpload module={$module} />
-
         {documents.length === 0 ? <InputContainer>
           <StyledInput
             ref={input}
             value={value}
             disabled={!!props.blockedText}
             placeholder={props.blockedText || "Напишите сообщение..."}
-            onChange={e => change(e.target.value)}
+            onChange={onChange}
             onKeyDown={keydownHandler}
           />
           <Send onClick={handleOnClick} />
@@ -222,7 +226,7 @@ const InputContainer = styled.div`
 
 const StyledInput = styled.textarea`
   font-size: 16px;
-  line-height: 22px;
+  /* line-height: 22px; */
   color: #424242;
   margin: 7px 42px 7px 15px;
   border: none;
@@ -232,7 +236,7 @@ const StyledInput = styled.textarea`
   word-wrap: break-word;
   word-break: break-word;  
   width: calc(100% - 57px);
-  height: 1.1em;
+  max-height: 7em;
   resize: none;
   transition: .3s;
 
@@ -242,9 +246,5 @@ const StyledInput = styled.textarea`
 
   &:disabled::placeholder {
     color: #ff6b00;
-  }
-
-  &:focus {
-    height: 7em;
   }
 `
