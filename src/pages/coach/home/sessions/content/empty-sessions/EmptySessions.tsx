@@ -1,20 +1,9 @@
 import styled from "styled-components"
-import { CoachSessionsBlockTitle as Title } from "@/pages/coach/home/sessions/common/CoachSessionsBlockTitle"
 import emptyImage from "./images/empty.svg"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
 
-const Container = styled.div`
-  ${MediaRange.lessThan("mobile")`
-    // margin-left: -10px;
-  `}
-`
-
-const StyledTitle = styled(Title)`
-  ${MediaRange.lessThan("mobile")`
-     width: 200px;
-  `}
-`
+const Container = styled.div``
 
 const Image = styled.img.attrs({ src: emptyImage })`
   width: 100px;
@@ -49,7 +38,6 @@ const Text = styled.div`
 
 export const EmptySessions = () => (
   <Container>
-    <StyledTitle>На ваши занятия записались</StyledTitle>
     <Content>
       <Image />
       <Text>На ваши занятия пока никто не записался</Text>

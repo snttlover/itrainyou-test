@@ -279,9 +279,18 @@ export const FreeSessionsHomePage = () => {
             <ContentContainer>
               {activeSessions.length > 0 && (
                 <Block>
-                  <Title>Сессия уже началась!</Title>
+                  <Title>Сессия началась</Title>
                   {activeSessions.map(session => (
-                    <ActiveSessionCard session={session} key={session.id} />
+                    <ActiveSessionCard
+                      id={session.id}
+                      aboutLink={`/client/sessions/${session.id}`}
+                      avatar={session.coach.avatar}
+                      name={`${session.coach.firstName} ${session.coach.lastName}`}
+                      startDatetime={session.startDatetime}
+                      endDatetime={session.endDatetime}
+                      key={session.id}
+                      inProgress
+                    />
                   ))}
                   {activeSessionsPending && <Loader />}
                 </Block>
@@ -296,7 +305,15 @@ export const FreeSessionsHomePage = () => {
                       <>
                         <Title>{day}</Title>
                         {upcomingSessions.splitted(day).map(session => (
-                          <TodaySessionCard session={session} key={session.id} />
+                          <TodaySessionCard
+                            id={session.id}
+                            aboutLink={`/client/sessions/${session.id}`}
+                            avatar={session.coach.avatar}
+                            name={`${session.coach.firstName} ${session.coach.lastName}`}
+                            startDatetime={session.startDatetime}
+                            endDatetime={session.endDatetime}
+                            key={session.id}
+                          />
                         ))}
                       </>
                     )
@@ -319,7 +336,8 @@ export const FreeSessionsHomePage = () => {
                     <InformerTextContainer>
                       <InformerHeader>Мы подобрали для вас подходящих коучей!</InformerHeader>
                       <InformerDescription>
-                        Забронируйте приветственную сессию бесплатно, чтобы сформировать запрос и познакомиться со
+                        {/* TODO надо посмотреть точный текст (про 30 минут) в дизе */}
+                        Забронируйте приветственную сессию на 30 минут бесплатно, чтобы сформировать запрос и познакомиться со
                         специалистом. Выберите удобную дату и время или конкретного коуча.
                       </InformerDescription>
                     </InformerTextContainer>

@@ -124,6 +124,9 @@ const ReserveButton = styled(Button).attrs({ size: "large" })`
   @media screen and (max-width: 600px) {
     width: 100%;
   }
+  @media screen and (max-width: 768px) {
+    visibility: visible;
+  }
 `
 
 const Block = styled.div<BlockTypes>`

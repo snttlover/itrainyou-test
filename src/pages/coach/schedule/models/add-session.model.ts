@@ -38,11 +38,11 @@ export const setAddSessionDate = createEvent<Dayjs>()
 export const $sessionDate = restore(setAddSessionDate, date())
 
 export const $durationList = createStore<{ label: string; value: DurationType }[]>([
+  { label: "промо", value: "PROMO" },
   { label: "30 минут", value: "D30" },
   { label: "45 минут", value: "D45" },
   { label: "60 минут", value: "D60" },
   { label: "90 минут", value: "D90" },
-  { label: "промо", value: "PROMO" },
 ])
 
 export const $durationOptions = $durationList.map((durations) => {

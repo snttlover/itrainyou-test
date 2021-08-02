@@ -1,14 +1,17 @@
 import { $isSocialSignupInProgress, loggedIn, setIsSocialSignupInProgress } from "@/feature/user/user.model"
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
-import { combine, forward, guard, merge, sample, split, attach } from "effector-root"
+import { attach, combine, forward, guard, merge, sample, split } from "effector-root"
 import {
   RegisterAsUserFromSocialsResponseFound,
   RegisterAsUserFromSocialsResponseNotFound
 } from "@/lib/api/auth-socials"
 import {
   $socialNetwork,
+  $socialsForm,
   authWithSocialNetwork,
+  checkEmailFx,
+  checkPhoneFx,
   createUserFromSocialsFx,
   deleteSocialNetworkNameFx,
   registerWithFacebookFx,
@@ -17,23 +20,29 @@ import {
   reportUnknownTypeFx,
   reset,
   saveSocialNetworkNameFx,
+  setEmailError,
+  setPhoneError,
   signUpWithSocialsPageGate,
   socialNetworkDataFx,
   socialsGate,
   userFound,
   userNotFound,
-  checkEmailFx,
-  $socialsForm,
-  setEmailError
 } from "@/pages/auth/pages/socials/models/units"
 import { SocialNetwork } from "@/pages/auth/pages/socials/models/types"
 import { UserData } from "@/pages/auth/pages/signup/models/types"
 import { userDataSetWithSocials } from "@/pages/auth/pages/signup/models/units"
-import { step3FormSubmitted, $emailError } from "@/pages/auth/pages/signup/content/step-3/step3.model"
+import { $emailError, $phoneError, step3FormSubmitted } from "@/pages/auth/pages/signup/content/step-3/step3.model"
+import { combineEvents } from "patronum"
 
 $socialNetwork.on(socialNetworkDataFx.doneData, (state, payload) =>
   ({ name: payload.name, accessToken: payload.accessToken, email: payload.email }))
   .reset(reset)
+
+
+forward({
+  from: socialNetworkDataFx.doneData.map(response => ({token: response.accessToken})),
+  to: loggedIn,
+})
 
 forward({
   from: signUpWithSocialsPageGate.open,
@@ -145,12 +154,6 @@ forward({
 
 guard({
   source: step3FormSubmitted,
-  filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
-  target: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
-})
-
-guard({
-  source: step3FormSubmitted,
   filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
   target: attach({
     effect: checkEmailFx,
@@ -162,14 +165,36 @@ forward({
   from: checkEmailFx.doneData.filter({
     fn: (response) => response.isReserved,
   }),
-  to: setEmailError.prepend(() => { return "Этот email занят другим пользователем" }),
-})
-
-forward({
-  from: checkEmailFx.doneData.filter({
-    fn: (response) => !response.isReserved,
-  }),
-  to: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
+  to: setEmailError.prepend(() => { return "Эта почта занята другим пользователем" }),
 })
 
 $emailError.on(setEmailError,(state,payload) => payload)
+
+guard({
+  source: step3FormSubmitted,
+  filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
+  target: attach({
+    effect: checkPhoneFx,
+    source: $socialsForm,
+  })
+})
+
+forward({
+  from: checkPhoneFx.doneData.filter({
+    fn: (response) => response.isReserved,
+  }),
+  to: setPhoneError.prepend(() => { return "Этот телефон занят другим пользователем" }),
+})
+
+$phoneError.on(setPhoneError,(state,payload) => payload)
+
+sample({
+  source: guard({
+    source: combine($phoneError, $emailError, (phoneError, emailError) => ({
+      phoneError, emailError
+    })),
+    filter: ({ phoneError, emailError }) => !phoneError && !emailError,
+  }),
+  clock: combineEvents({ events: [checkPhoneFx.doneData, checkEmailFx.doneData] }),
+  target: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
+})

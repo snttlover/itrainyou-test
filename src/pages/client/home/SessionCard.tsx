@@ -1,4 +1,3 @@
-import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { date } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
@@ -9,25 +8,43 @@ import { Dayjs } from "dayjs"
 import { Icon } from "@/old-components/icon/Icon"
 import { Button } from "@/new-components/button/Button"
 import { connectToSession } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { ISODate } from "@/lib/api/interfaces/utils.interface"
 
-type SessionCardProps = { session: DashboardSession; children?: React.ReactNode; className?: string }
+type SessionCardProps = {
+  className?: string
+  avatar: null | string
+  name: string
+  startDatetime: ISODate
+  endDatetime: ISODate
+  id: number
+  aboutLink: string
+  inProgress?: boolean // в некоторых списках сессия появляется до ее начала, параметр применяет стили начатой сессии принудительно
+}
 
 const getTimeText = (date: Dayjs) => date.format("HH:mm")
-
-export const SessionCard = ({ session, className }: SessionCardProps) => {
+export const SessionCard = ({
+  id,
+  aboutLink,
+  className,
+  avatar,
+  name,
+  startDatetime,
+  endDatetime,
+  inProgress,
+}: SessionCardProps) => {
   const history = useHistory()
   const now = date()
-  const startDate = date(session.startDatetime)
-  const endDate = date(session.endDatetime)
-  const isStarted = now.isBetween(startDate, endDate, "minute")
+  const startDate = date(startDatetime)
+  const endDate = date(endDatetime)
+  const isStarted = inProgress || now.isBetween(startDate, endDate, "minute")
 
   const minutesDiffText = `${endDate.diff(startDate, "minute")} мин`
 
   const clickHandler = () => {
     if (isStarted) {
-      connectToSession(session.id)
+      connectToSession(id)
     } else {
-      history.push(`/client/sessions/${session.id}`)
+      history.push(aboutLink)
     }
   }
 
@@ -44,12 +61,10 @@ export const SessionCard = ({ session, className }: SessionCardProps) => {
             до {getTimeText(endDate)}, {minutesDiffText}
           </DesktopExtendedTime>
           <MobileExtendedTime>{minutesDiffText}</MobileExtendedTime>
-          <Name>
-            {session.coach.firstName} {session.coach.lastName}
-          </Name>
+          <Name>{name}</Name>
         </Info>
         <Actions>
-          <CoachAvatar src={session.coach.avatar} />
+          <CoachAvatar src={avatar} />
           {isStarted && <ConnectButton>Присоединиться</ConnectButton>}
           {!isStarted && <AboutButton>Подробнее</AboutButton>}
         </Actions>

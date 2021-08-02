@@ -26,10 +26,10 @@ export const Application: React.FC = () => {
           <YMInitializer
             accounts={[config.YANDEX_METRIKA_ID]}
             options={{
-              clickmap:true,
-              trackLinks:true,
-              accurateTrackBounce:true,
-              webvisor:true
+              clickmap: true,
+              trackLinks: true,
+              accurateTrackBounce: true,
+              webvisor: true
             }}
             version="2"
           /> : null
