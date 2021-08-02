@@ -166,11 +166,13 @@ const isEqualDates = (first: Date, second: Date, format = equalFormat) =>
 
 export const Calendar = (props: CalendarTypes) => {
   const [startDate, changeActiveStartDate] = useState(new Date())
-  useMemo(()=> props.changeActiveStartDate ? props.changeActiveStartDate(startDate) : null, [startDate])
+  useMemo(()=> {console.log('1'); return props.changeActiveStartDate ? props.changeActiveStartDate(startDate) : null}, [startDate])
 
   useCallback(() => {
+    console.log('2')
     if (props.startFrom && date().format(equalFormat) === date(startDate).format(equalFormat)) {
-      changeActiveStartDate(props.startFrom)
+    console.log('3')
+    changeActiveStartDate(props.startFrom)
     }
   }, [props.startFrom])
   
