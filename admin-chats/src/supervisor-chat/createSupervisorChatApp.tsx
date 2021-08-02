@@ -4,15 +4,14 @@ import { createSupervisorChatModel } from "./create-supervisor-chat.model"
 import { getSupervisorChat } from "@/lib/api/chats/super-admin/get-super-chat"
 import { getSupervisorChatMessages } from "@/lib/api/chats/super-admin/get-super-messages"
 import { createSupervisorChat } from "./SupervisorChat"
-import Cookies from "js-cookie"
 
 import { restoreState, runInScope } from "@/scope"
 import ReactDOM from "react-dom"
-import { TOKEN_COOKIE_KEY } from "@/lib/network/token"
 import { clientStarted } from "@/lib/effector"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { config } from "@/config"
 import { createGlobalStyle } from "styled-components"
+import { sessionToken } from "@/feature/user/session-token"
 
 export const createSupervisorChatApp = (chatId: number, token: string, backend: string) => {
   Object.assign(config, {
@@ -20,7 +19,7 @@ export const createSupervisorChatApp = (chatId: number, token: string, backend: 
     WS_HOST: `wss://${backend}`,
   })
 
-  Cookies.set(TOKEN_COOKIE_KEY, token)
+  sessionToken.set(token)
   const socket = createChatsSocket("admin", { chat: chatId })
 
   const model = createSupervisorChatModel({

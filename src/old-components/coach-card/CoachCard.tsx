@@ -63,6 +63,7 @@ const Name = styled.span`
   line-height: 20px;
   display: flex;
   width: 100%;
+  font-weight: 500;
 
   @media screen and (max-width: 600px) {
     font-size: 16px;
@@ -150,22 +151,22 @@ const Block = styled.div<BlockTypes>`
   }
   ${Avatar} {
     ${props =>
-    props.isTopCoach
-      ? css`
-          width: 54px;
-          height: 54px;
+      props.isTopCoach
+        ? css`
+            width: 54px;
+            height: 54px;
 
-          @media screen and (max-width: 600px) {
-            width: 38px;
-            height: 38px;
-          }
+            @media screen and (max-width: 600px) {
+              width: 38px;
+              height: 38px;
+            }
           `
-      : css`
-          @media screen and (max-width: 600px) {
-            width: 40px;
-            height: 40px;
-          }
-        `}
+        : css`
+            @media screen and (max-width: 600px) {
+              width: 40px;
+              height: 40px;
+            }
+          `}
   }
 
   ${MainInfoContainer} {
@@ -196,6 +197,7 @@ const Meta = styled.div`
   align-items: center;
   flex: 1;
   justify-content: flex-end;
+  font-weight: normal;
 
   @media screen and (max-width: 600px) {
     justify-content: flex-start;
@@ -223,7 +225,7 @@ const Rating = styled.span`
 const Star = styled(Icon).attrs({ name: "yellow-star" })`
   width: 10px;
   height: 10px;
-  margin: 0 3px;
+  margin-right: 5px;
 
   @media screen and (max-width: 600px) {
     width: 13px;
@@ -233,7 +235,6 @@ const Star = styled(Icon).attrs({ name: "yellow-star" })`
   ${MediaRange.greaterThan("tablet")`  
     width: 14px;
     height: 14px;
-    margin: 0 5px;
   `}
 `
 
@@ -364,7 +365,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
 
               <Meta>
                 <Star />
-                <Rating>{rating}</Rating>
+                {rating && <Rating>{rating}</Rating>}
                 <ReviewsCount>{coach.reviewsCount ? `(${coach.reviewsCount})` : "пока нет оценок"}</ReviewsCount>
               </Meta>
             </Name>
