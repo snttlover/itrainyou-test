@@ -2,7 +2,7 @@ import { changeDashboardType, DashboardType } from "@/feature/dashboard/dashboar
 import { loadUserData } from "@/feature/user/user.model"
 import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { clientStarted } from "@/lib/effector"
-import { changeToken, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { changeToken } from "@/lib/network/token"
 import { restoreState, runInScope } from "@/scope"
 import Cookies from "js-cookie"
 import * as React from "react"
@@ -15,15 +15,14 @@ import { config } from "@/config"
 import { Integrations } from "@sentry/tracing"
 import { fixChrome88timeZone } from "@/polyfills/chrome88-dayjs-timezone-fix"
 import { enableDebugger } from "@/lib/effector/debug"
+import { sessionToken } from "@/feature/user/session-token"
 
 fixChrome88timeZone()
 
 if (config.ENVIRONMENT !== "local") {
   Sentry.init({
     dsn: `${config.SENTRY_CLIENT_DSN}`,
-    integrations: [
-      new Integrations.BrowserTracing(),
-    ],
+    integrations: [new Integrations.BrowserTracing()],
     ignoreErrors: [
       "Received `true` for a non-boolean attribute `active`",
       "ResizeObserver loop limit exceeded",
@@ -40,8 +39,8 @@ if (config.ENVIRONMENT === "local" && config.DEBUG === "1") {
   enableDebugger()
 }
 
-const token = Cookies.get(TOKEN_COOKIE_KEY)
-runInScope(changeToken, Cookies.get(TOKEN_COOKIE_KEY))
+const token = sessionToken.get()
+runInScope(changeToken, token)
 runInScope(changeDashboardType, Cookies.get("dashboard") as DashboardType)
 
 if (token) {
