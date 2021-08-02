@@ -289,7 +289,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
     const dayJsDate = date(startDate);
     const firstMonthDay = new Date(dayJsDate.year(), dayJsDate.month(), 1);
     const lastMonthDay = new Date(dayJsDate.year(), dayJsDate.month() + 1, 0);
-    console.log('4')
     loadData({
       params: {
         start_date__gte: date(firstMonthDay).format("YYYY-MM-DD"),
