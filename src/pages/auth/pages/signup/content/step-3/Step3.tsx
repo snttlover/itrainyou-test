@@ -30,7 +30,7 @@ import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 import { ToastsContainer } from "@/old-components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
-import * as InformerComponent from "@/new-components/informer/Informer"
+import { Informer } from "@/new-components/informer/Informer"
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -149,20 +149,10 @@ const AvatarHintText = styled.p`
   line-height: 16px;
   color: #9aa0a6;
   display: none;
+  margin-bottom: 8px;
   ${MediaRange.greaterThan("mobile")`
     display: flex;
   `}
-`
-
-const AvatarHintInformer = styled.div`
-  margin-top: 8px;
-  ${InformerComponent.Container} {
-    background: #FFF8F2;
-  }
-
-  ${InformerComponent.Content} {
-    color: #FF6B00;
-  }
 `
 
 export const Step3 = () => {
@@ -216,11 +206,13 @@ export const Step3 = () => {
             <AvatarHint>
               <AvatarHintTitle>Добавить фото</AvatarHintTitle>
               <AvatarHintText>Формат: jpg, png. Максимальный размер файла: 100Mb. Рекомендованный размер: 200х200 px.</AvatarHintText>
-              <AvatarHintInformer>
-                <InformerComponent.Informer colorful>
-                  Добавьте свое фото
-                </InformerComponent.Informer>
-              </AvatarHintInformer>
+              <Informer
+                colorful 
+                backGround={"orange"}
+                color={"orange"}
+              >
+                Добавьте свое фото
+              </Informer>
             </AvatarHint>
           </AvatarWrapper>
           <FormItem label='Имя' error={errors.name} required>
