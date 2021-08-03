@@ -25,15 +25,14 @@ export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = ({ id }: Jiv
   React.useEffect(() => {
     let unmount: (() => void) | undefined
     const onLoad = () => unmount = mount(id)
+    const jdiv:HTMLDivElement | null = document.querySelector("body > jdiv")
     if(!isLoggedIn) {
-      const jdiv = document.querySelector("body > jdiv")
       if (!!jdiv) jdiv.style.display = "block"
       if (document.readyState === "complete") mount(id)
       window.addEventListener("load", onLoad)
     } else {
       document.removeEventListener("load", onLoad)
       if (unmount) unmount()
-      const jdiv = document.querySelector("body > jdiv")
       if (!!jdiv) jdiv.style.display = "none"
     }
   }, [isLoggedIn])
