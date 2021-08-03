@@ -16,7 +16,7 @@ export type RequestParams = {
   headers?: RequestHeaders;
 };
 
-export type Response<T = void> = {
+export type Response<T = any> = {
   body: T;
   headers: Headers;
   status: number;
