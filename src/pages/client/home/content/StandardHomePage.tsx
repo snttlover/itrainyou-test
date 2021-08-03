@@ -314,7 +314,7 @@ export const StandardHomePage = () => {
           <Block>
             {upcomingSessions.keys.map(day => {
               return (
-                <>
+                <div key={day}>
                   <Title>{day}</Title>
                   {upcomingSessions.splitted(day).map(session => (
                     <TodaySessionCard
@@ -327,7 +327,7 @@ export const StandardHomePage = () => {
                       key={session.id}
                     />
                   ))}
-                </>
+                </div>
               )
             })}
           </Block>

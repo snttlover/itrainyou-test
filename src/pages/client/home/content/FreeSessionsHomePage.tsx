@@ -302,7 +302,7 @@ export const FreeSessionsHomePage = () => {
                 <Block>
                   {upcomingSessions.keys.map(day => {
                     return (
-                      <>
+                      <div key={day}>
                         <Title>{day}</Title>
                         {upcomingSessions.splitted(day).map(session => (
                           <TodaySessionCard
@@ -315,11 +315,10 @@ export const FreeSessionsHomePage = () => {
                             key={session.id}
                           />
                         ))}
-                      </>
+                      </div>
                     )
                   })}
                 </Block>
-
               </ContentContainer>
             ) : null}
 
@@ -337,8 +336,8 @@ export const FreeSessionsHomePage = () => {
                       <InformerHeader>Мы подобрали для вас подходящих коучей!</InformerHeader>
                       <InformerDescription>
                         {/* TODO надо посмотреть точный текст (про 30 минут) в дизе */}
-                        Забронируйте приветственную сессию на 30 минут бесплатно, чтобы сформировать запрос и познакомиться со
-                        специалистом. Выберите удобную дату и время или конкретного коуча.
+                        Забронируйте приветственную сессию на 30 минут бесплатно, чтобы сформировать запрос и
+                        познакомиться со специалистом. Выберите удобную дату и время или конкретного коуча.
                       </InformerDescription>
                     </InformerTextContainer>
                   </Informer>
