@@ -59,9 +59,9 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   }
 
   const onChange = e => {
-    input.current?.style.height = "auto";
-    input.current?.style.height = input.current?.scrollHeight+"px";
-    console.log(input.current?.scrollHeight)
+    input.current?.style.height = "auto"
+    input.current?.style.height = `${input.current?.scrollHeight-22}px`
+    input.current?.style.height = `${input.current?.scrollHeight}px`
     return change(e.target.value)
   }
 
@@ -226,7 +226,7 @@ const InputContainer = styled.div`
 
 const StyledInput = styled.textarea`
   font-size: 16px;
-  /* line-height: 22px; */
+  line-height: 22px;
   color: #424242;
   margin: 7px 42px 7px 15px;
   border: none;
@@ -237,9 +237,8 @@ const StyledInput = styled.textarea`
   word-break: break-word;  
   width: calc(100% - 57px);
   max-height: 7em;
+  block-size: 22px;
   resize: none;
-  transition: .3s;
-
   &::placeholder {
     color: #9aa0a6;
   }
