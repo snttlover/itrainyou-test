@@ -459,6 +459,7 @@ const Row = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  margin-top: 24px;
 `
 
 const CheckBoxesContainer = styled.div<{showOnMobile: boolean}>`
@@ -712,13 +713,13 @@ const Session = (props: {session: SessionType; bottomToolTip: boolean; rightTool
               :
               (props.session.sessionDurationType === "PROMO" ?
                 <>
-                  <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
+                  <ToolTipText>Этот слот не занят в вашем расписании</ToolTipText>
                   <Row><PercentsIcon /><FreeSessionText>Эта сессия бесплатная для новых клиентов. <a onClick={handleOnShowInfo}>Подробнее</a></FreeSessionText></Row>
                   <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
                 </>
                 :
                 <>
-                  <ToolTipText>Этот слот еще не занят никем в вашем расписании</ToolTipText>
+                  <ToolTipText>Этот слот не занят в вашем расписании</ToolTipText>
                   <ToolTipButton onClick={handleOnClick}>Удалить слот</ToolTipButton>
                 </>
               )

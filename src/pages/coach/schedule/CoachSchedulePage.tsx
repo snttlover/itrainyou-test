@@ -60,6 +60,7 @@ const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+  padding-top: 24px;
 
   ${MediaRange.lessThan("mobile")`
       margin-bottom: 34px;

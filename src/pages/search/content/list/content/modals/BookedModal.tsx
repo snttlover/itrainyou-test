@@ -48,8 +48,10 @@ const Success = () => {
   return (
     <Container>
       <Header>
-        Коучу был{`${pluralize("и")}`} отправлен{`${pluralize("ы")}`} запрос{`${pluralize("ы")}`} на бронирование сесси
-        {`${pluralize("й", "и")}`}
+        {pluralize(
+          "Коучу были отправлены запросы на бронирование сессий",
+          "Коучу был отправлен запрос на бронирование сессии"
+        )}
       </Header>
       <Description>
         При подтверждении или отклонении запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
@@ -82,7 +84,7 @@ const Failure = () => {
   )
 }
 
-export const BookedModal = () => {
+export const BookedModal = (): JSX.Element => {
   const bookedSessions = useStore($bookedSessions)
   return bookedSessions.length > 0 ? <Success /> : <Failure />
 }
@@ -196,6 +198,7 @@ const StyledAvatar = styled(Avatar)`
   height: 40px;
   min-width: 40px;
   margin-left: 16px;
+  cursor: pointer;
 `
 
 const Name = styled.div`

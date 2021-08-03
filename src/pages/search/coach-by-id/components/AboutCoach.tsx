@@ -8,7 +8,7 @@ import ReactIdSwiper, { SwiperRefNode } from "react-id-swiper"
 import styled from "styled-components"
 import { SwiperOptions } from "swiper"
 import { $coach } from "@/pages/search/coach-by-id/models/units"
-import { BlockWithLinks } from "@/components/block-with-links/BlockWithLinks"
+import { BlockWithLinks } from "@/new-components/block-with-links/BlockWithLinks"
 
 const StyledBlock = styled(Block)`
   white-space: pre-wrap;

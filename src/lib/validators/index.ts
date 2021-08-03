@@ -18,8 +18,10 @@ export const passwordValidator = (value: string) => {
 export const trimString = (value: string | null) => value === null ? "" : value.trim()
 
 export const phoneValidator = (value: string) => {
-  const clearValue = value.replace(/[^0-9]/g, "")
-  if (clearValue.length !== 11) return "Неверный формат номера телефона"
+  // ToDo вникнуть в чем вообще проблема (value может прийти null / undefined), пока просто проверку повесил, но проблему надо решать от корня
+  // const clearValue = value.replace(/[^0-9]/g, "")
+  const clearValue = value ? value.replace(/[^0-9]/g, "") : ""
+  if (clearValue?.length !== 11) return "Неверный формат номера телефона"
 
   return null
 }

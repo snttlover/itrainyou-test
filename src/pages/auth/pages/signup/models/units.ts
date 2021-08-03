@@ -51,7 +51,6 @@ export const $registerUserData = createStore<UserData>({
   coachData: {
     description: "",
     education: "",
-    phone: "",
     videoInterview: "",
     workExperience: "",
     photos: [],
@@ -85,6 +84,7 @@ export const registerUserFx = createEffect({
     }
   }
 })
+
 export const skipCoach = createEvent()
 
 export const getMyUserDataFx = attach({

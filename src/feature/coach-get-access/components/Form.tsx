@@ -11,7 +11,6 @@ import {
   educationChanged,
   descriptionChanged,
   workExperienceChanged,
-  phoneChanged,
   $photos,
   photoRemoved,
   changeLegalDataCheckBox,
@@ -146,7 +145,6 @@ export const Form = () => {
   const _educationChanged = useEvent(educationChanged)
   const _workExperienceChanged = useEvent(workExperienceChanged)
   const _descriptionChanged = useEvent(descriptionChanged)
-  const _phoneChanged = useEvent(phoneChanged)
   const _changeLegalDataCheckBox = useEvent(changeLegalDataCheckBox)
   const _innChanged = useEvent(innChanged)
   const _supervisionsChanged = useEvent(supervisionsChanged)
@@ -189,7 +187,7 @@ export const Form = () => {
           <Description>Эти данные нужны нам для проверки, они не будут видны клиентам</Description>
           <FormItem label='ИНН' error={errors.inn}>
             {/* @ts-ignore */}
-            <Input value={values.inn!} onChange={_innChanged} type='number' />  // @ts-ignore
+            <Input value={values.inn!} onChange={_innChanged} type='number' />
           </FormItem>
           <FormItem label='Кем вы являетесь'>
             {legalForm.map(item => (
@@ -208,15 +206,7 @@ export const Form = () => {
       <FormSection>
         <InformationTitle>Дополнительная информация</InformationTitle>
         <Description>Данная информация будет доступна только администраторам и супервизорам</Description>
-        <FormItem label='Телефон' error={errors.phone}>
-          <Input
-            mask='+1 111 111-11-11'
-            placeholder='+7 900 000-00-00'
-            value={values.phone}
-            onChange={(value: any) => _phoneChanged(value)}
-            type='tel'
-          />
-        </FormItem>
+
         <FormItem label='Ссылки на ваши социальные сети' error={errors.socialNetworks}>
           <Textarea value={values.socialNetworks} onChange={_socialNetworkChanged} rows={8} />
         </FormItem>

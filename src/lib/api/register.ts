@@ -67,7 +67,6 @@ export interface RegisterAsCoachRequest {
   workExperience: string
   education: string
   description: string
-  phone: string
   videoInterview: string
 }
 

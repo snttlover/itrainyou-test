@@ -1,15 +1,13 @@
-import { SelectDatetime } from "@/old-components/coach-card/select-date/SelectDatetime"
 import { Coach } from "@/lib/api/coach"
 import { MediaRange } from "@/lib/responsive/media"
 import * as React from "react"
-import { useMemo, useState } from "react"
 import styled, { css } from "styled-components"
-import { genCoachSessions } from "@/old-components/coach-card/select-date/select-date.model"
 import { getCategoryColorById } from "@/feature/categories/categories.store"
 import { Icon } from "@/old-components/icon/Icon"
 import { useHistory } from "react-router-dom"
-import { Button } from "@/old-components/button/normal/Button"
+import { Button } from "@/new-components/button/Button"
 import { getCoachPrices } from "@/old-components/coach-card/get-coach-prices"
+import { smartRound } from "@/lib/formatting/smartRound"
 
 const MainInfoContainer = styled.div`
   position: relative;
@@ -65,6 +63,7 @@ const Name = styled.span`
   line-height: 20px;
   display: flex;
   width: 100%;
+  font-weight: 500;
 
   @media screen and (max-width: 600px) {
     font-size: 16px;
@@ -119,17 +118,15 @@ type BlockTypes = {
   isTopCoach: boolean
 }
 
-const ReserveButton = styled(Button)`
-  transition: visibility 100ms ease;
-  width: 150px;
+const ReserveButton = styled(Button).attrs({ size: "large" })`
   visibility: hidden;
-  height: 40px;
-  font-size: 14px;
-  line-height: 22px;
   margin-bottom: 10px;
 
   @media screen and (max-width: 600px) {
     width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    visibility: visible;
   }
 `
 
@@ -154,8 +151,8 @@ const Block = styled.div<BlockTypes>`
   }
   ${Avatar} {
     ${props =>
-    props.isTopCoach
-      ? css`
+      props.isTopCoach
+        ? css`
             width: 54px;
             height: 54px;
 
@@ -164,7 +161,7 @@ const Block = styled.div<BlockTypes>`
               height: 38px;
             }
           `
-      : css`
+        : css`
             @media screen and (max-width: 600px) {
               width: 40px;
               height: 40px;
@@ -175,13 +172,13 @@ const Block = styled.div<BlockTypes>`
   ${MainInfoContainer} {
     border: 2px solid #fff;
   }
-  
+
   &:hover {
     ${ReserveButton} {
       visibility: visible;
     }
   }
-  
+
   @media screen and (max-width: 600px) {
     background: #fff;
     height: auto;
@@ -200,6 +197,7 @@ const Meta = styled.div`
   align-items: center;
   flex: 1;
   justify-content: flex-end;
+  font-weight: normal;
 
   @media screen and (max-width: 600px) {
     justify-content: flex-start;
@@ -227,7 +225,7 @@ const Rating = styled.span`
 const Star = styled(Icon).attrs({ name: "yellow-star" })`
   width: 10px;
   height: 10px;
-  margin: 0 3px;
+  margin-right: 5px;
 
   @media screen and (max-width: 600px) {
     width: 13px;
@@ -237,7 +235,6 @@ const Star = styled(Icon).attrs({ name: "yellow-star" })`
   ${MediaRange.greaterThan("tablet")`  
     width: 14px;
     height: 14px;
-    margin: 0 5px;
   `}
 `
 
@@ -346,7 +343,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
 
   const isThereRating = coach.rating !== null
 
-  const rating = !isThereRating || (coach.rating || 0).toFixed(1).replace(".", ",")
+  const rating = isThereRating && smartRound(coach.rating)
 
   const prices = getCoachPrices(coach)
 
@@ -368,7 +365,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
 
               <Meta>
                 <Star />
-                <Rating>{rating}</Rating>
+                {rating && <Rating>{rating}</Rating>}
                 <ReviewsCount>{coach.reviewsCount ? `(${coach.reviewsCount})` : "пока нет оценок"}</ReviewsCount>
               </Meta>
             </Name>
@@ -393,7 +390,7 @@ const CoachCardLayout = ({ coach, freeSessions, className }: Props) => {
                 </Price>
               ))}
             </PricesContainer>
-            <ReserveButton onClick={redirectToCoach}>{"Забронировать"}</ReserveButton>
+            <ReserveButton onClick={redirectToCoach}>Забронировать</ReserveButton>
           </Actions>
         </NameContainer>
       </MainInfoContainer>
