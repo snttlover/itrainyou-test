@@ -38,6 +38,7 @@ module.exports = {
       "error",
       {"max": 2, "maxEOF": 1}
     ],
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-var-requires": "off"
   }
 }
