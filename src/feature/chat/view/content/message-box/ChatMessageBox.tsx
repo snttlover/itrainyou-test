@@ -58,26 +58,26 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     }
   }
 
-  const onChange = (value: string) => {
-    const textareaRef = input.current
-    if (textareaRef) {
-      textareaRef.style.height = "auto"
-      textareaRef.style.height = `${textareaRef.scrollHeight-22}px`
-      textareaRef.style.height = `${textareaRef.scrollHeight}px`
-    }
-    return change(value)
-  }
-
   const handleOnClick = () => {
     send(value)
     change("")
   }
-
+  
   useEffect(() => {
     if (input.current && window.innerWidth > 768) {
       input.current.focus()
     }
   }, [])
+
+  useEffect(()=>{
+    const textareaRef = input.current
+    console.log('1')
+    if (textareaRef) {
+      textareaRef.style.height = "auto"
+      textareaRef.style.height = `${textareaRef.scrollHeight-22}px`
+      textareaRef.style.height = `${textareaRef.scrollHeight}px`
+    }
+  }, [value, documents.length])
 
   return (
     <Container>
@@ -89,7 +89,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
             value={value}
             disabled={!!props.blockedText}
             placeholder={props.blockedText || "Напишите сообщение..."}
-            onChange={e => onChange(e.target.value)}
+            onChange={e => change(e.target.value)}
             onKeyDown={keydownHandler}
           />
           <Send onClick={handleOnClick} />
