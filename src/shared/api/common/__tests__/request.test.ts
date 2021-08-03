@@ -14,11 +14,10 @@ describe("request module", () => {
 
   const requestHandlerMock = jest.fn().mockResolvedValue({})
 
-  let domain = root.createDomain()
+  const domain = root.createDomain()
   let module: ReturnType<typeof createRequestModule>
 
   beforeEach(() => {
-    domain = root.createDomain()
     module = createRequestModule({domain})
   })
 
