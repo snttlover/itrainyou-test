@@ -58,17 +58,21 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     }
   }
 
-  const onChange = e => {
-    input.current?.style.height = "auto"
-    input.current?.style.height = `${input.current?.scrollHeight-22}px`
-    input.current?.style.height = `${input.current?.scrollHeight}px`
-    return change(e.target.value)
+  const onChange = (value: string) => {
+    const textareaRef = input.current
+    if (textareaRef) {
+      textareaRef.style.height = "auto"
+      textareaRef.style.height = `${textareaRef.scrollHeight-22}px`
+      textareaRef.style.height = `${textareaRef.scrollHeight}px`
+    }
+    return change(value)
   }
 
   const handleOnClick = () => {
     send(value)
     change("")
   }
+
   useEffect(() => {
     if (input.current && window.innerWidth > 768) {
       input.current.focus()
@@ -85,7 +89,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
             value={value}
             disabled={!!props.blockedText}
             placeholder={props.blockedText || "Напишите сообщение..."}
-            onChange={onChange}
+            onChange={e => onChange(e.target.value)}
             onKeyDown={keydownHandler}
           />
           <Send onClick={handleOnClick} />
