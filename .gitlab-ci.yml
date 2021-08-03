@@ -17,8 +17,8 @@ test:
   image: node:12.18.1
   stage: test
   script:
-    - npm ci
-    - npm run test --ci --reporters=default --reporters=jest-junit
+    - yarn install --frozen-lockfile
+    - yarn run test --ci --reporters=default --reporters=jest-junit
   artifacts:
     when: always
     reports:
