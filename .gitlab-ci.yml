@@ -18,7 +18,12 @@ test:
   stage: test
   script:
     - npm ci
-    - npm run test
+    - npm run test --ci --reporters=default --reporters=jest-junit'
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
 
 .build:
   stage: build
