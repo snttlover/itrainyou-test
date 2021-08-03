@@ -1,9 +1,9 @@
 import { createQueryString } from "@/lib/helpers/query"
 import { attach, createEffect, Effect, root, Domain } from "effector-root"
 import { setPayload } from "@/shared/lib/reducers"
+import { PrimitiveType } from "@/shared/lib/types"
 
-type Primitive = string | number | boolean
-type BodyObject = Record<string, Primitive | Primitive[]>
+type BodyObject = Record<string, PrimitiveType | PrimitiveType[]>
 type Body = BodyObject | BodyObject[]
 
 type RequestHeaders = Record<string, string>
@@ -12,7 +12,7 @@ export type RequestParams = {
   url: string;
   method: string;
   body?: BodyInit | Body;
-  query?: Record<string, Primitive | Primitive[]>;
+  query?: Record<string, PrimitiveType | PrimitiveType[]>;
   headers?: RequestHeaders;
 };
 
