@@ -40,11 +40,6 @@ $socialNetwork.on(socialNetworkDataFx.doneData, (state, payload) =>
 
 
 forward({
-  from: socialNetworkDataFx.doneData.map(response => ({token: response.accessToken})),
-  to: loggedIn,
-})
-
-forward({
   from: signUpWithSocialsPageGate.open,
   to: socialNetworkDataFx,
 })

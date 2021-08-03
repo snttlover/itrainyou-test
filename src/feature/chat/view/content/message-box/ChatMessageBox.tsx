@@ -62,19 +62,27 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     send(value)
     change("")
   }
-
+  
   useEffect(() => {
     if (input.current && window.innerWidth > 768) {
       input.current.focus()
     }
   }, [])
 
+  useEffect(()=>{
+    const textareaRef = input.current
+    console.log('1')
+    if (textareaRef) {
+      textareaRef.style.height = "auto"
+      textareaRef.style.height = `${textareaRef.scrollHeight-22}px`
+      textareaRef.style.height = `${textareaRef.scrollHeight}px`
+    }
+  }, [value, documents.length])
+
   return (
     <Container>
       <MessageContainer>
-
         <MessageBoxUpload module={$module} />
-
         {documents.length === 0 ? <InputContainer>
           <StyledInput
             ref={input}
@@ -232,19 +240,14 @@ const StyledInput = styled.textarea`
   word-wrap: break-word;
   word-break: break-word;  
   width: calc(100% - 57px);
-  height: 1.1em;
+  max-height: 7em;
+  block-size: 22px;
   resize: none;
-  transition: .3s;
-
   &::placeholder {
     color: #9aa0a6;
   }
 
   &:disabled::placeholder {
     color: #ff6b00;
-  }
-
-  &:focus {
-    height: 7em;
   }
 `
