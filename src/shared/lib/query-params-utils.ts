@@ -2,7 +2,7 @@ interface URLSearchClass {
   new (init?: string[][] | Record<string, string> | string | URLSearchParams): URLSearchParams
 }
 
-const parseQueryStringFactory = (URLSearch: URLSearchClass) => <T = {}>(string: string): T => {
+const parseQueryStringFactory = (URLSearch: URLSearchClass) => <T = Record<string, string>>(string: string): T => {
   const searchParams = new URLSearch(string)
   const obj: T = {} as T
 
@@ -13,7 +13,7 @@ const parseQueryStringFactory = (URLSearch: URLSearchClass) => <T = {}>(string: 
   return obj
 }
 
-const createQueryStringFactory = (URLSearch: URLSearchClass) => <T extends {}>(obj?: T): string => {
+const createQueryStringFactory = (URLSearch: URLSearchClass) => <T extends Record<string, string>>(obj?: T): string => {
   if (!obj) return ""
   const searchParams = new URLSearch(obj)
   const searchParamsString = searchParams.toString()

@@ -1,4 +1,4 @@
-import { createQueryString } from "@/lib/helpers/query"
+import { createQueryString } from "@/shared/lib/query-params-utils"
 import { attach, createEffect, Effect, root, Domain } from "effector-root"
 import { setPayload } from "@/shared/lib/reducers"
 import { PrimitiveType } from "@/shared/lib/types"
@@ -12,7 +12,7 @@ export type RequestParams = {
   url: string;
   method: string;
   body?: BodyInit | Body;
-  query?: Record<string, PrimitiveType | PrimitiveType[]>;
+  query?: Record<string, string>;
   headers?: RequestHeaders;
 };
 
