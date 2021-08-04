@@ -165,7 +165,7 @@ const isEqualDates = (first: Date, second: Date, format = equalFormat) =>
   date(first).format(format) === date(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
-  const [startDate, changeActiveStartDate] = useState(new Date())
+  const [startDate, changeActiveStartDate] = useState<Date>(new Date())
   
   useMemo(()=> props.changeActiveStartDate ? props.changeActiveStartDate(startDate) : null, [startDate])
 
