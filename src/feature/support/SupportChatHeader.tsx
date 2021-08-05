@@ -29,7 +29,7 @@ const Container = styled(ChatHeaderContainer)`
 
 type ChatHeaderTypes = {
   supportName?: string
-  backLink: any
+  backLink?: string
   avatar?: string | null
   hasUser: boolean
 }
@@ -45,13 +45,11 @@ const SupportIcon = styled(Icon).attrs({ name: "support" })`
   `}
 `
 
-export const SupportChatHeader = (props: ChatHeaderTypes) => {
-  return (
-    <Container>
-      <MobileBackButton to={props.backLink} />
-      {!props.avatar && <SupportIcon />}
-      {!!props.avatar && <StyledAvatar src={props.avatar} />}
-      <Title>{props.hasUser ? props.supportName : "Чат поддержки"}</Title>
-    </Container>
-  )
-}
+export const SupportChatHeader = (props: ChatHeaderTypes): JSX.Element => (
+  <Container>
+    <MobileBackButton to={props.backLink} />
+    {!props.avatar && <SupportIcon />}
+    {!!props.avatar && <StyledAvatar src={props.avatar} />}
+    <Title>{props.hasUser ? props.supportName : "Чат поддержки"}</Title>
+  </Container>
+)
