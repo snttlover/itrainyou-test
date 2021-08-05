@@ -184,12 +184,31 @@ forward({
 
 $phoneError.on(setPhoneError,(state,payload) => payload)
 
+interface iPhoneEmailErrors {
+  phoneError: string | null
+  emailError: string | null
+}
+
+const goToNexrStepIfNoneErrors = createEffect(({ phoneError, emailError }: iPhoneEmailErrors) => {
+  const goToStep = navigatePush.prepend((url: string) => ({ url: routeNames.signup(url) }))
+  if (!phoneError && !emailError) goToStep("4")
+})
+
 sample({
   clock: combineEvents({ events: [checkPhoneFx.doneData, checkEmailFx.doneData] }),
   source: combine($phoneError, $emailError, (phoneError, emailError) => ({
     phoneError, emailError
   })),
-  target: createEffect(({ phoneError, emailError }: {phoneError: string | null, emailError: string | null}) => {
-    !phoneError && !emailError ? navigatePush.prepend((url: string) => ({ url: routeNames.signup(url) }))("4") : null
-  }),
+  target: goToNexrStepIfNoneErrors,
 })
+
+// sample({
+//   clock: guard({
+//     source: combine($phoneError, $emailError, (phoneError, emailError) => ({
+//       phoneError, emailError
+//     })),
+//     filter: ({ phoneError, emailError }) => !phoneError && !emailError,
+//   }),
+//   source: combineEvents({ events: [checkPhoneFx.doneData, checkEmailFx.doneData] }),
+//   target: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
+// })

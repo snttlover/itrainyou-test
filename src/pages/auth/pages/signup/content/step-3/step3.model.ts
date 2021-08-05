@@ -79,9 +79,12 @@ forward({
 $phoneError.on(setUserPhoneFx.fail, () => "Этот телефон занят другим пользователем")
 
 sample({
-  clock: step3FormSubmit,
+  clock: guard({
+    source: step3FormSubmit,
+    filter: $isSocialSignupInProgress.map(inProgress => !inProgress),
+  }),
   source: $phone,
-  target: createEffect((phone: string) => $isSocialSignupInProgress.map(inProgress => !inProgress ? setUserPhoneFx(phone) : null)),
+  target: setUserPhoneFx,
 })
 
 guard({
