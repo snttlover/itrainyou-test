@@ -16,45 +16,24 @@ const mount = (id: string) => {
   const neighbour = document.getElementsByTagName("script")[ 0 ]
   neighbour?.parentNode?.insertBefore(script, neighbour)
 
-  return () => {
-    neighbour?.parentNode?.removeChild(script)
-  }
+  return () => neighbour?.parentNode?.removeChild(script)
 }
 
 export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = ({ id }: JivoWidgetProps) => {
   const isLoggedIn = useStore($isLoggedIn)
 
   React.useEffect(() => {
-
     let unmount: (() => void) | undefined
-    const onLoad = () => {
-      unmount = mount(id)
-    }
-
+    const onLoad = () => unmount = mount(id)
+    const jdiv:HTMLDivElement | null = document.querySelector("body > jdiv")
     if(!isLoggedIn) {
-      const jivoTags = Array.from(document.getElementsByTagName("jdiv") as HTMLCollectionOf<HTMLElement>)
-      if (jivoTags.length > 0) {
-        jivoTags[0].style.display = "inherit"
-      }
-
-      if (document.readyState === "complete") {
-        return mount(id)
-      }
-
+      if (!!jdiv) jdiv.style.display = "block"
+      if (document.readyState === "complete") mount(id)
       window.addEventListener("load", onLoad)
-    }
-
-    if (isLoggedIn) {
+    } else {
       document.removeEventListener("load", onLoad)
-      if (unmount) {
-        unmount()
-      }
-
-      const jivoTags = Array.from(document.getElementsByTagName("jdiv") as HTMLCollectionOf<HTMLElement>)
-      if (jivoTags.length > 0) jivoTags[0].style.display = "none"
-    }
-
-    return () => {
+      if (unmount) unmount()
+      if (!!jdiv) jdiv.style.display = "none"
     }
   }, [isLoggedIn])
 
