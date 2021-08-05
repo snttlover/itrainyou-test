@@ -184,12 +184,12 @@ forward({
 
 $phoneError.on(setPhoneError,(state,payload) => payload)
 
-interface iPhoneEmailErrors {
+interface IErrors {
   phoneError: string | null
   emailError: string | null
 }
 
-const goToNexrStepIfNoneErrors = createEffect(({ phoneError, emailError }: iPhoneEmailErrors) => {
+const goToNexrStepIfNoneErrors = createEffect(({ phoneError, emailError }: IErrors) => {
   const goToStep = navigatePush.prepend((url: string) => ({ url: routeNames.signup(url) }))
   if (!phoneError && !emailError) goToStep("4")
 })
