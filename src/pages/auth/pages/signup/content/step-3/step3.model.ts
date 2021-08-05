@@ -3,7 +3,7 @@ import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
 import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, guard, createStore, forward, sample } from "effector-root"
+import { combine, createEffect, createEvent, guard, attach, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
@@ -13,7 +13,7 @@ import { routeNames } from "@/pages/route-names"
 import { updateMyUser } from "@/lib/api/users/update-my-user"
 
 export const step3FormSubmitted = createEvent()
-export const step3SetUserPhone = createEvent<string>()
+export const step3FormSubmit = createEvent()
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -78,15 +78,15 @@ forward({
 
 $phoneError.on(setUserPhoneFx.fail, () => "Этот телефон занят другим пользователем")
 
-guard({
-  source: step3SetUserPhone,
-  filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
-  target: setUserPhoneFx,
+sample({
+  clock: step3FormSubmit,
+  source: $phone,
+  target: createEffect((phone: string) => $isSocialSignupInProgress.map(inProgress => !inProgress ? setUserPhoneFx(phone) : null)),
 })
 
 guard({
-  source: step3SetUserPhone,
-  filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
+  source: step3FormSubmit,
+  filter: $isSocialSignupInProgress,
   target: step3FormSubmitted,
 })
 
