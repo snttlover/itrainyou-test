@@ -2,6 +2,8 @@ import { $isSocialSignupInProgress, loggedIn, setIsSocialSignupInProgress } from
 import { navigatePush } from "@/feature/navigation"
 import { routeNames } from "@/pages/route-names"
 import { attach, combine, forward, guard, merge, sample, split } from "effector-root"
+import {createEffect} from "effector"
+import { combineEvents } from "patronum"
 import {
   RegisterAsUserFromSocialsResponseFound,
   RegisterAsUserFromSocialsResponseNotFound
@@ -32,7 +34,6 @@ import { SocialNetwork } from "@/pages/auth/pages/socials/models/types"
 import { UserData } from "@/pages/auth/pages/signup/models/types"
 import { userDataSetWithSocials } from "@/pages/auth/pages/signup/models/units"
 import { $emailError, $phoneError, step3FormSubmitted } from "@/pages/auth/pages/signup/content/step-3/step3.model"
-import { combineEvents } from "patronum"
 
 $socialNetwork.on(socialNetworkDataFx.doneData, (state, payload) =>
   ({ name: payload.name, accessToken: payload.accessToken, email: payload.email }))
@@ -149,7 +150,16 @@ forward({
 
 guard({
   source: step3FormSubmitted,
-  filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
+  filter: $isSocialSignupInProgress,
+  target: attach({
+    effect: checkPhoneFx,
+    source: $socialsForm,
+  })
+})
+
+guard({
+  source: step3FormSubmitted,
+  filter: $isSocialSignupInProgress,
   target: attach({
     effect: checkEmailFx,
     source: $socialsForm,
@@ -165,15 +175,6 @@ forward({
 
 $emailError.on(setEmailError,(state,payload) => payload)
 
-guard({
-  source: step3FormSubmitted,
-  filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
-  target: attach({
-    effect: checkPhoneFx,
-    source: $socialsForm,
-  })
-})
-
 forward({
   from: checkPhoneFx.doneData.filter({
     fn: (response) => response.isReserved,
@@ -183,13 +184,20 @@ forward({
 
 $phoneError.on(setPhoneError,(state,payload) => payload)
 
+interface IErrors {
+  phoneError: string | null
+  emailError: string | null
+}
+
+const goToNexrStepIfNoneErrors = createEffect(({ phoneError, emailError }: IErrors) => {
+  const goToStep = navigatePush.prepend((url: string) => ({ url: routeNames.signup(url) }))
+  if (!phoneError && !emailError) goToStep("4")
+})
+
 sample({
-  source: guard({
-    source: combine($phoneError, $emailError, (phoneError, emailError) => ({
-      phoneError, emailError
-    })),
-    filter: ({ phoneError, emailError }) => !phoneError && !emailError,
-  }),
   clock: combineEvents({ events: [checkPhoneFx.doneData, checkEmailFx.doneData] }),
-  target: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
+  source: combine($phoneError, $emailError, (phoneError, emailError) => ({
+    phoneError, emailError
+  })),
+  target: goToNexrStepIfNoneErrors,
 })
