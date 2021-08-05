@@ -201,14 +201,3 @@ sample({
   })),
   target: goToNexrStepIfNoneErrors,
 })
-
-// sample({
-//   clock: guard({
-//     source: combine($phoneError, $emailError, (phoneError, emailError) => ({
-//       phoneError, emailError
-//     })),
-//     filter: ({ phoneError, emailError }) => !phoneError && !emailError,
-//   }),
-//   source: combineEvents({ events: [checkPhoneFx.doneData, checkEmailFx.doneData] }),
-//   target: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
-// })
