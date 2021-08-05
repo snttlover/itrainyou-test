@@ -40,6 +40,7 @@ type Agora = {
 
 const agoraHandleFail = (e: any, payload?: any) => {
   console.error(e, payload)
+  debugger
 }
 
 const videoConfig: VideoEncoderConfiguration = {
@@ -96,6 +97,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: chatModule.methods.reset,
   })
 
+  const connect = createEvent<number>()
   const connectToSession = createEvent<number>()
 
   const changeInterculatorWasConnected = createEvent<boolean>()
@@ -192,9 +194,13 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         const appId = appConfig.AGORA_ID as string
         agoraData.client.init(appId, () => {}, agoraHandleFail)
 
-        agoraData.client.on("stream-added", e => {
-          agoraData.client && agoraData.client.subscribe(e.stream)
-        })
+        agoraData.client.on(
+          "stream-added",
+          e => {
+            agoraData.client && agoraData.client.subscribe(e.stream)
+          },
+          agoraHandleFail
+        )
 
         agoraData.client.on("peer-online", e => {
           runInScope(changeInterculatorWasConnected, true)
@@ -217,14 +223,18 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         agoraData.client.on("mute-video", () => runInScope(changeInterlocutorVideoStatus, false))
         agoraData.client.on("unmute-video", () => runInScope(changeInterlocutorVideoStatus, true))
 
-        agoraData.client.on("stream-subscribed", e => {
-          agoraData.remoteStream = e.stream
+        agoraData.client.on(
+          "stream-subscribed",
+          e => {
+            agoraData.remoteStream = e.stream
 
-          play()
+            play()
 
-          runInScope(changeInterculatorWasConnected, true)
-          runInScope(changeInterculatorIsConnected, true)
-        })
+            runInScope(changeInterculatorWasConnected, true)
+            runInScope(changeInterculatorIsConnected, true)
+          },
+          agoraHandleFail
+        )
       }
     },
   })
@@ -281,13 +291,21 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
             agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
 
-            agoraData.localStream.init(() => {
-              if (agoraData.localStream) {
-                play()
+            agoraData.localStream.init(
+              () => {
+                if (agoraData.localStream) {
+                  play()
 
-                agoraData.client && agoraData.client.publish(agoraData.localStream, agoraHandleFail)
+                  agoraData.client && agoraData.client.publish(agoraData.localStream, agoraHandleFail)
+                }
+              },
+              e => {
+                if (["OverconstrainedError", "NotAllowedError"].includes(e.msg)) {
+                  console.error(e)
+                }
+                debugger
               }
-            })
+            )
           },
           agoraHandleFail
         )
@@ -331,6 +349,17 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   forward({
     from: connectToSession.map(() => true),
     to: changeCallsVisibility,
+  })
+
+  const changeConnecting = createEvent<boolean>()
+  const $connecting = restore(changeConnecting, false)
+    .on(connectToSession, () => true)
+    .on(close, () => false)
+
+  guard({
+    source: connect,
+    filter: $connecting.map(status => !status),
+    target: connectToSession,
   })
 
   forward({
@@ -528,7 +557,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       changeFullScreen,
       changeMicro,
       changeVideo,
-      connectToSession,
+      connectToSession: connect,
       close,
     },
     modules: {
