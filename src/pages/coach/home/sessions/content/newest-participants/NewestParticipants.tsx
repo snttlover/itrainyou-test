@@ -21,12 +21,12 @@ export const NewestParticipants = () => {
     <Container>
       <InfinityScroll>
         {sessions.keys.map(day => (
-          <>
+          <div key={day}>
             <Title>{day}</Title>
             {sessions.splitted(day).map(session => (
               <SessionCardListItem {...session} key={session.id} />
             ))}
-          </>
+          </div>
         ))}
       </InfinityScroll>
     </Container>

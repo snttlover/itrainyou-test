@@ -42,9 +42,7 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
   margin-top: 24px;
-  &:first-child {
-    margin-top: 0;
-  }
+  margin-bottom: 24px;
 `
 
 const ActiveSessionCard = styled(SessionCard)`
@@ -314,7 +312,7 @@ export const StandardHomePage = () => {
           <Block>
             {upcomingSessions.keys.map(day => {
               return (
-                <>
+                <div key={day}>
                   <Title>{day}</Title>
                   {upcomingSessions.splitted(day).map(session => (
                     <TodaySessionCard
@@ -327,7 +325,7 @@ export const StandardHomePage = () => {
                       key={session.id}
                     />
                   ))}
-                </>
+                </div>
               )
             })}
           </Block>
