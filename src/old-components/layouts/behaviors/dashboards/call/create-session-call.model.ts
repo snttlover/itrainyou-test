@@ -2,7 +2,7 @@ import { combine, createEffect, createEvent, createStore, forward, guard, restor
 import { getCoachSessionVideoToken, VideoTokenData } from "@/lib/api/coach/get-session-video-token"
 import { getCoachSession, SessionInfo } from "@/lib/api/coach/get-session"
 import { Client } from "@/lib/api/client/clientInfo"
-import { Client as AgoraClient, Stream, VideoEncoderConfiguration, MediaDeviceInfo } from "agora-rtc-sdk"
+import { Client as AgoraClient, Stream, VideoEncoderConfiguration } from "agora-rtc-sdk"
 import { createSessionCall } from "@/old-components/layouts/behaviors/dashboards/call/SessionCall"
 import { config as appConfig } from "@/config"
 import { $isClient } from "@/lib/effector"
@@ -86,6 +86,9 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   const ticker = createTicker(1000)
 
+  const changeHasProblemsDialog = createEvent<boolean>()
+  const $hasProblemsDialog = restore(changeHasProblemsDialog, false).reset(reset)
+
   forward({
     from: reset,
     to: ticker.stop,
@@ -96,6 +99,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: chatModule.methods.reset,
   })
 
+  const connect = createEvent<number>()
   const connectToSession = createEvent<number>()
 
   const changeInterculatorWasConnected = createEvent<boolean>()
@@ -127,30 +131,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   const checkDevicePermission = createEvent()
   const close = createEvent()
 
-  const playAgoraFx = createEffect({
-    handler: () => {
-      if (agoraData.remoteStream) {
-        if (agoraData.remoteStream.isPlaying()) {
-          agoraData.remoteStream.stop()
-        }
-        const player = document.getElementById("InterlocutorVideo")
-        if (player) {
-          player.innerHTML = ""
-        }
-        agoraData.remoteStream.play("InterlocutorVideo", { fit: "cover" })
-      }
-      if (agoraData.localStream) {
-        if (agoraData.localStream.isPlaying()) {
-          agoraData.localStream.stop()
-        }
-        const player = document.getElementById("MyUserVideo")
-        if (player) {
-          player.innerHTML = ""
-        }
-        agoraData.localStream.play("MyUserVideo", { fit: "cover" })
-      }
-    },
-  })
   const play = createEvent()
 
   const userPermissionFx = createEffect({
@@ -176,63 +156,96 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
 
   forward({
     from: play,
-    to: [playAgoraFx, userPermissionFx],
+    to: [userPermissionFx],
   })
+
+  const playStreamFail = (e: any) => {
+    if (e && e.status === "aborted") {
+      changeHasProblemsDialog(true)
+    }
+  }
+
+  const playStream = () => {
+    if (agoraData.remoteStream) {
+      if (agoraData.remoteStream.isPlaying()) {
+        agoraData.remoteStream.stop()
+      }
+      const player = document.getElementById("InterlocutorVideo")
+      if (player) {
+        player.innerHTML = ""
+      }
+      agoraData.remoteStream.play("InterlocutorVideo", { fit: "cover" }, playStreamFail)
+    }
+    if (agoraData.localStream) {
+      if (agoraData.localStream.isPlaying()) {
+        agoraData.localStream.stop()
+      }
+      const player = document.getElementById("MyUserVideo")
+      if (player) {
+        player.innerHTML = ""
+      }
+      agoraData.localStream.play("MyUserVideo", { fit: "cover" }, playStreamFail)
+    }
+    changeHasProblemsDialog(false)
+    debugger
+  }
 
   const changeSessionId = createEvent<number>()
   const $sessionId = restore(changeSessionId, 0).reset(config.socket.methods.userLeftSession)
 
-  const initAgoraFx = createEffect({
-    handler: () => {
-      if (agoraLib) {
-        agoraData.client = agoraLib.createClient({
-          mode: "live",
-          codec: "h264",
-        }) as AgoraClient
-        const appId = appConfig.AGORA_ID as string
-        agoraData.client.init(appId, () => {}, agoraHandleFail)
+  const initAgoraEvent = createEvent()
 
-        agoraData.client.on("stream-added", e => {
-          agoraData.client && agoraData.client.subscribe(e.stream)
-        })
+  initAgoraEvent.watch(() => {
+    if (agoraLib) {
+      agoraData.client = agoraLib.createClient({
+        mode: "live",
+        codec: "h264",
+      }) as AgoraClient
+      const appId = appConfig.AGORA_ID as string
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      agoraData.client.init(appId, () => {}, agoraHandleFail)
 
-        agoraData.client.on("peer-online", e => {
-          runInScope(changeInterculatorWasConnected, true)
-          runInScope(changeInterculatorIsConnected, true)
-        })
+      agoraData.client.on("stream-added", e => {
+        agoraData.client && agoraData.client.subscribe(e.stream)
+      })
 
-        agoraData.client.on("peer-leave", e => {
-          if (e.uid === agoraData.remoteStream?.getId()) {
-            runInScope(changeInterculatorIsConnected, false)
-            agoraData.remoteStream = null
-            const player = document.getElementById("InterlocutorVideo")
-            if (player) {
-              player.innerHTML = ""
-            }
+      agoraData.client.on("peer-online", e => {
+        runInScope(changeInterculatorWasConnected, true)
+        runInScope(changeInterculatorIsConnected, true)
+      })
+
+      agoraData.client.on("peer-leave", e => {
+        if (e.uid === agoraData.remoteStream?.getId()) {
+          runInScope(changeInterculatorIsConnected, false)
+          agoraData.remoteStream = null
+          const player = document.getElementById("InterlocutorVideo")
+          if (player) {
+            player.innerHTML = ""
           }
-        })
+        }
+      })
 
-        agoraData.client.on("mute-audio", () => runInScope(changeInterlocutorMicrophoneStatus, false))
-        agoraData.client.on("unmute-audio", () => runInScope(changeInterlocutorMicrophoneStatus, true))
-        agoraData.client.on("mute-video", () => runInScope(changeInterlocutorVideoStatus, false))
-        agoraData.client.on("unmute-video", () => runInScope(changeInterlocutorVideoStatus, true))
+      agoraData.client.on("mute-audio", () => runInScope(changeInterlocutorMicrophoneStatus, false))
+      agoraData.client.on("unmute-audio", () => runInScope(changeInterlocutorMicrophoneStatus, true))
+      agoraData.client.on("mute-video", () => runInScope(changeInterlocutorVideoStatus, false))
+      agoraData.client.on("unmute-video", () => runInScope(changeInterlocutorVideoStatus, true))
 
-        agoraData.client.on("stream-subscribed", e => {
-          agoraData.remoteStream = e.stream
+      agoraData.client.on("stream-subscribed", e => {
+        agoraData.remoteStream = e.stream
 
-          play()
+        playStream()
+        play()
 
-          runInScope(changeInterculatorWasConnected, true)
-          runInScope(changeInterculatorIsConnected, true)
-        })
-      }
-    },
+        runInScope(changeInterculatorWasConnected, true)
+        runInScope(changeInterculatorIsConnected, true)
+      })
+    }
   })
 
   guard({
     source: $isClient,
     filter: $isClient,
-    target: initAgoraFx.prepend(() => {}),
+    target: initAgoraEvent,
   })
 
   const agoraData: Agora = {
@@ -241,59 +254,58 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     remoteStream: null,
   }
 
-  const agoraConnectFx = createEffect({
-    handler: (credentials: VideoTokenData) => {
-      if (agoraData.client) {
-        agoraData.client.join(
-          credentials.token,
-          credentials.channelName,
-          credentials.userAccount,
-          undefined,
+  const connectToAgora = (credentials: VideoTokenData) => {
+    if (agoraData.client) {
+      agoraData.client.join(
+        credentials.token,
+        credentials.channelName,
+        +credentials.userAccount,
+        undefined,
 
-          // create streams
-          (uid: number) => {
-            agoraData.localStream = agoraLib.createStream({
-              streamID: credentials.userAccount,
-              audio: true,
-              video: true,
-              screen: false,
-            }) as Stream
+        // create streams
+        (uid: number) => {
+          agoraData.localStream = agoraLib.createStream({
+            streamID: credentials.userAccount,
+            audio: true,
+            video: true,
+            screen: false,
+          }) as Stream
 
-            agoraData.localStream?.on("accessAllowed", event => {
-              runInScope(checkDevicePermission)
-            })
+          agoraData.localStream?.on("accessAllowed", () => {
+            runInScope(checkDevicePermission)
+          })
 
-            agoraData.localStream?.on("accessDenied", event => {
-              runInScope(checkDevicePermission)
-            })
+          agoraData.localStream?.on("accessDenied", () => {
+            runInScope(checkDevicePermission)
+          })
 
-            agoraData.localStream?.on("videoTrackEnded", event => {
-              runInScope(checkDevicePermission)
-            })
+          agoraData.localStream?.on("videoTrackEnded", () => {
+            runInScope(checkDevicePermission)
+          })
 
-            agoraData.localStream?.on("audioTrackEnded", event => {
-              runInScope(checkDevicePermission)
-            })
+          agoraData.localStream?.on("audioTrackEnded", () => {
+            runInScope(checkDevicePermission)
+          })
 
-            agoraData.localStream?.on("audioMixingPlayed", event => {
-              runInScope(checkDevicePermission)
-            })
+          agoraData.localStream?.on("audioMixingPlayed", () => {
+            runInScope(checkDevicePermission)
+          })
 
-            agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
+          agoraData.localStream.setVideoEncoderConfiguration(videoConfig)
 
-            agoraData.localStream.init(() => {
-              if (agoraData.localStream) {
-                play()
+          agoraData.localStream.init(() => {
+            if (agoraData.localStream) {
+              playStream()
+              play()
 
-                agoraData.client && agoraData.client.publish(agoraData.localStream, agoraHandleFail)
-              }
-            })
-          },
-          agoraHandleFail
-        )
-      }
-    },
-  })
+              agoraData.client && agoraData.client.publish(agoraData.localStream, agoraHandleFail)
+            }
+          }, agoraHandleFail)
+        },
+        agoraHandleFail
+      )
+    }
+  }
 
   const getTokenDataFx = createEffect({
     handler: config.getConnectDataRequest,
@@ -333,6 +345,17 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     to: changeCallsVisibility,
   })
 
+  const changeConnecting = createEvent<boolean>()
+  const $connecting = restore(changeConnecting, false)
+    .on(connectToSession, () => true)
+    .on(close, () => false)
+
+  guard({
+    source: connect,
+    filter: $connecting.map(status => !status),
+    target: connectToSession,
+  })
+
   forward({
     from: connectToSession,
     to: [changeSessionId, getTokenDataFx, getSessionDataFx],
@@ -370,10 +393,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     return minutes <= tokenData.extraTimeMinutes
   })
 
-  forward({
-    from: getTokenDataFx.doneData,
-    to: agoraConnectFx,
-  })
+  getTokenDataFx.doneData.watch(connectToAgora)
 
   forward({
     from: getTokenDataFx.doneData.map(data =>
@@ -406,8 +426,15 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     },
   })
 
-  const leaveAgoraFx = createEffect({
-    handler: () => {
+  forward({
+    from: close,
+    to: [reset],
+  })
+
+  const leaveAgoraDone = createEvent()
+
+  close.watch(() => {
+    try {
       if (agoraData.remoteStream) {
         if (agoraData.client) {
           agoraData.client.unsubscribe(agoraData.remoteStream)
@@ -416,7 +443,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
         agoraData.remoteStream = null
       }
       if (agoraData.localStream) {
-        if (agoraData.client) {
+        if (agoraData.client && agoraData.localStream) {
           agoraData.client.unpublish(agoraData.localStream)
         }
         agoraData.localStream.close()
@@ -425,18 +452,16 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       if (agoraData.client) {
         agoraData.client.leave()
       }
-    },
-  })
-
-  forward({
-    from: close,
-    to: [leaveAgoraFx, reset],
+      leaveAgoraDone()
+    } catch (e) {
+      console.log(e)
+    }
   })
 
   sample({
     source: $sessionId,
-    clock: leaveAgoraFx.doneData,
-    fn: (sessionId, closeId) => ({ session: sessionId }),
+    clock: leaveAgoraDone,
+    fn: sessionId => ({ session: sessionId }),
     target: config.socket.methods.userLeftSession,
   })
 
@@ -513,8 +538,20 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     isCloseToTerminate,
   }))
 
+  const tryAgainFx = createEffect(() => {
+    playStream()
+  })
+
+  const tryAgain = createEvent()
+
+  forward({
+    from: tryAgain,
+    to: tryAgainFx,
+  })
+
   return {
     data: {
+      $hasProblemsDialog,
       $sessionId,
       $callsVisibility,
       $self,
@@ -524,11 +561,13 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       dashboardType: config.dashboard,
     },
     methods: {
+      tryAgain,
+      changeHasProblemsDialog,
       play,
       changeFullScreen,
       changeMicro,
       changeVideo,
-      connectToSession,
+      connectToSession: connect,
       close,
     },
     modules: {
@@ -536,164 +575,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
     },
   }
 }
-
-type TestingParams = {
-  uid: number
-  type: "audio" | "video"
-  selectedDevice?: MediaDeviceInfo | MediaDeviceInfo[] | string
-}
-
-export const createTestCallModule = () => {
-  const agoraData: Agora = {
-    client: null,
-    localStream: null,
-    remoteStream: null,
-  }
-
-  const mounted = createEvent<"audio" | "video">()
-  const setAudioLevel = createEvent<number>()
-  const play = createEvent<"audio" | "video">()
-  const close = createEvent()
-  const test = createEvent<TestingParams>()
-
-  const $audioLevel = restore(setAudioLevel, 0)
-
-  const changeGrantedPermissionForCamera = createEvent<boolean>()
-  const changeGrantedPermissionForMic = createEvent<boolean>()
-
-  const $userGrantedPermission = createStore({
-    micro: false,
-    camera: false,
-  })
-    .on(changeGrantedPermissionForCamera, (state, payload) => {
-      return { micro: state.micro, camera: payload }
-    })
-    .on(changeGrantedPermissionForMic, (state, payload) => {
-      return { micro: payload, camera: state.camera }
-    })
-
-  const getDevicesFx = createEffect({
-    handler: (type: "audio" | "video") => {
-      agoraData.localStream = agoraLib.getDevices((devices: MediaDeviceInfo[]) => {
-        const audioDevices = devices.filter(device => device.kind === "audioinput" && device.deviceId.length > 0)
-        const videoDevices = devices.filter(device => device.kind === "videoinput" && device.deviceId.length > 0)
-
-        videoDevices.length > 0
-          ? runInScope(changeGrantedPermissionForCamera, true)
-          : runInScope(changeGrantedPermissionForCamera, false)
-        audioDevices.length > 0 && videoDevices.length > 0
-          ? runInScope(changeGrantedPermissionForMic, true)
-          : runInScope(changeGrantedPermissionForMic, false)
-
-        const uid = Math.floor(Math.random() * 10000)
-        const selectedMicrophoneId = audioDevices.filter(device => device.deviceId === "default")
-        const selectedCameraId = videoDevices.filter(device => device.deviceId === "default")
-        test({ uid: uid, type: type, selectedDevice: type === "audio" ? selectedMicrophoneId : selectedCameraId })
-      })
-    },
-  })
-
-  const testingDevicesFx = createEffect({
-    handler: (params: TestingParams) => {
-      if (agoraLib) {
-        //microphoneId: params.selectedDevice,
-        //cameraId: params.selectedDevice,
-        const streamSpecs =
-          params.type === "audio"
-            ? {
-                streamID: params.uid,
-                audio: true,
-                video: true,
-                screen: false,
-              }
-            : {
-                streamID: params.uid,
-                audio: false,
-                video: true,
-                screen: false,
-              }
-
-        agoraData.localStream = agoraLib.createStream(streamSpecs)
-
-        agoraData?.localStream?.init(() => {
-          play(params.type)
-        })
-      }
-    },
-  })
-
-  let timer: any
-
-  const playFx = createEffect({
-    handler: (type: "audio" | "video") => {
-      if (agoraData.localStream) {
-        if (type === "audio") {
-          if (agoraData.localStream.isPlaying()) {
-            agoraData.localStream.stop()
-          }
-
-          timer = setInterval(() => {
-            // @ts-ignore
-            setAudioLevel(Math.floor(agoraData.localStream.getAudioLevel() * 100))
-          }, 50)
-        } else {
-          if (agoraData.localStream.isPlaying()) {
-            agoraData.localStream.stop()
-          }
-
-          const player = document.getElementById("VideoTest")
-          if (player) {
-            player.innerHTML = ""
-          }
-          agoraData.localStream.play("VideoTest", { fit: "cover" })
-        }
-      }
-    },
-  })
-
-  const closeFx = createEffect({
-    handler: () => {
-      clearTimeout(timer)
-      if (agoraData.localStream) {
-        agoraData.localStream.close()
-      }
-    },
-  })
-
-  forward({
-    from: close,
-    to: closeFx,
-  })
-
-  forward({
-    from: play,
-    to: playFx,
-  })
-
-  forward({
-    from: test,
-    to: testingDevicesFx,
-  })
-
-  forward({
-    from: mounted,
-    to: getDevicesFx,
-  })
-
-  return {
-    data: {
-      $audioLevel,
-      $userGrantedPermission,
-    },
-    methods: {
-      play,
-      mounted,
-      close,
-    },
-  }
-}
-
-export const testCall = createTestCallModule()
 
 export const coachCall = createSessionCallModule({
   dashboard: "coach",

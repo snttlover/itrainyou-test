@@ -9,5 +9,5 @@ export const coachChatsList = createChatListModule({
   type: "coach",
   socket: coachChatsSocket,
   getChat: getCoachChat,
-  sessionCallModule: coachCall
+  sessionCallModule: coachCall,
 })

@@ -107,7 +107,7 @@ sample({
   source: $registerUserData,
   clock: guard({
     source: registerStep4Merged,
-    filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
+    filter: $isSocialSignupInProgress.map(inProgress => !inProgress),
   }),
   target: registerUserFx,
 })
@@ -118,9 +118,15 @@ sample({
   source: $socialsForm,
   clock: guard({
     source: registerStep4Merged,
-    filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
+    filter: $isSocialSignupInProgress,
   }),
   target: createUserFromSocialsFx,
+})
+
+sample({
+  source: $registerUserData,
+  clock: createUserFromSocialsFx.doneData,
+  target: registerUserFx,
 })
 
 forward({

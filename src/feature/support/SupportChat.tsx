@@ -13,7 +13,7 @@ import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 export const createSupportChat = ($chatModule: ReturnType<typeof createSupportChatModel>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
   const MessageBox = createChatMessageBox($chatModule.messageBox)
-
+  
   return () => {
     const messagesFirstLoading = useStore($chatModule.$firstLoading)
 
@@ -35,7 +35,7 @@ export const createSupportChat = ($chatModule: ReturnType<typeof createSupportCh
           {!messagesFirstLoading && (
             <>
               <ChatContainer>
-                <SupportChatHeader avatar={support?.avatar} hasUser={!!support} backLink={"/coach"} supportName={support?.name} />
+                <SupportChatHeader avatar={support?.avatar} hasUser={!!support} supportName={support?.name} />
                 <Messages />
                 <MessageBox />
               </ChatContainer>

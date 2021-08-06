@@ -2,16 +2,25 @@ import React, { useEffect, useRef, useState } from "react"
 import styled, { css } from "styled-components"
 import { Icon } from "@/old-components/icon/Icon"
 import { Avatar } from "@/old-components/avatar/Avatar"
-import { createSessionCallModule, $compatibility } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
+import {
+  createSessionCallModule,
+  $compatibility,
+} from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 import { trackMouse } from "@/old-components/mouse-tracking/track-mouse"
-import { togglePermissionGrantedModal, changeModalInfo } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
+import {
+  togglePermissionGrantedModal,
+  changeModalInfo,
+} from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { NotCompatibleDialog } from "@/old-components/layouts/behaviors/dashboards/call/NotCompatibleDialog"
-import { createSessionChat, SessionChatContainer } from "@/old-components/layouts/behaviors/dashboards/call/chat/SessionChat"
+import {
+  createSessionChat,
+  SessionChatContainer,
+} from "@/old-components/layouts/behaviors/dashboards/call/chat/SessionChat"
+import { ConnectionProblemDialog } from "@/old-components/layouts/behaviors/dashboards/call/connection-problem/ConnectionProblemDialog"
 
 export const createSessionCall = ($module: ReturnType<typeof createSessionCallModule>) => {
-
   const Chat = createSessionChat($module.modules.chat)
 
   return () => {
@@ -30,18 +39,21 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     if (visibility) {
       let timer: any
-      trackMouse(videoCallRef, ((eventX, eventY) => {
+      trackMouse(videoCallRef, (eventX, eventY) => {
         timer && clearTimeout(timer)
         timer = setTimeout(() => changeUserActivity(false), 3000)
         !userActive ? clearTimeout(timer) : changeUserActivity(true)
-      }))
+      })
     }
 
-
     useEffect(() => {
-      window.addEventListener("beforeunload", function() {
-        close()
-      }, false)
+      window.addEventListener(
+        "beforeunload",
+        function () {
+          close()
+        },
+        false
+      )
       return () => {
         _toggleModal(false)
       }
@@ -56,21 +68,23 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
     const changeVideo = useEvent($module.methods.changeVideo)
     const changeFullScreen = useEvent($module.methods.changeFullScreen)
 
+    const hasProblems = useStore($module.data.$hasProblemsDialog)
+    const changeHasProblemsDilog = useEvent($module.methods.changeHasProblemsDialog)
+    const tryAgain = useEvent($module.methods.tryAgain)
+
     const handleOnClickVideo = () => {
-      if(permission.camera) {
+      if (permission.camera) {
         changeVideo(!self.video)
-      }
-      else {
+      } else {
         changeModalInfo("video")
         _toggleModal(true)
       }
     }
 
     const handleOnClickMicro = () => {
-      if(permission.micro) {
+      if (permission.micro) {
         changeMicro(!self.micro)
-      }
-      else {
+      } else {
         changeModalInfo("mic")
         _toggleModal(true)
       }
@@ -90,8 +104,10 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
 
     return (
       <div ref={videoCallRef}>
-        {!compatibility ? <NotCompatibleDialog visibility={visibility} close={handleOnClose} />
-          :
+        <ConnectionProblemDialog value={hasProblems} onChange={changeHasProblemsDilog} tryAgain={() => tryAgain()} />
+        {!compatibility ? (
+          <NotCompatibleDialog visibility={visibility} close={handleOnClose} />
+        ) : (
           <Container
             data-interlocutor-is-connected={interlocutor.connected}
             data-interlocutor-was-connected={interlocutor.wasConnected}
@@ -104,12 +120,13 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
               <ChatIconButton onClick={handleOnChatButtonClick} visibility={userActive}>
                 <ChatIcon />
               </ChatIconButton>
-              {time.minutesLeft && (<TimeTooltip data-terminate={time.isCloseToTerminate} visibility={userActive}>
-                <Time>
-                  <TimeLeftLabel>Осталось:</TimeLeftLabel>
-                  <TimeLeft>{time.minutesLeft} минут</TimeLeft>
-                </Time>
-              </TimeTooltip>
+              {time.minutesLeft && (
+                <TimeTooltip data-terminate={time.isCloseToTerminate} visibility={userActive}>
+                  <Time>
+                    <TimeLeftLabel>Осталось:</TimeLeftLabel>
+                    <TimeLeft>{time.minutesLeft} минут</TimeLeft>
+                  </Time>
+                </TimeTooltip>
               )}
               <Header visibility={userActive}>
                 {interlocutor.info && (
@@ -120,7 +137,7 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                   </User>
                 )}
               </Header>
-              <InterlocutorVideo id='InterlocutorVideo' >
+              <InterlocutorVideo id='InterlocutorVideo'>
                 <InterlocutorVideoPlaceholder>
                   <InterlocutorIcon />
                   <InterlocutorVideoPlaceholderText>Собеседник не включил камеру</InterlocutorVideoPlaceholderText>
@@ -143,17 +160,23 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                 <Actions>
                   <IconContainer>
                     <ToggleVideo active={self.video} permission={permission.camera} onClick={handleOnClickVideo} />
-                    {self.fullscreen && permission.camera && <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру" }</IconToolTip>}
+                    {self.fullscreen && permission.camera && (
+                      <IconToolTip>{self.video ? "Выключить камеру" : "Включить камеру"}</IconToolTip>
+                    )}
                   </IconContainer>
 
                   <IconContainer>
                     <ToggleMicro active={self.micro} permission={permission.micro} onClick={handleOnClickMicro} />
-                    {self.fullscreen && permission.micro && <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон" }</IconToolTip>}
+                    {self.fullscreen && permission.micro && (
+                      <IconToolTip>{self.micro ? "Выключить микрофон" : "Включить микрофон"}</IconToolTip>
+                    )}
                   </IconContainer>
 
                   <IconFullScreenContainer>
                     <ToggleFullscreen active={self.fullscreen} onClick={handleOnChangeFullscreen} />
-                    {self.fullscreen && <IconToolTip>{self.fullscreen ? "Свернуть окно" : "Развернуть окно" }</IconToolTip>}
+                    {self.fullscreen && (
+                      <IconToolTip>{self.fullscreen ? "Свернуть окно" : "Развернуть окно"}</IconToolTip>
+                    )}
                   </IconFullScreenContainer>
 
                   <IconContainer>
@@ -163,24 +186,24 @@ export const createSessionCall = ($module: ReturnType<typeof createSessionCallMo
                 </Actions>
               </Footer>
             </Call>
-            <ChatWrapper fullScreen={self.fullscreen} >
+            <ChatWrapper fullScreen={self.fullscreen}>
               <Chat />
             </ChatWrapper>
           </Container>
-        }
+        )}
       </div>
     )
   }
 }
 
-const ChatWrapper = styled.div<{fullScreen: boolean}>`
-  display: ${({ fullScreen }) => fullScreen ? "flex" : "none"};
-  
-  @media screen and (max-width: 900px) and (orientation : landscape) {
+const ChatWrapper = styled.div<{ fullScreen: boolean }>`
+  display: ${({ fullScreen }) => (fullScreen ? "flex" : "none")};
+
+  @media screen and (max-width: 900px) and (orientation: landscape) {
     display: flex;
   }
 
-  @media screen and (max-width: 480px) and (orientation : portrait) {
+  @media screen and (max-width: 480px) and (orientation: portrait) {
     display: flex;
   }
 `
@@ -205,7 +228,7 @@ const Tooltip = styled.div`
   z-index: 3;
 `
 
-const ChatIconButton = styled(Tooltip)<{visibility: boolean}>`
+const ChatIconButton = styled(Tooltip)<{ visibility: boolean }>`
   width: 56px;
   height: 40px;
   right: 16px;
@@ -232,7 +255,7 @@ const ChatIcon = styled(Icon).attrs({ name: "chat" })`
 
 const WasNotConnected = styled(Tooltip)``
 const NotConnected = styled(Tooltip)``
-const TimeTooltip = styled(Tooltip)<{visibility: boolean}>`
+const TimeTooltip = styled(Tooltip)<{ visibility: boolean }>`
   &[data-terminate="true"] {
     background: rgba(255, 107, 0, 1);
   }
@@ -243,7 +266,7 @@ const TimeTooltip = styled(Tooltip)<{visibility: boolean}>`
   }
 `
 
-const Header = styled.div<{visibility: boolean}>`
+const Header = styled.div<{ visibility: boolean }>`
   z-index: 10;
   opacity: ${({ visibility }) => (visibility ? "1" : "0")};
   transition: opacity 0.5s ease;
@@ -257,7 +280,7 @@ const Header = styled.div<{visibility: boolean}>`
   width: 100%;
 `
 
-const Footer = styled.div<{visibility: boolean}>`
+const Footer = styled.div<{ visibility: boolean }>`
   z-index: 10;
   opacity: ${({ visibility }) => (visibility ? "1" : "0")};
   display: flex;
@@ -323,7 +346,7 @@ const MyUserVideo = styled.div`
   background: #dbdee0;
   z-index: 2;
   transition: bottom 300ms;
-  
+
   &[data-user-activity="false"] {
     bottom: 15px !important;
   }
@@ -441,18 +464,16 @@ const IconFullScreenContainer = styled.div`
 
 const ToggleVideo = styled(ActionIcon).attrs(({ active, permission }: ActionIconTypes) => {
   if (permission) {
-    return { name: active ? "enabled-video" : "disabled-video", }
-  }
-  else {
-    return { name: "no-cam-permission", }
+    return { name: active ? "enabled-video" : "disabled-video" }
+  } else {
+    return { name: "no-cam-permission" }
   }
 })<ActionIconTypes>``
 const ToggleMicro = styled(ActionIcon).attrs(({ active, permission }: ActionIconTypes) => {
   if (permission) {
-    return { name: active ? "enabled-micro" : "disabled-micro", }
-  }
-  else {
-    return { name: "no-mic-permission", }
+    return { name: active ? "enabled-micro" : "disabled-micro" }
+  } else {
+    return { name: "no-mic-permission" }
   }
 })<ActionIconTypes>``
 const ToggleFullscreen = styled(ActionIcon).attrs(({ active }: ActionIconTypes) => ({
@@ -496,7 +517,7 @@ const TimeLeft = styled.div`
 `
 
 const fullscreenCSS = css`
-  position: absolute;      
+  position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
@@ -507,11 +528,11 @@ const fullscreenCSS = css`
   ${Tooltip} {
     max-width: 259px;
   }
-  
+
   ${ChatIconButton} {
     display: flex;
   }
-  
+
   ${SessionChatContainer} {
     display: block;
   }
@@ -534,7 +555,7 @@ const fullscreenCSS = css`
   ${Footer} {
     height: 84px;
   }
-  
+
   ${User} {
     display: flex;
   }
@@ -590,7 +611,7 @@ const fullscreenCSS = css`
     }
   }
 
-  @media screen and (max-width: 480px) and (orientation : portrait) {
+  @media screen and (max-width: 480px) and (orientation: portrait) {
     ${MyUserVideoPlaceholder},
     ${MyUserVideo} {
       top: unset;
@@ -625,41 +646,40 @@ const Container = styled.div`
   &[data-fullscreen="true"] {
     ${fullscreenCSS}
   }
-  
+
   &[data-fullscreen="false"] {
-    ${WasNotConnected}{
+    ${WasNotConnected} {
       top: 0;
     }
 
-    ${NotConnected}{
+    ${NotConnected} {
       top: 0;
     }
-    
-    ${TimeTooltip}{
+
+    ${TimeTooltip} {
       top: 0;
       width: 160px;
       height: 26px;
     }
 
-    ${TimeLeft}{
+    ${TimeLeft} {
       font-size: 12px;
       line-height: 18px;
     }
-    
-    ${Footer}{
+
+    ${Footer} {
       padding: 0;
     }
-    
   }
-  
-  @media screen and (max-width: 900px) and (orientation : landscape) {
-  ${fullscreenCSS}
-    
+
+  @media screen and (max-width: 900px) and (orientation: landscape) {
+    ${fullscreenCSS}
+
     ${ToggleFullscreen} {
       display: none;
     }
     ${IconFullScreenContainer} {
-    display: none;
+      display: none;
     }
     ${Actions} {
       bottom: calc(12vh + 16px);
@@ -667,18 +687,18 @@ const Container = styled.div`
     ${MyUserVideoPlaceholder},
     ${MyUserVideo} {
       width: 120px;
-      height: 80.36px;      
+      height: 80.36px;
     }
   }
-  
-  @media screen and (max-width: 480px) and (orientation : portrait) {
+
+  @media screen and (max-width: 480px) and (orientation: portrait) {
     ${fullscreenCSS}
-    
+
     ${ToggleFullscreen} {
       display: none;
     }
     ${IconFullScreenContainer} {
-    display: none;
+      display: none;
     }
     ${Actions} {
       bottom: 16px;
@@ -686,7 +706,7 @@ const Container = styled.div`
     ${MyUserVideoPlaceholder},
     ${MyUserVideo} {
       width: 120px;
-      height: 80.36px;      
+      height: 80.36px;
     }
   }
 
@@ -724,7 +744,7 @@ const Container = styled.div`
     }
   `}
   }
-  
+
   &[data-interlocutor-is-connected="true"] {
     ${TimeTooltip} {
       display: flex;
@@ -748,13 +768,12 @@ const Container = styled.div`
       top: 72px;
       display: flex;
     }
-    
+
     ${MediaRange.lessThan("mobile")`
     ${WasNotConnected} {
       top: 30px;
       display: flex;
     }
   `}
-    
   }
 `

@@ -56,14 +56,15 @@ const Success = () => {
       <Description>
         При подтверждении или отклонении запрос{`${pluralize("ов", "а")}`} коучем мы оповестим вас по email
       </Description>
-      <CoachContainer>
-        <Link to={routeNames.searchCoachPage(`${bookedSessions[0].coach.id}`)}>
+      <Link to={routeNames.searchCoachPage(`${bookedSessions[0].coach.id}`)} onClick={() => toggle()}>
+        <CoachContainer>
           <StyledAvatar src={bookedSessions[0].coach.avatar} />
-        </Link>
-        <Name>
-          {bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}
-        </Name>
-      </CoachContainer>
+          <Name>
+            {bookedSessions[0].coach.firstName} {bookedSessions[0].coach.lastName}
+          </Name>
+        </CoachContainer>
+      </Link>
+
       {useList($bookedSessions, session => (
         <StyledSessionItem {...session} />
       ))}

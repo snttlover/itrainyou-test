@@ -25,6 +25,30 @@ export const AppStyles = createGlobalStyle`
     user-select: none;
   }
 
+  // hide picture in picture firefox 
+  .pip-expanded, .pip-small, .pip-icon, .pip-explainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display :block;
+  }
+
+  // hide safari play button agora 
+  *::-webkit-media-controls-panel {
+    display: none!important;
+    -webkit-appearance: none;
+  }
+
+  *::-webkit-media-controls-play-button {
+    display: none!important;
+    -webkit-appearance: none;
+  }
+
+  *::-webkit-media-controls-start-playback-button {
+    display: none!important;
+    -webkit-appearance: none;
+  }
+
   @keyframes pulse {
     0% {
       transform: scale(1);
