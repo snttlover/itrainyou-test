@@ -347,7 +347,8 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
-  const activeTab = useStore(props.sessionsData.tabs.$durationTab).duration
+  const activeDurationTab = useStore(props.sessionsData.tabs.$durationTab)
+  const activeTab = activeDurationTab.duration ? activeDurationTab.duration : activeDurationTab
 
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
@@ -360,6 +361,7 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
   const navigate = useEvent(navigatePush)
 
   const enabledDates = sessions.map(session => session.startDatetime)
+
   useEffect(() => {
     if (!props.preSelectedDate) {
       changeCurrentDate((prevState) => {
@@ -371,20 +373,21 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
     }
   }, [enabledDates[0]])
 
-  useMemo(() => {
-    const dayJsDate = date(startDate);
-    const firstMonthDay = new Date(dayJsDate.year(), dayJsDate.month(), 1);
-    const lastMonthDay = new Date(dayJsDate.year(), dayJsDate.month() + 1, 0);
+
+  const loadPage = (duration: DurationType) => {
+    const dayJsDate = date(startDate)
+    const firstMonthDay = new Date(dayJsDate.year(), dayJsDate.month(), 1)
+    const lastMonthDay = new Date(dayJsDate.year(), dayJsDate.month() + 1, 0)
     changeActiveTab({
-      duration: activeTab,
+      duration: duration,
       params: {
         start_date__gte: date(firstMonthDay).format("YYYY-MM-DD"),
         start_date__lte: date(lastMonthDay).format("YYYY-MM-DD"),
       },
     })
-    console.log('activeTab: ', activeTab);
-  }, [startDate])
+  }
 
+  useMemo(()=>loadPage(activeTab), [startDate])
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(
@@ -400,18 +403,7 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
     true,
   ).format(equalDateFormat)
 
-  if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) {
-    const dayJsDate = date(startDate);
-    const firstMonthDay = new Date(dayJsDate.year(), dayJsDate.month(), 1);
-    const lastMonthDay = new Date(dayJsDate.year(), dayJsDate.month() + 1, 0);
-    changeActiveTab({
-      duration: tabs[0].key,
-      params: {
-        start_date__gte: date(firstMonthDay).format("YYYY-MM-DD"),
-        start_date__lte: date(lastMonthDay).format("YYYY-MM-DD"),
-      },
-    })
-  }
+  if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) loadPage(tabs[0].key)
 
   const times = sessions
     .filter(session => {
@@ -433,16 +425,7 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
   const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
 
   const changeTabHandler = (durationType: DurationType) => {
-    const dayJsDate = date(startDate);
-    const firstMonthDay = new Date(dayJsDate.year(), dayJsDate.month(), 1);
-    const lastMonthDay = new Date(dayJsDate.year(), dayJsDate.month() + 1, 0);
-    changeActiveTab({
-      duration: durationType,
-      params: {
-        start_date__gte: date(firstMonthDay).format("YYYY-MM-DD"),
-        start_date__lte: date(lastMonthDay).format("YYYY-MM-DD"),
-      },
-    })
+    loadPage(durationType)
     changeCurrentDate(null)
   }
 

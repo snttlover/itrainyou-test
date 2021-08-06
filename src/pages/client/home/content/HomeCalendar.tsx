@@ -256,7 +256,7 @@ type FreeSessionTypes = {
     loading: Store<boolean>
     loadData: Event<{
       id?: number
-      params: GetCoachSessionsParamsTypes
+      params?: GetCoachSessionsParamsTypes
     }>
     sessionsList: Store<any[]>
     toggleSession: Event<any>
