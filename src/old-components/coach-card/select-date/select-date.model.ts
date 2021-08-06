@@ -267,13 +267,13 @@ export const genCoachSessions = (id = 0, onlyFreeSessions = false) => {
   sample({
     clock: changeDurationTab,
     source: combine({ durationTab: $durationTab, coachId: $id }),
-    fn: ({ durationTab, coachId }) => {console.log(durationTab);return {
+    fn: ({ durationTab, coachId }) => ({
       id: coachId,
       params: {
         duration_type: durationTab.duration,
         ...durationTab.params
       },
-    }},
+    }),
     target: loadCoachSessions,
   })
 
