@@ -4,7 +4,6 @@ import { Coach, getRecommendations } from "@/lib/api/coach"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 import { keysToCamel } from "@/lib/network/casing"
-import { loginFx } from "@/pages/auth/pages/login/login.model"
 
 export const STORAGE_KEY = "show_informer"
 
@@ -94,12 +93,6 @@ sample({
 forward({
   from: [homePageMounted, freeSessionsPageMounted],
   to: [loadActiveSessionsFx, loadUpcomingSessionsFx, loadMore, getMyUserFx],
-})
-
-
-forward({
-  from: loginFx.done,
-  to: getMyUserFx,
 })
 
 forward({

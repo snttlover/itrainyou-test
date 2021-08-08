@@ -4,6 +4,7 @@ import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { clientStarted } from "@/lib/effector"
 import { changeToken } from "@/lib/network/token"
 import { restoreState, runInScope } from "@/scope"
+import { requestModule } from "@/shared/api/common/request"
 import Cookies from "js-cookie"
 import * as React from "react"
 import ReactDOM from "react-dom"
@@ -39,6 +40,7 @@ if (config.ENVIRONMENT === "local" && config.DEBUG === "1") {
   enableDebugger()
 }
 
+requestModule.setBaseUrl(config.BACKEND_URL)
 const token = sessionToken.get()
 runInScope(changeToken, token)
 runInScope(changeDashboardType, Cookies.get("dashboard") as DashboardType)
