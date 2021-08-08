@@ -1,5 +1,5 @@
 import { createEffect, Effect, root } from "effector-root"
-import { createApiEffectCaller } from "../api"
+import { createHttpRequestEffect } from "../create-http-request-effect"
 import { RequestParams, Response } from "../request"
 import { allSettled, fork } from "effector/fork"
 
@@ -18,16 +18,16 @@ describe("createApiEffectCaller", () => {
     requestHandler.mockResolvedValue({ body: 1 })
     const testApiDoneBodyMainFxHandler = jest.fn()
 
-    const requestOptions = (str: string) => ({
+    const requestOptions = (str: string): RequestParams => ({
       url: `/test/api/${str}`,
       method: "GET"
     })
 
     const param = "test"
 
-    const testApi = createApiEffectCaller({
+    const testApi = createHttpRequestEffect({
       requestFx,
-      requestMapper: (a: string) => requestOptions(a)
+      requestMapper: requestOptions
     })
     testApi.fx.watch(testApiDoneBodyMainFxHandler)
 
@@ -48,7 +48,7 @@ describe("createApiEffectCaller", () => {
     requestHandler.mockResolvedValue({ body: { field: 1 } })
     const testApiDoneBodyClonedFxHandler = jest.fn()
 
-    const testApi = createApiEffectCaller({
+    const testApi = createHttpRequestEffect({
       requestFx,
       requestMapper: () => ({
         url: "/test/api",
@@ -71,7 +71,7 @@ describe("createApiEffectCaller", () => {
     requestHandler.mockRejectedValue({ body: { errorCode: 1 } })
     const testApiFailBodyClonedFxHandler = jest.fn()
 
-    const testApi = createApiEffectCaller({
+    const testApi = createHttpRequestEffect({
       requestFx,
       requestMapper: () => ({
         url: "/test/api",

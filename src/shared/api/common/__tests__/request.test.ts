@@ -68,4 +68,51 @@ describe("request module", () => {
       url: `${baseUrl}${requestParams.url}`
     })
   })
+
+  test("should add headers and passing it to request handler", async () => {
+    const scope = fork(domain, {
+      handlers: new Map().set(module.__requestFx, requestHandlerMock)
+    })
+
+    await allSettled(module.addDefaultHeaders, {
+      scope,
+      params: headers
+    })
+
+    await allSettled(module.requestFx, {
+      scope,
+      params: requestParams
+    })
+
+    expect(requestHandlerMock).toBeCalledWith({
+      ...requestParams,
+      headers: headers
+    })
+  })
+
+  test("should delete headers", async () => {
+    const scope = fork(domain, {
+      handlers: new Map().set(module.__requestFx, requestHandlerMock)
+    })
+
+    await allSettled(module.setDefaultHeaders, {
+      scope,
+      params: {...headers, "other": "1"}
+    })
+
+    await allSettled(module.deleteDefaultHeaders, {
+      scope,
+      params: headers
+    })
+
+    await allSettled(module.requestFx, {
+      scope,
+      params: requestParams
+    })
+
+    expect(requestHandlerMock).toBeCalledWith({
+      ...requestParams,
+      headers: {"other": "1"}
+    })
+  })
 })

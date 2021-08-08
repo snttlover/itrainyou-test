@@ -15,13 +15,13 @@ interface ApiEffect<PARAMS, DONE, FAIL> extends RequestEffect<PARAMS, DONE, FAIL
 
 const getBody = <T>({ body }: Response<T>) => body
 
-export const createApiEffectCaller = <PARAMS = void, DONE = void, FAIL = void>(options: Options<PARAMS, DONE, FAIL>) => {
+export const createHttpRequestEffect = <PARAMS = void, DONE = void, FAIL = void>(options: Options<PARAMS, DONE, FAIL>) => {
   const requestFx = options.requestFx || requestModule.requestFx
 
   const fx = attach<PARAMS, RequestEffect<RequestParams, DONE, FAIL>>({
     effect: requestFx,
     mapParams: options.requestMapper
-  }) as unknown as ApiEffect<PARAMS, DONE, FAIL>
+  }) as ApiEffect<PARAMS, DONE, FAIL>
 
   fx.doneBody = fx.doneData.map(getBody)
   fx.failBody = fx.failData.map(getBody)
@@ -29,7 +29,7 @@ export const createApiEffectCaller = <PARAMS = void, DONE = void, FAIL = void>(o
   const clone = (): ApiEffect<PARAMS, DONE, FAIL> => {
     const clonedFx = attach({
       effect: fx
-    }) as unknown as ApiEffect<PARAMS, DONE, FAIL>
+    }) as ApiEffect<PARAMS, DONE, FAIL>
 
     clonedFx.doneBody = clonedFx.doneData.map(getBody)
     clonedFx.failBody = clonedFx.failData.map(getBody)
@@ -42,4 +42,3 @@ export const createApiEffectCaller = <PARAMS = void, DONE = void, FAIL = void>(o
     fx
   }
 }
-

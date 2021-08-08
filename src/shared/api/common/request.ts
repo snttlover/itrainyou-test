@@ -4,14 +4,15 @@ import { setPayload } from "@/shared/lib/reducers"
 import { PrimitiveType } from "@/shared/lib/types"
 
 type BodyObject = Record<string, PrimitiveType | PrimitiveType[]>
-type Body = BodyObject | BodyObject[]
+type RequestBody = BodyObject | BodyObject[]
 
 type RequestHeaders = Record<string, string>
+type RequestMethod = "GET" | "POST" | "PUT" | "DELETE"
 
 export type RequestParams = {
   url: string;
-  method: string;
-  body?: BodyInit | Body;
+  method: RequestMethod;
+  body?: BodyInit | RequestBody;
   query?: Record<string, string>;
   headers?: RequestHeaders;
 };
@@ -69,8 +70,22 @@ export const createRequestModule = (options?: CreateRequestModule) => {
     .on(setBaseUrl, setPayload)
 
   const setDefaultHeaders = createEvent<RequestHeaders>()
+  const addDefaultHeaders = createEvent<RequestHeaders>()
+  const deleteDefaultHeaders = createEvent<RequestHeaders>()
+
   const $defaultHeaders = createStore<RequestHeaders>({})
     .on(setDefaultHeaders, setPayload)
+    .on(addDefaultHeaders, (defaultHeaders, headersForAdding) => ({
+      ...defaultHeaders,
+      ...headersForAdding
+    }))
+    .on(deleteDefaultHeaders, (defaultHeaders, headersForAdding) => {
+      const headers = {...defaultHeaders}
+      for (const headerKey in headersForAdding) {
+        delete headers[headerKey]
+      }
+      return headers
+    })
 
   const __requestFx = createEffect<RequestParams, Response, Response>(request)
 
@@ -97,6 +112,8 @@ export const createRequestModule = (options?: CreateRequestModule) => {
   })
 
   return {
+    addDefaultHeaders,
+    deleteDefaultHeaders,
     setDefaultHeaders,
     setBaseUrl,
     __requestFx,
