@@ -4,7 +4,11 @@ import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import { Button } from "@/old-components/button/normal/Button"
 import { Dialog } from "@/old-components/dialog/Dialog"
-import { togglePermissionGrantedModal, $permissionGrantedModalVisibility, $modalInfo } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
+import {
+  togglePermissionGrantedModal,
+  $permissionGrantedModalVisibility,
+  $modalInfo,
+} from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { Icon } from "@/old-components/icon/Icon"
 
 type ListItemType = {
@@ -13,17 +17,21 @@ type ListItemType = {
   action: string | null
 }
 
-const StyledListItem: React.FC<ListItemType> = ({ text, link, action}) => {
-  const [showed,setShowed] = useState(true)
+const StyledListItem: React.FC<ListItemType> = ({ text, link, action }) => {
+  const [showed, setShowed] = useState(true)
 
   useEffect(() => {
-    if (!navigator.userAgent || navigator.userAgent.indexOf("Edg") != -1 || navigator.userAgent.indexOf("YaBrowser") != -1) {
-      setShowed(false) 
+    if (
+      !navigator.userAgent ||
+      navigator.userAgent.indexOf("Edg") != -1 ||
+      navigator.userAgent.indexOf("YaBrowser") != -1
+    ) {
+      setShowed(false)
     }
   }, [])
 
   const handleOnClick = () => {
-    if (!!action) {
+    if (action) {
       if ((navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR")) != -1) {
         window.open("https://help.opera.com/ru/latest/web-preferences/#Управление-доступом-к-камере")
       } else if (navigator.userAgent.indexOf("Chrome") != -1) {
@@ -46,8 +54,12 @@ const StyledListItem: React.FC<ListItemType> = ({ text, link, action}) => {
         <MarkerIcon />
         <ItemText>
           {text}
-          <br/>
-          {!!link && showed && <StyledLink active={action} onClick={handleOnClick}>{link}</StyledLink>}
+          <br />
+          {!!link && showed && (
+            <StyledLink active={action} onClick={handleOnClick}>
+              {link}
+            </StyledLink>
+          )}
         </ItemText>
       </Item>
     </ItemWrapper>
@@ -60,30 +72,34 @@ export const NoPermissionGrantedDialog = () => {
   const info = useStore($modalInfo)
 
   const list = [
-    {text: `запрещен доступ к ${info === "video" ? "камере" : "микрофону"} в браузере`,link: `Как включить ${info === "video" ? "камеру" : "микрофон"}`, action: "redicrect"},
-    {text: `запрещен доступ к ${info === "video" ? "камере" : "микрофону"} в настройках компьютера`,link: `После разрешения доступа к ${info === "video" ? "камере" : "микрофону"} перезагрузите страницу`, action: null},
-    {text: `${info === "video" ? "камера" : "микрофон"} неисправ${info === "video" ? "на" : "ен"}`,link: null, action: null},
-    {text: `нет ${info === "video" ? "камеры" : "микрофона"} в компьютере`,link: null, action: null},
+    {
+      text: `запрещен доступ к ${info === "video" ? "камере" : "микрофону"} в браузере`,
+      link: `Как включить ${info === "video" ? "камеру" : "микрофон"}`,
+      action: "redicrect",
+    },
+    {
+      text: `запрещен доступ к ${info === "video" ? "камере" : "микрофону"} в настройках компьютера`,
+      link: `После разрешения доступа к ${info === "video" ? "камере" : "микрофону"} перезагрузите страницу`,
+      action: null,
+    },
+    {
+      text: `${info === "video" ? "камера" : "микрофон"} неисправ${info === "video" ? "на" : "ен"}`,
+      link: null,
+      action: null,
+    },
+    { text: `нет ${info === "video" ? "камеры" : "микрофона"} в компьютере`, link: null, action: null },
   ]
 
   return (
     <StyledDialog value={visibility} onChange={toggle}>
       <ModalWrapper>
         <Container>
-          <Header>
-            {info === "video" ? "Нет доступа к камере" : "Нет доступа к микрофону"}
-          </Header>
-          <Description>
-              Посмотрите на список возможных ошибок, которые могут быть:
-          </Description>
+          <Header>{info === "video" ? "Нет доступа к камере" : "Нет доступа к микрофону"}</Header>
+          <Description>Посмотрите на список возможных ошибок, которые могут быть:</Description>
           {list.map((item, index) => (
             <StyledListItem {...item} key={index} />
           ))}
-          <StyledConfirmButton
-            onClick={() => toggle()}
-          >
-              Понятно
-          </StyledConfirmButton>
+          <StyledConfirmButton onClick={() => toggle()}>Понятно</StyledConfirmButton>
         </Container>
       </ModalWrapper>
     </StyledDialog>
@@ -99,7 +115,7 @@ const StyledDialog = styled(Dialog)`
   width: 100%;
   max-width: 536px;
   padding: 24px 68px;
-    ${MediaRange.lessThan("mobile")`
+  ${MediaRange.lessThan("mobile")`
     padding: 24px 16px;
   `}
 `
@@ -113,7 +129,7 @@ const Header = styled.div`
   color: #424242;
   text-align: center;
   max-width: 500px;
-  
+
   ${MediaRange.lessThan("mobile")`
     font-size: 16px;
     line-height: 24px;
@@ -135,7 +151,7 @@ const Description = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #5B6670;
+  color: #5b6670;
   text-align: center;
   margin-top: 12px;
   margin-bottom: 24px;
@@ -153,9 +169,8 @@ const StyledLink = styled.div<{ active: string | null }>`
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
   text-decoration: underline;
-  cursor: ${({ active }) => (!!active ? "pointer" : "default")};
+  cursor: ${({ active }) => (active ? "pointer" : "default")};
 `
-
 
 const ItemText = styled.div`
   font-family: Roboto;
@@ -163,7 +178,7 @@ const ItemText = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
-  color: #5B6670;
+  color: #5b6670;
   margin-left: 8px;
 `
 
@@ -187,7 +202,7 @@ const StyledConfirmButton = styled(Button)`
   width: 100%;
   max-width: 220px;
   margin-top: 100px;
-  
+
   ${MediaRange.lessThan("mobile")`
     margin-top: 40px;
   `}
@@ -199,7 +214,7 @@ const MarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })`
   margin-top: 7px;
   width: 8px;
   height: 8px;
-  
+
   ${MediaRange.lessThan("mobile")`
     width: 7px;
     height: 7px;

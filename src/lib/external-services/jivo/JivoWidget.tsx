@@ -19,21 +19,42 @@ const mount = (id: string) => {
   return () => neighbour?.parentNode?.removeChild(script)
 }
 
+const waitForAddedNode = (callback: (jdiv: HTMLDivElement)=>void) => {
+  const body = document.querySelector("body")
+
+  new MutationObserver((_, observer) => {
+    const jdiv = document.getElementsByTagName("jdiv")[0] as HTMLDivElement
+    if (jdiv) {
+      observer.disconnect()
+      callback(jdiv)
+    }
+  }).observe(body || document, {
+    subtree: !body,
+    childList: true,
+  })
+}
+
 export const JivoWidget: React.FunctionComponent<JivoWidgetProps> = ({ id }: JivoWidgetProps) => {
   const isLoggedIn = useStore($isLoggedIn)
 
   React.useEffect(() => {
     let unmount: (() => void) | undefined
     const onLoad = () => unmount = mount(id)
-    const jdiv:HTMLDivElement | null = document.querySelector("body > jdiv")
+
     if(!isLoggedIn) {
-      if (!!jdiv) jdiv.style.display = "block"
       if (document.readyState === "complete") mount(id)
       window.addEventListener("load", onLoad)
+
+      waitForAddedNode(jdiv => {
+        jdiv.style.display = "block"
+      })
     } else {
       document.removeEventListener("load", onLoad)
       if (unmount) unmount()
-      if (!!jdiv) jdiv.style.display = "none"
+
+      waitForAddedNode(jdiv => {
+        jdiv.style.display = "none"
+      })
     }
   }, [isLoggedIn])
 

@@ -1,7 +1,11 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Icon } from "@/old-components/icon/Icon"
-import { createTestCallModule, changeCallModal, $testCallModal, testCall, $compatibility } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
+import {
+  changeCallModal,
+  $testCallModal,
+  $compatibility,
+} from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
 import { useStore, useEvent } from "effector-react"
 import { MediaRange } from "@/lib/responsive/media"
 import { Dialog } from "@/old-components/dialog/Dialog"
@@ -11,7 +15,10 @@ import { DashedButton } from "@/old-components/button/dashed/DashedButton"
 import { NotCompatibleDialog } from "@/old-components/layouts/behaviors/dashboards/call/NotCompatibleDialog"
 import { Title as Header } from "@/pages/coach/schedule/CoachSchedulePage"
 import { Informer } from "@/new-components/informer/Informer"
-
+import {
+  createTestCallModule,
+  testCall,
+} from "@/old-components/layouts/behaviors/dashboards/call/create-test-call.module"
 
 const StyledTabs = styled(Tabs)`
   display: flex;
@@ -77,7 +84,7 @@ const Description = styled.div`
   line-height: 22px;
   margin-top: 8px;
   margin-bottom: 18px;
-  color: #5B6670;
+  color: #5b6670;
 `
 
 const VideoTest = styled.div`
@@ -108,7 +115,7 @@ const NoCamText = styled.div`
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
-  color: #E1E6EA;
+  color: #e1e6ea;
   text-align: center;
 
   ${MediaRange.lessThan("mobile")`
@@ -131,19 +138,19 @@ const CameraIcon = styled(Icon).attrs({ name: "camera" })`
   margin-right: 17px;
 `
 
-const InfoContainer = styled.div<{type: "coach" | "client"}>`
+const InfoContainer = styled.div<{ type: "coach" | "client" }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
   padding: 17px 21px;
   margin-bottom: 24px;
-  margin-top: ${({ type }) => type === "client" ? "16px" : "0"};
+  margin-top: ${({ type }) => (type === "client" ? "16px" : "0")};
   cursor: pointer;
-  color: #5B6670;
+  color: #5b6670;
   max-width: 600px;
 `
 
@@ -151,7 +158,7 @@ const StyledProgressBar = styled(ProgressBar)`
   margin-top: 16px;
   margin-bottom: 24px;
   max-width: 364px;
-  
+
   ${MediaRange.lessThan("mobile")`
     max-width: 256px;
   `}
@@ -189,19 +196,23 @@ const VideoTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
 
     return (
       <Container>
-        {permission.camera ?
+        {permission.camera ? (
           <>
             <Description>Если вы видите свое изображение, значит камера работает.</Description>
             <VideoTest id='VideoTest'>
-              <VideoPlaceholder><NoCamText>Возможно проблемы с камерой</NoCamText></VideoPlaceholder>
+              <VideoPlaceholder>
+                <NoCamText>Возможно проблемы с камерой</NoCamText>
+              </VideoPlaceholder>
             </VideoTest>
           </>
-          :
+        ) : (
           <>
-            <Informer colorful backGround={"no"}>Нет доступа к видеокамере</Informer>
+            <Informer colorful backGround={"no"}>
+              Нет доступа к видеокамере
+            </Informer>
             <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к видеокамере</StyledLink>
           </>
-        }
+        )}
       </Container>
     )
   }
@@ -223,7 +234,6 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
     }, [])
 
     const handleOnClick = () => {
-
       const audioPlayer = document.getElementById("SpeakersTest")
       // @ts-ignore
       !!audioPlayer && audioPlayer.play()
@@ -247,7 +257,7 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
 
     return (
       <Container>
-        {permission.micro ?
+        {permission.micro ? (
           <>
             <Title>Микрофон</Title>
             <Description>Если вы видите зеленый индикатор, то микрофон работает хорошо</Description>
@@ -255,15 +265,18 @@ const AudioTabContainer = ($module: ReturnType<typeof createTestCallModule>) => 
             <Title>Динамик</Title>
             <Description>Если вы слышите звук, то динамик работает</Description>
             <SpeakersCheckButton onClick={handleOnClick}>Проверить динамик</SpeakersCheckButton>
-            <audio src="/speakers_test.mp3" id="SpeakersTest">
-                    Ваш браузер не поддерживает воспроизведение mp3 файлов.
+            <audio src='/speakers_test.mp3' id='SpeakersTest'>
+              Ваш браузер не поддерживает воспроизведение mp3 файлов.
             </audio>
           </>
-          :
+        ) : (
           <>
-            <Informer colorful backGround={"no"}>Нет доступа к микрофону</Informer>
+            <Informer colorful backGround={"no"}>
+              Нет доступа к микрофону
+            </Informer>
             <StyledLink onClick={handleOnLinkClick}>Как разрешить доступ к микрофону</StyledLink>
-          </>}
+          </>
+        )}
       </Container>
     )
   }
@@ -292,8 +305,7 @@ const TestCallModal = () => {
   )
 }
 
-export const CheckMediaDevices = (props: {type: "coach" | "client"}) => {
-
+export const CheckMediaDevices = (props: { type: "coach" | "client" }) => {
   const showModal = useEvent(changeCallModal)
   const toggle = useEvent(changeCallModal)
   const visibility = useStore($testCallModal)
@@ -301,7 +313,7 @@ export const CheckMediaDevices = (props: {type: "coach" | "client"}) => {
 
   return (
     <InfoContainer type={props.type} onClick={() => showModal(true)}>
-      {!compatibility ? <NotCompatibleDialog visibility={visibility} close={() => toggle(false)} /> : <TestCallModal /> }
+      {!compatibility ? <NotCompatibleDialog visibility={visibility} close={() => toggle(false)} /> : <TestCallModal />}
       <CameraIcon />
       <div>Проверьте камеру и микрофон до встречи с {props.type === "client" ? "коучем" : "клиентом"}</div>
     </InfoContainer>
