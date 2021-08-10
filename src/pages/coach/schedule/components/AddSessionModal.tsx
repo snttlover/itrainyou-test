@@ -279,7 +279,7 @@ export const AddSessionModal = () => {
   const _addWeekDaySlot = useEvent(addSlotFromModal)
 
   const date = useStore($sessionDate)
-
+  
   return (
     <StyledDialog value={visibility} onChange={onCrossClick}>
       {isLoading ? <Spinner />
@@ -300,7 +300,7 @@ export const AddSessionModal = () => {
                         startTime: value, id: item.id, duration: item.duration
                       })
                     }
-                    options={[...startTimeOptions, {label: item.startTime!, value: item.startTime!}]}
+                    options={[...startTimeOptions]}
                     placeholder='Время'
                   />
                 </SelectBoxContainer>

@@ -78,6 +78,11 @@ const Datepicker = styled.div`
   flex-direction: column;
   border-bottom: 1px solid #dbdee0;
   padding-bottom: 4px;
+
+  > div${Description} {
+    margin-bottom: 12px;
+  }
+
   ${MediaRange.between("mobile", "laptop")`
      width: 50%;
      padding-right: 20px;
@@ -180,7 +185,7 @@ const StyledDateHeader = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #424242;
-  padding-left: 12px;
+  padding-left: 19px;
   padding-top: 16px;
 
   ${MediaRange.lessThan("mobile")`

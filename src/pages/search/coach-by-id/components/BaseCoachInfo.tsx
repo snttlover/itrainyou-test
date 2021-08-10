@@ -7,13 +7,15 @@ import { getYearsCount } from "@/lib/formatting/date"
 import { MediaRange } from "@/lib/responsive/media"
 import { Block } from "@/pages/search/coach-by-id/components/common/Block"
 import { useEvent, useStore } from "effector-react"
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import { writeToCoach } from "@/feature/chat/modules/write-to-coach"
 import { $coach, $isFavourite, toggleFavourite } from "@/pages/search/coach-by-id/models/units"
 import { GrayTooltip } from "@/old-components/gray-tooltip/GrayTooltip"
 import { declOfNum } from "@/lib/formatting/numerals"
 import { CopyLinkIcon } from "@/pages/search/coach-by-id/components/CopyIcon"
+import { smartRound } from "@/lib/formatting/smartRound"
+import { Tooltip } from "@/new-components/tooltip/Tooltip"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
@@ -36,7 +38,7 @@ const UserInfo = styled.div`
   width: 100%;
 `
 
-const Name = styled.p`
+const NameWrapper = styled.p`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
@@ -47,11 +49,20 @@ const Name = styled.p`
 
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
 
   ${MediaRange.greaterThan("mobile")`        
     font-size: 20px;
     line-height: 26px;
+  `}
+`
+
+const Name = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${MediaRange.greaterThan("mobile")`        
+    flex-direction: row;
   `}
 `
 
@@ -173,6 +184,11 @@ const CopyLink = styled(CopyLinkIcon)`
   margin-left: 5px;
 `
 
+const TooltipWrapper = styled(Tooltip)`
+  align-self: flex-end;
+  margin-left: 5px;
+`
+
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($coach)
   const isFavourite = useStore($isFavourite)
@@ -184,19 +200,23 @@ export const BaseCoachInfo = styled(({ ...props }) => {
       <UserInfoWrapper>
         <StyledAvatar src={coach?.avatar!} isTopCoach={!!coach?.isTopCoach} />
         <UserInfo>
-          <Name>
-            {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-            <Year>
-              {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!), ["год", "года", "лет"])}
-            </Year>
+          <NameWrapper>
+            <Name>
+              {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
+              <Year>
+                {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!), ["год", "года", "лет"])}
+              </Year>
+            </Name>
             {/*<IsAuthed>*/}
             {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
             {/*</IsAuthed>*/}
-            <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
-          </Name>
+            <TooltipWrapper text={"Скопировать ссылку профиля"}>
+              <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
+            </TooltipWrapper>
+          </NameWrapper>
           <Rating>
             <StarIcon name='star' />
-            {coach?.rating?.toFixed(1)}
+            {smartRound(coach?.rating, ".")}
           </Rating>
           <CategoriesAndButtonContainer>
             <CategoriesContainer>

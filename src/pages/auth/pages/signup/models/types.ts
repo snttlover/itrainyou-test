@@ -16,7 +16,6 @@ export type CoachData = {
   workExperience: string
   education: string
   description: string
-  phone: string
   photos: string[]
   videoInterview: string
   inn: number | string | ""

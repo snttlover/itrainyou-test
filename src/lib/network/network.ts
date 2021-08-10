@@ -1,8 +1,8 @@
-import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { $token, logout } from "@/lib/network/token"
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
 import { attach, createEffect, forward } from "effector-root"
-import Cookies from "js-cookie"
 import { runInScope } from "@/scope"
+import { sessionToken } from "@/feature/user/session-token"
 
 export type NetworkError = AxiosError
 
@@ -38,7 +38,7 @@ forward({
 
 axios.interceptors.request.use(config => {
   if (process.env.BUILD_TARGET === "client") {
-    const token = Cookies.get(TOKEN_COOKIE_KEY)
+    const token = sessionToken.get()
     token && (config.headers["Authorization"] = `JWT ${token}`)
   }
   return config

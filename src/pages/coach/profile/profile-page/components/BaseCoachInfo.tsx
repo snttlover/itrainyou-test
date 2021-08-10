@@ -13,6 +13,7 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import { declOfNum } from "@/lib/formatting/numerals"
 import { CopyLinkIcon } from "@/pages/search/coach-by-id/components/CopyIcon"
+import { Tooltip } from "@/new-components/tooltip/Tooltip"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
@@ -30,7 +31,7 @@ const UserInfo = styled.div`
   width: 100%;
 `
 
-const Name = styled.p`
+const NameWrapper = styled.p`
   font-family: Roboto Slab;
   font-style: normal;
   font-weight: normal;
@@ -41,11 +42,20 @@ const Name = styled.p`
 
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
 
   ${MediaRange.greaterThan("mobile")`        
     font-size: 20px;
     line-height: 26px;
+  `}
+`
+
+const Name = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${MediaRange.greaterThan("mobile")`        
+    flex-direction: row;
   `}
 `
 
@@ -124,6 +134,7 @@ const CategoriesAndButtonContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+
 const UserInfoWrapper = styled.div`
   display: flex;
 `
@@ -150,9 +161,14 @@ const MobileEditButton = styled(EditButton)`
 const CopyLink = styled(CopyLinkIcon)`
   width: 24px;
   cursor: pointer;
+  position: relative;
+  z-index: 1000;
   stroke: #9aa0a6;
-  align-self: flex-end;
+`
+
+const TooltipWrapper = styled(Tooltip)`
   margin-left: 5px;
+  align-self: flex-end;
 `
 
 export const BaseCoachInfo = styled(({ ...props }) => {
@@ -163,13 +179,17 @@ export const BaseCoachInfo = styled(({ ...props }) => {
       <UserInfoWrapper>
         <StyledAvatar src={coach?.avatar!} isTopCoach={!!coach?.isTopCoach} />
         <UserInfo>
-          <Name>
-            {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-            <Year>
-              {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate), ["год", "года", "лет"])}
-            </Year>
-            <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
-          </Name>
+          <NameWrapper>
+            <Name>
+              {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
+              <Year>
+                {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate), ["год", "года", "лет"])}
+              </Year>
+            </Name>
+            <TooltipWrapper text={"Скопировать ссылку профиля"}>
+              <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
+            </TooltipWrapper>
+          </NameWrapper>
           <Rating>
             <StarIcon name='star' />
             {coach?.rating || "Мало оценок"}

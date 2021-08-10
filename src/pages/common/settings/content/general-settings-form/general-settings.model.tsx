@@ -1,22 +1,37 @@
 import { setUserData } from "@/feature/user/user.model"
 import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
-import { updateMyUser } from "@/lib/api/users/update-my-user"
+
+import { updateMyUser, UpdateMyUserResponse, UpdateMyUserResponseError } from "@/lib/api/users/update-my-user"
+
 import { createEffectorField } from "@/lib/generators/efffector"
 import { keysToCamel } from "@/lib/network/casing"
-import { emailValidator, trimString } from "@/lib/validators"
+import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
-import { combine, createEffect, createEvent, createStoreObject, forward } from "effector-root"
+import { combine, createEffect, createEvent, createStoreObject, forward, guard, merge, split } from "effector-root"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { AxiosError } from "axios"
+import {
+  finishSaveClientCardFx,
+  finishSaveCoachCardFx,
+  getPaymentIdFx, reportUnknownTypeFx
+} from "@/feature/client-funds-up/dialog/models/units"
 
 export const SettingsGate = createGate()
 
 type ResetRType = {
   email: string
+  phone: string
   timeZone: string
 }
 
-export const changeGeneralSettingsFx = createEffect({
-  handler: ({ email, timeZone }: ResetRType) => updateMyUser({ email, timeZone }),
+export const changeGeneralSettingsFx = createEffect<
+  ResetRType,
+  UpdateMyUserResponse,
+  AxiosError<UpdateMyUserResponseError>
+>({
+  handler: ({ email, phone, timeZone }) => updateMyUser({
+    email, timeZone, phone: "+"+phone.replace(/\D+/g,"")
+  })
 })
 
 export const mounted = createEvent()
@@ -41,9 +56,10 @@ const errorToast: Toast = {
   text: "Произошла ошибка при изменении профиля",
 }
 
-forward({
-  from: changeGeneralSettingsFx.fail.map(_ => errorToast),
-  to: [toasts.remove, toasts.add],
+guard({
+  source: changeGeneralSettingsFx.failData,
+  filter: (error) => !error?.response?.data?.email?.[0] && !error?.response?.data?.phone?.[0],
+  target: merge([toasts.remove.prepend(() => errorToast), toasts.add.prepend(() => errorToast)]),
 })
 
 export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffectorField<string>({
@@ -53,9 +69,26 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
   reset: SettingsGate.open,
 })
 
-const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
+  defaultValue: "",
+  validator: phoneValidator,
+  eventMapper: event => event.map(trimString),
+  reset: SettingsGate.open,
+})
 
-$email.on(userDoneData, (state, user) => user.email)
+forward({
+  from: changeGeneralSettingsFx.failData.filterMap(
+    (error) => error?.response?.data?.email?.[0] && "Данный email уже занят"
+  ),
+  to: $emailError,
+})
+
+forward({
+  from: changeGeneralSettingsFx.failData.filterMap(
+    (error) => error?.response?.data?.phone?.[0] && "Данный телефон уже занят"
+  ),
+  to: $phoneError,
+})
 
 export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -69,22 +102,29 @@ export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = 
   reset: SettingsGate.open,
 })
 
+const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
+
+$email.on(userDoneData, (state, user) => user.email)
+$phone.on(userDoneData, (state, user) => user.phone)
 $timeZone.on(userDoneData, (state, user) => user.timeZone)
 
 export const $changeGeneralSettingsForm = createStoreObject({
   email: $email,
+  phone: $phone,
   timeZone: $timeZone,
 })
 
 export const $changeGeneralSettingsFormErrors = createStoreObject({
   email: $emailError,
+  phone: $phoneError,
   timeZone: $timeZoneError,
 })
 
 export const $isGeneralSettingsFormFormValid = combine(
   $isEmailCorrect,
+  $isPhoneCorrect,
   $isTimeZoneCorrect,
-  (isEmailCorrect, isTimeZoneCorrect) => isEmailCorrect && isTimeZoneCorrect
+  (isEmailCorrect, isPhoneCorrect, isTimeZoneCorrect) => isEmailCorrect && isPhoneCorrect && isTimeZoneCorrect
 )
 
 forward({

@@ -1,16 +1,19 @@
 import { UploadMediaResponse } from "@/lib/api/media"
 import { date } from "@/lib/formatting/date"
 import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
-import { emailValidator, trimString } from "@/lib/validators"
+import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { Dayjs } from "dayjs"
-import { combine, createEffect, createEvent, createStore, forward, sample } from "effector-root"
+import { combine, createEffect, createEvent, guard, createStore, forward, sample } from "effector-root"
 import { combineEvents, spread } from "patronum"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { REGISTER_SAVE_KEY } from "@/pages/auth/pages/signup/models/types"
-import { $registerUserData, clientDataChanged, signUpPageMounted, $priceRanges } from "@/pages/auth/pages/signup/models/units"
-
+import { $registerUserData, clientDataChanged, signUpPageMounted } from "@/pages/auth/pages/signup/models/units"
+import { navigatePush } from "@/feature/navigation"
+import { routeNames } from "@/pages/route-names"
+import { updateMyUser } from "@/lib/api/users/update-my-user"
 
 export const step3FormSubmitted = createEvent()
+export const step3SetUserPhone = createEvent<string>()
 export const imageUploaded = createEvent<UploadMediaResponse>()
 export const originalAvatarUploaded = createEvent<UploadMediaResponse>()
 export const $image = createStore<UploadMediaResponse>({ id: -1, type: "IMAGE", file: "" }).on(
@@ -21,16 +24,15 @@ export const $originalAvatar = createStore<UploadMediaResponse>({ id: -1, type: 
   originalAvatarUploaded,
   (state, payload) => payload
 )
-
 const $isImageError = combine(
   $image,
   $registerUserData.map(userData => userData.type),
   (img, type) => {
     if (type === "coach" && !img.file) return "Изображение обязательно к загрузке"
-
     return null
   }
 )
+
 const $isImageCorrect = $isImageError.map(error => !error)
 
 export const toggleUploadModal = createEvent()
@@ -56,6 +58,37 @@ export const [$email, emailChanged, $emailError, $isEmailCorrect] = createEffect
     validator: obj => obj.isSocialSignupInProgress ? emailValidator(obj.value) : null,
     eventMapper: event => event.map(trimString),
   })
+
+export const [$phone, phoneChanged, $phoneError, $isPhoneCorrect] = createEffectorField<string>({
+  defaultValue: "",
+  validator: value => !!value ? phoneValidator(value) : "Поле обязательно к заполнению",
+  eventMapper: event => event.map(trimString),
+})
+
+export const setUserPhoneFx = createEffect({
+  handler: (phone: string) => updateMyUser({
+    phone: "+"+phone.replace(/\D+/g,"")
+  })
+})
+
+forward({
+  from: setUserPhoneFx.doneData,
+  to: navigatePush.prepend(() => ({ url: routeNames.signup("4") })),
+})
+
+$phoneError.on(setUserPhoneFx.fail, () => "Этот телефон занят другим пользователем")
+
+guard({
+  source: step3SetUserPhone,
+  filter: combine($isSocialSignupInProgress, (inProgress) => !inProgress),
+  target: setUserPhoneFx,
+})
+
+guard({
+  source: step3SetUserPhone,
+  filter: combine($isSocialSignupInProgress, (inProgress) => inProgress),
+  target: step3FormSubmitted,
+})
 
 export const [$lastName, lastNameChanged, $lastNameError, $isLastNameCorrect] = createEffectorField({
   defaultValue: "",
@@ -120,6 +153,7 @@ export const $step3Form = combine({
   middleName: $middleName,
   sex: $sex,
   email: $email,
+  phone: $phone,
   originalAvatar: $originalAvatar,
   priceRanges: [],
 })
@@ -135,6 +169,7 @@ sample({
     middleName: data.middleName,
     sex: data.sex,
     email: data.email,
+    phone: data.phone,
     originalAvatar: data.originalAvatar.file || null,
     priceRanges: data.priceRanges
   }),
@@ -163,6 +198,7 @@ spread({
     lastName: lastNameChanged,
     middleName: middleNameChanged,
     email: emailChanged,
+    phone: phoneChanged,
     birthDate: birthdayChanged.prepend((birthDate: string) =>
       date(birthDate, "YYYY-MM-DD").isValid() ? date(birthDate, "YYYY-MM-DD") : null
     ),
@@ -178,6 +214,7 @@ export const $step3FormErrors = combine({
   birthday: $birthdayError,
   sex: $sexError,
   email: $emailError,
+  phone: $phoneError,
   middleName: $middleNameError,
 })
 
@@ -188,6 +225,7 @@ export const $isStep3FormValid = combine(
   $isSexCorrect,
   $isImageCorrect,
   $isEmailCorrect,
+  $isPhoneCorrect,
   $isMiddleNameCorrect,
   (...args) => args.every(val => val)
 )

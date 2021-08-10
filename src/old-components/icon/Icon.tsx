@@ -113,6 +113,7 @@ export type IconName =
   | "gift-black"
   | "fb"
   | "instagram"
+  | "tooltip-arrow"
 
 type IconProps = {
   name: IconName
