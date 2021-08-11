@@ -13,7 +13,7 @@ import { Button } from "@/old-components/button/normal/Button"
 import { genSessionTabs, SelectDatetimeTypes } from "@/old-components/coach-card/select-date/SelectDatetime"
 import { Icon } from "@/old-components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
-import { DurationType } from "@/lib/api/coach-sessions"
+import { DurationType, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { Link } from "react-router-dom"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
 import { toggleCreditCardsModal } from "@/pages/search/coach-by-id/models/units"
@@ -348,7 +348,7 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
   const loading = useStore(props.sessionsData.loading)
   const buyLoading = useStore(props.sessionsData.buySessionsLoading)
   const activeDurationTab = useStore(props.sessionsData.tabs.$durationTab)
-  const activeTab = activeDurationTab.duration ? activeDurationTab.duration : activeDurationTab
+  const activeTab = activeDurationTab.duration
 
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const deleteSession = useEvent(props.sessionsData.deleteSession)
@@ -383,6 +383,7 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
       params: {
         start_date__gte: date(firstMonthDay).format("YYYY-MM-DD"),
         start_date__lte: date(lastMonthDay).format("YYYY-MM-DD"),
+        // ...data.params
       },
     })
   }
