@@ -184,78 +184,112 @@ const StyledInformer = () => {
   )
 
   switch (freeSessionsStatus) {
-    case "AWAITING_BOOK_PROMO_REQUEST":
-      header = "Вы отправили запрос на бронирование бесплатной сессии!"
-      description =
-        "За 30 минут вы сможете познакомиться с коучем, определить, над чем хотите работать и наметить дальнейшний план действий."
-      showSocials = false
+  case "AWAITING_BOOK_PROMO_REQUEST":
+    header = "Вы отправили запрос на бронирование бесплатной сессии!"
+    description = "За 30 минут вы сможете познакомиться с коучем, определить, над чем хотите работать и наметить дальнейшний план действий."
+    showSocials = false
 
-      return (
-        <InformerContainer>
-          <Informer iconName={"gift-black"} closable backGround={"no"} onCrossClick={handleOnCrossClick}>
-            <ContentOption changeColors={true} />
-          </Informer>
-        </InformerContainer>
-      )
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
 
-    case "ACTIVE_PROMO_SESSION":
-      header = "Бесплатная сессия забронирована!"
-      description =
-        "Надеемся, что все пройдет успешно! Приветственная сессия создана для знакомства с коучем и формирования вашего запроса."
-      showSocials = false
+  case "AWAITING_BOOK_PAID_REQUEST":
+    header = "Вы отправили запрос на бронирование платной сессии!"
+    description = "За 30 минут вы сможете познакомиться с коучем, определить, над чем хотите работать и наметить дальнейшний план действий."
+    showSocials = false
 
-      return (
-        <InformerContainer>
-          <Informer iconName={"gift-black"} closable backGround={"no"} onCrossClick={handleOnCrossClick}>
-            <ContentOption changeColors={true} />
-          </Informer>
-        </InformerContainer>
-      )
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
 
-    case "ACTIVE_PAID_SESSION":
-      header = "Сессия забронирована!"
-      description = "Надеемся, что все пройдет успешно!"
-      showSocials = false
+  case "ACTIVE_PROMO_SESSION":
+    header = "Бесплатная сессия забронирована!"
+    description = "Надеемся, что все пройдет успешно! Приветственная сессия создана для знакомства с коучем и формирования вашего запроса."
+    showSocials = false
 
-      return (
-        <InformerContainer>
-          <Informer iconName={"gift-black"} closable backGround={"no"} onCrossClick={handleOnCrossClick}>
-            <ContentOption changeColors={true} />
-          </Informer>
-        </InformerContainer>
-      )
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
 
-    case "AWAITING_COMPLETION_PROMO_REQUEST":
-      header = "Вы не подтвердили окончание бесплатной сессии!"
-      description = "Нам важно получить обратную связь о прошедшей сессии, чтобы совершенствоваться."
-      showSocials = false
+  case "ACTIVE_PAID_SESSION":
+    header = "Сессия забронирована!"
+    description = "Надеемся, что все пройдет успешно!"
+    showSocials = false
 
-      return (
-        <InformerContainer>
-          <Informer iconName={"gift-black"} closable backGround={"no"} onCrossClick={handleOnCrossClick}>
-            <ContentOption changeColors={true} />
-          </Informer>
-        </InformerContainer>
-      )
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
 
-    case "PROMO_LIMIT_ENDED":
-      header = "Вы исчерпали лимит бесплатных сессий на платформе."
-      description = "Предлагаем забронировать первую сессию и начать свой путь к цели!"
-      showSocials = false
+  case "AWAITING_COMPLETION_PROMO_REQUEST":
+    header = "Вы не подтвердили окончание бесплатной сессии!"
+    description = "Нам важно получить обратную связь о прошедшей сессии, чтобы совершенствоваться."
+    showSocials = false
 
-      return (
-        <InformerContainer>
-          <Informer closable backGround={"no"} onCrossClick={handleOnCrossClick}>
-            <ContentOption changeColors={true} />
-          </Informer>
-        </InformerContainer>
-      )
+    return (
+      <InformerContainer>
+        <Informer
+          iconName={"gift-black"}
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
 
-    case "NO_PROMO_AVAILABLE":
-      return null
+  case "PROMO_LIMIT_ENDED":
+    header = "Вы исчерпали лимит бесплатных сессий на платформе."
+    description = "Предлагаем забронировать первую сессию и начать свой путь к цели!"
+    showSocials = false
 
-    default:
-      return null
+    return (
+      <InformerContainer>
+        <Informer
+          closable
+          backGround={"no"}
+          onCrossClick={handleOnCrossClick} >
+          <ContentOption changeColors={true}/>
+        </Informer>
+      </InformerContainer>
+    )
+
+  case "NO_PROMO_AVAILABLE":
+    return null
+
+  default:
+    return null
   }
 }
 
