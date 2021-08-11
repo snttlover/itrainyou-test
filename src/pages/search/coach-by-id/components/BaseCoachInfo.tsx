@@ -210,7 +210,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
             {/*<IsAuthed>*/}
             {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
             {/*</IsAuthed>*/}
-            <TooltipWrapper text={"Скопировать ссылку профиля"}>
+            <TooltipWrapper text={"Скопировать ссылку профиля"} isLaptopHidden={true}>
               <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
             </TooltipWrapper>
           </NameWrapper>
