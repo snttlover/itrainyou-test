@@ -255,11 +255,14 @@ export const genCoachSessions = (id = 0, onlyFreeSessions = false) => {
     target: fetchCoachSessionsListFx,
   })
 
-  const changeDurationTab = createEvent<DurationType>()
+  const changeDurationTab = createEvent<{duration: DurationType, params: GetCoachSessionsParamsTypes}>()
 
-  const initialTabState = onlyFreeSessions ? "PROMO" : "D30"
-  const $durationTab = createStore<DurationType>(initialTabState).on(changeDurationTab, (_, payload) => payload)
+  const initialTabState = {
+    duration: onlyFreeSessions ? "PROMO" : "D30",
+    params: {},
+  }
 
+  const $durationTab = createStore<{duration: DurationType, params: GetCoachSessionsParamsTypes}>(initialTabState).on(changeDurationTab, (_, payload) => payload)
 
   sample({
     clock: changeDurationTab,
@@ -267,7 +270,8 @@ export const genCoachSessions = (id = 0, onlyFreeSessions = false) => {
     fn: ({ durationTab, coachId }) => ({
       id: coachId,
       params: {
-        duration_type: durationTab,
+        duration_type: durationTab.duration,
+        ...durationTab.params
       },
     }),
     target: loadCoachSessions,

@@ -19,7 +19,6 @@ import starIcon from "@/old-components/coach-card/images/star.svg"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
 import { changeFreeBookedSession } from "@/pages/search/content/list/content/modals/book-sessions-status-modal.model"
 
-
 type StyledTabTypes = {
   onlyOneCard: boolean
 }
@@ -257,7 +256,7 @@ type FreeSessionTypes = {
     loading: Store<boolean>
     loadData: Event<{
       id?: number
-      params: GetCoachSessionsParamsTypes
+      params?: GetCoachSessionsParamsTypes
     }>
     sessionsList: Store<any[]>
     toggleSession: Event<any>
@@ -269,7 +268,8 @@ type FreeSessionTypes = {
 
 export const HomeCalendar = (props: FreeSessionTypes) => {
   const [currentDate, changeCurrentDate] = useState<Date | null | undefined>(undefined)
-
+  const [startDate, changeActiveStartDate] = useState<Date>(new Date())
+  
   const sessions = useStore(props.freeSessionsModule.sessionsList)
   const loading = useStore(props.freeSessionsModule.loading)
   const buyLoading = useStore(props.freeSessionsModule.buySessionsLoading)
@@ -279,7 +279,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   const bulkFreeSession = useEvent(props.freeSessionsModule.bulkFreeSession)
   const changeModalInfo = useEvent(changeFreeBookedSession)
 
-
   const enabledDates = sessions.map(session => session.startDatetime)
 
   useEffect(() => {
@@ -287,9 +286,16 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
   }, [enabledDates[0]])
 
   useEffect(() => {
-    loadData({params:{}})
-  }, [])
-
+    const dayJsDate = date(startDate);
+    const firstMonthDay = new Date(dayJsDate.year(), dayJsDate.month(), 1);
+    const lastMonthDay = new Date(dayJsDate.year(), dayJsDate.month() + 1, 0);
+    loadData({
+      params: {
+        start_date__gte: date(firstMonthDay).format("YYYY-MM-DD"),
+        start_date__lte: date(lastMonthDay).format("YYYY-MM-DD"),
+      }
+    })
+  }, [startDate])
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(headerDate).format("DD MMMM")
@@ -314,7 +320,6 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
 
   const WidthCurrentDateConditionWrapper = showWithConditionWrapper(!!currentDate)
 
-
   const payForTheSessionHandler = () => {
     bulkFreeSession({session: selected[0].id, type: "BOOK"})
     changeModalInfo(selected[0])
@@ -333,6 +338,7 @@ export const HomeCalendar = (props: FreeSessionTypes) => {
               value={currentDate}
               enabledDates={enabledDates}
               onChange={changeCurrentDate}
+              changeActiveStartDate={changeActiveStartDate}
               isBig={true}
               startFrom={new Date(date(currentDate || undefined).toDate())}
             />

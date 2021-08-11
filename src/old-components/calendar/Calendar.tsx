@@ -9,7 +9,7 @@ import {
 } from "@/old-components/calendar/CalendarHeader"
 import { date } from "@/lib/formatting/date"
 import * as React from "react"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState, useMemo, useCallback} from "react"
 import styled, { css } from "styled-components"
 
 export type CalendarDateType = Date | Date[] | undefined | null
@@ -27,6 +27,7 @@ type CalendarTypes = {
   pinTo?: Date | null
   onPrevMonth?: (prevMonth: Date) => void
   onNextMonth?: (nextMonth: Date) => void
+  changeActiveStartDate?: (value: Date) => void
 }
 
 const ReactCalendar: CalendarTypes | any = require("react-calendar").Calendar
@@ -164,13 +165,9 @@ const isEqualDates = (first: Date, second: Date, format = equalFormat) =>
   date(first).format(format) === date(second).format(format)
 
 export const Calendar = (props: CalendarTypes) => {
-  const [startDate, changeActiveStartDate] = useState(new Date())
-
-  useEffect(() => {
-    if (props.startFrom && date().format(equalFormat) === date(startDate).format(equalFormat)) {
-      changeActiveStartDate(props.startFrom)
-    }
-  }, [props.startFrom])
+  const [startDate, changeActiveStartDate] = useState<Date>(new Date())
+  
+  useMemo(()=> props.changeActiveStartDate ? props.changeActiveStartDate(startDate) : null, [startDate])
 
   const pinnedDefined = !!props.pinnedDates
   const enabledDefined = !!props.enabledDates

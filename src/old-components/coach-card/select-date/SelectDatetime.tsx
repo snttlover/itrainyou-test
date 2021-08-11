@@ -13,7 +13,7 @@ import { CoachSessionWithSelect } from "@/old-components/coach-card/select-date/
 import { Coach } from "@/lib/api/coach"
 import { Spinner } from "@/old-components/spinner/Spinner"
 import { Button } from "@/old-components/button/normal/Button"
-import { DurationType } from "@/lib/api/coach-sessions"
+import { DurationType, GetCoachSessionsParamsTypes } from "@/lib/api/coach-sessions"
 import { MediaRange } from "@/lib/responsive/media"
 import { SelectCreditCardDialog } from "@/pages/search/content/list/content/modals/CoachModalBuySession"
 import { showWithConditionWrapper } from "@/lib/hoc/showWithConditionWrapper"
@@ -248,8 +248,14 @@ export type SelectDatetimeTypes = {
     toggleSession: Event<CoachSessionWithSelect>
     deleteSession: Event<number>
     tabs: {
-      $durationTab: Store<DurationType>
-      changeDurationTab: Event<DurationType>
+      $durationTab: Store<{
+        duration: DurationType,
+        params: GetCoachSessionsParamsTypes,
+      }>
+      changeDurationTab: Event<{
+        duration: DurationType,
+        params: GetCoachSessionsParamsTypes,
+      }>
     }
     buySessionsLoading: Store<boolean>
     buySessionBulk: Event<BulkBookSessionsRequest>
