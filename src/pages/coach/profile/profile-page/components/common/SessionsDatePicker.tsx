@@ -297,7 +297,7 @@ export const SessionsDatePicker = (props: SelectDatetimeTypes) => {
 
   const tabsKeys = tabs.map(tab => tab.key)
   if (!tabsKeys.includes(activeTab) && tabsKeys[0]) {
-    changeActiveTab(tabsKeys[0])
+    changeActiveTab({duration: tabsKeys[0]})
   }
 
   const [currentDate, changeCurrentDate] = useState<Date | null>()
@@ -317,7 +317,7 @@ export const SessionsDatePicker = (props: SelectDatetimeTypes) => {
     }))
 
   const changeTabHandler = (durationType: DurationType) => {
-    changeActiveTab(durationType)
+    changeActiveTab({duration: durationType})
     changeCurrentDate(null)
   }
 

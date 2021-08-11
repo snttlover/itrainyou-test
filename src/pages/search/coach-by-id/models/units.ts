@@ -48,11 +48,11 @@ export const changeCoachSessionCoachId = $sessionsPickerStore.changeId.prepend<C
 export const changeCoachFreeSessionCoachId = $freeSessionsPickerStore.changeId.prepend<Coach>(coach => coach.id)
 
 export const changeCoachSessionDurationTab = $sessionsPickerStore.tabs.changeDurationTab.prepend<Coach>(
-  coach => Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
+  coach => ({duration: Object.keys(coach.prices).find(key => !!coach[key]) as DurationType})
 )
 
 export const changeCoachFreeSessionDurationTab = $freeSessionsPickerStore.tabs.changeDurationTab.prepend<Coach>(
-  _ => "PROMO"
+  _ => ({duration: "PROMO"})
 )
 
 export const toggleFavourite = createEvent()

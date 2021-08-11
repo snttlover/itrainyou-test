@@ -250,11 +250,11 @@ export type SelectDatetimeTypes = {
     tabs: {
       $durationTab: Store<{
         duration: DurationType,
-        params: GetCoachSessionsParamsTypes,
+        params?: GetCoachSessionsParamsTypes,
       }>
       changeDurationTab: Event<{
         duration: DurationType,
-        params: GetCoachSessionsParamsTypes,
+        params?: GetCoachSessionsParamsTypes,
       }>
     }
     buySessionsLoading: Store<boolean>
@@ -264,155 +264,156 @@ export type SelectDatetimeTypes = {
 }
 // ToDo: компонент не используется, т.к. каледари были убраны из карточки коуча (удалить?)
 export const SelectDatetime = (props: SelectDatetimeTypes) => {
-  const _toggleCreditCardsModal = useEvent(toggleCreditCardsModal)
-  const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
+  // const _toggleCreditCardsModal = useEvent(toggleCreditCardsModal)
+  // const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
-  const sessions = useStore(props.sessionsData.sessionsList)
-  const loading = useStore(props.sessionsData.loading)
-  const buyLoading = useStore(props.sessionsData.buySessionsLoading)
-  const activeTab = useStore(props.sessionsData.tabs.$durationTab)
-  const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
-  const bulkSession = useEvent(props.sessionsData.bulkSession)
-  const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
+  // const sessions = useStore(props.sessionsData.sessionsList)
+  // const loading = useStore(props.sessionsData.loading)
+  // const buyLoading = useStore(props.sessionsData.buySessionsLoading)
+  // const activeTab = useStore(props.sessionsData.tabs.$durationTab)
+  // const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
+  // const bulkSession = useEvent(props.sessionsData.bulkSession)
+  // const changeFreeSessionModalInfo = useEvent(changeFreeBookedSession)
 
-  const enabledDates = sessions.map(session => session.startDatetime)
+  // const enabledDates = sessions.map(session => session.startDatetime)
 
-  const navigate = useEvent(navigatePush)
+  // const navigate = useEvent(navigatePush)
 
-  const [currentDate, changeCurrentDate] = useState<Date | null>(null)
+  // const [currentDate, changeCurrentDate] = useState<Date | null>(null)
 
-  useEffect(() => {
-    changeCurrentDate(date(enabledDates[0]).toDate())
-  }, [activeTab, enabledDates[0]])
+  // useEffect(() => {
+  //   changeCurrentDate(date(enabledDates[0]).toDate())
+  // }, [activeTab, enabledDates[0]])
 
-  useEffect(() => {
-    changeActiveTab(activeTab)
-  }, [])
+  // useEffect(() => {
+  //   changeActiveTab(activeTab)
+  // }, [])
 
 
-  const formattedDate = date(currentDate || date()).format("DD MMMM")
-  const currentDateEqual = date(currentDate || date()).format(equalDateFormat)
+  // const formattedDate = date(currentDate || date()).format("DD MMMM")
+  // const currentDateEqual = date(currentDate || date()).format(equalDateFormat)
 
-  if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) {
-    changeActiveTab(tabs[0].key)
-  }
+  // if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) {
+  //   changeActiveTab(tabs[0].key as DurationType)
+  // }
 
-  const times = sessions
-    .filter(session => {
-      return date(session.startDatetime).format(equalDateFormat) === currentDateEqual
-    })
-    .map(session => ({
-      ...session,
-      start_datetime: date(session.startDatetime).format(equalTimeFormat),
-    }))
+  // const times = sessions
+  //   .filter(session => {
+  //     return date(session.startDatetime).format(equalDateFormat) === currentDateEqual
+  //   })
+  //   .map(session => ({
+  //     ...session,
+  //     start_datetime: date(session.startDatetime).format(equalTimeFormat),
+  //   }))
 
-  const selected = sessions
-    .filter(session => session.selected)
-    .map(session => ({
-      ...session,
-      date: date(session.startDatetime).format("DD.MM.YY"),
-      time: date(session.startDatetime).format(equalTimeFormat),
-    }))
+  // const selected = sessions
+  //   .filter(session => session.selected)
+  //   .map(session => ({
+  //     ...session,
+  //     date: date(session.startDatetime).format("DD.MM.YY"),
+  //     time: date(session.startDatetime).format(equalTimeFormat),
+  //   }))
 
-  const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
+  // const amount = selected.reduce((acc, cur) => acc + parseInt(cur.clientPrice), 0)
   
-  const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
+  // const WidthAmountConditionWrapper = showWithConditionWrapper(!!amount)
 
-  const payForTheSessionHandler = () => {
-    activeTab === "PROMO" ? bulkSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardsModal(true)
-    if (activeTab === "PROMO") {
-      const sessionInfo = selected[0]
-      sessionInfo.coach = props.coach
-      changeFreeSessionModalInfo(sessionInfo)
-    }
-    changeCurrentDate(null)
-  }
+  // const payForTheSessionHandler = () => {
+  //   activeTab === "PROMO" ? bulkSession({session: selected[0].id, type: "BOOK"}) : _toggleCreditCardsModal(true)
+  //   if (activeTab === "PROMO") {
+  //     const sessionInfo = selected[0]
+  //     sessionInfo.coach = props.coach
+  //     changeFreeSessionModalInfo(sessionInfo)
+  //   }
+  //   changeCurrentDate(null)
+  // }
 
-  return (
-    <>
-      <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
+  // return (
+  //   <>
+  //     <SelectCreditCardDialog coach={props.coach} sessionsData={props.sessionsData} />
 
-      {activeTab === "PROMO" ? null :
-        <StyledTabs value={activeTab} onChange={changeActiveTab}>
-          {tabs.map(tab => (
-            <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
-              <TabTime>{tab.key !== "PROMO" ? `${tab.timeInMinutes}  мин` : "ПРОМО"}</TabTime>
-              <TabPrice>/{tab.price} ₽</TabPrice>
-            </StyledTab>
-          ))}
-        </StyledTabs>}
+  //     {activeTab === "PROMO" ? null :
+  //       <StyledTabs value={activeTab} onChange={changeActiveTab}>
+  //         {tabs.map(tab => (
+  //           <StyledTab key={tab.key} value={tab.key} onlyOneCard={tabs.length === 1}>
+  //             <TabTime>{tab.key !== "PROMO" ? `${tab.timeInMinutes}  мин` : "ПРОМО"}</TabTime>
+  //             <TabPrice>/{tab.price} ₽</TabPrice>
+  //           </StyledTab>
+  //         ))}
+  //       </StyledTabs>}
 
-      <Block onlyOneCard={tabs.length === 1}>
-        {loading && <Spinner />}
-        <CalendarDirectionBlock>
-          <Datepicker>
-            {activeTab === "PROMO" ?  <Description>Выберите день</Description> : null}
-            <StyledCalendar
-              value={currentDate}
-              startFrom={new Date(date(currentDate || undefined).valueOf())}
-              enabledDates={enabledDates}
-              onChange={changeCurrentDate}
-              isBig={true}
-            />
-          </Datepicker>
+  //     <Block onlyOneCard={tabs.length === 1}>
+  //       {loading && <Spinner />}
+  //       <CalendarDirectionBlock>
+  //         <Datepicker>
+  //           {activeTab === "PROMO" ?  <Description>Выберите день</Description> : null}
+  //           <StyledCalendar
+  //             value={currentDate}
+  //             startFrom={new Date(date(currentDate || undefined).valueOf())}
+  //             enabledDates={enabledDates}
+  //             onChange={changeCurrentDate}
+  //             isBig={true}
+  //           />
+  //         </Datepicker>
 
-          <SelectTimeContainer>
-            {activeTab === "PROMO" ?  <Description>Выберите время</Description> : null}
-            <SelectDateHeader>{formattedDate}</SelectDateHeader>
+  //         <SelectTimeContainer>
+  //           {activeTab === "PROMO" ?  <Description>Выберите время</Description> : null}
+  //           <SelectDateHeader>{formattedDate}</SelectDateHeader>
 
-            <Times>
-              {times.map(session => (
-                <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>
-                  {session.start_datetime}
-                </Tag>
-              ))}
-            </Times>
+  //           <Times>
+  //             {times.map(session => (
+  //               <Tag active={session.selected} key={session.id} onClick={() => props.sessionsData.toggleSession(session)}>
+  //                 {session.start_datetime}
+  //               </Tag>
+  //             ))}
+  //           </Times>
 
-            <Divider />
+  //           <Divider />
 
-            <WidthAmountConditionWrapper>
-              <SelectedDatetimeTable>
-                <tbody>
-                  {selected.map(session => (
-                    <tr key={session.id}>
-                      <td>{session.date}</td>
-                      <TimeColumn>{session.time}</TimeColumn>
-                    </tr>
-                  ))}
-                </tbody>
-              </SelectedDatetimeTable>
-              <Text>Итого: {amount} ₽</Text>
-            </WidthAmountConditionWrapper>
-            <ButtonContainer>
-              <ButtonWrapper>
-                <IsAuthed>
-                  <StyledBuyButton
-                    disabled={buyLoading || selected.length === 0}
-                    onClick={payForTheSessionHandler}
-                  >
-                    {activeTab === "PROMO" ? "Забронировать бесплатно" : "Забронировать"}
-                  </StyledBuyButton>
-                </IsAuthed>
-                <IsGuest>
-                  <Button
-                    disabled={selected.length === 0}
-                    onClick={() => navigate({
-                      url: "/auth/signup/1",
-                      state: {
-                        coachToRedirectAfterSignUp: {
-                          coach: props.coach.id,
-                          sessions: selected
-                        }
-                      }
-                    })}>
-                    Зарегистрироваться
-                  </Button>
-                </IsGuest>
-              </ButtonWrapper>
-            </ButtonContainer>
-          </SelectTimeContainer>
-        </CalendarDirectionBlock>
-      </Block>
-    </>
-  )
+  //           <WidthAmountConditionWrapper>
+  //             <SelectedDatetimeTable>
+  //               <tbody>
+  //                 {selected.map(session => (
+  //                   <tr key={session.id}>
+  //                     <td>{session.date}</td>
+  //                     <TimeColumn>{session.time}</TimeColumn>
+  //                   </tr>
+  //                 ))}
+  //               </tbody>
+  //             </SelectedDatetimeTable>
+  //             <Text>Итого: {amount} ₽</Text>
+  //           </WidthAmountConditionWrapper>
+  //           <ButtonContainer>
+  //             <ButtonWrapper>
+  //               <IsAuthed>
+  //                 <StyledBuyButton
+  //                   disabled={buyLoading || selected.length === 0}
+  //                   onClick={payForTheSessionHandler}
+  //                 >
+  //                   {activeTab === "PROMO" ? "Забронировать бесплатно" : "Забронировать"}
+  //                 </StyledBuyButton>
+  //               </IsAuthed>
+  //               <IsGuest>
+  //                 <Button
+  //                   disabled={selected.length === 0}
+  //                   onClick={() => navigate({
+  //                     url: "/auth/signup/1",
+  //                     state: {
+  //                       coachToRedirectAfterSignUp: {
+  //                         coach: props.coach.id,
+  //                         sessions: selected
+  //                       }
+  //                     }
+  //                   })}>
+  //                   Зарегистрироваться
+  //                 </Button>
+  //               </IsGuest>
+  //             </ButtonWrapper>
+  //           </ButtonContainer>
+  //         </SelectTimeContainer>
+  //       </CalendarDirectionBlock>
+  //     </Block>
+  //   </>
+  // )
+  return null
 }

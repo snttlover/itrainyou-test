@@ -33,7 +33,7 @@ export interface CoachSessionWithSelect extends CoachSession {
 
 type RequestType = {
   id?: number
-  params: GetCoachSessionsParamsTypes
+  params?: GetCoachSessionsParamsTypes
 }
 
 // Вынес из функции genCoachSessions, чтобы можно было цепляться на этот эффект из любого места проекта,
@@ -255,14 +255,13 @@ export const genCoachSessions = (id = 0, onlyFreeSessions = false) => {
     target: fetchCoachSessionsListFx,
   })
 
-  const changeDurationTab = createEvent<{duration: DurationType, params: GetCoachSessionsParamsTypes}>()
+  const changeDurationTab = createEvent<{duration: DurationType, params?: GetCoachSessionsParamsTypes}>()
 
   const initialTabState = {
-    duration: onlyFreeSessions ? "PROMO" : "D30",
-    params: {},
+    duration: onlyFreeSessions ? "PROMO" : "D30" as DurationType,
   }
 
-  const $durationTab = createStore<{duration: DurationType, params: GetCoachSessionsParamsTypes}>(initialTabState).on(changeDurationTab, (_, payload) => payload)
+  const $durationTab = createStore<{duration: DurationType, params?: GetCoachSessionsParamsTypes}>(initialTabState).on(changeDurationTab, (_, payload) => payload)
 
   sample({
     clock: changeDurationTab,
