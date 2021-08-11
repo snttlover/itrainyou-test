@@ -201,23 +201,6 @@ const StyledInformer = () => {
       </InformerContainer>
     )
 
-  case "AWAITING_BOOK_PAID_REQUEST":
-    header = "Вы отправили запрос на бронирование платной сессии!"
-    description = "За 30 минут вы сможете познакомиться с коучем, определить, над чем хотите работать и наметить дальнейшний план действий."
-    showSocials = false
-
-    return (
-      <InformerContainer>
-        <Informer
-          iconName={"gift-black"}
-          closable
-          backGround={"no"}
-          onCrossClick={handleOnCrossClick} >
-          <ContentOption changeColors={true}/>
-        </Informer>
-      </InformerContainer>
-    )
-
   case "ACTIVE_PROMO_SESSION":
     header = "Бесплатная сессия забронирована!"
     description = "Надеемся, что все пройдет успешно! Приветственная сессия создана для знакомства с коучем и формирования вашего запроса."
