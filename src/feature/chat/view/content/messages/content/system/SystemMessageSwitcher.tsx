@@ -72,8 +72,7 @@ const getText = (
     } else if (systemMessageType === "CHOOSE_NEW_COACH") {
       return "Не подошел коуч? Забронируйте бесплатную сессию с другим"
     } else if (systemMessageType === "FREE_SESSION_LIMIT_ENDED") {
-      return <p>Вы использовали все доступные бесплатные сессии. Теперь вы знаете, над чем вам нужно работать. Найдите своего коуча <UnderLine to='/client'>здесь.</UnderLine>
-        и забронируйте платную сессию. </p>
+      return <p>Вы использовали все доступные бесплатные сессии. Теперь вы знаете, над чем вам нужно работать. Найдите своего коуча <UnderLine to='/client'>здесь</UnderLine> и забронируйте платную сессию. </p>
     }
     
   } else {
@@ -196,7 +195,7 @@ const getText = (
       }
 
       if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
-        return "Вы отправили запрос на бронирование сессии"
+        return "Вы отправили запрос на бронирование бесплатной сессии"
       }
 
       if (is("BOOK", "CANCELLED", "COMPLETED")) {
@@ -372,11 +371,11 @@ const getText = (
 
           return <p>{request.initiatorClient?.firstName} отправил{
             request.initiatorClient?.sex === "F" ? "a" : ""
-          } запрос на подтверждение <b>бесплатной</b> сессии </p>
+          } запрос на подтверждение бронирования <b>бесплатной</b> сессии </p>
         } else {
           return `${request.initiatorClient?.firstName} отправил${
             request.initiatorClient?.sex === "F" ? "a" : ""
-          } запрос на подтверждение сессии`
+          } запрос на подтверждение бронирования сессии`
         }
 
       }

@@ -17,7 +17,7 @@ import {
   homePageMounted,
   $informerShowed,
   $freeSessionsStatus,
-  STORAGE_KEY
+  STORAGE_KEY,
 } from "../home.model"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
@@ -26,6 +26,8 @@ import { Onboarding } from "@/pages/client/home/content/Onboarding"
 import { CheckMediaDevices } from "@/old-components/layouts/behaviors/dashboards/call/TestCall"
 import { Icon } from "@/old-components/icon/Icon"
 import { Informer } from "@/new-components/informer/Informer"
+import { date } from "@/lib/formatting/date"
+import { useSplittedStore } from "@/lib/effector/use-split-store"
 
 const Block = styled.div`
   position: relative;
@@ -40,6 +42,9 @@ const Title = styled.div`
   line-height: 26px;
   color: #424242;
   margin-top: 24px;
+  &:first-child {
+    margin-top: 0;
+  }
 `
 
 const ActiveSessionCard = styled(SessionCard)`
@@ -94,7 +99,7 @@ const FacebookIcon = styled(Icon).attrs({ name: "fb" })`
   width: 16px;
   height: 16px;
   cursor: pointer;
-  fill: #4858CC;
+  fill: #4858cc;
   margin-right: 12px;
 `
 
@@ -102,7 +107,7 @@ const InstagramIcon = styled(Icon).attrs({ name: "instagram" })`
   width: 16px;
   height: 16px;
   cursor: pointer;
-  fill: #4858CC;
+  fill: #4858cc;
   margin-right: 12px;
 `
 
@@ -112,28 +117,28 @@ const InformerTextContainer = styled.div`
   text-align: left;
 `
 
-const InformerHeader = styled.div<{changeColors: boolean}>`
+const InformerHeader = styled.div<{ changeColors: boolean }>`
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
   margin-bottom: 8px;
-  color: ${({ changeColors }) => changeColors ? "#424242" : "#FFFFFF"};
+  color: ${({ changeColors }) => (changeColors ? "#424242" : "#FFFFFF")};
 `
 
-const InformerDescription = styled.div<{changeColors: boolean}>`
+const InformerDescription = styled.div<{ changeColors: boolean }>`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
-  color: ${({ changeColors }) => changeColors ? "#424242" : "#FFFFFF"};
+  color: ${({ changeColors }) => (changeColors ? "#424242" : "#FFFFFF")};
 `
 
-const SocialLink = styled.a<{filledColor?: boolean}>`
+const SocialLink = styled.a<{ filledColor?: boolean }>`
   text-decoration: underline;
-  color: ${({ filledColor }) => filledColor ? "#FFFFFF" : "#4858CC"};
+  color: ${({ filledColor }) => (filledColor ? "#FFFFFF" : "#4858CC")};
   font-weight: 500;
 
   &:last-child {
@@ -163,12 +168,18 @@ const StyledInformer = () => {
       <InformerHeader changeColors>{header}</InformerHeader>
 
       <InformerDescription changeColors>{description}</InformerDescription>
-      {showSocials ?
+      {showSocials ? (
         <SocialsContainer>
-          <SocialLink href='https://instagram.com/i_trainyou'><InstagramIcon />Instagram</SocialLink>
-          <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'><FacebookIcon />Facebook</SocialLink>
+          <SocialLink href='https://instagram.com/i_trainyou'>
+            <InstagramIcon />
+            Instagram
+          </SocialLink>
+          <SocialLink href='https://www.facebook.com/iTrainYou-107404141044566/'>
+            <FacebookIcon />
+            Facebook
+          </SocialLink>
         </SocialsContainer>
-        : null}
+      ) : null}
     </InformerTextContainer>
   )
 
@@ -285,7 +296,6 @@ const StyledInformer = () => {
 export const StandardHomePage = () => {
   const [isFirstRender, setIsFirstRender] = useState(true)
   const activeSessions = useStore($activeSessions)
-  const upcomingSessions = useStore($upcomingSessions)
   const recommendations = useStore($recommendations)
   const isHasMoreRecommendations = useStore($isHasMoreRecommendations)
   const activeSessionsPending = useStore(loadActiveSessionsFx.pending)
@@ -294,76 +304,92 @@ export const StandardHomePage = () => {
   const _loadMore = useEvent(loadMore)
   const informerVisibility = useStore($informerShowed)
 
+  const upcomingSessions = useSplittedStore({
+    store: $upcomingSessions,
+    splitter: session =>
+      date().isSame(session.startDatetime, "d") ? "Сегодня" : date(session.startDatetime).format("DD MMMM"),
+  })
+
   useEffect(() => {
     _mounted()
     setIsFirstRender(false)
   }, [])
 
-  const startSession = useEvent(clientCall.methods.connectToSession)
-
-  const startSessionClickHandler = (e: React.SyntheticEvent, sessionId: number) => {
-    startSession(sessionId)
-    e.preventDefault()
-  }
-
   return (
     <>
       <ContentContainer>
         <CheckMediaDevices type={"client"} />
-        {informerVisibility && (<StyledInformer />)}
+        {informerVisibility && <StyledInformer />}
       </ContentContainer>
 
       <ContentContainer>
-        {activeSessions.length > 0 &&(
+        {activeSessions.length > 0 && (
           <Block>
-            <Title>Сессия уже началась!</Title>
+            <Title>Сессия началась</Title>
             {activeSessions.map(session => (
-              <ActiveSessionCard session={session} key={session.id}>
-                <div onClick={(e) => startSessionClickHandler(e, session.id)}>
-                  <SessionEnterButton data-slim>Зайти в сессию</SessionEnterButton>
-                  <SessionEnterText>Зайти в сессию</SessionEnterText>
-                </div>
-              </ActiveSessionCard>
+              <ActiveSessionCard
+                id={session.id}
+                aboutLink={`/client/sessions/${session.id}`}
+                avatar={session.coach.avatar}
+                name={`${session.coach.firstName} ${session.coach.lastName}`}
+                startDatetime={session.startDatetime}
+                endDatetime={session.endDatetime}
+                key={session.id}
+                inProgress
+              />
             ))}
             {activeSessionsPending && <Loader />}
           </Block>
         )}
       </ContentContainer>
 
-      {upcomingSessions.length ? (
+      {upcomingSessions.items.length ? (
         <ContentContainer>
           <Block>
-            <Title>Ближайшие сессии</Title>
-            {upcomingSessions.map(session => (
-              <TodaySessionCard session={session} key={session.id} />
-            ))}
+            {upcomingSessions.keys.map(day => {
+              return (
+                <>
+                  <Title>{day}</Title>
+                  {upcomingSessions.splitted(day).map(session => (
+                    <TodaySessionCard
+                      id={session.id}
+                      aboutLink={`/client/sessions/${session.id}`}
+                      avatar={session.coach.avatar}
+                      name={`${session.coach.firstName} ${session.coach.lastName}`}
+                      startDatetime={session.startDatetime}
+                      endDatetime={session.endDatetime}
+                      key={session.id}
+                    />
+                  ))}
+                </>
+              )
+            })}
           </Block>
         </ContentContainer>
+      ) : upcomingSessionsPending || isFirstRender ? (
+        <Loader />
+      ) : (
+        <Onboarding />
+      )}
 
-      ) :
-        (upcomingSessionsPending || isFirstRender)?
-          <Loader/> : <Onboarding/>}
-
-      {
-        !(upcomingSessionsPending || isFirstRender) &&
-              <ContentContainer>
-                <Block>
-                  <Title>Рекомендации</Title>
-                  <InfiniteScroll
-                    loader={<Loader />}
-                    next={_loadMore as any}
-                    hasMore={isHasMoreRecommendations}
-                    dataLength={recommendations.length}
-                    style={{overflow: "hidden"}}
-                  >
-                    {recommendations.map(coach => (
-                      <RecommendationCoachCard key={coach.id} coach={coach} />
-                    ))}
-                  </InfiniteScroll>
-                </Block>
-              </ContentContainer>
-      }
-
+      {!(upcomingSessionsPending || isFirstRender) && (
+        <ContentContainer>
+          <Block>
+            <Title>Рекомендации</Title>
+            <InfiniteScroll
+              loader={<Loader />}
+              next={_loadMore as any}
+              hasMore={isHasMoreRecommendations}
+              dataLength={recommendations.length}
+              style={{ overflow: "hidden" }}
+            >
+              {recommendations.map(coach => (
+                <RecommendationCoachCard key={coach.id} coach={coach} />
+              ))}
+            </InfiniteScroll>
+          </Block>
+        </ContentContainer>
+      )}
     </>
   )
 }

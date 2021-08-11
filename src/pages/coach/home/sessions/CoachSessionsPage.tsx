@@ -3,14 +3,8 @@ import { StartedSessions } from "@/pages/coach/home/sessions/content/started/Sta
 import { NewestParticipants } from "@/pages/coach/home/sessions/content/newest-participants/NewestParticipants"
 import { MediaRange } from "@/lib/responsive/media"
 import React, { useEffect, useState } from "react"
-import {
-  $coachSessionsPageLoading,
-  $isCoachScheduleFilled,
-  mounted
-} from "./coach-sessions-page.model"
-import { TodaySessions } from "@/pages/coach/home/sessions/content/today/TodaySessions"
+import { $coachSessionsPageLoading, $isCoachScheduleFilled, mounted } from "./coach-sessions-page.model"
 import { useEvent, useStore } from "effector-react"
-import { $hasTodaySessions } from "@/pages/coach/home/sessions/content/today/today-sessions.model"
 import { $hasStartedSessions } from "@/pages/coach/home/sessions/content/started/started-sessions.model"
 import { Loader } from "@/old-components/spinner/Spinner"
 import { $hasNewestParticipantsList } from "@/pages/coach/home/sessions/content/newest-participants/newest-participants.model"
@@ -22,34 +16,27 @@ import { CheckMediaDevices } from "@/old-components/layouts/behaviors/dashboards
 
 const Container = styled.div<{ nosessions: boolean }>`
   width: 100%;
-  max-width: ${({nosessions}) => nosessions ? "" : "672px"}; 
-  margin-top: 36px;
-    
+  max-width: ${({ nosessions }) => (nosessions ? "" : "672px")};
+
   ${MediaRange.lessThan("tablet")`
     margin: 0 auto;
-    margin-top: 40px;
-  `}
-
-  ${MediaRange.greaterThan("tablet")`
-    // padding: 0 16px;
   `}
 `
 
 const useSessions = () => {
-  const hasToday = useStore($hasTodaySessions)
   const hasStarted = useStore($hasStartedSessions)
   const hasNewest = useStore($hasNewestParticipantsList)
   const isFilledSchedule = useStore($isCoachScheduleFilled)
-  const noHasSessions = !hasToday && !hasStarted && !hasNewest
+  const noHasSessions = !hasStarted && !hasNewest
   const isFilledScheduleNoHasSessions = noHasSessions && isFilledSchedule
   const EmptySessionsWith = () => {
     return (
       <>
-        {!isFilledSchedule && <FillOutSchedule/>}
-        {isFilledScheduleNoHasSessions && <FilledOutNoResponses/>}
+        {!isFilledSchedule && <FillOutSchedule />}
+        {isFilledScheduleNoHasSessions && <FilledOutNoResponses />}
 
         <ContentContainer>
-          <EmptySessions/>
+          <EmptySessions />
         </ContentContainer>
       </>
     )
@@ -58,15 +45,10 @@ const useSessions = () => {
     MainSessions: () => (
       <>
         {hasStarted && <StartedSessions />}
-        {hasToday && <TodaySessions />}
         {hasNewest && <NewestParticipants />}
       </>
     ),
-    Onbordings: () => (
-      <>
-        {noHasSessions && <EmptySessionsWith />}
-      </>
-    )
+    Onbordings: () => <>{noHasSessions && <EmptySessionsWith />}</>,
   }
 }
 
@@ -75,14 +57,13 @@ export const CoachSessionsPage = () => {
   const pageLoading = useStore($coachSessionsPageLoading)
   const _mounted = useEvent(mounted)
 
-  const hasToday = useStore($hasTodaySessions)
   const hasStarted = useStore($hasStartedSessions)
   const hasNewest = useStore($hasNewestParticipantsList)
-  const noHasSessions = !hasToday && !hasStarted && !hasNewest
+  const noHasSessions = !hasStarted && !hasNewest
 
-  const {MainSessions, Onbordings} = useSessions()
+  const { MainSessions, Onbordings } = useSessions()
 
-  const showComponentOrLoader = (Component: React.FC) => (pageLoading || isFirstRender) ? <Loader/> : <Component/>
+  const showComponentOrLoader = (Component: React.FC) => (pageLoading || isFirstRender ? <Loader /> : <Component />)
 
   useEffect(() => {
     _mounted()
@@ -96,12 +77,9 @@ export const CoachSessionsPage = () => {
       </ContentContainer>
 
       {/*{showComponentOrLoader(Onbordings)}*/}
-      {!(pageLoading || isFirstRender) && <Onbordings/>}
+      {!(pageLoading || isFirstRender) && <Onbordings />}
       <ContentContainer>
-        <Container nosessions={noHasSessions}>
-
-          {showComponentOrLoader(MainSessions)}
-        </Container>
+        <Container nosessions={noHasSessions}>{showComponentOrLoader(MainSessions)}</Container>
       </ContentContainer>
     </>
   )

@@ -8,6 +8,7 @@ import { post } from "@/lib/network/network"
 export interface UserSelfData {
   id: number
   email: string
+  phone: string
   creationDatetime: ISODate
   timeZone: string
 }

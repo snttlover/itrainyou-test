@@ -1,5 +1,5 @@
 import { $lastUrlServerNavigation } from "@/feature/navigation"
-import { $token, logout, TOKEN_COOKIE_KEY } from "@/lib/network/token"
+import { $token, logout } from "@/lib/network/token"
 import { Provider } from "effector-react/ssr"
 import express from "express"
 import * as Sentry from "@sentry/node"
@@ -21,6 +21,7 @@ import { getStart, START } from "./lib/effector"
 import { Application } from "./application"
 import { ROUTES } from "./pages/routes"
 import { fixChrome88timeZone } from "@/polyfills/chrome88-dayjs-timezone-fix"
+import { TOKEN_COOKIE_KEY } from "@/feature/user/session-token"
 
 fixChrome88timeZone()
 
@@ -54,9 +55,9 @@ for (const { component } of ROUTES) {
 
     return filteredRoutes.length > 0
       ? {
-        route: filteredRoutes[0],
-        query,
-      }
+          route: filteredRoutes[0],
+          query,
+        }
       : undefined
   })
 
@@ -134,7 +135,7 @@ const cache = {}
 const CACHE_TIMEOUT = 5 * 60
 
 const cacheGet = (key: string) => {
-  if((cache[key])) {
+  if (cache[key]) {
     const isFresh = Math.round((Date.now() - cache[key].setDatetime) / 1000) < CACHE_TIMEOUT
 
     if (isFresh) return cache[key].value
@@ -144,7 +145,7 @@ const cacheGet = (key: string) => {
 const cacheSet = (key: string, value: string) => {
   cache[key] = {
     value,
-    setDatetime: Date.now()
+    setDatetime: Date.now(),
   }
 }
 
@@ -162,11 +163,10 @@ export const server = express()
     const hasCookie = !!req.cookies[TOKEN_COOKIE_KEY]
 
     if (isSSR && !hasCookie) {
-      if ((ROUTES_TO_CACHE.includes(req.url)) && (cacheGet(req.url))) {
+      if (ROUTES_TO_CACHE.includes(req.url) && cacheGet(req.url)) {
         console.log("Reading from cache")
         res.end(cacheGet(req.url))
       } else {
-
         let generatedPage
         try {
           generatedPage = await generateSSRPage(req, res)
@@ -215,14 +215,14 @@ function htmlStart(assetsCss: string, assetsJs: string, css: string) {
         <title>Itrainyou</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">     
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,600|Roboto:300,400,500,700,900&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
-        ${ config.ENVIRONMENT === "production" ? getGoogleAnalyticsTags() : ""}  
+        ${config.ENVIRONMENT === "production" ? getGoogleAnalyticsTags() : ""}  
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ""}
         <script>window.env = ${serialize(config)};</script>
         ${
-  process.env.NODE_ENV === "production"
-    ? `<script src="${assetsJs}" defer></script>`
-    : `<script src="${assetsJs}" defer crossorigin></script>`
-}
+          process.env.NODE_ENV === "production"
+            ? `<script src="${assetsJs}" defer></script>`
+            : `<script src="${assetsJs}" defer crossorigin></script>`
+        }
         ${css}
     </head>
     <body>

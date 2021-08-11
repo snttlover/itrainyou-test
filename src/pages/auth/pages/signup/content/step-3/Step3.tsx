@@ -4,6 +4,7 @@ import { Input } from "@/old-components/input/Input"
 import { AuthLayout } from "@/old-components/layouts/sections/auth/AuthLayout"
 import { MediaRange } from "@/lib/responsive/media"
 import { NextButton } from "@/pages/auth/pages/signup/components/NextButton"
+import { Spinner } from "@/old-components/spinner/Spinner"
 import { Steps } from "@/pages/auth/pages/signup/components/Steps"
 import { BirthdayFormGroup } from "@/pages/auth/pages/signup/content/step-3/BirthdayFormGroup"
 import {
@@ -12,10 +13,11 @@ import {
   $step3Form,
   $step3FormErrors,
   emailChanged,
+  phoneChanged,
   lastNameChanged,
   middleNameChanged,
   nameChanged,
-  step3FormSubmitted,
+  step3SetUserPhone,
   step3Mounted,
   toggleUploadModal
 } from "@/pages/auth/pages/signup/content/step-3/step3.model"
@@ -27,6 +29,8 @@ import styled from "styled-components"
 import { $isSocialSignupInProgress } from "@/feature/user/user.model"
 import { $registerUserData } from "@/pages/auth/pages/signup/models/units"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
+import { ToastsContainer } from "@/old-components/layouts/behaviors/dashboards/common/toasts/ToastsContainer"
+import { Informer } from "@/new-components/informer/Informer"
 
 const StyledSteps = styled(Steps)`
   ${MediaRange.greaterThan("laptop")`
@@ -115,30 +119,37 @@ const AvatarWrapper = styled.div`
 
 const AvatarHint = styled.div`
   margin-left: 30px;
-  display: none;
   flex-direction: column;
   color: #424242;
   width: 360px;
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+  `}
+`
 
-  h4 {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 16px;
-    color: #424242;
-  }
+const AvatarHintTitle = styled.h4`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #424242;
+  display: none;
+  ${MediaRange.greaterThan("mobile")`
+    display: flex;
+  `}
+`
 
-  p {
-    margin-top: 8px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 16px;
-    color: #9aa0a6;
-  }
-
+const AvatarHintText = styled.p`
+  margin-top: 8px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: #9aa0a6;
+  display: none;
+  margin-bottom: 8px;
   ${MediaRange.greaterThan("mobile")`
     display: flex;
   `}
@@ -152,15 +163,15 @@ export const Step3 = () => {
   const isUploadModalShowed = useStore($isUploadModelOpen)
   const isSocialSignupInProgress = useStore($isSocialSignupInProgress)
 
+  const _step3SetUserPhone = useEvent(step3SetUserPhone)
   const mounted = useEvent(step3Mounted)
   const _toggleUploadModal = useEvent(toggleUploadModal)
   const _nameChanged = useEvent(nameChanged)
   const _lastNameChanged = useEvent(lastNameChanged)
   const _emailChanged = useEvent(emailChanged)
-  const _step3FormSubmitted = useEvent(step3FormSubmitted)
+  const _phoneChanged = useEvent(phoneChanged)
   const _middleNameChanged = useEvent(middleNameChanged)
   const [nextDisabled, setNextDisabled] = useState(false)
-
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -168,7 +179,7 @@ export const Step3 = () => {
 
   const nextOnClick = () => {
     ymLog("reachGoal","profilesignin")
-    _step3FormSubmitted()
+    _step3SetUserPhone(values.phone)
   }
 
   useEffect(() => {
@@ -177,6 +188,8 @@ export const Step3 = () => {
 
   return (
     <AuthLayout>
+      <ToastsContainer />
+      
       <Steps activeId='1'>
         <Steps.Step id='1'>Роль</Steps.Step>
         <Steps.Step id='2'>Данные</Steps.Step>
@@ -191,8 +204,15 @@ export const Step3 = () => {
               required={userType === "coach"}
             />
             <AvatarHint>
-              <h4>Добавить фото</h4>
-              <p>Формат: jpg, png. Максимальный размер файла: 100Mb. Рекомендованный размер: 200х200 px.</p>
+              <AvatarHintTitle>Добавить фото</AvatarHintTitle>
+              <AvatarHintText>Формат: jpg, png. Максимальный размер файла: 100Mb. Рекомендованный размер: 200х200 px.</AvatarHintText>
+              <Informer
+                colorful 
+                backGround={"orange"}
+                color={"orange"}
+              >
+                Добавьте свое фото
+              </Informer>
             </AvatarHint>
           </AvatarWrapper>
           <FormItem label='Имя' error={errors.name} required>
@@ -209,8 +229,16 @@ export const Step3 = () => {
               <Input value={values.email} onChange={_emailChanged} />
             </FormItem>
           )}
+          <FormItem label='Телефон' error={errors.phone} required>
+            <Input
+              mask='+7 (111) 111-11-11'
+              placeholder='+7 (900) 000-00-00'
+              value={values.phone}
+              onChange={_phoneChanged}
+              type='tel'
+            />
+          </FormItem>
           <BirthdayFormGroup setNextDisabled={setNextDisabled} />
-
           <NextButton onClick={nextOnClick} disabled={!isFormValid || nextDisabled} />
         </Form>
       </Container>

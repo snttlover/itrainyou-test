@@ -5,7 +5,15 @@ import { patch } from "@/lib/network/network"
 
 export type UpdateMyUserRequest = {
   email?: string
+  phone?: string
   timeZone?: string
+}
+
+export type UpdateMyUserResponse = GetMyUserResponse
+
+export type UpdateMyUserResponseError = {
+  phone?: string[]
+  email?: string[]
 }
 
 export const updateMyUser = (data: UpdateMyUserRequest): Promise<GetMyUserResponse> =>

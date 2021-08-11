@@ -16,6 +16,7 @@ const Container = styled.div`
   border-radius: 2px;
   cursor: pointer;
   user-select: none;
+  border-radius: 8px;
   ${MediaRange.greaterThan("mobile")`
     padding: 24px;
     margin: 24px auto 0;
@@ -92,13 +93,25 @@ const DefaultButton = styled(Button)<{ color: string }>`
   padding: 12px 24px;
   display: block;
   background: ${({ color, theme }) => theme.colors.primary};
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
 `
 
 const StyledDashedButton = styled(DashedButton)<{ color: string }>`
-  padding: 12px 24px;
+  padding: 11.5px 24px 12.5px 24px;
   display: block;
-  border: 1px solid ${({ color, theme }) => theme.colors.primary};
   color: ${({ color, theme }) => theme.colors.primary};
+  background: #F8F8FD;
+  border: none;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+
 `
 
 type ArrowType = { reverse?: boolean }
