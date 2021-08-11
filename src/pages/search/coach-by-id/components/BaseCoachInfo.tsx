@@ -16,6 +16,7 @@ import { declOfNum } from "@/lib/formatting/numerals"
 import { CopyLinkIcon } from "@/pages/search/coach-by-id/components/CopyIcon"
 import { smartRound } from "@/lib/formatting/smartRound"
 import { Tooltip } from "@/new-components/tooltip/Tooltip"
+import { useHistory } from "react-router-dom"
 
 const StyledAvatar = styled(Avatar)<{ isTopCoach: boolean }>`
   border: 2px solid ${props => (props.isTopCoach ? "#F6C435" : "#fff")};
@@ -189,57 +190,92 @@ const TooltipWrapper = styled(Tooltip)`
   margin-left: 5px;
 `
 
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  margin-bottom: 24px;
+  cursor: pointer;
+  
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${props => props.theme.colors.primary};
+  
+  ${MediaRange.greaterThan("tablet")`
+    display: none;
+  `}
+`
+
+const GoBackIcon = styled(Icon).attrs({ name: "go-back" })`
+  height: 20px;
+  width: 20px;
+  fill: ${props => props.theme.colors.primary};
+`
+
 export const BaseCoachInfo = styled(({ ...props }) => {
   const coach = useStore($coach)
   const isFavourite = useStore($isFavourite)
   const write = useEvent(writeToCoach)
   const _toggleFavourite = useEvent(toggleFavourite)
+  const history = useHistory()
 
   return (
-    <StyledBlock inline {...props}>
-      <UserInfoWrapper>
-        <StyledAvatar src={coach?.avatar!} isTopCoach={!!coach?.isTopCoach} />
-        <UserInfo>
-          <NameWrapper>
-            <Name>
-              {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
-              <Year>
-                {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!), ["год", "года", "лет"])}
-              </Year>
-            </Name>
-            {/*<IsAuthed>*/}
-            {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
-            {/*</IsAuthed>*/}
-            <TooltipWrapper text={"Скопировать ссылку профиля"} isLaptopHidden={true}>
-              <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
-            </TooltipWrapper>
-          </NameWrapper>
-          <Rating>
-            <StarIcon name='star' />
-            {smartRound(coach?.rating, ".")}
-          </Rating>
-          <CategoriesAndButtonContainer>
-            <CategoriesContainer>
-              {coach?.isTopCoach && (
-                <GrayTooltip text={"Топ-коуч"}>
-                  <TopCoachIcon />
-                </GrayTooltip>
-              )}
-              {coach?.categories.map(cat => (
-                <GrayTooltip text={cat.name} key={cat.id}>
-                  <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
-                </GrayTooltip>
-              ))}
-            </CategoriesContainer>
-            <IsAuthed>
-              <WriteButton onClick={() => write(coach?.id || null)}>Написать</WriteButton>
-            </IsAuthed>
-          </CategoriesAndButtonContainer>
-        </UserInfo>
-      </UserInfoWrapper>
-      <IsAuthed>
-        <MobileWriteButton onClick={() => write(coach?.id || null)}>Написать</MobileWriteButton>
-      </IsAuthed>
-    </StyledBlock>
+    <>
+      <Row onClick={()=>history.goBack()} >
+        <GoBackIcon />
+        <div>Назад</div>
+      </Row>
+
+      <StyledBlock inline {...props}>
+        <UserInfoWrapper>
+          <StyledAvatar src={coach?.avatar!} isTopCoach={!!coach?.isTopCoach} />
+          <UserInfo>
+            <NameWrapper>
+              <Name>
+                {`${coach?.firstName} ${coach?.lastName}`},&nbsp;
+                <Year>
+                  {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate!), ["год", "года", "лет"])}
+                </Year>
+              </Name>
+              {/*<IsAuthed>*/}
+              {/*  <Like name={isFavourite ? "hearth-full" : "hearth"} onClick={() => _toggleFavourite()} />*/}
+              {/*</IsAuthed>*/}
+              <TooltipWrapper text={"Скопировать ссылку профиля"} isLaptopHidden={true}>
+                <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
+              </TooltipWrapper>
+            </NameWrapper>
+            <Rating>
+              <StarIcon name='star' />
+              {smartRound(coach?.rating, ".")}
+            </Rating>
+            <CategoriesAndButtonContainer>
+              <CategoriesContainer>
+                {coach?.isTopCoach && (
+                  <GrayTooltip text={"Топ-коуч"}>
+                    <TopCoachIcon />
+                  </GrayTooltip>
+                )}
+                {coach?.categories.map(cat => (
+                  <GrayTooltip text={cat.name} key={cat.id}>
+                    <Tabletka color={getCategoryColorById(cat.id)} key={cat.id} />
+                  </GrayTooltip>
+                ))}
+              </CategoriesContainer>
+              <IsAuthed>
+                <WriteButton onClick={() => write(coach?.id || null)}>Написать</WriteButton>
+              </IsAuthed>
+            </CategoriesAndButtonContainer>
+          </UserInfo>
+        </UserInfoWrapper>
+        <IsAuthed>
+          <MobileWriteButton onClick={() => write(coach?.id || null)}>Написать</MobileWriteButton>
+        </IsAuthed>
+      </StyledBlock>
+    </>
   )
 })``
