@@ -35,7 +35,7 @@ export const $sessionsPickerStore = genCoachSessions()
 
 const changeCoachSessionCoachId = $sessionsPickerStore.changeId.prepend<CoachSelfData>(coach => coach.id)
 const changeCoachSessionDurationTab = $sessionsPickerStore.tabs.changeDurationTab.prepend<CoachSelfData>(
-  coach => Object.keys(coach.prices).find(key => !!coach[key]) as DurationType
+  coach => ({duration: Object.keys(coach.prices).find(key => !!coach[key]) as DurationType})
 )
 
 sample({

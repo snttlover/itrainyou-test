@@ -291,13 +291,13 @@ const equalTimeFormat = "HH:mm"
 export const SessionsDatePicker = (props: SelectDatetimeTypes) => {
   const sessions = useStore(props.sessionsData.sessionsList)
   const loading = useStore(props.sessionsData.loading)
-  const activeTab = useStore(props.sessionsData.tabs.$durationTab)
+  const activeTab = useStore(props.sessionsData.tabs.$durationTab).duration
   const changeActiveTab = useEvent(props.sessionsData.tabs.changeDurationTab)
   const tabs = useMemo(() => genSessionTabs(props.coach), [props.coach])
 
   const tabsKeys = tabs.map(tab => tab.key)
   if (!tabsKeys.includes(activeTab) && tabsKeys[0]) {
-    changeActiveTab(tabsKeys[0])
+    changeActiveTab({duration: tabsKeys[0]})
   }
 
   const [currentDate, changeCurrentDate] = useState<Date | null>()
@@ -317,7 +317,7 @@ export const SessionsDatePicker = (props: SelectDatetimeTypes) => {
     }))
 
   const changeTabHandler = (durationType: DurationType) => {
-    changeActiveTab(durationType)
+    changeActiveTab({duration: durationType})
     changeCurrentDate(null)
   }
 
