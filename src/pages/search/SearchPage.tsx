@@ -48,7 +48,8 @@ export const SearchPage = () => {
     // Для незарегистрированных пользователей показываем только коучей с бесплатными сессиями
     if (!isLoggedIn) {
       delete query.session_duration_types
-      query["promo_and_paid_sessions"] = true
+      // query["promo_and_paid_sessions"] = true
+      query["ordering"] = "has_free_sessions"
     }
 
     setQueryParams(query)
