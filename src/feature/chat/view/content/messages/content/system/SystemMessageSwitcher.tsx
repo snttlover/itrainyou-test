@@ -63,7 +63,7 @@ const getText = (
       checkStatus(status, messageStatus)
     )
   }
-  
+
   if (!!systemMessageType) {
 
     if (systemMessageType === "BOOK_PAID_SESSION") {
@@ -192,6 +192,13 @@ const getText = (
 
       if (is("BOOK", "AUTOMATICALLY_CANCELLED", "COMPLETED")) {
         return "Запрос на бронирование был автоматически отменен, так как коуч не ответил на запрос"
+      }
+
+      if (
+        is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")
+        && request.session.durationType === "PROMO"
+      ) {
+        return "Вы отправили запрос на бронирование бесплатной сессии"
       }
 
       if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
