@@ -69,7 +69,8 @@ export const SettingsPage = () => {
           <a href='/privacy_policy.pdf' target='_blank'>Политика конфиденциальности</a>,{" "}
           <a href='/user_agreement.pdf' target='_blank'>Пользовательское соглашение</a>,{" "}
           <a href='/personal_data.pdf' target='_blank'>Политика по обработке персональных данных</a>,{" "}
-          <a href='/oferta.pdf' target='_blank'>Оферта</a>
+          <a href='/oferta.pdf' target='_blank'>Оферта</a>,{" "}
+          <a href='/contract_provision_of_services.pdf' target='_blank'>Договор возмездного оказания услуг</a>
         </AcceptionText>
       </LeftPageContainer>
     </ContentContainer>
