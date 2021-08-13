@@ -361,6 +361,7 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
   const navigate = useEvent(navigatePush)
 
   const enabledDates = sessions.map(session => session.startDatetime)
+  const dayJsDate = date(startDate)
 
   useEffect(() => {
     if (!props.preSelectedDate) {
@@ -373,22 +374,25 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
     }
   }, [enabledDates[0]])
 
-
   const loadPage = (duration: DurationType) => {
-    const dayJsDate = date(startDate)
     const firstMonthDay = new Date(dayJsDate.year(), dayJsDate.month(), 1)
     const lastMonthDay = new Date(dayJsDate.year(), dayJsDate.month() + 1, 0)
+  
     changeActiveTab({
       duration: duration,
       params: {
         start_date__gte: date(firstMonthDay).format("YYYY-MM-DD"),
         start_date__lte: date(lastMonthDay).format("YYYY-MM-DD"),
-        // ...data.params
       },
     })
   }
 
-  useMemo(()=>loadPage(activeTab), [startDate])
+  useMemo(()=>{
+    if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) {
+      return loadPage(tabs[0].key)
+    }
+    return loadPage(activeTab)
+  }, [dayJsDate.month()])
 
   const headerDate = currentDate || new Date()
   const formattedDate = date(
@@ -403,8 +407,6 @@ export const CoachDatepicker = (props: CoachDatepickerTypes) => {
     undefined,
     true,
   ).format(equalDateFormat)
-
-  if (activeTab !== "PROMO" && !props.coach.prices[activeTab] && tabs.length) loadPage(tabs[0].key)
 
   const times = sessions
     .filter(session => {
