@@ -1,5 +1,5 @@
 import "../models/init"
-
+import "../processes/auth/auth"
 import { createEvent, guard } from "effector-root"
 import { spread } from "patronum"
 import { requestModule } from "@/shared/api/common/request"
@@ -22,7 +22,7 @@ guard({
   target: [
     changeToken,
     requestModule.addDefaultHeaders.prepend((token: string) => ({
-      "Authorization": `Token ${token}`
+      "Authorization": `JWT ${token}`
     }))
   ]
 })

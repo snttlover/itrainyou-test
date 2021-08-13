@@ -9,4 +9,7 @@ export const sessionToken = {
   set(token: string) {
     Cookies.set(TOKEN_COOKIE_KEY, token, { expires: 100, path: "/" }) // 100 days
   },
+  remove() {
+    Cookies.remove(TOKEN_COOKIE_KEY)
+  }
 }

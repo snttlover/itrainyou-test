@@ -1,3 +1,6 @@
+if (process.env.BUILD_TARGET === "server") {
+  require("node-fetch")
+}
 import { createQueryString } from "@/shared/lib/query-params-utils"
 import { attach, createEffect, Effect, root, Domain } from "effector-root"
 import { setPayload } from "@/shared/lib/reducers"
@@ -71,7 +74,7 @@ export const createRequestModule = (options?: CreateRequestModule) => {
 
   const setDefaultHeaders = createEvent<RequestHeaders>()
   const addDefaultHeaders = createEvent<RequestHeaders>()
-  const deleteDefaultHeaders = createEvent<RequestHeaders>()
+  const deleteDefaultHeaders = createEvent<string | string[]>()
 
   const $defaultHeaders = createStore<RequestHeaders>({})
     .on(setDefaultHeaders, setPayload)
@@ -79,9 +82,11 @@ export const createRequestModule = (options?: CreateRequestModule) => {
       ...defaultHeaders,
       ...headersForAdding
     }))
-    .on(deleteDefaultHeaders, (defaultHeaders, headersForAdding) => {
+    .on(deleteDefaultHeaders, (defaultHeaders, headersForDeleting) => {
+      const keysForDelete = Array.isArray(headersForDeleting) ? headersForDeleting : [headersForDeleting]
+
       const headers = {...defaultHeaders}
-      for (const headerKey in headersForAdding) {
+      for (const headerKey of keysForDelete) {
         delete headers[headerKey]
       }
       return headers

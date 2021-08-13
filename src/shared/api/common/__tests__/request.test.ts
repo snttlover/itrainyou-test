@@ -102,7 +102,7 @@ describe("request module", () => {
 
     await allSettled(module.deleteDefaultHeaders, {
       scope,
-      params: headers
+      params: Object.keys(headers)
     })
 
     await allSettled(module.requestFx, {
