@@ -1,1 +1,1 @@
-export const isLiteralObject = (value: any) => value?.constructor === Object
+export const isLiteralObject = (value: any): value is object => value?.constructor === Object

@@ -9,13 +9,13 @@ export type GetMyUserResponse = {
   id: number
   client: ClientSelfData
   coach: CoachSelfData
-  email: string 
+  email: string
   phone: string
   timeZone: string
   creationDatetime: string
 }
 
-export const getMyUserFx = attach<never, Effect<any, AxiosResponse<GetMyUserResponse>>>({
+export const getMyUserFx = attach<void, Effect<any, AxiosResponse<GetMyUserResponse>>>({
   effect: authorizedRequestFx,
   mapParams: () => ({ method: "get", url: `${config.BACKEND_URL}/api/v1/web/users/me/` }),
 })

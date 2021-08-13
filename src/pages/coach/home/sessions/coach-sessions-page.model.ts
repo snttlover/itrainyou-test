@@ -7,11 +7,10 @@ import {
   getDashboardNewestParticipants,
 } from "@/lib/api/coach/get-dashboard-newest-participants"
 import { createPagination } from "@/feature/pagination"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { $userData } from "@/feature/user/user.model"
 import { createGate } from "@/scope"
-import weekday from "dayjs/plugin/weekday"
 import { $weekdaySlots } from "@/pages/coach/schedule/models/weekday-schedule.model"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 
 const resetCoachSessionList =  createEvent()
 
@@ -67,5 +66,5 @@ export const CoachHomeGate = createGate()
 
 forward({
   from: CoachHomeGate.open,
-  to: getMyUserFx
+  to: getMyUserApiFx.fx
 })

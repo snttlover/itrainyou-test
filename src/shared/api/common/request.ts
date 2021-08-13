@@ -13,7 +13,7 @@ export type RequestParams = {
   url: string;
   method: RequestMethod;
   body?: BodyInit | RequestBody;
-  query?: Record<string, string>;
+  query?: Record<string, PrimitiveType | null | undefined>;
   headers?: RequestHeaders;
 };
 
@@ -99,16 +99,14 @@ export const createRequestModule = (options?: CreateRequestModule) => {
       headers: $defaultHeaders,
       baseUrl: $baseUrl
     },
-    mapParams: (params, { headers, baseUrl }) => {
-      return {
-        ...params,
-        url: `${baseUrl}${params.url}`,
-        headers: {
-          ...headers,
-          ...params.headers
-        }
+    mapParams: (params, { headers, baseUrl }) => ({
+      ...params,
+      url: `${baseUrl}${params.url}`,
+      headers: {
+        ...headers,
+        ...params.headers
       }
-    }
+    })
   })
 
   return {

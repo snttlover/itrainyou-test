@@ -4,6 +4,7 @@ import { Effect, Event, root, Store } from "effector-root"
 import { hydrate } from "effector/fork"
 import Cookies from "js-cookie"
 import { sessionToken } from "@/feature/user/session-token"
+import { Gate } from "effector-react"
 
 type InferEventEffect<T> = T extends Event<infer U> ? U : T extends Effect<infer U, any> ? U : never
 
@@ -12,7 +13,7 @@ export const runInScope = <E extends Event<any> | Effect<any, any, any>>(unit: E
 
 export const getStoreFromScope = <R>(store: Store<R>): R => store.getState()
 
-export const createGate = <T>(defaultState?: T) => {
+export const createGate = <T>(defaultState?: T): Gate<T> => {
   const params = {
     defaultState,
     domain: root,

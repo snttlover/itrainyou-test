@@ -2,8 +2,7 @@ import { getClientSessions } from "@/lib/api/client-session"
 import { DashboardSession } from "@/lib/api/coach/get-dashboard-sessions"
 import { Coach, getRecommendations } from "@/lib/api/coach"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
-import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
-import { keysToCamel } from "@/lib/network/casing"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 
 export const STORAGE_KEY = "show_informer"
 
@@ -40,12 +39,11 @@ export const freeSessionsPageMounted = createEvent()
 
 export const loadMore = createEvent()
 
-const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
 export const $hasFreeSessions = createStore(false)
-  .on(userDoneData, (_, payload) => payload.client ? payload.client.hasFreeSessions : false)
+  .on(getMyUserApiFx.fx.doneBody, (_, payload) => payload.client ? payload.client.hasFreeSessions : false)
 
 export const $freeSessionsStatus = createStore("")
-  .on(userDoneData, (_, payload) => payload.client ? payload.client.freeSessionUnavailableReason : "")
+  .on(getMyUserApiFx.fx.doneBody, (_, payload) => payload.client ? payload.client.freeSessionUnavailableReason : "")
 
 export const $recommendations = createStore<Coach[]>([]).on(loadRecommendationsFx.doneData, (state, payload) => [
   ...state,
@@ -92,7 +90,7 @@ sample({
 
 forward({
   from: [homePageMounted, freeSessionsPageMounted],
-  to: [loadActiveSessionsFx, loadUpcomingSessionsFx, loadMore, getMyUserFx],
+  to: [loadActiveSessionsFx, loadUpcomingSessionsFx, loadMore, getMyUserApiFx.fx],
 })
 
 forward({

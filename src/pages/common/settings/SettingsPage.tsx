@@ -1,9 +1,9 @@
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 import * as React from "react"
 import styled from "styled-components"
 import { GeneralSettingsForm } from "./content/general-settings-form/GeneralSettingsForm"
 import { PasswordForm } from "./content/PasswordForm"
 import { MediaRange } from "@/lib/responsive/media"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { useStore } from "effector-react"
 import { Loader } from "@/old-components/spinner/Spinner"
 import { LeftPageContainer } from "@/pages/common/settings/content/LeftPageContainer"
@@ -53,7 +53,7 @@ const AcceptionText = styled.div`
 `
 
 export const SettingsPage = () => {
-  const pending = useStore(getMyUserFx.pending)
+  const pending = useStore(getMyUserApiFx.fx.pending)
   return (
     <ContentContainer>
       <LeftPageContainer>

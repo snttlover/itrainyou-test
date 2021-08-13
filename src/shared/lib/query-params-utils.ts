@@ -1,3 +1,5 @@
+import { PrimitiveType } from "@/shared/lib/types"
+
 interface URLSearchClass {
   new (init?: string[][] | Record<string, string> | string | URLSearchParams): URLSearchParams
 }
@@ -13,9 +15,19 @@ const parseQueryStringFactory = (URLSearch: URLSearchClass) => <T = Record<strin
   return obj
 }
 
-const createQueryStringFactory = (URLSearch: URLSearchClass) => <T extends Record<string, string>>(obj?: T): string => {
+const createQueryStringFactory = (URLSearch: URLSearchClass) => <T extends Record<string, PrimitiveType | null | undefined>>(obj?: T): string => {
   if (!obj) return ""
-  const searchParams = new URLSearch(obj)
+  const stringValuesObject: Record<string, string> = {}
+
+  for (const [key, value] of Object.entries(obj)) {
+    if (!value) {
+      continue
+    }
+
+    stringValuesObject[key] = value.toString()
+  }
+
+  const searchParams = new URLSearch(stringValuesObject)
   const searchParamsString = searchParams.toString()
 
   return searchParamsString.length > 0 ? `?${searchParamsString}` : searchParamsString

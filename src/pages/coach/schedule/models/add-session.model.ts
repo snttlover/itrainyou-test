@@ -126,14 +126,13 @@ export const $startTimeOptions = createStore([{label: "00:00", value: "00:00"}])
 
 sample({
   clock: getStartTimeOptions,
-  source: combine(
-    {
-      allTimesOptions: $allTimesOptions,
-      sessionDate: $sessionDate,
-      existedSessions: $daySessions,
-      formSessionsData: $formSessionsData,
-      formSessions: $formSessions,
-    }),
+  source: {
+    allTimesOptions: $allTimesOptions,
+    sessionDate: $sessionDate,
+    existedSessions: $daySessions,
+    formSessionsData: $formSessionsData,
+    formSessions: $formSessions,
+  },
   target: $startTimeOptions,
   fn: (
     {

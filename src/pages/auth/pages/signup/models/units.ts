@@ -9,10 +9,10 @@ import {
   UserData
 } from "@/pages/auth/pages/signup/models/types"
 import { registerAsClient, registerAsCoach } from "@/lib/api/register"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { createGate } from "@/scope"
 import { getPriceRanges, PriceRangesType } from "@/lib/api/get-price-ranges"
 import { persist } from "effector-storage/local"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 
 export const signUpPageMounted = createEvent()
 export const userTypeChanged = createEvent<RegisterUserType>()
@@ -87,10 +87,7 @@ export const registerUserFx = createEffect({
 
 export const skipCoach = createEvent()
 
-export const getMyUserDataFx = attach({
-  effect: getMyUserFx as any,
-  mapParams: () => ({})
-})
+export const getMyUserDataFx = getMyUserApiFx.clone()
 
 const event = sample({
   clock: getMyUserDataFx.done,

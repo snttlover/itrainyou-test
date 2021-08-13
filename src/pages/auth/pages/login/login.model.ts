@@ -7,7 +7,8 @@ import { routeNames } from "@/pages/route-names"
 import { combine,  createEvent, createStoreObject, forward, sample, merge } from "effector-root"
 import { userFound } from "@/pages/auth/pages/socials/models/units"
 import { loginApiFx, LoginResponse } from "@/shared/api/login"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
+import { noop } from "@/shared/lib/types"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 
 export const loginFx = loginApiFx.clone()
 
@@ -96,8 +97,8 @@ sample({
 forward({
   from: loginFxUserFoundMerged,
   to: [
-    loggedIn,
-    getMyUserFx,
+    loggedIn.prepend<{ token: string }>(({token}) => ({ token})),
+    getMyUserApiFx.fx.prepend(noop),
     setUserData.prepend((response: LoginResponse) => ({ client: response.user.client, coach: response.user.coach })),
   ],
 })
