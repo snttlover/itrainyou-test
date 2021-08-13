@@ -186,7 +186,7 @@ export const BaseCoachInfo = styled(({ ...props }) => {
                 {getYearsCount(coach?.birthDate!)} {declOfNum(getYearsCount(coach?.birthDate), ["год", "года", "лет"])}
               </Year>
             </Name>
-            <TooltipWrapper text={"Скопировать ссылку профиля"}>
+            <TooltipWrapper text={"Скопировать ссылку профиля"} isLaptopHidden={true}>
               <CopyLink link={() => `https://${window.location.hostname}/search/coach/${coach?.id}`} />
             </TooltipWrapper>
           </NameWrapper>

@@ -62,5 +62,5 @@ const LandingClientPageMarkUp = () => (
 export const LandingClientPage = withGuest({ to: "/client" })(LandingClientPageMarkUp)
 
 LandingClientPage[START] = ourCoachesModel.loadCoaches.prepend(
-  () => {return { promo_and_paid_sessions: true }}
+  () => {return { ordering: "has_free_sessions" }}
 )
