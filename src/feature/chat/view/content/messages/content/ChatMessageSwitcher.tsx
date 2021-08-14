@@ -6,8 +6,8 @@ import { ChatMessagesTypes } from "@/feature/chat/modules/chat-messages"
 import { SupportMessageSwitcher } from "@/feature/chat/view/content/messages/content/support/SupportMessageSwitcher"
 import styled from "styled-components"
 
-const StyledUnreadMessage = styled.div<{ readed: boolean}>`
-  background: ${({ readed,theme }) => readed ? "#FFFFFF" : `${theme.colors.primary}1F`} ;
+const StyledUnreadMessage = styled.div<{ readed: boolean }>`
+  background: ${({ readed, theme }) => (readed ? "transparent" : `${theme.colors.primary}1F`)};
   transition: background 0.5s ease;
   padding: 16px 24px;
   ${MediaRange.lessThan("mobile")`
@@ -17,15 +17,17 @@ const StyledUnreadMessage = styled.div<{ readed: boolean}>`
 
 export const ChatMessageSwitcher = ({
   message,
-  isSystemChat, showUser, commonSystemMessages, imageClick
+  isSystemChat,
+  showUser,
+  commonSystemMessages,
+  imageClick,
 }: {
   message: ChatMessagesTypes
   isSystemChat: boolean
-  showUser?: boolean,
+  showUser?: boolean
   commonSystemMessages?: boolean
   imageClick?: (index: number) => void
 }) => {
-
   if (message.type === "SUPPORT") {
     return (
       <StyledUnreadMessage readed={message.isReadByYou}>
@@ -58,7 +60,8 @@ export const ChatMessageSwitcher = ({
       <SystemMessageSwitcher
         message={message}
         isSystemChat={isSystemChat}
-        commonSystemMessages={commonSystemMessages} />
+        commonSystemMessages={commonSystemMessages}
+      />
     </StyledUnreadMessage>
   )
 }

@@ -34,7 +34,7 @@ export const PersonalChatHeader = (props: ChatHeaderTypes) => {
         <Link to={props.link!}>{props.name}</Link>
       </Title>
       <MobileChatHeaderMenu openMaterials={props.openMaterials} />
-      <MaterialsIcon onClick={props.openMaterials} />
+      {/*<MaterialsIcon onClick={props.openMaterials} />*/}
       {props.type === "coach" && (
         <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />
       )}
@@ -43,14 +43,9 @@ export const PersonalChatHeader = (props: ChatHeaderTypes) => {
 }
 
 const StyledAvatar = styled(Avatar)`
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   margin-right: 8px;
-  ${MediaRange.lessThan("mobile")`
-    width: 24px;
-    height: 24px;
-    margin-right: 4px;
-  `}
 `
 
 const Container = styled(ChatHeaderContainer)`

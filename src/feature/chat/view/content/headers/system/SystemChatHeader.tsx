@@ -11,7 +11,7 @@ export const SystemChatHeader = ({ backLink }: { backLink: string }) => (
   <ChatHeaderContainer>
     <MobileBackButton to={backLink} />
     <SystemChatIcon />
-    <Title>Уведомления о сессиях</Title>
+    <Title>Уведомления</Title>
   </ChatHeaderContainer>
 )
 

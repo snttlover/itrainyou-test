@@ -62,33 +62,11 @@ const MobileBackButton = styled(Icon).attrs({ name: "left-icon" })`
 
 const Container = styled.div`
   position: relative;
-  margin-left: 32px;
-  width: 280px;
-  flex-basis: 280px;
   background: #fff;
   border-radius: 2px;
   height: 100%;
-  ${MediaRange.lessThan("tablet")`
-     margin-left: 12px;
-     width: 232px;
-  `}
-  ${MediaRange.lessThan("mobile")`
-    display: none;
-    
-    &[data-show-on-mobile="true"] {
-      display: block !important;
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 100;
-      margin-left: 0 !important;
-      padding: 17px;
-      background: #F4F5F7;
-    }
-  `}
-  
+  flex-basis: 320px;
+  width: 320px;
 `
 
 const StyledTabs = styled(Tabs)`

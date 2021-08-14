@@ -86,4 +86,5 @@ const Container = styled.div`
   position: relative;
   height: 100%;
   display: flex;
+  flex: 1;
 `
