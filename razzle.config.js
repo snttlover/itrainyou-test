@@ -13,8 +13,15 @@ module.exports = {
     },
   ],
   modifyBabelOptions(options, { target }) {
-    if (target === "web") options.plugins.push("effector/babel-plugin")
-    if (target === "node") options.plugins.push(["effector/babel-plugin", { reactSsr: true }])
+    const commonEffectorBabelPluginOptions = {
+      factories: [
+        "@/lib/generators/efffector",
+        "@/shared/api/common/request",
+      ],
+    }
+
+    if (target === "web") options.plugins.push(["effector/babel-plugin", commonEffectorBabelPluginOptions])
+    if (target === "node") options.plugins.push(["effector/babel-plugin", { ...commonEffectorBabelPluginOptions, reactSsr: true }])
 
     return options
   },
@@ -42,4 +49,9 @@ module.exports = {
     config.resolve.modules.unshift(path.resolve(__dirname, "src"))
     return config
   },
+  modifyJestConfig({ jestConfig }) {
+    jestConfig.moduleNameMapper["^@/(.*)$"] = "<rootDir>/src/$1"
+
+    return jestConfig
+  }
 }

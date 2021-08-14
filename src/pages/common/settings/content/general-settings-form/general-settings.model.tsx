@@ -1,20 +1,14 @@
 import { setUserData } from "@/feature/user/user.model"
-import { getMyUserFx, GetMyUserResponse } from "@/lib/api/users/get-my-user"
 
 import { updateMyUser, UpdateMyUserResponse, UpdateMyUserResponseError } from "@/lib/api/users/update-my-user"
 
 import { createEffectorField } from "@/lib/generators/efffector"
-import { keysToCamel } from "@/lib/network/casing"
 import { phoneValidator, emailValidator, trimString } from "@/lib/validators"
 import { createGate } from "@/scope"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 import { combine, createEffect, createEvent, createStoreObject, forward, guard, merge, split } from "effector-root"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { AxiosError } from "axios"
-import {
-  finishSaveClientCardFx,
-  finishSaveCoachCardFx,
-  getPaymentIdFx, reportUnknownTypeFx
-} from "@/feature/client-funds-up/dialog/models/units"
 
 export const SettingsGate = createGate()
 
@@ -102,11 +96,9 @@ export const [$timeZone, timeZoneChanged, $timeZoneError, $isTimeZoneCorrect] = 
   reset: SettingsGate.open,
 })
 
-const userDoneData = getMyUserFx.doneData.map<GetMyUserResponse>(data => keysToCamel(data.data))
-
-$email.on(userDoneData, (state, user) => user.email)
-$phone.on(userDoneData, (state, user) => user.phone)
-$timeZone.on(userDoneData, (state, user) => user.timeZone)
+$email.on(getMyUserApiFx.fx.doneBody, (state, user) => user.email)
+$phone.on(getMyUserApiFx.fx.doneBody, (state, user) => user.phone)
+$timeZone.on(getMyUserApiFx.fx.doneBody, (state, user) => user.timeZone)
 
 export const $changeGeneralSettingsForm = createStoreObject({
   email: $email,
@@ -129,5 +121,5 @@ export const $isGeneralSettingsFormFormValid = combine(
 
 forward({
   from: mounted,
-  to: [getMyUserFx],
+  to: [getMyUserApiFx.fx],
 })

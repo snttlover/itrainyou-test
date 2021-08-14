@@ -191,7 +191,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
 
   const sendImagesToChatFx = createEffect({
     handler({ images, chat }: { images: ChatFile[]; chat: number }) {
-      return new Promise((res) => {
+      return new Promise<void>((res) => {
         images
           .forEach(image => {
             if (image.serverUrl) {
@@ -208,7 +208,7 @@ export const createChatMessageBoxModule = (config: CreateChatMessageBoxModuleCon
 
   const sendDocumentsToChatFx = createEffect({
     handler({ documents, chat }: { documents: ChatFile[]; chat: number }) {
-      return new Promise((res) => {
+      return new Promise<void>((res) => {
         documents
           .forEach(document => {
             if (document.serverUrl) {

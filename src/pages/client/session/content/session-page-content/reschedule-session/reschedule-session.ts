@@ -5,6 +5,7 @@ import { CoachSession, DurationType, getCoachSessions } from "@/lib/api/coach-se
 import { date } from "@/lib/formatting/date"
 import { createClientSessionRequest } from "@/lib/api/client/create-client-session-request"
 import { Toast, toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
+import { noop } from "@/shared/lib/types"
 
 export const resetRescheduleDialog = createEvent()
 
@@ -85,22 +86,21 @@ export const rescheduleSessionFx = createEffect({
 export const rescheduleSession = createEvent()
 
 sample({
-  // @ts-ignore
-  source: combine(
-    $pickedRescheduleSession,
-    clientSessionPage.modules.sessionInfo.data.$info,
-    (pickedSession, currentSession) => ({
-      type: "RESCHEDULE",
-      session: currentSession.id,
-      rescheduleSession: pickedSession,
-    })
-  ),
   clock: rescheduleSession,
+  source: {
+    pickedSession: $pickedRescheduleSession,
+    currentSession: clientSessionPage.modules.sessionInfo.data.$info
+  },
+  fn: ({ pickedSession, currentSession }) => ({
+    type: "RESCHEDULE" as const,
+    session: currentSession.id!,
+    rescheduleSession: pickedSession,
+  }),
   target: rescheduleSessionFx,
 })
 
 forward({
-  from: rescheduleSessionFx.doneData.map(() => {}),
+  from: rescheduleSessionFx.doneData.map(noop),
   to: resetRescheduleDialog,
 })
 

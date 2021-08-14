@@ -1,4 +1,4 @@
-import { createEffect, createEvent, forward, guard, sample } from "effector-root"
+import { createEffect, createEvent, forward, guard } from "effector-root"
 import { getChatWithCoach } from "@/lib/api/chats/clients/get-chat-with-coach"
 import { createChatWithCoach } from "@/lib/api/chats/clients/create-chat-with-coach"
 import { navigatePush } from "@/feature/navigation"
@@ -17,7 +17,7 @@ type CreateWriteToUserModule = {
 const createWriteToUserModule = (config: CreateWriteToUserModule) => {
   const write = createEvent<number | null>()
 
-  const checkChatFx = createEffect({
+  const checkChatFx = createEffect<number, PersonalChat, number>({
     handler: (id: number) => config.checkChat(id)
       .catch(e => Promise.reject(id))
   })
@@ -28,12 +28,11 @@ const createWriteToUserModule = (config: CreateWriteToUserModule) => {
 
   guard({
     source: write,
-    filter: (id) => id !== null,
+    filter: (id): id is number => id !== null,
     target: checkChatFx
   })
 
   forward({
-    // @ts-ignore
     from: checkChatFx.failData,
     to: createChatFx
   })

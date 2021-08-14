@@ -37,7 +37,11 @@ forward({
 sample({
   clock: saveNote,
   source: { text: $note, id: clientPageGate.state },
-  target: updateClientNoteFx,
+  fn: ({ text, id }) => ({
+    text,
+    id
+  }),
+  target: updateClientNoteFx
 })
 
 forward({

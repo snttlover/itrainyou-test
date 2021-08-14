@@ -1,8 +1,7 @@
-import { attach, createEffect, createEvent, createStore, restore } from "effector-root"
+import { createEffect, createEvent, createStore, restore } from "effector-root"
 import { $userData } from "@/feature/user/user.model"
 import { becomeCoachRequest } from "@/lib/api/client/become-coach"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
-import { userProfileGate } from "@/pages/client/edit-profile/user-data/client-profile.model"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 
 export const resetChangeCoachWarningDialogVisibility = createEvent()
 
@@ -22,8 +21,4 @@ export const becomeCoachFx = createEffect({
 export const changeIsClientBecomingCoach = createEvent<boolean>()
 export const $isClientBecomingCoach = createStore<boolean>(false)
 
-export const reloadUserDataFx = attach({
-  // @ts-ignore
-  effect: getMyUserFx,
-  mapParams: () => {}
-})
+export const reloadUserDataFx = getMyUserApiFx.clone()

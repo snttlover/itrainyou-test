@@ -216,18 +216,23 @@ export const $clientProfileSaving = saveClientUserDataFx.pending
 
 
 sample({
-  // @ts-ignore
-  source: combine($userData, $clientProfileForm, $image, $originalAvatar, (userData, form, lastImage, originalAvatar) => ({
+  clock: saveClientUserData,
+  source: {
+    userData: $userData,
+    form: $clientProfileForm,
+    lastImage: $image,
+    originalAvatar: $originalAvatar
+  },
+  fn: ({ userData, form, lastImage, originalAvatar }) => ({
     firstName: form.name,
     lastName: form.lastName,
     middleName: form.middleName,
     birthDate: form.birthday ? dayjs(form.birthday).format("YYYY-MM-DD") : undefined,
-    avatar: lastImage.file === null ? null : lastImage.file || form.image,
-    originalAvatar: originalAvatar.file === null ? null : originalAvatar.file || form.originalAvatar,
+    avatar: lastImage.file === null ? null : lastImage.file || form.image.file,
+    originalAvatar: originalAvatar.file === null ? null : originalAvatar.file || form.originalAvatar.file,
     categories: (userData.client?.categories || []).map(category => category.id),
-    sex: form.sex || userData.client?.sex,
-  })),
-  clock: saveClientUserData,
+    sex: form.sex || userData.client?.sex || "M",
+  }),
   target: saveClientUserDataFx,
 })
 

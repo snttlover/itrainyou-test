@@ -20,7 +20,7 @@ import { loadClientCardsFx, loadCoachCardsFx } from "@/pages/client/wallet/cards
 import { ClientProfileGate } from "@/pages/client/profile/profile-page.model"
 import { $sessionsPickerStore, mounted as CoachByIdMounted } from "@/pages/search/coach-by-id/models/units"
 import { routeNames } from "@/pages/route-names"
-import { homePageMounted as homeMounted } from "@/pages/client/home/home.model.ts"
+import { homePageMounted as homeMounted } from "@/pages/client/home/home.model"
 import { CoachHomeGate } from "@/pages/coach/home/sessions/coach-sessions-page.model"
 
 forward({
@@ -96,7 +96,7 @@ split({
   }
 })
 
-const splitAddCard = sample({ 
+const splitAddCard = sample({
   clock: addCard,
   source: $redirectUrl,
   fn: (url, id) => (id ? {

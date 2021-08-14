@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react"
 
-export function useMousePosition (ref: React.MutableRefObject<HTMLDivElement | null>, callback: (position: any) => void)  {
-  const [mousePosition, setMousePosition] = useState({ x: null, y: null })
-  const [positionChanged, setPositionChanged] = useState(false)
+type MousePosition = {
+  x: number | null
+  y: number | null
+}
 
-  const updateMousePosition = (ev: MouseEvent & any) => {
+export function useMousePosition (ref: React.MutableRefObject<HTMLDivElement | null>, callback: (position: MousePosition) => void)  {
+  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: null, y: null })
+
+  const updateMousePosition = (ev: MouseEvent) => {
     setMousePosition({ x: ev.clientX, y: ev.clientY })
   }
 
   useEffect(() => {
-    if (ref && ref.current) {
-      ref.current.addEventListener("mousemove", updateMousePosition)
+    ref.current?.addEventListener("mousemove", updateMousePosition)
 
-      // @ts-ignore
-      return () => ref.current.removeEventListener("mousemove", updateMousePosition)
+    return () => {
+      ref.current?.removeEventListener("mousemove", updateMousePosition)
     }
-    return
   }, [ref])
 
   return callback(mousePosition)

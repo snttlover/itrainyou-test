@@ -217,30 +217,18 @@ const loadSessions = createEvent()
 
 export const loadSessionsWithParamsFx = attach({
   effect: loadCalendarEventsFx,
-  // @ts-ignore
-  source: combine(
-    {
-      from: $monthStartDate,
-      to: $monthEndDate,
-    },
-    ({ from, to }) => {
-      // @ts-ignore
-      if( isNaN(from) || isNaN(to) ) {
-        return {
-          from: true,
-          to: true,
-        }
-      }
-      else {
-        const weekBefore = from.subtract(1, "week")
-        const weekAfter = to.add(1, "week")
-        return {
-          from: weekBefore.toISOString().substring(0, 10),
-          to: weekAfter.toISOString().substring(0, 10),
-        }
-      }}
-  ),
-  mapParams: (_, data) => ({ ...data }),
+  source: {
+    from: $monthStartDate,
+    to: $monthEndDate,
+  },
+  mapParams: (_, { from, to }) => {
+    const weekBefore = from.subtract(1, "week")
+    const weekAfter = to.add(1, "week")
+    return {
+      from: weekBefore.toISOString().substring(0, 10),
+      to: weekAfter.toISOString().substring(0, 10),
+    }
+  },
 })
 
 export type PickerDate = Dayjs | null
