@@ -1,26 +1,31 @@
+import { keysToCamel, keysToSnake } from "@/lib/network/casing"
+
 if (process.env.BUILD_TARGET === "server") {
   require("node-fetch")
 }
+import { isLiteralObject } from "@/lib/helpers/utils"
 import { createQueryString } from "@/shared/lib/query-params-utils"
 import { attach, createEffect, Effect, root, Domain } from "effector-root"
 import { setPayload } from "@/shared/lib/reducers"
 import { PrimitiveType } from "@/shared/lib/types"
 
 type BodyObject = Record<string, PrimitiveType | PrimitiveType[]>
-type RequestBody = BodyObject | BodyObject[]
+type Body = BodyObject | BodyObject[]
 
 type RequestHeaders = Record<string, string>
 type RequestMethod = "GET" | "POST" | "PUT" | "DELETE"
 
+type RequestQueryParams = Record<string, PrimitiveType | null | undefined>
+
 export type RequestParams = {
   url: string;
   method: RequestMethod;
-  body?: BodyInit | RequestBody;
-  query?: Record<string, PrimitiveType | null | undefined>;
+  body?: BodyInit | Body;
+  query?: RequestQueryParams;
   headers?: RequestHeaders;
 };
 
-export type Response<T = any> = {
+export type Response<T = Body> = {
   body: T;
   headers: Headers;
   status: number;
@@ -63,10 +68,18 @@ export const request = async <R>(params: RequestParams): Promise<Response<R>> =>
 
 type CreateRequestModule = {
   domain?: Domain
+  preTransformBody?: (body: Body) => Body
+  preTransformQuery?: (query: RequestQueryParams) => RequestQueryParams
+  postTransformBody?: (body: Body) => Body
 }
 
 export const createRequestModule = (options?: CreateRequestModule) => {
   const { createStore, createEvent } = options?.domain ? options?.domain : root.createDomain("request-module")
+
+  const preTransformBody = options?.preTransformBody ? options?.preTransformBody : (body: Body) => body
+  const preTransformQuery = options?.preTransformQuery ? options?.preTransformQuery : (query: RequestQueryParams) => query
+
+  const postTransformBody = options?.postTransformBody ? options?.postTransformBody : (body: Body) => body
 
   const setBaseUrl = createEvent<string>()
   const $baseUrl = createStore<string>("")
@@ -92,9 +105,31 @@ export const createRequestModule = (options?: CreateRequestModule) => {
       return headers
     })
 
-  const __requestFx = createEffect<RequestParams, Response, Response>(request)
+  const __requestFx = createEffect<RequestParams, Response, Response>(async (requestParams) => {
+    if (requestParams.query) {
+      requestParams.query = preTransformQuery(requestParams.query)
+    }
 
-  const requestFx = attach<
+    if (requestParams.body && isLiteralObject(requestParams.body)) {
+      requestParams.body = preTransformBody(requestParams.body as Body)
+    }
+    try {
+      const response: Response = await request(requestParams)
+
+      if (response.body && isLiteralObject(response.body)) {
+        response.body = postTransformBody(response.body as Body)
+      }
+
+      return response
+    } catch (error) {
+      if (error.body && isLiteralObject(error.body)) {
+        error.body = postTransformBody(error.body as Body)
+      }
+      throw error
+    }
+  })
+
+  const requestFx: Effect<RequestParams, Response<any>, Response<any>> = attach<
     RequestParams,
     { headers: typeof $defaultHeaders, baseUrl: typeof $baseUrl },
     Effect<RequestParams, Response, Response>
@@ -124,4 +159,9 @@ export const createRequestModule = (options?: CreateRequestModule) => {
   }
 }
 
-export const requestModule = createRequestModule()
+export const requestModule = createRequestModule({
+  preTransformBody: keysToSnake,
+  preTransformQuery: keysToSnake,
+
+  postTransformBody: keysToCamel
+})

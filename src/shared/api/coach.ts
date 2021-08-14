@@ -1,6 +1,5 @@
 import { createHttpRequestEffect } from "@/shared/api/common/create-http-request-effect"
 import { Pagination, Sex } from "@/lib/api/interfaces/utils.interface"
-import { keysToCamel, keysToSnake } from "@/lib/network/casing"
 
 type CoachCategoryListItemType = {
   id: number
@@ -47,7 +46,7 @@ export type Coach = {
   nearestSessionDatetime: string
 } & CoachUser
 
-export type CoachSortingType = "price" | "-price" | "popularity" | "nearest_session_datetime"
+export type CoachSortingType = "price" | "-price" | "popularity" | "nearest_session_datetime" | "has_free_sessions"
 
 export type GetCoachesParamsTypes = {
   session_duration_types?: string
@@ -69,6 +68,6 @@ export const getCoachesApiFx = createHttpRequestEffect<GetCoachesParamsTypes, Pa
   requestMapper: (query) => ({
     url: "/api/v1/web/coaches/",
     method: "GET",
-    query: keysToSnake(query)
+    query
   }),
 })
