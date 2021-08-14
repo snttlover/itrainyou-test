@@ -1,20 +1,18 @@
 import { $dashboard } from "@/feature/dashboard/dashboard"
 import { loggedIn, setUserData } from "@/feature/user/user.model"
-import { login, LoginResponse } from "@/lib/api/login"
-import { createEffectorField, UnpackedStoreObjectType } from "@/lib/generators/efffector"
+import { createEffectorField } from "@/lib/generators/efffector"
 import { navigateReplace } from "@/feature/navigation"
 import { trimString } from "@/lib/validators"
 import { routeNames } from "@/pages/route-names"
-import { AxiosError } from "axios"
-import { combine, createEffect, createEvent, createStoreObject, forward, sample, merge } from "effector-root"
+import { combine,  createEvent, createStoreObject, forward, sample, merge } from "effector-root"
 import { userFound } from "@/pages/auth/pages/socials/models/units"
+import { loginApiFx, LoginResponse } from "@/shared/api/login"
+import { noop } from "@/shared/lib/types"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
+
+export const loginFx = loginApiFx.clone()
 
 export const loginFormSent = createEvent()
-
-export const loginFx = createEffect<UnpackedStoreObjectType<typeof $loginForm>, LoginResponse, AxiosError>({
-  handler: ({ phoneOrEmail, password }) => login({ email: phoneOrEmail.includes("@") ? phoneOrEmail : (phoneOrEmail[0] === "8" || phoneOrEmail[0] === "7") ? "+7" + phoneOrEmail.substr(1) : phoneOrEmail, password: password }),
-})
-
 export const resetLoginForm = createEvent()
 
 export const [$phoneOrEmail, phoneOrEmailChanged, $phoneOrEmailError, $isPhoneOrEmailCorrect] = createEffectorField<string>({
@@ -23,7 +21,9 @@ export const [$phoneOrEmail, phoneOrEmailChanged, $phoneOrEmailError, $isPhoneOr
   reset: resetLoginForm,
 })
 
-$phoneOrEmailError.on(loginFx, () => null).on(loginFx.fail, (state, { error }) => "Неверные данные")
+$phoneOrEmailError
+  .on(loginFx, () => null)
+  .on(loginFx.fail, () => "Неверные данные")
 
 export const [$password, passwordChanged, $passwordError, $isPasswordCorrect] = createEffectorField<string>({
   defaultValue: "",
@@ -50,10 +50,24 @@ export const $isFormValid = combine(
 sample({
   source: $loginForm,
   clock: loginFormSent,
+  fn: ({ phoneOrEmail, password }) => {
+    let userId = phoneOrEmail
+    if (phoneOrEmail.includes("@")) {
+      // it's email, nothing to do transformation
+    } else if (phoneOrEmail[0] === "8" || phoneOrEmail[0] === "7") {
+      // it's phone
+      userId = "+7" + phoneOrEmail.substr(1)
+    }
+
+    return {
+      email: userId,
+      password
+    }
+  },
   target: loginFx,
 })
 
-const loginFxUserFoundMerged = merge([loginFx.doneData,userFound])
+const loginFxUserFoundMerged = merge([loginFx.doneBody, userFound])
 
 sample({
   source: $dashboard,
@@ -83,7 +97,8 @@ sample({
 forward({
   from: loginFxUserFoundMerged,
   to: [
-    loggedIn,
+    loggedIn.prepend<{ token: string }>(({token}) => ({ token})),
+    getMyUserApiFx.fx.prepend(noop),
     setUserData.prepend((response: LoginResponse) => ({ client: response.user.client, coach: response.user.coach })),
   ],
 })

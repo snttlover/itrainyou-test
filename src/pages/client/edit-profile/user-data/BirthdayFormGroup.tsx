@@ -57,9 +57,9 @@ export const BirthdayFormGroup = (props: GroupProps) => {
   const {SelectInput: YearSelectInput} = useSelectInput()
   const {SelectInput: SexSelectInput} = useSelectInput()
 
-  let birthday = date(useStore($clientProfileForm).birthday)
   const values = useStore($clientProfileForm)
   const errors = useStore($clientProfileFormErrors)
+  let birthday = date(values.birthday)
 
   const _birthdayChanged = useEvent(birthdayChanged)
   const _sexChanged = useEvent(sexChanged)

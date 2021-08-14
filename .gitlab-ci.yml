@@ -7,10 +7,23 @@ services:
   - docker:18.09-dind
 
 stages:
+  - test
   - build
   - deploy-dev
   - deploy-prod
   - deploy-staging
+
+test:
+  image: node:12.18.1
+  stage: test
+  script:
+    - yarn install --frozen-lockfile
+    - yarn run test --ci --reporters=default --reporters=jest-junit
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
 
 .build:
   stage: build

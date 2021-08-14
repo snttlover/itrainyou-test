@@ -1,7 +1,5 @@
 import * as React from "react"
 import styled from "styled-components"
-import mobileActiveButton from "@/pages/landing-old/content/platform-advantages/images/mobile-advantage-slider-button-active.svg"
-import mobileButton from "@/pages/landing-old/content/platform-advantages/images/mobile-advantage-slider-button.svg"
 import { Dispatch, SetStateAction } from "react"
 
 const AdvantagesContainer = styled.div`
@@ -56,7 +54,6 @@ const Advantage = styled.div<AdvantageTypes>`
       position: absolute;
       width: 100%;
       height: 100%;
-      background: url("${props => (props.isActive ? mobileActiveButton : mobileButton)}") no-repeat;
     }
   }
 `

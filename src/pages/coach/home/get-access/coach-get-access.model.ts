@@ -14,7 +14,7 @@ import {
 import { $userData, loadUserData } from "@/feature/user/user.model"
 import { updateMyCoach } from "@/lib/api/coach/update-my-coach"
 import { InferStoreType } from "@/lib/types/effector"
-import { combine, createEffect, createEvent, forward, sample, Event } from "effector-root"
+import { combine, createEffect, createEvent, forward, sample } from "effector-root"
 import { spread } from "patronum"
 import { isLiteralObject } from "@/lib/helpers/utils"
 import { isArray } from "@/lib/network/casing"
@@ -26,30 +26,29 @@ const calculateProgress = ({
   form: InferStoreType<typeof $form>
   categories: InferStoreType<typeof $selectedCategories>
 }) => {
-  const withRemovedKeys = form
-  delete withRemovedKeys["photos"]
-  delete withRemovedKeys["videoInterview"]
+  const keys = Object.keys(form)
+    .filter((key) => key !== "photos" && key !== "videoInterview")
 
-  const values = Object.values(withRemovedKeys)
-  let length = values.length
+  const paramsCount = keys.length + 1 // + categories
 
-  let filledValues = values
-    .map(value => {
-      if (Array.isArray(value)) return value.length > 0
+  let filledValuesCount = Number(categories.length > 0)
 
-      // @ts-ignore
-      // Проверка заполненность цен в расписании (price-settings)
-      if (isLiteralObject(value) && "d30Price" in value) {
-        return Object.values(value).some((_value) => !isArray(_value) && Boolean(_value))
-      }
-      return Boolean(value)
-    })
-    .reduce((acc, value) => acc + Number(value), 0)
+  for (const key of keys) {
+    const value = form[key]
 
-  length++
-  filledValues += Number(categories.length !== 0)
+    if (Array.isArray(value) && value.length > 0) {
+      // Проверяем что в массиве есть хоть один элемент
+      filledValuesCount += 1
+    } else if (isLiteralObject(value) && "d30Price" in value) {
+      // Проверяем что хоть одно значение в расписании заполнено и не массив
+      filledValuesCount += Number(Object.values(value).some((_value) => !!_value && !isArray(_value)))
+    } else {
+      // Проверяем что значение заполнено
+      filledValuesCount += Number(!!value)
+    }
+  }
 
-  return (filledValues / length) * 100
+  return (filledValuesCount / paramsCount) * 100
 }
 
 const $fullForm = combine({ form: $form, categories: $selectedCategories })
@@ -80,7 +79,7 @@ const userDataLoaded = sample({
 })
 
 spread({
-  source: userDataLoaded.map(data => data.coach) as Event<any>,
+  source: userDataLoaded.map(data => data.coach),
   targets: {
     socialNetworks: socialNetworkChanged,
     supervisions: supervisionsChanged,
