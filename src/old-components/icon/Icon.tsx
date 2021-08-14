@@ -18,6 +18,7 @@ export type IconName =
   | "ruble"
   | "people-notification"
   | "delete"
+  | "chat-search"
   | "left-icon"
   | "right-icon"
   | "rotate"

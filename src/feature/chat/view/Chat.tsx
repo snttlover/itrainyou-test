@@ -51,7 +51,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
         changeSessionsVisibility(false)
         unmounted()
       }
-    }, [])
+    }, [params.id])
 
     const isSystemChat = chat.chatType === "SYSTEM"
     const Header = isSystemChat ? (
@@ -83,8 +83,6 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
 }
 
 const Container = styled.div`
-  padding-top: 8px;
-  padding-bottom: 16px;
   position: relative;
   height: 100%;
   display: flex;

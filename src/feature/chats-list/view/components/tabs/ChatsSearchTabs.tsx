@@ -1,9 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { Tabs, Tab } from "@/old-components/tabs/Tabs"
+import { Tabs, Tab } from "@/new-components/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
 import { ChatListTabs } from "@/feature/chats-list/modules/chat-list"
-import { Simulate } from "react-dom/test-utils"
 
 type ChatsListTabsProps = {
   value: string
@@ -22,37 +21,19 @@ export const ChatsSearchTabs = (props: ChatsListTabsProps) => {
     <StyledTabs value={props.value} onChange={changeTab}>
       <StyledTab value='all'>Все</StyledTab>
       <StyledTab value='unread'>Непрочитанные</StyledTab>
-      {/*{props.showChosen && <StyledTab value='chosen'>Избранные</StyledTab>}*/}
     </StyledTabs>
   )
 }
 
 const StyledTabs = styled(Tabs)`
   display: flex;
-  margin-top: 36px;
   justify-content: flex-start;
+  padding: 0 16px;
+  border-bottom: 1px solid #f4f5f7;
   ${MediaRange.lessThan("mobile")`
     margin-top: 20px;
     justify-content: space-around;
   `}
 `
 
-const StyledTab = styled(Tab)`
-  padding: 0;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #424242;
-  margin-right: 24px;
-  background: transparent;
-  flex: 0;
-  border-bottom: 2px solid rgba(0, 0, 0, 0);
-
-  &[data-active="true"] {
-    border-bottom: 2px solid ${props => props.theme.colors.primary};
-    background: transparent;
-  }
-  ${MediaRange.lessThan("mobile")`
-    margin-right: 0;
-  `}
-`
+const StyledTab = styled(Tab)``

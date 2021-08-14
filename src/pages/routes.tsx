@@ -107,7 +107,7 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: routeNames.clientChat(":id"),
-    component: ClientChatPage,
+    component: ClientChatListPage,
   },
   {
     path: routeNames.clientProfile(),
@@ -193,7 +193,7 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: routeNames.coachChat(":id"),
-    component: CoachChatPage,
+    component: CoachClientsPage,
   },
   {
     path: "*",
