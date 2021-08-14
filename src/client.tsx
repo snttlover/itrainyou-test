@@ -1,5 +1,6 @@
 import "@/shared/polyfills"
 import { bootstrapApplication } from "@/app/bootstrap"
+import { fixDuplicateTokenCookie } from "@/app/fix/duplicate-token-cookie"
 
 import { DashboardType } from "@/feature/dashboard/dashboard"
 import { loadUserData } from "@/feature/user/user.model"
@@ -18,7 +19,9 @@ import * as Sentry from "@sentry/react"
 import { config } from "@/config"
 import { Integrations } from "@sentry/tracing"
 import { enableDebugger } from "@/lib/effector/debug"
-import { sessionToken, TOKEN_COOKIE_KEY } from "@/feature/user/session-token"
+import { sessionToken } from "@/feature/user/session-token"
+
+fixDuplicateTokenCookie()
 
 if (config.ENVIRONMENT !== "local") {
   Sentry.init({
@@ -38,21 +41,6 @@ if (config.ENVIRONMENT !== "local") {
 
 if (config.ENVIRONMENT === "local" && config.DEBUG === "1") {
   enableDebugger()
-}
-
-const cookiesKeys = document.cookie.split("; ").map((cookeStr) => cookeStr.split("=")[0])
-const tokenCookiesCount = cookiesKeys.reduce((acc, key) => acc + Number(key === TOKEN_COOKIE_KEY), 0)
-
-if (tokenCookiesCount > 1) {
-  const currentPathname = document.location.pathname
-  const paths = currentPathname.split("/").filter(path => path.length > 0)
-
-  for (let i = 0; i < paths.length; i++) {
-    const path = paths.slice(0, i + 1).join("/")
-
-    Cookies.remove(TOKEN_COOKIE_KEY, { path: `/${path}` })
-    Cookies.remove(TOKEN_COOKIE_KEY, { path: `/${path}/` })
-  }
 }
 
 const token = sessionToken.get()
