@@ -10,6 +10,9 @@ const StyledUnreadMessage = styled.div<{ readed: boolean }>`
   background: ${({ readed, theme }) => (readed ? "transparent" : `${theme.colors.primary}1F`)};
   transition: background 0.5s ease;
   padding: 4px 24px;
+  &:first-child {
+    margin-top: 16px;
+  }
   &:last-child {
     margin-bottom: 16px;
   }

@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
 import {
   DocumentsLimitDialog,
-  ImagesLimitDialog
+  ImagesLimitDialog,
 } from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
 import { ChatFile, createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
@@ -15,7 +15,7 @@ type ChatMessageBoxTypes = {
   blockedText?: string | null
 }
 
-const DocumentList = ({ doc, del }: {doc: ChatFile, del: (id: number) => void}) => (
+const DocumentList = ({ doc, del }: { doc: ChatFile; del: (id: number) => void }) => (
   <Item>
     <Item>
       <FileIcon src={FilePreview} />
@@ -45,8 +45,12 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const showImagesLimitDialog = useStore($module.data.$limitDialogVisibility.$limitImagesDialogVisibility)
   const showDocumentsLimitDialog = useStore($module.data.$limitDialogVisibility.$limitDocumentsDialogVisibility)
 
-  const changeLimitImagesDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitImagesDialogVisibility)
-  const changeLimitDocumentsDialogVisibility = useEvent($module.methods.changeLimitDialogVisibility.changeLimitDocumentsDialogVisibility)
+  const changeLimitImagesDialogVisibility = useEvent(
+    $module.methods.changeLimitDialogVisibility.changeLimitImagesDialogVisibility
+  )
+  const changeLimitDocumentsDialogVisibility = useEvent(
+    $module.methods.changeLimitDialogVisibility.changeLimitDocumentsDialogVisibility
+  )
 
   const sendTenImages = useEvent($module.methods.sendTen.sendTenImages)
   const sendTenDocuments = useEvent($module.methods.sendTen.sendTenDocuments)
@@ -62,19 +66,18 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     send(value)
     change("")
   }
-  
+
   useEffect(() => {
     if (input.current && window.innerWidth > 768) {
       input.current.focus()
     }
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     const textareaRef = input.current
-    console.log('1')
     if (textareaRef) {
       textareaRef.style.height = "auto"
-      textareaRef.style.height = `${textareaRef.scrollHeight-22}px`
+      textareaRef.style.height = `${textareaRef.scrollHeight - 22}px`
       textareaRef.style.height = `${textareaRef.scrollHeight}px`
     }
   }, [value, documents.length])
@@ -83,24 +86,28 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     <Container>
       <MessageContainer>
         <MessageBoxUpload module={$module} />
-        {documents.length === 0 ? <InputContainer>
-          <StyledInput
-            ref={input}
-            value={value}
-            disabled={!!props.blockedText}
-            placeholder={props.blockedText || "Напишите сообщение..."}
-            onChange={e => change(e.target.value)}
-            onKeyDown={keydownHandler}
-          />
-          <Send onClick={handleOnClick} />
-        </InputContainer> :
+        {documents.length === 0 ? (
+          <InputContainer>
+            <StyledInput
+              ref={input}
+              value={value}
+              disabled={!!props.blockedText}
+              placeholder={props.blockedText || "Напишите сообщение..."}
+              onChange={e => change(e.target.value)}
+              onKeyDown={keydownHandler}
+            />
+            <Send onClick={handleOnClick} />
+          </InputContainer>
+        ) : (
           <>
             <ListContainer>
-              {documents.map((doc,i) => (<DocumentList doc={doc} del={deleteDocument} key={i} />))}
+              {documents.map((doc, i) => (
+                <DocumentList doc={doc} del={deleteDocument} key={i} />
+              ))}
             </ListContainer>
             <SendDocument listEmpty={!!documents.length} onClick={() => uploadDocument()} />
           </>
-        }
+        )}
 
         <ImagesLimitDialog
           images={images}
@@ -112,7 +119,7 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
         <DocumentsLimitDialog
           visibility={showDocumentsLimitDialog}
           onChangeVisibility={changeLimitDocumentsDialogVisibility}
-          documents={documents.slice(0,10)}
+          documents={documents.slice(0, 10)}
           send={() => sendTenDocuments()}
         />
       </MessageContainer>
@@ -128,27 +135,27 @@ export const DocInfo = styled.div`
 `
 
 const Name = styled.div`
-    font-family: Roboto;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 22px;
-    color: #5B6670;
-    max-width: 440px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: #5b6670;
+  max-width: 440px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 
-    ${MediaRange.lessThan("mobile")`
+  ${MediaRange.lessThan("mobile")`
         max-width: 150px;
     `}
 `
 
 const Size = styled.div`
-    font-family: Roboto;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 22px;
-    color: #9AA0A6;
+  font-family: Roboto;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #9aa0a6;
 `
 
 const Item = styled.div`
@@ -159,16 +166,15 @@ const Item = styled.div`
 `
 
 const MessageContainer = styled.div`
-  background: #e1e6ea;
-  border-radius: 0px 0px 2px 2px;
-  padding: 12px;
+  background: #fff;
+  padding: 8px 18px;
   display: flex;
   align-items: center;
   position: relative;
 `
 
 const Container = styled.div`
-  background: #e1e6ea;
+  background: #fff;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -177,39 +183,39 @@ const Container = styled.div`
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;  
+  width: 100%;
 `
 
 const Send = styled(Icon).attrs({ name: "send" })`
-  fill: #5B6670;
+  fill: #5b6670;
   cursor: pointer;
-  height: 17px;
-  position: absolute; 
+  height: 20px;
+  position: absolute;
   right: 22px;
-  top: 21px; 
+  top: 15px;
 `
 
 const SendDocument = styled(Icon).attrs((props: any) => ({
   name: "send",
-  ...props
-}))<{listEmpty: boolean}>`
-  fill: #5B6670;
+  ...props,
+}))<{ listEmpty: boolean }>`
+  fill: #5b6670;
   cursor: pointer;
   height: 17px;
   align-self: flex-end;
-  margin-bottom: ${({ listEmpty }) => !listEmpty ? "0" : "13px"};
+  margin-bottom: ${({ listEmpty }) => (!listEmpty ? "0" : "13px")};
 
-  @media screen and (max-width: 480px) and (orientation : portrait) {
-    align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-start"};
+  @media screen and (max-width: 480px) and (orientation: portrait) {
+    align-self: ${({ listEmpty }) => (!listEmpty ? "center" : "flex-start")};
     margin-bottom: 0;
-    margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "12px"};
+    margin-top: ${({ listEmpty }) => (!listEmpty ? "0" : "12px")};
   }
 `
 
 export const Close = styled(Icon).attrs({ name: "close" })`
   width: 32px;
   cursor: pointer;
-  fill: #9AA0A6;
+  fill: #9aa0a6;
   margin-right: 40px;
 
   ${MediaRange.lessThan("mobile")`
@@ -229,20 +235,24 @@ const InputContainer = styled.div`
 `
 
 const StyledInput = styled.textarea`
-  font-size: 16px;
-  line-height: 22px;
   color: #424242;
-  margin: 7px 42px 7px 15px;
+  padding: 5px 16px;
   border: none;
   outline: none;
   flex: 1;
   white-space: normal;
   word-wrap: break-word;
-  word-break: break-word;  
-  width: calc(100% - 57px);
+  word-break: break-word;
+  width: calc(100% - 40px);
   max-height: 7em;
   block-size: 22px;
   resize: none;
+
+  font-size: 14px;
+  line-height: 22px;
+
+  background: #f4f5f7;
+  border-radius: 16px;
   &::placeholder {
     color: #9aa0a6;
   }

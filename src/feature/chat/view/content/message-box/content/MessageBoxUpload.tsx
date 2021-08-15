@@ -1,21 +1,26 @@
-import React, {useCallback, useEffect, useRef, useState} from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Icon } from "@/old-components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
-import {ChatFile, createChatMessageBoxModule} from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { ChatFile, createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import SimpleBar from "simplebar-react"
-import {useEvent, useStore} from "effector-react"
+import { useEvent, useStore } from "effector-react"
 import { toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
-import {useClickOutside} from "@/old-components/click-outside/use-click-outside"
+import { useClickOutside } from "@/old-components/click-outside/use-click-outside"
 
-const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
-    title: string
-    iconName: string
-    add: (file: File) => void
-    visible: boolean
-    setVisibility: (e: boolean) => void
+const UploadMenu = ({
+  title,
+  iconName,
+  add,
+  visible,
+  setVisibility,
+}: {
+  title: string
+  iconName: string
+  add: (file: File) => void
+  visible: boolean
+  setVisibility: (e: boolean) => void
 }) => {
-
   const addToast = useEvent(toasts.add)
 
   const onDropAccepted = useCallback(acceptedFiles => {
@@ -23,7 +28,7 @@ const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
     const heic2any = require("heic2any")
     acceptedFiles.forEach(async (file: File) => {
       if ((file.type.length === 0 || file.type === "image/heic") && title === "Фотографии") {
-        const result = await heic2any({blob: file, toType: "image/jpeg"})
+        const result = await heic2any({ blob: file, toType: "image/jpeg" })
         add(result)
       } else {
         add(file)
@@ -37,51 +42,52 @@ const UploadMenu = ({title, iconName, add, visible, setVisibility}: {
       if (error.file.size > maxSize) {
         addToast({
           type: "error",
-          text: `Размер файла ${error.file.name} превышает 100mb, он не будет загружен.`
+          text: `Размер файла ${error.file.name} превышает 100mb, он не будет загружен.`,
         })
         return
       }
       addToast({
         type: "error",
-        text: `Файл ${error.file.name} имеет неверное расширение`
+        text: `Файл ${error.file.name} имеет неверное расширение`,
       })
     })
   }, [])
 
-  const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif",".heic"]
+  const acceptMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", ".heic"]
   const maxSize = 104857600
 
-  const options = title === "Фотографии" ? ({
-    onDropAccepted,
-    onDropRejected,
-    multiple: true,
-    maxSize,
-    accept: acceptMimeTypes,
-  }) : ({
-    onDropAccepted,
-    onDropRejected,
-    multiple: true,
-    maxSize,
-  })
+  const options =
+    title === "Фотографии"
+      ? {
+          onDropAccepted,
+          onDropRejected,
+          multiple: true,
+          maxSize,
+          accept: acceptMimeTypes,
+        }
+      : {
+          onDropAccepted,
+          onDropRejected,
+          multiple: true,
+          maxSize,
+        }
 
   const { getInputProps, open } = useDropzone(options)
 
-
   return (
     <>
-      {visible ?
+      {visible ? (
         <ItemContainer onClick={open}>
           <FileInput {...getInputProps()} />
-          <MenuIcon iconName={iconName}/>
+          <MenuIcon iconName={iconName} />
           <MenuItem>{title}</MenuItem>
-        </ItemContainer> : null}
+        </ItemContainer>
+      ) : null}
     </>
   )
-
 }
 
-export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChatMessageBoxModule>}) => {
-
+export const MessageBoxUpload = ({ module }: { module: ReturnType<typeof createChatMessageBoxModule> }) => {
   const addImage = useEvent(module.methods.add.addFile)
   const addDocument = useEvent(module.methods.add.addDocument)
   const images: ChatFile[] = useStore(module.data.$images)
@@ -93,8 +99,8 @@ export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChat
   const [visibility, setVisibility] = useState(false)
 
   const menuItems = [
-    {title: "Фотографии", iconName: "photos-icon", add: addImage, visible: !documents.length},
-    {title: "Документы", iconName: "documents-icon", add: addDocument, visible: !images.length},
+    { title: "Фотографии", iconName: "photos-icon", add: addImage, visible: !documents.length },
+    { title: "Документы", iconName: "documents-icon", add: addDocument, visible: !images.length },
   ]
 
   const imagesRef = useRef<any>(null)
@@ -149,11 +155,13 @@ export const MessageBoxUpload = ({module}: {module: ReturnType<typeof createChat
 
   return (
     <Container listEmpty={!!documents.length}>
-      {visibility ? <UploadMenuContainer ref={menuRef}>
-        {menuItems.map((item,i) => (
-          <UploadMenu {...item} key={i} setVisibility={setVisibility} />
-        ))}
-      </UploadMenuContainer> : null}
+      {visibility ? (
+        <UploadMenuContainer ref={menuRef}>
+          {menuItems.map((item, i) => (
+            <UploadMenu {...item} key={i} setVisibility={setVisibility} />
+          ))}
+        </UploadMenuContainer>
+      ) : null}
       <UploadIcon onClick={() => setVisibility(true)} />
 
       {!!images.length && (
@@ -189,21 +197,20 @@ const StyledSimpleBar = styled(SimpleBar)`
   }
 `
 
-
-const Container = styled.div<{listEmpty: boolean}>`
+const Container = styled.div<{ listEmpty: boolean }>`
   display: flex;
-  align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-end"};
-  margin-bottom: ${({ listEmpty }) => !listEmpty ? "0" : "10px"};
+  align-self: ${({ listEmpty }) => (!listEmpty ? "center" : "flex-end")};
+  margin-bottom: ${({ listEmpty }) => (!listEmpty ? "0" : "10px")};
 
-    @media screen and (max-width: 480px) and (orientation : portrait) {
-        align-self: ${({ listEmpty }) => !listEmpty ? "center" : "flex-start"};
-        margin-bottom: 0;
-        margin-top: ${({ listEmpty }) => !listEmpty ? "0" : "12px"};
-    }
+  @media screen and (max-width: 480px) and (orientation: portrait) {
+    align-self: ${({ listEmpty }) => (!listEmpty ? "center" : "flex-start")};
+    margin-bottom: 0;
+    margin-top: ${({ listEmpty }) => (!listEmpty ? "0" : "12px")};
+  }
 `
 
 const UploadMenuContainer = styled.div`
-  background: #FFFFFF;
+  background: #ffffff;
   position: absolute;
   transform: translateY(-125%);
   left: 0;
@@ -214,14 +221,14 @@ const UploadMenuContainer = styled.div`
 
 const MenuItem = styled.div`
   font-size: 14px;
-  line-height: 22px;  
+  line-height: 22px;
 `
 
 const UploadIcon = styled(Icon).attrs({ name: "clip" })`
-  fill: #5B6670;;
+  fill: #5b6670;
   cursor: pointer;
-  width: 28px;
-  margin-right: 12px;
+  width: 20px;
+  margin-right: 18px;
   display: flex;
   align-items: center;
 `
@@ -247,9 +254,9 @@ const ItemContainer = styled.div`
   align-items: center;
   flex-direction: row;
   padding: 12px;
-    width: 137px;
-    height: 48px;
-    cursor: pointer;
+  width: 137px;
+  height: 48px;
+  cursor: pointer;
 `
 
 const Images = styled.div`
@@ -332,7 +339,6 @@ const Progress = styled.div<ProgressProps>`
   }
 `
 
-
 const LeftArrow = styled(Icon).attrs({ name: "left-icon" })`
   fill: ${props => props.theme.colors.primary};
   cursor: pointer;
@@ -350,15 +356,15 @@ const RightArrow = styled(Icon).attrs({ name: "right-icon" })`
 
 const MenuIcon = styled(Icon).attrs((props: any) => ({
   name: props.iconName,
-  ...props
+  ...props,
 }))`
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 `
 
 const Send = styled(Icon).attrs({ name: "send" })`
-  fill: #5B6670;
+  fill: #5b6670;
   cursor: pointer;
   height: 17px;
   margin-right: 25px;
