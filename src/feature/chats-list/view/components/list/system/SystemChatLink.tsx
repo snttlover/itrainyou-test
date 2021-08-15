@@ -29,7 +29,6 @@ const BellIcon = styled(Icon).attrs({ name: "bell" })`
 `
 
 const Header = styled.div`
-  font-weight: 500;
   font-size: 14px;
   line-height: 22px;
   color: #424242;

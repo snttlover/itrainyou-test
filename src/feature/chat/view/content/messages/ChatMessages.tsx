@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import styled from "styled-components"
-import { MediaRange } from "@/lib/responsive/media"
+import styled, { css } from "styled-components"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { useList, useStore } from "effector-react"
 import { createReverseInfinityScroll } from "@/feature/pagination/view/ReverseInfinityScroll"
@@ -28,7 +27,7 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
     isSystem,
     showUser,
     commonSystemMessages,
-    imageClick
+    imageClick,
   }: {
     isSystem?: boolean
     showUser?: boolean
@@ -40,6 +39,7 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
     const [lastMessageId, changeLastMessage] = useState<null | number>(null)
     const [firsMessageId, changeFirstMessage] = useState<null | number>(null)
     const messages = useStore($chatMessagesModule.$messages)
+    const empty = useStore($chatMessagesModule.pagination.data.$listIsEmpty)
 
     useEffect(() => {
       /* скрол к первому сообщению */
@@ -79,20 +79,42 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
 
     return (
       <Container ref={container} id='messages'>
-        <InfScroll scrollableTarget='messages'>
-          <MessagesWrapper ref={messageWrapper}>
-            {useList($chatMessagesModule.$messages, message => (
-              <ChatMessageSwitcher
-                message={message}
-                isSystemChat={!!isSystem}
-                showUser={showUser}
-                commonSystemMessages={commonSystemMessages}
-                imageClick={imageClick}
-              />
-            ))}
-          </MessagesWrapper>
-        </InfScroll>
+        {empty && <Empty>Пока нет сообщений</Empty>}
+        <ScrollWrapper>
+          <InfScroll scrollableTarget='messages'>
+            <MessagesWrapper ref={messageWrapper}>
+              {useList($chatMessagesModule.$messages, message => (
+                <ChatMessageSwitcher
+                  message={message}
+                  isSystemChat={!!isSystem}
+                  showUser={showUser}
+                  commonSystemMessages={commonSystemMessages}
+                  imageClick={imageClick}
+                />
+              ))}
+            </MessagesWrapper>
+          </InfScroll>
+        </ScrollWrapper>
       </Container>
     )
   }
 }
+
+const ScrollWrapper = styled.div`
+  display: flex;
+  min-height: 100%;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+`
+
+const Empty = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 24px;
+  color: #9aa0a6;
+`

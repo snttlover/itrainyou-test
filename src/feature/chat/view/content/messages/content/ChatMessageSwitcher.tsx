@@ -9,10 +9,10 @@ import styled from "styled-components"
 const StyledUnreadMessage = styled.div<{ readed: boolean }>`
   background: ${({ readed, theme }) => (readed ? "transparent" : `${theme.colors.primary}1F`)};
   transition: background 0.5s ease;
-  padding: 16px 24px;
-  ${MediaRange.lessThan("mobile")`
-    padding: 12px 8px;
-  `}
+  padding: 4px 24px;
+  &:last-child {
+    margin-bottom: 16px;
+  }
 `
 
 export const ChatMessageSwitcher = ({

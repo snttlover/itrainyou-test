@@ -65,6 +65,7 @@ const Empty = styled.div`
   font-size: 14px;
   line-height: 22px;
   color: #9aa0a6;
+  font-weight: 300;
 `
 
 const Container = styled(Link)`
@@ -122,7 +123,6 @@ const MessageContent = styled.div`
 
 const UserName = styled.div`
   font-style: normal;
-  font-weight: 500;
   font-size: 14px;
   line-height: 22px;
   color: #424242;
@@ -130,7 +130,6 @@ const UserName = styled.div`
 
 const LastMessage = styled.div`
   font-style: normal;
-  font-weight: 500;
   font-size: 14px;
   line-height: 22px;
   color: #424242;
