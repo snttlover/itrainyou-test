@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import styled from "styled-components"
 import { Icon } from "@/old-components/icon/Icon"
 import { FileRejection, useDropzone } from "react-dropzone"
 import { ChatFile, createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
-import SimpleBar from "simplebar-react"
 import { useEvent, useStore } from "effector-react"
 import { toasts } from "@/old-components/layouts/behaviors/dashboards/common/toasts/toasts"
 import { useClickOutside } from "@/old-components/click-outside/use-click-outside"
 import { ImagesDialog } from "@/feature/chat/view/content/message-box/content/ImagesDialog"
+import { DocumentsDialog } from "@/feature/chat/view/content/message-box/content/DocumentsDialog"
 
 const UploadMenu = ({
   title,
@@ -120,6 +120,7 @@ export const MessageBoxUpload = ({ module }: { module: ReturnType<typeof createC
       <UploadIcon onClick={() => setVisibility(true)} />
 
       <ImagesDialog module={module} />
+      <DocumentsDialog module={module} />
     </Container>
   )
 }

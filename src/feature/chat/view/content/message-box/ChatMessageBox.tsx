@@ -1,32 +1,14 @@
 import React, { useEffect, useRef } from "react"
 import styled from "styled-components"
 import { MediaRange } from "@/lib/responsive/media"
-import {
-  DocumentsLimitDialog,
-  ImagesLimitDialog,
-} from "@/feature/chat/view/content/message-box/content/ImagesLimitDialog"
 import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/content/MessageBoxUpload"
-import { ChatFile, createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { useEvent, useStore } from "effector-react"
 import { Icon } from "@/old-components/icon/Icon"
-import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
 type ChatMessageBoxTypes = {
   blockedText?: string | null
 }
-
-const DocumentList = ({ doc, del }: { doc: ChatFile; del: (id: number) => void }) => (
-  <Item>
-    <Item>
-      <FileIcon src={FilePreview} />
-      <DocInfo>
-        <Name>{doc.file.name}</Name>
-        <Size>{(doc.file.size / 1048576).toFixed(2)} МБ</Size>
-      </DocInfo>
-    </Item>
-    <Close onClick={() => del(doc.id)} />
-  </Item>
-)
 
 export const createChatMessageBox = ($module: ReturnType<typeof createChatMessageBoxModule>) => (
   props: ChatMessageBoxTypes
@@ -36,24 +18,6 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const send = useEvent($module.methods.sendTextMessage)
 
   const input = useRef<HTMLTextAreaElement>(null)
-
-  const images = useStore($module.data.$images)
-  const documents = useStore($module.data.$documents)
-  const deleteDocument = useEvent($module.methods.delete.deleteDocument)
-  const uploadDocument = useEvent($module.methods.send.sendDocument)
-
-  const showImagesLimitDialog = useStore($module.data.$limitDialogVisibility.$limitImagesDialogVisibility)
-  const showDocumentsLimitDialog = useStore($module.data.$limitDialogVisibility.$limitDocumentsDialogVisibility)
-
-  const changeLimitImagesDialogVisibility = useEvent(
-    $module.methods.changeLimitDialogVisibility.changeLimitImagesDialogVisibility
-  )
-  const changeLimitDocumentsDialogVisibility = useEvent(
-    $module.methods.changeLimitDialogVisibility.changeLimitDocumentsDialogVisibility
-  )
-
-  const sendTenImages = useEvent($module.methods.sendTen.sendTenImages)
-  const sendTenDocuments = useEvent($module.methods.sendTen.sendTenDocuments)
 
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
@@ -80,41 +44,23 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
       textareaRef.style.height = `${textareaRef.scrollHeight - 22}px`
       textareaRef.style.height = `${textareaRef.scrollHeight}px`
     }
-  }, [value, documents.length])
+  }, [value])
 
   return (
     <Container>
       <MessageContainer>
         <MessageBoxUpload module={$module} />
-        {documents.length === 0 ? (
-          <InputContainer>
-            <StyledInput
-              ref={input}
-              value={value}
-              disabled={!!props.blockedText}
-              placeholder={props.blockedText || "Напишите сообщение..."}
-              onChange={e => change(e.target.value)}
-              onKeyDown={keydownHandler}
-            />
-            <Send onClick={handleOnClick} />
-          </InputContainer>
-        ) : (
-          <>
-            <ListContainer>
-              {documents.map((doc, i) => (
-                <DocumentList doc={doc} del={deleteDocument} key={i} />
-              ))}
-            </ListContainer>
-            <SendDocument listEmpty={!!documents.length} onClick={() => uploadDocument()} />
-          </>
-        )}
-
-        <DocumentsLimitDialog
-          visibility={showDocumentsLimitDialog}
-          onChangeVisibility={changeLimitDocumentsDialogVisibility}
-          documents={documents.slice(0, 10)}
-          send={() => sendTenDocuments()}
-        />
+        <InputContainer>
+          <StyledInput
+            ref={input}
+            value={value}
+            disabled={!!props.blockedText}
+            placeholder={props.blockedText || "Напишите сообщение..."}
+            onChange={e => change(e.target.value)}
+            onKeyDown={keydownHandler}
+          />
+          <Send onClick={handleOnClick} />
+        </InputContainer>
       </MessageContainer>
     </Container>
   )
@@ -125,37 +71,6 @@ export const DocInfo = styled.div`
   flex-direction: column;
   max-width: 240px;
   margin-left: 8px;
-`
-
-const Name = styled.div`
-  font-family: Roboto;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 22px;
-  color: #5b6670;
-  max-width: 440px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-
-  ${MediaRange.lessThan("mobile")`
-        max-width: 150px;
-    `}
-`
-
-const Size = styled.div`
-  font-family: Roboto;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 22px;
-  color: #9aa0a6;
-`
-
-const Item = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 `
 
 const MessageContainer = styled.div`
@@ -173,12 +88,6 @@ const Container = styled.div`
   position: relative;
 `
 
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-
 const Send = styled(Icon).attrs({ name: "send" })`
   fill: #5b6670;
   cursor: pointer;
@@ -186,23 +95,6 @@ const Send = styled(Icon).attrs({ name: "send" })`
   position: absolute;
   right: 22px;
   top: 15px;
-`
-
-const SendDocument = styled(Icon).attrs((props: any) => ({
-  name: "send",
-  ...props,
-}))<{ listEmpty: boolean }>`
-  fill: #5b6670;
-  cursor: pointer;
-  height: 17px;
-  align-self: flex-end;
-  margin-bottom: ${({ listEmpty }) => (!listEmpty ? "0" : "13px")};
-
-  @media screen and (max-width: 480px) and (orientation: portrait) {
-    align-self: ${({ listEmpty }) => (!listEmpty ? "center" : "flex-start")};
-    margin-bottom: 0;
-    margin-top: ${({ listEmpty }) => (!listEmpty ? "0" : "12px")};
-  }
 `
 
 export const Close = styled(Icon).attrs({ name: "close" })`
@@ -214,11 +106,6 @@ export const Close = styled(Icon).attrs({ name: "close" })`
   ${MediaRange.lessThan("mobile")`
     margin-right: 0;
   `}
-`
-
-const FileIcon = styled.img`
-  width: 40px;
-  height: 40px;
 `
 
 const InputContainer = styled.div`
