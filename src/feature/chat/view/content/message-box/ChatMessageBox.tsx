@@ -109,13 +109,6 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
           </>
         )}
 
-        <ImagesLimitDialog
-          images={images}
-          visibility={showImagesLimitDialog}
-          onChangeVisibility={changeLimitImagesDialogVisibility}
-          send={() => sendTenImages()}
-        />
-
         <DocumentsLimitDialog
           visibility={showDocumentsLimitDialog}
           onChangeVisibility={changeLimitDocumentsDialogVisibility}

@@ -113,6 +113,7 @@ export type IconName =
   | "go-back"
   | "question-mark"
   | "percents"
+  | "warning"
   | "gift"
   | "gift-black"
   | "fb"
