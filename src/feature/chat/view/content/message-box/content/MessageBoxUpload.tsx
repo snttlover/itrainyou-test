@@ -210,13 +210,17 @@ const Container = styled.div<{ listEmpty: boolean }>`
 `
 
 const UploadMenuContainer = styled.div`
-  background: #ffffff;
   position: absolute;
   transform: translateY(-125%);
-  left: 0;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
-  border-radius: 2px;
   z-index: 100;
+
+  width: 149px;
+  height: 96px;
+  left: 10px;
+  bottom: -110px;
+  background: #ffffff;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.14);
+  border-radius: 8px;
 `
 
 const MenuItem = styled.div`
@@ -253,7 +257,7 @@ const ItemContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-  padding: 12px;
+  padding: 10px;
   width: 137px;
   height: 48px;
   cursor: pointer;
