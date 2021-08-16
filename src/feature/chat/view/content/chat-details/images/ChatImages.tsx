@@ -79,6 +79,7 @@ const Picture = styled.div<PictureTypes>`
   background: url("${props => props.src}");
   background-position: center;
   background-size: cover;
+  background-color: #eee;
 `
 
 const Empty = styled.div`
