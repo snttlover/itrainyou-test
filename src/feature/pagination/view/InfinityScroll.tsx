@@ -7,11 +7,12 @@ import { Store } from "effector-root"
 export type InfinityScrollPropsTypes = {
   children: React.ReactNode | React.ReactNode[]
   scrollableTarget?: string
+  className?: string
 }
 
 export type CreateInfinityScrollType<T> = {
   data: {
-    $list: Store<T>,
+    $list: Store<T>
     $hasMore: Store<boolean>
   }
   methods: {
@@ -28,6 +29,7 @@ export const createInfinityScroll = ($paginationModel: CreateInfinityScrollType<
 
   return (
     <InfiniteScroll
+      className={props.className}
       loader={<Loader />}
       next={loadMore as any}
       hasMore={hasMore}

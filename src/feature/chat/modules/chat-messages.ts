@@ -8,7 +8,7 @@ import {
   SupportTicketType,
   TransActionProperties,
   TransActionsStatus,
-  FreeSessionClientMessage
+  FreeSessionClientMessage,
 } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
@@ -21,13 +21,12 @@ import { debounce } from "patronum"
 type CreateChatMessagesModuleTypes = {
   type: "client" | "coach"
   socket: ReturnType<typeof createChatsSocket>
-  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
+  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
   dontRead?: boolean
 
-  isSupport?: true,
+  isSupport?: true
   supportIsMe?: true
 }
-
 
 export type ChatSupportMessage = {
   type: "SUPPORT"
@@ -36,6 +35,7 @@ export type ChatSupportMessage = {
   userAvatar: string | null
   ticketStatus: SupportTicketType
   isReadByYou: boolean
+  date: string
 }
 
 export type ChatSystemMessage = {
@@ -63,6 +63,7 @@ export type PersonalChatMessage = {
   user: CoachUser | Client | null
   imageIndex: number
   isReadByYou: boolean
+  date: string
 }
 
 const onlyUniqueRequests = (value: number, index: number, self: number[]) => {
@@ -82,7 +83,8 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       const newState = data.data.messages
 
       return state.concat(newState)
-    }).reset(changeId)
+    })
+    .reset(changeId)
 
   const $chatId = createStore<ChatId>(0)
     .on(changeId, (_, id) => id)
@@ -97,19 +99,20 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   const $loading = pagination.data.$loading
 
   const $chatLoaded = createStore<boolean>(false)
-    .on($loading, (state, loading) => state ? true : !loading)
+    .on($loading, (state, loading) => (state ? true : !loading))
     .reset([reset])
 
   $chatLoaded.watch(loaded => (chatLoaded = loaded))
 
   const addMessage = createEvent<WriteChatMessageDone>()
 
-  pagination.data.$list.on(addMessage, (messages, message) => {
-    const arrayOfids = messages.map(message => message.id)
-    if (arrayOfids.includes(message.data.id)) return messages
-    return [message.data, ...messages]
-  })
-    .on(updateMessages,(messages,updateMessages) => {
+  pagination.data.$list
+    .on(addMessage, (messages, message) => {
+      const arrayOfids = messages.map(message => message.id)
+      if (arrayOfids.includes(message.data.id)) return messages
+      return [message.data, ...messages]
+    })
+    .on(updateMessages, (messages, updateMessages) => {
       const arrayOfids = updateMessages.map(upd => upd.id)
       return messages.map(message => {
         let isTrue = false
@@ -129,7 +132,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
     const completedStatusesIds = messages
       .filter(message => message.sessionRequestStatus === "COMPLETED" && message.sessionRequest)
       .map(message => message.sessionRequest?.id)
-
 
     const reqs = messages
       .filter(message => message.sessionRequest)
@@ -161,7 +163,6 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
           let user: CoachUser | Client | null = null
 
-
           if (message.type === "SUPPORT") {
             const user = message?.supportTicket?.support
             return {
@@ -171,6 +172,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               userAvatar: user?.avatar || null,
               ticketStatus: message.systemTicketType,
               isReadByYou: message.isReadByYou,
+              date: message.creationDatetime,
             }
           }
 
@@ -179,10 +181,10 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
               user = message.sessionRequest?.initiatorClient || message.sessionRequest?.receiverClient || null
             } else {
               user =
-                      message.sessionRequest?.session.coach ||
-                      message.sessionRequest?.initiatorCoach ||
-                      message.sessionRequest?.receiverCoach ||
-                      null
+                message.sessionRequest?.session.coach ||
+                message.sessionRequest?.initiatorCoach ||
+                message.sessionRequest?.receiverCoach ||
+                null
             }
             if (!message.sessionRequest) {
               user = message.transaction?.session.coach || null
@@ -197,10 +199,9 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 status: message.transactionType,
                 date: message.creationDatetime,
                 isReadByYou: message.isReadByYou,
-                systemMessageType: message.systemMessageType
+                systemMessageType: message.systemMessageType,
               }
-            }
-            else {
+            } else {
               return {
                 type: message.type as "SYSTEM",
                 id: message.id,
@@ -212,7 +213,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
                 status: message?.conflict?.status || message.sessionRequestStatus,
                 date: message.creationDatetime,
                 isReadByYou: message.isReadByYou,
-                systemMessageType: message.systemMessageType
+                systemMessageType: message.systemMessageType,
               }
             }
           }
@@ -227,9 +228,10 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
             text: message.text,
             image: message.image,
             document: message.document,
+            date: message.creationDatetime,
             time: date(message.creationDatetime).format("HH:mm"),
             imageIndex: message.image ? imageIndex-- : imageIndex,
-            user
+            user,
           }
         }
       )
@@ -252,7 +254,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
         return (
           ("SYSTEM" === message.data.type ||
             (config.type === "client" && !!message.data.senderCoach) ||
-            (config.type === "coach" && !!message.data.senderClient) ) &&
+            (config.type === "coach" && !!message.data.senderClient)) &&
           chatId === message.data.chat
         )
       },
@@ -262,11 +264,10 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
 
   guard({
     source: config.socket.events.onMessage,
-    filter: message => (message.data.chat === chatId && (chatLoaded || !!config.isSupport)),
+    filter: message => message.data.chat === chatId && (chatLoaded || !!config.isSupport),
     target: addMessage,
   })
-  
-  
+
   return {
     $chatId,
     pagination,

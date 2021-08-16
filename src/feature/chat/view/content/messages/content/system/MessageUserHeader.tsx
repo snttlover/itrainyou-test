@@ -1,7 +1,4 @@
-import { date } from "@/lib/formatting/date"
 import styled from "styled-components"
-import { MediaRange } from "@/lib/responsive/media"
-import { Avatar } from "@/old-components/avatar/Avatar"
 import React from "react"
 
 type UserHeaderProps = {
@@ -16,31 +13,14 @@ type UserHeaderProps = {
 export const MessageUserHeader = (props: UserHeaderProps) => {
   return (
     <StyledUserHeader data-right={props.right}>
-      {
-        props.showUser && (
-          <UserData>
-            <StyledAvatar src={props.avatar} />
-            <UserHeaderTitle>{props.name}</UserHeaderTitle>
-          </UserData>
-        )
-      }
-      { !props.hideDate && <Time>{date(props.date).format("HH:mm")}</Time> }
+      {props.showUser && (
+        <UserData>
+          <UserHeaderTitle>{props.name}</UserHeaderTitle>
+        </UserData>
+      )}
     </StyledUserHeader>
   )
 }
-
-const Time = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #9aa0a6;
-  
-  flex: 1;
-  text-align: right;
-  ${MediaRange.lessThan("mobile")`  
-    font-size: 12px;
-    line-height: 16px;
-  `}
-`
 
 const UserData = styled.div`
   display: flex;
@@ -57,19 +37,9 @@ const StyledUserHeader = styled.div`
   }
 `
 
-const StyledAvatar = styled(Avatar)`
-  width: 24px;
-  height: 24px;
-  margin-right: 4px;
-`
-
 const UserHeaderTitle = styled.div`
   font-weight: 500;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 22px;
   color: #424242;
-  ${MediaRange.lessThan("mobile")`
-    font-size: 12px;
-    line-height: 16px;
-  `}
 `
