@@ -22,12 +22,19 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
 
   const keydownHandler = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
+      e.preventDefault()
+      if (!value.trim()) {
+        return
+      }
       send(value)
       change("")
     }
   }
 
   const handleOnClick = () => {
+    if (!value.trim()) {
+      return
+    }
     send(value)
     change("")
   }
