@@ -1,6 +1,5 @@
 import { getMyTransactionsCoach, SessionTransaction } from "@/lib/api/transactions/client/list-transaction"
 import { date } from "@/lib/formatting/date"
-import WalletTransactionImage from "@/pages/coach/wallet/history/images/wallet.svg"
 import { createGate } from "@/scope"
 import { combine, createEffect, createEvent, createStore, forward, guard, sample } from "effector-root"
 

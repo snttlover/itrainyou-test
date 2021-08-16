@@ -16,6 +16,17 @@ const StyledContainer = styled(Container)`
   align-items: center;
   color: white;
   position: relative;
+
+  /* PRELOAD IMAGES */
+
+  &::after {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: -1;
+    content: url(${content[0].image}) url(${content[1].image}) url(${content[2].image}) url(${content[3].image});
+  }
 `
 
 const Title = styled.h2`

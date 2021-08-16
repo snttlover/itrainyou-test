@@ -1,12 +1,11 @@
 import { ClientSelfData } from "@/lib/api/client/clientInfo"
 import { CoachSelfData } from "@/lib/api/coach/get-my-coach"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { updateMyUser } from "@/lib/api/users/update-my-user"
-import { keysToCamel } from "@/lib/network/casing"
 import { $token, changeToken, logout } from "@/lib/network/token"
 import dayjs from "dayjs"
 import { combine, createEffect, createEvent, createStore, forward, guard, restore } from "effector-root"
 import { sessionToken } from "@/feature/user/session-token"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 
 export type UserData = {
   coach: CoachSelfData | null
@@ -20,7 +19,7 @@ export const loadUserData = createEvent()
 export const setUserData = createEvent<UserData>()
 
 export const $userData = createStore<UserData>({ client: null, coach: null })
-  .on([setUserData, getMyUserFx.doneData.map(data => keysToCamel(data.data))], (state, payload) => payload)
+  .on([setUserData, getMyUserApiFx.fx.doneBody], (state, payload) => payload)
   .reset(logout)
 
 export const $isFullyRegistered = $userData.map(userData => !!(userData.client || userData.coach))
@@ -50,7 +49,7 @@ forward({
 guard({
   source: loadUserData,
   filter: $isLoggedIn,
-  target: getMyUserFx,
+  target: getMyUserApiFx.fx,
 })
 
 if (process.env.BUILD_TARGET === "client") {

@@ -6,7 +6,7 @@ import { MediaRange } from "@/lib/responsive/media"
 
 type ChatsSearchProps = {
   value: string
-  onChange: (value: string) => void,
+  onChange: (value: string) => void
   find: (payload: void) => void
 }
 
@@ -19,7 +19,12 @@ export const ChatsSearch = (props: ChatsSearchProps) => {
 
   return (
     <Container>
-      <StyledInput value={props.value} onChange={props.onChange} onKeyDown={keydownHandler} />
+      <StyledInput
+        value={props.value}
+        placeholder={"Поиск по имени"}
+        onChange={props.onChange}
+        onKeyDown={keydownHandler}
+      />
       <SearchIcon onClick={() => props.find()} />
     </Container>
   )
@@ -28,24 +33,28 @@ export const ChatsSearch = (props: ChatsSearchProps) => {
 const Container = styled.div`
   position: relative;
   width: 100%;
-  max-width: 546px;
-  ${MediaRange.lessThan("tablet")`
-    max-width: 100%;
-  `}
+  padding: 16px;
 `
 
 const StyledInput = styled(Input)`
   width: 100%;
-  padding: 7px 20px;
-  ${MediaRange.lessThan("mobile")`
-    padding: 7px 8px;
-  `}
+  background: #f4f5f7;
+  border-radius: 8px;
+  padding: 8px;
+  padding-left: 40px;
+  border: none !important;
+  font-size: 14px;
+  line-height: 16px;
+  &::placeholder {
+    color: #9aa0a6;
+  }
 `
 
-const SearchIcon = styled(Icon).attrs({ name: "search" })`
+const SearchIcon = styled(Icon).attrs({ name: "chat-search" })`
   position: absolute;
   top: 50%;
-  right: 10px;
+  left: 26px;
   transform: translateY(-50%);
   fill: #5b6670;
+  width: 15px;
 `

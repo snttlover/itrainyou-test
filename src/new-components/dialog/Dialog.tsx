@@ -5,19 +5,20 @@ import { Icon } from "@/old-components/icon/Icon"
 import { MediaRange } from "@/lib/responsive/media"
 
 type DialogProps = {
-  children: React.ReactChild | React.ReactChild[]
   value: boolean
-  onChange: (val: boolean) => any | React.Dispatch<React.SetStateAction<boolean>>
+  onChange?: (val: boolean) => any | React.Dispatch<React.SetStateAction<boolean>>
   className?: string
   notClosable?: boolean
   id?: string
 }
 
-export const Dialog = (props: DialogProps) => {
-  const close = () => props.onChange(false)
+export const Dialog: React.FC<DialogProps> = ({ children, onChange, notClosable, value, className, id }) => {
+  const close = () => {
+    onChange && onChange(false)
+  }
 
   const documentKeypressHandler = (e: KeyboardEvent) => {
-    if (e.keyCode === 27 && !props.notClosable) {
+    if (e.keyCode === 27 && !notClosable) {
       close()
     }
   }
@@ -29,11 +30,11 @@ export const Dialog = (props: DialogProps) => {
 
   return (
     <>
-      {props.value && (
-        <DialogOverlay id={props.id} onClick={close}>
-          <StyledDialog className={props.className} onClick={e => e.stopPropagation()}>
-            {!props.notClosable ? <Close onClick={close} /> : null}
-            {props.children}
+      {value && (
+        <DialogOverlay id={id} onClick={close}>
+          <StyledDialog className={className} onClick={e => e.stopPropagation()}>
+            {!notClosable ? <Close onClick={close} /> : null}
+            {children}
           </StyledDialog>
         </DialogOverlay>
       )}

@@ -8,7 +8,7 @@ export type UpdateClientRequest = {
   firstName: string
   lastName: string
   middleName: string
-  birthDate: Day
+  birthDate?: Day
   sex: Sex
   avatar: null | string
   originalAvatar: null | string

@@ -1,3 +1,4 @@
+import { bootstrapApplication } from "@/app/bootstrap"
 import { $lastUrlServerNavigation } from "@/feature/navigation"
 import { $token, logout } from "@/lib/network/token"
 import { Provider } from "effector-react/ssr"
@@ -18,12 +19,9 @@ import { root, Event, forward, sample } from "effector-root"
 import { config } from "./config"
 
 import { getStart, START } from "./lib/effector"
-import { Application } from "./application"
+import { Application } from "./app/application"
 import { ROUTES } from "./pages/routes"
-import { fixChrome88timeZone } from "@/polyfills/chrome88-dayjs-timezone-fix"
 import { TOKEN_COOKIE_KEY } from "@/feature/user/session-token"
-
-fixChrome88timeZone()
 
 Sentry.init({
   dsn: `${config.SENTRY_SERVER_DSN}`,
@@ -55,9 +53,9 @@ for (const { component } of ROUTES) {
 
     return filteredRoutes.length > 0
       ? {
-          route: filteredRoutes[0],
-          query,
-        }
+        route: filteredRoutes[0],
+        query,
+      }
       : undefined
   })
 
@@ -96,6 +94,13 @@ const generateSSRPage = async (req: express.Request, res: express.Response) => {
 
   try {
     const t1 = performance.now()
+    await allSettled(bootstrapApplication, {
+      scope,
+      params: {
+        activeDashboardType: "client",
+        backendUrl: config.BACKEND_URL,
+      }
+    })
     await allSettled(serverStarted, {
       scope,
       params: { req, res, isSSR: true },
@@ -206,6 +211,12 @@ function getGoogleAnalyticsTags() {
   `
 }
 
+function scriptLink(assetsJs: string) {
+  return  process.env.NODE_ENV === "production"
+    ? `<script src="${assetsJs}" defer></script>`
+    : `<script src="${assetsJs}" defer crossorigin></script>`
+}
+
 function htmlStart(assetsCss: string, assetsJs: string, css: string) {
   return `<!doctype html>
     <html lang="">
@@ -218,11 +229,7 @@ function htmlStart(assetsCss: string, assetsJs: string, css: string) {
         ${config.ENVIRONMENT === "production" ? getGoogleAnalyticsTags() : ""}  
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ""}
         <script>window.env = ${serialize(config)};</script>
-        ${
-          process.env.NODE_ENV === "production"
-            ? `<script src="${assetsJs}" defer></script>`
-            : `<script src="${assetsJs}" defer crossorigin></script>`
-        }
+        ${scriptLink(assetsJs)}
         ${css}
     </head>
     <body>

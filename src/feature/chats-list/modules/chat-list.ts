@@ -145,50 +145,52 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
     config.socket.data.$chatsCounters,
     config.sessionCallModule.data.$sessionId,
     (chats, time, counters, currentSessionCallId) => {
-      return chats
-        .filter((chat, index) => chats.findIndex(c => c.id === chat.id) === index)
-        // @ts-ignore
-        .filter(chat =>  chat.type !== "SUPPORT")
-        .sort((chatA, chatB) => (getChatDate(chatA) > getChatDate(chatB) ? -1 : 1))
-        .map(chat => {
-          const newMessagesCounter = counters.find(counter => counter.id === chat.id)
+      return (
+        chats
+          .filter((chat, index) => chats.findIndex(c => c.id === chat.id) === index)
+          // @ts-ignore
+          .filter(chat => chat.type !== "SUPPORT")
+          .sort((chatA, chatB) => (getChatDate(chatA) > getChatDate(chatB) ? -1 : 1))
+          .map(chat => {
+            const newMessagesCounter = counters.find(counter => counter.id === chat.id)
 
-          const interlocutor = config.type === "client" ? chat.coach : chat.clients[0]
-          const userLink = interlocutor
-            ? config.type === "client"
-              ? routeNames.searchCoachPage(interlocutor.id.toString())
-              : routeNames.coachClientProfile(interlocutor.id.toString())
-            : ""
-          const lastMessageIsMine = !!(config.type === "client"
-            ? chat.lastMessage?.senderClient
-            : chat.lastMessage?.senderCoach)
+            const interlocutor = config.type === "client" ? chat.coach : chat.clients[0]
+            const userLink = interlocutor
+              ? config.type === "client"
+                ? routeNames.searchCoachPage(interlocutor.id.toString())
+                : routeNames.coachClientProfile(interlocutor.id.toString())
+              : ""
+            const lastMessageIsMine = !!(config.type === "client"
+              ? chat.lastMessage?.senderClient
+              : chat.lastMessage?.senderCoach)
 
-          const startTime = chat.lastMessage?.creationDatetime
-            ? date(chat.lastMessage?.creationDatetime).format("HH:mm")
-            : ""
+            const startTime = chat.lastMessage?.creationDatetime
+              ? date(chat.lastMessage?.creationDatetime).format("HH:mm")
+              : ""
 
-          return {
-            id: chat.id,
-            type: chat.type,
-            link: `/${config.type}/chats/${chat.id}`,
-            avatar: interlocutor?.avatar || null,
-            userLink,
-            name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,
-            startTime,
-            newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
-            materialCount: chat.materialsCount,
-            isStarted: chatSessionIsStarted(chat),
-            startSession: config.sessionCallModule.methods.connectToSession,
-            isImage: !!chat.lastMessage?.image,
-            lastMessage: chat.lastMessage?.text || "",
-            lastMessageIsMine,
-            highlightMessages: !!newMessagesCounter,
-            sessionTextStatus: getSessionStatusByDates(
-              chat.nearestSession?.startDatetime,
-              chat.nearestSession?.endDatetime
-            ),
-          }
-        })
+            return {
+              id: chat.id,
+              type: chat.type,
+              link: `/${config.type}/chats/${chat.id}`,
+              avatar: interlocutor?.avatar || null,
+              userLink,
+              name: `${interlocutor?.firstName} ${interlocutor?.lastName}`,
+              startTime,
+              newMessagesCount: newMessagesCounter ? newMessagesCounter.newMessagesCount : 0,
+              materialCount: chat.materialsCount,
+              isStarted: chatSessionIsStarted(chat),
+              startSession: config.sessionCallModule.methods.connectToSession,
+              isImage: !!chat.lastMessage?.image,
+              lastMessage: chat.lastMessage?.text || "",
+              lastMessageIsMine,
+              highlightMessages: false,
+              sessionTextStatus: getSessionStatusByDates(
+                chat.nearestSession?.startDatetime,
+                chat.nearestSession?.endDatetime
+              ),
+            }
+          })
+      )
     }
   )
 

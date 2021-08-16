@@ -37,8 +37,8 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
             find={find}
             showChosen={$chatListModule.data.type === "client"}
           />
-          {listIsEmpty && <ListIsEmpty />}
           <ChatLinksContainer>
+            {listIsEmpty && <ListIsEmpty />}
             <InfScroll>
               {useList($chatListModule.data.$chatsList, chat => (
                 <ChatLinkSwitcher chat={chat} />
@@ -54,10 +54,13 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 12px;
-  margin-bottom: 20px;
   width: 100%;
-  max-width: 734px;
+  max-width: 320px;
+  position: relative;
+  border-radius: 8px 0px 0px 8px;
+  background: #fff;
+  overflow: hidden;
+  border-right: 1px solid #e1e6ea;
 `
 
 const ListIsEmpty = () => {
@@ -65,9 +68,11 @@ const ListIsEmpty = () => {
 }
 
 const ChatLinksContainer = styled.div`
-  margin-top: 22px;
   display: block;
   width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
   ${MediaRange.lessThan("mobile")`
     margin-top: 14px;
   `}
@@ -77,16 +82,10 @@ const Empty = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 120px;
 
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
-  text-align: center;
+  font-size: 14px;
+  line-height: 16px;
   color: #9aa0a6;
-
-  ${MediaRange.lessThan("mobile")`
-    font-size: 16px;
-    line-height: 22px;
-  `}
+  width: 100%;
+  height: 100%;
 `

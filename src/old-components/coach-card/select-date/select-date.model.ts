@@ -24,8 +24,8 @@ import {
 import { getFreeSessionsList } from "@/lib/api/free-sessions/free-sessions"
 import { createClientSessionRequest } from "@/lib/api/client/create-client-session-request"
 import { SessionRequestParams } from "@/lib/api/coach/create-session-request"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 
 export interface CoachSessionWithSelect extends CoachSession {
   selected: boolean
@@ -97,7 +97,7 @@ export const genFreeSessions = () => {
 
   forward({
     from: bulkAnySessionFx.done,
-    to: [resetSelectedSessions, getMyUserFx],
+    to: [resetSelectedSessions, getMyUserApiFx.fx],
   })
 
   forward({
@@ -208,7 +208,7 @@ export const genCoachSessions = (id = 0, onlyFreeSessions = false) => {
 
   forward({
     from: bulkAnySessionFx.done,
-    to: getMyUserFx,
+    to: getMyUserApiFx.fx,
   })
 
 

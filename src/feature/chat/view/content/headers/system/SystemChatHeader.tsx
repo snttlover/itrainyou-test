@@ -11,11 +11,11 @@ export const SystemChatHeader = ({ backLink }: { backLink: string }) => (
   <ChatHeaderContainer>
     <MobileBackButton to={backLink} />
     <SystemChatIcon />
-    <Title>Уведомления о сессиях</Title>
+    <Title>Уведомления</Title>
   </ChatHeaderContainer>
 )
 
-const SystemChatIcon = styled(Icon).attrs({ name: "bell" })`
+const SystemChatIcon = styled(Icon).attrs({ name: "circle-bell" })`
   fill: ${props => props.theme.colors.primary};
 
   width: 40px;

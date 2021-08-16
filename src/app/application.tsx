@@ -1,9 +1,8 @@
 import { AsyncDataLoader } from "@/lib/AsyncDataLoader"
 import * as React from "react"
 import { AppStyles } from "./AppStyles"
-import { ClientTheme } from "./old-components/layouts/themes"
-import { Pages } from "./pages"
-import "./models/init"
+import { ClientTheme } from "@/old-components/layouts/themes"
+import { Pages } from "@/pages"
 import { YMInitializer } from "react-yandex-metrika"
 
 import "react-image-crop/dist/ReactCrop.css"

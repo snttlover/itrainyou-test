@@ -1,7 +1,11 @@
-import feat1Img from "../../assets/features/1.png"
-import feat2Img from "../../assets/features/2.png"
-import feat3Img from "../../assets/features/3.png"
-import feat4Img from "../../assets/features/4.png"
+// @ts-ignore
+import feat1Img from "../../assets/features/1.jpg"
+// @ts-ignore
+import feat2Img from "../../assets/features/2.jpg"
+// @ts-ignore
+import feat3Img from "../../assets/features/3.jpg"
+// @ts-ignore
+import feat4Img from "../../assets/features/4.jpg"
 
 export const content = [
   {

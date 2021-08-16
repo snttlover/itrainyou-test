@@ -14,30 +14,17 @@ type CreateChatSessionsModuleConfig = {
   fetch: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 
-type ChatSessionsTabs = "future" | "past"
-
 export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig) => {
   const loadSessions = createEvent()
   const reset = createEvent()
   const resetPagination = createEvent()
 
-  const changeTab = createEvent<ChatSessionsTabs>()
-  const $tab = createStore<ChatSessionsTabs>("future")
-    .on(changeTab, (_, tab) => tab)
-    .reset(reset)
-
   const pagination = createPagination<ChatSession>({
     fetchMethod: config.fetch,
-    $query: combine(config.$chatId, $tab, (id, tab) => {
+    $query: combine(config.$chatId, id => {
       const query: any = { id: +id }
-
-      if (tab === "past") {
-        query.past = "True"
-      }
-
-      if (tab === "future") {
-        query.excludePast = "True"
-      }
+      query.past = "False"
+      query.excludePast = "False"
 
       return query
     }),
@@ -45,25 +32,19 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
 
   forward({
     from: resetPagination,
-    to: pagination.methods.reset
+    to: pagination.methods.reset,
   })
 
-  const changeTick = createEvent<Date>()
-  const $tick = createStore(new Date()).on(changeTick, (_, date) => date)
-
-  const $sessions = combine(pagination.data.$list, $tick, $tab, (sessions, tick, tab) => {
+  const $sessions = combine(pagination.data.$list, sessions => {
     const formatted = sessions.map(s => {
       const session: any = {
+        id: s.id,
         link: `/${config.chatUserType}/sessions/${s.id}`,
-        time: date(s.startDatetime).format("HH:mm"),
+        time: `${date(s.startDatetime).format("HH:mm")} - ${date(s.endDatetime).format("HH:mm")}`,
         date: date(s.startDatetime).format("DD MMM YYYYг"),
-        startDatetime: date(s.startDatetime)
-      }
-
-      if (tab === "future") {
-        session.tick = date(s.startDatetime)
-          .subtract(+tick, "millisecond")
-          .format("HH.MM.SS")
+        startDatetime: date(s.startDatetime),
+        duration: s.durationType === "PROMO" ? "PROMO" : `${s.durationType.match(/\d/g)?.join("")} мин`,
+        inFuture: date().isBefore(s.endDatetime),
       }
 
       if (date().format("DDMMYY") === date(s.startDatetime).format("DDMMYY")) {
@@ -73,10 +54,6 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
       return session
     })
 
-    if (tab === "future") {
-      return formatted.filter(session => date().isBefore(session.startDatetime))
-    }
-
     return formatted
   })
 
@@ -85,8 +62,10 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
     to: pagination.methods.loadMore,
   })
 
+  const init = createEvent()
+
   forward({
-    from: changeTab,
+    from: init,
     to: [resetPagination, loadSessions],
   })
 
@@ -97,11 +76,10 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
 
   return {
     data: {
-      $tab,
       $sessions,
     },
     methods: {
-      changeTab,
+      init,
       reset,
       loadSessions,
     },

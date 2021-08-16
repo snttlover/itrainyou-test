@@ -1,7 +1,6 @@
 import { CoachDashboardLayout } from "@/old-components/layouts/behaviors/dashboards/coach/CoachDashboardLayout"
 import { ContentContainer } from "@/old-components/layouts/ContentContainer"
 import { Loader } from "@/old-components/spinner/Spinner"
-import { getMyUserFx } from "@/lib/api/users/get-my-user"
 import { MediaRange } from "@/lib/responsive/media"
 import { ApprovalFailing } from "@/pages/coach/home/approval-failing/ApprovalFailing"
 import { ApprovalTimerOver } from "@/pages/coach/home/approval-timer-over/ApprovalTimerOver"
@@ -12,6 +11,7 @@ import { CoachGetAccess } from "@/pages/coach/home/get-access/CoachGetAccess"
 import { CoachSessionsPage } from "@/pages/coach/home/sessions/CoachSessionsPage"
 import { YandexKassaInstructions } from "@/pages/coach/home/yandex-kassa-not-approved/YandexKassaInstructions"
 import { YandexKassaWaitingForApproval } from "@/pages/coach/home/yandex-kassa-not-approved/YandexKassaWaitingForApproval"
+import { getMyUserApiFx } from "@/shared/api/users/get-my-user"
 import { useGate, useStore } from "effector-react"
 import * as React from "react"
 import styled from "styled-components"
@@ -93,7 +93,7 @@ const CurrentState = () => {
 }
 
 export const CoachHome = () => {
-  const isUserDataLoading = useStore(getMyUserFx.pending)
+  const isUserDataLoading = useStore(getMyUserApiFx.fx.pending)
 
   useGate(CoachHomeGate)
 

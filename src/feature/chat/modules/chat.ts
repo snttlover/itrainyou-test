@@ -4,20 +4,24 @@ import { createChatInfoModule } from "@/feature/chat/modules/chat-info"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { createEvent, createStore, forward, sample } from "effector-root"
 import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api/interfaces/utils.interface"
-import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
 import { ChatMaterials } from "@/lib/api/chats/clients/get-images"
 import { PaginationRequest } from "@/feature/pagination/modules/pagination"
+import { createChatDetailsModule } from "@/feature/chat/modules/chat-details"
 
 export type ChatModuleConfig = {
   type: "client" | "coach"
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
-  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>,
-  fetchMaterials: (id: ChatId, materials: "images" | "documents", params: PaginationRequest) => Promise<Pagination<ChatMaterials>>,
+  fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
+  fetchMaterials: (
+    id: ChatId,
+    materials: "images" | "documents",
+    params: PaginationRequest
+  ) => Promise<Pagination<ChatMaterials>>
   fetchSessions: (params: GetChatSessionsQuery) => Promise<Pagination<ChatSession>>
 }
 
@@ -29,15 +33,16 @@ export const createChatModule = (config: ChatModuleConfig) => {
 
   const materials = createChatMaterialsModule({
     $chatId,
-    fetchMaterials: config.fetchMaterials
+    fetchMaterials: config.fetchMaterials,
   })
 
-  const chatSessions = createChatSessionsModule({
+  const chatDetails = createChatDetailsModule({
     socket: config.socket,
-    $withAvatars: chat.$chat.map(chat => chat.chatType === "SYSTEM"),
     $chatId,
-    fetch: config.fetchSessions,
-    chatUserType: config.type
+    fetchSessions: config.fetchSessions,
+    chatUserType: config.type,
+    chatInfoModule: chat,
+    fetchMaterials: config.fetchMaterials,
   })
 
   const chatMessages = createChatMessagesModule(config)
@@ -59,16 +64,15 @@ export const createChatModule = (config: ChatModuleConfig) => {
     to: [
       chat.reset,
       chatMessages.pagination.methods.reset,
-      chatSessions.methods.reset,
       chatMessages.pagination.methods.loadMore,
       chat.loadChat,
-      chatSessions.methods.loadSessions
+      chatDetails.methods.init,
     ],
   })
 
   const messageBox = createChatMessageBoxModule({
     ...config,
-    $chatId
+    $chatId,
   })
 
   const mounted = createEvent<ChatId>()
@@ -87,10 +91,10 @@ export const createChatModule = (config: ChatModuleConfig) => {
     materials,
     chat,
     chatMessages,
-    chatSessions,
+    chatDetails,
     socket: config.socket,
     mounted,
     reset,
-    messageBox
+    messageBox,
   }
 }
