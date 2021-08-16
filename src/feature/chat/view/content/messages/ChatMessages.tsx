@@ -24,6 +24,7 @@ const MessagesWrapper = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
+  margin: 20px 0;
 `
 
 export const createChatMessages = ($chatMessagesModule: ReturnType<typeof createChatMessagesModule>) => {

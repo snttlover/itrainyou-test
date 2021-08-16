@@ -607,7 +607,7 @@ const BodyWrapper = styled.div`
 
 const SystemMessageWrapper = styled.div`
   display: flex;
-  margin: 8px 0;
+  margin: 4px 0;
 `
 
 type SystemMessageTypes = {
