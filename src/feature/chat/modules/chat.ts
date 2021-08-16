@@ -4,7 +4,6 @@ import { createChatInfoModule } from "@/feature/chat/modules/chat-info"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { createEvent, createStore, forward, sample } from "effector-root"
 import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api/interfaces/utils.interface"
-import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
@@ -43,6 +42,7 @@ export const createChatModule = (config: ChatModuleConfig) => {
     fetchSessions: config.fetchSessions,
     chatUserType: config.type,
     chatInfoModule: chat,
+    fetchMaterials: config.fetchMaterials,
   })
 
   const chatMessages = createChatMessagesModule(config)

@@ -5,10 +5,12 @@ import { createChatDetailsModule } from "@/feature/chat/modules/chat-details"
 import { Avatar } from "@/old-components/avatar/Avatar"
 import { Tab, Tabs } from "@/new-components/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
-import { createChatSessions } from "@/feature/chat/view/content/chat-sessions/ChatSessionsList"
+import { createChatSessions } from "@/feature/chat/view/content/chat-details/sessions/ChatSessionsList"
+import { createChatImages } from "@/feature/chat/view/content/chat-details/images/ChatImages"
 
 export const createChatDetails = (detailsModule: ReturnType<typeof createChatDetailsModule>) => {
   const Sessions = createChatSessions(detailsModule.modules.sessions)
+  const Protos = createChatImages(detailsModule.modules.photos)
 
   return () => {
     const tab = useStore(detailsModule.data.$tab)
@@ -26,7 +28,10 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
           <StyledTab value='photos'>Фото</StyledTab>
           <StyledTab value='documents'>Файлы</StyledTab>
         </StyledTabs>
-        <TabsContent>{tab === "sessions" && <Sessions />}</TabsContent>
+        <TabsContent>
+          {tab === "sessions" && <Sessions />}
+          {tab === "photos" && <Protos />}
+        </TabsContent>
       </Container>
     )
   }
@@ -64,7 +69,7 @@ const Name = styled.div`
 const TabsContent = styled.div`
   display: block;
   flex: 1;
-  overflow: auto;
+  overflow: hidden;
 `
 
 const StyledTabs = styled(Tabs)`

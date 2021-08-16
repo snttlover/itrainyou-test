@@ -13,6 +13,7 @@ export type PaginationFetchMethod<T> = (params: PaginationRequest) => Promise<Pa
 export type PaginationModelConfigTypes<T> = {
   fetchMethod: PaginationFetchMethod<T>
   $query?: Store<any>
+  pageSize?: number
 }
 
 export type CreatePaginationType<ItemTypes> = {
@@ -37,7 +38,8 @@ export const createPagination = <ListItemType>(
   const reset = createEvent()
 
   const loadMoreFx = createEffect({
-    handler: ({ page, query }: { page: number; query: any }) => config.fetchMethod({ page, pageSize: 15, ...query }),
+    handler: ({ page, query }: { page: number; query: any }) =>
+      config.fetchMethod({ page, pageSize: config.pageSize || 15, ...query }),
   })
 
   const $itemsCount = createStore<number>(Infinity)

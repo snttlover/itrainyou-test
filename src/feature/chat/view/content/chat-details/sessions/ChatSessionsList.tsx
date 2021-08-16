@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { ChatSessionListItem } from "@/feature/chat/view/content/chat-sessions/ChatSessionListItem"
+import { ChatSessionListItem } from "@/feature/chat/view/content/chat-details/sessions/ChatSessionListItem"
 import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
 import { createInfinityScroll } from "@/feature/pagination"
 import { useEvent, useList, useStore } from "effector-react"
@@ -67,6 +67,7 @@ const Container = styled.div`
   height: 100%;
   flex-basis: 320px;
   width: 320px;
+  overflow: auto;
 `
 
 const Sessions = styled.div`
