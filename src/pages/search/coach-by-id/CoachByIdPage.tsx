@@ -26,7 +26,7 @@ import { useLocation } from "react-router-dom"
 import { $hasFreeSessions } from "@/pages/client/home/home.model"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
 import { $isLoggedIn } from "@/feature/user/user.model"
-import { coachToRedirectAfterSignUpType } from "@/pages/auth/pages/signup/models/types"
+import { biggerThenLaptop } from "@/lib/responsive/mediaHooks"
 
 const InfoWithSidebar = styled.div`
   margin: 20px 0;
@@ -43,27 +43,19 @@ const InfoWithSidebar = styled.div`
 `
 
 const BuySidebar = styled.div`
-  display: none;
   min-width: 268px;
   width: 268px;
   margin-left: 24px;
   position: relative;
   align-self: flex-start;
   height: auto;
-
-  ${MediaRange.greaterThan("laptop")`
-    display: flex;
-  `}
+  display: flex;
 `
 
 const BuyBlock = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-
-  ${MediaRange.greaterThan("laptop")`
-    display: none;
-  `}
 `
 
 const CoachInfoContainer = styled.div`
@@ -157,6 +149,7 @@ export type CoachByIdPageLocationStateTypes = {
 }
 
 export const CoachByIdPage = () => {
+  const isBiggerThenLaptop = biggerThenLaptop()
   useGate(coachByIdGate)
 
   const coach = useStore($coach)
@@ -180,24 +173,24 @@ export const CoachByIdPage = () => {
             <CoachInfoContainer>
               <MainCoachBlock>
                 <BaseCoachInfo />
-                <BuyBlock>
+                {!isBiggerThenLaptop && <BuyBlock>
                   <Datepicker
                     preSelectedDate={locationState?.preSelectedDate}
                     preSelectedSessions={locationState?.preSelectedSessions}
                     showFreeSessionsOnly={locationState?.showFreeSessionsOnly}
                   />
-                </BuyBlock>
+                </BuyBlock>}
                 <AboutCoach />
               </MainCoachBlock>
               <Reviews />
             </CoachInfoContainer>
-            <BuySidebar>
+            {isBiggerThenLaptop && <BuySidebar>
               <Datepicker
                 preSelectedDate={locationState?.preSelectedDate}
                 preSelectedSessions={locationState?.preSelectedSessions}
                 showFreeSessionsOnly={locationState?.showFreeSessionsOnly}
               />
-            </BuySidebar>
+            </BuySidebar>}
             <BookSessionsStatusModalDialog />
             <CardPicker />
           </InfoWithSidebar>
