@@ -17,8 +17,10 @@ export default () => {
   return (
     <ClientDashboardLayout>
       <Content>
-        <ChatsList />
-        {params.id && <Chat />}
+        <ChatsWrapper>
+          <ChatsList />
+          {params.id && <Chat />}
+        </ChatsWrapper>
       </Content>
     </ClientDashboardLayout>
   )
@@ -30,4 +32,14 @@ export const Content = styled.div`
   padding: 24px;
   display: flex;
   position: relative;
+`
+
+const ChatsWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #fff;
 `

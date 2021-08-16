@@ -51,23 +51,42 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
     <Container>
       <ChatContentContainer>
         <MessageContainer>
-          <MessageBoxUpload module={$module} />
-          <InputContainer>
-            <StyledInput
-              ref={input}
-              value={value}
-              disabled={!!props.blockedText}
-              placeholder={props.blockedText || "Напишите сообщение..."}
-              onChange={e => change(e.target.value)}
-              onKeyDown={keydownHandler}
-            />
-            <Send onClick={handleOnClick} />
-          </InputContainer>
+          {props.blockedText && <BlockedText>{props.blockedText}</BlockedText>}
+          {!props.blockedText && (
+            <>
+              <MessageBoxUpload module={$module} />
+              <InputContainer>
+                <StyledInput
+                  ref={input}
+                  value={value}
+                  disabled={!!props.blockedText}
+                  placeholder={props.blockedText || "Напишите сообщение..."}
+                  onChange={e => change(e.target.value)}
+                  onKeyDown={keydownHandler}
+                />
+                <Send onClick={handleOnClick} />
+              </InputContainer>
+            </>
+          )}
         </MessageContainer>
       </ChatContentContainer>
     </Container>
   )
 }
+
+const BlockedText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: #ff6b00;
+  background: #fff;
+  height: 48px;
+`
 
 export const DocInfo = styled.div`
   display: flex;
@@ -78,7 +97,7 @@ export const DocInfo = styled.div`
 
 const MessageContainer = styled.div`
   background: #fff;
-  padding: 8px 18px;
+  padding: 8px 0;
   display: flex;
   align-items: center;
   position: relative;
@@ -95,9 +114,7 @@ const Send = styled(Icon).attrs({ name: "send" })`
   fill: #5b6670;
   cursor: pointer;
   height: 20px;
-  position: absolute;
-  right: 22px;
-  top: 15px;
+  margin-left: 18px;
 `
 
 export const Close = styled(Icon).attrs({ name: "close" })`
@@ -115,6 +132,8 @@ const InputContainer = styled.div`
   width: 100%;
   border-radius: 18px;
   background: #fff;
+  display: flex;
+  align-items: center;
 `
 
 const StyledInput = styled.textarea`

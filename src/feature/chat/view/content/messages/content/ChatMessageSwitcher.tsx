@@ -9,7 +9,7 @@ import styled from "styled-components"
 const StyledUnreadMessage = styled.div<{ readed: boolean }>`
   background: ${({ readed, theme }) => (readed ? "transparent" : `${theme.colors.primary}1F`)};
   transition: background 0.5s ease;
-  padding: 4px 24px;
+  padding: 4px 0;
   &:first-child {
     margin-top: 16px;
   }
