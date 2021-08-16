@@ -597,7 +597,7 @@ const StyledAvatar = styled(Avatar)`
   width: 40px;
   height: 40px;
   margin-right: 8px;
-  flex-basis: 40px;
+  min-width: 40px;
 `
 
 const BodyWrapper = styled.div`

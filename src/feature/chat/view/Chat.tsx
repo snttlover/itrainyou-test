@@ -71,7 +71,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
               <Messages isSystem={chat.chatType === "SYSTEM"} imageClick={openImage} />
               {!isSystemChat && <MessageBox blockedText={blockedText} />}
             </ChatContainer>
-            <Details />
+            {chat.chatType === "PERSONAL" && <Details />}
             <RevocationSessionDialog />
             <DenyCompletetionDialog />
           </>
