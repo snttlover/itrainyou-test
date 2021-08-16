@@ -8,6 +8,7 @@ import { createChatInfoModule } from "@/feature/chat/modules/chat-info"
 import { createChatImagesListModule } from "@/feature/chat/modules/chat-images"
 import { PaginationRequest } from "@/feature/pagination/modules/pagination"
 import { ChatMaterials } from "@/lib/api/chats/clients/get-images"
+import { createChatDocumentsListModule } from "@/feature/chat/modules/chat-documents"
 
 type CreateChatDetailsModuleConfig = {
   socket: ReturnType<typeof createChatsSocket>
@@ -43,9 +44,11 @@ export const createChatDetailsModule = (config: CreateChatDetailsModuleConfig) =
 
   const photos = createChatImagesListModule(config)
 
+  const documents = createChatDocumentsListModule(config)
+
   forward({
     from: reset,
-    to: [sessions.methods.reset, photos.methods.reset],
+    to: [sessions.methods.reset, photos.methods.reset, documents.methods.reset],
   })
 
   return {
@@ -60,6 +63,7 @@ export const createChatDetailsModule = (config: CreateChatDetailsModuleConfig) =
     modules: {
       photos,
       sessions,
+      documents,
       info: config.chatInfoModule,
     },
   }

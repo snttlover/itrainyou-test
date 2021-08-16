@@ -7,10 +7,12 @@ import { Tab, Tabs } from "@/new-components/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
 import { createChatSessions } from "@/feature/chat/view/content/chat-details/sessions/ChatSessionsList"
 import { createChatImages } from "@/feature/chat/view/content/chat-details/images/ChatImages"
+import { createChatDocuments } from "@/feature/chat/view/content/chat-details/documents/ChatDocuments"
 
 export const createChatDetails = (detailsModule: ReturnType<typeof createChatDetailsModule>) => {
   const Sessions = createChatSessions(detailsModule.modules.sessions)
   const Protos = createChatImages(detailsModule.modules.photos)
+  const Documents = createChatDocuments(detailsModule.modules.documents)
 
   return () => {
     const tab = useStore(detailsModule.data.$tab)
@@ -31,6 +33,7 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
         <TabsContent>
           {tab === "sessions" && <Sessions />}
           {tab === "photos" && <Protos />}
+          {tab === "documents" && <Documents />}
         </TabsContent>
       </Container>
     )
