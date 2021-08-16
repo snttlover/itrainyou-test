@@ -40,11 +40,11 @@ export const createChatSessionsModule = (config: CreateChatSessionsModuleConfig)
       const session: any = {
         id: s.id,
         link: `/${config.chatUserType}/sessions/${s.id}`,
-        time: date(s.startDatetime).format("HH:mm"),
+        time: `${date(s.startDatetime).format("HH:mm")} - ${date(s.endDatetime).format("HH:mm")}`,
         date: date(s.startDatetime).format("DD MMM YYYYг"),
         startDatetime: date(s.startDatetime),
         duration: s.durationType === "PROMO" ? "PROMO" : `${s.durationType.match(/\d/g)?.join("")} мин`,
-        inFuture: date().isBefore(s.startDatetime),
+        inFuture: date().isBefore(s.endDatetime),
       }
 
       if (date().format("DDMMYY") === date(s.startDatetime).format("DDMMYY")) {
