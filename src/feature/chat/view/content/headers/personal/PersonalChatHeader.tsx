@@ -34,7 +34,7 @@ export const PersonalChatHeader = (props: ChatHeaderTypes) => {
         <Link to={props.link!}>{props.name}</Link>
       </Title>
       <MobileChatHeaderMenu openMaterials={props.openMaterials} />
-      {/*<MaterialsIcon onClick={props.openMaterials} />*/}
+      <MaterialsIcon onClick={props.openMaterials} />
       {props.type === "coach" && (
         <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />
       )}

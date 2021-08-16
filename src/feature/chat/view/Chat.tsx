@@ -9,18 +9,17 @@ import { useEvent, useStore } from "effector-react"
 import { Loader } from "@/old-components/spinner/Spinner"
 import { useParams } from "react-router-dom"
 import { NotFound } from "@/feature/not-found/components/NotFound"
-import { createChatSessions } from "@/feature/chat/view/content/chat-sessions/ChatSessionsList"
 import { SystemChatHeader } from "@/feature/chat/view/content/headers/system/SystemChatHeader"
 import { resetRevocation } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { RevocationSessionDialog } from "@/pages/client/session/content/session-page-content/cancel-session/RevocationSessionDialog"
 import { changeSessionsMobileVisibility } from "@/feature/chat/modules/chat-sessions"
 import { DenyCompletetionDialog } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/DenyCompletetionDialog"
-// @ts-ignore
 import { createMaterialsDialog } from "@/feature/chat/modules/chat-materials/createMaterialsDialog"
+import { createChatDetails } from "@/feature/chat/view/content/chat-details/ChatDetails"
 
 export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
-  const Sessions = createChatSessions($chatModule.chatSessions)
+  const Details = createChatDetails($chatModule.chatDetails)
   const MessageBox = createChatMessageBox($chatModule.messageBox)
   const MaterialsDialog = createMaterialsDialog($chatModule.materials)
   return () => {
@@ -72,7 +71,7 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
               <Messages isSystem={chat.chatType === "SYSTEM"} imageClick={openImage} />
               {!isSystemChat && <MessageBox blockedText={blockedText} />}
             </ChatContainer>
-            <Sessions />
+            <Details />
             <RevocationSessionDialog />
             <DenyCompletetionDialog />
           </>

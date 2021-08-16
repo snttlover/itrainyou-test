@@ -1,46 +1,48 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { ChatSessionListItem } from "@/feature/chat/view/content/chat-sessions/ChatSessionListItem"
-import { MediaRange } from "@/lib/responsive/media"
-import {
-  $showSessionsOnMobile,
-  changeSessionsMobileVisibility,
-  createChatSessionsModule,
-} from "@/feature/chat/modules/chat-sessions"
+import { createChatSessionsModule } from "@/feature/chat/modules/chat-sessions"
 import { createInfinityScroll } from "@/feature/pagination"
-import { useList, useStore } from "effector-react"
-import { Tabs, Tab } from "@/old-components/tabs/Tabs"
-import { useEvent } from "effector-react"
-import { Icon } from "@/old-components/icon/Icon"
+import { useEvent, useList, useStore } from "effector-react"
+import { useSplittedStore } from "@/lib/effector/use-split-store"
 
 export const createChatSessions = (sessionsModule: ReturnType<typeof createChatSessionsModule>) => {
   const Pagination = createInfinityScroll(sessionsModule.modules.pagination)
 
   return () => {
-    const loading = useStore(sessionsModule.modules.pagination.data.$loading)
-    const tab = useStore(sessionsModule.data.$tab)
-    const changeTab = useEvent(sessionsModule.methods.changeTab)
     const isEmpty = useStore(sessionsModule.modules.pagination.data.$listIsEmpty)
+    const load = useEvent(sessionsModule.methods.init)
+    const reset = useEvent(sessionsModule.methods.reset)
 
-    const changeMobileVisibility = useEvent(changeSessionsMobileVisibility)
-    const showOnMobile = useStore($showSessionsOnMobile)
+    const sessions = useSplittedStore({
+      store: sessionsModule.data.$sessions,
+      splitter: session => (session.inFuture ? "future" : "past"),
+    })
+
+    useEffect(() => {
+      load()
+      return () => reset()
+    }, [])
 
     return (
-      <Container data-show-on-mobile={showOnMobile}>
-        <Header>
-          <MobileBackButton onClick={() => changeMobileVisibility(false)} />
-          Сессии
-        </Header>
-        <StyledTabs value={tab} onChange={changeTab}>
-          {loading && <BlockTabs />}
-          <StyledTab value='future'>Будут</StyledTab>
-          <StyledTab value='past'>Прошли</StyledTab>
-        </StyledTabs>
+      <Container>
         <Sessions>
           {isEmpty && <Empty>Пока нет сессий</Empty>}
           <Pagination>
-            {useList(sessionsModule.data.$sessions, session => (
-              <ChatSessionListItem link={session.link} date={session.date} time={session.time} />
+            {sessions.keys.map(time => (
+              <div key={time}>
+                {time === "past" && <Title>Прошли</Title>}
+                {sessions.splitted(time).map(session => (
+                  <ChatSessionListItem
+                    key={session.id}
+                    link={session.link}
+                    duration={session.duration}
+                    date={session.date}
+                    time={session.time}
+                    inFuture={session.inFuture}
+                  />
+                ))}
+              </div>
             ))}
           </Pagination>
         </Sessions>
@@ -49,15 +51,13 @@ export const createChatSessions = (sessionsModule: ReturnType<typeof createChatS
   }
 }
 
-const MobileBackButton = styled(Icon).attrs({ name: "left-icon" })`
-  display: none;
-  width: 24px;
-  height: 24px;
-  ${MediaRange.lessThan("mobile")`
-    display: flex;
-    fill:  ${props => props.theme.colors.primary};
-    margin-right: 12px;
-  `}
+const Title = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #424242;
+  margin-top: 24px;
 `
 
 const Container = styled.div`
@@ -69,63 +69,11 @@ const Container = styled.div`
   width: 320px;
 `
 
-const StyledTabs = styled(Tabs)`
-  display: flex;
-  position: relative;
-`
-
-const BlockTabs = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  background: transparent;
-  width: 100%;
-  height: 100%;
-`
-
-const StyledTab = styled(Tab)`
-  font-size: 14px;
-  line-height: 18px;
-  color: #424242;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2px;
-  background: transparent;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  &[data-active="true"] {
-    border-bottom: 2px solid ${props => props.theme.colors.primary};
-    background: transparent;
-  }
-`
-
-const Header = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #424242;
-  padding: 17px 12px 14px;
-  display: flex;
-  align-items: center;
-  ${MediaRange.lessThan("mobile")`
-    font-family: Roboto Slab;
-    font-size: 20px;
-    line-height: 26px;
-    padding-top: 0;
-  `}
-`
-
 const Sessions = styled.div`
   flex: 1;
   position: relative;
   overflow: auto;
-  height: calc(100% - 77px);
-  ${MediaRange.lessThan("mobile")`
-    margin-top: 12px;
-  `}
+  padding: 0 16px;
 `
 
 const Empty = styled.div`
@@ -134,7 +82,6 @@ const Empty = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 120px;
-  position: absolute;
   font-size: 16px;
   line-height: 22px;
   color: #9aa0a6;

@@ -7,97 +7,68 @@ type ChatSessionListItemTypes = {
   link: string
   avatar?: string
   timer?: string
+  duration: string
 
   date: string
   time: string
+  inFuture: boolean
 }
 
 export const ChatSessionListItem = (props: ChatSessionListItemTypes) => {
   return (
-    <Container to={props.link}>
+    <Container to={props.link} data-in-future={props.inFuture}>
       <Header>
         <Date>{props.date}</Date>
-        <Time>{props.time}</Time>
-        {props.timer && <Timer>{props.timer}</Timer>}
+        <Time>
+          {props.duration} • {props.time}
+        </Time>
       </Header>
+      <RightIcon />
     </Container>
   )
 }
 
-const Container = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  padding: 10px 12px;
-  position: relative;
-  background: #fff;
-  border-bottom: 1px solid #efefef;
-`
-
 const Header = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  flex: 1;
 `
 
 const Date = styled.div`
+  font-style: normal;
+  font-weight: 500;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 22px;
   color: #424242;
-  margin-right: 8px;
+  margin-bottom: 4px;
 `
 
 const Time = styled.div`
-  font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
-  color: #424242;
-`
-
-const NoMaterials = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #9aa0a6;
-  margin-top: 14px;
-`
-
-const Timer = styled.div`
-  position: absolute;
-  top: 12px;
-  right: 8px;
-
-  font-size: 12px;
-  line-height: 16px;
   color: #5b6670;
 `
 
-const Counters = styled.div`
-  display: flex;
-  margin-top: 14px;
+const RightIcon = styled(Icon).attrs({ name: "right-icon" })`
+  fill: #efefef;
+  width: 12px;
 `
 
-const Counter = styled.div`
+const Container = styled(Link)`
   display: flex;
   align-items: center;
-`
-
-const CounterText = styled.div`
-  font-size: 12px;
-  line-height: 16px;
-  color: #424242;
-  margin-left: 5px;
-  margin-right: 9px;
-`
-
-const ImageIcon = styled(Icon).attrs({ name: "image" })`
-  fill: ${props => props.theme.colors.primary};
-  height: 12px;
-`
-
-const CameraIcon = styled(Icon).attrs({ name: "camera" })`
-  fill: ${props => props.theme.colors.primary};
-  height: 12px;
-`
-
-const DocumentIcon = styled(Icon).attrs({ name: "document" })`
-  fill: ${props => props.theme.colors.primary};
-  height: 12px;
+  padding-top: 16px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #f4f5f7;
+  &[data-in-future="false"] {
+    ${Date} {
+      color: #9aa0a6;
+    }
+    ${Time} {
+      color: #9aa0a6;
+    }
+    ${RightIcon} {
+      fill: #efefef;
+    }
+  }
 `
