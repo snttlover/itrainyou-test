@@ -49,6 +49,7 @@ export const createChatDetailsModule = (config: CreateChatDetailsModuleConfig) =
     },
     modules: {
       sessions,
+      info: config.chatInfoModule,
     },
   }
 }

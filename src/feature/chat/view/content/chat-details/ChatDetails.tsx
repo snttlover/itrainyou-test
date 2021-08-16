@@ -13,16 +13,13 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
   return () => {
     const tab = useStore(detailsModule.data.$tab)
     const changeTab = useEvent(detailsModule.methods.changeTab)
+    const info = useStore(detailsModule.modules.info.$chat)
 
     return (
       <Container>
         <Header>
-          <StyledAvatar
-            src={
-              "https://avatars.mds.yandex.net/get-kino-vod-films-gallery/28788/47e2fd514411e18b76af786d7417062d/600x380"
-            }
-          />
-          <Name>Виктор Крылова</Name>
+          <StyledAvatar src={info.avatar || null} />
+          <Name>{info.name}</Name>
         </Header>
         <StyledTabs value={tab} onChange={changeTab}>
           <StyledTab value='sessions'>Сессии</StyledTab>
@@ -48,6 +45,7 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   padding: 16px;
+  align-items: center;
 `
 
 const StyledAvatar = styled(Avatar)`
