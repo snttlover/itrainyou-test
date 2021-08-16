@@ -5,6 +5,9 @@ import { useList, useStore } from "effector-react"
 import { createReverseInfinityScroll } from "@/feature/pagination/view/ReverseInfinityScroll"
 import { ChatMessageSwitcher } from "@/feature/chat/view/content/messages/content/ChatMessageSwitcher"
 import { ChatContentContainer } from "@/feature/chat/view/content/messages/content/ChatContentContainer"
+import { useSplittedStore } from "@/lib/effector/use-split-store"
+import dayjs from "dayjs"
+import { date } from "@/lib/formatting/date"
 
 const Container = styled.div`
   flex-direction: column;
@@ -79,6 +82,16 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
       }
     }, [])
 
+    const splittedMessages = useSplittedStore({
+      store: $chatMessagesModule.$messages,
+      splitter: message => {
+        if (date(message.date).isAfter(date().startOf("day"))) {
+          return "Сегодня"
+        }
+        return date(message.date).format("DD MMMM")
+      },
+    })
+
     return (
       <Container ref={container} id='messages'>
         {empty && <Empty>Пока нет сообщений</Empty>}
@@ -86,14 +99,20 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
           <InfScroll scrollableTarget='messages'>
             <ChatContentContainer>
               <MessagesWrapper ref={messageWrapper}>
-                {useList($chatMessagesModule.$messages, message => (
-                  <ChatMessageSwitcher
-                    message={message}
-                    isSystemChat={!!isSystem}
-                    showUser={showUser}
-                    commonSystemMessages={commonSystemMessages}
-                    imageClick={imageClick}
-                  />
+                {splittedMessages.keys.map(day => (
+                  <MessagesByDate key={day}>
+                    <Day>{day}</Day>
+                    {splittedMessages.splitted(day).map(message => (
+                      <ChatMessageSwitcher
+                        key={message.id}
+                        message={message}
+                        isSystemChat={!!isSystem}
+                        showUser={showUser}
+                        commonSystemMessages={commonSystemMessages}
+                        imageClick={imageClick}
+                      />
+                    ))}
+                  </MessagesByDate>
                 ))}
               </MessagesWrapper>
             </ChatContentContainer>
@@ -103,6 +122,19 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
     )
   }
 }
+
+const Day = styled.div`
+  font-size: 14px;
+  line-height: 22px;
+  color: #5b6670;
+  margin: 8px;
+  text-align: center;
+`
+
+const MessagesByDate = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 const ScrollWrapper = styled.div`
   display: flex;
