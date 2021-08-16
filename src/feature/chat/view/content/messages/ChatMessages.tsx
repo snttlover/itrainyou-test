@@ -14,6 +14,7 @@ const Container = styled.div`
   display: block;
   position: relative;
   overflow: auto;
+  background: #f4f5f7;
 `
 
 const MessagesWrapper = styled.div`
