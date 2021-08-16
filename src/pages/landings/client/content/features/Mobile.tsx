@@ -63,6 +63,11 @@ const ListItem = styled.li`
   width: 100%;
   position: relative;
 
+  & p {
+    position: relative;
+    z-index: 2;
+  }
+
   &:nth-child(1) {
     img {
       width: 338px;
