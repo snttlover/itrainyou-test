@@ -21,7 +21,7 @@ const Container = styled(Link)`
   }
 `
 
-const BellIcon = styled(Icon).attrs({ name: "bell" })`
+const BellIcon = styled(Icon).attrs({ name: "circle-bell" })`
   width: 40px;
   height: 40px;
   margin-right: 12px;

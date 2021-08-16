@@ -4,6 +4,7 @@ import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { useList, useStore } from "effector-react"
 import { createReverseInfinityScroll } from "@/feature/pagination/view/ReverseInfinityScroll"
 import { ChatMessageSwitcher } from "@/feature/chat/view/content/messages/content/ChatMessageSwitcher"
+import { ChatContentContainer } from "@/feature/chat/view/content/messages/content/ChatContentContainer"
 
 const Container = styled.div`
   flex-direction: column;
@@ -82,17 +83,19 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
         {empty && <Empty>Пока нет сообщений</Empty>}
         <ScrollWrapper>
           <InfScroll scrollableTarget='messages'>
-            <MessagesWrapper ref={messageWrapper}>
-              {useList($chatMessagesModule.$messages, message => (
-                <ChatMessageSwitcher
-                  message={message}
-                  isSystemChat={!!isSystem}
-                  showUser={showUser}
-                  commonSystemMessages={commonSystemMessages}
-                  imageClick={imageClick}
-                />
-              ))}
-            </MessagesWrapper>
+            <ChatContentContainer>
+              <MessagesWrapper ref={messageWrapper}>
+                {useList($chatMessagesModule.$messages, message => (
+                  <ChatMessageSwitcher
+                    message={message}
+                    isSystemChat={!!isSystem}
+                    showUser={showUser}
+                    commonSystemMessages={commonSystemMessages}
+                    imageClick={imageClick}
+                  />
+                ))}
+              </MessagesWrapper>
+            </ChatContentContainer>
           </InfScroll>
         </ScrollWrapper>
       </Container>

@@ -5,6 +5,7 @@ import { MessageBoxUpload } from "@/feature/chat/view/content/message-box/conten
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
 import { useEvent, useStore } from "effector-react"
 import { Icon } from "@/old-components/icon/Icon"
+import { ChatContentContainer } from "@/feature/chat/view/content/messages/content/ChatContentContainer"
 
 type ChatMessageBoxTypes = {
   blockedText?: string | null
@@ -48,20 +49,22 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
 
   return (
     <Container>
-      <MessageContainer>
-        <MessageBoxUpload module={$module} />
-        <InputContainer>
-          <StyledInput
-            ref={input}
-            value={value}
-            disabled={!!props.blockedText}
-            placeholder={props.blockedText || "Напишите сообщение..."}
-            onChange={e => change(e.target.value)}
-            onKeyDown={keydownHandler}
-          />
-          <Send onClick={handleOnClick} />
-        </InputContainer>
-      </MessageContainer>
+      <ChatContentContainer>
+        <MessageContainer>
+          <MessageBoxUpload module={$module} />
+          <InputContainer>
+            <StyledInput
+              ref={input}
+              value={value}
+              disabled={!!props.blockedText}
+              placeholder={props.blockedText || "Напишите сообщение..."}
+              onChange={e => change(e.target.value)}
+              onKeyDown={keydownHandler}
+            />
+            <Send onClick={handleOnClick} />
+          </InputContainer>
+        </MessageContainer>
+      </ChatContentContainer>
     </Container>
   )
 }

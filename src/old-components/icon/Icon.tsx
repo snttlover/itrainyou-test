@@ -66,6 +66,7 @@ export type IconName =
   | "help"
   | "home"
   | "bell"
+  | "circle-bell"
   | "my-coaches"
   | "my-purse"
   | "settings"

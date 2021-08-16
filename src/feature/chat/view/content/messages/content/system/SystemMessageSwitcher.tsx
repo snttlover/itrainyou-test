@@ -7,7 +7,7 @@ import {
   MessageSessionRequestStatuses,
   TransActionProperties,
   TransActionsStatus,
-  FreeSessionClientMessage
+  FreeSessionClientMessage,
 } from "@/lib/api/chats/clients/get-chats"
 import { date } from "@/lib/formatting/date"
 import { ISODate } from "@/lib/api/interfaces/utils.interface"
@@ -25,9 +25,14 @@ import {
   changeRevocationUser,
 } from "@/pages/client/session/content/session-page-content/cancel-session/session-revocation"
 import { Avatar } from "@/old-components/avatar/Avatar"
-import { changeCurrentDenyCompletationRequest, changeDenyOptions } from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
+import {
+  changeCurrentDenyCompletationRequest,
+  changeDenyOptions,
+} from "@/pages/client/session/content/session-page-content/deny-completetion-dialog/deny-completation-dialog"
 import { MessageUserHeader } from "@/feature/chat/view/content/messages/content/system/MessageUserHeader"
 import { Link, useHistory } from "react-router-dom"
+import { Button } from "@/new-components/button/Button"
+import { Icon } from "@/old-components/icon/Icon"
 
 const dateFormat = "DD MMM YYYY"
 const formatDate = (day: string) => date(day).format(dateFormat)
@@ -46,7 +51,7 @@ const getText = (
   request: SessionRequest | TransActionProperties,
   status: MessageSessionRequestStatuses | ConflictStatus | TransActionsStatus,
   chatType: "coach" | "client",
-  commonSystemMessages?: boolean,
+  commonSystemMessages?: boolean
 ) => {
   const is = (
     requestType: SessionRequestTypes | SessionRequestTypes[],
@@ -64,25 +69,32 @@ const getText = (
     )
   }
 
-  if (!!systemMessageType) {
-
+  if (systemMessageType) {
     if (systemMessageType === "BOOK_PAID_SESSION") {
       return `Выберете удобное для вас время.
           Коуч ${request.session.coach.firstName} ${request.session.coach.lastName} ждет новое бронирование и готов работать на результат.`
     } else if (systemMessageType === "CHOOSE_NEW_COACH") {
       return "Не подошел коуч? Забронируйте бесплатную сессию с другим"
     } else if (systemMessageType === "FREE_SESSION_LIMIT_ENDED") {
-      return <p>Вы использовали все доступные бесплатные сессии. Теперь вы знаете, над чем вам нужно работать. Найдите своего коуча <UnderLine to='/client'>здесь</UnderLine> и забронируйте платную сессию. </p>
+      return (
+        <p>
+          Вы использовали все доступные бесплатные сессии. Теперь вы знаете, над чем вам нужно работать. Найдите своего
+          коуча <UnderLine to='/client'>здесь</UnderLine> и забронируйте платную сессию.{" "}
+        </p>
+      )
     }
-    
   } else {
     if (commonSystemMessages) {
       if (is("BOOK", "APPROVED", "COMPLETED")) {
-        return `${request.receiverCoach?.firstName} подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
+        return `${request.receiverCoach?.firstName} подтвердил${
+          request.receiverCoach?.sex === "F" ? "a" : ""
+        } бронирование сессии. Средства на карте заморозятся за 24 часа до начала сессии`
       }
 
       if (is("BOOK", "DENIED", "COMPLETED")) {
-        return `${request.receiverCoach?.firstName} не подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} запрос на бронирование сессии`
+        return `${request.receiverCoach?.firstName} не подтвердил${
+          request.receiverCoach?.sex === "F" ? "a" : ""
+        } запрос на бронирование сессии`
       }
 
       if (is("CANCEL", "DENIED", "COMPLETED")) {
@@ -91,7 +103,7 @@ const getText = (
         } отмену сессии. Сессия состоится`
       }
 
-      if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED" ], "INITIATED")) {
+      if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
         return `Вы хотите перенести сессию на ${formatSessionDate(
           request.rescheduleSession?.startDatetime,
           request.rescheduleSession?.endDatetime
@@ -106,12 +118,14 @@ const getText = (
         return `${request.initiatorClient?.firstName} отменил${request.receiverCoach?.sex === "F" ? "a" : ""} сессию`
       }
 
-      if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED") && request.initiatorClient) {
+      if (
+        is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED") &&
+        request.initiatorClient
+      ) {
         return `${request.initiatorClient?.firstName} отправил${
           request.initiatorClient?.sex === "F" ? "a" : ""
         } запрос на подтверждение сессии`
       }
-
 
       if (is("BOOK", "CANCELLED", "COMPLETED") && request.initiatorClient) {
         return `${request.initiatorClient?.firstName} отменил${
@@ -119,7 +133,7 @@ const getText = (
         } запрос на подтверждение сессии`
       }
 
-      if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED")) {
+      if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
         return `${request.initiatorClient?.firstName} отправил${
           request.initiatorClient?.sex === "F" ? "a" : ""
         } запрос на отмену сессии`
@@ -131,7 +145,7 @@ const getText = (
         } запрос на отмену сессии`
       }
 
-      if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED")) {
+      if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
         return `${request.initiatorClient?.firstName} хочет перенести сессию на ${formatSessionDate(
           request.rescheduleSession?.startDatetime,
           request.rescheduleSession?.endDatetime
@@ -161,16 +175,21 @@ const getText = (
         )}`
       }
 
-      if (is("CANCEL", ["AUTOMATICALLY_APPROVED","AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"]) && request.initiatorClient) {
+      if (
+        is("CANCEL", ["AUTOMATICALLY_APPROVED", "AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"]) &&
+        request.initiatorClient
+      ) {
         return `${request.initiatorClient?.firstName} отменил${request.initiatorClient?.sex === "F" ? "a" : ""} сессию`
       }
 
-      if (is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED") && request.initiatorClient) {
+      if (
+        is("CANCEL", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED") &&
+        request.initiatorClient
+      ) {
         return `${request.initiatorClient?.firstName} отправил${
           request.initiatorClient?.sex === "F" ? "a" : ""
         } запрос на отмену сессии`
       }
-
     }
 
     if (chatType === "client") {
@@ -195,8 +214,8 @@ const getText = (
       }
 
       if (
-        is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")
-        && request.session.durationType === "PROMO"
+        is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED") &&
+        request.session.durationType === "PROMO"
       ) {
         return "Вы отправили запрос на бронирование бесплатной сессии"
       }
@@ -210,20 +229,24 @@ const getText = (
       }
 
       if (is("BOOK", "APPROVED", "COMPLETED")) {
-
         if (request.session.durationType === "PROMO") {
-
-          return <p>{request.receiverCoach?.firstName} подтвердил{
-            request.receiverCoach?.sex === "F" ? "a" : ""
-          } бронирование <b>бесплатной</b> сессии </p>
+          return (
+            <p>
+              {request.receiverCoach?.firstName} подтвердил{request.receiverCoach?.sex === "F" ? "a" : ""} бронирование{" "}
+              <b>бесплатной</b> сессии{" "}
+            </p>
+          )
         } else {
-          return `${request.receiverCoach?.firstName} подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
+          return `${request.receiverCoach?.firstName} подтвердил${
+            request.receiverCoach?.sex === "F" ? "a" : ""
+          } бронирование сессии. Средства на карте будут списаны за 24 часа до начала сессии`
         }
-
       }
 
       if (is("BOOK", "DENIED", "COMPLETED")) {
-        return `${request.receiverCoach?.firstName} не подтвердил${request.receiverCoach?.sex === "F" ? "a" : ""} запрос на бронирование сессии`
+        return `${request.receiverCoach?.firstName} не подтвердил${
+          request.receiverCoach?.sex === "F" ? "a" : ""
+        } запрос на бронирование сессии`
       }
 
       if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
@@ -283,7 +306,7 @@ const getText = (
 
       if (
         is("CONFIRMATION_COMPLETION", ["APPROVED", "AUTOMATICALLY_APPROVED"], "COMPLETED") &&
-              (request.session.isReviewed || $revocated.getState().indexOf(request.session.id) !== -1)
+        (request.session.isReviewed || $revocated.getState().indexOf(request.session.id) !== -1)
       ) {
         return "Сессия прошла успешно."
       }
@@ -319,7 +342,6 @@ const getText = (
     }
 
     if (chatType === "coach") {
-
       if (status === "MONEY_HOLD_UNSUCCESSFUL") {
         return `${request.enrolledClient?.firstName} отменил${request.enrolledClient?.sex === "F" ? "a" : ""} сессию.`
       }
@@ -340,21 +362,30 @@ const getText = (
         return "Администратор решил спорную ситуацию в пользу клиента. Клиенту были возвращены деньги за сессию"
       }
 
-      if (is("CONFIRMATION_COMPLETION", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_APPROVED"], "INITIATED")) {
+      if (
+        is(
+          "CONFIRMATION_COMPLETION",
+          ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_APPROVED"],
+          "INITIATED"
+        )
+      ) {
         if (request.session.durationType === "PROMO") {
           return "Ожидаем, когда клиент подтвердит, что бесплатная сессия прошла успешно"
         } else {
-          return "Ожидаем, когда клиент подтвердит, что сессия завершена успешно, после чего вы получите оплату на следующий рабочий день.\n" +
-                  "У клиента есть 24 часа на подтверждение. Если в течение 24 часов клиент не даст подтверждение, система сделает это автоматически."
+          return (
+            "Ожидаем, когда клиент подтвердит, что сессия завершена успешно, после чего вы получите оплату на следующий рабочий день.\n" +
+            "У клиента есть 24 часа на подтверждение. Если в течение 24 часов клиент не даст подтверждение, система сделает это автоматически."
+          )
         }
       }
 
       if (is("CONFIRMATION_COMPLETION", ["APPROVED", "AUTOMATICALLY_APPROVED"], "COMPLETED")) {
-
         if (request.session.durationType === "PROMO") {
-          return <p>
-            Клиент подтвердил, что <b>бесплатная</b> сессия прошла успешно!
-          </p>
+          return (
+            <p>
+              Клиент подтвердил, что <b>бесплатная</b> сессия прошла успешно!
+            </p>
+          )
         } else {
           return "Клиент подтвердил, что сессия прошла успешно! Вы получите оплату на следующий рабочий день"
         }
@@ -372,19 +403,22 @@ const getText = (
         return "Запрос на бронирование был автоматически отменен из-за превышения времени ожидания"
       }
 
-      if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED","AUTOMATICALLY_CANCELLED"], "INITIATED") && request.initiatorClient) {
-
+      if (
+        is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED") &&
+        request.initiatorClient
+      ) {
         if (request.session.durationType === "PROMO") {
-
-          return <p>{request.initiatorClient?.firstName} отправил{
-            request.initiatorClient?.sex === "F" ? "a" : ""
-          } запрос на подтверждение бронирования <b>бесплатной</b> сессии </p>
+          return (
+            <p>
+              {request.initiatorClient?.firstName} отправил{request.initiatorClient?.sex === "F" ? "a" : ""} запрос на
+              подтверждение бронирования <b>бесплатной</b> сессии{" "}
+            </p>
+          )
         } else {
           return `${request.initiatorClient?.firstName} отправил${
             request.initiatorClient?.sex === "F" ? "a" : ""
           } запрос на подтверждение бронирования сессии`
         }
-
       }
 
       if (is("BOOK", "DENIED", "COMPLETED")) {
@@ -414,23 +448,25 @@ const getText = (
       }
 
       if (is("BOOK", "APPROVED", "COMPLETED")) {
-
         if (request.session.durationType === "PROMO") {
-          return <p>
-            Вы подтвердили бронирование <b>бесплатной</b> сессии.
-            <br />
-            <br />
-            За 10 минут до начала сессии в личном кабинете на платформе вы сможете открыть видеочат с клиентом.
-          </p>
+          return (
+            <p>
+              Вы подтвердили бронирование <b>бесплатной</b> сессии.
+              <br />
+              <br />
+              За 10 минут до начала сессии в личном кабинете на платформе вы сможете открыть видеочат с клиентом.
+            </p>
+          )
         } else {
-          return <p>
-            Вы подтвердили бронирование сессии.
-            <br />
-            <br />
-            За 10 минут до начала сессии в личном кабинете на платформе вы сможете открыть видеочат с клиентом.
-          </p>
+          return (
+            <p>
+              Вы подтвердили бронирование сессии.
+              <br />
+              <br />
+              За 10 минут до начала сессии в личном кабинете на платформе вы сможете открыть видеочат с клиентом.
+            </p>
+          )
         }
-
       }
 
       if (is("RESCHEDULE", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
@@ -467,7 +503,10 @@ const getText = (
         )}`
       }
 
-      if (is("CANCEL", ["AUTOMATICALLY_APPROVED","AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"]) && request.initiatorClient) {
+      if (
+        is("CANCEL", ["AUTOMATICALLY_APPROVED", "AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"]) &&
+        request.initiatorClient
+      ) {
         return `${request.initiatorClient?.firstName} отменил${request.initiatorClient?.sex === "F" ? "a" : ""} сессию`
       }
 
@@ -477,7 +516,7 @@ const getText = (
         } запрос на отмену сессии`
       }
 
-      if (is("CANCEL", ["AUTOMATICALLY_APPROVED","AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"])) {
+      if (is("CANCEL", ["AUTOMATICALLY_APPROVED", "AUTOMATICALLY_CANCELLED"], ["COMPLETED", "INITIATED"])) {
         return " Вы отменили сессию. Сессии не будет."
       }
 
@@ -500,60 +539,126 @@ const getText = (
 
 export const SystemMessageSwitcher = ({
   message,
-  isSystemChat, commonSystemMessages
+  isSystemChat,
+  commonSystemMessages,
 }: {
   isSystemChat: boolean
   message: ChatSystemMessage
   commonSystemMessages?: boolean
 }) => {
-
-  const text = getText(message.systemMessageType, message.request, message.status, message.chatType, commonSystemMessages)
-  let Buttons = getSystemButtons(message.systemMessageType,message.request, message.chatType, message.showButtons, message.status, {
-    name: message.userName,
-    avatar: message.userAvatar || "",
-  })
+  const text = getText(
+    message.systemMessageType,
+    message.request,
+    message.status,
+    message.chatType,
+    commonSystemMessages
+  )
+  let Buttons = getSystemButtons(
+    message.systemMessageType,
+    message.request,
+    message.chatType,
+    message.showButtons,
+    message.status,
+    {
+      name: message.userName,
+      avatar: message.userAvatar || "",
+    }
+  )
 
   if (commonSystemMessages) {
     Buttons = <></>
   }
 
   return (
-    <>
-      <MessageUserHeader showUser={isSystemChat} name={message.userName} avatar={message.userAvatar} date={message.date} />
-      <SystemMessage
-        id={message.id}
-        text={text}
-        startDate={message.request.session?.startDatetime}
-        endDate={message.request.session?.endDatetime}
-      >
-        {Buttons}
-      </SystemMessage>
-    </>
+    <SystemMessageWrapper>
+      {isSystemChat && <StyledAvatar src={message.userAvatar} />}
+      <BodyWrapper>
+        <MessageUserHeader
+          showUser={isSystemChat}
+          name={message.userName}
+          avatar={message.userAvatar}
+          date={message.date}
+        />
+        <SystemMessage
+          id={message.id}
+          text={text}
+          startDate={message.request.session?.startDatetime}
+          endDate={message.request.session?.endDatetime}
+          time={date(message.date).format("HH:mm")}
+        >
+          {Buttons}
+        </SystemMessage>
+      </BodyWrapper>
+    </SystemMessageWrapper>
   )
 }
+
+const StyledAvatar = styled(Avatar)`
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  flex-basis: 40px;
+`
+
+const BodyWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const SystemMessageWrapper = styled.div`
+  display: flex;
+  margin: 8px 0;
+`
 
 type SystemMessageTypes = {
   id: number
   text: string | React.ReactChild | React.ReactChild[]
   startDate?: ISODate
   endDate?: ISODate
+  time: string
   children?: React.ReactChild | React.ReactChild[]
 }
 
 const SystemMessage = (props: SystemMessageTypes) => {
   return (
     <StyledSystemMessage id={props.id as never}>
-      <SessionDate>
-        <SessionDay>{formatSessionDay(props.startDate)}</SessionDay>
-        <SessionTime>{formatSessionTime(props.startDate, props.endDate)}</SessionTime>
-      </SessionDate>
-      <Message>{props.text}</Message>
-      {props.children}
+      <BellIcon />
+      <SessionInfo>
+        <Message>
+          {props.text}
+          <SessionDate>
+            • <SessionDay>{formatSessionDay(props.startDate)}</SessionDay>•{" "}
+            <SessionTime>{formatSessionTime(props.startDate, props.endDate)}</SessionTime>
+          </SessionDate>
+        </Message>
+        {props.children}
+      </SessionInfo>
+      <Time>{props.time}</Time>
     </StyledSystemMessage>
   )
 }
 
-const SessionDay = styled.div`
+const Time = styled.div`
+  font-size: 12px;
+  line-height: 18px;
+  color: #9aa0a6;
+`
+
+const BellIcon = styled(Icon).attrs({ name: "bell" })`
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  stroke: #fff;
+`
+
+const SessionInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 20px;
+`
+
+const SessionDay = styled.span`
   margin-right: 2px;
 `
 
@@ -563,22 +668,15 @@ const UnderLine = styled(Link)`
   font-weight: 500;
 `
 
-const SessionTime = styled.div`
-  font-weight: 500;
-  ${MediaRange.lessThan("tablet")`
-    margin-left: 0;
-  `}
-`
+const SessionTime = styled.span``
 
 const StyledSystemMessage = styled.div<{ id: number }>`
-  border-radius: 24px;
-  border: 2px solid ${props => props.theme.colors.primary};
   display: flex;
-  margin-bottom: 16px;
-  margin-left: -10px;
-  width: calc(100% + 20px);
-  position: relative;
-  overflow: hidden;
+  align-items: flex-start;
+  padding: 16px;
+
+  background: #ffffff;
+  border-radius: 8px;
   ${MediaRange.lessThan("mobile")`
     flex-direction: column;
     width: 100%;
@@ -586,44 +684,17 @@ const StyledSystemMessage = styled.div<{ id: number }>`
   `}
 `
 
-const SessionDate = styled.div`
-  border-right: 2px solid ${props => props.theme.colors.primary};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 158px;
-
-  font-size: 12px;
-  line-height: 16px;
-  color: #9aa0a6;
-
-  ${MediaRange.lessThan("tablet")`
-    flex-direction: column;
-    width: 90px;
-  `}
-  ${MediaRange.lessThan("mobile")`
-    width: 100%;
-    border-right: 0;
-    flex-direction: row;
-    justify-content: flex-start;
-    padding: 10px 16px;
-    padding-bottom: 0;
-  `}
+const SessionDate = styled.span`
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+  margin-left: 10px;
 `
 
 const Message = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding: 12px;
-
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 22px;
   color: #424242;
-  ${MediaRange.lessThan("mobile")`
-    padding: 10px 16px;
-    padding-top: 4px;
-  `}
 `
 
 type User = { name: string; avatar: string }
@@ -655,7 +726,13 @@ const getSystemButtons = (
 
     if (chatType === "client") {
       if (is("CONFIRMATION_COMPLETION", "AWAITING")) {
-        return <ConfirmationCompletation approve={() => approve(request.id)} request={request} limitedOptions={!!!freeSessionTypes} />
+        return (
+          <ConfirmationCompletation
+            approve={() => approve(request.id)}
+            request={request}
+            limitedOptions={!freeSessionTypes}
+          />
+        )
       }
 
       if (is("BOOK", "AWAITING") || is("RESCHEDULE", "AWAITING")) {
@@ -678,25 +755,31 @@ const getSystemButtons = (
   }
 
   if (
-    chatType === "client" && !!!freeSessionTypes &&
-          is("CONFIRMATION_COMPLETION", ["AUTOMATICALLY_APPROVED", "APPROVED"]) && !request.session.isReviewed &&
+    chatType === "client" &&
+    !freeSessionTypes &&
+    is("CONFIRMATION_COMPLETION", ["AUTOMATICALLY_APPROVED", "APPROVED"]) &&
+    !request.session.isReviewed &&
     status === "COMPLETED"
   ) {
     return <RevocationButton coach={user} sessionId={request.session.id} />
   }
 
-  if (!!freeSessionTypes) {
-
+  if (freeSessionTypes) {
     if (freeSessionTypes === "BOOK_PAID_SESSION") {
-      return (<Actions withoutLoader={true}>
-        <Button onClick={() => history.push(`/search/coach/${request.session.coach.id}`)}>Выбрать время</Button>
-      </Actions>)
+      return (
+        <Actions withoutLoader={true}>
+          <StyledButton onClick={() => history.push(`/search/coach/${request.session.coach.id}`)}>
+            Выбрать время
+          </StyledButton>
+        </Actions>
+      )
     } else if (freeSessionTypes === "CHOOSE_NEW_COACH") {
-      return (<Actions withoutLoader={true}>
-        <Button onClick={() => history.push(`/client`)}>Выбрать коуча</Button>
-      </Actions>)
+      return (
+        <Actions withoutLoader={true}>
+          <StyledButton onClick={() => history.push("/client")}>Выбрать коуча</StyledButton>
+        </Actions>
+      )
     }
-
   }
 
   return <></>
@@ -723,15 +806,15 @@ const ConfirmationCompletation = ({ approve, request, limitedOptions }: Confirma
   return (
     <StyledActions>
       {loading && <StyledActionLoader />}
-      <Button
+      <StyledButton
         onClick={() => {
           change(true)
           approve()
         }}
       >
         Да
-      </Button>
-      <Button onClick={handleOnDeny}>Нет</Button>
+      </StyledButton>
+      <StyledButton onClick={handleOnDeny}>Нет</StyledButton>
     </StyledActions>
   )
 }
@@ -772,69 +855,20 @@ const StyledActionLoader = styled(Spinner)`
 `
 
 const StyledActions = styled.div`
+  margin-top: 16px;
   display: flex;
-  flex-direction: column;
-  border-left: 2px solid ${props => props.theme.colors.primary};
-  width: 100px;
   position: relative;
   overflow: hidden;
   text-align: center;
+  align-items: flex-start;
 
   ${MediaRange.lessThan("mobile")`
     border-left: 0;
-    border-top: 2px solid ${props => props.theme.colors.primary};
-    min-height: 36px  ;
-    width: 100%;
     flex-direction: row;
   `}
 `
 
-const Button = styled.div`
-  cursor: pointer;
-  border-bottom: 2px solid ${props => props.theme.colors.primary};
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: ${props => props.theme.colors.primary};
-  position: relative;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  ${MediaRange.lessThan("mobile")`
-    border-bottom: 0;
-    border-right: 2px solid ${props => props.theme.colors.primary};
-  
-    &:last-child {
-      border-right: none;
-    }
-  `}
-  &:after {
-    opacity: 0;
-    transition: 300ms;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    content: "";
-    background: ${props => props.theme.colors.primary};
-  }
-
-  &:hover:after {
-    opacity: 0.1;
-  }
-  &:active:after {
-    opacity: 0.2;
-  }
-`
+const StyledButton = styled(Button)``
 
 type SessionRequestActionProps = {
   request: SessionRequest | TransActionProperties
@@ -851,8 +885,10 @@ type ApproveActionsTypes = {
 const ApproveActions = ({ yes, no, approve, deny }: ApproveActionsTypes) => {
   return (
     <Actions>
-      <Button onClick={approve}>{yes}</Button>
-      <Button onClick={deny}>{no}</Button>
+      <StyledButton onClick={approve}>{yes}</StyledButton>
+      <StyledButton color='secondary' onClick={deny}>
+        {no}
+      </StyledButton>
     </Actions>
   )
 }
@@ -861,7 +897,7 @@ const CancelAction = ({ request, requestsModule }: SessionRequestActionProps) =>
   const cancel = useEvent(requestsModule.methods.deny)
   return (
     <Actions>
-      <Button onClick={() => cancel({ id: request.id })}>Отменить</Button>
+      <StyledButton onClick={() => cancel({ id: request.id })}>Отменить</StyledButton>
     </Actions>
   )
 }
@@ -882,7 +918,7 @@ const RevocationButton = ({ sessionId, coach }: { sessionId: number; coach: null
 
   return (
     <Actions withoutLoader={true}>
-      <Button onClick={openDialog}>Отзыв</Button>
+      <StyledButton onClick={openDialog}>Отзыв</StyledButton>
     </Actions>
   )
 }
