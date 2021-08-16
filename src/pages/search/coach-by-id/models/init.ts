@@ -45,9 +45,9 @@ forward({
   from: loadCoachFx.doneData,
   to: [
     changeCoachSessionCoachId,
-    changeCoachSessionDurationTab,
+    // changeCoachSessionDurationTab,
     changeCoachFreeSessionCoachId,
-    changeCoachFreeSessionDurationTab
+    // changeCoachFreeSessionDurationTab
   ],
 })
 
