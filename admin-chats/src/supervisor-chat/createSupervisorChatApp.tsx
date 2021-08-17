@@ -1,3 +1,6 @@
+import { bootstrapApplication } from "@/app/bootstrap"
+import { root } from "effector-root"
+import { hydrate } from "effector/fork"
 import * as React from "react"
 import { createAdminChatContainer } from "../common/createAdminChatContainer"
 import { createSupervisorChatModel } from "./create-supervisor-chat.model"
@@ -5,7 +8,7 @@ import { getSupervisorChat } from "@/lib/api/chats/super-admin/get-super-chat"
 import { getSupervisorChatMessages } from "@/lib/api/chats/super-admin/get-super-messages"
 import { createSupervisorChat } from "./SupervisorChat"
 
-import { restoreState, runInScope } from "@/scope"
+import { runInScope } from "@/scope"
 import ReactDOM from "react-dom"
 import { clientStarted } from "@/lib/effector"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
@@ -31,18 +34,23 @@ export const createSupervisorChatApp = (chatId: number, token: string, backend: 
 
   const Chat = createSupervisorChat(chatId, model)
 
-  restoreState().then(() => {
-    runInScope(clientStarted)
-    ReactDOM.render(
-      <>
-        <Styles />
-        <div id='root'>
-          <Chat />
-        </div>
-      </>,
-      createAdminChatContainer()
-    )
+  bootstrapApplication({
+    activeDashboardType: "client",
+    token: sessionToken.get(),
+    backendUrl: config.BACKEND_URL
   })
+  hydrate(root, { values: window.INITIAL_STATE })
+
+  runInScope(clientStarted)
+  ReactDOM.render(
+    <>
+      <Styles />
+      <div id='root'>
+        <Chat />
+      </div>
+    </>,
+    createAdminChatContainer()
+  )
 }
 
 const Styles = createGlobalStyle`
