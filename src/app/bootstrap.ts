@@ -18,7 +18,7 @@ const setTokenIfExists = createEvent<string | undefined>()
 
 guard({
   source: setTokenIfExists,
-  filter: (token): token is string => token !== undefined,
+  filter: (token): token is string => token !== undefined && token.trim().length > 0,
   target: [
     changeToken,
     requestModule.addDefaultHeaders.prepend((token: string) => ({
