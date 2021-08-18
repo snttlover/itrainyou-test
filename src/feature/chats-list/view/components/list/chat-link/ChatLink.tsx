@@ -84,9 +84,6 @@ const Column = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  @media screen and (max-width: 560px) {
-    padding: 8px;
-  }
 `
 
 const MessageColumn = styled(Column)`
@@ -99,8 +96,6 @@ const MessageColumn = styled(Column)`
   }
 
   @media screen and (max-width: 560px) {
-    border-right: 0;
-    border-bottom: 1px solid #efefef;
     width: 100%;
   }
 `

@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { useParams } from "react-router-dom"
 import { createChat } from "@/feature/chat"
 import { coachChat } from "@/pages/coach/chats/chat/coach-chat.model"
+import { MediaRange } from "@/lib/responsive/media"
 
 const ChatsList = createChatList(coachChatsList)
 
@@ -52,4 +53,7 @@ const Empty = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  ${MediaRange.lessThan("mobile")`
+    border: none;
+  `}
 `

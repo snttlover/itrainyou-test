@@ -7,6 +7,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { ChatsSearch } from "@/feature/chats-list/view/components/search/ChatsSearch"
 import { ChatsSearchTabs } from "@/feature/chats-list/view/components/tabs/ChatsSearchTabs"
 import { ChatLinkSwitcher } from "@/feature/chats-list/view/components/list/ChatLinkSwitcher"
+import { useParams } from "react-router-dom"
 
 export const createChatList = ($chatListModule: ReturnType<typeof createChatListModule>) => {
   const InfScroll = createInfinityScroll($chatListModule.modules.pagination)
@@ -23,30 +24,30 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
     const tab = useStore($chatListModule.data.$tab)
     const changeTab = useEvent($chatListModule.methods.changeTab)
 
+    const params = useParams<{ id: string }>()
+
     useEffect(() => {
       loadData()
     })
 
     return (
-      <>
-        <Container>
-          <ChatsSearch value={search} onChange={changeSearch} find={find} />
-          <ChatsSearchTabs
-            value={tab}
-            onChange={changeTab}
-            find={find}
-            showChosen={$chatListModule.data.type === "client"}
-          />
-          <ChatLinksContainer>
-            {listIsEmpty && <ListIsEmpty />}
-            <InfScroll>
-              {useList($chatListModule.data.$chatsList, chat => (
-                <ChatLinkSwitcher chat={chat} />
-              ))}
-            </InfScroll>
-          </ChatLinksContainer>
-        </Container>
-      </>
+      <Container data-show-on-mobile={!params.id}>
+        <ChatsSearch value={search} onChange={changeSearch} find={find} />
+        <ChatsSearchTabs
+          value={tab}
+          onChange={changeTab}
+          find={find}
+          showChosen={$chatListModule.data.type === "client"}
+        />
+        <ChatLinksContainer>
+          {listIsEmpty && <ListIsEmpty />}
+          <InfScroll>
+            {useList($chatListModule.data.$chatsList, chat => (
+              <ChatLinkSwitcher chat={chat} />
+            ))}
+          </InfScroll>
+        </ChatLinksContainer>
+      </Container>
     )
   }
 }
@@ -57,10 +58,31 @@ const Container = styled.div`
   min-width: 320px;
   width: 320px;
   position: relative;
-  border-radius: 8px 0px 0px 8px;
   background: #fff;
   overflow: hidden;
   border-right: 1px solid #e1e6ea;
+
+  @media screen and (max-width: 640px) {
+    min-width: 280px;
+    width: 280px;
+  }
+  @media screen and (max-width: 580px) {
+    min-width: 220px;
+    width: 220px;
+  }
+
+  ${MediaRange.lessThan("mobile")`
+    &[data-show-on-mobile="false"] {
+      display: none;
+    }
+    &[data-show-on-mobile="true"] {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+  `}
 `
 
 const ListIsEmpty = () => {

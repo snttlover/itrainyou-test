@@ -18,7 +18,6 @@ type ReverseInfiniteScrollTypes = {
 }
 
 const ReverseInfiniteScroll = (props: ReverseInfiniteScrollTypes) => {
-
   useEffect(() => {
     const el = document.getElementById(props.scrollableTarget)
 
@@ -46,6 +45,21 @@ const ReverseInfiniteScroll = (props: ReverseInfiniteScrollTypes) => {
   )
 }
 
+const ScrollLoader = () => (
+  <StyledScrollLoader>
+    <Loader />
+  </StyledScrollLoader>
+)
+
+const StyledScrollLoader = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+`
+
 export const createReverseInfinityScroll = ($paginationModel: CreateInfinityScrollType<any>) => (
   props: InfinityScrollPropsTypes
 ) => {
@@ -54,7 +68,7 @@ export const createReverseInfinityScroll = ($paginationModel: CreateInfinityScro
 
   return (
     <ReverseInfiniteScroll
-      loader={<Loader />}
+      loader={<ScrollLoader />}
       next={loadMore as any}
       hasMore={hasMore}
       scrollableTarget={props.scrollableTarget || "page-wrapper"}

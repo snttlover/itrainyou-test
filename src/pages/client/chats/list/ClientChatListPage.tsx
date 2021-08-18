@@ -6,6 +6,7 @@ import { createChat } from "@/feature/chat"
 import { clientChat } from "@/pages/client/chats/chat/client-chat.model"
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
+import { MediaRange } from "@/lib/responsive/media"
 
 const ChatsList = createChatList(clientChatsList)
 
@@ -55,4 +56,7 @@ const ChatsWrapper = styled.div`
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #fff;
+  ${MediaRange.lessThan("mobile")`
+    border: none;
+  `}
 `
