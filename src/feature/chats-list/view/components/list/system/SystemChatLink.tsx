@@ -20,9 +20,10 @@ export const SystemChatLink = ({ link, newMessagesCount, systemMessage }: System
 )
 
 const Info = styled.div`
-  flex: 1;
   display: flex;
   flex-direction: column;
+  padding-right: 16px;
+  overflow: hidden;
 `
 
 const LastMessage = styled.div`
@@ -37,6 +38,7 @@ const LastMessage = styled.div`
 `
 
 const Container = styled(Link)`
+  position: relative;
   cursor: pointer;
   display: flex;
   padding: 16px 12px;
