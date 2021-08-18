@@ -15,8 +15,10 @@ export const CoachChatListPage = () => {
 
   return (
     <Content>
-      <ChatsList />
-      {params.id && <Chat />}
+      <ChatsWrapper>
+        <ChatsList />
+        {params.id ? <Chat /> : <Empty>Выберите чат</Empty>}
+      </ChatsWrapper>
     </Content>
   )
 }
@@ -27,4 +29,27 @@ export const Content = styled.div`
   padding: 24px;
   display: flex;
   position: relative;
+`
+
+const ChatsWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #fff;
+`
+
+const Empty = styled.div`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #9aa0a6;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
