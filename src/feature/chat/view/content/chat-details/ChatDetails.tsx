@@ -44,8 +44,8 @@ const Container = styled.div`
   position: relative;
   background: #fff;
   height: 100%;
-  flex-basis: 320px;
   width: 320px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
   border-left: 1px solid #e1e6ea;

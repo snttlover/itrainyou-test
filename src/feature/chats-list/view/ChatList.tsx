@@ -54,8 +54,8 @@ export const createChatList = ($chatListModule: ReturnType<typeof createChatList
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 320px;
+  min-width: 320px;
+  width: 320px;
   position: relative;
   border-radius: 8px 0px 0px 8px;
   background: #fff;
