@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { ChatMessage } from "@/feature/chat/view/content/messages/content/ChatMessage"
 import { SystemMessageSwitcher } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
 import { ChatMessagesTypes } from "@/feature/chat/modules/chat-messages"

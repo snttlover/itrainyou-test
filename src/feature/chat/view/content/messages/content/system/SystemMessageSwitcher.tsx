@@ -46,7 +46,7 @@ const formatSessionDate = (start?: ISODate, end?: ISODate) => {
   return formatSessionDay(start) + " " + formatSessionTime(start, end)
 }
 
-const getText = (
+export const getSystemMessageText = (
   systemMessageType: FreeSessionClientMessage,
   request: SessionRequest | TransActionProperties,
   status: MessageSessionRequestStatuses | ConflictStatus | TransActionsStatus,
@@ -546,7 +546,7 @@ export const SystemMessageSwitcher = ({
   message: ChatSystemMessage
   commonSystemMessages?: boolean
 }) => {
-  const text = getText(
+  const text = getSystemMessageText(
     message.systemMessageType,
     message.request,
     message.status,
