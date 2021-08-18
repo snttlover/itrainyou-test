@@ -10,8 +10,9 @@ import { condition } from "patronum"
 import dayjs from "dayjs"
 import { chatSessionIsStarted } from "@/feature/chats-list/modules/chat-session-is-started"
 import { logout } from "@/lib/network/token"
-import { config as globalConfig } from "@/config"
 import { createSessionCallModule } from "@/old-components/layouts/behaviors/dashboards/call/create-session-call.model"
+import { getSystemMessageText } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
+import { getFileName } from "@/lib/network/get-file-by-url"
 
 export type ChatListModuleConfig = {
   type: "client" | "coach"
@@ -168,6 +169,24 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
               ? date(chat.lastMessage?.creationDatetime).format("HH:mm")
               : ""
 
+            let systemMessage: any = ""
+            if (chat.lastMessage?.type === "SYSTEM" && chat.lastMessage.sessionRequest) {
+              systemMessage = getSystemMessageText(
+                chat.lastMessage.systemMessageType,
+                chat.lastMessage.sessionRequest,
+                chat.lastMessage.sessionRequestStatus,
+                config.type
+              )
+            }
+
+            let lastMessage = chat.lastMessage?.text || ""
+            if (chat.lastMessage?.image) {
+              lastMessage = "Фотография"
+            }
+            if (chat.lastMessage?.document) {
+              lastMessage = `Документ (${getFileName(chat.lastMessage.document)})`
+            }
+
             return {
               id: chat.id,
               type: chat.type,
@@ -180,8 +199,8 @@ export const createChatListModule = (config: ChatListModuleConfig) => {
               materialCount: chat.materialsCount,
               isStarted: chatSessionIsStarted(chat),
               startSession: config.sessionCallModule.methods.connectToSession,
-              isImage: !!chat.lastMessage?.image,
-              lastMessage: chat.lastMessage?.text || "",
+              lastMessage,
+              systemMessage,
               lastMessageIsMine,
               highlightMessages: false,
               sessionTextStatus: getSessionStatusByDates(

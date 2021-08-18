@@ -6,6 +6,7 @@ import { useEvent, useStore } from "effector-react"
 import { Icon } from "@/old-components/icon/Icon"
 import { Button } from "@/new-components/button/Button"
 import { Warning } from "@/feature/chat/view/content/message-box/content/Warning"
+import { MediaRange } from "@/lib/responsive/media"
 
 type DocumentsDialogProps = {
   module: ReturnType<typeof createChatMessageBoxModule>
@@ -19,7 +20,11 @@ export const DocumentsDialog = ({ module }: DocumentsDialogProps) => {
   const maxLength = documents.length > 10
 
   return (
-    <StyledDocumentsDialog value={!!documents.length} onChange={state => !state && deleteDocuments()}>
+    <StyledDocumentsDialog
+      fullscreenOnMobile
+      value={!!documents.length}
+      onChange={state => !state && deleteDocuments()}
+    >
       <Title>Отправка файлов</Title>
       {maxLength && (
         <StyledWarning>За один раз можно отправлять только 10 документов. Удалите лишние документы.</StyledWarning>
@@ -172,7 +177,11 @@ const Documents = styled.div`
   padding: 0 24px;
 `
 
-const Send = styled(Button)``
+const Send = styled(Button)`
+  ${MediaRange.lessThan("mobile")`
+    flex: 1;
+  `}
+`
 
 const FileIconWrapper = styled.div`
   display: flex;

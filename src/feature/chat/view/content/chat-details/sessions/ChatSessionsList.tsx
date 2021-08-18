@@ -65,8 +65,7 @@ const Container = styled.div`
   background: #fff;
   border-radius: 2px;
   height: 100%;
-  flex-basis: 320px;
-  width: 320px;
+  width: 100%;
   overflow: auto;
 `
 

@@ -158,14 +158,18 @@ export const ChatMessageContainer = styled.div<ContainerTypes>`
   `}
 `
 const MessageText = styled.div<{ doc?: boolean }>`
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
-  max-width: ${({ doc }) => (doc ? "320px" : "100%")};
+  max-width: ${({ doc }) => (doc ? "320px" : "calc(100% - 30px)")};
   margin-left: ${({ doc }) => (doc ? "8px" : "0")};
   cursor: ${({ doc }) => (doc ? "pointer" : "default")};
   text-overflow: ${({ doc }) => (doc ? "ellipsis" : "unset")};
   white-space: ${({ doc }) => (doc ? "nowrap" : "unset")};
   overflow: ${({ doc }) => (doc ? "hidden" : "unset")};
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 
   ${MediaRange.lessThan("mobile")`
     max-width: 240px;

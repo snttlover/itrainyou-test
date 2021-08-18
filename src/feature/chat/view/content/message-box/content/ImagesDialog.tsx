@@ -7,6 +7,7 @@ import { Icon } from "@/old-components/icon/Icon"
 import { Button } from "@/new-components/button/Button"
 import { Warning } from "@/feature/chat/view/content/message-box/content/Warning"
 import { FullContentProgress } from "@/feature/chat/view/content/message-box/content/FullContentProgress"
+import { MediaRange } from "@/lib/responsive/media"
 
 type ImagesDialogProps = {
   module: ReturnType<typeof createChatMessageBoxModule>
@@ -20,7 +21,7 @@ export const ImagesDialog = ({ module }: ImagesDialogProps) => {
   const maxLength = images.length > 10
 
   return (
-    <StyledImagesDialog value={!!images.length} onChange={state => !state && deleteImages()}>
+    <StyledImagesDialog fullscreenOnMobile value={!!images.length} onChange={state => !state && deleteImages()}>
       <Title>Отправка фото</Title>
       {maxLength && (
         <StyledWarning>За один раз можно отправлять только 10 фотографий. Удалите лишние изображения.</StyledWarning>
@@ -125,4 +126,8 @@ const RemoveImageIcon = styled(Icon).attrs({ name: "cross" })`
   transform: translate(-50%, -50%);
 `
 
-const Send = styled(Button)``
+const Send = styled(Button)`
+  ${MediaRange.lessThan("mobile")`
+    flex: 1;
+  `}
+`

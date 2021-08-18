@@ -126,6 +126,7 @@ export const MessageBoxUpload = ({ module }: { module: ReturnType<typeof createC
 }
 
 const Container = styled.div<{ listEmpty: boolean }>`
+  position: relative;
   display: flex;
   align-self: ${({ listEmpty }) => (!listEmpty ? "center" : "flex-end")};
   margin-bottom: ${({ listEmpty }) => (!listEmpty ? "0" : "10px")};
@@ -139,12 +140,13 @@ const Container = styled.div<{ listEmpty: boolean }>`
 
 const UploadMenuContainer = styled.div`
   position: absolute;
-  transform: translateY(-125%);
   z-index: 100;
 
   width: 149px;
-  left: 10px;
-  bottom: -110px;
+  left: -10px;
+  bottom: 0;
+  transform: translateY(-42px);
+  overflow: hidden;
   background: #ffffff;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.14);
   border-radius: 8px;
@@ -173,9 +175,12 @@ const ItemContainer = styled.div`
   align-items: center;
   flex-direction: row;
   padding: 10px;
-  width: 137px;
   height: 48px;
   cursor: pointer;
+  width: 100%;
+  &:hover {
+    background: #f6f6f6;
+  }
 `
 
 const MenuIcon = styled(Icon).attrs((props: any) => ({

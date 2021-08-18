@@ -1,4 +1,4 @@
-import { createEvent, createStore, forward, Store } from "effector-root"
+import { createEvent, createStore, forward, restore, Store } from "effector-root"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
 import { ChatSession, GetChatSessionsQuery } from "@/lib/api/chats/clients/get-chat-sessions"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
@@ -68,3 +68,6 @@ export const createChatDetailsModule = (config: CreateChatDetailsModuleConfig) =
     },
   }
 }
+
+export const changeDetailsVisibilityOnMobile = createEvent<boolean>()
+export const $showDetailsOnMobile = restore(changeDetailsVisibilityOnMobile, false)

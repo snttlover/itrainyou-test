@@ -3,14 +3,42 @@ import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { Icon } from "@/old-components/icon/Icon"
 
-export const SystemChatLink = ({ link, newMessagesCount }: { link: string; newMessagesCount: number }) => (
+type SystemChatLinkProps = {
+  link: string
+  newMessagesCount: number
+  systemMessage: string
+}
+
+export const SystemChatLink = ({ link, newMessagesCount, systemMessage }: SystemChatLinkProps) => (
   <Container to={link} data-has-messages={!!newMessagesCount}>
     <BellIcon />
-    <Header>Уведомления</Header>
+    <Info>
+      <Header>Уведомления</Header>
+      <LastMessage>{systemMessage}</LastMessage>
+    </Info>
   </Container>
 )
 
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-right: 16px;
+  overflow: hidden;
+`
+
+const LastMessage = styled.div`
+  font-style: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+`
+
 const Container = styled(Link)`
+  position: relative;
   cursor: pointer;
   display: flex;
   padding: 16px 12px;
@@ -24,6 +52,7 @@ const Container = styled(Link)`
 const BellIcon = styled(Icon).attrs({ name: "circle-bell" })`
   width: 40px;
   height: 40px;
+  min-width: 40px;
   margin-right: 12px;
   fill: ${props => props.theme.colors.primary};
 `

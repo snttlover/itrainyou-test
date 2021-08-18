@@ -1,13 +1,19 @@
 import React from "react"
 import styled from "styled-components"
 import { useStore, useEvent } from "effector-react"
-import { createChatDetailsModule } from "@/feature/chat/modules/chat-details"
+import {
+  $showDetailsOnMobile,
+  changeDetailsVisibilityOnMobile,
+  createChatDetailsModule,
+} from "@/feature/chat/modules/chat-details"
 import { Avatar } from "@/old-components/avatar/Avatar"
 import { Tab, Tabs } from "@/new-components/tabs/Tabs"
 import { MediaRange } from "@/lib/responsive/media"
 import { createChatSessions } from "@/feature/chat/view/content/chat-details/sessions/ChatSessionsList"
 import { createChatImages } from "@/feature/chat/view/content/chat-details/images/ChatImages"
 import { createChatDocuments } from "@/feature/chat/view/content/chat-details/documents/ChatDocuments"
+import { ChatHeaderMobileBackButton } from "@/feature/chat/view/content/headers/common/ChatHeaderMobileBackButton"
+import { Icon } from "@/old-components/icon/Icon"
 
 export const createChatDetails = (detailsModule: ReturnType<typeof createChatDetailsModule>) => {
   const Sessions = createChatSessions(detailsModule.modules.sessions)
@@ -18,9 +24,15 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
     const tab = useStore(detailsModule.data.$tab)
     const changeTab = useEvent(detailsModule.methods.changeTab)
     const info = useStore(detailsModule.modules.info.$chat)
+    const showOnMobile = useStore($showDetailsOnMobile)
+    const changeMobileVisibility = useEvent(changeDetailsVisibilityOnMobile)
 
     return (
-      <Container>
+      <Container data-show-on-mobile={showOnMobile}>
+        <MobileBack onClick={() => changeMobileVisibility(false)}>
+          <BackIcon />
+          <MobileBackText>К чату</MobileBackText>
+        </MobileBack>
         <Header>
           <StyledAvatar src={info.avatar || null} />
           <Name>{info.name}</Name>
@@ -40,14 +52,65 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
   }
 }
 
+const BackIcon = styled(Icon).attrs({ name: "left-icon" })`
+  display: flex;
+  fill: #424242;
+  width: 8px;
+  margin-right: 15px;
+`
+
+const MobileBack = styled.div`
+  display: none;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #e1e6ea;
+
+  @media screen and (max-width: 1225px) {
+    display: flex;
+  }
+`
+
+const MobileBackText = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: #424242;
+`
+
 const Container = styled.div`
   position: relative;
   background: #fff;
   height: 100%;
-  flex-basis: 320px;
   width: 320px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
+  border-left: 1px solid #e1e6ea;
+
+  @media screen and (max-width: 1225px) {
+    &[data-show-on-mobile="false"] {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 1139px) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    z-index: 2;
+    border-left: 0;
+  }
+
+  ${MediaRange.lessThan("mobile")`
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  `}
 `
 
 const Header = styled.div`
@@ -80,10 +143,6 @@ const StyledTabs = styled(Tabs)`
   justify-content: flex-start;
   padding: 0 16px;
   border-bottom: 1px solid #f4f5f7;
-  ${MediaRange.lessThan("mobile")`
-    margin-top: 20px;
-    justify-content: space-around;
-  `}
 `
 
 const StyledTab = styled(Tab)``

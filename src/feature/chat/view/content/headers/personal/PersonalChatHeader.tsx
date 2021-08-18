@@ -9,6 +9,8 @@ import { ChatHeaderTitle as Title } from "@/feature/chat/view/content/headers/co
 import { ChatHeaderContainer } from "@/feature/chat/view/content/headers/common/ChatHeaderContainer"
 import { MobileChatHeaderMenu } from "@/feature/chat/view/content/headers/personal/MobileMenu"
 import { Icon } from "@/old-components/icon/Icon"
+import { useEvent, useStore } from "effector-react"
+import { $showDetailsOnMobile, changeDetailsVisibilityOnMobile } from "@/feature/chat/modules/chat-details"
 
 type ChatHeaderTypes = {
   avatar?: string | null
@@ -23,6 +25,8 @@ type ChatHeaderTypes = {
 }
 
 export const PersonalChatHeader = (props: ChatHeaderTypes) => {
+  const showOnMobile = useStore($showDetailsOnMobile)
+  const changeMobileVisibility = useEvent(changeDetailsVisibilityOnMobile)
   return (
     <Container data-has-link={!!props.link}>
       <MobileBackButton to={props.backLink} />
@@ -33,14 +37,43 @@ export const PersonalChatHeader = (props: ChatHeaderTypes) => {
       <Title>
         <Link to={props.link!}>{props.name}</Link>
       </Title>
-      <MobileChatHeaderMenu openMaterials={props.openMaterials} />
-      {/*<MaterialsIcon onClick={props.openMaterials} />*/}
+      <DetailsWrapper onClick={() => changeMobileVisibility(!showOnMobile)}>
+        <DetailsIcon />
+        <DetailsText>Делали</DetailsText>
+      </DetailsWrapper>
       {props.type === "coach" && (
         <BanTooltip userId={props.userId} blocked={props.blocked} restricted={props.restricted} />
       )}
     </Container>
   )
 }
+
+const DetailsWrapper = styled.div`
+  display: none;
+  align-items: center;
+  @media screen and (max-width: 1225px) {
+    display: flex;
+  }
+`
+
+const DetailsIcon = styled(Icon).attrs({ name: "info" })`
+  fill: ${props => props.theme.colors.primary};
+  width: 19px;
+  height: 19px;
+`
+
+const DetailsText = styled.div`
+  margin-left: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: ${props => props.theme.colors.primary};
+
+  ${MediaRange.lessThan("mobile")`
+    display: none;
+  `}
+`
 
 const StyledAvatar = styled(Avatar)`
   width: 24px;
@@ -55,15 +88,4 @@ const Container = styled(ChatHeaderContainer)`
       cursor: pointer;
     }
   }
-`
-
-const MaterialsIcon = styled(Icon).attrs({ name: "chat-files" })`
-  width: 20px;
-  height: 20px;
-  fill: #9aa0a6;
-  margin-right: 21px;
-  cursor: pointer;
-  ${MediaRange.lessThan("mobile")`
-      display: none;
-  `}
 `

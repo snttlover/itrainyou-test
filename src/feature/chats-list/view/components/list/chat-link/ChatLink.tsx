@@ -18,7 +18,7 @@ export type ChatLinkTypes = {
   materialCount: number
   isStarted: boolean
   lastMessage: string
-  isImage: boolean
+  systemMessage: string
   lastMessageIsMine: boolean
   highlightMessages: boolean
   sessionTextStatus: string
@@ -33,6 +33,8 @@ export const ChatLink = (props: ChatLinkTypes) => {
     startSession(props.id)
   }
 
+  const hasMessage = props.lastMessage || props.systemMessage
+
   return (
     <Container to={props.link}>
       <MessageColumn data-message-is-not-mine={props.highlightMessages}>
@@ -42,15 +44,14 @@ export const ChatLink = (props: ChatLinkTypes) => {
 
         <MessageContent>
           <UserName>{props.name}</UserName>
-          {props.lastMessage ? (
+          {!hasMessage && <Empty>Нет сообщений</Empty>}
+          {props.lastMessage && (
             <LastMessage data-is-mine={props.lastMessage}>
               {props.lastMessageIsMine && "Вы: "}
-              {props.isImage && "Фотография"}
               {props.lastMessage}
             </LastMessage>
-          ) : (
-            <Empty>Нет сообщений</Empty>
           )}
+          {props.systemMessage && <LastSystemMessage>{props.systemMessage}</LastSystemMessage>}
         </MessageContent>
         <MessageInfo>
           <Time>{props.startTime}</Time>
@@ -83,9 +84,6 @@ const Column = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  @media screen and (max-width: 560px) {
-    padding: 8px;
-  }
 `
 
 const MessageColumn = styled(Column)`
@@ -98,8 +96,6 @@ const MessageColumn = styled(Column)`
   }
 
   @media screen and (max-width: 560px) {
-    border-right: 0;
-    border-bottom: 1px solid #efefef;
     width: 100%;
   }
 `
@@ -137,6 +133,10 @@ const LastMessage = styled.div`
   text-overflow: ellipsis;
   width: 100%;
   overflow: hidden;
+`
+
+const LastSystemMessage = styled(LastMessage)`
+  color: ${props => props.theme.colors.primary};
 `
 
 const MessageInfo = styled.div`

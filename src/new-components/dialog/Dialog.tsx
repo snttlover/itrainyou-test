@@ -10,9 +10,18 @@ type DialogProps = {
   className?: string
   notClosable?: boolean
   id?: string
+  fullscreenOnMobile?: boolean
 }
 
-export const Dialog: React.FC<DialogProps> = ({ children, onChange, notClosable, value, className, id }) => {
+export const Dialog: React.FC<DialogProps> = ({
+  children,
+  fullscreenOnMobile,
+  onChange,
+  notClosable,
+  value,
+  className,
+  id,
+}) => {
   const close = () => {
     onChange && onChange(false)
   }
@@ -32,7 +41,11 @@ export const Dialog: React.FC<DialogProps> = ({ children, onChange, notClosable,
     <>
       {value && (
         <DialogOverlay id={id} onClick={close}>
-          <StyledDialog className={className} onClick={e => e.stopPropagation()}>
+          <StyledDialog
+            className={className}
+            onClick={e => e.stopPropagation()}
+            data-fullscreen-on-modile={fullscreenOnMobile}
+          >
             {!notClosable ? <Close onClick={close} /> : null}
             {children}
           </StyledDialog>
@@ -68,5 +81,11 @@ const StyledDialog = styled.div`
   ${MediaRange.lessThan("mobile")`
     padding: 16px;
     width: 90%;
+    &[data-fullscreen-on-modile="true"] {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      overflow: hidden;
+    }
   `}
 `

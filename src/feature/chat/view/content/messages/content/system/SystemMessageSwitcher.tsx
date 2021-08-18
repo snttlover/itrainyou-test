@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { ChatSystemMessage } from "@/feature/chat/modules/chat-messages"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { SessionRequest, SessionRequestStatus, SessionRequestTypes } from "@/lib/api/coach/get-sessions-requests"
 import {
   ConflictStatus,
@@ -46,7 +46,7 @@ const formatSessionDate = (start?: ISODate, end?: ISODate) => {
   return formatSessionDay(start) + " " + formatSessionTime(start, end)
 }
 
-const getText = (
+export const getSystemMessageText = (
   systemMessageType: FreeSessionClientMessage,
   request: SessionRequest | TransActionProperties,
   status: MessageSessionRequestStatuses | ConflictStatus | TransActionsStatus,
@@ -546,7 +546,7 @@ export const SystemMessageSwitcher = ({
   message: ChatSystemMessage
   commonSystemMessages?: boolean
 }) => {
-  const text = getText(
+  const text = getSystemMessageText(
     message.systemMessageType,
     message.request,
     message.status,
@@ -655,7 +655,6 @@ const SessionInfo = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  margin-right: 20px;
 `
 
 const SessionDay = styled.span`
@@ -678,7 +677,6 @@ const StyledSystemMessage = styled.div<{ id: number }>`
   background: #ffffff;
   border-radius: 8px;
   ${MediaRange.lessThan("mobile")`
-    flex-direction: column;
     width: 100%;
     margin-left: 0;
   `}
@@ -822,7 +820,9 @@ const ConfirmationCompletation = ({ approve, request, limitedOptions }: Confirma
 const Actions = ({
   children,
   withoutLoader,
+  className,
 }: {
+  className?: string
   withoutLoader?: boolean
   children: React.ReactChild | React.ReactChild[]
 }) => {
@@ -834,7 +834,11 @@ const Actions = ({
     }
   }
 
-  return <StyledActions onClick={() => clickHandler()}>{!loading ? children : <StyledActionLoader />}</StyledActions>
+  return (
+    <StyledActions className={className} onClick={() => clickHandler()}>
+      {!loading ? children : <StyledActionLoader />}
+    </StyledActions>
+  )
 }
 
 const StyledActionLoader = styled(Spinner)`
@@ -864,11 +868,25 @@ const StyledActions = styled.div`
 
   ${MediaRange.lessThan("mobile")`
     border-left: 0;
-    flex-direction: row;
+    flex-direction: column;
   `}
 `
 
-const StyledButton = styled(Button)``
+const StyledButton = styled(Button)`
+  ${MediaRange.lessThan("mobile")`
+    flex: 1;
+    margin-bottom: 8px;
+    width: 100%;
+  `}
+`
+
+const ApproveBtn = styled(StyledButton)`
+  margin-right: 8px;
+  ${MediaRange.lessThan("mobile")`
+    margin-right: 0;
+    margin-bottom: 8px;
+  `}
+`
 
 type SessionRequestActionProps = {
   request: SessionRequest | TransActionProperties
@@ -885,7 +903,7 @@ type ApproveActionsTypes = {
 const ApproveActions = ({ yes, no, approve, deny }: ApproveActionsTypes) => {
   return (
     <Actions>
-      <StyledButton onClick={approve}>{yes}</StyledButton>
+      <ApproveBtn onClick={approve}>{yes}</ApproveBtn>
       <StyledButton color='secondary' onClick={deny}>
         {no}
       </StyledButton>
@@ -897,7 +915,9 @@ const CancelAction = ({ request, requestsModule }: SessionRequestActionProps) =>
   const cancel = useEvent(requestsModule.methods.deny)
   return (
     <Actions>
-      <StyledButton onClick={() => cancel({ id: request.id })}>Отменить</StyledButton>
+      <StyledButton color='secondary' onClick={() => cancel({ id: request.id })}>
+        Отменить
+      </StyledButton>
     </Actions>
   )
 }

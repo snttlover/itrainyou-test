@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react"
-import { MediaRange } from "@/lib/responsive/media"
+import React from "react"
 import { ChatMessage } from "@/feature/chat/view/content/messages/content/ChatMessage"
 import { SystemMessageSwitcher } from "@/feature/chat/view/content/messages/content/system/SystemMessageSwitcher"
 import { ChatMessagesTypes } from "@/feature/chat/modules/chat-messages"
 import { SupportMessageSwitcher } from "@/feature/chat/view/content/messages/content/support/SupportMessageSwitcher"
 import styled from "styled-components"
 
-const StyledUnreadMessage = styled.div<{ readed: boolean }>`
-  background: ${({ readed, theme }) => (readed ? "transparent" : `${theme.colors.primary}1F`)};
+const StyledUnreadMessage = styled.div<{ readed?: boolean }>`
+  background: transparent;
   transition: background 0.5s ease;
   padding: 4px 0;
 `
@@ -27,7 +26,7 @@ export const ChatMessageSwitcher = ({
 }) => {
   if (message.type === "SUPPORT") {
     return (
-      <StyledUnreadMessage readed={message.isReadByYou}>
+      <StyledUnreadMessage>
         <SupportMessageSwitcher {...message} />
       </StyledUnreadMessage>
     )
@@ -35,7 +34,7 @@ export const ChatMessageSwitcher = ({
 
   if (message.type === "TEXT") {
     return (
-      <StyledUnreadMessage readed={message.isReadByYou}>
+      <StyledUnreadMessage>
         <ChatMessage
           user={message.user}
           showUser={showUser}
@@ -53,7 +52,7 @@ export const ChatMessageSwitcher = ({
   }
 
   return (
-    <StyledUnreadMessage readed={message.isReadByYou}>
+    <StyledUnreadMessage>
       <SystemMessageSwitcher
         message={message}
         isSystemChat={isSystemChat}
