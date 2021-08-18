@@ -57,9 +57,9 @@ const MobileBack = styled.div`
   padding: 21px 25px;
   border-bottom: 1px solid #e1e6ea;
 
-  ${MediaRange.lessThan("mobile")`
+  @media screen and (max-width: 1225px) {
     display: flex;
-  `}
+  }
 `
 
 const MobileBackText = styled.div`
