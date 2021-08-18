@@ -13,6 +13,7 @@ import { createChatSessions } from "@/feature/chat/view/content/chat-details/ses
 import { createChatImages } from "@/feature/chat/view/content/chat-details/images/ChatImages"
 import { createChatDocuments } from "@/feature/chat/view/content/chat-details/documents/ChatDocuments"
 import { ChatHeaderMobileBackButton } from "@/feature/chat/view/content/headers/common/ChatHeaderMobileBackButton"
+import { Icon } from "@/old-components/icon/Icon"
 
 export const createChatDetails = (detailsModule: ReturnType<typeof createChatDetailsModule>) => {
   const Sessions = createChatSessions(detailsModule.modules.sessions)
@@ -29,7 +30,7 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
     return (
       <Container data-show-on-mobile={showOnMobile}>
         <MobileBack onClick={() => changeMobileVisibility(false)}>
-          <ChatHeaderMobileBackButton />
+          <BackIcon />
           <MobileBackText>К чату</MobileBackText>
         </MobileBack>
         <Header>
@@ -51,10 +52,17 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
   }
 }
 
+const BackIcon = styled(Icon).attrs({ name: "left-icon" })`
+  display: flex;
+  fill: #424242;
+  width: 8px;
+  margin-right: 15px;
+`
+
 const MobileBack = styled.div`
   display: none;
   align-items: center;
-  padding: 21px 25px;
+  padding: 20px 25px;
   border-bottom: 1px solid #e1e6ea;
 
   @media screen and (max-width: 1225px) {
