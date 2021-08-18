@@ -12,7 +12,7 @@ import { MediaRange } from "@/lib/responsive/media"
 import { createChatSessions } from "@/feature/chat/view/content/chat-details/sessions/ChatSessionsList"
 import { createChatImages } from "@/feature/chat/view/content/chat-details/images/ChatImages"
 import { createChatDocuments } from "@/feature/chat/view/content/chat-details/documents/ChatDocuments"
-import { Icon } from "@/old-components/icon/Icon"
+import { ChatHeaderMobileBackButton } from "@/feature/chat/view/content/headers/common/ChatHeaderMobileBackButton"
 
 export const createChatDetails = (detailsModule: ReturnType<typeof createChatDetailsModule>) => {
   const Sessions = createChatSessions(detailsModule.modules.sessions)
@@ -29,7 +29,7 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
     return (
       <Container data-show-on-mobile={showOnMobile}>
         <MobileBack onClick={() => changeMobileVisibility(false)}>
-          <MobileBackIcon />
+          <ChatHeaderMobileBackButton />
           <MobileBackText>К чату</MobileBackText>
         </MobileBack>
         <Header>
@@ -56,12 +56,6 @@ const MobileBack = styled.div`
   align-items: center;
   padding: 20px 25px;
   border-bottom: 1px solid #e1e6ea;
-`
-
-const MobileBackIcon = styled(Icon).attrs({ name: "left-icon" })`
-  fill: #424242;
-  width: 8px;
-  margin-right: 10px;
 `
 
 const MobileBackText = styled.div`

@@ -60,15 +60,19 @@ const DetailsIcon = styled(Icon).attrs({ name: "info" })`
   fill: ${props => props.theme.colors.primary};
   width: 19px;
   height: 19px;
-  margin-right: 10px;
 `
 
 const DetailsText = styled.div`
+  margin-left: 10px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
   color: ${props => props.theme.colors.primary};
+
+  ${MediaRange.lessThan("mobile")`
+    display: none;
+  `}
 `
 
 const StyledAvatar = styled(Avatar)`
@@ -84,15 +88,4 @@ const Container = styled(ChatHeaderContainer)`
       cursor: pointer;
     }
   }
-`
-
-const MaterialsIcon = styled(Icon).attrs({ name: "chat-files" })`
-  width: 20px;
-  height: 20px;
-  fill: #9aa0a6;
-  margin-right: 21px;
-  cursor: pointer;
-  ${MediaRange.lessThan("mobile")`
-      display: none;
-  `}
 `

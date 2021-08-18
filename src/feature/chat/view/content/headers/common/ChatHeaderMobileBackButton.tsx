@@ -7,7 +7,7 @@ import { Link } from "react-router-dom"
 
 export const ChatHeaderMobileBackButton = ({ to }: { to?: string }): JSX.Element => {
   const history = useHistory()
-  
+
   if (to) {
     return (
       <Link to={to}>
@@ -16,16 +16,14 @@ export const ChatHeaderMobileBackButton = ({ to }: { to?: string }): JSX.Element
     )
   }
 
-  return <Button onClick={()=>history.goBack()} />
+  return <Button onClick={() => history.goBack()} />
 }
 
 const Button = styled(Icon).attrs({ name: "left-icon" })`
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  fill: ${props => props.theme.colors.primary};
-  margin-right: 12px;
   display: none;
+  fill: #424242;
+  width: 8px;
+  margin-right: 15px;
   ${MediaRange.lessThan("mobile")`
     display: flex;
   `}
