@@ -64,7 +64,7 @@ const Container = styled.div`
 `
 
 const ListIsEmpty = () => {
-  return <Empty>По вашему запросу ничего не найдено</Empty>
+  return <Empty>Ничего не найдено</Empty>
 }
 
 const ChatLinksContainer = styled.div`
