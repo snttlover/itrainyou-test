@@ -52,10 +52,14 @@ export const createChatDetails = (detailsModule: ReturnType<typeof createChatDet
 }
 
 const MobileBack = styled.div`
-  display: flex;
+  display: none;
   align-items: center;
-  padding: 20px 25px;
+  padding: 21px 25px;
   border-bottom: 1px solid #e1e6ea;
+
+  ${MediaRange.lessThan("mobile")`
+    display: flex;
+  `}
 `
 
 const MobileBackText = styled.div`
