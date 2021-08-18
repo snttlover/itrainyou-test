@@ -158,7 +158,7 @@ export const ChatMessageContainer = styled.div<ContainerTypes>`
   `}
 `
 const MessageText = styled.div<{ doc?: boolean }>`
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
   max-width: ${({ doc }) => (doc ? "320px" : "100%")};
   margin-left: ${({ doc }) => (doc ? "8px" : "0")};
