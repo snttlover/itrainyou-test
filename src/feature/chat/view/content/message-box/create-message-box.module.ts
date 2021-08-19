@@ -1,12 +1,12 @@
-import { combine, createEffect, createEvent, forward, guard, restore, sample, Store } from "effector-root"
-import { SupportChatModelConfig } from "@/feature/support/create-support-chat.model"
+import { combine, createEffect, createEvent, forward, restore, sample, Store } from "effector-root"
+import { BaseSupportChatModelConfig } from "@/feature/support/create-support-chat.model"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { uploadMedia } from "@/lib/api/media"
 import { runInScope } from "@/scope"
 import { condition } from "patronum"
 import FilePreview from "@/feature/chat/view/content/message-box/content/file-preview.svg"
 
-type CreateChatMessageBoxModuleConfig = SupportChatModelConfig & {
+type CreateChatMessageBoxModuleConfig = BaseSupportChatModelConfig & {
   $chatId: Store<ChatId>
 }
 

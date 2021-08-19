@@ -9,11 +9,14 @@ import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials
 import { PaginationRequest } from "@/feature/pagination/modules/pagination"
 import { ChatMaterials } from "@/lib/api/chats/clients/get-images"
 
-export type SupportChatModelConfig = {
+export type BaseSupportChatModelConfig = {
   type: "client" | "coach"
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
+}
+
+export type SupportChatModelConfig = BaseSupportChatModelConfig & {
   fetchMaterials: (
     id: ChatId,
     materials: "images" | "documents",
