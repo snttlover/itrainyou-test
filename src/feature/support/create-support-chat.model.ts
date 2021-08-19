@@ -1,16 +1,24 @@
 import { Chat, ChatMessage, PersonalChat } from "@/lib/api/chats/clients/get-chats"
 import { createChatsSocket } from "@/feature/socket/chats-socket"
-import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/utils.interface"
+import { CursorPagination, CursorPaginationRequest, Pagination } from "@/lib/api/interfaces/utils.interface"
 import { createChatMessagesModule } from "@/feature/chat/modules/chat-messages"
 import { combine, createEffect, createEvent, createStore, forward, restore } from "effector-root"
 import { ChatId } from "@/lib/api/chats/coach/get-messages"
 import { createChatMessageBoxModule } from "@/feature/chat/view/content/message-box/create-message-box.module"
+import { createChatMaterialsModule } from "@/feature/chat/modules/chat-materials/create-chat-materials"
+import { PaginationRequest } from "@/feature/pagination/modules/pagination"
+import { ChatMaterials } from "@/lib/api/chats/clients/get-images"
 
 export type SupportChatModelConfig = {
   type: "client" | "coach"
   fetchChat: (id: ChatId) => Promise<PersonalChat>
   socket: ReturnType<typeof createChatsSocket>
   fetchMessages: (id: ChatId, params: CursorPaginationRequest) => Promise<CursorPagination<ChatMessage>>
+  fetchMaterials: (
+    id: ChatId,
+    materials: "images" | "documents",
+    params: PaginationRequest
+  ) => Promise<Pagination<ChatMaterials>>
 }
 
 export const createSupportChatModel = (config: SupportChatModelConfig) => {
@@ -30,7 +38,12 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
     // @ts-ignore
     fetchMessages: (id: number, params: CursorPaginationRequest) => config.fetchMessages("support", params),
     isSupport: true,
-    supportIsMe: true
+    supportIsMe: true,
+  })
+
+  const materials = createChatMaterialsModule({
+    $chatId,
+    fetchMaterials: config.fetchMaterials,
   })
 
   const load = createEvent()
@@ -120,6 +133,7 @@ export const createSupportChatModel = (config: SupportChatModelConfig) => {
   })
 
   return {
+    materials,
     $support,
     chatMessages,
     socket: config.socket,

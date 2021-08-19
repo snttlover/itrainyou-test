@@ -12,7 +12,6 @@ import { MediaRange } from "@/lib/responsive/media"
 import { createChatSessions } from "@/feature/chat/view/content/chat-details/sessions/ChatSessionsList"
 import { createChatImages } from "@/feature/chat/view/content/chat-details/images/ChatImages"
 import { createChatDocuments } from "@/feature/chat/view/content/chat-details/documents/ChatDocuments"
-import { ChatHeaderMobileBackButton } from "@/feature/chat/view/content/headers/common/ChatHeaderMobileBackButton"
 import { Icon } from "@/old-components/icon/Icon"
 
 export const createChatDetails = (detailsModule: ReturnType<typeof createChatDetailsModule>) => {
