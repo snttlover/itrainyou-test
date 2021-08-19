@@ -9,11 +9,13 @@ import styled from "styled-components"
 import { SupportChatHeader } from "@/feature/support/SupportChatHeader"
 import { ContentContainer } from "@/old-components/layouts/ContentContainer"
 import { ymLog } from "@/lib/external-services/yandex-metrika/lib"
+import { createMaterialsDialog } from "@/feature/chat/modules/chat-materials/createMaterialsDialog"
 
 export const createSupportChat = ($chatModule: ReturnType<typeof createSupportChatModel>) => {
   const Messages = createChatMessages($chatModule.chatMessages)
   const MessageBox = createChatMessageBox($chatModule.messageBox)
-  
+  const MeterialsDialog = createMaterialsDialog($chatModule.materials)
+
   return () => {
     const messagesFirstLoading = useStore($chatModule.$firstLoading)
 
@@ -22,8 +24,10 @@ export const createSupportChat = ($chatModule: ReturnType<typeof createSupportCh
 
     const support = useStore($chatModule.$support)
 
+    const openImage = useEvent($chatModule.materials.modules.imagesDialog.openImageByIndex)
+
     useEffect(() => {
-      ymLog("reachGoal","pushhelpme")
+      ymLog("reachGoal", "pushhelpme")
       mounted("support")
       return () => unmounted()
     }, [])
@@ -36,11 +40,12 @@ export const createSupportChat = ($chatModule: ReturnType<typeof createSupportCh
             <>
               <ChatContainer>
                 <SupportChatHeader avatar={support?.avatar} hasUser={!!support} supportName={support?.name} />
-                <Messages />
+                <Messages imageClick={openImage} />
                 <MessageBox />
               </ChatContainer>
             </>
           )}
+          <MeterialsDialog />
         </Container>
       </ContentWrapper>
     )

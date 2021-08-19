@@ -217,11 +217,19 @@ export const getSystemMessageText = (
         is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED") &&
         request.session.durationType === "PROMO"
       ) {
-        return "Вы отправили запрос на бронирование бесплатной сессии"
+        return (
+          <>
+            Вы <b>запросили</b> бронь бесплатной сессии
+          </>
+        )
       }
 
       if (is("BOOK", ["AWAITING", "APPROVED", "DENIED", "CANCELLED", "AUTOMATICALLY_CANCELLED"], "INITIATED")) {
-        return "Вы отправили запрос на бронирование сессии"
+        return (
+          <>
+            Вы <b>запросили</b> бронь сессии
+          </>
+        )
       }
 
       if (is("BOOK", "CANCELLED", "COMPLETED")) {
@@ -415,9 +423,11 @@ export const getSystemMessageText = (
             </p>
           )
         } else {
-          return `${request.initiatorClient?.firstName} отправил${
-            request.initiatorClient?.sex === "F" ? "a" : ""
-          } запрос на подтверждение бронирования сессии`
+          return (
+            <>
+              {request.initiatorClient?.firstName} <b>запрашивает</b> бронь сессии
+            </>
+          )
         }
       }
 
