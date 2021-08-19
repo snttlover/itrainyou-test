@@ -93,7 +93,7 @@ const Container = styled.div`
     }
   }
 
-  @media screen and (max-width: 1139px) {
+  @media screen and (max-width: 1140px) {
     position: absolute;
     left: 0;
     top: 0;
