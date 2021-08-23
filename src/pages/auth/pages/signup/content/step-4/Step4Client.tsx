@@ -32,7 +32,7 @@ const Header = styled.div`
   margin: 24px 16px 0;
 
   ${MediaRange.greaterThan("mobile")`
-    margin: 80px auto 0;
+    margin: 24px auto 0;
     max-width: 70%;
   `}
   ${MediaRange.greaterThan("laptop")`
