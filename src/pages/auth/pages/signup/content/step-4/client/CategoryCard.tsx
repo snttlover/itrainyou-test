@@ -45,7 +45,7 @@ const Title = styled.h3`
   `}
 `
 
-const TabletkaIcon = styled(Icon).attrs({ name: "tabletka" })<{ color: string }>`
+const TabletkaIcon = styled(Icon).attrs({ name: "tabletka" }) <{ color: string }>`
   width: 16px;
   height: 16px;
   margin-left: auto;
@@ -83,13 +83,13 @@ const ButtonsMobile = styled.div`
   flex-direction: column;
 
   ${MediaRange.lessThan("mobile")`
-    width: 116px;
+    width: 115px;
     display: flex;
     margin-top: 16px;
   `}
 `
 
-const DefaultButton = styled(Button)<{ color: string }>`
+const DefaultButton = styled(Button) <{ color: string }>`
   padding: 12px 24px;
   display: block;
   background: ${({ color, theme }) => theme.colors.primary};
@@ -100,8 +100,8 @@ const DefaultButton = styled(Button)<{ color: string }>`
   line-height: 24px;
 `
 
-const StyledDashedButton = styled(DashedButton)<{ color: string }>`
-  padding: 11.5px 24px 12.5px 24px;
+const StyledDashedButton = styled(DashedButton) <{ color: string }>`
+  padding: 12px 24.46px 12px 24.47px;
   display: block;
   color: ${({ color, theme }) => theme.colors.primary};
   background: #F8F8FD;
@@ -111,7 +111,7 @@ const StyledDashedButton = styled(DashedButton)<{ color: string }>`
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-
+  
 `
 
 type ArrowType = { reverse?: boolean }
