@@ -92,7 +92,7 @@ const ButtonsMobile = styled.div`
 const DefaultButton = styled(Button) <{ color: string }>`
   padding: 12px 24px;
   display: block;
-  background: ${({ color, theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.primary};
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -103,7 +103,7 @@ const DefaultButton = styled(Button) <{ color: string }>`
 const StyledDashedButton = styled(DashedButton) <{ color: string }>`
   padding: 12px 24.46px 12px 24.47px;
   display: block;
-  color: ${({ color, theme }) => theme.colors.primary};
+  color: ${({  theme }) => theme.colors.primary};
   background: #F8F8FD;
   border: none;
   font-family: Roboto;
