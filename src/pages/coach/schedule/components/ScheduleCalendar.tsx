@@ -138,8 +138,11 @@ const StyledHeader = styled(Header)`
 `
 
 const AddVacationButton = styled(DashedButton)`
-  width: 188px;
-
+  width: 161px;
+  background: #F4EFF7;
+  border: none;
+  padding: 11px 24.25px 11px 24.25px;
+  white-space: nowrap;
   ${MediaRange.lessThan("mobile")`
     align-self: flex-end;
     margin-bottom: 34px;

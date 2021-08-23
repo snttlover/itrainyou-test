@@ -38,6 +38,7 @@ const RemoveDateRangeContainer = styled.div`
 `
 
 const StyledSuccessButton = styled(Button)`
+  
   width: 220px;
   margin-left: 16px;
   font-size: 16px;
