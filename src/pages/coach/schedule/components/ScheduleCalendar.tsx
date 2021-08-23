@@ -475,6 +475,7 @@ const CheckBoxesContainer = styled.div<{showOnMobile: boolean}>`
   }
 
   ${MediaRange.lessThan("mobile")`
+    gap: 20.5px;
     flex-direction: column;
     align-items: flex-start;
     display: ${
