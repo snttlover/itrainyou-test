@@ -76,7 +76,7 @@ export const $compatibility = createStore(false).on(checkCompatibilityFx.doneDat
 guard({
   source: $isClient,
   filter: $isClient,
-  target: checkCompatibilityFx.prepend(() => {}),
+  target: checkCompatibilityFx.prepend(() => { }),
 })
 
 export const createSessionCallModule = (config: CreateSessionCallModuleConfig) => {
@@ -187,7 +187,6 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       agoraData.localStream.play("MyUserVideo", { fit: "cover" }, playStreamFail)
     }
     changeHasProblemsDialog(false)
-    debugger
   }
 
   const changeSessionId = createEvent<number>()
@@ -203,7 +202,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
       }) as AgoraClient
       const appId = appConfig.AGORA_ID as string
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      agoraData.client.init(appId, () => {}, agoraHandleFail)
+      agoraData.client.init(appId, () => { }, agoraHandleFail)
 
       agoraData.client.on("stream-added", e => {
         agoraData.client && agoraData.client.subscribe(e.stream)
@@ -333,7 +332,7 @@ export const createSessionCallModule = (config: CreateSessionCallModuleConfig) =
   })
 
   forward({
-    from: connectToSession.map(() => {}),
+    from: connectToSession.map(() => { }),
     to: reset,
   })
 

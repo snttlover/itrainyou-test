@@ -68,7 +68,7 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
 
       changeLastMessage(messages[messages.length - 1]?.id || null)
       changeFirstMessage(messages[0]?.id || null)
-      return () => {}
+      return () => { }
     }, [messages])
 
     useEffect(() => {

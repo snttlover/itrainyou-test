@@ -56,8 +56,8 @@ export const createChat = ($chatModule: ReturnType<typeof createChatModule>) => 
     const Header = isSystemChat ? (
       <SystemChatHeader {...chat} />
     ) : (
-      <PersonalChatHeader {...chat} openMaterials={() => openMaterials()} />
-    )
+        <PersonalChatHeader {...chat} openMaterials={() => openMaterials()} />
+      )
 
     return (
       <Container>

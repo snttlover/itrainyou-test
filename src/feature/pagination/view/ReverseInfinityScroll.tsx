@@ -20,13 +20,14 @@ type ReverseInfiniteScrollTypes = {
 const ReverseInfiniteScroll = (props: ReverseInfiniteScrollTypes) => {
   useEffect(() => {
     const el = document.getElementById(props.scrollableTarget)
-
     const scrollHandler = () => {
       if (el && el.scrollTop < 100 && props.hasMore) {
         props.next()
       }
     }
-
+    if (el && el.scrollTop < 100) {
+      scrollHandler()
+    }
     if (el) {
       el.addEventListener("scroll", scrollHandler)
     }
@@ -65,7 +66,6 @@ export const createReverseInfinityScroll = ($paginationModel: CreateInfinityScro
 ) => {
   const loadMore = useEvent($paginationModel.methods.loadMore)
   const hasMore = useStore($paginationModel.data.$hasMore)
-
   return (
     <ReverseInfiniteScroll
       loader={<ScrollLoader />}
