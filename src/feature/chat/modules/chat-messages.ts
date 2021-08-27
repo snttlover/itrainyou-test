@@ -80,6 +80,7 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
   let chatLoaded = false
   const $readedMessages = createStore<ChatMessage[]>([])
     .on(config.socket.events.onMessagesReadDone, (state, data) => {
+      debugger
       const newState = data.data.messages
 
       return state.concat(newState)
@@ -237,9 +238,13 @@ export const createChatMessagesModule = (config: CreateChatMessagesModuleTypes) 
       )
   })
 
-  const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => ({
-    messages: [message.data.id],
-  }))
+  const readMessage = config.socket.methods.readMessages.prepend<WriteChatMessageDone>(message => {
+    debugger
+    return {
+
+      messages: [message.data.id],
+    }
+  })
 
   debounce({
     source: $readedMessages,

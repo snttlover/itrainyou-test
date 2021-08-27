@@ -8,10 +8,12 @@ export const showCoachOnboarding = createEvent<void | boolean>()
 export const showPromoSessionsOnboarding = createEvent<void | boolean>()
 export const $onBoardingVisibility = createStore<boolean>(false)
   .on(showCoachOnboarding, (state, payload) => {
+    debugger
     if (payload !== undefined) return payload
     return !state
   })
   .on(showPromoSessionsOnboarding, (state, payload) => {
+    debugger
     if (payload !== undefined) return payload
     return !state
   })
@@ -28,7 +30,7 @@ export const visibleOnboardingType = createStore<ONBOARDING_TYPES>(ONBOARDING_TY
 const checkUserFx = createEffect({
   handler: () => {
     const stringData = localStorage.getItem(ONBOARDGING_SHOWED_STORAGE_KEY)
-
+    debugger
     if (!stringData) return false
 
     return JSON.parse(stringData)
@@ -43,6 +45,7 @@ forward({
 forward({
   from: checkUserFx.doneData.map(isShowed => {
     localStorage.setItem(ONBOARDGING_SHOWED_STORAGE_KEY, "true")
+    debugger
     return !isShowed
   }),
   to: showCoachOnboarding,

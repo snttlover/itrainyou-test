@@ -22,15 +22,15 @@ export const ReviewNotification = (props: ReviewNotificationProps) => {
     <StyledLink to={routeNames.coachClientProfile(review.reviewerClient.id.toString())}>
       <Card>
         <Row>
-        
+
           <NotificationAvatar src={review.reviewerClient.avatar} />
-        
+
           <Title>
             <Bold>
               {review.reviewerClient.firstName} {review.reviewerClient.lastName}
             </Bold>
             {" "}
-          оставила о вас отзыв
+          оставил(а) о вас отзыв
             {review.text && <Review>{review.text}</Review>}
           </Title>
           <Time>{props.time}</Time>

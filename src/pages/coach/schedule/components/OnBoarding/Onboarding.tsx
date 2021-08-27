@@ -47,7 +47,7 @@ const Title = styled.div`
   max-width: 432px;
 `
 
-const Description = styled.div<{noAlign? : boolean}>`
+const Description = styled.div<{ noAlign?: boolean }>`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -86,7 +86,7 @@ type SelectableTypes = {
   selected: boolean
 }
 
-const SelectableMarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" })<SelectableTypes>`
+const SelectableMarkerIcon = styled(Icon).attrs({ name: "ellipse-list-marker" }) <SelectableTypes>`
   fill: ${props => props.theme.colors.primary};
   margin: 0 2px;
   width: ${({ selected }) => (selected ? "12px" : "8px")};
@@ -219,12 +219,12 @@ const Slides = ({ content }: SlidesType) => {
   const handleOnClick = () => {
     visibleNumber === content.length - 1 ? toggle(false) : setShowed(visibleNumber + 1)
   }
-  
+
   return (
     <Container>
       {
         content.map((element: OnboardingContentTypes, index: number) => (
-          index === visibleNumber  && <React.Fragment key={index}>
+          index === visibleNumber && <React.Fragment key={index}>
             <Image src={element.image} />
             {element.title && <Title>{element.title}</Title>}
             {element.description}
@@ -250,8 +250,9 @@ export const OnBoardingFreeSessions = () => {
   const visibility = useStore($onBoardingVisibility)
   const _showSecondOnBoarding = useEvent(showPromoSessionsOnboarding)
   const _showFirstOnBoarding = useEvent(showCoachOnboarding)
-
+  debugger
   const toggle = (value: boolean) => {
+    debugger
     type === ONBOARDING_TYPES.COACH ? _showFirstOnBoarding(value) : _showSecondOnBoarding(value)
   }
 

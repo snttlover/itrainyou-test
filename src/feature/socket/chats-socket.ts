@@ -134,8 +134,8 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   const send = socket.methods.send.prepend<SendSocketChatMessage>(data => ({ type: "WRITE_MESSAGE", data }))
   const readMessages = socket.methods.send.prepend<ReadChatMessages>(data => ({ type: "READ_MESSAGES", data }))
-  const userEnteredSession = socket.methods.send.prepend<UserEnteredSession>(data => ({ type: "ENTER_SESSION", data}))
-  const userLeftSession = socket.methods.send.prepend<UserLeftSession>(data => ({ type: "LEFT_SESSION", data}))
+  const userEnteredSession = socket.methods.send.prepend<UserEnteredSession>(data => ({ type: "ENTER_SESSION", data }))
+  const userLeftSession = socket.methods.send.prepend<UserLeftSession>(data => ({ type: "LEFT_SESSION", data }))
 
   const $needConnect = combine(
     $isLoggedIn,
@@ -161,14 +161,18 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     changeCountersFromInit,
     (_, message) => message.data.unreadChats.filter(chat => chat.type !== "SUPPORT")
   )
-
   const onSupportMessage = createEvent<WriteChatMessageDone>()
 
   const $supportUnreadMessagesCounter = createStore<number>(0).on(
     changeCountersFromInit,
-    (_, message) => message.data.unreadChats.filter(chat => chat.type === "SUPPORT")[0]?.newMessagesCount)
-    .on(onSupportMessage, (counters, message) => counters + 1)
-    .reset([onMessagesReadDone,logout])
+    (_, message) => {
+      debugger
+      return message.data.unreadChats.filter(chat => chat.type === "SUPPORT")[0]?.newMessagesCount
+    })
+    .on(onSupportMessage, (counters, message) => {
+      return counters + 1
+    })
+    .reset([onMessagesReadDone, logout])
 
   const changeNotificationsCounter = createEvent<number>()
   const $notificationsCounter = restore(changeNotificationsCounter, 0)
@@ -186,6 +190,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   $chatsCounters
     .on(onIntercMessage, (counters, message) => {
+      debugger
       const currentCounter = counters.find(counter => counter.id === message.data.chat)
       const counter = {
         id: message.data.chat,
@@ -194,6 +199,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       return [counter, ...counters.filter(c => c.id !== counter.id)]
     })
     .on(onMessagesReadDone, (counters, message) => {
+      debugger
       const chats = message.data.messages
         .filter(
           message =>
@@ -215,7 +221,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
     })
 
   const $chatsCount = $chatsCounters.map($counters => $counters.length)
-
   sample({
     source: guard({ source: $token, filter: token => !!token }),
     clock: merge([$needConnect, registerUserFx.done]),
@@ -248,7 +253,7 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
   })
 
   forward({
-    from: socket.events.onConnect.map(() => {}),
+    from: socket.events.onConnect.map(() => { }),
     to: pingPongFx,
   })
 

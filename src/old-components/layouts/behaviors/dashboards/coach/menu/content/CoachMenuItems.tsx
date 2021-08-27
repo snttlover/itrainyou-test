@@ -46,7 +46,6 @@ const Delimiter = styled.div`
 export const CoachMenuItems = () => {
   const chatsCount = useStore(coachChatsSocket.data.$chatsCount)
   const supportChatsCount = useStore(coachChatsSocket.data.$supportUnreadMessagesCounter)
-
   return (
     <ItemsWrapper>
       <DashboardMenuItem link={routeNames.coach()} icon='home'>

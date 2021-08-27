@@ -16,76 +16,76 @@ export type ConflictStatus = "SOLVED_IN_COACH_FAVOUR" | "SOLVED_IN_CLIENT_FAVOUR
 export type TransActionsStatus = "MONEY_SUCCESSFULLY_HELD" | "MONEY_HOLD_UNSUCCESSFUL" | ""
 export type FreeSessionClientMessage = "" | "CHOOSE_NEW_COACH" | "BOOK_PAID_SESSION" | "FREE_SESSION_LIMIT_ENDED"
 
-export type TransActionProperties= {
+export type TransActionProperties = {
+  id: number
+  type: "SESSION_ENROLLMENT" | "SESSION_CANCELATION" | "CLIENT_ENROLLED_SESSION"
+  status: "WAITING_FOR_HOLD" | "IS_HELD" | "SESSION_CANCELLED" | "SUCCEEDED" | "REFUNDED"
+  amount: string
+  enrolledClient: {
+    avatar: string
+    birthDate: Day
+    creationDatetime: ISODate
+    firstName: string
     id: number
-    type: "SESSION_ENROLLMENT" | "SESSION_CANCELATION" | "CLIENT_ENROLLED_SESSION"
-    status: "WAITING_FOR_HOLD" | "IS_HELD" | "SESSION_CANCELLED" | "SUCCEEDED" | "REFUNDED"
-    amount: string
-    enrolledClient: {
-        avatar: string
-        birthDate: Day
-        creationDatetime: ISODate
-        firstName: string
-        id: number
-        lastName: string
-        sex: Sex
-    } | null
-    session: {
-        id: number
-        isReviewed: boolean
-        coach: {
-            id: number
-            firstName: string
-            lastName: string
-            birthDate: string
-            sex: Sex
-            avatar: string
-            isTopCoach: boolean
-            creationDatetime: ISODate
-        }
-        clientPrice: string
-        coachPrice: string
-        startDatetime: string
-        endDatetime: string
-        durationType: string
-        translationUrl: string
-        recordingUrl: string
-        materials: string[]
+    lastName: string
+    sex: Sex
+  } | null
+  session: {
+    id: number
+    isReviewed: boolean
+    coach: {
+      id: number
+      firstName: string
+      lastName: string
+      birthDate: string
+      sex: Sex
+      avatar: string
+      isTopCoach: boolean
+      creationDatetime: ISODate
     }
+    clientPrice: string
+    coachPrice: string
+    startDatetime: string
+    endDatetime: string
+    durationType: string
+    translationUrl: string
+    recordingUrl: string
+    materials: string[]
+  }
 
-    rescheduleSession: null
-    initiatorClient?: Client
-    initiatorCoach?: CoachUser
-    receiverClient?: Client
-    receiverCoach?: CoachUser
-    resultDatetime: ISODate
+  rescheduleSession: null
+  initiatorClient?: Client
+  initiatorCoach?: CoachUser
+  receiverClient?: Client
+  receiverCoach?: CoachUser
+  resultDatetime: ISODate
 }
 
 export type ChatMessage = {
-    id: number
-    type: MessageTypes
-    text: string
-    image: string
-    coachToBookSession: number | null
-    document: string
-    chat: number
-    transaction: TransActionProperties | null
-    transactionType: TransActionsStatus
-    senderCoach: CoachUser | null
-    senderClient: Client | null
-    senderSupport: Client | null
-    sessionRequest: SessionRequest | null
-    supportTicket: {
-        support: Client
-    } | null
-    conflict: null | {
-        status: ConflictStatus
-    }
-    sessionRequestStatus: MessageSessionRequestStatuses
-    creationDatetime: ISODate
-    systemTicketType: SupportTicketType
-    isReadByYou: boolean
-    systemMessageType: FreeSessionClientMessage
+  id: number
+  type: MessageTypes
+  text: string
+  image: string
+  coachToBookSession: number | null
+  document: string
+  chat: number
+  transaction: TransActionProperties | null
+  transactionType: TransActionsStatus
+  senderCoach: CoachUser | null
+  senderClient: Client | null
+  senderSupport: Client | null
+  sessionRequest: SessionRequest | null
+  supportTicket: {
+    support: Client
+  } | null
+  conflict: null | {
+    status: ConflictStatus
+  }
+  sessionRequestStatus: MessageSessionRequestStatuses
+  creationDatetime: ISODate
+  systemTicketType: SupportTicketType
+  isReadByYou: boolean
+  systemMessageType: FreeSessionClientMessage
 }
 
 

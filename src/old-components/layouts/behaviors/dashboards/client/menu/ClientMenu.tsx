@@ -19,7 +19,6 @@ const StyledLink = styled(Link)`
 export const ClientMenu = () => {
   const mobileMenuVisibility = useStore(blueLayoutMobileMenuVisibility)
   const user = useStore($userData)
-
   return (
     <DashboardMenuContainer showOnMobile={mobileMenuVisibility}>
       <StyledLink to={routeNames.client()}>
@@ -33,7 +32,7 @@ export const ClientMenu = () => {
         profileLink={routeNames.clientProfile()}
       />
       <ClientMenuItems />
-      <CoachLink>Стать коучем</CoachLink>
+      {!user.coach && <CoachLink>Стать коучем</CoachLink>}
     </DashboardMenuContainer>
   )
 }

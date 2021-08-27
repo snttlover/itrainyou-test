@@ -22,6 +22,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 768px) {
     background: ${props => props.theme.colors.primary};
+    position: sticky;
   }
 `
 

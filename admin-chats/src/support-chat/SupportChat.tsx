@@ -18,7 +18,6 @@ export const createSupportChat = (chatId: ChatId, $chatModule: ReturnType<typeof
   const Messages = createChatMessages($chatModule.chatMessages)
   const MessageBox = createChatMessageBox($chatModule.messageBox)
   const MaterialsDialog = createMaterialsDialog($chatModule.materials)
-
   return () => {
     const messagesFirstLoading = useStore($chatModule.$firstLoading)
 

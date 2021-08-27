@@ -92,7 +92,6 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
         return date(message.date).format("DD MMMM")
       },
     })
-
     return (
       <Container ref={container} id='messages'>
         {empty && <Empty>Пока нет сообщений</Empty>}
