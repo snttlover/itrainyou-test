@@ -16,9 +16,9 @@ export const createSocket = () => {
       socket.onclose = () => runInScope(onClose)
       socket.onerror = () => runInScope(onError)
       socket.onmessage = e => {
-        let message = keysToCamel(JSON.parse(e.data))
 
-        if ( config.ENVIRONMENT !== "production") {
+        let message = keysToCamel(JSON.parse(e.data))
+        if (config.ENVIRONMENT !== "production") {
           message = fixAvatarAndImageUrl(message)
         }
         runInScope(onMessage, message)

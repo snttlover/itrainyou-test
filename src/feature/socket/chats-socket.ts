@@ -159,14 +159,15 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   const $chatsCounters = createStore<ChatCounter[]>([]).on(
     changeCountersFromInit,
-    (_, message) => message.data.unreadChats.filter(chat => chat.type !== "SUPPORT")
+    (_, message) => {
+      message.data.unreadChats.filter(chat => chat.type !== "SUPPORT")
+    }
   )
   const onSupportMessage = createEvent<WriteChatMessageDone>()
 
   const $supportUnreadMessagesCounter = createStore<number>(0).on(
     changeCountersFromInit,
     (_, message) => {
-      debugger
       return message.data.unreadChats.filter(chat => chat.type === "SUPPORT")[0]?.newMessagesCount
     })
     .on(onSupportMessage, (counters, message) => {
@@ -190,7 +191,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
 
   $chatsCounters
     .on(onIntercMessage, (counters, message) => {
-      debugger
       const currentCounter = counters.find(counter => counter.id === message.data.chat)
       const counter = {
         id: message.data.chat,
@@ -199,7 +199,6 @@ export const createChatsSocket = (userType: UserType, query?: any) => {
       return [counter, ...counters.filter(c => c.id !== counter.id)]
     })
     .on(onMessagesReadDone, (counters, message) => {
-      debugger
       const chats = message.data.messages
         .filter(
           message =>

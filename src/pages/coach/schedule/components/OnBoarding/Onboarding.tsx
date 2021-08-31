@@ -250,9 +250,7 @@ export const OnBoardingFreeSessions = () => {
   const visibility = useStore($onBoardingVisibility)
   const _showSecondOnBoarding = useEvent(showPromoSessionsOnboarding)
   const _showFirstOnBoarding = useEvent(showCoachOnboarding)
-  debugger
   const toggle = (value: boolean) => {
-    debugger
     type === ONBOARDING_TYPES.COACH ? _showFirstOnBoarding(value) : _showSecondOnBoarding(value)
   }
 

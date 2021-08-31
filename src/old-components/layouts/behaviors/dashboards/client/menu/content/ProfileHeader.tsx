@@ -5,6 +5,8 @@ import { MediaRange } from "@/lib/responsive/media"
 import { Icon } from "@/old-components/icon/Icon"
 import { CoachTooltip } from "@/old-components/layouts/behaviors/dashboards/coach/top-bar/coach-tooltip/CoachTooltip"
 import * as React from "react"
+import { toggleBlueLayoutMobileMenuVisibility } from "@/old-components/layouts/behaviors/dashboards/client/menu/blue-layout.mobile-menu"
+import { useEvent } from "effector-react"
 
 const StyledHeader = styled.div`
   width: 100%;
@@ -86,17 +88,19 @@ type ProfileHeaderTypes = {
   profileLink: string
 }
 
-export const ProfileHeader = (props: ProfileHeaderTypes) => (
-  <StyledHeader {...props}>
+export const ProfileHeader = (props: ProfileHeaderTypes) => {
+  const toggle = useEvent(toggleBlueLayoutMobileMenuVisibility)
+
+  return <StyledHeader {...props}>
     <Name>
       {props.firstName}
       <br /> {props.lastName}
     </Name>
-    <Link to={props.profileLink}>
+    <Link to={props.profileLink} onClick={() => toggle()}>
       <StyledAvatar src={props.avatar || null} />
     </Link>
     <StyledCoachTooltip withBack={true}>
       <DropdownButton />
     </StyledCoachTooltip>
   </StyledHeader>
-)
+}

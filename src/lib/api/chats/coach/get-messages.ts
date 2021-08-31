@@ -6,7 +6,8 @@ import { CursorPagination, CursorPaginationRequest } from "@/lib/api/interfaces/
 
 export type ChatId = number | "system" | "support"
 
-export const getCoachChatMessages = (id: ChatId, params: CursorPaginationRequest) =>
-  get<CursorPagination<ChatMessage>, CursorPaginationRequest>(`${config.BACKEND_URL}/api/v1/web/coach/chats/${id}/messages/`, params)
+export const getCoachChatMessages = (id: ChatId, params: CursorPaginationRequest) => {
+  return get<CursorPagination<ChatMessage>, CursorPaginationRequest>(`${config.BACKEND_URL}/api/v1/web/coach/chats/${id}/messages/`, params)
     .then(response => response.data)
     .then(keysToCamel)
+}

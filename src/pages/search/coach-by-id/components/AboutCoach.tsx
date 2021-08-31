@@ -13,7 +13,7 @@ import { BlockWithLinks } from "@/new-components/block-with-links/BlockWithLinks
 const StyledBlock = styled(Block)`
   white-space: pre-wrap;
   word-break: break-all;
-
+  line-height: 24px;
   ${MediaRange.between("mobile", "laptop")`
     padding: 20px 16px;
   `}

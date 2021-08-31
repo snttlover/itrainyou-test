@@ -102,16 +102,18 @@ export const createChatMessages = ($chatMessagesModule: ReturnType<typeof create
                 {splittedMessages.keys.map(day => (
                   <MessagesByDate key={day}>
                     <Day>{day}</Day>
-                    {splittedMessages.splitted(day).map(message => (
-                      <ChatMessageSwitcher
-                        key={message.id}
-                        message={message}
-                        isSystemChat={!!isSystem}
-                        showUser={showUser}
-                        commonSystemMessages={commonSystemMessages}
-                        imageClick={imageClick}
-                      />
-                    ))}
+                    {splittedMessages.splitted(day).map(message => {
+                      return (
+                        <ChatMessageSwitcher
+                          key={message.id}
+                          message={message}
+                          isSystemChat={!!isSystem}
+                          showUser={showUser}
+                          commonSystemMessages={commonSystemMessages}
+                          imageClick={imageClick}
+                        />
+                      )
+                    })}
                   </MessagesByDate>
                 ))}
               </MessagesWrapper>

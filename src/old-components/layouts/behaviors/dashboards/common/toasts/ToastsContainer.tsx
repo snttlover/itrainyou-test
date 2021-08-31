@@ -45,7 +45,7 @@ export const ToastsContainer = () => (
         return () => {
           timeoutId && clearTimeout(timeoutId)
         }
-      }, [])
+      }, [toast])
 
       return (
         <Toast type={toast.type}>

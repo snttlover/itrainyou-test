@@ -90,7 +90,7 @@ const ButtonsMobile = styled.div`
 `
 
 const DefaultButton = styled(Button) <{ color: string }>`
-  padding: 12px 24px;
+  padding: 12.5px 24.13px 11.5px 24.12px;
   display: block;
   background: ${({ theme }) => theme.colors.primary};
   font-family: Roboto;

@@ -21,7 +21,8 @@ export const createChatMessageBox = ($module: ReturnType<typeof createChatMessag
   const input = useRef<HTMLTextAreaElement>(null)
 
   const keydownHandler = (e: React.KeyboardEvent) => {
-    if (e.keyCode === 13) {
+
+    if (e.keyCode === 13 && window.innerWidth > 768) {
       e.preventDefault()
       if (!value.trim()) {
         return
